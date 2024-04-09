@@ -13,9 +13,9 @@ public final class JobResponseInnerTests {
         JobResponseInner model =
             BinaryData
                 .fromString(
-                    "{\"jobId\":\"lupj\",\"startTimeUtc\":\"Wed, 21 Apr 2021 08:53:38 GMT\",\"endTimeUtc\":\"Mon, 26"
-                        + " Apr 2021 22:12:21"
-                        + " GMT\",\"type\":\"import\",\"status\":\"completed\",\"failureReason\":\"wsrtjriplrbpbe\",\"statusMessage\":\"ghfg\",\"parentJobId\":\"c\"}")
+                    "{\"jobId\":\"begibtnmxiebwwa\",\"startTimeUtc\":\"Mon, 12 Apr 2021 02:20:56"
+                        + " GMT\",\"endTimeUtc\":\"Mon, 26 Apr 2021 15:42:40"
+                        + " GMT\",\"type\":\"factoryResetDevice\",\"status\":\"unknown\",\"failureReason\":\"zjuzgwyz\",\"statusMessage\":\"txon\",\"parentJobId\":\"ts\"}")
                 .toObject(JobResponseInner.class);
     }
 

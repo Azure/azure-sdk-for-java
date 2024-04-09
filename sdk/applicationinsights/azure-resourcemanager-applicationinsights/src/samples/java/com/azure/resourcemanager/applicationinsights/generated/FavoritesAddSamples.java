@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentFavoriteInner;
 import com.azure.resourcemanager.applicationinsights.models.FavoriteType;
 import java.util.Arrays;
@@ -157,6 +156,6 @@ public final class FavoritesAddSamples {
                     .withFavoriteType(FavoriteType.SHARED)
                     .withTags(Arrays.asList("TagSample01", "TagSample02"))
                     .withIsGeneratedFromTemplate(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

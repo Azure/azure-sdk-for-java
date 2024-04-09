@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for CheckIPAddressAvailability API service call. */
+/**
+ * Response for CheckIPAddressAvailability API service call.
+ */
 @Fluent
 public final class IpAddressAvailabilityResultInner {
     /*
@@ -29,13 +31,15 @@ public final class IpAddressAvailabilityResultInner {
     @JsonProperty(value = "isPlatformReserved")
     private Boolean isPlatformReserved;
 
-    /** Creates an instance of IpAddressAvailabilityResultInner class. */
+    /**
+     * Creates an instance of IpAddressAvailabilityResultInner class.
+     */
     public IpAddressAvailabilityResultInner() {
     }
 
     /**
      * Get the available property: Private IP address availability.
-     *
+     * 
      * @return the available value.
      */
     public Boolean available() {
@@ -44,7 +48,7 @@ public final class IpAddressAvailabilityResultInner {
 
     /**
      * Set the available property: Private IP address availability.
-     *
+     * 
      * @param available the available value to set.
      * @return the IpAddressAvailabilityResultInner object itself.
      */
@@ -56,7 +60,7 @@ public final class IpAddressAvailabilityResultInner {
     /**
      * Get the availableIpAddresses property: Contains other available private IP addresses if the asked for address is
      * taken.
-     *
+     * 
      * @return the availableIpAddresses value.
      */
     public List<String> availableIpAddresses() {
@@ -66,7 +70,7 @@ public final class IpAddressAvailabilityResultInner {
     /**
      * Set the availableIpAddresses property: Contains other available private IP addresses if the asked for address is
      * taken.
-     *
+     * 
      * @param availableIpAddresses the availableIpAddresses value to set.
      * @return the IpAddressAvailabilityResultInner object itself.
      */
@@ -77,7 +81,7 @@ public final class IpAddressAvailabilityResultInner {
 
     /**
      * Get the isPlatformReserved property: Private IP address platform reserved.
-     *
+     * 
      * @return the isPlatformReserved value.
      */
     public Boolean isPlatformReserved() {
@@ -86,7 +90,7 @@ public final class IpAddressAvailabilityResultInner {
 
     /**
      * Set the isPlatformReserved property: Private IP address platform reserved.
-     *
+     * 
      * @param isPlatformReserved the isPlatformReserved value to set.
      * @return the IpAddressAvailabilityResultInner object itself.
      */
@@ -97,7 +101,7 @@ public final class IpAddressAvailabilityResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

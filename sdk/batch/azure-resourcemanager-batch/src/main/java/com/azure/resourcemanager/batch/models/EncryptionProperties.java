@@ -25,13 +25,15 @@ public final class EncryptionProperties {
     @JsonProperty(value = "keyVaultProperties")
     private KeyVaultProperties keyVaultProperties;
 
-    /** Creates an instance of EncryptionProperties class. */
+    /**
+     * Creates an instance of EncryptionProperties class.
+     */
     public EncryptionProperties() {
     }
 
     /**
      * Get the keySource property: Type of the key source.
-     *
+     * 
      * @return the keySource value.
      */
     public KeySource keySource() {
@@ -40,7 +42,7 @@ public final class EncryptionProperties {
 
     /**
      * Set the keySource property: Type of the key source.
-     *
+     * 
      * @param keySource the keySource value to set.
      * @return the EncryptionProperties object itself.
      */
@@ -51,7 +53,7 @@ public final class EncryptionProperties {
 
     /**
      * Get the keyVaultProperties property: Additional details when using Microsoft.KeyVault.
-     *
+     * 
      * @return the keyVaultProperties value.
      */
     public KeyVaultProperties keyVaultProperties() {
@@ -60,7 +62,7 @@ public final class EncryptionProperties {
 
     /**
      * Set the keyVaultProperties property: Additional details when using Microsoft.KeyVault.
-     *
+     * 
      * @param keyVaultProperties the keyVaultProperties value to set.
      * @return the EncryptionProperties object itself.
      */
@@ -71,7 +73,7 @@ public final class EncryptionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

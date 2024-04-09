@@ -10,12 +10,14 @@ the `azure-sdk-tools` repository.
 
 ## Table of contents
 
-- [Current recording setup](#current-recording-setup)
-- [New recording setup](#new-recording-setup)
-- [Initial recording migration](#initial-recording-migration)
+- [Guide for migrating test recordings out of the `azure-sdk-for-java` repository](#guide-for-migrating-test-recordings-out-of-the-azure-sdk-for-java-repository)
+  - [Table of contents](#table-of-contents)
+  - [Current recording setup](#current-recording-setup)
+  - [New recording setup](#new-recording-setup)
+  - [Initial recording migration](#initial-recording-migration)
     - [Migration script prerequisites](#migration-script-prerequisites)
     - [Execute the migration script](#execute-the-migration-script)
-- [Run tests with out-of-repo recordings](#run-tests-with-out-of-repo-recordings)
+  - [Run tests with out-of-repo recordings](#run-tests-with-out-of-repo-recordings)
 
 ## Current recording setup
 
@@ -120,4 +122,4 @@ primary ways:
 [git_setup]: https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup
 [git_token]: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
 [powershell]: https://learn.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-latest
-[transition_script]: https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/testproxy/onboarding/README.me
+[transition_script]: https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/testproxy/onboarding/README.md

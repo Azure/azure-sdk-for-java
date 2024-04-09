@@ -5,7 +5,7 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.data.appconfiguration.models.SnapshotStatus;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,7 +19,7 @@ public final class SnapshotUpdateParameters implements JsonSerializable<Snapshot
     /*
      * The desired status of the snapshot.
      */
-    private SnapshotStatus status;
+    private ConfigurationSnapshotStatus status;
 
     /** Creates an instance of SnapshotUpdateParameters class. */
     public SnapshotUpdateParameters() {}
@@ -29,7 +29,7 @@ public final class SnapshotUpdateParameters implements JsonSerializable<Snapshot
      *
      * @return the status value.
      */
-    public SnapshotStatus getStatus() {
+    public ConfigurationSnapshotStatus getStatus() {
         return this.status;
     }
 
@@ -39,7 +39,7 @@ public final class SnapshotUpdateParameters implements JsonSerializable<Snapshot
      * @param status the status value to set.
      * @return the SnapshotUpdateParameters object itself.
      */
-    public SnapshotUpdateParameters setStatus(SnapshotStatus status) {
+    public SnapshotUpdateParameters setStatus(ConfigurationSnapshotStatus status) {
         this.status = status;
         return this;
     }
@@ -68,7 +68,8 @@ public final class SnapshotUpdateParameters implements JsonSerializable<Snapshot
                         reader.nextToken();
 
                         if ("status".equals(fieldName)) {
-                            deserializedSnapshotUpdateParameters.status = SnapshotStatus.fromString(reader.getString());
+                            deserializedSnapshotUpdateParameters.status =
+                                    ConfigurationSnapshotStatus.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }

@@ -177,11 +177,13 @@ public interface ScalingPlanPooledSchedule {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ScalingPlanPooledSchedule definition stages. */
     interface DefinitionStages {
         /** The first stage of the ScalingPlanPooledSchedule definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ScalingPlanPooledSchedule definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -193,6 +195,7 @@ public interface ScalingPlanPooledSchedule {
              */
             WithCreate withExistingScalingPlan(String resourceGroupName, String scalingPlanName);
         }
+
         /**
          * The stage of the ScalingPlanPooledSchedule definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -230,6 +233,7 @@ public interface ScalingPlanPooledSchedule {
              */
             ScalingPlanPooledSchedule create(Context context);
         }
+
         /** The stage of the ScalingPlanPooledSchedule definition allowing to specify daysOfWeek. */
         interface WithDaysOfWeek {
             /**
@@ -240,6 +244,7 @@ public interface ScalingPlanPooledSchedule {
              */
             WithCreate withDaysOfWeek(List<DayOfWeek> daysOfWeek);
         }
+
         /** The stage of the ScalingPlanPooledSchedule definition allowing to specify rampUpStartTime. */
         interface WithRampUpStartTime {
             /**
@@ -250,6 +255,7 @@ public interface ScalingPlanPooledSchedule {
              */
             WithCreate withRampUpStartTime(Time rampUpStartTime);
         }
+
         /** The stage of the ScalingPlanPooledSchedule definition allowing to specify rampUpLoadBalancingAlgorithm. */
         interface WithRampUpLoadBalancingAlgorithm {
             /**
@@ -260,6 +266,7 @@ public interface ScalingPlanPooledSchedule {
              */
             WithCreate withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm rampUpLoadBalancingAlgorithm);
         }
+
         /** The stage of the ScalingPlanPooledSchedule definition allowing to specify rampUpMinimumHostsPct. */
         interface WithRampUpMinimumHostsPct {
             /**
@@ -270,6 +277,7 @@ public interface ScalingPlanPooledSchedule {
              */
             WithCreate withRampUpMinimumHostsPct(Integer rampUpMinimumHostsPct);
         }
+
         /** The stage of the ScalingPlanPooledSchedule definition allowing to specify rampUpCapacityThresholdPct. */
         interface WithRampUpCapacityThresholdPct {
             /**
@@ -280,6 +288,7 @@ public interface ScalingPlanPooledSchedule {
              */
             WithCreate withRampUpCapacityThresholdPct(Integer rampUpCapacityThresholdPct);
         }
+
         /** The stage of the ScalingPlanPooledSchedule definition allowing to specify peakStartTime. */
         interface WithPeakStartTime {
             /**
@@ -290,6 +299,7 @@ public interface ScalingPlanPooledSchedule {
              */
             WithCreate withPeakStartTime(Time peakStartTime);
         }
+
         /** The stage of the ScalingPlanPooledSchedule definition allowing to specify peakLoadBalancingAlgorithm. */
         interface WithPeakLoadBalancingAlgorithm {
             /**
@@ -300,6 +310,7 @@ public interface ScalingPlanPooledSchedule {
              */
             WithCreate withPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm peakLoadBalancingAlgorithm);
         }
+
         /** The stage of the ScalingPlanPooledSchedule definition allowing to specify rampDownStartTime. */
         interface WithRampDownStartTime {
             /**
@@ -310,6 +321,7 @@ public interface ScalingPlanPooledSchedule {
              */
             WithCreate withRampDownStartTime(Time rampDownStartTime);
         }
+
         /** The stage of the ScalingPlanPooledSchedule definition allowing to specify rampDownLoadBalancingAlgorithm. */
         interface WithRampDownLoadBalancingAlgorithm {
             /**
@@ -321,6 +333,7 @@ public interface ScalingPlanPooledSchedule {
             WithCreate withRampDownLoadBalancingAlgorithm(
                 SessionHostLoadBalancingAlgorithm rampDownLoadBalancingAlgorithm);
         }
+
         /** The stage of the ScalingPlanPooledSchedule definition allowing to specify rampDownMinimumHostsPct. */
         interface WithRampDownMinimumHostsPct {
             /**
@@ -331,6 +344,7 @@ public interface ScalingPlanPooledSchedule {
              */
             WithCreate withRampDownMinimumHostsPct(Integer rampDownMinimumHostsPct);
         }
+
         /** The stage of the ScalingPlanPooledSchedule definition allowing to specify rampDownCapacityThresholdPct. */
         interface WithRampDownCapacityThresholdPct {
             /**
@@ -341,6 +355,7 @@ public interface ScalingPlanPooledSchedule {
              */
             WithCreate withRampDownCapacityThresholdPct(Integer rampDownCapacityThresholdPct);
         }
+
         /** The stage of the ScalingPlanPooledSchedule definition allowing to specify rampDownForceLogoffUsers. */
         interface WithRampDownForceLogoffUsers {
             /**
@@ -351,6 +366,7 @@ public interface ScalingPlanPooledSchedule {
              */
             WithCreate withRampDownForceLogoffUsers(Boolean rampDownForceLogoffUsers);
         }
+
         /** The stage of the ScalingPlanPooledSchedule definition allowing to specify rampDownStopHostsWhen. */
         interface WithRampDownStopHostsWhen {
             /**
@@ -361,6 +377,7 @@ public interface ScalingPlanPooledSchedule {
              */
             WithCreate withRampDownStopHostsWhen(StopHostsWhen rampDownStopHostsWhen);
         }
+
         /** The stage of the ScalingPlanPooledSchedule definition allowing to specify rampDownWaitTimeMinutes. */
         interface WithRampDownWaitTimeMinutes {
             /**
@@ -372,6 +389,7 @@ public interface ScalingPlanPooledSchedule {
              */
             WithCreate withRampDownWaitTimeMinutes(Integer rampDownWaitTimeMinutes);
         }
+
         /** The stage of the ScalingPlanPooledSchedule definition allowing to specify rampDownNotificationMessage. */
         interface WithRampDownNotificationMessage {
             /**
@@ -383,6 +401,7 @@ public interface ScalingPlanPooledSchedule {
              */
             WithCreate withRampDownNotificationMessage(String rampDownNotificationMessage);
         }
+
         /** The stage of the ScalingPlanPooledSchedule definition allowing to specify offPeakStartTime. */
         interface WithOffPeakStartTime {
             /**
@@ -393,6 +412,7 @@ public interface ScalingPlanPooledSchedule {
              */
             WithCreate withOffPeakStartTime(Time offPeakStartTime);
         }
+
         /** The stage of the ScalingPlanPooledSchedule definition allowing to specify offPeakLoadBalancingAlgorithm. */
         interface WithOffPeakLoadBalancingAlgorithm {
             /**
@@ -405,6 +425,7 @@ public interface ScalingPlanPooledSchedule {
                 SessionHostLoadBalancingAlgorithm offPeakLoadBalancingAlgorithm);
         }
     }
+
     /**
      * Begins update for the ScalingPlanPooledSchedule resource.
      *
@@ -446,6 +467,7 @@ public interface ScalingPlanPooledSchedule {
          */
         ScalingPlanPooledSchedule apply(Context context);
     }
+
     /** The ScalingPlanPooledSchedule update stages. */
     interface UpdateStages {
         /** The stage of the ScalingPlanPooledSchedule update allowing to specify daysOfWeek. */
@@ -458,6 +480,7 @@ public interface ScalingPlanPooledSchedule {
              */
             Update withDaysOfWeek(List<DayOfWeek> daysOfWeek);
         }
+
         /** The stage of the ScalingPlanPooledSchedule update allowing to specify rampUpStartTime. */
         interface WithRampUpStartTime {
             /**
@@ -468,6 +491,7 @@ public interface ScalingPlanPooledSchedule {
              */
             Update withRampUpStartTime(Time rampUpStartTime);
         }
+
         /** The stage of the ScalingPlanPooledSchedule update allowing to specify rampUpLoadBalancingAlgorithm. */
         interface WithRampUpLoadBalancingAlgorithm {
             /**
@@ -478,6 +502,7 @@ public interface ScalingPlanPooledSchedule {
              */
             Update withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm rampUpLoadBalancingAlgorithm);
         }
+
         /** The stage of the ScalingPlanPooledSchedule update allowing to specify rampUpMinimumHostsPct. */
         interface WithRampUpMinimumHostsPct {
             /**
@@ -488,6 +513,7 @@ public interface ScalingPlanPooledSchedule {
              */
             Update withRampUpMinimumHostsPct(Integer rampUpMinimumHostsPct);
         }
+
         /** The stage of the ScalingPlanPooledSchedule update allowing to specify rampUpCapacityThresholdPct. */
         interface WithRampUpCapacityThresholdPct {
             /**
@@ -498,6 +524,7 @@ public interface ScalingPlanPooledSchedule {
              */
             Update withRampUpCapacityThresholdPct(Integer rampUpCapacityThresholdPct);
         }
+
         /** The stage of the ScalingPlanPooledSchedule update allowing to specify peakStartTime. */
         interface WithPeakStartTime {
             /**
@@ -508,6 +535,7 @@ public interface ScalingPlanPooledSchedule {
              */
             Update withPeakStartTime(Time peakStartTime);
         }
+
         /** The stage of the ScalingPlanPooledSchedule update allowing to specify peakLoadBalancingAlgorithm. */
         interface WithPeakLoadBalancingAlgorithm {
             /**
@@ -518,6 +546,7 @@ public interface ScalingPlanPooledSchedule {
              */
             Update withPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm peakLoadBalancingAlgorithm);
         }
+
         /** The stage of the ScalingPlanPooledSchedule update allowing to specify rampDownStartTime. */
         interface WithRampDownStartTime {
             /**
@@ -528,6 +557,7 @@ public interface ScalingPlanPooledSchedule {
              */
             Update withRampDownStartTime(Time rampDownStartTime);
         }
+
         /** The stage of the ScalingPlanPooledSchedule update allowing to specify rampDownLoadBalancingAlgorithm. */
         interface WithRampDownLoadBalancingAlgorithm {
             /**
@@ -538,6 +568,7 @@ public interface ScalingPlanPooledSchedule {
              */
             Update withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm rampDownLoadBalancingAlgorithm);
         }
+
         /** The stage of the ScalingPlanPooledSchedule update allowing to specify rampDownMinimumHostsPct. */
         interface WithRampDownMinimumHostsPct {
             /**
@@ -548,6 +579,7 @@ public interface ScalingPlanPooledSchedule {
              */
             Update withRampDownMinimumHostsPct(Integer rampDownMinimumHostsPct);
         }
+
         /** The stage of the ScalingPlanPooledSchedule update allowing to specify rampDownCapacityThresholdPct. */
         interface WithRampDownCapacityThresholdPct {
             /**
@@ -558,6 +590,7 @@ public interface ScalingPlanPooledSchedule {
              */
             Update withRampDownCapacityThresholdPct(Integer rampDownCapacityThresholdPct);
         }
+
         /** The stage of the ScalingPlanPooledSchedule update allowing to specify rampDownForceLogoffUsers. */
         interface WithRampDownForceLogoffUsers {
             /**
@@ -568,6 +601,7 @@ public interface ScalingPlanPooledSchedule {
              */
             Update withRampDownForceLogoffUsers(Boolean rampDownForceLogoffUsers);
         }
+
         /** The stage of the ScalingPlanPooledSchedule update allowing to specify rampDownStopHostsWhen. */
         interface WithRampDownStopHostsWhen {
             /**
@@ -578,6 +612,7 @@ public interface ScalingPlanPooledSchedule {
              */
             Update withRampDownStopHostsWhen(StopHostsWhen rampDownStopHostsWhen);
         }
+
         /** The stage of the ScalingPlanPooledSchedule update allowing to specify rampDownWaitTimeMinutes. */
         interface WithRampDownWaitTimeMinutes {
             /**
@@ -589,6 +624,7 @@ public interface ScalingPlanPooledSchedule {
              */
             Update withRampDownWaitTimeMinutes(Integer rampDownWaitTimeMinutes);
         }
+
         /** The stage of the ScalingPlanPooledSchedule update allowing to specify rampDownNotificationMessage. */
         interface WithRampDownNotificationMessage {
             /**
@@ -600,6 +636,7 @@ public interface ScalingPlanPooledSchedule {
              */
             Update withRampDownNotificationMessage(String rampDownNotificationMessage);
         }
+
         /** The stage of the ScalingPlanPooledSchedule update allowing to specify offPeakStartTime. */
         interface WithOffPeakStartTime {
             /**
@@ -610,6 +647,7 @@ public interface ScalingPlanPooledSchedule {
              */
             Update withOffPeakStartTime(Time offPeakStartTime);
         }
+
         /** The stage of the ScalingPlanPooledSchedule update allowing to specify offPeakLoadBalancingAlgorithm. */
         interface WithOffPeakLoadBalancingAlgorithm {
             /**
@@ -621,6 +659,7 @@ public interface ScalingPlanPooledSchedule {
             Update withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm offPeakLoadBalancingAlgorithm);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** SQL stored procedure activity type. */
+/**
+ * SQL stored procedure activity type.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SqlServerStoredProcedure")
 @JsonFlatten
@@ -29,12 +31,16 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.storedProcedureParameters")
     private Object storedProcedureParameters;
 
-    /** Creates an instance of SqlServerStoredProcedureActivity class. */
-    public SqlServerStoredProcedureActivity() {}
+    /**
+     * Creates an instance of SqlServerStoredProcedureActivity class.
+     */
+    public SqlServerStoredProcedureActivity() {
+    }
 
     /**
-     * Get the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
-     *
+     * Get the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the storedProcedureName value.
      */
     public Object getStoredProcedureName() {
@@ -42,8 +48,9 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
-     *
+     * Set the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param storedProcedureName the storedProcedureName value to set.
      * @return the SqlServerStoredProcedureActivity object itself.
      */
@@ -55,7 +62,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     /**
      * Get the storedProcedureParameters property: Value and type setting for stored procedure parameters. Example:
      * "{Parameter1: {value: "1", type: "int"}}".
-     *
+     * 
      * @return the storedProcedureParameters value.
      */
     public Object getStoredProcedureParameters() {
@@ -65,7 +72,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     /**
      * Set the storedProcedureParameters property: Value and type setting for stored procedure parameters. Example:
      * "{Parameter1: {value: "1", type: "int"}}".
-     *
+     * 
      * @param storedProcedureParameters the storedProcedureParameters value to set.
      * @return the SqlServerStoredProcedureActivity object itself.
      */
@@ -74,56 +81,72 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerStoredProcedureActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerStoredProcedureActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerStoredProcedureActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerStoredProcedureActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerStoredProcedureActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerStoredProcedureActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerStoredProcedureActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerStoredProcedureActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

@@ -16,10 +16,10 @@ public final class PrepareRequestTests {
         PrepareRequest model =
             BinaryData
                 .fromString(
-                    "{\"validateOnly\":true,\"moveResources\":[\"sbzjhcr\",\"evdphlxaol\",\"hqtrgqjbpf\"],\"moveResourceInputType\":\"MoveResourceId\"}")
+                    "{\"validateOnly\":true,\"moveResources\":[\"awrlyx\",\"jkcpr\",\"nwbxgjvtbvpyssz\"],\"moveResourceInputType\":\"MoveResourceId\"}")
                 .toObject(PrepareRequest.class);
         Assertions.assertEquals(true, model.validateOnly());
-        Assertions.assertEquals("sbzjhcr", model.moveResources().get(0));
+        Assertions.assertEquals("awrlyx", model.moveResources().get(0));
         Assertions.assertEquals(MoveResourceInputType.MOVE_RESOURCE_ID, model.moveResourceInputType());
     }
 
@@ -28,11 +28,11 @@ public final class PrepareRequestTests {
         PrepareRequest model =
             new PrepareRequest()
                 .withValidateOnly(true)
-                .withMoveResources(Arrays.asList("sbzjhcr", "evdphlxaol", "hqtrgqjbpf"))
+                .withMoveResources(Arrays.asList("awrlyx", "jkcpr", "nwbxgjvtbvpyssz"))
                 .withMoveResourceInputType(MoveResourceInputType.MOVE_RESOURCE_ID);
         model = BinaryData.fromObject(model).toObject(PrepareRequest.class);
         Assertions.assertEquals(true, model.validateOnly());
-        Assertions.assertEquals("sbzjhcr", model.moveResources().get(0));
+        Assertions.assertEquals("awrlyx", model.moveResources().get(0));
         Assertions.assertEquals(MoveResourceInputType.MOVE_RESOURCE_ID, model.moveResourceInputType());
     }
 }

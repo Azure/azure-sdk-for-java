@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The related metadata items for the Log Analytics workspace. */
+/**
+ * The related metadata items for the Log Analytics workspace.
+ */
 @Fluent
 public final class MetadataWorkspaceRelated {
     /*
@@ -41,12 +43,15 @@ public final class MetadataWorkspaceRelated {
     @JsonProperty(value = "resources")
     private List<String> resources;
 
-    /** Creates an instance of MetadataWorkspaceRelated class. */
-    public MetadataWorkspaceRelated() {}
+    /**
+     * Creates an instance of MetadataWorkspaceRelated class.
+     */
+    public MetadataWorkspaceRelated() {
+    }
 
     /**
      * Get the tables property: The related tables for the Log Analytics workspace.
-     *
+     * 
      * @return the tables value.
      */
     public List<String> getTables() {
@@ -55,7 +60,7 @@ public final class MetadataWorkspaceRelated {
 
     /**
      * Set the tables property: The related tables for the Log Analytics workspace.
-     *
+     * 
      * @param tables the tables value to set.
      * @return the MetadataWorkspaceRelated object itself.
      */
@@ -66,7 +71,7 @@ public final class MetadataWorkspaceRelated {
 
     /**
      * Get the solutions property: The related Log Analytics solutions for the Log Analytics workspace.
-     *
+     * 
      * @return the solutions value.
      */
     public List<String> getSolutions() {
@@ -75,7 +80,7 @@ public final class MetadataWorkspaceRelated {
 
     /**
      * Set the solutions property: The related Log Analytics solutions for the Log Analytics workspace.
-     *
+     * 
      * @param solutions the solutions value to set.
      * @return the MetadataWorkspaceRelated object itself.
      */
@@ -86,7 +91,7 @@ public final class MetadataWorkspaceRelated {
 
     /**
      * Get the resourceTypes property: The related resource types for the Log Analytics workspace.
-     *
+     * 
      * @return the resourceTypes value.
      */
     public List<String> getResourceTypes() {
@@ -95,7 +100,7 @@ public final class MetadataWorkspaceRelated {
 
     /**
      * Set the resourceTypes property: The related resource types for the Log Analytics workspace.
-     *
+     * 
      * @param resourceTypes the resourceTypes value to set.
      * @return the MetadataWorkspaceRelated object itself.
      */
@@ -106,7 +111,7 @@ public final class MetadataWorkspaceRelated {
 
     /**
      * Get the functions property: The related functions for the Log Analytics workspace.
-     *
+     * 
      * @return the functions value.
      */
     public List<String> getFunctions() {
@@ -115,7 +120,7 @@ public final class MetadataWorkspaceRelated {
 
     /**
      * Set the functions property: The related functions for the Log Analytics workspace.
-     *
+     * 
      * @param functions the functions value to set.
      * @return the MetadataWorkspaceRelated object itself.
      */
@@ -126,7 +131,7 @@ public final class MetadataWorkspaceRelated {
 
     /**
      * Get the resources property: The related Azure resources for the Log Analytics workspace.
-     *
+     * 
      * @return the resources value.
      */
     public List<String> getResources() {
@@ -135,7 +140,7 @@ public final class MetadataWorkspaceRelated {
 
     /**
      * Set the resources property: The related Azure resources for the Log Analytics workspace.
-     *
+     * 
      * @param resources the resources value to set.
      * @return the MetadataWorkspaceRelated object itself.
      */
@@ -143,11 +148,4 @@ public final class MetadataWorkspaceRelated {
         this.resources = resources;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

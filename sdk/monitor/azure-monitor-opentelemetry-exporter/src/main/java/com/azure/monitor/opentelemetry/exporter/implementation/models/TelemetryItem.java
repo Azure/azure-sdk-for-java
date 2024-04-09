@@ -8,8 +8,11 @@ import com.azure.monitor.opentelemetry.exporter.implementation.configuration.Con
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.StatsbeatConnectionString;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.opentelemetry.sdk.resources.Resource;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -66,6 +69,9 @@ public final class TelemetryItem {
 
     @JsonIgnore
     private String connectionString;
+
+    @JsonIgnore
+    private Resource resource;
 
     /*
      * Key/value collection of context properties. See ContextTagKeys for
@@ -235,6 +241,39 @@ public final class TelemetryItem {
                 + ";IngestionEndpoint="
                 + connectionString.getIngestionEndpoint();
         return this;
+    }
+
+    @JsonIgnore
+    public Resource getResource() {
+        return resource;
+    }
+
+    @JsonIgnore
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
+
+    @JsonIgnore
+    public Map<String, String> getResourceFromTags() {
+        if (tags == null) {
+            // Statsbeat doesn't have tags
+            return Collections.emptyMap();
+        }
+        Map<String, String> resourceFromTags = new HashMap<>();
+        populateFromTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), resourceFromTags);
+        populateFromTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), resourceFromTags);
+        populateFromTag(ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(), resourceFromTags);
+        return resourceFromTags;
+    }
+
+    private void populateFromTag(String contextTagKey, Map<String, String> resourceFromTags) {
+        if (tags == null) {
+            return;
+        }
+        String roleName = tags.get(contextTagKey);
+        if (roleName != null) {
+            resourceFromTags.put(contextTagKey, roleName);
+        }
     }
 
     /**

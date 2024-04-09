@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The sku type. */
+/**
+ * The sku type.
+ */
 @Fluent
 public final class WorkflowSku {
     /*
@@ -23,13 +25,15 @@ public final class WorkflowSku {
     @JsonProperty(value = "plan")
     private ResourceReference plan;
 
-    /** Creates an instance of WorkflowSku class. */
+    /**
+     * Creates an instance of WorkflowSku class.
+     */
     public WorkflowSku() {
     }
 
     /**
      * Get the name property: The name.
-     *
+     * 
      * @return the name value.
      */
     public WorkflowSkuName name() {
@@ -38,7 +42,7 @@ public final class WorkflowSku {
 
     /**
      * Set the name property: The name.
-     *
+     * 
      * @param name the name value to set.
      * @return the WorkflowSku object itself.
      */
@@ -49,7 +53,7 @@ public final class WorkflowSku {
 
     /**
      * Get the plan property: The reference to plan.
-     *
+     * 
      * @return the plan value.
      */
     public ResourceReference plan() {
@@ -58,7 +62,7 @@ public final class WorkflowSku {
 
     /**
      * Set the plan property: The reference to plan.
-     *
+     * 
      * @param plan the plan value to set.
      * @return the WorkflowSku object itself.
      */
@@ -69,14 +73,13 @@ public final class WorkflowSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model WorkflowSku"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model WorkflowSku"));
         }
         if (plan() != null) {
             plan().validate();

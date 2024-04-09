@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Calculation result data. */
+/**
+ * Calculation result data.
+ */
 @Immutable
 public final class ScoreDetails {
     /*
@@ -28,13 +30,15 @@ public final class ScoreDetails {
     @JsonProperty(value = "percentage", access = JsonProperty.Access.WRITE_ONLY)
     private Double percentage;
 
-    /** Creates an instance of ScoreDetails class. */
+    /**
+     * Creates an instance of ScoreDetails class.
+     */
     public ScoreDetails() {
     }
 
     /**
      * Get the max property: Maximum score available.
-     *
+     * 
      * @return the max value.
      */
     public Integer max() {
@@ -43,7 +47,7 @@ public final class ScoreDetails {
 
     /**
      * Get the current property: Current score.
-     *
+     * 
      * @return the current value.
      */
     public Double current() {
@@ -53,7 +57,7 @@ public final class ScoreDetails {
     /**
      * Get the percentage property: Ratio of the current score divided by the maximum. Rounded to 4 digits after the
      * decimal point.
-     *
+     * 
      * @return the percentage value.
      */
     public Double percentage() {
@@ -62,7 +66,7 @@ public final class ScoreDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

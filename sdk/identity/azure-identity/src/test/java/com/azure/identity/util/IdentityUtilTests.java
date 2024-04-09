@@ -9,8 +9,8 @@ import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.IdentityUtil;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
@@ -26,10 +26,10 @@ public class IdentityUtilTests {
         IdentityClientOptions options = new IdentityClientOptions()
             .setAdditionallyAllowedTenants(Arrays.asList(newTenant));
 
-        Assert.assertEquals(newTenant, IdentityUtil.resolveTenantId(currentTenant, trc, options));
+        Assertions.assertEquals(newTenant, IdentityUtil.resolveTenantId(currentTenant, trc, options));
     }
 
-    @Test(expected = ClientAuthenticationException.class)
+    @Test
     public void testMultiTenantAuthenticationDisabled() {
         String currentTenant = "tenant";
         TokenRequestContext trc = new TokenRequestContext()
@@ -38,7 +38,8 @@ public class IdentityUtilTests {
         IdentityClientOptions options = new IdentityClientOptions();
         options.disableMultiTenantAuthentication();
 
-        IdentityUtil.resolveTenantId(currentTenant, trc, options);
+        Assertions.assertThrows(ClientAuthenticationException.class,
+            () -> IdentityUtil.resolveTenantId(currentTenant, trc, options));
     }
 
     @Test
@@ -52,7 +53,7 @@ public class IdentityUtilTests {
         options.setAdditionallyAllowedTenants(Arrays.asList(IdentityUtil.ALL_TENANTS));
 
         String resolvedTenant = IdentityUtil.resolveTenantId(currentTenant, trc, options);
-        Assert.assertEquals(newTenant, resolvedTenant);
+        Assertions.assertEquals(newTenant, resolvedTenant);
     }
 
     @Test
@@ -66,10 +67,10 @@ public class IdentityUtilTests {
         options.setAdditionallyAllowedTenants(Arrays.asList("newtenant"));
 
         String resolvedTenant = IdentityUtil.resolveTenantId(currentTenant, trc, options);
-        Assert.assertEquals(newTenant, resolvedTenant);
+        Assertions.assertEquals(newTenant, resolvedTenant);
     }
 
-    @Test(expected = ClientAuthenticationException.class)
+    @Test
     public void testAlienTenantWithAdditionallyAllowedTenants() {
         String currentTenant = "tenant";
         String newTenant = "newTenant";
@@ -79,10 +80,11 @@ public class IdentityUtilTests {
         IdentityClientOptions options = new IdentityClientOptions();
         options.setAdditionallyAllowedTenants(Arrays.asList("tenant"));
 
-        IdentityUtil.resolveTenantId(currentTenant, trc, options);
+        Assertions.assertThrows(ClientAuthenticationException.class,
+            () -> IdentityUtil.resolveTenantId(currentTenant, trc, options));
     }
 
-    @Test(expected = ClientAuthenticationException.class)
+    @Test
     public void testAlienTenantWithAdditionallyAllowedNotConfigured() {
         String currentTenant = "tenant";
         String newTenant = "newTenant";
@@ -91,7 +93,8 @@ public class IdentityUtilTests {
             .setTenantId(newTenant);
         IdentityClientOptions options = new IdentityClientOptions();
 
-        IdentityUtil.resolveTenantId(currentTenant, trc, options);
+        Assertions.assertThrows(ClientAuthenticationException.class,
+            () -> IdentityUtil.resolveTenantId(currentTenant, trc, options));
     }
 
     @Test
@@ -110,7 +113,7 @@ public class IdentityUtilTests {
             .setAdditionallyAllowedTenants(IdentityUtil.getAdditionalTenantsFromEnvironment(configuration));
 
         String resolvedTenant = IdentityUtil.resolveTenantId(currentTenant, trc, options);
-        Assert.assertEquals(newTenant, resolvedTenant);
+        Assertions.assertEquals(newTenant, resolvedTenant);
 
     }
 
@@ -130,11 +133,11 @@ public class IdentityUtilTests {
             .setAdditionallyAllowedTenants(IdentityUtil.getAdditionalTenantsFromEnvironment(configuration));
 
         String resolvedTenant = IdentityUtil.resolveTenantId(currentTenant, trc, options);
-        Assert.assertEquals(newTenant, resolvedTenant);
+        Assertions.assertEquals(newTenant, resolvedTenant);
 
     }
 
-    @Test(expected = ClientAuthenticationException.class)
+    @Test
     public void testAlienTenantWithAdditionalTenantsFromEnv() {
         String currentTenant = "tenant";
         String newTenant = "newTenant";
@@ -147,7 +150,9 @@ public class IdentityUtilTests {
 
         IdentityClientOptions options = new IdentityClientOptions()
             .setAdditionallyAllowedTenants(IdentityUtil.getAdditionalTenantsFromEnvironment(configuration));
-        IdentityUtil.resolveTenantId(currentTenant, trc, options);
+
+        Assertions.assertThrows(ClientAuthenticationException.class,
+            () -> IdentityUtil.resolveTenantId(currentTenant, trc, options));
     }
 
 }

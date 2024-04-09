@@ -7,7 +7,9 @@ package com.azure.resourcemanager.deviceupdate.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Private endpoint update details. */
+/**
+ * Private endpoint update details.
+ */
 @Fluent
 public final class PrivateEndpointUpdate {
     /*
@@ -41,8 +43,14 @@ public final class PrivateEndpointUpdate {
     private String vnetTrafficTag;
 
     /**
+     * Creates an instance of PrivateEndpointUpdate class.
+     */
+    public PrivateEndpointUpdate() {
+    }
+
+    /**
      * Get the id property: Remote endpoint resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -51,7 +59,7 @@ public final class PrivateEndpointUpdate {
 
     /**
      * Set the id property: Remote endpoint resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the PrivateEndpointUpdate object itself.
      */
@@ -62,7 +70,7 @@ public final class PrivateEndpointUpdate {
 
     /**
      * Get the location property: ARM location of the remote private endpoint.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -71,7 +79,7 @@ public final class PrivateEndpointUpdate {
 
     /**
      * Set the location property: ARM location of the remote private endpoint.
-     *
+     * 
      * @param location the location value to set.
      * @return the PrivateEndpointUpdate object itself.
      */
@@ -82,7 +90,7 @@ public final class PrivateEndpointUpdate {
 
     /**
      * Get the immutableSubscriptionId property: Original subscription ID needed by Microsoft.Network.
-     *
+     * 
      * @return the immutableSubscriptionId value.
      */
     public String immutableSubscriptionId() {
@@ -91,7 +99,7 @@ public final class PrivateEndpointUpdate {
 
     /**
      * Set the immutableSubscriptionId property: Original subscription ID needed by Microsoft.Network.
-     *
+     * 
      * @param immutableSubscriptionId the immutableSubscriptionId value to set.
      * @return the PrivateEndpointUpdate object itself.
      */
@@ -102,7 +110,7 @@ public final class PrivateEndpointUpdate {
 
     /**
      * Get the immutableResourceId property: Original resource ID needed by Microsoft.Network.
-     *
+     * 
      * @return the immutableResourceId value.
      */
     public String immutableResourceId() {
@@ -111,7 +119,7 @@ public final class PrivateEndpointUpdate {
 
     /**
      * Set the immutableResourceId property: Original resource ID needed by Microsoft.Network.
-     *
+     * 
      * @param immutableResourceId the immutableResourceId value to set.
      * @return the PrivateEndpointUpdate object itself.
      */
@@ -122,7 +130,7 @@ public final class PrivateEndpointUpdate {
 
     /**
      * Get the vnetTrafficTag property: Virtual network traffic tag.
-     *
+     * 
      * @return the vnetTrafficTag value.
      */
     public String vnetTrafficTag() {
@@ -131,7 +139,7 @@ public final class PrivateEndpointUpdate {
 
     /**
      * Set the vnetTrafficTag property: Virtual network traffic tag.
-     *
+     * 
      * @param vnetTrafficTag the vnetTrafficTag value to set.
      * @return the PrivateEndpointUpdate object itself.
      */
@@ -142,7 +150,7 @@ public final class PrivateEndpointUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

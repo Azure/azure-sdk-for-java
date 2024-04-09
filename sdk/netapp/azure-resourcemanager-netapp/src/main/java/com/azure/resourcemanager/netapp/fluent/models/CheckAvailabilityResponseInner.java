@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.netapp.models.InAvailabilityReasonType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information regarding availability of a resource. */
+/**
+ * Information regarding availability of a resource.
+ */
 @Fluent
 public final class CheckAvailabilityResponseInner {
     /*
@@ -33,14 +35,16 @@ public final class CheckAvailabilityResponseInner {
     @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of CheckAvailabilityResponseInner class. */
+    /**
+     * Creates an instance of CheckAvailabilityResponseInner class.
+     */
     public CheckAvailabilityResponseInner() {
     }
 
     /**
      * Get the isAvailable property: &lt;code&gt;true&lt;/code&gt; indicates name is valid and available.
      * &lt;code&gt;false&lt;/code&gt; indicates the name is invalid, unavailable, or both.
-     *
+     * 
      * @return the isAvailable value.
      */
     public Boolean isAvailable() {
@@ -50,7 +54,7 @@ public final class CheckAvailabilityResponseInner {
     /**
      * Set the isAvailable property: &lt;code&gt;true&lt;/code&gt; indicates name is valid and available.
      * &lt;code&gt;false&lt;/code&gt; indicates the name is invalid, unavailable, or both.
-     *
+     * 
      * @param isAvailable the isAvailable value to set.
      * @return the CheckAvailabilityResponseInner object itself.
      */
@@ -61,9 +65,9 @@ public final class CheckAvailabilityResponseInner {
 
     /**
      * Get the reason property: &lt;code&gt;Invalid&lt;/code&gt; indicates the name provided does not match Azure App
-     * Service naming requirements. &lt;code&gt;AlreadyExists&lt;/code&gt; indicates that the name is already in use and
-     * is therefore unavailable.
-     *
+     * Service naming requirements. &lt;code&gt;AlreadyExists&lt;/code&gt; indicates that the name is already in use
+     * and is therefore unavailable.
+     * 
      * @return the reason value.
      */
     public InAvailabilityReasonType reason() {
@@ -72,9 +76,9 @@ public final class CheckAvailabilityResponseInner {
 
     /**
      * Set the reason property: &lt;code&gt;Invalid&lt;/code&gt; indicates the name provided does not match Azure App
-     * Service naming requirements. &lt;code&gt;AlreadyExists&lt;/code&gt; indicates that the name is already in use and
-     * is therefore unavailable.
-     *
+     * Service naming requirements. &lt;code&gt;AlreadyExists&lt;/code&gt; indicates that the name is already in use
+     * and is therefore unavailable.
+     * 
      * @param reason the reason value to set.
      * @return the CheckAvailabilityResponseInner object itself.
      */
@@ -87,7 +91,7 @@ public final class CheckAvailabilityResponseInner {
      * Get the message property: If reason == invalid, provide the user with the reason why the given name is invalid,
      * and provide the resource naming requirements so that the user can select a valid name. If reason ==
      * AlreadyExists, explain that resource name is already in use, and direct them to select a different name.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -98,7 +102,7 @@ public final class CheckAvailabilityResponseInner {
      * Set the message property: If reason == invalid, provide the user with the reason why the given name is invalid,
      * and provide the resource naming requirements so that the user can select a valid name. If reason ==
      * AlreadyExists, explain that resource name is already in use, and direct them to select a different name.
-     *
+     * 
      * @param message the message value to set.
      * @return the CheckAvailabilityResponseInner object itself.
      */
@@ -109,7 +113,7 @@ public final class CheckAvailabilityResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

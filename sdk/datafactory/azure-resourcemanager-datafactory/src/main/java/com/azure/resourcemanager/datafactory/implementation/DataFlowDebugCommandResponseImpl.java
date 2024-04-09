@@ -12,8 +12,7 @@ public final class DataFlowDebugCommandResponseImpl implements DataFlowDebugComm
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    DataFlowDebugCommandResponseImpl(
-        DataFlowDebugCommandResponseInner innerObject,
+    DataFlowDebugCommandResponseImpl(DataFlowDebugCommandResponseInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

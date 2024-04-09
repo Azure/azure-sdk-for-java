@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Defines the QueryString condition for the delivery rule. */
+/**
+ * Defines the QueryString condition for the delivery rule.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
 @JsonTypeName("QueryString")
 @Fluent
@@ -22,8 +24,14 @@ public final class DeliveryRuleQueryStringCondition extends DeliveryRuleConditio
     private QueryStringMatchConditionParameters parameters;
 
     /**
+     * Creates an instance of DeliveryRuleQueryStringCondition class.
+     */
+    public DeliveryRuleQueryStringCondition() {
+    }
+
+    /**
      * Get the parameters property: Defines the parameters for the condition.
-     *
+     * 
      * @return the parameters value.
      */
     public QueryStringMatchConditionParameters parameters() {
@@ -32,7 +40,7 @@ public final class DeliveryRuleQueryStringCondition extends DeliveryRuleConditio
 
     /**
      * Set the parameters property: Defines the parameters for the condition.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DeliveryRuleQueryStringCondition object itself.
      */
@@ -43,17 +51,15 @@ public final class DeliveryRuleQueryStringCondition extends DeliveryRuleConditio
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property parameters in model DeliveryRuleQueryStringCondition"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property parameters in model DeliveryRuleQueryStringCondition"));
         } else {
             parameters().validate();
         }

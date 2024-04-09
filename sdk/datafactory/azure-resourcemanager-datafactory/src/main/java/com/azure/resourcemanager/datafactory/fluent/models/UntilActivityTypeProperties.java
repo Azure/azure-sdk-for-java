@@ -11,7 +11,9 @@ import com.azure.resourcemanager.datafactory.models.Expression;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Until activity properties. */
+/**
+ * Until activity properties.
+ */
 @Fluent
 public final class UntilActivityTypeProperties {
     /*
@@ -23,8 +25,7 @@ public final class UntilActivityTypeProperties {
     /*
      * Specifies the timeout for the activity to run. If there is no value specified, it takes the value of
      * TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or Expression with resultType string),
-     * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "timeout")
     private Object timeout;
@@ -35,14 +36,16 @@ public final class UntilActivityTypeProperties {
     @JsonProperty(value = "activities", required = true)
     private List<Activity> activities;
 
-    /** Creates an instance of UntilActivityTypeProperties class. */
+    /**
+     * Creates an instance of UntilActivityTypeProperties class.
+     */
     public UntilActivityTypeProperties() {
     }
 
     /**
      * Get the expression property: An expression that would evaluate to Boolean. The loop will continue until this
      * expression evaluates to true.
-     *
+     * 
      * @return the expression value.
      */
     public Expression expression() {
@@ -52,7 +55,7 @@ public final class UntilActivityTypeProperties {
     /**
      * Set the expression property: An expression that would evaluate to Boolean. The loop will continue until this
      * expression evaluates to true.
-     *
+     * 
      * @param expression the expression value to set.
      * @return the UntilActivityTypeProperties object itself.
      */
@@ -62,11 +65,10 @@ public final class UntilActivityTypeProperties {
     }
 
     /**
-     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
-     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
-     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or Expression with
-     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it
+     * takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * 
      * @return the timeout value.
      */
     public Object timeout() {
@@ -74,11 +76,10 @@ public final class UntilActivityTypeProperties {
     }
 
     /**
-     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
-     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
-     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or Expression with
-     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it
+     * takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * 
      * @param timeout the timeout value to set.
      * @return the UntilActivityTypeProperties object itself.
      */
@@ -89,7 +90,7 @@ public final class UntilActivityTypeProperties {
 
     /**
      * Get the activities property: List of activities to execute.
-     *
+     * 
      * @return the activities value.
      */
     public List<Activity> activities() {
@@ -98,7 +99,7 @@ public final class UntilActivityTypeProperties {
 
     /**
      * Set the activities property: List of activities to execute.
-     *
+     * 
      * @param activities the activities value to set.
      * @return the UntilActivityTypeProperties object itself.
      */
@@ -109,23 +110,19 @@ public final class UntilActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (expression() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property expression in model UntilActivityTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property expression in model UntilActivityTypeProperties"));
         } else {
             expression().validate();
         }
         if (activities() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property activities in model UntilActivityTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property activities in model UntilActivityTypeProperties"));
         } else {
             activities().forEach(e -> e.validate());
         }

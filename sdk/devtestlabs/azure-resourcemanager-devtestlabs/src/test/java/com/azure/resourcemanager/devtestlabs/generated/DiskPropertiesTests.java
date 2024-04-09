@@ -15,38 +15,38 @@ public final class DiskPropertiesTests {
         DiskProperties model =
             BinaryData
                 .fromString(
-                    "{\"diskType\":\"Premium\",\"diskSizeGiB\":1110569499,\"leasedByLabVmId\":\"bzydvfvfcj\",\"diskBlobName\":\"eoisrvhmgor\",\"diskUri\":\"ukiscvwmzhw\",\"storageAccountId\":\"efaxvxilc\",\"createdDate\":\"2021-01-12T00:47:11Z\",\"hostCaching\":\"hnze\",\"managedDiskId\":\"xtjjfzqlqhycav\",\"provisioningState\":\"ggxdb\",\"uniqueIdentifier\":\"smieknlra\"}")
+                    "{\"diskType\":\"Standard\",\"diskSizeGiB\":102339077,\"leasedByLabVmId\":\"zhokvbwnhh\",\"diskBlobName\":\"lgehg\",\"diskUri\":\"ipifhpfeoajvg\",\"storageAccountId\":\"txjcsheafidlt\",\"createdDate\":\"2021-07-18T03:03:02Z\",\"hostCaching\":\"esmkssjhoiftxfkf\",\"managedDiskId\":\"gpr\",\"provisioningState\":\"tillucbiqtg\",\"uniqueIdentifier\":\"ohmcwsld\"}")
                 .toObject(DiskProperties.class);
-        Assertions.assertEquals(StorageType.PREMIUM, model.diskType());
-        Assertions.assertEquals(1110569499, model.diskSizeGiB());
-        Assertions.assertEquals("bzydvfvfcj", model.leasedByLabVmId());
-        Assertions.assertEquals("eoisrvhmgor", model.diskBlobName());
-        Assertions.assertEquals("ukiscvwmzhw", model.diskUri());
-        Assertions.assertEquals("efaxvxilc", model.storageAccountId());
-        Assertions.assertEquals("hnze", model.hostCaching());
-        Assertions.assertEquals("xtjjfzqlqhycav", model.managedDiskId());
+        Assertions.assertEquals(StorageType.STANDARD, model.diskType());
+        Assertions.assertEquals(102339077, model.diskSizeGiB());
+        Assertions.assertEquals("zhokvbwnhh", model.leasedByLabVmId());
+        Assertions.assertEquals("lgehg", model.diskBlobName());
+        Assertions.assertEquals("ipifhpfeoajvg", model.diskUri());
+        Assertions.assertEquals("txjcsheafidlt", model.storageAccountId());
+        Assertions.assertEquals("esmkssjhoiftxfkf", model.hostCaching());
+        Assertions.assertEquals("gpr", model.managedDiskId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiskProperties model =
             new DiskProperties()
-                .withDiskType(StorageType.PREMIUM)
-                .withDiskSizeGiB(1110569499)
-                .withLeasedByLabVmId("bzydvfvfcj")
-                .withDiskBlobName("eoisrvhmgor")
-                .withDiskUri("ukiscvwmzhw")
-                .withStorageAccountId("efaxvxilc")
-                .withHostCaching("hnze")
-                .withManagedDiskId("xtjjfzqlqhycav");
+                .withDiskType(StorageType.STANDARD)
+                .withDiskSizeGiB(102339077)
+                .withLeasedByLabVmId("zhokvbwnhh")
+                .withDiskBlobName("lgehg")
+                .withDiskUri("ipifhpfeoajvg")
+                .withStorageAccountId("txjcsheafidlt")
+                .withHostCaching("esmkssjhoiftxfkf")
+                .withManagedDiskId("gpr");
         model = BinaryData.fromObject(model).toObject(DiskProperties.class);
-        Assertions.assertEquals(StorageType.PREMIUM, model.diskType());
-        Assertions.assertEquals(1110569499, model.diskSizeGiB());
-        Assertions.assertEquals("bzydvfvfcj", model.leasedByLabVmId());
-        Assertions.assertEquals("eoisrvhmgor", model.diskBlobName());
-        Assertions.assertEquals("ukiscvwmzhw", model.diskUri());
-        Assertions.assertEquals("efaxvxilc", model.storageAccountId());
-        Assertions.assertEquals("hnze", model.hostCaching());
-        Assertions.assertEquals("xtjjfzqlqhycav", model.managedDiskId());
+        Assertions.assertEquals(StorageType.STANDARD, model.diskType());
+        Assertions.assertEquals(102339077, model.diskSizeGiB());
+        Assertions.assertEquals("zhokvbwnhh", model.leasedByLabVmId());
+        Assertions.assertEquals("lgehg", model.diskBlobName());
+        Assertions.assertEquals("ipifhpfeoajvg", model.diskUri());
+        Assertions.assertEquals("txjcsheafidlt", model.storageAccountId());
+        Assertions.assertEquals("esmkssjhoiftxfkf", model.hostCaching());
+        Assertions.assertEquals("gpr", model.managedDiskId());
     }
 }

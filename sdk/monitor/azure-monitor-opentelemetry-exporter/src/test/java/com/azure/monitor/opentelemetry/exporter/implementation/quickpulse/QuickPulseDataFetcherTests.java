@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.MockHttpResponse;
+import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -93,6 +94,7 @@ class QuickPulseDataFetcherTests {
         HttpPipeline httpPipeline =
             new HttpPipelineBuilder()
                 .httpClient(request -> Mono.just(new MockHttpResponse(request, 200, httpHeaders)))
+                .tracer(new NoopTracer())
                 .build();
         QuickPulsePingSender quickPulsePingSender =
             new QuickPulsePingSender(

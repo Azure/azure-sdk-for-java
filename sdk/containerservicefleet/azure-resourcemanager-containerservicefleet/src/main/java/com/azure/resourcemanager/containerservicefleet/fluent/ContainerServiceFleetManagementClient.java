@@ -71,4 +71,11 @@ public interface ContainerServiceFleetManagementClient {
      * @return the UpdateRunsClient object.
      */
     UpdateRunsClient getUpdateRuns();
+
+    /**
+     * Gets the FleetUpdateStrategiesClient object to access its operations.
+     *
+     * @return the FleetUpdateStrategiesClient object.
+     */
+    FleetUpdateStrategiesClient getFleetUpdateStrategies();
 }

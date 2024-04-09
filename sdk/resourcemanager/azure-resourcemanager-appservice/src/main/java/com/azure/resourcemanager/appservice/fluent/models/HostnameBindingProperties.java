@@ -11,7 +11,9 @@ import com.azure.resourcemanager.appservice.models.HostnameType;
 import com.azure.resourcemanager.appservice.models.SslState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** HostNameBinding resource specific properties. */
+/**
+ * HostNameBinding resource specific properties.
+ */
 @Fluent
 public final class HostnameBindingProperties {
     /*
@@ -68,13 +70,15 @@ public final class HostnameBindingProperties {
     @JsonProperty(value = "virtualIP", access = JsonProperty.Access.WRITE_ONLY)
     private String virtualIp;
 
-    /** Creates an instance of HostnameBindingProperties class. */
+    /**
+     * Creates an instance of HostnameBindingProperties class.
+     */
     public HostnameBindingProperties() {
     }
 
     /**
      * Get the siteName property: App Service app name.
-     *
+     * 
      * @return the siteName value.
      */
     public String siteName() {
@@ -83,7 +87,7 @@ public final class HostnameBindingProperties {
 
     /**
      * Set the siteName property: App Service app name.
-     *
+     * 
      * @param siteName the siteName value to set.
      * @return the HostnameBindingProperties object itself.
      */
@@ -94,7 +98,7 @@ public final class HostnameBindingProperties {
 
     /**
      * Get the domainId property: Fully qualified ARM domain resource URI.
-     *
+     * 
      * @return the domainId value.
      */
     public String domainId() {
@@ -103,7 +107,7 @@ public final class HostnameBindingProperties {
 
     /**
      * Set the domainId property: Fully qualified ARM domain resource URI.
-     *
+     * 
      * @param domainId the domainId value to set.
      * @return the HostnameBindingProperties object itself.
      */
@@ -114,7 +118,7 @@ public final class HostnameBindingProperties {
 
     /**
      * Get the azureResourceName property: Azure resource name.
-     *
+     * 
      * @return the azureResourceName value.
      */
     public String azureResourceName() {
@@ -123,7 +127,7 @@ public final class HostnameBindingProperties {
 
     /**
      * Set the azureResourceName property: Azure resource name.
-     *
+     * 
      * @param azureResourceName the azureResourceName value to set.
      * @return the HostnameBindingProperties object itself.
      */
@@ -134,7 +138,7 @@ public final class HostnameBindingProperties {
 
     /**
      * Get the azureResourceType property: Azure resource type.
-     *
+     * 
      * @return the azureResourceType value.
      */
     public AzureResourceType azureResourceType() {
@@ -143,7 +147,7 @@ public final class HostnameBindingProperties {
 
     /**
      * Set the azureResourceType property: Azure resource type.
-     *
+     * 
      * @param azureResourceType the azureResourceType value to set.
      * @return the HostnameBindingProperties object itself.
      */
@@ -154,7 +158,7 @@ public final class HostnameBindingProperties {
 
     /**
      * Get the customHostnameDnsRecordType property: Custom DNS record type.
-     *
+     * 
      * @return the customHostnameDnsRecordType value.
      */
     public CustomHostnameDnsRecordType customHostnameDnsRecordType() {
@@ -163,19 +167,19 @@ public final class HostnameBindingProperties {
 
     /**
      * Set the customHostnameDnsRecordType property: Custom DNS record type.
-     *
+     * 
      * @param customHostnameDnsRecordType the customHostnameDnsRecordType value to set.
      * @return the HostnameBindingProperties object itself.
      */
-    public HostnameBindingProperties withCustomHostnameDnsRecordType(
-        CustomHostnameDnsRecordType customHostnameDnsRecordType) {
+    public HostnameBindingProperties
+        withCustomHostnameDnsRecordType(CustomHostnameDnsRecordType customHostnameDnsRecordType) {
         this.customHostnameDnsRecordType = customHostnameDnsRecordType;
         return this;
     }
 
     /**
      * Get the hostnameType property: Hostname type.
-     *
+     * 
      * @return the hostnameType value.
      */
     public HostnameType hostnameType() {
@@ -184,7 +188,7 @@ public final class HostnameBindingProperties {
 
     /**
      * Set the hostnameType property: Hostname type.
-     *
+     * 
      * @param hostnameType the hostnameType value to set.
      * @return the HostnameBindingProperties object itself.
      */
@@ -195,7 +199,7 @@ public final class HostnameBindingProperties {
 
     /**
      * Get the sslState property: SSL type.
-     *
+     * 
      * @return the sslState value.
      */
     public SslState sslState() {
@@ -204,7 +208,7 @@ public final class HostnameBindingProperties {
 
     /**
      * Set the sslState property: SSL type.
-     *
+     * 
      * @param sslState the sslState value to set.
      * @return the HostnameBindingProperties object itself.
      */
@@ -215,7 +219,7 @@ public final class HostnameBindingProperties {
 
     /**
      * Get the thumbprint property: SSL certificate thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -224,7 +228,7 @@ public final class HostnameBindingProperties {
 
     /**
      * Set the thumbprint property: SSL certificate thumbprint.
-     *
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the HostnameBindingProperties object itself.
      */
@@ -235,7 +239,7 @@ public final class HostnameBindingProperties {
 
     /**
      * Get the virtualIp property: Virtual IP address assigned to the hostname if IP based SSL is enabled.
-     *
+     * 
      * @return the virtualIp value.
      */
     public String virtualIp() {
@@ -244,7 +248,7 @@ public final class HostnameBindingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

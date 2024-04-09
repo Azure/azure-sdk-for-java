@@ -10,9 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Contains the groups to be updated by an UpdateRun. Update order: - Sequential between stages: Stages run
- * sequentially. The previous stage must complete before the next one starts. - Parallel within a stage: Groups within a
- * stage run in parallel. - Sequential within a group: Clusters within a group are updated sequentially.
+ * Defines a stage which contains the groups to update and the steps to take (e.g., wait for a time period) before
+ * starting the next stage.
  */
 @Fluent
 public final class UpdateStage {
@@ -23,8 +22,7 @@ public final class UpdateStage {
     private String name;
 
     /*
-     * A list of group names that compose the stage.
-     * The groups will be updated in parallel. Each group name can only appear once in the UpdateRun.
+     * Defines the groups to be executed in parallel in this stage. Duplicate groups are not allowed. Min size: 1.
      */
     @JsonProperty(value = "groups")
     private List<UpdateGroup> groups;
@@ -61,8 +59,8 @@ public final class UpdateStage {
     }
 
     /**
-     * Get the groups property: A list of group names that compose the stage. The groups will be updated in parallel.
-     * Each group name can only appear once in the UpdateRun.
+     * Get the groups property: Defines the groups to be executed in parallel in this stage. Duplicate groups are not
+     * allowed. Min size: 1.
      *
      * @return the groups value.
      */
@@ -71,8 +69,8 @@ public final class UpdateStage {
     }
 
     /**
-     * Set the groups property: A list of group names that compose the stage. The groups will be updated in parallel.
-     * Each group name can only appear once in the UpdateRun.
+     * Set the groups property: Defines the groups to be executed in parallel in this stage. Duplicate groups are not
+     * allowed. Min size: 1.
      *
      * @param groups the groups value to set.
      * @return the UpdateStage object itself.

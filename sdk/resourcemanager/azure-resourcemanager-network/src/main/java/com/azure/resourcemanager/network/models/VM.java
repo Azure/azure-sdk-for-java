@@ -9,7 +9,9 @@ import com.azure.core.management.Resource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Describes a Virtual Machine. */
+/**
+ * Describes a Virtual Machine.
+ */
 @Fluent
 public final class VM extends Resource {
     /*
@@ -18,13 +20,15 @@ public final class VM extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of VM class. */
+    /**
+     * Creates an instance of VM class.
+     */
     public VM() {
     }
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -33,7 +37,7 @@ public final class VM extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the VM object itself.
      */
@@ -42,14 +46,18 @@ public final class VM extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VM withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VM withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -58,7 +66,7 @@ public final class VM extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

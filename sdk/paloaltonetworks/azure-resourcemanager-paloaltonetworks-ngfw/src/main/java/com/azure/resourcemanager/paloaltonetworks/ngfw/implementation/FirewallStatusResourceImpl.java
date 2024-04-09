@@ -17,8 +17,7 @@ public final class FirewallStatusResourceImpl implements FirewallStatusResource 
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    FirewallStatusResourceImpl(
-        FirewallStatusResourceInner innerObject,
+    FirewallStatusResourceImpl(FirewallStatusResourceInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

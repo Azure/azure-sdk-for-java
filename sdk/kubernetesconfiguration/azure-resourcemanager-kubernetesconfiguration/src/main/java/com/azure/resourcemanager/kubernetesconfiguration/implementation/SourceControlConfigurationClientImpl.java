@@ -207,7 +207,7 @@ public final class SourceControlConfigurationClientImpl implements SourceControl
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-11-01";
+        this.apiVersion = "2023-05-01";
         this.extensions = new ExtensionsClientImpl(this);
         this.operationStatus = new OperationStatusClientImpl(this);
         this.fluxConfigurations = new FluxConfigurationsClientImpl(this);

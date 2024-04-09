@@ -8,6 +8,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.developer.devcenter.DevCenterClientTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -16,10 +17,15 @@ public final class DevBoxesStartDevBoxTests extends DevCenterClientTestBase {
     @Test
     @Disabled
     public void testDevBoxesStartDevBoxTests() {
+        createDevBox();
+
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, BinaryData> response =
-                devBoxesClient.beginStartDevBox("myProject", "me", "MyDevBox", requestOptions);
+                devBoxesClient.beginStartDevBox(projectName, "me", devBoxName, requestOptions);
+
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
+
+        deleteDevBox();
     }
 }

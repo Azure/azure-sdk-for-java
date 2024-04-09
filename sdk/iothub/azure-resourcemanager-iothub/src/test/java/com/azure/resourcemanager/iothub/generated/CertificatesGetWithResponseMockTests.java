@@ -31,10 +31,10 @@ public final class CertificatesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"subject\":\"lmv\",\"expiry\":\"Sun, 26 Sep 2021 11:18:34"
-                + " GMT\",\"thumbprint\":\"ktgplcr\",\"isVerified\":true,\"created\":\"Fri, 19 Nov 2021 13:53:17"
-                + " GMT\",\"updated\":\"Fri, 05 Mar 2021 15:11:27"
-                + " GMT\",\"certificate\":\"igbrnjw\"},\"etag\":\"kpnb\",\"id\":\"azej\",\"name\":\"oqkag\",\"type\":\"hsxttaugzxnf\"}";
+            "{\"properties\":{\"subject\":\"einqf\",\"expiry\":\"Mon, 10 May 2021 20:16:44"
+                + " GMT\",\"thumbprint\":\"qknp\",\"isVerified\":true,\"created\":\"Sun, 25 Apr 2021 01:28:07"
+                + " GMT\",\"updated\":\"Fri, 15 Oct 2021 22:08:17"
+                + " GMT\",\"certificate\":\"wqmsniffcdmqn\"},\"etag\":\"jlpijnkrx\",\"id\":\"rddh\",\"name\":\"ratiz\",\"type\":\"ronasxift\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,10 +65,10 @@ public final class CertificatesGetWithResponseMockTests {
         CertificateDescription response =
             manager
                 .certificates()
-                .getWithResponse("waekrrjreafxtsgu", "hjglikk", "wslolbqp", com.azure.core.util.Context.NONE)
+                .getWithResponse("uu", "fdlwg", "ytsbwtovv", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(true, response.properties().isVerified());
-        Assertions.assertEquals("igbrnjw", response.properties().certificate());
+        Assertions.assertEquals("wqmsniffcdmqn", response.properties().certificate());
     }
 }

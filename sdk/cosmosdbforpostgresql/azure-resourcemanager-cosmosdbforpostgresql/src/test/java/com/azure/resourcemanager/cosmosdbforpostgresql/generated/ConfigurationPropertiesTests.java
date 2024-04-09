@@ -14,34 +14,24 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"hurzafblj\",\"dataType\":\"Integer\",\"allowedValues\":\"toqcjmklja\",\"requiresRestart\":true,\"serverRoleGroupConfigurations\":[{\"role\":\"Worker\",\"value\":\"tqajzyulpkudjkrl\",\"defaultValue\":\"bzhfepgzgqexz\",\"source\":\"c\"},{\"role\":\"Coordinator\",\"value\":\"c\",\"defaultValue\":\"ierhhbcsglummaj\",\"source\":\"aodxo\"},{\"role\":\"Coordinator\",\"value\":\"bdxkqpxokaj\",\"defaultValue\":\"npime\",\"source\":\"stxgc\"}],\"provisioningState\":\"Succeeded\"}")
-                .toObject(ConfigurationProperties.class);
+        ConfigurationProperties model = BinaryData.fromString(
+            "{\"description\":\"uofqwe\",\"dataType\":\"Enumeration\",\"allowedValues\":\"enevfyexfwhybci\",\"requiresRestart\":true,\"serverRoleGroupConfigurations\":[{\"role\":\"Coordinator\",\"value\":\"c\",\"defaultValue\":\"tynnaamdectehfi\",\"source\":\"cj\"},{\"role\":\"Worker\",\"value\":\"pvhez\",\"defaultValue\":\"gqhcjrefovg\",\"source\":\"qsl\"},{\"role\":\"Worker\",\"value\":\"yvxyqjp\",\"defaultValue\":\"attpngjcrcczsq\",\"source\":\"hvmdajvnysounq\"}],\"provisioningState\":\"Succeeded\"}")
+            .toObject(ConfigurationProperties.class);
         Assertions.assertEquals(true, model.requiresRestart());
-        Assertions.assertEquals(ServerRole.WORKER, model.serverRoleGroupConfigurations().get(0).role());
-        Assertions.assertEquals("tqajzyulpkudjkrl", model.serverRoleGroupConfigurations().get(0).value());
+        Assertions.assertEquals(ServerRole.COORDINATOR, model.serverRoleGroupConfigurations().get(0).role());
+        Assertions.assertEquals("c", model.serverRoleGroupConfigurations().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationProperties model =
-            new ConfigurationProperties()
-                .withRequiresRestart(true)
-                .withServerRoleGroupConfigurations(
-                    Arrays
-                        .asList(
-                            new ServerRoleGroupConfiguration()
-                                .withRole(ServerRole.WORKER)
-                                .withValue("tqajzyulpkudjkrl"),
-                            new ServerRoleGroupConfiguration().withRole(ServerRole.COORDINATOR).withValue("c"),
-                            new ServerRoleGroupConfiguration()
-                                .withRole(ServerRole.COORDINATOR)
-                                .withValue("bdxkqpxokaj")));
+        ConfigurationProperties model
+            = new ConfigurationProperties().withRequiresRestart(true).withServerRoleGroupConfigurations(
+                Arrays.asList(new ServerRoleGroupConfiguration().withRole(ServerRole.COORDINATOR).withValue("c"),
+                    new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("pvhez"),
+                    new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("yvxyqjp")));
         model = BinaryData.fromObject(model).toObject(ConfigurationProperties.class);
         Assertions.assertEquals(true, model.requiresRestart());
-        Assertions.assertEquals(ServerRole.WORKER, model.serverRoleGroupConfigurations().get(0).role());
-        Assertions.assertEquals("tqajzyulpkudjkrl", model.serverRoleGroupConfigurations().get(0).value());
+        Assertions.assertEquals(ServerRole.COORDINATOR, model.serverRoleGroupConfigurations().get(0).role());
+        Assertions.assertEquals("c", model.serverRoleGroupConfigurations().get(0).value());
     }
 }

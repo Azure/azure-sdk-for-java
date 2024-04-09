@@ -3,12 +3,13 @@
 
 package com.azure.cosmos
 
-import com.azure.cosmos.implementation.{DocumentCollection, PartitionKeyRange, SparkBridgeImplementationInternal}
+import com.azure.cosmos.implementation.{DocumentCollection, ImplementationBridgeHelpers, PartitionKeyRange, SparkBridgeImplementationInternal}
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl
 import com.azure.cosmos.implementation.routing.Range
-import com.azure.cosmos.models.{FeedRange, ModelBridgeInternal}
+import com.azure.cosmos.models.{CosmosContainerProperties, CosmosQueryRequestOptions, FeedRange, ModelBridgeInternal}
 import com.azure.cosmos.spark.NormalizedRange
 
+import java.time.Duration
 import scala.collection.mutable.ArrayBuffer
 
 // scalastyle:off underscore.import
@@ -16,6 +17,14 @@ import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 private[cosmos] object SparkBridgeInternal {
+  private val containerPropertiesAccessor = ImplementationBridgeHelpers
+    .CosmosContainerPropertiesHelper
+    .getCosmosContainerPropertiesAccessor
+
+  //scalastyle:off null
+  val defaultQueryRequestOptions: CosmosQueryRequestOptions = null
+  //scalastyle:on null
+
   def trySplitFeedRange
   (
     container: CosmosAsyncContainer,
@@ -59,7 +68,7 @@ private[cosmos] object SparkBridgeInternal {
     container
       .getDatabase
       .getDocClientWrapper
-      .readPartitionKeyRanges(container.getLink, null)
+      .readPartitionKeyRanges(container.getLink, defaultQueryRequestOptions)
       .collectList
       .block()
       .forEach(feedResponse => feedResponse.getResults.forEach(pkRange => pkRanges += pkRange))
@@ -79,5 +88,20 @@ private[cosmos] object SparkBridgeInternal {
       .getCollectionCache()
       .resolveByNameAsync(null, link, null, obsoleteValue)
       .block()
+  }
+
+  def getContainerPropertiesFromCollectionCache(container: CosmosAsyncContainer): CosmosContainerProperties = {
+    val documentCollectionHolder = container
+      .getDatabase
+      .getDocClientWrapper
+      .getCollectionCache
+      .resolveByNameAsync(null, container.getLinkWithoutTrailingSlash, null)
+      .block()
+
+    if (documentCollectionHolder != null) {
+      containerPropertiesAccessor.create(documentCollectionHolder)
+    } else {
+      container.read().block().getProperties
+    }
   }
 }

@@ -77,23 +77,18 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       cosmosPartitioningConfig.partitioningStrategy match {
         case PartitioningStrategies.Restrictive =>
           applyRestrictiveStrategy(planningInfo)
+        case PartitioningStrategies.Default =>
+          applyRestrictiveStrategy(planningInfo)
         case PartitioningStrategies.Custom =>
           applyCustomStrategy(
             container,
             planningInfo,
             cosmosPartitioningConfig.targetedPartitionCount.get)
-        case PartitioningStrategies.Default =>
-          applyStorageAlignedStrategy(
-            container,
-            planningInfo,
-            1 / defaultMaxPartitionSizeInMB.toDouble,
-            defaultMinimalPartitionCount
-          )
         case PartitioningStrategies.Aggressive =>
           applyStorageAlignedStrategy(
             container,
             planningInfo,
-            5 / defaultMaxPartitionSizeInMB.toDouble,
+            1 / defaultMaxPartitionSizeInMB.toDouble,
             defaultMinimalPartitionCount
           )
       }
@@ -646,7 +641,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         ThroughputControlHelper.getThroughputControlClientCacheItem(
           userConfig,
           calledFrom,
-          cosmosClientStateHandles)
+          cosmosClientStateHandles,
+          cosmosClientConfig.sparkEnvironmentInfo)
       ))
       .to(clientCacheItems => {
         val container =
@@ -655,7 +651,6 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
             cosmosContainerConfig,
             clientCacheItems(0).get,
             clientCacheItems(1))
-        SparkUtils.safeOpenConnectionInitCaches(container, (msg, e) => logWarning(msg, e))
 
         ContainerFeedRangesCache
           .getFeedRanges(container)

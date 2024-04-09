@@ -89,6 +89,15 @@ public final class MicrosoftGraphCategoryColor extends ExpandableStringEnum<Micr
     public static final MicrosoftGraphCategoryColor PRESET24 = fromString("preset24");
 
     /**
+     * Creates a new instance of MicrosoftGraphCategoryColor value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphCategoryColor() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphCategoryColor from its string representation.
      *
      * @param name a name to look for.

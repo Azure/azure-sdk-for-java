@@ -4,6 +4,10 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
+import com.azure.resourcemanager.devcenter.models.CustomerManagedKeyEncryption;
+import com.azure.resourcemanager.devcenter.models.CustomerManagedKeyEncryptionKeyIdentity;
+import com.azure.resourcemanager.devcenter.models.Encryption;
+import com.azure.resourcemanager.devcenter.models.IdentityType;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.devcenter.models.UserAssignedIdentity;
@@ -13,7 +17,7 @@ import java.util.Map;
 /** Samples for DevCenters CreateOrUpdate. */
 public final class DevCentersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/DevCenters_Create.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/DevCenters_Create.json
      */
     /**
      * Sample code: DevCenters_Create.
@@ -26,12 +30,13 @@ public final class DevCentersCreateOrUpdateSamples {
             .define("Contoso")
             .withRegion("centralus")
             .withExistingResourceGroup("rg1")
-            .withTags(mapOf("CostCode", "12345"))
+            .withTags(mapOf("CostCode", "fakeTokenPlaceholder"))
+            .withDisplayName("ContosoDevCenter")
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/DevCenters_CreateWithUserIdentity.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/DevCenters_CreateWithUserIdentity.json
      */
     /**
      * Sample code: DevCenters_CreateWithUserIdentity.
@@ -44,7 +49,7 @@ public final class DevCentersCreateOrUpdateSamples {
             .define("Contoso")
             .withRegion("centralus")
             .withExistingResourceGroup("rg1")
-            .withTags(mapOf("CostCode", "12345"))
+            .withTags(mapOf("CostCode", "fakeTokenPlaceholder"))
             .withIdentity(
                 new ManagedServiceIdentity()
                     .withType(ManagedServiceIdentityType.USER_ASSIGNED)
@@ -52,9 +57,47 @@ public final class DevCentersCreateOrUpdateSamples {
                         mapOf(
                             "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/identityGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity1",
                             new UserAssignedIdentity())))
+            .withDisplayName("ContosoDevCenter")
             .create();
     }
 
+    /*
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/DevCenters_CreateWithEncryption.json
+     */
+    /**
+     * Sample code: DevCenters_CreateWithEncryption.
+     *
+     * @param manager Entry point to DevCenterManager.
+     */
+    public static void devCentersCreateWithEncryption(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
+        manager
+            .devCenters()
+            .define("Contoso")
+            .withRegion("centralus")
+            .withExistingResourceGroup("rg1")
+            .withTags(mapOf("CostCode", "fakeTokenPlaceholder"))
+            .withIdentity(
+                new ManagedServiceIdentity()
+                    .withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(
+                        mapOf(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/identityGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity1",
+                            new UserAssignedIdentity())))
+            .withEncryption(
+                new Encryption()
+                    .withCustomerManagedKeyEncryption(
+                        new CustomerManagedKeyEncryption()
+                            .withKeyEncryptionKeyIdentity(
+                                new CustomerManagedKeyEncryptionKeyIdentity()
+                                    .withIdentityType(IdentityType.USER_ASSIGNED_IDENTITY)
+                                    .withUserAssignedIdentityResourceId(
+                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/identityGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity1"))
+                            .withKeyEncryptionKeyUrl("fakeTokenPlaceholder")))
+            .withDisplayName("ContosoDevCenter")
+            .create();
+    }
+
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

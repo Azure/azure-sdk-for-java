@@ -16,13 +16,13 @@ public final class LinkTests {
         Link model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"Button\",\"displayText\":{\"value\":\"muzyoxaepdk\",\"localizedValue\":\"ancuxrhd\"},\"extensionName\":\"avxbniwdjswztsdb\",\"bladeName\":\"nxytxh\",\"parameters\":\"dataxbzpfzab\"}")
+                    "{\"type\":\"Button\",\"displayText\":{\"value\":\"ji\",\"localizedValue\":\"wifto\"},\"extensionName\":\"kvpuvksgplsaknyn\",\"bladeName\":\"ynl\",\"parameters\":\"datahuopxodlqiynto\"}")
                 .toObject(Link.class);
         Assertions.assertEquals(LinkTypeValues.BUTTON, model.type());
-        Assertions.assertEquals("muzyoxaepdk", model.displayText().value());
-        Assertions.assertEquals("ancuxrhd", model.displayText().localizedValue());
-        Assertions.assertEquals("avxbniwdjswztsdb", model.extensionName());
-        Assertions.assertEquals("nxytxh", model.bladeName());
+        Assertions.assertEquals("ji", model.displayText().value());
+        Assertions.assertEquals("wifto", model.displayText().localizedValue());
+        Assertions.assertEquals("kvpuvksgplsaknyn", model.extensionName());
+        Assertions.assertEquals("ynl", model.bladeName());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,15 +30,15 @@ public final class LinkTests {
         Link model =
             new Link()
                 .withType(LinkTypeValues.BUTTON)
-                .withDisplayText(new LinkDisplayText().withValue("muzyoxaepdk").withLocalizedValue("ancuxrhd"))
-                .withExtensionName("avxbniwdjswztsdb")
-                .withBladeName("nxytxh")
-                .withParameters("dataxbzpfzab");
+                .withDisplayText(new LinkDisplayText().withValue("ji").withLocalizedValue("wifto"))
+                .withExtensionName("kvpuvksgplsaknyn")
+                .withBladeName("ynl")
+                .withParameters("datahuopxodlqiynto");
         model = BinaryData.fromObject(model).toObject(Link.class);
         Assertions.assertEquals(LinkTypeValues.BUTTON, model.type());
-        Assertions.assertEquals("muzyoxaepdk", model.displayText().value());
-        Assertions.assertEquals("ancuxrhd", model.displayText().localizedValue());
-        Assertions.assertEquals("avxbniwdjswztsdb", model.extensionName());
-        Assertions.assertEquals("nxytxh", model.bladeName());
+        Assertions.assertEquals("ji", model.displayText().value());
+        Assertions.assertEquals("wifto", model.displayText().localizedValue());
+        Assertions.assertEquals("kvpuvksgplsaknyn", model.extensionName());
+        Assertions.assertEquals("ynl", model.bladeName());
     }
 }

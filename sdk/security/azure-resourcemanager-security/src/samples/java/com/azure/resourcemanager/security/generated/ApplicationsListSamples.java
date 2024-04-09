@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.security.generated;
 
-/** Samples for Applications List. */
+/**
+ * Samples for Applications List.
+ */
 public final class ApplicationsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/ListBySubscriptionApplications_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/
+     * ListBySubscriptionApplications_example.json
      */
     /**
      * Sample code: List applications security by subscription level scope.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
-    public static void listApplicationsSecurityBySubscriptionLevelScope(
-        com.azure.resourcemanager.security.SecurityManager manager) {
+    public static void
+        listApplicationsSecurityBySubscriptionLevelScope(com.azure.resourcemanager.security.SecurityManager manager) {
         manager.applications().list(com.azure.core.util.Context.NONE);
     }
 }

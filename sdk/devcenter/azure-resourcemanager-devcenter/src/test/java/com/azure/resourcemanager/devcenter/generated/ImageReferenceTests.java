@@ -12,16 +12,14 @@ public final class ImageReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageReference model =
-            BinaryData
-                .fromString("{\"id\":\"ztfolhbnxk\",\"exactVersion\":\"laulppg\"}")
-                .toObject(ImageReference.class);
-        Assertions.assertEquals("ztfolhbnxk", model.id());
+            BinaryData.fromString("{\"id\":\"fikdowwqu\",\"exactVersion\":\"xzxcl\"}").toObject(ImageReference.class);
+        Assertions.assertEquals("fikdowwqu", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageReference model = new ImageReference().withId("ztfolhbnxk");
+        ImageReference model = new ImageReference().withId("fikdowwqu");
         model = BinaryData.fromObject(model).toObject(ImageReference.class);
-        Assertions.assertEquals("ztfolhbnxk", model.id());
+        Assertions.assertEquals("fikdowwqu", model.id());
     }
 }

@@ -17,6 +17,8 @@ import java.util.Map;
 /** thumbnail. */
 @Fluent
 public final class MicrosoftGraphThumbnail {
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
     /*
      * The content stream for the thumbnail.
      */
@@ -64,7 +66,7 @@ public final class MicrosoftGraphThumbnail {
      */
     public byte[] content() {
         if (this.content == null) {
-            return new byte[0];
+            return EMPTY_BYTE_ARRAY;
         }
         return this.content.decodedBytes();
     }

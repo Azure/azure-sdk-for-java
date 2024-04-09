@@ -12,6 +12,29 @@ class SparkE2EConfigResolutionITest extends IntegrationSpec with CosmosClient wi
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
 
+  "spark environment config" can "be parsed for Synapse" in {
+    val sparkConfig = new SparkConf()
+    sparkConfig.set("spark.synapse.pool.name", "SomeVeryLongClusterName012345678901234567890123456789")
+    sparkConfig.set("spark.synapse.workspace.name", "MySynapseWorkspace")
+
+    CosmosClientConfiguration
+      .getSparkEnvironmentInfoFromConfig(Some(sparkConfig))  shouldEqual
+        "SYN|MySynapseWorkspace|SomeVeryLongClusterName012345678"
+  }
+
+  "spark environment config" can "be parsed for Databricks" in {
+    val sparkConfig = new SparkConf()
+    val workspaceId = UUID.randomUUID().toString
+    sparkConfig.set(
+      "spark.databricks.clusterUsageTags.clusterName",
+      "SomeVeryLongClusterName012345678901234567890123456789")
+    sparkConfig.set("spark.databricks.clusterUsageTags.orgId", workspaceId)
+
+    CosmosClientConfiguration
+      .getSparkEnvironmentInfoFromConfig(Some(sparkConfig)) shouldEqual
+        s"DBX|$workspaceId|SomeVeryLongClusterName012345678"
+  }
+
   "config resolution" can "merge user config with spark config for write" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY

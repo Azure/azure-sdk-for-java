@@ -22,6 +22,10 @@ public final class PrivateLinkScopedResource {
     @JsonProperty(value = "ScopeId")
     private String scopeId;
 
+    /** Creates an instance of PrivateLinkScopedResource class. */
+    public PrivateLinkScopedResource() {
+    }
+
     /**
      * Get the resourceId property: The full resource Id of the private link scope resource.
      *

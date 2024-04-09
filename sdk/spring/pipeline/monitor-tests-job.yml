@@ -17,6 +17,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           Paths:
+            - 'sdk/parents/azure-client-sdk-parent'
             - 'sdk/spring'
       - script: |
           python -m pip install termcolor

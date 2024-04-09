@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Profiles List. */
+/**
+ * Samples for Profiles List.
+ */
 public final class ProfilesListSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Profiles_List.json
+     * x-ms-original-file:
+     * specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/Profiles_List.json
      */
     /**
      * Sample code: Profiles_List.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void profilesList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getProfiles().list(Context.NONE);
+        azure.cdnProfiles().manager().serviceClient().getProfiles().list(com.azure.core.util.Context.NONE);
     }
 }

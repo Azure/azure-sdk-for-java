@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of custom and predefined url category. */
+/**
+ * List of custom and predefined url category.
+ */
 @Fluent
 public final class AdvSecurityObjectModel {
     /*
@@ -24,13 +26,15 @@ public final class AdvSecurityObjectModel {
     @JsonProperty(value = "entry", required = true)
     private List<NameDescriptionObject> entry;
 
-    /** Creates an instance of AdvSecurityObjectModel class. */
+    /**
+     * Creates an instance of AdvSecurityObjectModel class.
+     */
     public AdvSecurityObjectModel() {
     }
 
     /**
      * Get the type property: type of object.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -39,7 +43,7 @@ public final class AdvSecurityObjectModel {
 
     /**
      * Set the type property: type of object.
-     *
+     * 
      * @param type the type value to set.
      * @return the AdvSecurityObjectModel object itself.
      */
@@ -50,7 +54,7 @@ public final class AdvSecurityObjectModel {
 
     /**
      * Get the entry property: URL entry.
-     *
+     * 
      * @return the entry value.
      */
     public List<NameDescriptionObject> entry() {
@@ -59,7 +63,7 @@ public final class AdvSecurityObjectModel {
 
     /**
      * Set the entry property: URL entry.
-     *
+     * 
      * @param entry the entry value to set.
      * @return the AdvSecurityObjectModel object itself.
      */
@@ -70,14 +74,13 @@ public final class AdvSecurityObjectModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (entry() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property entry in model AdvSecurityObjectModel"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property entry in model AdvSecurityObjectModel"));
         } else {
             entry().forEach(e -> e.validate());
         }

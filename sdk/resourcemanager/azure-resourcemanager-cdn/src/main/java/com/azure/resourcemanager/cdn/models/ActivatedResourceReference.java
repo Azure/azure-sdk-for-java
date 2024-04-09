@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reference to another resource along with its state. */
+/**
+ * Reference to another resource along with its state.
+ */
 @Fluent
 public final class ActivatedResourceReference {
     /*
@@ -23,8 +25,14 @@ public final class ActivatedResourceReference {
     private Boolean isActive;
 
     /**
+     * Creates an instance of ActivatedResourceReference class.
+     */
+    public ActivatedResourceReference() {
+    }
+
+    /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -33,7 +41,7 @@ public final class ActivatedResourceReference {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the ActivatedResourceReference object itself.
      */
@@ -44,7 +52,7 @@ public final class ActivatedResourceReference {
 
     /**
      * Get the isActive property: Whether the resource is active or inactive.
-     *
+     * 
      * @return the isActive value.
      */
     public Boolean isActive() {
@@ -53,7 +61,7 @@ public final class ActivatedResourceReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

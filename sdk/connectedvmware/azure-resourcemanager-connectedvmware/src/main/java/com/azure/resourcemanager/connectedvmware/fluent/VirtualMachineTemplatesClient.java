@@ -23,7 +23,6 @@ public interface VirtualMachineTemplatesClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
-     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -31,7 +30,7 @@ public interface VirtualMachineTemplatesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineTemplateInner>, VirtualMachineTemplateInner> beginCreate(
-        String resourceGroupName, String virtualMachineTemplateName, VirtualMachineTemplateInner body);
+        String resourceGroupName, String virtualMachineTemplateName);
 
     /**
      * Implements virtual machine template PUT method.
@@ -50,23 +49,6 @@ public interface VirtualMachineTemplatesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineTemplateInner>, VirtualMachineTemplateInner> beginCreate(
         String resourceGroupName, String virtualMachineTemplateName, VirtualMachineTemplateInner body, Context context);
-
-    /**
-     * Implements virtual machine template PUT method.
-     *
-     * <p>Create Or Update virtual machine template.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param virtualMachineTemplateName Name of the virtual machine template resource.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the virtualMachineTemplate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineTemplateInner create(
-        String resourceGroupName, String virtualMachineTemplateName, VirtualMachineTemplateInner body);
 
     /**
      * Implements virtual machine template PUT method.
@@ -108,21 +90,6 @@ public interface VirtualMachineTemplatesClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the virtualMachineTemplate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineTemplateInner getByResourceGroup(String resourceGroupName, String virtualMachineTemplateName);
-
-    /**
-     * Gets a virtual machine template.
-     *
-     * <p>Implements virtual machine template GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -134,9 +101,9 @@ public interface VirtualMachineTemplatesClient {
         String resourceGroupName, String virtualMachineTemplateName, Context context);
 
     /**
-     * Updates a virtual machine template.
+     * Gets a virtual machine template.
      *
-     * <p>API to update certain properties of the virtual machine template resource.
+     * <p>Implements virtual machine template GET method.
      *
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
@@ -146,7 +113,7 @@ public interface VirtualMachineTemplatesClient {
      * @return define the virtualMachineTemplate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineTemplateInner update(String resourceGroupName, String virtualMachineTemplateName);
+    VirtualMachineTemplateInner getByResourceGroup(String resourceGroupName, String virtualMachineTemplateName);
 
     /**
      * Updates a virtual machine template.
@@ -167,21 +134,34 @@ public interface VirtualMachineTemplatesClient {
         String resourceGroupName, String virtualMachineTemplateName, ResourcePatch body, Context context);
 
     /**
+     * Updates a virtual machine template.
+     *
+     * <p>API to update certain properties of the virtual machine template resource.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param virtualMachineTemplateName Name of the virtual machine template resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the virtualMachineTemplate.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualMachineTemplateInner update(String resourceGroupName, String virtualMachineTemplateName);
+
+    /**
      * Deletes an virtual machine template.
      *
      * <p>Implements virtual machine template DELETE method.
      *
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualMachineTemplateName, Boolean force);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualMachineTemplateName);
 
     /**
      * Deletes an virtual machine template.
@@ -200,21 +180,6 @@ public interface VirtualMachineTemplatesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualMachineTemplateName, Boolean force, Context context);
-
-    /**
-     * Deletes an virtual machine template.
-     *
-     * <p>Implements virtual machine template DELETE method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param virtualMachineTemplateName Name of the virtual machine template resource.
-     * @param force Whether force delete was specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String virtualMachineTemplateName, Boolean force);
 
     /**
      * Deletes an virtual machine template.

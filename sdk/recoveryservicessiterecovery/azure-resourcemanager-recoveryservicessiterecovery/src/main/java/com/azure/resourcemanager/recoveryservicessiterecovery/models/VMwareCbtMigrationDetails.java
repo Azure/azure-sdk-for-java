@@ -13,7 +13,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** VMwareCbt provider specific settings. */
+/**
+ * VMwareCbt provider specific settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VMwareCbt")
 @Fluent
@@ -29,6 +31,12 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
      */
     @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private String osType;
+
+    /*
+     * The name of the OS on the VM.
+     */
+    @JsonProperty(value = "osName", access = JsonProperty.Access.WRITE_ONLY)
+    private String osName;
 
     /*
      * The firmware type.
@@ -113,6 +121,18 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
      */
     @JsonProperty(value = "targetProximityPlacementGroupId")
     private String targetProximityPlacementGroupId;
+
+    /*
+     * The confidential VM key vault Id for ADE installation.
+     */
+    @JsonProperty(value = "confidentialVmKeyVaultId")
+    private String confidentialVmKeyVaultId;
+
+    /*
+     * The target VM security profile.
+     */
+    @JsonProperty(value = "targetVmSecurityProfile")
+    private VMwareCbtSecurityProfileProperties targetVmSecurityProfile;
 
     /*
      * The target boot diagnostics storage account ARM Id.
@@ -201,6 +221,18 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
     private Integer resumeProgressPercentage;
 
     /*
+     * The delta sync progress percentage.
+     */
+    @JsonProperty(value = "deltaSyncProgressPercentage", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer deltaSyncProgressPercentage;
+
+    /*
+     * A value indicating whether checksum resync cycle is in progress.
+     */
+    @JsonProperty(value = "isCheckSumResyncCycle", access = JsonProperty.Access.WRITE_ONLY)
+    private String isCheckSumResyncCycle;
+
+    /*
      * The initial seeding retry count.
      */
     @JsonProperty(value = "initialSeedingRetryCount", access = JsonProperty.Access.WRITE_ONLY)
@@ -217,6 +249,12 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
      */
     @JsonProperty(value = "resumeRetryCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long resumeRetryCount;
+
+    /*
+     * The delta sync retry count.
+     */
+    @JsonProperty(value = "deltaSyncRetryCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Long deltaSyncRetryCount;
 
     /*
      * A value indicating whether resync is required.
@@ -250,13 +288,39 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetDiskTags;
 
-    /** Creates an instance of VMwareCbtMigrationDetails class. */
+    /*
+     * A value indicating the inplace OS Upgrade version.
+     */
+    @JsonProperty(value = "supportedOSVersions")
+    private List<String> supportedOSVersions;
+
+    /*
+     * A value indicating the appliance monitoring details.
+     */
+    @JsonProperty(value = "applianceMonitoringDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private ApplianceMonitoringDetails applianceMonitoringDetails;
+
+    /*
+     * A value indicating the gateway operation details.
+     */
+    @JsonProperty(value = "gatewayOperationDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private GatewayOperationDetails gatewayOperationDetails;
+
+    /*
+     * A value indicating the SRS operation name.
+     */
+    @JsonProperty(value = "operationName", access = JsonProperty.Access.WRITE_ONLY)
+    private String operationName;
+
+    /**
+     * Creates an instance of VMwareCbtMigrationDetails class.
+     */
     public VMwareCbtMigrationDetails() {
     }
 
     /**
      * Get the vmwareMachineId property: The ARM Id of the VM discovered in VMware.
-     *
+     * 
      * @return the vmwareMachineId value.
      */
     public String vmwareMachineId() {
@@ -265,7 +329,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the osType property: The type of the OS on the VM.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -273,8 +337,17 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
     }
 
     /**
+     * Get the osName property: The name of the OS on the VM.
+     * 
+     * @return the osName value.
+     */
+    public String osName() {
+        return this.osName;
+    }
+
+    /**
      * Get the firmwareType property: The firmware type.
-     *
+     * 
      * @return the firmwareType value.
      */
     public String firmwareType() {
@@ -283,7 +356,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the targetGeneration property: The target generation.
-     *
+     * 
      * @return the targetGeneration value.
      */
     public String targetGeneration() {
@@ -292,7 +365,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the licenseType property: License Type of the VM to be used.
-     *
+     * 
      * @return the licenseType value.
      */
     public String licenseType() {
@@ -301,7 +374,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Set the licenseType property: License Type of the VM to be used.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the VMwareCbtMigrationDetails object itself.
      */
@@ -312,7 +385,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the sqlServerLicenseType property: The SQL Server license type.
-     *
+     * 
      * @return the sqlServerLicenseType value.
      */
     public String sqlServerLicenseType() {
@@ -321,7 +394,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Set the sqlServerLicenseType property: The SQL Server license type.
-     *
+     * 
      * @param sqlServerLicenseType the sqlServerLicenseType value to set.
      * @return the VMwareCbtMigrationDetails object itself.
      */
@@ -332,7 +405,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the dataMoverRunAsAccountId property: The data mover run as account Id.
-     *
+     * 
      * @return the dataMoverRunAsAccountId value.
      */
     public String dataMoverRunAsAccountId() {
@@ -341,7 +414,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the snapshotRunAsAccountId property: The snapshot run as account Id.
-     *
+     * 
      * @return the snapshotRunAsAccountId value.
      */
     public String snapshotRunAsAccountId() {
@@ -351,7 +424,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
     /**
      * Get the storageAccountId property: The replication storage account ARM Id. This is applicable only for the blob
      * based replication test hook.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -360,7 +433,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the targetVmName property: Target VM name.
-     *
+     * 
      * @return the targetVmName value.
      */
     public String targetVmName() {
@@ -369,7 +442,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Set the targetVmName property: Target VM name.
-     *
+     * 
      * @param targetVmName the targetVmName value to set.
      * @return the VMwareCbtMigrationDetails object itself.
      */
@@ -380,7 +453,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the targetVmSize property: The target VM size.
-     *
+     * 
      * @return the targetVmSize value.
      */
     public String targetVmSize() {
@@ -389,7 +462,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Set the targetVmSize property: The target VM size.
-     *
+     * 
      * @param targetVmSize the targetVmSize value to set.
      * @return the VMwareCbtMigrationDetails object itself.
      */
@@ -400,7 +473,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the targetLocation property: The target location.
-     *
+     * 
      * @return the targetLocation value.
      */
     public String targetLocation() {
@@ -409,7 +482,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the targetResourceGroupId property: The target resource group Id.
-     *
+     * 
      * @return the targetResourceGroupId value.
      */
     public String targetResourceGroupId() {
@@ -418,7 +491,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Set the targetResourceGroupId property: The target resource group Id.
-     *
+     * 
      * @param targetResourceGroupId the targetResourceGroupId value to set.
      * @return the VMwareCbtMigrationDetails object itself.
      */
@@ -429,7 +502,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the targetAvailabilitySetId property: The target availability set Id.
-     *
+     * 
      * @return the targetAvailabilitySetId value.
      */
     public String targetAvailabilitySetId() {
@@ -438,7 +511,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Set the targetAvailabilitySetId property: The target availability set Id.
-     *
+     * 
      * @param targetAvailabilitySetId the targetAvailabilitySetId value to set.
      * @return the VMwareCbtMigrationDetails object itself.
      */
@@ -449,7 +522,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @return the targetAvailabilityZone value.
      */
     public String targetAvailabilityZone() {
@@ -458,7 +531,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Set the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @param targetAvailabilityZone the targetAvailabilityZone value to set.
      * @return the VMwareCbtMigrationDetails object itself.
      */
@@ -469,7 +542,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the targetProximityPlacementGroupId property: The target proximity placement group Id.
-     *
+     * 
      * @return the targetProximityPlacementGroupId value.
      */
     public String targetProximityPlacementGroupId() {
@@ -478,7 +551,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Set the targetProximityPlacementGroupId property: The target proximity placement group Id.
-     *
+     * 
      * @param targetProximityPlacementGroupId the targetProximityPlacementGroupId value to set.
      * @return the VMwareCbtMigrationDetails object itself.
      */
@@ -488,8 +561,49 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
     }
 
     /**
+     * Get the confidentialVmKeyVaultId property: The confidential VM key vault Id for ADE installation.
+     * 
+     * @return the confidentialVmKeyVaultId value.
+     */
+    public String confidentialVmKeyVaultId() {
+        return this.confidentialVmKeyVaultId;
+    }
+
+    /**
+     * Set the confidentialVmKeyVaultId property: The confidential VM key vault Id for ADE installation.
+     * 
+     * @param confidentialVmKeyVaultId the confidentialVmKeyVaultId value to set.
+     * @return the VMwareCbtMigrationDetails object itself.
+     */
+    public VMwareCbtMigrationDetails withConfidentialVmKeyVaultId(String confidentialVmKeyVaultId) {
+        this.confidentialVmKeyVaultId = confidentialVmKeyVaultId;
+        return this;
+    }
+
+    /**
+     * Get the targetVmSecurityProfile property: The target VM security profile.
+     * 
+     * @return the targetVmSecurityProfile value.
+     */
+    public VMwareCbtSecurityProfileProperties targetVmSecurityProfile() {
+        return this.targetVmSecurityProfile;
+    }
+
+    /**
+     * Set the targetVmSecurityProfile property: The target VM security profile.
+     * 
+     * @param targetVmSecurityProfile the targetVmSecurityProfile value to set.
+     * @return the VMwareCbtMigrationDetails object itself.
+     */
+    public VMwareCbtMigrationDetails
+        withTargetVmSecurityProfile(VMwareCbtSecurityProfileProperties targetVmSecurityProfile) {
+        this.targetVmSecurityProfile = targetVmSecurityProfile;
+        return this;
+    }
+
+    /**
      * Get the targetBootDiagnosticsStorageAccountId property: The target boot diagnostics storage account ARM Id.
-     *
+     * 
      * @return the targetBootDiagnosticsStorageAccountId value.
      */
     public String targetBootDiagnosticsStorageAccountId() {
@@ -498,19 +612,19 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Set the targetBootDiagnosticsStorageAccountId property: The target boot diagnostics storage account ARM Id.
-     *
+     * 
      * @param targetBootDiagnosticsStorageAccountId the targetBootDiagnosticsStorageAccountId value to set.
      * @return the VMwareCbtMigrationDetails object itself.
      */
-    public VMwareCbtMigrationDetails withTargetBootDiagnosticsStorageAccountId(
-        String targetBootDiagnosticsStorageAccountId) {
+    public VMwareCbtMigrationDetails
+        withTargetBootDiagnosticsStorageAccountId(String targetBootDiagnosticsStorageAccountId) {
         this.targetBootDiagnosticsStorageAccountId = targetBootDiagnosticsStorageAccountId;
         return this;
     }
 
     /**
      * Get the targetVmTags property: The target VM tags.
-     *
+     * 
      * @return the targetVmTags value.
      */
     public Map<String, String> targetVmTags() {
@@ -519,7 +633,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Set the targetVmTags property: The target VM tags.
-     *
+     * 
      * @param targetVmTags the targetVmTags value to set.
      * @return the VMwareCbtMigrationDetails object itself.
      */
@@ -530,7 +644,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the protectedDisks property: The list of protected disks.
-     *
+     * 
      * @return the protectedDisks value.
      */
     public List<VMwareCbtProtectedDiskDetails> protectedDisks() {
@@ -539,7 +653,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Set the protectedDisks property: The list of protected disks.
-     *
+     * 
      * @param protectedDisks the protectedDisks value to set.
      * @return the VMwareCbtMigrationDetails object itself.
      */
@@ -550,7 +664,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the targetNetworkId property: The target network Id.
-     *
+     * 
      * @return the targetNetworkId value.
      */
     public String targetNetworkId() {
@@ -559,7 +673,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Set the targetNetworkId property: The target network Id.
-     *
+     * 
      * @param targetNetworkId the targetNetworkId value to set.
      * @return the VMwareCbtMigrationDetails object itself.
      */
@@ -570,7 +684,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the testNetworkId property: The test network Id.
-     *
+     * 
      * @return the testNetworkId value.
      */
     public String testNetworkId() {
@@ -579,7 +693,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Set the testNetworkId property: The test network Id.
-     *
+     * 
      * @param testNetworkId the testNetworkId value to set.
      * @return the VMwareCbtMigrationDetails object itself.
      */
@@ -590,7 +704,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the vmNics property: The network details.
-     *
+     * 
      * @return the vmNics value.
      */
     public List<VMwareCbtNicDetails> vmNics() {
@@ -599,7 +713,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Set the vmNics property: The network details.
-     *
+     * 
      * @param vmNics the vmNics value to set.
      * @return the VMwareCbtMigrationDetails object itself.
      */
@@ -610,7 +724,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the targetNicTags property: The tags for the target NICs.
-     *
+     * 
      * @return the targetNicTags value.
      */
     public Map<String, String> targetNicTags() {
@@ -619,7 +733,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Set the targetNicTags property: The tags for the target NICs.
-     *
+     * 
      * @param targetNicTags the targetNicTags value to set.
      * @return the VMwareCbtMigrationDetails object itself.
      */
@@ -630,7 +744,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the migrationRecoveryPointId property: The recovery point Id to which the VM was migrated.
-     *
+     * 
      * @return the migrationRecoveryPointId value.
      */
     public String migrationRecoveryPointId() {
@@ -639,7 +753,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the lastRecoveryPointReceived property: The last recovery point received time.
-     *
+     * 
      * @return the lastRecoveryPointReceived value.
      */
     public OffsetDateTime lastRecoveryPointReceived() {
@@ -648,7 +762,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the lastRecoveryPointId property: The last recovery point Id.
-     *
+     * 
      * @return the lastRecoveryPointId value.
      */
     public String lastRecoveryPointId() {
@@ -657,7 +771,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the initialSeedingProgressPercentage property: The initial seeding progress percentage.
-     *
+     * 
      * @return the initialSeedingProgressPercentage value.
      */
     public Integer initialSeedingProgressPercentage() {
@@ -666,7 +780,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the migrationProgressPercentage property: The migration progress percentage.
-     *
+     * 
      * @return the migrationProgressPercentage value.
      */
     public Integer migrationProgressPercentage() {
@@ -675,7 +789,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the resyncProgressPercentage property: The resync progress percentage.
-     *
+     * 
      * @return the resyncProgressPercentage value.
      */
     public Integer resyncProgressPercentage() {
@@ -684,7 +798,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the resumeProgressPercentage property: The resume progress percentage.
-     *
+     * 
      * @return the resumeProgressPercentage value.
      */
     public Integer resumeProgressPercentage() {
@@ -692,8 +806,26 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
     }
 
     /**
+     * Get the deltaSyncProgressPercentage property: The delta sync progress percentage.
+     * 
+     * @return the deltaSyncProgressPercentage value.
+     */
+    public Integer deltaSyncProgressPercentage() {
+        return this.deltaSyncProgressPercentage;
+    }
+
+    /**
+     * Get the isCheckSumResyncCycle property: A value indicating whether checksum resync cycle is in progress.
+     * 
+     * @return the isCheckSumResyncCycle value.
+     */
+    public String isCheckSumResyncCycle() {
+        return this.isCheckSumResyncCycle;
+    }
+
+    /**
      * Get the initialSeedingRetryCount property: The initial seeding retry count.
-     *
+     * 
      * @return the initialSeedingRetryCount value.
      */
     public Long initialSeedingRetryCount() {
@@ -702,7 +834,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the resyncRetryCount property: The resync retry count.
-     *
+     * 
      * @return the resyncRetryCount value.
      */
     public Long resyncRetryCount() {
@@ -711,7 +843,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the resumeRetryCount property: The resume retry count.
-     *
+     * 
      * @return the resumeRetryCount value.
      */
     public Long resumeRetryCount() {
@@ -719,8 +851,17 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
     }
 
     /**
+     * Get the deltaSyncRetryCount property: The delta sync retry count.
+     * 
+     * @return the deltaSyncRetryCount value.
+     */
+    public Long deltaSyncRetryCount() {
+        return this.deltaSyncRetryCount;
+    }
+
+    /**
      * Get the resyncRequired property: A value indicating whether resync is required.
-     *
+     * 
      * @return the resyncRequired value.
      */
     public String resyncRequired() {
@@ -729,7 +870,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the resyncState property: The resync state.
-     *
+     * 
      * @return the resyncState value.
      */
     public ResyncState resyncState() {
@@ -738,7 +879,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the performAutoResync property: A value indicating whether auto resync is to be done.
-     *
+     * 
      * @return the performAutoResync value.
      */
     public String performAutoResync() {
@@ -747,7 +888,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Set the performAutoResync property: A value indicating whether auto resync is to be done.
-     *
+     * 
      * @param performAutoResync the performAutoResync value to set.
      * @return the VMwareCbtMigrationDetails object itself.
      */
@@ -758,7 +899,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the seedDiskTags property: The tags for the seed disks.
-     *
+     * 
      * @return the seedDiskTags value.
      */
     public Map<String, String> seedDiskTags() {
@@ -767,7 +908,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Set the seedDiskTags property: The tags for the seed disks.
-     *
+     * 
      * @param seedDiskTags the seedDiskTags value to set.
      * @return the VMwareCbtMigrationDetails object itself.
      */
@@ -778,7 +919,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Get the targetDiskTags property: The tags for the target disks.
-     *
+     * 
      * @return the targetDiskTags value.
      */
     public Map<String, String> targetDiskTags() {
@@ -787,7 +928,7 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
 
     /**
      * Set the targetDiskTags property: The tags for the target disks.
-     *
+     * 
      * @param targetDiskTags the targetDiskTags value to set.
      * @return the VMwareCbtMigrationDetails object itself.
      */
@@ -797,18 +938,74 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
     }
 
     /**
+     * Get the supportedOSVersions property: A value indicating the inplace OS Upgrade version.
+     * 
+     * @return the supportedOSVersions value.
+     */
+    public List<String> supportedOSVersions() {
+        return this.supportedOSVersions;
+    }
+
+    /**
+     * Set the supportedOSVersions property: A value indicating the inplace OS Upgrade version.
+     * 
+     * @param supportedOSVersions the supportedOSVersions value to set.
+     * @return the VMwareCbtMigrationDetails object itself.
+     */
+    public VMwareCbtMigrationDetails withSupportedOSVersions(List<String> supportedOSVersions) {
+        this.supportedOSVersions = supportedOSVersions;
+        return this;
+    }
+
+    /**
+     * Get the applianceMonitoringDetails property: A value indicating the appliance monitoring details.
+     * 
+     * @return the applianceMonitoringDetails value.
+     */
+    public ApplianceMonitoringDetails applianceMonitoringDetails() {
+        return this.applianceMonitoringDetails;
+    }
+
+    /**
+     * Get the gatewayOperationDetails property: A value indicating the gateway operation details.
+     * 
+     * @return the gatewayOperationDetails value.
+     */
+    public GatewayOperationDetails gatewayOperationDetails() {
+        return this.gatewayOperationDetails;
+    }
+
+    /**
+     * Get the operationName property: A value indicating the SRS operation name.
+     * 
+     * @return the operationName value.
+     */
+    public String operationName() {
+        return this.operationName;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+        if (targetVmSecurityProfile() != null) {
+            targetVmSecurityProfile().validate();
+        }
         if (protectedDisks() != null) {
             protectedDisks().forEach(e -> e.validate());
         }
         if (vmNics() != null) {
             vmNics().forEach(e -> e.validate());
+        }
+        if (applianceMonitoringDetails() != null) {
+            applianceMonitoringDetails().validate();
+        }
+        if (gatewayOperationDetails() != null) {
+            gatewayOperationDetails().validate();
         }
     }
 }

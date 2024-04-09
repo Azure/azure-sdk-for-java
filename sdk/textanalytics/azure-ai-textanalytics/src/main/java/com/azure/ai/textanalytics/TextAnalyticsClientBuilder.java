@@ -53,15 +53,13 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help instantiation of {@link TextAnalyticsClient TextAnalyticsClients}
- * and {@link TextAnalyticsAsyncClient TextAnalyticsAsyncClients}, call {@link #buildClient()} buildClient} and {@link
+ * This class provides a fluent builder API to help instantiation of {@link TextAnalyticsClient TextAnalyticsClient}
+ * and {@link TextAnalyticsAsyncClient TextAnalyticsAsyncClient}, call {@link #buildClient()} buildClient} and {@link
  * #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  *
- * <p>
- * The client needs the service endpoint of the Azure Text Analytics to access the resource service. {@link
+ * <p>The client needs the service endpoint of the Azure Text Analytics to access the resource service. {@link
  * #credential(AzureKeyCredential)} or {@link #credential(TokenCredential) credential(TokenCredential)} give the builder
- * access credential.
- * </p>
+ * access credential.</p>
  *
  * <p><strong>Instantiating an asynchronous Text Analytics Client</strong></p>
  *
@@ -85,12 +83,10 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.instantiation -->
  *
- * <p>
- * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an authenticated
+ * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an authenticated
  * way to communicate with the service. Set the pipeline with {@link #pipeline(HttpPipeline) this} and set the service
  * endpoint with {@link #endpoint(String) this}. Using a pipeline requires additional setup but allows for finer control
- * on how the {@link TextAnalyticsClient} and {@link TextAnalyticsAsyncClient} is built.
- * </p>
+ * on how the {@link TextAnalyticsClient} and {@link TextAnalyticsAsyncClient} is built.</p>
  *
  * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.pipeline.instantiation -->
  * <pre>
@@ -152,6 +148,13 @@ public final class TextAnalyticsClientBuilder implements
         Map<String, String> properties = CoreUtils.getProperties(TEXT_ANALYTICS_PROPERTIES);
         CLIENT_NAME = properties.getOrDefault(NAME, "UnknownName");
         CLIENT_VERSION = properties.getOrDefault(VERSION, "UnknownVersion");
+    }
+
+    /**
+     * Construct a {@link TextAnalyticsClientBuilder} object.
+     */
+    public TextAnalyticsClientBuilder() {
+
     }
 
     /**
@@ -253,7 +256,7 @@ public final class TextAnalyticsClientBuilder implements
             if (clientOptions != null) {
                 tracingOptions = clientOptions.getTracingOptions();
             }
-            
+
             Tracer tracer = TracerProvider.getDefaultProvider()
                 .createTracer(CLIENT_NAME, CLIENT_VERSION, COGNITIVE_TRACING_NAMESPACE_VALUE, tracingOptions);
 

@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Entity Resource
- *
- * <p>The resource model definition for an Azure Resource Manager resource with an etag.
+ * 
+ * The resource model definition for an Azure Resource Manager resource with an etag.
  */
 @Immutable
 public class AzureEntityResource extends Resource {
@@ -20,12 +20,15 @@ public class AzureEntityResource extends Resource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of AzureEntityResource class. */
-    public AzureEntityResource() {}
+    /**
+     * Creates an instance of AzureEntityResource class.
+     */
+    public AzureEntityResource() {
+    }
 
     /**
      * Get the etag property: Resource Etag.
-     *
+     * 
      * @return the etag value.
      */
     public String getEtag() {

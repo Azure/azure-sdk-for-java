@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class HourlyScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HourlySchedule model =
-            BinaryData
-                .fromString(
-                    "{\"interval\":1907750437,\"scheduleWindowStartTime\":\"2021-09-04T14:52:10Z\",\"scheduleWindowDuration\":1075307971}")
-                .toObject(HourlySchedule.class);
-        Assertions.assertEquals(1907750437, model.interval());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-04T14:52:10Z"), model.scheduleWindowStartTime());
-        Assertions.assertEquals(1075307971, model.scheduleWindowDuration());
+        HourlySchedule model = BinaryData.fromString(
+            "{\"interval\":1007355900,\"scheduleWindowStartTime\":\"2021-08-02T11:55:53Z\",\"scheduleWindowDuration\":1850415836}")
+            .toObject(HourlySchedule.class);
+        Assertions.assertEquals(1007355900, model.interval());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-02T11:55:53Z"), model.scheduleWindowStartTime());
+        Assertions.assertEquals(1850415836, model.scheduleWindowDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HourlySchedule model =
-            new HourlySchedule()
-                .withInterval(1907750437)
-                .withScheduleWindowStartTime(OffsetDateTime.parse("2021-09-04T14:52:10Z"))
-                .withScheduleWindowDuration(1075307971);
+        HourlySchedule model = new HourlySchedule().withInterval(1007355900)
+            .withScheduleWindowStartTime(OffsetDateTime.parse("2021-08-02T11:55:53Z"))
+            .withScheduleWindowDuration(1850415836);
         model = BinaryData.fromObject(model).toObject(HourlySchedule.class);
-        Assertions.assertEquals(1907750437, model.interval());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-04T14:52:10Z"), model.scheduleWindowStartTime());
-        Assertions.assertEquals(1075307971, model.scheduleWindowDuration());
+        Assertions.assertEquals(1007355900, model.interval());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-02T11:55:53Z"), model.scheduleWindowStartTime());
+        Assertions.assertEquals(1850415836, model.scheduleWindowDuration());
     }
 }

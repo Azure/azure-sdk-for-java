@@ -11,55 +11,43 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.healthcareapis.fluent.models.PrivateLinkResourceDescriptionInner;
 
-/** An instance of this class provides access to all the operations defined in WorkspacePrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkspacePrivateLinkResourcesClient.
+ */
 public interface WorkspacePrivateLinkResourcesClient {
     /**
      * Gets the private link resources that need to be created for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a workspace as paginated response with {@link
-     *     PagedIterable}.
+     * @return the private link resources that need to be created for a workspace as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateLinkResourceDescriptionInner> listByWorkspace(String resourceGroupName, String workspaceName);
 
     /**
      * Gets the private link resources that need to be created for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a workspace as paginated response with {@link
-     *     PagedIterable}.
+     * @return the private link resources that need to be created for a workspace as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateLinkResourceDescriptionInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<PrivateLinkResourceDescriptionInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Gets a private link resource that need to be created for a workspace.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param workspaceName The name of workspace resource.
-     * @param groupName The name of the private link resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource that need to be created for a workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkResourceDescriptionInner get(String resourceGroupName, String workspaceName, String groupName);
-
-    /**
-     * Gets a private link resource that need to be created for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param groupName The name of the private link resource group.
@@ -70,6 +58,20 @@ public interface WorkspacePrivateLinkResourcesClient {
      * @return a private link resource that need to be created for a workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceDescriptionInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String groupName, Context context);
+    Response<PrivateLinkResourceDescriptionInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String groupName, Context context);
+
+    /**
+     * Gets a private link resource that need to be created for a workspace.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the service instance.
+     * @param workspaceName The name of workspace resource.
+     * @param groupName The name of the private link resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private link resource that need to be created for a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateLinkResourceDescriptionInner get(String resourceGroupName, String workspaceName, String groupName);
 }

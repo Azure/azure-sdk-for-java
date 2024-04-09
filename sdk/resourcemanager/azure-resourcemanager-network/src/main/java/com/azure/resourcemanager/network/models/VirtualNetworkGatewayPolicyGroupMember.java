@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Vpn Client Connection configuration PolicyGroup member. */
+/**
+ * Vpn Client Connection configuration PolicyGroup member.
+ */
 @Fluent
 public final class VirtualNetworkGatewayPolicyGroupMember {
     /*
@@ -28,13 +30,15 @@ public final class VirtualNetworkGatewayPolicyGroupMember {
     @JsonProperty(value = "attributeValue")
     private String attributeValue;
 
-    /** Creates an instance of VirtualNetworkGatewayPolicyGroupMember class. */
+    /**
+     * Creates an instance of VirtualNetworkGatewayPolicyGroupMember class.
+     */
     public VirtualNetworkGatewayPolicyGroupMember() {
     }
 
     /**
      * Get the name property: Name of the VirtualNetworkGatewayPolicyGroupMember.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +47,7 @@ public final class VirtualNetworkGatewayPolicyGroupMember {
 
     /**
      * Set the name property: Name of the VirtualNetworkGatewayPolicyGroupMember.
-     *
+     * 
      * @param name the name value to set.
      * @return the VirtualNetworkGatewayPolicyGroupMember object itself.
      */
@@ -54,7 +58,7 @@ public final class VirtualNetworkGatewayPolicyGroupMember {
 
     /**
      * Get the attributeType property: The Vpn Policy member attribute type.
-     *
+     * 
      * @return the attributeType value.
      */
     public VpnPolicyMemberAttributeType attributeType() {
@@ -63,7 +67,7 @@ public final class VirtualNetworkGatewayPolicyGroupMember {
 
     /**
      * Set the attributeType property: The Vpn Policy member attribute type.
-     *
+     * 
      * @param attributeType the attributeType value to set.
      * @return the VirtualNetworkGatewayPolicyGroupMember object itself.
      */
@@ -74,7 +78,7 @@ public final class VirtualNetworkGatewayPolicyGroupMember {
 
     /**
      * Get the attributeValue property: The value of Attribute used for this VirtualNetworkGatewayPolicyGroupMember.
-     *
+     * 
      * @return the attributeValue value.
      */
     public String attributeValue() {
@@ -83,7 +87,7 @@ public final class VirtualNetworkGatewayPolicyGroupMember {
 
     /**
      * Set the attributeValue property: The value of Attribute used for this VirtualNetworkGatewayPolicyGroupMember.
-     *
+     * 
      * @param attributeValue the attributeValue value to set.
      * @return the VirtualNetworkGatewayPolicyGroupMember object itself.
      */
@@ -94,7 +98,7 @@ public final class VirtualNetworkGatewayPolicyGroupMember {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

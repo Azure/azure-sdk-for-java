@@ -32,21 +32,6 @@ public final class FavoritesImpl implements Favorites {
         this.serviceManager = serviceManager;
     }
 
-    public List<ApplicationInsightsComponentFavorite> list(String resourceGroupName, String resourceName) {
-        List<ApplicationInsightsComponentFavoriteInner> inner =
-            this.serviceClient().list(resourceGroupName, resourceName);
-        if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ApplicationInsightsComponentFavoriteImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
     public Response<List<ApplicationInsightsComponentFavorite>> listWithResponse(
         String resourceGroupName,
         String resourceName,
@@ -75,13 +60,18 @@ public final class FavoritesImpl implements Favorites {
         }
     }
 
-    public ApplicationInsightsComponentFavorite get(String resourceGroupName, String resourceName, String favoriteId) {
-        ApplicationInsightsComponentFavoriteInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName, favoriteId);
+    public List<ApplicationInsightsComponentFavorite> list(String resourceGroupName, String resourceName) {
+        List<ApplicationInsightsComponentFavoriteInner> inner =
+            this.serviceClient().list(resourceGroupName, resourceName);
         if (inner != null) {
-            return new ApplicationInsightsComponentFavoriteImpl(inner, this.manager());
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new ApplicationInsightsComponentFavoriteImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
         } else {
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -100,13 +90,9 @@ public final class FavoritesImpl implements Favorites {
         }
     }
 
-    public ApplicationInsightsComponentFavorite add(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
-        ApplicationInsightsComponentFavoriteInner favoriteProperties) {
+    public ApplicationInsightsComponentFavorite get(String resourceGroupName, String resourceName, String favoriteId) {
         ApplicationInsightsComponentFavoriteInner inner =
-            this.serviceClient().add(resourceGroupName, resourceName, favoriteId, favoriteProperties);
+            this.serviceClient().get(resourceGroupName, resourceName, favoriteId);
         if (inner != null) {
             return new ApplicationInsightsComponentFavoriteImpl(inner, this.manager());
         } else {
@@ -135,13 +121,13 @@ public final class FavoritesImpl implements Favorites {
         }
     }
 
-    public ApplicationInsightsComponentFavorite update(
+    public ApplicationInsightsComponentFavorite add(
         String resourceGroupName,
         String resourceName,
         String favoriteId,
         ApplicationInsightsComponentFavoriteInner favoriteProperties) {
         ApplicationInsightsComponentFavoriteInner inner =
-            this.serviceClient().update(resourceGroupName, resourceName, favoriteId, favoriteProperties);
+            this.serviceClient().add(resourceGroupName, resourceName, favoriteId, favoriteProperties);
         if (inner != null) {
             return new ApplicationInsightsComponentFavoriteImpl(inner, this.manager());
         } else {
@@ -170,13 +156,27 @@ public final class FavoritesImpl implements Favorites {
         }
     }
 
-    public void delete(String resourceGroupName, String resourceName, String favoriteId) {
-        this.serviceClient().delete(resourceGroupName, resourceName, favoriteId);
+    public ApplicationInsightsComponentFavorite update(
+        String resourceGroupName,
+        String resourceName,
+        String favoriteId,
+        ApplicationInsightsComponentFavoriteInner favoriteProperties) {
+        ApplicationInsightsComponentFavoriteInner inner =
+            this.serviceClient().update(resourceGroupName, resourceName, favoriteId, favoriteProperties);
+        if (inner != null) {
+            return new ApplicationInsightsComponentFavoriteImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String resourceName, String favoriteId, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, favoriteId, context);
+    }
+
+    public void delete(String resourceGroupName, String resourceName, String favoriteId) {
+        this.serviceClient().delete(resourceGroupName, resourceName, favoriteId);
     }
 
     private FavoritesClient serviceClient() {

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Item Level kubernetes persistent volume target info for restore operation. */
+/**
+ * Item Level kubernetes persistent volume target info for restore operation.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("KubernetesPVRestoreCriteria")
 @Fluent
@@ -26,13 +28,15 @@ public final class KubernetesPVRestoreCriteria extends ItemLevelRestoreCriteria 
     @JsonProperty(value = "storageClassName")
     private String storageClassName;
 
-    /** Creates an instance of KubernetesPVRestoreCriteria class. */
+    /**
+     * Creates an instance of KubernetesPVRestoreCriteria class.
+     */
     public KubernetesPVRestoreCriteria() {
     }
 
     /**
      * Get the name property: Selected persistent volume claim name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -41,7 +45,7 @@ public final class KubernetesPVRestoreCriteria extends ItemLevelRestoreCriteria 
 
     /**
      * Set the name property: Selected persistent volume claim name.
-     *
+     * 
      * @param name the name value to set.
      * @return the KubernetesPVRestoreCriteria object itself.
      */
@@ -52,7 +56,7 @@ public final class KubernetesPVRestoreCriteria extends ItemLevelRestoreCriteria 
 
     /**
      * Get the storageClassName property: Selected storage class name for restore operation.
-     *
+     * 
      * @return the storageClassName value.
      */
     public String storageClassName() {
@@ -61,7 +65,7 @@ public final class KubernetesPVRestoreCriteria extends ItemLevelRestoreCriteria 
 
     /**
      * Set the storageClassName property: Selected storage class name for restore operation.
-     *
+     * 
      * @param storageClassName the storageClassName value to set.
      * @return the KubernetesPVRestoreCriteria object itself.
      */
@@ -72,7 +76,7 @@ public final class KubernetesPVRestoreCriteria extends ItemLevelRestoreCriteria 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

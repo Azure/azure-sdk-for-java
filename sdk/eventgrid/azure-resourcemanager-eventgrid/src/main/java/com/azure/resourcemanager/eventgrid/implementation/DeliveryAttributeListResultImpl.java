@@ -15,8 +15,7 @@ public final class DeliveryAttributeListResultImpl implements DeliveryAttributeL
 
     private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    DeliveryAttributeListResultImpl(
-        DeliveryAttributeListResultInner innerObject,
+    DeliveryAttributeListResultImpl(DeliveryAttributeListResultInner innerObject,
         com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

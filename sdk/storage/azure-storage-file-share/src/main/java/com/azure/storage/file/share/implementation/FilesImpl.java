@@ -594,6 +594,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -620,6 +621,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
+                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -639,6 +641,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-support-rename") Boolean supportRename,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -658,6 +661,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+                @HeaderParam("x-ms-file-support-rename") Boolean supportRename,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -4569,6 +4573,7 @@ public final class FilesImpl {
                                 fileLastWrittenMode,
                                 this.client.isAllowTrailingDot(),
                                 this.client.isAllowSourceTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -4655,6 +4660,7 @@ public final class FilesImpl {
                 fileLastWrittenMode,
                 this.client.isAllowTrailingDot(),
                 this.client.isAllowSourceTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -4864,6 +4870,7 @@ public final class FilesImpl {
                                 fileLastWrittenMode,
                                 this.client.isAllowTrailingDot(),
                                 this.client.isAllowSourceTrailingDot(),
+                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -4950,6 +4957,7 @@ public final class FilesImpl {
                 fileLastWrittenMode,
                 this.client.isAllowTrailingDot(),
                 this.client.isAllowSourceTrailingDot(),
+                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -4968,6 +4976,11 @@ public final class FilesImpl {
      *     Timeouts for File Service Operations.&lt;/a&gt;.
      * @param range Specifies the range of bytes over which to list ranges, inclusively.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     *     whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     *     file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     *     will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response.
+     *     The default value is false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4981,7 +4994,8 @@ public final class FilesImpl {
             String prevsharesnapshot,
             Integer timeout,
             String range,
-            String leaseId) {
+            String leaseId,
+            Boolean supportRename) {
         final String comp = "rangelist";
         final String accept = "application/xml";
         return FluxUtil.withContext(
@@ -4999,6 +5013,7 @@ public final class FilesImpl {
                                 leaseId,
                                 this.client.isAllowTrailingDot(),
                                 this.client.getFileRequestIntent(),
+                                supportRename,
                                 accept,
                                 context));
     }
@@ -5017,6 +5032,11 @@ public final class FilesImpl {
      *     Timeouts for File Service Operations.&lt;/a&gt;.
      * @param range Specifies the range of bytes over which to list ranges, inclusively.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     *     whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     *     file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     *     will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response.
+     *     The default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -5032,6 +5052,7 @@ public final class FilesImpl {
             Integer timeout,
             String range,
             String leaseId,
+            Boolean supportRename,
             Context context) {
         final String comp = "rangelist";
         final String accept = "application/xml";
@@ -5048,6 +5069,7 @@ public final class FilesImpl {
                 leaseId,
                 this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(),
+                supportRename,
                 accept,
                 context);
     }
@@ -5066,6 +5088,11 @@ public final class FilesImpl {
      *     Timeouts for File Service Operations.&lt;/a&gt;.
      * @param range Specifies the range of bytes over which to list ranges, inclusively.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     *     whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     *     file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     *     will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response.
+     *     The default value is false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5079,9 +5106,10 @@ public final class FilesImpl {
             String prevsharesnapshot,
             Integer timeout,
             String range,
-            String leaseId) {
+            String leaseId,
+            Boolean supportRename) {
         return getRangeListWithResponseAsync(
-                        shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range, leaseId)
+                        shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range, leaseId, supportRename)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -5099,6 +5127,11 @@ public final class FilesImpl {
      *     Timeouts for File Service Operations.&lt;/a&gt;.
      * @param range Specifies the range of bytes over which to list ranges, inclusively.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     *     whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     *     file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     *     will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response.
+     *     The default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -5114,9 +5147,18 @@ public final class FilesImpl {
             Integer timeout,
             String range,
             String leaseId,
+            Boolean supportRename,
             Context context) {
         return getRangeListWithResponseAsync(
-                        shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range, leaseId, context)
+                        shareName,
+                        fileName,
+                        sharesnapshot,
+                        prevsharesnapshot,
+                        timeout,
+                        range,
+                        leaseId,
+                        supportRename,
+                        context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -5134,6 +5176,11 @@ public final class FilesImpl {
      *     Timeouts for File Service Operations.&lt;/a&gt;.
      * @param range Specifies the range of bytes over which to list ranges, inclusively.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     *     whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     *     file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     *     will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response.
+     *     The default value is false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5147,7 +5194,8 @@ public final class FilesImpl {
             String prevsharesnapshot,
             Integer timeout,
             String range,
-            String leaseId) {
+            String leaseId,
+            Boolean supportRename) {
         final String comp = "rangelist";
         final String accept = "application/xml";
         return FluxUtil.withContext(
@@ -5165,6 +5213,7 @@ public final class FilesImpl {
                                 leaseId,
                                 this.client.isAllowTrailingDot(),
                                 this.client.getFileRequestIntent(),
+                                supportRename,
                                 accept,
                                 context));
     }
@@ -5183,6 +5232,11 @@ public final class FilesImpl {
      *     Timeouts for File Service Operations.&lt;/a&gt;.
      * @param range Specifies the range of bytes over which to list ranges, inclusively.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     *     whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     *     file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     *     will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response.
+     *     The default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -5198,6 +5252,7 @@ public final class FilesImpl {
             Integer timeout,
             String range,
             String leaseId,
+            Boolean supportRename,
             Context context) {
         final String comp = "rangelist";
         final String accept = "application/xml";
@@ -5214,6 +5269,7 @@ public final class FilesImpl {
                 leaseId,
                 this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(),
+                supportRename,
                 accept,
                 context);
     }

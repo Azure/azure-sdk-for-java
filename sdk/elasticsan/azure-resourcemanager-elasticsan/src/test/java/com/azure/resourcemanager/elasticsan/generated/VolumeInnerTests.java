@@ -6,6 +6,7 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeInner;
+import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
 import com.azure.resourcemanager.elasticsan.models.SourceCreationData;
 import com.azure.resourcemanager.elasticsan.models.VolumeCreateOption;
 import org.junit.jupiter.api.Assertions;
@@ -13,26 +14,25 @@ import org.junit.jupiter.api.Assertions;
 public final class VolumeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VolumeInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"volumeId\":\"jzkdeslpvlopwi\",\"creationData\":{\"createSource\":\"None\",\"sourceUri\":\"pkdwzbai\"},\"sizeGiB\":3085775452141512212,\"storageTarget\":{\"targetIqn\":\"umnyqu\",\"targetPortalHostname\":\"deoj\",\"targetPortalPort\":746279797,\"provisioningState\":\"Creating\",\"status\":\"Updating\"}},\"id\":\"mtxpsiebtfh\",\"name\":\"pesapskrdqmhjj\",\"type\":\"htldwk\"}")
-                .toObject(VolumeInner.class);
-        Assertions.assertEquals(VolumeCreateOption.NONE, model.creationData().createSource());
-        Assertions.assertEquals("pkdwzbai", model.creationData().sourceUri());
-        Assertions.assertEquals(3085775452141512212L, model.sizeGiB());
+        VolumeInner model = BinaryData.fromString(
+            "{\"properties\":{\"volumeId\":\"hfnljkyq\",\"creationData\":{\"createSource\":\"VolumeSnapshot\",\"sourceId\":\"j\"},\"sizeGiB\":8463316449918745617,\"storageTarget\":{\"targetIqn\":\"kgj\",\"targetPortalHostname\":\"yoxgvcltbgsnc\",\"targetPortalPort\":1435851366,\"provisioningState\":\"Succeeded\",\"status\":\"Invalid\"},\"managedBy\":{\"resourceId\":\"bijhtxfvgxbf\"},\"provisioningState\":\"Pending\"},\"id\":\"eh\",\"name\":\"pvecxgodeb\",\"type\":\"qkkrb\"}")
+            .toObject(VolumeInner.class);
+        Assertions.assertEquals(VolumeCreateOption.VOLUME_SNAPSHOT, model.creationData().createSource());
+        Assertions.assertEquals("j", model.creationData().sourceId());
+        Assertions.assertEquals(8463316449918745617L, model.sizeGiB());
+        Assertions.assertEquals("bijhtxfvgxbf", model.managedBy().resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeInner model =
-            new VolumeInner()
-                .withCreationData(
-                    new SourceCreationData().withCreateSource(VolumeCreateOption.NONE).withSourceUri("pkdwzbai"))
-                .withSizeGiB(3085775452141512212L);
+        VolumeInner model = new VolumeInner()
+            .withCreationData(
+                new SourceCreationData().withCreateSource(VolumeCreateOption.VOLUME_SNAPSHOT).withSourceId("j"))
+            .withSizeGiB(8463316449918745617L).withManagedBy(new ManagedByInfo().withResourceId("bijhtxfvgxbf"));
         model = BinaryData.fromObject(model).toObject(VolumeInner.class);
-        Assertions.assertEquals(VolumeCreateOption.NONE, model.creationData().createSource());
-        Assertions.assertEquals("pkdwzbai", model.creationData().sourceUri());
-        Assertions.assertEquals(3085775452141512212L, model.sizeGiB());
+        Assertions.assertEquals(VolumeCreateOption.VOLUME_SNAPSHOT, model.creationData().createSource());
+        Assertions.assertEquals("j", model.creationData().sourceId());
+        Assertions.assertEquals(8463316449918745617L, model.sizeGiB());
+        Assertions.assertEquals("bijhtxfvgxbf", model.managedBy().resourceId());
     }
 }

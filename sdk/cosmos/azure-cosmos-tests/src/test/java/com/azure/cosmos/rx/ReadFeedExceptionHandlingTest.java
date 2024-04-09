@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
@@ -55,24 +56,20 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
 
         final CosmosAsyncClientWrapper mockedClientWrapper = Mockito.spy(new CosmosAsyncClientWrapper(client));
         Mockito.when(mockedClientWrapper.readAllDatabases()).thenReturn(UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            pagedFluxOptions.setTracerInformation(
+
+            QueryFeedOperationState state = new QueryFeedOperationState(
+                client,
                 "testSpan",
                 "testDb",
                 null,
-                null,
-                OperationType.ReadFeed,
                 ResourceType.Database,
-                client,
+                OperationType.ReadFeed,
                 null,
-                ImplementationBridgeHelpers
-                    .CosmosAsyncClientHelper
-                    .getCosmosAsyncClientAccessor()
-                    .getEffectiveDiagnosticsThresholds(
-                        client,
-                        ImplementationBridgeHelpers
-                            .CosmosQueryRequestOptionsHelper
-                            .getCosmosQueryRequestOptionsAccessor()
-                            .getDiagnosticsThresholds(new CosmosQueryRequestOptions())));
+                new CosmosQueryRequestOptions(),
+                pagedFluxOptions
+            );
+
+            pagedFluxOptions.setFeedOperationState(state);
             return response;
         }));
         TestSubscriber<FeedResponse<CosmosDatabaseProperties>> subscriber = new TestSubscriber<>();

@@ -10,10 +10,8 @@ import com.azure.resourcemanager.dataprotection.models.FeatureValidationRequestB
 public final class FeatureValidationRequestBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FeatureValidationRequestBase model =
-            BinaryData
-                .fromString("{\"objectType\":\"FeatureValidationRequestBase\"}")
-                .toObject(FeatureValidationRequestBase.class);
+        FeatureValidationRequestBase model = BinaryData.fromString("{\"objectType\":\"FeatureValidationRequestBase\"}")
+            .toObject(FeatureValidationRequestBase.class);
     }
 
     @org.junit.jupiter.api.Test

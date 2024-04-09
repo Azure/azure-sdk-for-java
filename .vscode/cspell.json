@@ -16,6 +16,7 @@
     "**/sdk/**/target/**",
     "**/session-records/**",
     "**/sdk/**/**/assets.json",
+    "**/sdk/**/*-matrix.json",
     "**/chromedriver",
     ".gitignore",
     "*.jar",
@@ -50,9 +51,11 @@
     "*.crt",
     "*.yml",
     ".vscode/cspell.json",
+    ".vscode/eclipse-format-azure-sdk-for-java.xml",
     "*.parquet",
     "**/sdk/**/src/main/java/**/implementation/**",
     "**/*-perf/**",
+    "**/*-stress/**",
     "**/*-tests/**",
     "**/*-test-*/**",
     "**/resourcemanager/**",
@@ -110,6 +113,7 @@
     "sdk/communication/azure-communication-phonenumbers/**",
     "sdk/communication/azure-communication-rooms/**",
     "sdk/communication/azure-communication-sms/**",
+    "sdk/communication/azure-communication-messages/**",
     "sdk/confidentialledger/azure-security-confidentialledger/**",
     "sdk/core/.idea/**",
     "sdk/containerregistry/azure-containers-containerregistry/**",
@@ -124,20 +128,20 @@
     "sdk/core/azure-core-serializer-json-gson/**",
     "sdk/core/azure-core-serializer-json-jackson/**",
     "sdk/core/azure-core-management/**",
-    "sdk/core/azure-xml/**",
     "sdk/cosmos/azure-cosmos-dotnet-benchmark/**",
     "sdk/core/azure-core-tracing-opentelemetry/**",
+    "sdk/core/azure-core-tracing-opentelemetry-samples/**",
     "sdk/cosmos/azure-cosmos-benchmark/**",
-    "sdk/core/azure-json-gson/**",
     "sdk/cosmos/azure-cosmos-spark_3-1_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-2_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-3_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-4_2-12/**",
+    "sdk/cosmos/azure-cosmos-spark_3-5_2-12/**",
     "sdk/core/azure-core-test/**",
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-cosmos-spark_3_2-12/**",
     "sdk/spring/azure-spring-data-cosmos/**",
-    "sdk/core/azure-json/**",
+    "sdk/cosmos/azure-cosmos-kafka-connect/**",
     "sdk/deviceupdate/azure-iot-deviceupdate/**",
     "sdk/e2e/src/**",
     "sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/**",
@@ -159,6 +163,7 @@
     "sdk/keyvault/test-resources.json",
     "sdk/formrecognizer/azure-ai-formrecognizer/**",
     "sdk/core/azure-core/**",
+    "sdk/documentintelligence/azure-ai-documentintelligence/**",
     "sdk/maps/azure-maps-render/**",
     "sdk/maps/azure-maps-route/**",
     "sdk/monitor/azure-monitor-ingestion/**",
@@ -180,9 +185,9 @@
     "sdk/remoterendering/TestResources/**",
     "sdk/purview/azure-analytics-purview-catalog/**",
     "sdk/servicebus/build/**",
+    "sdk/servicebus/azure-messaging-servicebus-stress/templates/**",
     "sdk/servicebus/azure-messaging-servicebus-stress/workbooks/**",
     "sdk/servicebus/azure-messaging-servicebus-stress/Dockerfile",
-    "sdk/search/azure-search-documents/**",
     "sdk/storage/azure-storage-internal-avro/**",
     "sdk/storage/azure-storage-queue/**",
     "sdk/synapse/azure-analytics-synapse-accesscontrol/**",
@@ -190,7 +195,6 @@
     "sdk/synapse/azure-analytics-synapse-monitoring/**",
     "sdk/synapse/azure-analytics-synapse-spark/**",
     "sdk/storage/azure-storage-blob-nio/**",
-    "sdk/tables/.idea/**",
     "sdk/template/azure-sdk-template/**",
     "sdk/template/azure-sdk-template-three/**",
     "sdk/template/azure-sdk-template-two/**",
@@ -201,19 +205,28 @@
     "sdk/videoanalyzer/azure-media-videoanalyzer-edge/**",
     "sdk/synapse/azure-analytics-synapse-artifacts/**",
     "sdk/webpubsub/azure-messaging-webpubsub/**",
-    "sdk/tables/azure-data-tables/**",
     "sdk/textanalytics/azure-ai-textanalytics/**",
     "sdk/storage/azure-storage-file-datalake/**",
     "sdk/maps/azure-maps-elevation/**",
     "sdk/maps/azure-maps-geolocation/**",
     "sdk/maps/azure-maps-timezone/**",
-    "sdk/search/.idea/**",
     "sdk/devcenter/azure-developer-devcenter/**",
-    "sdk/loadtesting/azure-developer-loadtesting/**"
+    "sdk/loadtesting/azure-developer-loadtesting/**",
+    "sdk/serialization/azure-json-gson/**",
+    "sdk/serialization/azure-json/**",
+    "sdk/serialization/azure-xml/**",
+    "sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/HotelsData.json",
+    "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/OcrSkillLanguage.java",
+    "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/PhoneticEncoder.java",
+    "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/StemmerTokenFilterLanguage.java",
+    "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/SnowballTokenFilterLanguage.java",
+    "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/TextTranslationSkillLanguage.java",
+    "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/TokenFilterName.java"
   ],
   "words": [
     "adal",
     "akhtabar",
+    "alzimmer",
     "amqp",
     "Amqp",
     "AMQP",
@@ -248,7 +261,9 @@
     "creds",
     "credscan",
     "curr",
+    "dall",
     "DALL-E",
+    "dall-e",
     "databind",
     "databricks",
     "DAZURE",
@@ -260,6 +275,7 @@
     "destfile",
     "Dgenerate",
     "Dincludes",
+    "Dshade",
     "Dverbose",
     "dicom",
     "doclint",
@@ -273,6 +289,8 @@
     "embedme",
     "encryptor",
     "endtoend",
+    "entra",
+    "Entra",
     "Esto",
     "etag",
     "eventhub",
@@ -293,6 +311,7 @@
     "hudha",
     "hvac",
     "hybridkubernetes",
+    "hyunwoongko",
     "insights",
     "intellij",
     "Intellij",
@@ -307,8 +326,10 @@
     "JSESSIONID",
     "junitxml",
     "jtoken",
+    "jtokkit",
     "keyvault",
     "kasobol",
+    "knuddelsgmbh",
     "kube",
     "kubeconfig",
     "kubeconfigs",
@@ -323,6 +344,7 @@
     "logit",
     "logprobs",
     "logz",
+    "LOINC",
     "Lucene",
     "mgmt",
     "mibps",
@@ -330,6 +352,7 @@
     "Mockito",
     "Mordor",
     "mosca",
+    "mpga",
     "msal",
     "msix",
     "MSRC",
@@ -338,17 +361,20 @@
     "odata",
     "ODBC",
     "okhttp",
+    "OTLP",
     "OLTP",
     "onboarded",
     "Onco",
     "onenote",
     "openai",
+    "passthrough",
     "Pnative",
     "premf",
     "pwsh",
     "protonj",
     "prueba",
     "PSQL",
+    "PZLA",
     "qpid",
     "racdw",
     "RAGRS",
@@ -365,6 +391,7 @@
     "SBOM",
     "scalastyle",
     "schemaregistryapacheavroserializer",
+    "SERIALVERSIONID",
     "servicebus",
     "sftdl",
     "skus",
@@ -385,6 +412,8 @@
     "unmanaged",
     "unmutated",
     "versionid",
+    "vertx",
+    "Vertx",
     "vmware",
     "vnet",
     "VNET",
@@ -396,6 +425,42 @@
     "XLint"
   ],
   "overrides": [
+    {
+      "filename": "sdk/search/azure-search-documents/**",
+      "words": [
+        "ADLS",
+        "mysearch",
+        "TFIDF",
+        "Decompounder",
+        "NGRAM",
+        "Bangla",
+        "Rslp",
+        "vectorizer",
+        "vectorizable",
+        "vectorizers",
+        "hnsw",
+        "rerank",
+        "reranker",
+        "mytext",
+        "myocr",
+        "econo",
+        "azsearch",
+        "bokmaal",
+        "bokmal",
+        "adlsgen",
+        "sorani",
+        "mylocation",
+        "myloc",
+        "dari",
+        "hitel"
+      ]
+    },
+    {
+      "filename": "sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/HotelsData.json",
+      "words": [
+        "*"
+      ]
+    },
     {
       "filename": "sdk/identity/cgmanifest.json",
       "words":[
@@ -473,6 +538,24 @@
       "filename": "sdk/maps/azure-maps-weather/src/main/java/com/azure/maps/weather/models/WeatherAlongRoutePrecipitation.java",
       "words": [
         "Decibles"
+      ]
+    },
+    {
+      "filename": "sdk/healthinsights/**",
+      "words": [
+        "authorid",
+        "encounterid",
+        "docid"
+      ]
+    },
+    {
+      "filename": "sdk/easm/*",
+      "words": [
+        "easm",
+        "asns",
+        "nxdomain",
+        "cnames",
+        "riskiq"
       ]
     },
     {
@@ -677,13 +760,15 @@
       ]
     },
     {
-      "filename": "**/sdk/cosmos/platform-matrix.json",
+      "filename": "**/sdk/cosmos/live-platform-matrix.json",
       "words": [
         "Pfast",
         "Pdirect",
-	      "Pmulti",
+	    "Pmulti",
         "Psplit",
-        "Pquery"
+        "Pquery",
+        "Pcfp",
+        "Pflaky"
       ]
     },
     {
@@ -794,7 +879,8 @@
         "Oleh",
         "Dokuka",
         "Netifi",
-        "Zaugg"
+        "Zaugg",
+        "lrgrwrks"
       ]
     },
     {
@@ -845,7 +931,10 @@
     {
       "filename": "sdk/servicebus/azure-messaging-servicebus/**",
       "words": [
+        "anu",
         "Conniey",
+        "liudmila",
+        "Milli",
         "qpid",
         "unretriable"
         ]
@@ -1035,7 +1124,14 @@
         "Drevapi",
         "Dskip",
         "Dspotbugs",
-        "Pdev"
+        "Pdev",
+	"Djava"
+      ]
+    },
+    {
+      "filename": "sdk/vision/azure-ai-vision-imageanalysis/**",
+      "words": [
+        "javac"
       ]
     },
     {

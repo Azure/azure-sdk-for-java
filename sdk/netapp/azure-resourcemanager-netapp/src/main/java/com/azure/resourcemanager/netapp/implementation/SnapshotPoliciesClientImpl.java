@@ -41,22 +41,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SnapshotPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SnapshotPoliciesClient.
+ */
 public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SnapshotPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetAppManagementClientImpl client;
 
     /**
      * Initializes an instance of SnapshotPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SnapshotPoliciesClientImpl(NetAppManagementClientImpl client) {
-        this.service =
-            RestProxy.create(SnapshotPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SnapshotPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,100 +73,71 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
     @Host("{$host}")
     @ServiceInterface(name = "NetAppManagementClie")
     public interface SnapshotPoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/snapshotPolicies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/snapshotPolicies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SnapshotPoliciesList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SnapshotPoliciesList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/snapshotPolicies/{snapshotPolicyName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SnapshotPolicyInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("snapshotPolicyName") String snapshotPolicyName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/snapshotPolicies/{snapshotPolicyName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SnapshotPolicyInner>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("snapshotPolicyName") String snapshotPolicyName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SnapshotPolicyInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/snapshotPolicies/{snapshotPolicyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/snapshotPolicies/{snapshotPolicyName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SnapshotPolicyInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("snapshotPolicyName") String snapshotPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("snapshotPolicyName") String snapshotPolicyName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SnapshotPolicyPatch body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/snapshotPolicies/{snapshotPolicyName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/snapshotPolicies/{snapshotPolicyName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SnapshotPolicyInner>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("snapshotPolicyName") String snapshotPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SnapshotPolicyInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("snapshotPolicyName") String snapshotPolicyName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/snapshotPolicies/{snapshotPolicyName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/snapshotPolicies/{snapshotPolicyName}/volumes")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SnapshotPolicyVolumeListInner>> listVolumes(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("snapshotPolicyName") String snapshotPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SnapshotPolicyPatch body,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/snapshotPolicies/{snapshotPolicyName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("snapshotPolicyName") String snapshotPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/snapshotPolicies/{snapshotPolicyName}/volumes")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SnapshotPolicyVolumeListInner>> listVolumes(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("snapshotPolicyName") String snapshotPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("snapshotPolicyName") String snapshotPolicyName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -171,16 +148,12 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SnapshotPolicyInner>> listSinglePageAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -191,27 +164,16 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<SnapshotPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<SnapshotPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
@@ -221,19 +183,15 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return list of Snapshot Policies along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SnapshotPolicyInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<PagedResponse<SnapshotPolicyInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -245,23 +203,15 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * List snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -276,7 +226,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
 
     /**
      * List snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
@@ -292,7 +242,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
 
     /**
      * List snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -307,7 +257,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
 
     /**
      * List snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
@@ -323,7 +273,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
 
     /**
      * Get a snapshot Policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -333,19 +283,15 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return a snapshot Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SnapshotPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String snapshotPolicyName) {
+    private Mono<Response<SnapshotPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String snapshotPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -360,24 +306,14 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            snapshotPolicyName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, snapshotPolicyName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a snapshot Policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -388,19 +324,15 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return a snapshot Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SnapshotPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String snapshotPolicyName, Context context) {
+    private Mono<Response<SnapshotPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String snapshotPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -415,21 +347,13 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                snapshotPolicyName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            snapshotPolicyName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get a snapshot Policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -439,15 +363,15 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return a snapshot Policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SnapshotPolicyInner> getAsync(
-        String resourceGroupName, String accountName, String snapshotPolicyName) {
+    private Mono<SnapshotPolicyInner> getAsync(String resourceGroupName, String accountName,
+        String snapshotPolicyName) {
         return getWithResponseAsync(resourceGroupName, accountName, snapshotPolicyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a snapshot Policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -458,14 +382,14 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return a snapshot Policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SnapshotPolicyInner> getWithResponse(
-        String resourceGroupName, String accountName, String snapshotPolicyName, Context context) {
+    public Response<SnapshotPolicyInner> getWithResponse(String resourceGroupName, String accountName,
+        String snapshotPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, snapshotPolicyName, context).block();
     }
 
     /**
      * Get a snapshot Policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -481,7 +405,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
 
     /**
      * Create a snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -492,19 +416,15 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return snapshot policy information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SnapshotPolicyInner>> createWithResponseAsync(
-        String resourceGroupName, String accountName, String snapshotPolicyName, SnapshotPolicyInner body) {
+    private Mono<Response<SnapshotPolicyInner>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String snapshotPolicyName, SnapshotPolicyInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -524,25 +444,14 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            snapshotPolicyName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, snapshotPolicyName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -554,23 +463,15 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return snapshot policy information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SnapshotPolicyInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String snapshotPolicyName,
-        SnapshotPolicyInner body,
-        Context context) {
+    private Mono<Response<SnapshotPolicyInner>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String snapshotPolicyName, SnapshotPolicyInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -590,22 +491,13 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                snapshotPolicyName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, snapshotPolicyName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Create a snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -616,15 +508,15 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return snapshot policy information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SnapshotPolicyInner> createAsync(
-        String resourceGroupName, String accountName, String snapshotPolicyName, SnapshotPolicyInner body) {
+    private Mono<SnapshotPolicyInner> createAsync(String resourceGroupName, String accountName,
+        String snapshotPolicyName, SnapshotPolicyInner body) {
         return createWithResponseAsync(resourceGroupName, accountName, snapshotPolicyName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create a snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -636,18 +528,14 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return snapshot policy information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SnapshotPolicyInner> createWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String snapshotPolicyName,
-        SnapshotPolicyInner body,
-        Context context) {
+    public Response<SnapshotPolicyInner> createWithResponse(String resourceGroupName, String accountName,
+        String snapshotPolicyName, SnapshotPolicyInner body, Context context) {
         return createWithResponseAsync(resourceGroupName, accountName, snapshotPolicyName, body, context).block();
     }
 
     /**
      * Create a snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -658,14 +546,14 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return snapshot policy information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SnapshotPolicyInner create(
-        String resourceGroupName, String accountName, String snapshotPolicyName, SnapshotPolicyInner body) {
+    public SnapshotPolicyInner create(String resourceGroupName, String accountName, String snapshotPolicyName,
+        SnapshotPolicyInner body) {
         return createWithResponse(resourceGroupName, accountName, snapshotPolicyName, body, Context.NONE).getValue();
     }
 
     /**
      * Patch a snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -676,19 +564,15 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return snapshot policy information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, String snapshotPolicyName, SnapshotPolicyPatch body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String snapshotPolicyName, SnapshotPolicyPatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -708,25 +592,14 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            snapshotPolicyName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, snapshotPolicyName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Patch a snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -738,23 +611,15 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return snapshot policy information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String snapshotPolicyName,
-        SnapshotPolicyPatch body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String snapshotPolicyName, SnapshotPolicyPatch body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -774,22 +639,13 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                snapshotPolicyName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, snapshotPolicyName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Patch a snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -800,23 +656,17 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return the {@link PollerFlux} for polling of snapshot policy information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SnapshotPolicyInner>, SnapshotPolicyInner> beginUpdateAsync(
-        String resourceGroupName, String accountName, String snapshotPolicyName, SnapshotPolicyPatch body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, accountName, snapshotPolicyName, body);
-        return this
-            .client
-            .<SnapshotPolicyInner, SnapshotPolicyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SnapshotPolicyInner.class,
-                SnapshotPolicyInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<SnapshotPolicyInner>, SnapshotPolicyInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, String snapshotPolicyName, SnapshotPolicyPatch body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, accountName, snapshotPolicyName, body);
+        return this.client.<SnapshotPolicyInner, SnapshotPolicyInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SnapshotPolicyInner.class, SnapshotPolicyInner.class, this.client.getContext());
     }
 
     /**
      * Patch a snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -828,24 +678,18 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return the {@link PollerFlux} for polling of snapshot policy information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SnapshotPolicyInner>, SnapshotPolicyInner> beginUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        String snapshotPolicyName,
-        SnapshotPolicyPatch body,
-        Context context) {
+    private PollerFlux<PollResult<SnapshotPolicyInner>, SnapshotPolicyInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, String snapshotPolicyName, SnapshotPolicyPatch body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, accountName, snapshotPolicyName, body, context);
-        return this
-            .client
-            .<SnapshotPolicyInner, SnapshotPolicyInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SnapshotPolicyInner.class, SnapshotPolicyInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, accountName, snapshotPolicyName, body, context);
+        return this.client.<SnapshotPolicyInner, SnapshotPolicyInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SnapshotPolicyInner.class, SnapshotPolicyInner.class, context);
     }
 
     /**
      * Patch a snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -856,14 +700,14 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return the {@link SyncPoller} for polling of snapshot policy information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SnapshotPolicyInner>, SnapshotPolicyInner> beginUpdate(
-        String resourceGroupName, String accountName, String snapshotPolicyName, SnapshotPolicyPatch body) {
+    public SyncPoller<PollResult<SnapshotPolicyInner>, SnapshotPolicyInner> beginUpdate(String resourceGroupName,
+        String accountName, String snapshotPolicyName, SnapshotPolicyPatch body) {
         return this.beginUpdateAsync(resourceGroupName, accountName, snapshotPolicyName, body).getSyncPoller();
     }
 
     /**
      * Patch a snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -875,18 +719,14 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return the {@link SyncPoller} for polling of snapshot policy information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SnapshotPolicyInner>, SnapshotPolicyInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        String snapshotPolicyName,
-        SnapshotPolicyPatch body,
-        Context context) {
+    public SyncPoller<PollResult<SnapshotPolicyInner>, SnapshotPolicyInner> beginUpdate(String resourceGroupName,
+        String accountName, String snapshotPolicyName, SnapshotPolicyPatch body, Context context) {
         return this.beginUpdateAsync(resourceGroupName, accountName, snapshotPolicyName, body, context).getSyncPoller();
     }
 
     /**
      * Patch a snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -897,16 +737,15 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return snapshot policy information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SnapshotPolicyInner> updateAsync(
-        String resourceGroupName, String accountName, String snapshotPolicyName, SnapshotPolicyPatch body) {
-        return beginUpdateAsync(resourceGroupName, accountName, snapshotPolicyName, body)
-            .last()
+    private Mono<SnapshotPolicyInner> updateAsync(String resourceGroupName, String accountName,
+        String snapshotPolicyName, SnapshotPolicyPatch body) {
+        return beginUpdateAsync(resourceGroupName, accountName, snapshotPolicyName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch a snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -918,20 +757,15 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return snapshot policy information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SnapshotPolicyInner> updateAsync(
-        String resourceGroupName,
-        String accountName,
-        String snapshotPolicyName,
-        SnapshotPolicyPatch body,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, snapshotPolicyName, body, context)
-            .last()
+    private Mono<SnapshotPolicyInner> updateAsync(String resourceGroupName, String accountName,
+        String snapshotPolicyName, SnapshotPolicyPatch body, Context context) {
+        return beginUpdateAsync(resourceGroupName, accountName, snapshotPolicyName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch a snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -942,14 +776,14 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return snapshot policy information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SnapshotPolicyInner update(
-        String resourceGroupName, String accountName, String snapshotPolicyName, SnapshotPolicyPatch body) {
+    public SnapshotPolicyInner update(String resourceGroupName, String accountName, String snapshotPolicyName,
+        SnapshotPolicyPatch body) {
         return updateAsync(resourceGroupName, accountName, snapshotPolicyName, body).block();
     }
 
     /**
      * Patch a snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -961,18 +795,14 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return snapshot policy information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SnapshotPolicyInner update(
-        String resourceGroupName,
-        String accountName,
-        String snapshotPolicyName,
-        SnapshotPolicyPatch body,
-        Context context) {
+    public SnapshotPolicyInner update(String resourceGroupName, String accountName, String snapshotPolicyName,
+        SnapshotPolicyPatch body, Context context) {
         return updateAsync(resourceGroupName, accountName, snapshotPolicyName, body, context).block();
     }
 
     /**
      * Delete snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -982,19 +812,15 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String snapshotPolicyName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String snapshotPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1007,24 +833,16 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter snapshotPolicyName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            snapshotPolicyName,
-                            this.client.getApiVersion(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, snapshotPolicyName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -1035,19 +853,15 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String snapshotPolicyName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String snapshotPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1060,21 +874,15 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter snapshotPolicyName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                snapshotPolicyName,
-                this.client.getApiVersion(),
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, snapshotPolicyName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -1084,19 +892,17 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String snapshotPolicyName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, snapshotPolicyName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String snapshotPolicyName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, snapshotPolicyName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -1107,19 +913,18 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String snapshotPolicyName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String snapshotPolicyName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, snapshotPolicyName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, snapshotPolicyName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -1129,14 +934,14 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String snapshotPolicyName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String snapshotPolicyName) {
         return this.beginDeleteAsync(resourceGroupName, accountName, snapshotPolicyName).getSyncPoller();
     }
 
     /**
      * Delete snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -1147,14 +952,14 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String snapshotPolicyName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String snapshotPolicyName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, accountName, snapshotPolicyName, context).getSyncPoller();
     }
 
     /**
      * Delete snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -1165,14 +970,13 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String snapshotPolicyName) {
-        return beginDeleteAsync(resourceGroupName, accountName, snapshotPolicyName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, accountName, snapshotPolicyName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -1183,16 +987,15 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String accountName, String snapshotPolicyName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, snapshotPolicyName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String snapshotPolicyName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, accountName, snapshotPolicyName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -1207,7 +1010,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
 
     /**
      * Delete snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -1223,32 +1026,28 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
 
     /**
      * Get volumes for snapshot policy
-     *
-     * <p>Get volumes associated with snapshot policy.
-     *
+     * 
+     * Get volumes associated with snapshot policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volumes associated with snapshot policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return volumes associated with snapshot policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SnapshotPolicyVolumeListInner>> listVolumesWithResponseAsync(
-        String resourceGroupName, String accountName, String snapshotPolicyName) {
+    private Mono<Response<SnapshotPolicyVolumeListInner>> listVolumesWithResponseAsync(String resourceGroupName,
+        String accountName, String snapshotPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1263,26 +1062,16 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listVolumes(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            snapshotPolicyName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listVolumes(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, snapshotPolicyName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get volumes for snapshot policy
-     *
-     * <p>Get volumes associated with snapshot policy.
-     *
+     * 
+     * Get volumes associated with snapshot policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -1290,23 +1079,19 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volumes associated with snapshot policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return volumes associated with snapshot policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SnapshotPolicyVolumeListInner>> listVolumesWithResponseAsync(
-        String resourceGroupName, String accountName, String snapshotPolicyName, Context context) {
+    private Mono<Response<SnapshotPolicyVolumeListInner>> listVolumesWithResponseAsync(String resourceGroupName,
+        String accountName, String snapshotPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1321,23 +1106,15 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listVolumes(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                snapshotPolicyName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listVolumes(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, snapshotPolicyName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get volumes for snapshot policy
-     *
-     * <p>Get volumes associated with snapshot policy.
-     *
+     * 
+     * Get volumes associated with snapshot policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -1347,17 +1124,17 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return volumes associated with snapshot policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SnapshotPolicyVolumeListInner> listVolumesAsync(
-        String resourceGroupName, String accountName, String snapshotPolicyName) {
+    private Mono<SnapshotPolicyVolumeListInner> listVolumesAsync(String resourceGroupName, String accountName,
+        String snapshotPolicyName) {
         return listVolumesWithResponseAsync(resourceGroupName, accountName, snapshotPolicyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get volumes for snapshot policy
-     *
-     * <p>Get volumes associated with snapshot policy.
-     *
+     * 
+     * Get volumes associated with snapshot policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -1368,16 +1145,16 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return volumes associated with snapshot policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SnapshotPolicyVolumeListInner> listVolumesWithResponse(
-        String resourceGroupName, String accountName, String snapshotPolicyName, Context context) {
+    public Response<SnapshotPolicyVolumeListInner> listVolumesWithResponse(String resourceGroupName, String accountName,
+        String snapshotPolicyName, Context context) {
         return listVolumesWithResponseAsync(resourceGroupName, accountName, snapshotPolicyName, context).block();
     }
 
     /**
      * Get volumes for snapshot policy
-     *
-     * <p>Get volumes associated with snapshot policy.
-     *
+     * 
+     * Get volumes associated with snapshot policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -1387,8 +1164,8 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @return volumes associated with snapshot policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SnapshotPolicyVolumeListInner listVolumes(
-        String resourceGroupName, String accountName, String snapshotPolicyName) {
+    public SnapshotPolicyVolumeListInner listVolumes(String resourceGroupName, String accountName,
+        String snapshotPolicyName) {
         return listVolumesWithResponse(resourceGroupName, accountName, snapshotPolicyName, Context.NONE).getValue();
     }
 }

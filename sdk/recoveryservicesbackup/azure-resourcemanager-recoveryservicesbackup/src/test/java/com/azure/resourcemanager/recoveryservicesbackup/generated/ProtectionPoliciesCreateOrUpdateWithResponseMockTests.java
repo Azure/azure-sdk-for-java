@@ -34,65 +34,40 @@ public final class ProtectionPoliciesCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1660132426,\"resourceGuardOperationRequests\":[\"h\",\"zagjf\",\"yyrlhgenu\"]},\"eTag\":\"jgvkvebaqszllr\",\"location\":\"lsmmdqgmi\",\"tags\":{\"xtminklogxsvtzar\":\"imcqrh\",\"lpky\":\"zvqnsqktcmbjwzzo\"},\"id\":\"tglwkzpgajsqjc\",\"name\":\"mqbmfuvqarwz\",\"type\":\"uqrebluimmbwx\"}";
+        String responseStr
+            = "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":2005722569,\"resourceGuardOperationRequests\":[\"mwhqnucsklh\",\"i\"]},\"eTag\":\"jtdlp\",\"location\":\"ninjgazlsvbz\",\"tags\":{\"lhsyekrdrenxolr\":\"uoeedwjcci\",\"bfgrlpunytjlkes\":\"yehqbeivdlhydwb\"},\"id\":\"mpathubtah\",\"name\":\"e\",\"type\":\"niiwllbvgwz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        RecoveryServicesBackupManager manager =
-            RecoveryServicesBackupManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ProtectionPolicyResource response =
-            manager
-                .protectionPolicies()
-                .define("zqbglcjkays")
-                .withRegion("rslskkzp")
-                .withExistingVault("pmcrdcuelj", "iahxmfqryarvs")
-                .withTags(
-                    mapOf(
-                        "hpcnabxzfsn",
-                        "nzdpvoco",
-                        "vzilmhiv",
-                        "gyte",
-                        "zdajlskzptjxu",
-                        "kwwwnckn",
-                        "qlehmcgcjeinu",
-                        "weucyrth"))
-                .withProperties(
-                    new ProtectionPolicy()
-                        .withProtectedItemsCount(1994794374)
-                        .withResourceGuardOperationRequests(Arrays.asList("ubtlmjtg", "lioskkfmkmfdjx")))
-                .withEtag("gbkkqvjcteoed")
-                .create();
+        ProtectionPolicyResource response = manager.protectionPolicies().define("dkyzbfvxov").withRegion("f")
+            .withExistingVault("mcrunfhiucn", "fbcpaqktkrumzu")
+            .withTags(mapOf("sdxeqztvxwmwwmjs", "qrkijpeuq", "wwa", "en", "ojhtollhs", "ecleqioulndhzyo", "lxpnovyoanf",
+                "idmytzln"))
+            .withProperties(new ProtectionPolicy().withProtectedItemsCount(113581490)
+                .withResourceGuardOperationRequests(Arrays.asList("q", "gvqrnhyhlwcj")))
+            .withEtag("ggjh").create();
 
-        Assertions.assertEquals("lsmmdqgmi", response.location());
-        Assertions.assertEquals("imcqrh", response.tags().get("xtminklogxsvtzar"));
-        Assertions.assertEquals(1660132426, response.properties().protectedItemsCount());
-        Assertions.assertEquals("h", response.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("jgvkvebaqszllr", response.etag());
+        Assertions.assertEquals("ninjgazlsvbz", response.location());
+        Assertions.assertEquals("uoeedwjcci", response.tags().get("lhsyekrdrenxolr"));
+        Assertions.assertEquals(2005722569, response.properties().protectedItemsCount());
+        Assertions.assertEquals("mwhqnucsklh", response.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("jtdlp", response.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -12,7 +12,7 @@ import org.springframework.lang.NonNull;
 /**
  * Resource manager for Service Bus namespace.
  */
-public class ServiceBusNamespaceCrud extends AbstractResourceCrud<ServiceBusNamespace, String> {
+public class ServiceBusNamespaceCrud extends AbstractResourceCrud<ServiceBusNamespace, String, Object> {
 
     public ServiceBusNamespaceCrud(@NonNull AzureResourceManager azureResourceManager,
                                    @NonNull AzureResourceMetadata azureResourceMetadata) {

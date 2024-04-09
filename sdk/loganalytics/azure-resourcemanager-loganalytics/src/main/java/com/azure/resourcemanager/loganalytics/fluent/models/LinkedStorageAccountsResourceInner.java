@@ -20,6 +20,10 @@ public final class LinkedStorageAccountsResourceInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private LinkedStorageAccountsProperties innerProperties = new LinkedStorageAccountsProperties();
 
+    /** Creates an instance of LinkedStorageAccountsResourceInner class. */
+    public LinkedStorageAccountsResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: Linked storage accounts properties.
      *

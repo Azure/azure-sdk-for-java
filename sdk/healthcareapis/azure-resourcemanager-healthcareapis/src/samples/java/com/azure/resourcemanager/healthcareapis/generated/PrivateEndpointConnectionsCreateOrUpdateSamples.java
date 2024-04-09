@@ -7,26 +7,25 @@ package com.azure.resourcemanager.healthcareapis.generated;
 import com.azure.resourcemanager.healthcareapis.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.healthcareapis.models.PrivateLinkServiceConnectionState;
 
-/** Samples for PrivateEndpointConnections CreateOrUpdate. */
+/**
+ * Samples for PrivateEndpointConnections CreateOrUpdate.
+ */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/legacy/ServiceCreatePrivateEndpointConnection.json
+     * x-ms-original-file:
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/legacy/
+     * ServiceCreatePrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to HealthcareApisManager.
      */
     public static void privateEndpointConnectionCreateOrUpdate(
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
-        manager
-            .privateEndpointConnections()
-            .define("myConnection")
-            .withExistingService("rgname", "service1")
-            .withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionState()
-                    .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                    .withDescription("Auto-Approved"))
+        manager.privateEndpointConnections().define("myConnection").withExistingService("rgname", "service1")
+            .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED).withDescription("Auto-Approved"))
             .create();
     }
 }

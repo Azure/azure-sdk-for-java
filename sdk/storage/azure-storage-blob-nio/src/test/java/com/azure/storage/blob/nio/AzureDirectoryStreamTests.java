@@ -49,14 +49,13 @@ public class AzureDirectoryStreamTests extends BlobNioTestBase {
         String dirName = generateBlobName();
         Map<Path, AzureResource> resources = new ConcurrentHashMap<>();
         IntStream.range(0, numFiles).parallel().forEach(i -> {
-            AzureResource resource = null;
             try {
-                resource = new AzureResource(fs.getPath(rootName, dirName, generateBlobName()));
+                AzureResource resource = new AzureResource(fs.getPath(rootName, dirName, generateBlobName()));
+                resource.getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList());
+                resources.put(resource.getPath(), resource);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            resources.put(resource.getPath(), resource);
-            resource.getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList());
         });
 
         Iterator<Path> iterator = new AzureDirectoryStream((AzurePath) fs.getPath(rootName, dirName), entry -> true)
@@ -69,7 +68,6 @@ public class AzureDirectoryStreamTests extends BlobNioTestBase {
         }
 
         for (int i = 0; i < numFiles; i++) {
-            assertTrue(iterator.hasNext());
             assertNotNull(resources.remove(iterator.next()));
         }
 

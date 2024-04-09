@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of GlobalParameters. */
+/**
+ * Resource collection API of GlobalParameters.
+ */
 public interface GlobalParameters {
     /**
      * Lists Global parameters.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface GlobalParameters {
 
     /**
      * Lists Global parameters.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface GlobalParameters {
 
     /**
      * Gets a Global parameter.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param globalParameterName The global parameter name.
@@ -47,12 +49,12 @@ public interface GlobalParameters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Global parameter along with {@link Response}.
      */
-    Response<GlobalParameterResource> getWithResponse(
-        String resourceGroupName, String factoryName, String globalParameterName, Context context);
+    Response<GlobalParameterResource> getWithResponse(String resourceGroupName, String factoryName,
+        String globalParameterName, Context context);
 
     /**
      * Gets a Global parameter.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param globalParameterName The global parameter name.
@@ -65,7 +67,7 @@ public interface GlobalParameters {
 
     /**
      * Deletes a Global parameter.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param globalParameterName The global parameter name.
@@ -75,12 +77,12 @@ public interface GlobalParameters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String factoryName, String globalParameterName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String globalParameterName,
+        Context context);
 
     /**
      * Deletes a Global parameter.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param globalParameterName The global parameter name.
@@ -92,7 +94,7 @@ public interface GlobalParameters {
 
     /**
      * Gets a Global parameter.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -103,7 +105,7 @@ public interface GlobalParameters {
 
     /**
      * Gets a Global parameter.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,7 +117,7 @@ public interface GlobalParameters {
 
     /**
      * Deletes a Global parameter.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,7 +127,7 @@ public interface GlobalParameters {
 
     /**
      * Deletes a Global parameter.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,7 +139,7 @@ public interface GlobalParameters {
 
     /**
      * Begins definition for a new GlobalParameterResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new GlobalParameterResource definition.
      */

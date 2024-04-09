@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the parameters of a ScaleSet managed disk. */
+/**
+ * Describes the parameters of a ScaleSet managed disk.
+ */
 @Fluent
 public final class VirtualMachineScaleSetManagedDiskParameters {
     /*
@@ -29,14 +31,16 @@ public final class VirtualMachineScaleSetManagedDiskParameters {
     @JsonProperty(value = "securityProfile")
     private VMDiskSecurityProfile securityProfile;
 
-    /** Creates an instance of VirtualMachineScaleSetManagedDiskParameters class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetManagedDiskParameters class.
+     */
     public VirtualMachineScaleSetManagedDiskParameters() {
     }
 
     /**
      * Get the storageAccountType property: Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS
      * can only be used with data disks, it cannot be used with OS Disk.
-     *
+     * 
      * @return the storageAccountType value.
      */
     public StorageAccountTypes storageAccountType() {
@@ -46,7 +50,7 @@ public final class VirtualMachineScaleSetManagedDiskParameters {
     /**
      * Set the storageAccountType property: Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS
      * can only be used with data disks, it cannot be used with OS Disk.
-     *
+     * 
      * @param storageAccountType the storageAccountType value to set.
      * @return the VirtualMachineScaleSetManagedDiskParameters object itself.
      */
@@ -58,7 +62,7 @@ public final class VirtualMachineScaleSetManagedDiskParameters {
     /**
      * Get the diskEncryptionSet property: Specifies the customer managed disk encryption set resource id for the
      * managed disk.
-     *
+     * 
      * @return the diskEncryptionSet value.
      */
     public DiskEncryptionSetParameters diskEncryptionSet() {
@@ -68,19 +72,19 @@ public final class VirtualMachineScaleSetManagedDiskParameters {
     /**
      * Set the diskEncryptionSet property: Specifies the customer managed disk encryption set resource id for the
      * managed disk.
-     *
+     * 
      * @param diskEncryptionSet the diskEncryptionSet value to set.
      * @return the VirtualMachineScaleSetManagedDiskParameters object itself.
      */
-    public VirtualMachineScaleSetManagedDiskParameters withDiskEncryptionSet(
-        DiskEncryptionSetParameters diskEncryptionSet) {
+    public VirtualMachineScaleSetManagedDiskParameters
+        withDiskEncryptionSet(DiskEncryptionSetParameters diskEncryptionSet) {
         this.diskEncryptionSet = diskEncryptionSet;
         return this;
     }
 
     /**
      * Get the securityProfile property: Specifies the security profile for the managed disk.
-     *
+     * 
      * @return the securityProfile value.
      */
     public VMDiskSecurityProfile securityProfile() {
@@ -89,7 +93,7 @@ public final class VirtualMachineScaleSetManagedDiskParameters {
 
     /**
      * Set the securityProfile property: Specifies the security profile for the managed disk.
-     *
+     * 
      * @param securityProfile the securityProfile value to set.
      * @return the VirtualMachineScaleSetManagedDiskParameters object itself.
      */
@@ -100,7 +104,7 @@ public final class VirtualMachineScaleSetManagedDiskParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

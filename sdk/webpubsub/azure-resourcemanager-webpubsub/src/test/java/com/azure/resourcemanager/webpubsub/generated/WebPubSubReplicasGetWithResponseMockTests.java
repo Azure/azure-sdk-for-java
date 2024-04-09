@@ -32,7 +32,7 @@ public final class WebPubSubReplicasGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"sku\":{\"name\":\"vvtzejetjkl\",\"tier\":\"Basic\",\"size\":\"yjuzkdb\",\"family\":\"o\",\"capacity\":886631090},\"properties\":{\"provisioningState\":\"Canceled\"},\"location\":\"jwtrhtgvgzp\",\"tags\":{\"xfzzzwyjafitlhgu\":\"kolawjmjsmwrokc\",\"us\":\"nuchlgmltxdwhmo\"},\"id\":\"zvlnsnnjz\",\"name\":\"pafolp\",\"type\":\"mwamxqzragpgdph\"}";
+            "{\"sku\":{\"name\":\"vtrrmhwrbfdpyflu\",\"tier\":\"Premium\",\"size\":\"glrocuy\",\"family\":\"whhmemhooc\",\"capacity\":769753365},\"properties\":{\"provisioningState\":\"Moving\",\"regionEndpointEnabled\":\"emc\",\"resourceStopped\":\"kmmykyujxsglh\"},\"location\":\"rryejylmbkzudnig\",\"tags\":{\"wlpxuzzjg\":\"hotj\",\"qotoihiqakydiwfb\":\"refqy\",\"spodaqax\":\"kwpzdqtvh\",\"jfulbmoic\":\"ipietgbe\"},\"id\":\"dlpnfpubn\",\"name\":\"nbatzvi\",\"type\":\"sowsaael\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,15 @@ public final class WebPubSubReplicasGetWithResponseMockTests {
         Replica response =
             manager
                 .webPubSubReplicas()
-                .getWithResponse("iblkujr", "lfojuidjp", "uyjucejikzo", com.azure.core.util.Context.NONE)
+                .getWithResponse("nsjlpjrtws", "hv", "uic", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("jwtrhtgvgzp", response.location());
-        Assertions.assertEquals("kolawjmjsmwrokc", response.tags().get("xfzzzwyjafitlhgu"));
-        Assertions.assertEquals("vvtzejetjkl", response.sku().name());
-        Assertions.assertEquals(WebPubSubSkuTier.BASIC, response.sku().tier());
-        Assertions.assertEquals(886631090, response.sku().capacity());
+        Assertions.assertEquals("rryejylmbkzudnig", response.location());
+        Assertions.assertEquals("hotj", response.tags().get("wlpxuzzjg"));
+        Assertions.assertEquals("vtrrmhwrbfdpyflu", response.sku().name());
+        Assertions.assertEquals(WebPubSubSkuTier.PREMIUM, response.sku().tier());
+        Assertions.assertEquals(769753365, response.sku().capacity());
+        Assertions.assertEquals("emc", response.regionEndpointEnabled());
+        Assertions.assertEquals("kmmykyujxsglh", response.resourceStopped());
     }
 }

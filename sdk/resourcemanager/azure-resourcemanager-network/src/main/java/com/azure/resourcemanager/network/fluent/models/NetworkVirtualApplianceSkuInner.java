@@ -13,14 +13,14 @@ import java.util.Map;
 
 /**
  * Available NetworkVirtualApplianceSkus
- *
- * <p>Definition of the NetworkVirtualApplianceSkus resource.
+ * 
+ * Definition of the NetworkVirtualApplianceSkus resource.
  */
 @Fluent
 public final class NetworkVirtualApplianceSkuInner extends Resource {
     /*
      * Network Virtual Appliance Sku Properties
-     *
+     * 
      * NetworkVirtualApplianceSku properties.
      */
     @JsonProperty(value = "properties")
@@ -38,15 +38,17 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of NetworkVirtualApplianceSkuInner class. */
+    /**
+     * Creates an instance of NetworkVirtualApplianceSkuInner class.
+     */
     public NetworkVirtualApplianceSkuInner() {
     }
 
     /**
      * Get the innerProperties property: Network Virtual Appliance Sku Properties
-     *
-     * <p>NetworkVirtualApplianceSku properties.
-     *
+     * 
+     * NetworkVirtualApplianceSku properties.
+     * 
      * @return the innerProperties value.
      */
     private NetworkVirtualApplianceSkuPropertiesFormat innerProperties() {
@@ -55,7 +57,7 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -64,7 +66,7 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -73,7 +75,7 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the NetworkVirtualApplianceSkuInner object itself.
      */
@@ -82,14 +84,18 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkVirtualApplianceSkuInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkVirtualApplianceSkuInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -98,7 +104,7 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
 
     /**
      * Get the vendor property: Network Virtual Appliance Sku vendor.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -107,7 +113,7 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
 
     /**
      * Get the availableVersions property: Available Network Virtual Appliance versions.
-     *
+     * 
      * @return the availableVersions value.
      */
     public List<String> availableVersions() {
@@ -116,7 +122,7 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
 
     /**
      * Get the availableScaleUnits property: The list of scale units available.
-     *
+     * 
      * @return the availableScaleUnits value.
      */
     public List<NetworkVirtualApplianceSkuInstances> availableScaleUnits() {
@@ -125,12 +131,12 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
 
     /**
      * Set the availableScaleUnits property: The list of scale units available.
-     *
+     * 
      * @param availableScaleUnits the availableScaleUnits value to set.
      * @return the NetworkVirtualApplianceSkuInner object itself.
      */
-    public NetworkVirtualApplianceSkuInner withAvailableScaleUnits(
-        List<NetworkVirtualApplianceSkuInstances> availableScaleUnits) {
+    public NetworkVirtualApplianceSkuInner
+        withAvailableScaleUnits(List<NetworkVirtualApplianceSkuInstances> availableScaleUnits) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkVirtualApplianceSkuPropertiesFormat();
         }
@@ -140,7 +146,7 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -14,20 +14,20 @@ public final class ImportLabVirtualMachineRequestTests {
         ImportLabVirtualMachineRequest model =
             BinaryData
                 .fromString(
-                    "{\"sourceVirtualMachineResourceId\":\"nq\",\"destinationVirtualMachineName\":\"qpswokmvkhlggdhb\"}")
+                    "{\"sourceVirtualMachineResourceId\":\"cigeleohdbvqvw\",\"destinationVirtualMachineName\":\"jopwbeonrlkwz\"}")
                 .toObject(ImportLabVirtualMachineRequest.class);
-        Assertions.assertEquals("nq", model.sourceVirtualMachineResourceId());
-        Assertions.assertEquals("qpswokmvkhlggdhb", model.destinationVirtualMachineName());
+        Assertions.assertEquals("cigeleohdbvqvw", model.sourceVirtualMachineResourceId());
+        Assertions.assertEquals("jopwbeonrlkwz", model.destinationVirtualMachineName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ImportLabVirtualMachineRequest model =
             new ImportLabVirtualMachineRequest()
-                .withSourceVirtualMachineResourceId("nq")
-                .withDestinationVirtualMachineName("qpswokmvkhlggdhb");
+                .withSourceVirtualMachineResourceId("cigeleohdbvqvw")
+                .withDestinationVirtualMachineName("jopwbeonrlkwz");
         model = BinaryData.fromObject(model).toObject(ImportLabVirtualMachineRequest.class);
-        Assertions.assertEquals("nq", model.sourceVirtualMachineResourceId());
-        Assertions.assertEquals("qpswokmvkhlggdhb", model.destinationVirtualMachineName());
+        Assertions.assertEquals("cigeleohdbvqvw", model.sourceVirtualMachineResourceId());
+        Assertions.assertEquals("jopwbeonrlkwz", model.destinationVirtualMachineName());
     }
 }

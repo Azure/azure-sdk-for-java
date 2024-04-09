@@ -7,8 +7,12 @@ import com.azure.cosmos.models.ThroughputProperties
 import com.azure.cosmos.spark.CosmosPatchOperationTypes.CosmosPatchOperationTypes
 import com.azure.cosmos.spark.ItemWriteStrategy.ItemWriteStrategy
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import org.apache.spark.scheduler.{AccumulableInfo, SparkListener, SparkListenerTaskEnd}
 import org.apache.spark.sql.functions.{col, from_json}
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
+import org.scalatest.concurrent.Eventually.eventually
+import org.scalatest.concurrent.Waiters.{interval, timeout}
+import org.scalatest.time.SpanSugar.convertIntToGrainOfTime
 
 import java.util.UUID
 
@@ -25,44 +29,35 @@ class SparkE2EWriteITest
   //scalastyle:off magic.number
   //scalastyle:off null
 
-  private case class UpsertParameterTest(bulkEnabled: Boolean, itemWriteStrategy: ItemWriteStrategy, hasId: Boolean = true, initialBatchSize: Option[Int] = None)
+  private case class UpsertParameterTest(
+                                          bulkEnabled: Boolean,
+                                          itemWriteStrategy: ItemWriteStrategy,
+                                          hasId: Boolean = true,
+                                          initialBatchSize: Option[Int] = None,
+                                          maxBatchSize: Option[Int] = None)
 
   private val upsertParameterTest = Seq(
-    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = None),
-    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = Some(1)),
-    UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = None),
-    UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemWriteStrategy.ItemAppend, initialBatchSize = None)
+    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = None, maxBatchSize = None),
+    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = Some(1), maxBatchSize = None),
+    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = Some(1), maxBatchSize = Some(5)),
+    UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = None, maxBatchSize = None),
+    UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemWriteStrategy.ItemAppend, initialBatchSize = None, maxBatchSize = None)
   )
 
-  for (UpsertParameterTest(bulkEnabled, itemWriteStrategy, hasId, initialBatchSize) <- upsertParameterTest) {
-    it should s"support upserts with bulkEnabled = $bulkEnabled itemWriteStrategy = $itemWriteStrategy hasId = $hasId initialBatchSize = $initialBatchSize" in {
+  for (UpsertParameterTest(bulkEnabled, itemWriteStrategy, hasId, initialBatchSize, maxBatchSize) <- upsertParameterTest) {
+    it should s"support upserts with bulkEnabled = $bulkEnabled itemWriteStrategy = $itemWriteStrategy hasId = $hasId initialBatchSize = $initialBatchSize, maxBatchSize = $maxBatchSize" in {
       val cosmosEndpoint = TestConfigurations.HOST
       val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
-      val cfg = {
+      val configMapBuilder = scala.collection.mutable.Map(
+        "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        "spark.cosmos.accountKey" -> cosmosMasterKey,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> cosmosContainer,
+        "spark.cosmos.serialization.inclusionMode" -> "NonDefault"
+      )
 
-        initialBatchSize match {
-          case Some(customInitialBatchSize) =>
-            Map(
-              "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-              "spark.cosmos.accountKey" -> cosmosMasterKey,
-              "spark.cosmos.database" -> cosmosDatabase,
-              "spark.cosmos.container" -> cosmosContainer,
-              "spark.cosmos.serialization.inclusionMode" -> "NonDefault",
-              "spark.cosmos.write.bulk.initialBatchSize" -> customInitialBatchSize.toString,
-            )
-          case None =>
-            Map (
-              "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-              "spark.cosmos.accountKey" -> cosmosMasterKey,
-              "spark.cosmos.database" -> cosmosDatabase,
-              "spark.cosmos.container" -> cosmosContainer,
-              "spark.cosmos.serialization.inclusionMode" -> "NonDefault"
-            )
-        }
-      }
-
-      val cfgOverwrite = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      val configOverrideMapBuilder = scala.collection.mutable.Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
         "spark.cosmos.accountKey" -> cosmosMasterKey,
         "spark.cosmos.database" -> cosmosDatabase,
         "spark.cosmos.container" -> cosmosContainer,
@@ -70,6 +65,34 @@ class SparkE2EWriteITest
         "spark.cosmos.write.bulk.enabled" -> bulkEnabled.toString,
         "spark.cosmos.serialization.inclusionMode" -> "NonDefault"
       )
+
+      initialBatchSize match {
+        case Some(customInitialBatchSize) =>
+          configMapBuilder += (
+            "spark.cosmos.write.bulk.initialBatchSize" -> customInitialBatchSize.toString,
+          )
+
+          configOverrideMapBuilder += (
+            "spark.cosmos.write.bulk.initialBatchSize" -> customInitialBatchSize.toString,
+            )
+        case None =>
+      }
+
+      maxBatchSize match {
+        case Some(customMaxBatchSize) =>
+          configMapBuilder += (
+            "spark.cosmos.write.bulk.maxBatchSize" -> customMaxBatchSize.toString,
+            )
+
+          configOverrideMapBuilder += (
+            "spark.cosmos.write.bulk.maxBatchSize" -> customMaxBatchSize.toString,
+            )
+        case None =>
+      }
+
+      val cfg = configMapBuilder.toMap
+
+      val cfgOverwrite = configOverrideMapBuilder.toMap
 
       val newSpark = getSpark
 
@@ -81,17 +104,65 @@ class SparkE2EWriteITest
       // scalastyle:on import.grouping
 
       val df = Seq(
-        ("Quark", "Quark", "Red", 1.0 / 2, "")
+        ("Quark", "Quark", "Red", 1.0 / 2, ""),
       ).toDF("particle name", "id", "color", "spin", "empty")
 
+      var bytesWrittenSnapshot = 0L
+      var recordsWrittenSnapshot = 0L
+      var totalRequestChargeSnapshot: Option[AccumulableInfo] = None
+
+      val statusStore = spark.sharedState.statusStore
+      val oldCount = statusStore.executionsCount()
+
+      spark.sparkContext
+        .addSparkListener(
+          new SparkListener {
+            override def onTaskEnd(taskEnd: SparkListenerTaskEnd): Unit = {
+              val outputMetrics = taskEnd.taskMetrics.outputMetrics
+              logInfo(s"ON_TASK_END - Records written: ${outputMetrics.recordsWritten}, " +
+                s"Bytes written: ${outputMetrics.bytesWritten}, " +
+                s"${taskEnd.taskInfo.accumulables.mkString(", ")}")
+              bytesWrittenSnapshot = outputMetrics.bytesWritten
+
+              recordsWrittenSnapshot = outputMetrics.recordsWritten
+
+              taskEnd
+                .taskInfo
+                .accumulables
+                .filter(accumulableInfo => accumulableInfo.name.isDefined &&
+                  accumulableInfo.name.get.equals(CosmosConstants.MetricNames.TotalRequestCharge))
+                .foreach(
+                  accumulableInfo => {
+                    totalRequestChargeSnapshot = Some(accumulableInfo)
+                  }
+                )
+            }
+          })
+
       df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
+
+      // Wait until the new execution is started and being tracked.
+      eventually(timeout(10.seconds), interval(10.milliseconds)) {
+        assert(statusStore.executionsCount() > oldCount)
+      }
+
+      // Wait for listener to finish computing the metrics for the execution.
+      eventually(timeout(10.seconds), interval(10.milliseconds)) {
+        assert(statusStore.executionsList().nonEmpty &&
+          statusStore.executionsList().last.metricValues != null)
+      }
+
+      recordsWrittenSnapshot shouldEqual 1
+      bytesWrittenSnapshot > 0 shouldEqual  true
+      if (!spark.sparkContext.version.startsWith("3.1.")) {
+        totalRequestChargeSnapshot.isDefined shouldEqual true
+      }
 
       val overwriteDf = Seq(
         ("Quark", "Quark", "green", "Yes", ""),
         ("Boson", "Boson", "", "", "")
 
       ).toDF("particle name", if (hasId) "id" else "no-id", "color", "color charge", "empty")
-
 
       try {
         overwriteDf.write.format("cosmos.oltp").mode("Append").options(cfgOverwrite).save()
@@ -460,7 +531,7 @@ class SparkE2EWriteITest
       ).toDF("particle name", "id", "color", "spin", "empty", "childNodeJson")
 
       val df = dfWithJson
-        .withColumn("car", from_json(col("childNodeJson"), StructType(Array(StructField("manufacturer", StringType, true), StructField("carType", StringType, true)))))
+        .withColumn("car", from_json(col("childNodeJson"), StructType(Array(StructField("manufacturer", StringType, nullable = true), StructField("carType", StringType, nullable = true)))))
         .drop("childNodeJson")
       df.show(false)
       df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
@@ -484,7 +555,7 @@ class SparkE2EWriteITest
       } else {
         Seq(("Quark", "{ \"manufacturer\": \"BMW\", \"carType\": \"X5\" }"))
           .toDF("id", "childNodeJson")
-          .withColumn("car", from_json(col("childNodeJson"), StructType(Array(StructField("manufacturer", StringType, true), StructField("carType", StringType, true)))))
+          .withColumn("car", from_json(col("childNodeJson"), StructType(Array(StructField("manufacturer", StringType, nullable = true), StructField("carType", StringType, nullable = true)))))
           .drop("childNodeJson")
       }
 
@@ -616,7 +687,7 @@ class SparkE2EWriteITest
           ).toDF("particle name", "id", "color", "spin", "empty", "childNodeJson")
 
           val df = dfWithJson
-              .withColumn("car", from_json(col("childNodeJson"), StructType(Array(StructField("manufacturer", StringType, true), StructField("carType", StringType, true)))))
+              .withColumn("car", from_json(col("childNodeJson"), StructType(Array(StructField("manufacturer", StringType, nullable = true), StructField("carType", StringType, nullable = true)))))
               .drop("childNodeJson")
           df.show(false)
           df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
@@ -640,7 +711,7 @@ class SparkE2EWriteITest
           } else {
               Seq(("Quark", "{ \"manufacturer\": \"BMW\", \"carType\": \"X5\" }"))
                   .toDF("id", "childNodeJson")
-                  .withColumn("car", from_json(col("childNodeJson"), StructType(Array(StructField("manufacturer", StringType, true), StructField("carType", StringType, true)))))
+                  .withColumn("car", from_json(col("childNodeJson"), StructType(Array(StructField("manufacturer", StringType, nullable = true), StructField("carType", StringType, nullable = true)))))
                   .drop("childNodeJson")
           }
 
@@ -776,10 +847,10 @@ class SparkE2EWriteITest
         quark2.get("color").asText() shouldEqual "Blue"
 
         // Validate item 'Quark3' is created properly
-        var quarks3 = queryItems("SELECT * FROM r where r.id = 'Quark3'", cosmosDatabase, targetContainerName).toArray
+        val quarks3 = queryItems("SELECT * FROM r where r.id = 'Quark3'", cosmosDatabase, targetContainerName).toArray
         quarks3 should have size 1
 
-        var quark3 = quarks3(0)
+        val quark3 = quarks3(0)
         quark3.get("pk").asText() shouldEqual "QuarkPk"
         quark3.get("id").asText() shouldEqual "Quark3"
         quark3.get("color").asText() shouldEqual "Green"

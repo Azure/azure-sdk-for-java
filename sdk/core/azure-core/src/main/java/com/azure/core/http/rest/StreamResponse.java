@@ -19,7 +19,13 @@ import java.nio.channels.WritableByteChannel;
 import java.util.Objects;
 
 /**
- * REST response with a streaming content.
+ * <p>This class represents a REST response with a streaming content.
+ * It encapsulates the HTTP request that resulted in the response, the status code of the HTTP response,
+ * the headers of the HTTP response, and the content of the HTTP response as a stream of
+ * {@link ByteBuffer byte buffers}.</p>
+ *
+ * <p>It also provides methods to write the content of the HTTP response to a {@link AsynchronousByteChannel} or a
+ * {@link WritableByteChannel}, and to dispose the connection associated with the response.</p>
  */
 public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> implements Closeable {
     private static final ClientLogger LOGGER = new ClientLogger(StreamResponse.class);
@@ -60,11 +66,11 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
     @Override
     public Flux<ByteBuffer> getValue() {
         if (response == null) {
-            return super.getValue().doFinally(t -> this.consumed = true);
+            return Flux.using(() -> this, ignored -> super.getValue(), response -> response.consumed = true);
         } else {
-            return response.getBody().doFinally(t -> {
-                this.consumed = true;
-                this.response.close();
+            return Flux.using(() -> response, HttpResponse::getBody, r -> {
+                consumed = true;
+                r.close();
             });
         }
     }

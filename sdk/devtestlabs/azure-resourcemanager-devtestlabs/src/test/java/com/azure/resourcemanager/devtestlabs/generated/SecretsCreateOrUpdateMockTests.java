@@ -33,7 +33,7 @@ public final class SecretsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"value\":\"fpxgnmqvz\",\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"aifppuacvfyeowp\"},\"location\":\"fxtjdhsoym\",\"tags\":{\"ehdpboujstkfvvds\":\"tyqft\"},\"id\":\"xcdedsu\",\"name\":\"nygnxcgjtfrnquk\",\"type\":\"rf\"}";
+            "{\"properties\":{\"value\":\"snvlaqd\",\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"kokb\"},\"location\":\"zothym\",\"tags\":{\"msn\":\"l\",\"aaneakhtmhobcya\":\"gwi\",\"gxkfnaoaqymhccto\":\"rfvqtvkhgvo\",\"czygxv\":\"uowyrnskbyhqu\"},\"id\":\"ajpxecxqnwhscoza\",\"name\":\"mvgxsmpknpwir\",\"type\":\"ljfewxqo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,18 +64,19 @@ public final class SecretsCreateOrUpdateMockTests {
         Secret response =
             manager
                 .secrets()
-                .define("ojkpoyh")
-                .withRegion("minxojjluxxdh")
-                .withExistingUser("cf", "ybmx", "nxocuul")
-                .withTags(mapOf("zqjmueza", "zd", "otokhtvwtaznk", "ovribq", "wjyofgwhnkbtl", "qww", "tsnld", "ljssm"))
-                .withValue("wdjuxdbdljzgdy")
+                .define("kczynuhhoqeqsh")
+                .withRegion("jmlfuyfjbp")
+                .withExistingUser("fjzc", "aaxoialahfxwcc", "kdxkuk")
+                .withTags(mapOf("fuiocuselq", "dhlrufzcqyjmq", "qmdtffi", "rsazrhxud", "khmwdmd", "jmr"))
+                .withValue("ljqkxyrqolnthbb")
                 .create();
 
-        Assertions.assertEquals("fxtjdhsoym", response.location());
-        Assertions.assertEquals("tyqft", response.tags().get("ehdpboujstkfvvds"));
-        Assertions.assertEquals("fpxgnmqvz", response.value());
+        Assertions.assertEquals("zothym", response.location());
+        Assertions.assertEquals("l", response.tags().get("msn"));
+        Assertions.assertEquals("snvlaqd", response.value());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

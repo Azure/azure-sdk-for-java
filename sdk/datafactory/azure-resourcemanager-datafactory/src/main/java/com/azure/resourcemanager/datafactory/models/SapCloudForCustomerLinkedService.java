@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for SAP Cloud for Customer. */
+/**
+ * Linked service for SAP Cloud for Customer.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapCloudForCustomer")
 @Fluent
@@ -22,44 +24,54 @@ public final class SapCloudForCustomerLinkedService extends LinkedService {
      * SAP Cloud for Customer linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
-    private SapCloudForCustomerLinkedServiceTypeProperties innerTypeProperties =
-        new SapCloudForCustomerLinkedServiceTypeProperties();
+    private SapCloudForCustomerLinkedServiceTypeProperties innerTypeProperties
+        = new SapCloudForCustomerLinkedServiceTypeProperties();
 
-    /** Creates an instance of SapCloudForCustomerLinkedService class. */
+    /**
+     * Creates an instance of SapCloudForCustomerLinkedService class.
+     */
     public SapCloudForCustomerLinkedService() {
     }
 
     /**
      * Get the innerTypeProperties property: SAP Cloud for Customer linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private SapCloudForCustomerLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -69,7 +81,7 @@ public final class SapCloudForCustomerLinkedService extends LinkedService {
     /**
      * Get the url property: The URL of SAP Cloud for Customer OData API. For example,
      * '[https://[tenantname].crm.ondemand.com/sap/c4c/odata/v1]'. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the url value.
      */
     public Object url() {
@@ -79,7 +91,7 @@ public final class SapCloudForCustomerLinkedService extends LinkedService {
     /**
      * Set the url property: The URL of SAP Cloud for Customer OData API. For example,
      * '[https://[tenantname].crm.ondemand.com/sap/c4c/odata/v1]'. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param url the url value to set.
      * @return the SapCloudForCustomerLinkedService object itself.
      */
@@ -94,7 +106,7 @@ public final class SapCloudForCustomerLinkedService extends LinkedService {
     /**
      * Get the username property: The username for Basic authentication. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -104,7 +116,7 @@ public final class SapCloudForCustomerLinkedService extends LinkedService {
     /**
      * Set the username property: The username for Basic authentication. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param username the username value to set.
      * @return the SapCloudForCustomerLinkedService object itself.
      */
@@ -118,7 +130,7 @@ public final class SapCloudForCustomerLinkedService extends LinkedService {
 
     /**
      * Get the password property: The password for Basic authentication.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -127,7 +139,7 @@ public final class SapCloudForCustomerLinkedService extends LinkedService {
 
     /**
      * Set the password property: The password for Basic authentication.
-     *
+     * 
      * @param password the password value to set.
      * @return the SapCloudForCustomerLinkedService object itself.
      */
@@ -140,25 +152,25 @@ public final class SapCloudForCustomerLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Either encryptedCredential or username/password must be
-     * provided. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Either encryptedCredential or username/password must
+     * be provided. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Either encryptedCredential or username/password must be
-     * provided. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Either encryptedCredential or username/password must
+     * be provided. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapCloudForCustomerLinkedService object itself.
      */
-    public SapCloudForCustomerLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public SapCloudForCustomerLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new SapCloudForCustomerLinkedServiceTypeProperties();
         }
@@ -168,17 +180,15 @@ public final class SapCloudForCustomerLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model SapCloudForCustomerLinkedService"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model SapCloudForCustomerLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

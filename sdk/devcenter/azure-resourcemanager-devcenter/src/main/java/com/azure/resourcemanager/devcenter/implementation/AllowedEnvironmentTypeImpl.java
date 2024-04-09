@@ -40,6 +40,10 @@ public final class AllowedEnvironmentTypeImpl implements AllowedEnvironmentType 
         return this.innerModel().provisioningState();
     }
 
+    public String displayName() {
+        return this.innerModel().displayName();
+    }
+
     public AllowedEnvironmentTypeInner innerModel() {
         return this.innerObject;
     }

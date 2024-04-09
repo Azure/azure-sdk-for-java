@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.Office365PolicyProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the rule group. */
+/**
+ * Properties of the rule group.
+ */
 @Fluent
 public final class VirtualApplianceSiteProperties {
     /*
@@ -30,13 +32,15 @@ public final class VirtualApplianceSiteProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of VirtualApplianceSiteProperties class. */
+    /**
+     * Creates an instance of VirtualApplianceSiteProperties class.
+     */
     public VirtualApplianceSiteProperties() {
     }
 
     /**
      * Get the addressPrefix property: Address Prefix.
-     *
+     * 
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -45,7 +49,7 @@ public final class VirtualApplianceSiteProperties {
 
     /**
      * Set the addressPrefix property: Address Prefix.
-     *
+     * 
      * @param addressPrefix the addressPrefix value to set.
      * @return the VirtualApplianceSiteProperties object itself.
      */
@@ -56,7 +60,7 @@ public final class VirtualApplianceSiteProperties {
 
     /**
      * Get the o365Policy property: Office 365 Policy.
-     *
+     * 
      * @return the o365Policy value.
      */
     public Office365PolicyProperties o365Policy() {
@@ -65,7 +69,7 @@ public final class VirtualApplianceSiteProperties {
 
     /**
      * Set the o365Policy property: Office 365 Policy.
-     *
+     * 
      * @param o365Policy the o365Policy value to set.
      * @return the VirtualApplianceSiteProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class VirtualApplianceSiteProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -85,7 +89,7 @@ public final class VirtualApplianceSiteProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration of the protocol. */
+/**
+ * Configuration of the protocol.
+ */
 @Fluent
 public final class ProtocolConfiguration {
     /*
@@ -16,13 +18,15 @@ public final class ProtocolConfiguration {
     @JsonProperty(value = "HTTPConfiguration")
     private HttpConfiguration httpConfiguration;
 
-    /** Creates an instance of ProtocolConfiguration class. */
+    /**
+     * Creates an instance of ProtocolConfiguration class.
+     */
     public ProtocolConfiguration() {
     }
 
     /**
      * Get the httpConfiguration property: HTTP configuration of the connectivity check.
-     *
+     * 
      * @return the httpConfiguration value.
      */
     public HttpConfiguration httpConfiguration() {
@@ -31,7 +35,7 @@ public final class ProtocolConfiguration {
 
     /**
      * Set the httpConfiguration property: HTTP configuration of the connectivity check.
-     *
+     * 
      * @param httpConfiguration the httpConfiguration value to set.
      * @return the ProtocolConfiguration object itself.
      */
@@ -42,7 +46,7 @@ public final class ProtocolConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,29 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class NameAvailabilityInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NameAvailabilityInner model =
-            BinaryData
-                .fromString(
-                    "{\"message\":\"oo\",\"nameAvailable\":true,\"name\":\"zevgb\",\"type\":\"jqabcypmivkwlzuv\"}")
+        NameAvailabilityInner model
+            = BinaryData.fromString("{\"message\":\"yjr\",\"nameAvailable\":false,\"name\":\"aos\",\"type\":\"xc\"}")
                 .toObject(NameAvailabilityInner.class);
-        Assertions.assertEquals("oo", model.message());
-        Assertions.assertEquals(true, model.nameAvailable());
-        Assertions.assertEquals("zevgb", model.name());
-        Assertions.assertEquals("jqabcypmivkwlzuv", model.type());
+        Assertions.assertEquals("yjr", model.message());
+        Assertions.assertEquals(false, model.nameAvailable());
+        Assertions.assertEquals("aos", model.name());
+        Assertions.assertEquals("xc", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NameAvailabilityInner model =
-            new NameAvailabilityInner()
-                .withMessage("oo")
-                .withNameAvailable(true)
-                .withName("zevgb")
-                .withType("jqabcypmivkwlzuv");
+        NameAvailabilityInner model
+            = new NameAvailabilityInner().withMessage("yjr").withNameAvailable(false).withName("aos").withType("xc");
         model = BinaryData.fromObject(model).toObject(NameAvailabilityInner.class);
-        Assertions.assertEquals("oo", model.message());
-        Assertions.assertEquals(true, model.nameAvailable());
-        Assertions.assertEquals("zevgb", model.name());
-        Assertions.assertEquals("jqabcypmivkwlzuv", model.type());
+        Assertions.assertEquals("yjr", model.message());
+        Assertions.assertEquals(false, model.nameAvailable());
+        Assertions.assertEquals("aos", model.name());
+        Assertions.assertEquals("xc", model.type());
     }
 }

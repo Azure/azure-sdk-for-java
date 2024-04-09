@@ -28,8 +28,14 @@ public final class RouteListResult {
     private String nextLink;
 
     /**
+     * Creates an instance of RouteListResult class.
+     */
+    public RouteListResult() {
+    }
+
+    /**
      * Get the value property: List of AzureFrontDoor routes within a profile.
-     *
+     * 
      * @return the value value.
      */
     public List<RouteInner> value() {
@@ -38,7 +44,7 @@ public final class RouteListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of route objects if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -47,7 +53,7 @@ public final class RouteListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of route objects if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the RouteListResult object itself.
      */
@@ -58,7 +64,7 @@ public final class RouteListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

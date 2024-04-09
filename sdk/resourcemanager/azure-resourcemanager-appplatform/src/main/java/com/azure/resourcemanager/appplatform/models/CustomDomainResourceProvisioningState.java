@@ -8,27 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CustomDomainResourceProvisioningState. */
+/**
+ * Provisioning state of the Domain.
+ */
 public final class CustomDomainResourceProvisioningState
     extends ExpandableStringEnum<CustomDomainResourceProvisioningState> {
-    /** Static value Creating for CustomDomainResourceProvisioningState. */
+    /**
+     * Static value Creating for CustomDomainResourceProvisioningState.
+     */
     public static final CustomDomainResourceProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for CustomDomainResourceProvisioningState. */
+    /**
+     * Static value Updating for CustomDomainResourceProvisioningState.
+     */
     public static final CustomDomainResourceProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Succeeded for CustomDomainResourceProvisioningState. */
+    /**
+     * Static value Succeeded for CustomDomainResourceProvisioningState.
+     */
     public static final CustomDomainResourceProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for CustomDomainResourceProvisioningState. */
+    /**
+     * Static value Failed for CustomDomainResourceProvisioningState.
+     */
     public static final CustomDomainResourceProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Deleting for CustomDomainResourceProvisioningState. */
+    /**
+     * Static value Deleting for CustomDomainResourceProvisioningState.
+     */
     public static final CustomDomainResourceProvisioningState DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of CustomDomainResourceProvisioningState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CustomDomainResourceProvisioningState() {
+    }
+
+    /**
      * Creates or finds a CustomDomainResourceProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CustomDomainResourceProvisioningState.
      */
@@ -39,7 +60,7 @@ public final class CustomDomainResourceProvisioningState
 
     /**
      * Gets known CustomDomainResourceProvisioningState values.
-     *
+     * 
      * @return known CustomDomainResourceProvisioningState values.
      */
     public static Collection<CustomDomainResourceProvisioningState> values() {

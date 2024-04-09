@@ -30,7 +30,7 @@ public final class IotHubResourcesGetStatsWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"totalDeviceCount\":1881000145918379423,\"enabledDeviceCount\":5500271153534098761,\"disabledDeviceCount\":6702265057684474491}";
+            "{\"totalDeviceCount\":4977542958455551003,\"enabledDeviceCount\":9013966511894256740,\"disabledDeviceCount\":1441964733305710874}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class IotHubResourcesGetStatsWithResponseMockTests {
         RegistryStatistics response =
             manager
                 .iotHubResources()
-                .getStatsWithResponse("ofncckwyfzqwhxxb", "yq", com.azure.core.util.Context.NONE)
+                .getStatsWithResponse("dxrbuukzcle", "yhmlwpaztzp", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

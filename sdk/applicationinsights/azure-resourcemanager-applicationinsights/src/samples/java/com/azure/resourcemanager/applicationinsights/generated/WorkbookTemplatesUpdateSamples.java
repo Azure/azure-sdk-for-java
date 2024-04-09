@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplate;
 
 /** Samples for WorkbookTemplates Update. */
@@ -22,7 +21,8 @@ public final class WorkbookTemplatesUpdateSamples {
         WorkbookTemplate resource =
             manager
                 .workbookTemplates()
-                .getByResourceGroupWithResponse("my-resource-group", "my-template-resource", Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "my-resource-group", "my-template-resource", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().apply();
     }

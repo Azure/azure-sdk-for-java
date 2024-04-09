@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ixhbkuofqweykhm\",\"display\":{\"provider\":\"vfyexfw\",\"resource\":\"bcibvyvdcsitynn\",\"operation\":\"mdectehfiqscjey\",\"description\":\"hezrkgq\"},\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"cattpngjcrcczsq\":\"datavgmkqsleyyvxyqjp\"}}")
-                .toObject(OperationInner.class);
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"ldngkpoci\",\"display\":{\"provider\":\"yxoegukgjnp\",\"resource\":\"cgygev\",\"operation\":\"ntypmrbpizcdrqj\",\"description\":\"pyd\"},\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"w\":\"dataoejzi\",\"tgzfbishcbkh\":\"datafsj\"}}")
+            .toObject(OperationInner.class);
         Assertions.assertEquals(true, model.isDataAction());
     }
 

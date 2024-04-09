@@ -13,7 +13,7 @@ public final class AllowedEnvironmentTypeListResultTests {
         AllowedEnvironmentTypeListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\"},\"id\":\"hcbkhajde\",\"name\":\"eamdp\",\"type\":\"agalpbuxwgipwhon\"},{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"hwankixzbinjepu\",\"name\":\"tmryw\",\"type\":\"uzoqft\"},{\"properties\":{\"provisioningState\":\"Canceled\"},\"id\":\"n\",\"name\":\"cqvyxlwhzlsico\",\"type\":\"oqqnwvlryav\"}],\"nextLink\":\"heun\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"displayName\":\"cwif\"},\"id\":\"ttgzfbis\",\"name\":\"cbkhajdeyeamdph\",\"type\":\"g\"},{\"properties\":{\"provisioningState\":\"Updated\",\"displayName\":\"xw\"},\"id\":\"pwhonowkg\",\"name\":\"hwankixzbinjepu\",\"type\":\"tmryw\"}],\"nextLink\":\"zoqftiyqzrnkcqvy\"}")
                 .toObject(AllowedEnvironmentTypeListResult.class);
     }
 

@@ -9,7 +9,7 @@ import com.azure.resourcemanager.desktopvirtualization.models.MsixImageUri;
 /** Samples for MsixImages Expand. */
 public final class MsixImagesExpandSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/MsixImage_Expand_Post.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/MsixImage_Expand_Post.json
      */
     /**
      * Sample code: MsixImage_Expand.

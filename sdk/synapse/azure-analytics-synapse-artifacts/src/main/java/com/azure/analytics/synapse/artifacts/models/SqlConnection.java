@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The connection used to execute the SQL script. */
+/**
+ * The connection used to execute the SQL script.
+ */
 @Fluent
 public final class SqlConnection {
     /*
@@ -42,14 +44,18 @@ public final class SqlConnection {
     /*
      * The connection used to execute the SQL script.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of SqlConnection class. */
-    public SqlConnection() {}
+    /**
+     * Creates an instance of SqlConnection class.
+     */
+    public SqlConnection() {
+    }
 
     /**
      * Get the type property: The type of the connection.
-     *
+     * 
      * @return the type value.
      */
     public SqlConnectionType getType() {
@@ -58,7 +64,7 @@ public final class SqlConnection {
 
     /**
      * Set the type property: The type of the connection.
-     *
+     * 
      * @param type the type value to set.
      * @return the SqlConnection object itself.
      */
@@ -69,7 +75,7 @@ public final class SqlConnection {
 
     /**
      * Get the name property: The identifier of the connection.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -78,7 +84,7 @@ public final class SqlConnection {
 
     /**
      * Set the name property: The identifier of the connection.
-     *
+     * 
      * @param name the name value to set.
      * @return the SqlConnection object itself.
      */
@@ -89,7 +95,7 @@ public final class SqlConnection {
 
     /**
      * Get the poolName property: The associated SQL pool name (supported by SQL pool v3).
-     *
+     * 
      * @return the poolName value.
      */
     public String getPoolName() {
@@ -98,7 +104,7 @@ public final class SqlConnection {
 
     /**
      * Set the poolName property: The associated SQL pool name (supported by SQL pool v3).
-     *
+     * 
      * @param poolName the poolName value to set.
      * @return the SqlConnection object itself.
      */
@@ -109,7 +115,7 @@ public final class SqlConnection {
 
     /**
      * Get the databaseName property: The associated database name (supported by SQL pool v3).
-     *
+     * 
      * @return the databaseName value.
      */
     public String getDatabaseName() {
@@ -118,7 +124,7 @@ public final class SqlConnection {
 
     /**
      * Set the databaseName property: The associated database name (supported by SQL pool v3).
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the SqlConnection object itself.
      */
@@ -129,7 +135,7 @@ public final class SqlConnection {
 
     /**
      * Get the additionalProperties property: The connection used to execute the SQL script.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -139,7 +145,7 @@ public final class SqlConnection {
 
     /**
      * Set the additionalProperties property: The connection used to execute the SQL script.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the SqlConnection object itself.
      */

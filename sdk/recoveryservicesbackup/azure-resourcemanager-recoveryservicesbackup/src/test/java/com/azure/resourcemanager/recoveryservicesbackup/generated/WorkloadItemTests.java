@@ -12,29 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkloadItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadItem model =
-            BinaryData
-                .fromString(
-                    "{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"zfoqouicybxar\",\"workloadType\":\"szufoxciqopidoa\",\"friendlyName\":\"iodhkhazxkhnz\",\"protectionState\":\"Protected\"}")
-                .toObject(WorkloadItem.class);
-        Assertions.assertEquals("zfoqouicybxar", model.backupManagementType());
-        Assertions.assertEquals("szufoxciqopidoa", model.workloadType());
-        Assertions.assertEquals("iodhkhazxkhnz", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
+        WorkloadItem model = BinaryData.fromString(
+            "{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"gxsds\",\"workloadType\":\"e\",\"friendlyName\":\"sbzkf\",\"protectionState\":\"Protecting\"}")
+            .toObject(WorkloadItem.class);
+        Assertions.assertEquals("gxsds", model.backupManagementType());
+        Assertions.assertEquals("e", model.workloadType());
+        Assertions.assertEquals("sbzkf", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.protectionState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadItem model =
-            new WorkloadItem()
-                .withBackupManagementType("zfoqouicybxar")
-                .withWorkloadType("szufoxciqopidoa")
-                .withFriendlyName("iodhkhazxkhnz")
-                .withProtectionState(ProtectionStatus.PROTECTED);
+        WorkloadItem model = new WorkloadItem().withBackupManagementType("gxsds").withWorkloadType("e")
+            .withFriendlyName("sbzkf").withProtectionState(ProtectionStatus.PROTECTING);
         model = BinaryData.fromObject(model).toObject(WorkloadItem.class);
-        Assertions.assertEquals("zfoqouicybxar", model.backupManagementType());
-        Assertions.assertEquals("szufoxciqopidoa", model.workloadType());
-        Assertions.assertEquals("iodhkhazxkhnz", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
+        Assertions.assertEquals("gxsds", model.backupManagementType());
+        Assertions.assertEquals("e", model.workloadType());
+        Assertions.assertEquals("sbzkf", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.protectionState());
     }
 }

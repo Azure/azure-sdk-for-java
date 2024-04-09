@@ -3,8 +3,8 @@
 
 package com.azure.identity.implementation;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -31,7 +31,7 @@ public class SynchronizedAccessorTests {
         //test
         Integer firstVal = values.get(0);
         for (int z = 1; z < values.size(); z++) {
-            Assert.assertEquals(firstVal, values.get(z));
+            Assertions.assertEquals(firstVal, values.get(z));
         }
     }
 }

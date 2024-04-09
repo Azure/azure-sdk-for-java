@@ -13,18 +13,18 @@ public final class ScalingHostPoolReferenceTests {
     public void testDeserialize() throws Exception {
         ScalingHostPoolReference model =
             BinaryData
-                .fromString("{\"hostPoolArmPath\":\"pusuesn\",\"scalingPlanEnabled\":false}")
+                .fromString("{\"hostPoolArmPath\":\"yav\",\"scalingPlanEnabled\":false}")
                 .toObject(ScalingHostPoolReference.class);
-        Assertions.assertEquals("pusuesn", model.hostPoolArmPath());
+        Assertions.assertEquals("yav", model.hostPoolArmPath());
         Assertions.assertEquals(false, model.scalingPlanEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScalingHostPoolReference model =
-            new ScalingHostPoolReference().withHostPoolArmPath("pusuesn").withScalingPlanEnabled(false);
+            new ScalingHostPoolReference().withHostPoolArmPath("yav").withScalingPlanEnabled(false);
         model = BinaryData.fromObject(model).toObject(ScalingHostPoolReference.class);
-        Assertions.assertEquals("pusuesn", model.hostPoolArmPath());
+        Assertions.assertEquals("yav", model.hostPoolArmPath());
         Assertions.assertEquals(false, model.scalingPlanEnabled());
     }
 }

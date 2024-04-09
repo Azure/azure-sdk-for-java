@@ -36,6 +36,12 @@ public final class ClusterUpdate extends ProxyResource {
     private AzureSku sku;
 
     /*
+     * The availability zones of the cluster.
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
+
+    /*
      * The identity of the cluster, if configured.
      */
     @JsonProperty(value = "identity")
@@ -108,6 +114,26 @@ public final class ClusterUpdate extends ProxyResource {
      */
     public ClusterUpdate withSku(AzureSku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the zones property: The availability zones of the cluster.
+     *
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: The availability zones of the cluster.
+     *
+     * @param zones the zones value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withZones(List<String> zones) {
+        this.zones = zones;
         return this;
     }
 

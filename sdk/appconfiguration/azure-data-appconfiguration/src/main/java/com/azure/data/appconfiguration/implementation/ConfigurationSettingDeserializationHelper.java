@@ -177,11 +177,10 @@ public final class ConfigurationSettingDeserializationHelper {
                 } else if (ENABLED.equals(fieldName)) {
                     isEnabled = reader.getBoolean();
                 } else if (CONDITIONS.equals(fieldName)) {
-                    clientFilters = readClientFilters(reader);
+                    clientFilters = readConditions(reader).getFeatureFlagFilters();
                 } else {
                     reader.skipChildren();
                 }
-
             }
 
             return new FeatureFlagConfigurationSetting(featureId, isEnabled)
@@ -191,25 +190,29 @@ public final class ConfigurationSettingDeserializationHelper {
         });
     }
 
-    // Feature flag configuration setting: client filters
-    private static List<FeatureFlagFilter> readClientFilters(JsonReader jsonReader) throws IOException {
+    // Feature flag configuration setting: conditions
+    public static Conditions readConditions(JsonReader jsonReader) throws IOException {
+        Conditions conditions = new Conditions();
+        Map<String, Object> unknownConditions = conditions.getUnknownConditions();
         return jsonReader.readObject(reader -> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if (CLIENT_FILTERS.equals(fieldName)) {
-                    return reader.readArray(ConfigurationSettingDeserializationHelper::readClientFilter);
+                    conditions.setFeatureFlagFilters(
+                        reader.readArray(ConfigurationSettingDeserializationHelper::readClientFilter));
                 } else {
-                    reader.skipChildren();
+                    unknownConditions.put(fieldName, reader.readUntyped());
                 }
             }
+            conditions.setUnknownConditions(unknownConditions);
 
-            return null;
+            return conditions;
         });
     }
 
-    private static FeatureFlagFilter readClientFilter(JsonReader jsonReader) throws IOException {
+    public static FeatureFlagFilter readClientFilter(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             Map<String, Object> parameters = null;

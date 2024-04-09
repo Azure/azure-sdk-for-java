@@ -20,6 +20,15 @@ public final class RecipientType extends ExpandableStringEnum<RecipientType> {
     public static final RecipientType ADMIN = fromString("Admin");
 
     /**
+     * Creates a new instance of RecipientType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecipientType() {
+    }
+
+    /**
      * Creates or finds a RecipientType from its string representation.
      *
      * @param name a name to look for.

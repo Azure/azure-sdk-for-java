@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Installation of licensed component setup type properties. */
+/**
+ * Installation of licensed component setup type properties.
+ */
 @Fluent
 public final class LicensedComponentSetupTypeProperties {
     /*
@@ -24,13 +26,15 @@ public final class LicensedComponentSetupTypeProperties {
     @JsonProperty(value = "licenseKey")
     private SecretBase licenseKey;
 
-    /** Creates an instance of LicensedComponentSetupTypeProperties class. */
+    /**
+     * Creates an instance of LicensedComponentSetupTypeProperties class.
+     */
     public LicensedComponentSetupTypeProperties() {
     }
 
     /**
      * Get the componentName property: The name of the 3rd party component.
-     *
+     * 
      * @return the componentName value.
      */
     public String componentName() {
@@ -39,7 +43,7 @@ public final class LicensedComponentSetupTypeProperties {
 
     /**
      * Set the componentName property: The name of the 3rd party component.
-     *
+     * 
      * @param componentName the componentName value to set.
      * @return the LicensedComponentSetupTypeProperties object itself.
      */
@@ -50,7 +54,7 @@ public final class LicensedComponentSetupTypeProperties {
 
     /**
      * Get the licenseKey property: The license key to activate the component.
-     *
+     * 
      * @return the licenseKey value.
      */
     public SecretBase licenseKey() {
@@ -59,7 +63,7 @@ public final class LicensedComponentSetupTypeProperties {
 
     /**
      * Set the licenseKey property: The license key to activate the component.
-     *
+     * 
      * @param licenseKey the licenseKey value to set.
      * @return the LicensedComponentSetupTypeProperties object itself.
      */
@@ -70,15 +74,13 @@ public final class LicensedComponentSetupTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (componentName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property componentName in model LicensedComponentSetupTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property componentName in model LicensedComponentSetupTypeProperties"));
         }
         if (licenseKey() != null) {
             licenseKey().validate();

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.datafactory.models.EventSubscriptionStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the response of a trigger subscription operation. */
+/**
+ * Defines the response of a trigger subscription operation.
+ */
 @Immutable
 public final class TriggerSubscriptionOperationStatusInner {
     /*
@@ -23,13 +25,15 @@ public final class TriggerSubscriptionOperationStatusInner {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private EventSubscriptionStatus status;
 
-    /** Creates an instance of TriggerSubscriptionOperationStatusInner class. */
+    /**
+     * Creates an instance of TriggerSubscriptionOperationStatusInner class.
+     */
     public TriggerSubscriptionOperationStatusInner() {
     }
 
     /**
      * Get the triggerName property: Trigger name.
-     *
+     * 
      * @return the triggerName value.
      */
     public String triggerName() {
@@ -38,7 +42,7 @@ public final class TriggerSubscriptionOperationStatusInner {
 
     /**
      * Get the status property: Event Subscription Status.
-     *
+     * 
      * @return the status value.
      */
     public EventSubscriptionStatus status() {
@@ -47,7 +51,7 @@ public final class TriggerSubscriptionOperationStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

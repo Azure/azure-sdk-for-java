@@ -23,6 +23,15 @@ public final class MicrosoftGraphMdmAuthority extends ExpandableStringEnum<Micro
     public static final MicrosoftGraphMdmAuthority OFFICE365 = fromString("office365");
 
     /**
+     * Creates a new instance of MicrosoftGraphMdmAuthority value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphMdmAuthority() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphMdmAuthority from its string representation.
      *
      * @param name a name to look for.

@@ -34,24 +34,28 @@ import com.azure.resourcemanager.security.models.CustomEntityStoreAssignmentRequ
 import com.azure.resourcemanager.security.models.CustomEntityStoreAssignmentsListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CustomEntityStoreAssignmentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CustomEntityStoreAssignmentsClient.
+ */
 public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntityStoreAssignmentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CustomEntityStoreAssignmentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityCenterImpl client;
 
     /**
      * Initializes an instance of CustomEntityStoreAssignmentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CustomEntityStoreAssignmentsClientImpl(SecurityCenterImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    CustomEntityStoreAssignmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(CustomEntityStoreAssignmentsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,253 +66,202 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterCustom")
     public interface CustomEntityStoreAssignmentsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customEntityStoreAssignments/{customEntityStoreAssignmentName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customEntityStoreAssignments/{customEntityStoreAssignmentName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomEntityStoreAssignmentInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<CustomEntityStoreAssignmentInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("customEntityStoreAssignmentName") String customEntityStoreAssignmentName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customEntityStoreAssignments/{customEntityStoreAssignmentName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customEntityStoreAssignments/{customEntityStoreAssignmentName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomEntityStoreAssignmentInner>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<CustomEntityStoreAssignmentInner>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("customEntityStoreAssignmentName") String customEntityStoreAssignmentName,
             @BodyParam("application/json") CustomEntityStoreAssignmentRequest customEntityStoreAssignmentRequestBody,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customEntityStoreAssignments/{customEntityStoreAssignmentName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customEntityStoreAssignments/{customEntityStoreAssignmentName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("customEntityStoreAssignmentName") String customEntityStoreAssignmentName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customEntityStoreAssignments")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customEntityStoreAssignments")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomEntityStoreAssignmentsListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<CustomEntityStoreAssignmentsListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/customEntityStoreAssignments")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomEntityStoreAssignmentsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CustomEntityStoreAssignmentsListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomEntityStoreAssignmentsListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomEntityStoreAssignmentsListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a custom entity store assignment
-     *
-     * <p>Gets a single custom entity store assignment by name for the provided subscription and resource group.
-     *
+     * 
+     * Gets a single custom entity store assignment by name for the provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single custom entity store assignment by name for the provided subscription and resource group along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CustomEntityStoreAssignmentInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String customEntityStoreAssignmentName) {
+    private Mono<Response<CustomEntityStoreAssignmentInner>>
+        getByResourceGroupWithResponseAsync(String resourceGroupName, String customEntityStoreAssignmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customEntityStoreAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter customEntityStoreAssignmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter customEntityStoreAssignmentName is required and cannot be null."));
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            customEntityStoreAssignmentName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, customEntityStoreAssignmentName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a custom entity store assignment
-     *
-     * <p>Gets a single custom entity store assignment by name for the provided subscription and resource group.
-     *
+     * 
+     * Gets a single custom entity store assignment by name for the provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single custom entity store assignment by name for the provided subscription and resource group along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomEntityStoreAssignmentInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String customEntityStoreAssignmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customEntityStoreAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter customEntityStoreAssignmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter customEntityStoreAssignmentName is required and cannot be null."));
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                customEntityStoreAssignmentName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, customEntityStoreAssignmentName, accept, context);
     }
 
     /**
      * Gets a custom entity store assignment
-     *
-     * <p>Gets a single custom entity store assignment by name for the provided subscription and resource group.
-     *
+     * 
+     * Gets a single custom entity store assignment by name for the provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single custom entity store assignment by name for the provided subscription and resource group on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CustomEntityStoreAssignmentInner> getByResourceGroupAsync(
-        String resourceGroupName, String customEntityStoreAssignmentName) {
+    private Mono<CustomEntityStoreAssignmentInner> getByResourceGroupAsync(String resourceGroupName,
+        String customEntityStoreAssignmentName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, customEntityStoreAssignmentName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a custom entity store assignment
-     *
-     * <p>Gets a single custom entity store assignment by name for the provided subscription and resource group.
-     *
+     * 
+     * Gets a single custom entity store assignment by name for the provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single custom entity store assignment by name for the provided subscription and resource group along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CustomEntityStoreAssignmentInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String customEntityStoreAssignmentName, Context context) {
+    public Response<CustomEntityStoreAssignmentInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String customEntityStoreAssignmentName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, customEntityStoreAssignmentName, context).block();
     }
 
     /**
      * Gets a custom entity store assignment
-     *
-     * <p>Gets a single custom entity store assignment by name for the provided subscription and resource group.
-     *
+     * 
+     * Gets a single custom entity store assignment by name for the provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -316,19 +269,19 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
      * @return a single custom entity store assignment by name for the provided subscription and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomEntityStoreAssignmentInner getByResourceGroup(
-        String resourceGroupName, String customEntityStoreAssignmentName) {
+    public CustomEntityStoreAssignmentInner getByResourceGroup(String resourceGroupName,
+        String customEntityStoreAssignmentName) {
         return getByResourceGroupWithResponse(resourceGroupName, customEntityStoreAssignmentName, Context.NONE)
             .getValue();
     }
 
     /**
      * Creates a custom entity store assignment
-     *
-     * <p>Creates a custom entity store assignment for the provided subscription, if not already exists.
-     *
+     * 
+     * Creates a custom entity store assignment for the provided subscription, if not already exists.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
      * @param customEntityStoreAssignmentRequestBody Custom entity store assignment body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -337,65 +290,47 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
      * @return custom entity store assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CustomEntityStoreAssignmentInner>> createWithResponseAsync(
-        String resourceGroupName,
+    private Mono<Response<CustomEntityStoreAssignmentInner>> createWithResponseAsync(String resourceGroupName,
         String customEntityStoreAssignmentName,
         CustomEntityStoreAssignmentRequest customEntityStoreAssignmentRequestBody) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customEntityStoreAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter customEntityStoreAssignmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter customEntityStoreAssignmentName is required and cannot be null."));
         }
         if (customEntityStoreAssignmentRequestBody == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter customEntityStoreAssignmentRequestBody is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter customEntityStoreAssignmentRequestBody is required and cannot be null."));
         } else {
             customEntityStoreAssignmentRequestBody.validate();
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            customEntityStoreAssignmentName,
-                            customEntityStoreAssignmentRequestBody,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, customEntityStoreAssignmentName,
+                customEntityStoreAssignmentRequestBody, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a custom entity store assignment
-     *
-     * <p>Creates a custom entity store assignment for the provided subscription, if not already exists.
-     *
+     * 
+     * Creates a custom entity store assignment for the provided subscription, if not already exists.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
      * @param customEntityStoreAssignmentRequestBody Custom entity store assignment body.
      * @param context The context to associate with this operation.
@@ -405,63 +340,45 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
      * @return custom entity store assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CustomEntityStoreAssignmentInner>> createWithResponseAsync(
-        String resourceGroupName,
+    private Mono<Response<CustomEntityStoreAssignmentInner>> createWithResponseAsync(String resourceGroupName,
         String customEntityStoreAssignmentName,
-        CustomEntityStoreAssignmentRequest customEntityStoreAssignmentRequestBody,
-        Context context) {
+        CustomEntityStoreAssignmentRequest customEntityStoreAssignmentRequestBody, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customEntityStoreAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter customEntityStoreAssignmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter customEntityStoreAssignmentName is required and cannot be null."));
         }
         if (customEntityStoreAssignmentRequestBody == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter customEntityStoreAssignmentRequestBody is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter customEntityStoreAssignmentRequestBody is required and cannot be null."));
         } else {
             customEntityStoreAssignmentRequestBody.validate();
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                customEntityStoreAssignmentName,
-                customEntityStoreAssignmentRequestBody,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            customEntityStoreAssignmentName, customEntityStoreAssignmentRequestBody, accept, context);
     }
 
     /**
      * Creates a custom entity store assignment
-     *
-     * <p>Creates a custom entity store assignment for the provided subscription, if not already exists.
-     *
+     * 
+     * Creates a custom entity store assignment for the provided subscription, if not already exists.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
      * @param customEntityStoreAssignmentRequestBody Custom entity store assignment body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -470,22 +387,20 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
      * @return custom entity store assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CustomEntityStoreAssignmentInner> createAsync(
-        String resourceGroupName,
+    private Mono<CustomEntityStoreAssignmentInner> createAsync(String resourceGroupName,
         String customEntityStoreAssignmentName,
         CustomEntityStoreAssignmentRequest customEntityStoreAssignmentRequestBody) {
-        return createWithResponseAsync(
-                resourceGroupName, customEntityStoreAssignmentName, customEntityStoreAssignmentRequestBody)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return createWithResponseAsync(resourceGroupName, customEntityStoreAssignmentName,
+            customEntityStoreAssignmentRequestBody).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a custom entity store assignment
-     *
-     * <p>Creates a custom entity store assignment for the provided subscription, if not already exists.
-     *
+     * 
+     * Creates a custom entity store assignment for the provided subscription, if not already exists.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
      * @param customEntityStoreAssignmentRequestBody Custom entity store assignment body.
      * @param context The context to associate with this operation.
@@ -495,23 +410,20 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
      * @return custom entity store assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CustomEntityStoreAssignmentInner> createWithResponse(
-        String resourceGroupName,
+    public Response<CustomEntityStoreAssignmentInner> createWithResponse(String resourceGroupName,
         String customEntityStoreAssignmentName,
-        CustomEntityStoreAssignmentRequest customEntityStoreAssignmentRequestBody,
-        Context context) {
-        return createWithResponseAsync(
-                resourceGroupName, customEntityStoreAssignmentName, customEntityStoreAssignmentRequestBody, context)
-            .block();
+        CustomEntityStoreAssignmentRequest customEntityStoreAssignmentRequestBody, Context context) {
+        return createWithResponseAsync(resourceGroupName, customEntityStoreAssignmentName,
+            customEntityStoreAssignmentRequestBody, context).block();
     }
 
     /**
      * Creates a custom entity store assignment
-     *
-     * <p>Creates a custom entity store assignment for the provided subscription, if not already exists.
-     *
+     * 
+     * Creates a custom entity store assignment for the provided subscription, if not already exists.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
      * @param customEntityStoreAssignmentRequestBody Custom entity store assignment body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -520,25 +432,19 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
      * @return custom entity store assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomEntityStoreAssignmentInner create(
-        String resourceGroupName,
-        String customEntityStoreAssignmentName,
+    public CustomEntityStoreAssignmentInner create(String resourceGroupName, String customEntityStoreAssignmentName,
         CustomEntityStoreAssignmentRequest customEntityStoreAssignmentRequestBody) {
-        return createWithResponse(
-                resourceGroupName,
-                customEntityStoreAssignmentName,
-                customEntityStoreAssignmentRequestBody,
-                Context.NONE)
-            .getValue();
+        return createWithResponse(resourceGroupName, customEntityStoreAssignmentName,
+            customEntityStoreAssignmentRequestBody, Context.NONE).getValue();
     }
 
     /**
      * Deleted a custom entity store assignment
-     *
-     * <p>Delete a custom entity store assignment by name for a provided subscription.
-     *
+     * 
+     * Delete a custom entity store assignment by name for a provided subscription.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -546,54 +452,39 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String customEntityStoreAssignmentName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName,
+        String customEntityStoreAssignmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customEntityStoreAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter customEntityStoreAssignmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter customEntityStoreAssignmentName is required and cannot be null."));
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            customEntityStoreAssignmentName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, customEntityStoreAssignmentName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deleted a custom entity store assignment
-     *
-     * <p>Delete a custom entity store assignment by name for a provided subscription.
-     *
+     * 
+     * Delete a custom entity store assignment by name for a provided subscription.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -602,51 +493,38 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String customEntityStoreAssignmentName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName,
+        String customEntityStoreAssignmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customEntityStoreAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter customEntityStoreAssignmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter customEntityStoreAssignmentName is required and cannot be null."));
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                customEntityStoreAssignmentName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            customEntityStoreAssignmentName, accept, context);
     }
 
     /**
      * Deleted a custom entity store assignment
-     *
-     * <p>Delete a custom entity store assignment by name for a provided subscription.
-     *
+     * 
+     * Delete a custom entity store assignment by name for a provided subscription.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -661,11 +539,11 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
 
     /**
      * Deleted a custom entity store assignment
-     *
-     * <p>Delete a custom entity store assignment by name for a provided subscription.
-     *
+     * 
+     * Delete a custom entity store assignment by name for a provided subscription.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -674,18 +552,18 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String customEntityStoreAssignmentName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String customEntityStoreAssignmentName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, customEntityStoreAssignmentName, context).block();
     }
 
     /**
      * Deleted a custom entity store assignment
-     *
-     * <p>Delete a custom entity store assignment by name for a provided subscription.
-     *
+     * 
+     * Delete a custom entity store assignment by name for a provided subscription.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -698,31 +576,27 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
 
     /**
      * List custom entity store assignments in a subscription and a resource group
-     *
-     * <p>List custom entity store assignments by a provided subscription and resource group.
-     *
+     * 
+     * List custom entity store assignments by a provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of custom entity store assignments along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomEntityStoreAssignmentInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
+    private Mono<PagedResponse<CustomEntityStoreAssignmentInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -731,56 +605,37 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accept,
-                            context))
-            .<PagedResponse<CustomEntityStoreAssignmentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+            .<PagedResponse<CustomEntityStoreAssignmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List custom entity store assignments in a subscription and a resource group
-     *
-     * <p>List custom entity store assignments by a provided subscription and resource group.
-     *
+     * 
+     * List custom entity store assignments by a provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of custom entity store assignments along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomEntityStoreAssignmentInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<CustomEntityStoreAssignmentInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -790,31 +645,19 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List custom entity store assignments in a subscription and a resource group
-     *
-     * <p>List custom entity store assignments by a provided subscription and resource group.
-     *
+     * 
+     * List custom entity store assignments by a provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -822,18 +665,17 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomEntityStoreAssignmentInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List custom entity store assignments in a subscription and a resource group
-     *
-     * <p>List custom entity store assignments by a provided subscription and resource group.
-     *
+     * 
+     * List custom entity store assignments by a provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -841,20 +683,19 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
      * @return a list of custom entity store assignments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CustomEntityStoreAssignmentInner> listByResourceGroupAsync(
-        String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+    private PagedFlux<CustomEntityStoreAssignmentInner> listByResourceGroupAsync(String resourceGroupName,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List custom entity store assignments in a subscription and a resource group
-     *
-     * <p>List custom entity store assignments by a provided subscription and resource group.
-     *
+     * 
+     * List custom entity store assignments by a provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -867,11 +708,11 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
 
     /**
      * List custom entity store assignments in a subscription and a resource group
-     *
-     * <p>List custom entity store assignments by a provided subscription and resource group.
-     *
+     * 
+     * List custom entity store assignments by a provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -879,116 +720,91 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
      * @return a list of custom entity store assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CustomEntityStoreAssignmentInner> listByResourceGroup(
-        String resourceGroupName, Context context) {
+    public PagedIterable<CustomEntityStoreAssignmentInner> listByResourceGroup(String resourceGroupName,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
     }
 
     /**
      * List custom entity store assignments in a subscription
-     *
-     * <p>List custom entity store assignments by provided subscription.
-     *
+     * 
+     * List custom entity store assignments by provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of custom entity store assignments along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomEntityStoreAssignmentInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
-            .<PagedResponse<CustomEntityStoreAssignmentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                accept, context))
+            .<PagedResponse<CustomEntityStoreAssignmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List custom entity store assignments in a subscription
-     *
-     * <p>List custom entity store assignments by provided subscription.
-     *
+     * 
+     * List custom entity store assignments by provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of custom entity store assignments along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomEntityStoreAssignmentInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List custom entity store assignments in a subscription
-     *
-     * <p>List custom entity store assignments by provided subscription.
-     *
+     * 
+     * List custom entity store assignments by provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of custom entity store assignments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomEntityStoreAssignmentInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List custom entity store assignments in a subscription
-     *
-     * <p>List custom entity store assignments by provided subscription.
-     *
+     * 
+     * List custom entity store assignments by provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -997,15 +813,15 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomEntityStoreAssignmentInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List custom entity store assignments in a subscription
-     *
-     * <p>List custom entity store assignments by provided subscription.
-     *
+     * 
+     * List custom entity store assignments by provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of custom entity store assignments as paginated response with {@link PagedIterable}.
@@ -1017,9 +833,9 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
 
     /**
      * List custom entity store assignments in a subscription
-     *
-     * <p>List custom entity store assignments by provided subscription.
-     *
+     * 
+     * List custom entity store assignments by provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1033,157 +849,123 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of custom entity store assignments along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomEntityStoreAssignmentInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<CustomEntityStoreAssignmentInner>>
+        listByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CustomEntityStoreAssignmentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<CustomEntityStoreAssignmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of custom entity store assignments along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomEntityStoreAssignmentInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<CustomEntityStoreAssignmentInner>>
+        listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of custom entity store assignments along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomEntityStoreAssignmentInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<CustomEntityStoreAssignmentInner>>
+        listBySubscriptionNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CustomEntityStoreAssignmentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<CustomEntityStoreAssignmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of custom entity store assignments along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomEntityStoreAssignmentInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<CustomEntityStoreAssignmentInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

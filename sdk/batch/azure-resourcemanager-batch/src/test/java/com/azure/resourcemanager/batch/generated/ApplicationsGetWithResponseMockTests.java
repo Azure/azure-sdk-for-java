@@ -30,43 +30,29 @@ public final class ApplicationsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"displayName\":\"wz\",\"allowUpdates\":true,\"defaultVersion\":\"lmctlpd\"},\"etag\":\"itvgbmhrixkwm\",\"id\":\"ijejvegrhbpn\",\"name\":\"ixexcc\",\"type\":\"dreaxh\"}";
+        String responseStr
+            = "{\"properties\":{\"displayName\":\"t\",\"allowUpdates\":false,\"defaultVersion\":\"pyostronzmyhgfi\"},\"etag\":\"sxkm\",\"id\":\"waekrrjreafxtsgu\",\"name\":\"hjglikk\",\"type\":\"wslolbqp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        BatchManager manager =
-            BatchManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        BatchManager manager = BatchManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Application response =
-            manager
-                .applications()
-                .getWithResponse("vblm", "vkzuhbxvvyhgso", "byrqufeg", com.azure.core.util.Context.NONE)
-                .getValue();
+        Application response = manager.applications()
+            .getWithResponse("exdrrvqahqkg", "tpwijnh", "jsvfycxzbfvoowv", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("wz", response.displayName());
-        Assertions.assertEquals(true, response.allowUpdates());
-        Assertions.assertEquals("lmctlpd", response.defaultVersion());
+        Assertions.assertEquals("t", response.displayName());
+        Assertions.assertEquals(false, response.allowUpdates());
+        Assertions.assertEquals("pyostronzmyhgfi", response.defaultVersion());
     }
 }

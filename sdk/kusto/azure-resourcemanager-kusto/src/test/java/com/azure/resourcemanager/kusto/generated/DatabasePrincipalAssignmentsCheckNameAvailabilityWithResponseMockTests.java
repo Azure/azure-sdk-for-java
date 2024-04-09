@@ -33,7 +33,7 @@ public final class DatabasePrincipalAssignmentsCheckNameAvailabilityWithResponse
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"nameAvailable\":true,\"name\":\"lnvnafvvkyfedev\",\"message\":\"oslc\",\"reason\":\"Invalid\"}";
+            "{\"nameAvailable\":true,\"name\":\"wartspphkixkykxd\",\"message\":\"j\",\"reason\":\"Invalid\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,16 +65,16 @@ public final class DatabasePrincipalAssignmentsCheckNameAvailabilityWithResponse
             manager
                 .databasePrincipalAssignments()
                 .checkNameAvailabilityWithResponse(
-                    "qwtehtuevr",
-                    "rljyoogwxhnsdu",
-                    "gwbsreurf",
-                    new DatabasePrincipalAssignmentCheckNameRequest().withName("kfuarenlv"),
+                    "piudeugfsxzecpa",
+                    "wkufykhvuhxepm",
+                    "utznabaobns",
+                    new DatabasePrincipalAssignmentCheckNameRequest().withName("ujdjltymkmvg"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(true, response.nameAvailable());
-        Assertions.assertEquals("lnvnafvvkyfedev", response.name());
-        Assertions.assertEquals("oslc", response.message());
+        Assertions.assertEquals("wartspphkixkykxd", response.name());
+        Assertions.assertEquals("j", response.message());
         Assertions.assertEquals(Reason.INVALID, response.reason());
     }
 }

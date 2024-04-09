@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Excel dataset. */
+/**
+ * Excel dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Excel")
 @JsonFlatten
@@ -62,12 +64,15 @@ public class ExcelDataset extends Dataset {
     @JsonProperty(value = "typeProperties.nullValue")
     private Object nullValue;
 
-    /** Creates an instance of ExcelDataset class. */
-    public ExcelDataset() {}
+    /**
+     * Creates an instance of ExcelDataset class.
+     */
+    public ExcelDataset() {
+    }
 
     /**
      * Get the location property: The location of the excel storage.
-     *
+     * 
      * @return the location value.
      */
     public DatasetLocation getLocation() {
@@ -76,7 +81,7 @@ public class ExcelDataset extends Dataset {
 
     /**
      * Set the location property: The location of the excel storage.
-     *
+     * 
      * @param location the location value to set.
      * @return the ExcelDataset object itself.
      */
@@ -87,7 +92,7 @@ public class ExcelDataset extends Dataset {
 
     /**
      * Get the sheetName property: The sheet name of excel file. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the sheetName value.
      */
     public Object getSheetName() {
@@ -96,7 +101,7 @@ public class ExcelDataset extends Dataset {
 
     /**
      * Set the sheetName property: The sheet name of excel file. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param sheetName the sheetName value to set.
      * @return the ExcelDataset object itself.
      */
@@ -108,7 +113,7 @@ public class ExcelDataset extends Dataset {
     /**
      * Get the sheetIndex property: The sheet index of excel file and default value is 0. Type: integer (or Expression
      * with resultType integer).
-     *
+     * 
      * @return the sheetIndex value.
      */
     public Object getSheetIndex() {
@@ -118,7 +123,7 @@ public class ExcelDataset extends Dataset {
     /**
      * Set the sheetIndex property: The sheet index of excel file and default value is 0. Type: integer (or Expression
      * with resultType integer).
-     *
+     * 
      * @param sheetIndex the sheetIndex value to set.
      * @return the ExcelDataset object itself.
      */
@@ -129,7 +134,7 @@ public class ExcelDataset extends Dataset {
 
     /**
      * Get the range property: The partial data of one sheet. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the range value.
      */
     public Object getRange() {
@@ -138,7 +143,7 @@ public class ExcelDataset extends Dataset {
 
     /**
      * Set the range property: The partial data of one sheet. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param range the range value to set.
      * @return the ExcelDataset object itself.
      */
@@ -151,7 +156,7 @@ public class ExcelDataset extends Dataset {
      * Get the firstRowAsHeader property: When used as input, treat the first row of data as headers. When used as
      * output,write the headers into the output as the first row of data. The default value is false. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @return the firstRowAsHeader value.
      */
     public Object getFirstRowAsHeader() {
@@ -162,7 +167,7 @@ public class ExcelDataset extends Dataset {
      * Set the firstRowAsHeader property: When used as input, treat the first row of data as headers. When used as
      * output,write the headers into the output as the first row of data. The default value is false. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @param firstRowAsHeader the firstRowAsHeader value to set.
      * @return the ExcelDataset object itself.
      */
@@ -173,7 +178,7 @@ public class ExcelDataset extends Dataset {
 
     /**
      * Get the compression property: The data compression method used for the json dataset.
-     *
+     * 
      * @return the compression value.
      */
     public DatasetCompression getCompression() {
@@ -182,7 +187,7 @@ public class ExcelDataset extends Dataset {
 
     /**
      * Set the compression property: The data compression method used for the json dataset.
-     *
+     * 
      * @param compression the compression value to set.
      * @return the ExcelDataset object itself.
      */
@@ -193,7 +198,7 @@ public class ExcelDataset extends Dataset {
 
     /**
      * Get the nullValue property: The null value string. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the nullValue value.
      */
     public Object getNullValue() {
@@ -202,7 +207,7 @@ public class ExcelDataset extends Dataset {
 
     /**
      * Set the nullValue property: The null value string. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param nullValue the nullValue value to set.
      * @return the ExcelDataset object itself.
      */
@@ -211,49 +216,63 @@ public class ExcelDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExcelDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExcelDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExcelDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExcelDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExcelDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExcelDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExcelDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

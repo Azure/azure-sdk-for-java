@@ -4,84 +4,106 @@
 
 package com.azure.monitor.query.implementation.metricsbatch.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
-/** The unit of the metric. */
-public enum MetricUnit {
-    /** Unit of raw quantity. */
-    COUNT("Count"),
+/**
+ * The unit of the metric.
+ */
+public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
+    /**
+     * Unit of raw quantity.
+     */
+    public static final MetricUnit COUNT = fromString("Count");
 
-    /** Unit of memory in bytes. */
-    BYTES("Bytes"),
+    /**
+     * Unit of memory in bytes.
+     */
+    public static final MetricUnit BYTES = fromString("Bytes");
 
-    /** Unit of time in seconds. */
-    SECONDS("Seconds"),
+    /**
+     * Unit of time in seconds.
+     */
+    public static final MetricUnit SECONDS = fromString("Seconds");
 
-    /** Rate unit of raw quantity per second. */
-    COUNT_PER_SECOND("CountPerSecond"),
+    /**
+     * Rate unit of raw quantity per second.
+     */
+    public static final MetricUnit COUNT_PER_SECOND = fromString("CountPerSecond");
 
-    /** Rate unit of memory in bytes per second. */
-    BYTES_PER_SECOND("BytesPerSecond"),
+    /**
+     * Rate unit of memory in bytes per second.
+     */
+    public static final MetricUnit BYTES_PER_SECOND = fromString("BytesPerSecond");
 
-    /** Percentage unit. */
-    PERCENT("Percent"),
+    /**
+     * Percentage unit.
+     */
+    public static final MetricUnit PERCENT = fromString("Percent");
 
-    /** Unit of time in 1/1000th of a second. */
-    MILLI_SECONDS("MilliSeconds"),
+    /**
+     * Unit of time in 1/1000th of a second.
+     */
+    public static final MetricUnit MILLI_SECONDS = fromString("MilliSeconds");
 
     /**
      * Unit of data transfer or storage. It is the size of the data in bytes multiplied by the time it takes to transfer
      * or store the data in seconds.
      */
-    BYTE_SECONDS("ByteSeconds"),
+    public static final MetricUnit BYTE_SECONDS = fromString("ByteSeconds");
 
-    /** No specified unit. */
-    UNSPECIFIED("Unspecified"),
+    /**
+     * No specified unit.
+     */
+    public static final MetricUnit UNSPECIFIED = fromString("Unspecified");
 
-    /** Unit of processing power. */
-    CORES("Cores"),
+    /**
+     * Unit of processing power.
+     */
+    public static final MetricUnit CORES = fromString("Cores");
 
-    /** Unit of processing power in 1/1000th of a CPU core. */
-    MILLI_CORES("MilliCores"),
+    /**
+     * Unit of processing power in 1/1000th of a CPU core.
+     */
+    public static final MetricUnit MILLI_CORES = fromString("MilliCores");
 
-    /** Unit of processing power in one billionth of a CPU core. */
-    NANO_CORES("NanoCores"),
+    /**
+     * Unit of processing power in one billionth of a CPU core.
+     */
+    public static final MetricUnit NANO_CORES = fromString("NanoCores");
 
-    /** Rate unit of binary digits per second. */
-    BITS_PER_SECOND("BitsPerSecond");
+    /**
+     * Rate unit of binary digits per second.
+     */
+    public static final MetricUnit BITS_PER_SECOND = fromString("BitsPerSecond");
 
-    /** The actual serialized value for a MetricUnit instance. */
-    private final String value;
-
-    MetricUnit(String value) {
-        this.value = value;
+    /**
+     * Creates a new instance of MetricUnit value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MetricUnit() {
     }
 
     /**
-     * Parses a serialized value to a MetricUnit instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed MetricUnit object, or null if unable to parse.
+     * Creates or finds a MetricUnit from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding MetricUnit.
      */
     @JsonCreator
-    public static MetricUnit fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        MetricUnit[] items = MetricUnit.values();
-        for (MetricUnit item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static MetricUnit fromString(String name) {
+        return fromString(name, MetricUnit.class);
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * Gets known MetricUnit values.
+     * 
+     * @return known MetricUnit values.
+     */
+    public static Collection<MetricUnit> values() {
+        return values(MetricUnit.class);
     }
 }

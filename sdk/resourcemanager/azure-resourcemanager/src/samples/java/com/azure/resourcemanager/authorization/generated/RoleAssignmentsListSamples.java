@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RoleAssignments List. */
 public final class RoleAssignmentsListSamples {
     /*
@@ -23,6 +21,6 @@ public final class RoleAssignmentsListSamples {
             .manager()
             .roleServiceClient()
             .getRoleAssignments()
-            .list(null, null, Context.NONE);
+            .list(null, null, com.azure.core.util.Context.NONE);
     }
 }

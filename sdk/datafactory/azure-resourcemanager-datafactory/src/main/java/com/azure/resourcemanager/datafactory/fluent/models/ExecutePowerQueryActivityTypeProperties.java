@@ -16,7 +16,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Execute power query data flow activity properties. */
+/**
+ * Execute power query data flow activity properties.
+ */
 @Fluent
 public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFlowActivityTypeProperties {
     /*
@@ -32,14 +34,16 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
     @JsonProperty(value = "queries")
     private List<PowerQuerySinkMapping> queries;
 
-    /** Creates an instance of ExecutePowerQueryActivityTypeProperties class. */
+    /**
+     * Creates an instance of ExecutePowerQueryActivityTypeProperties class.
+     */
     public ExecutePowerQueryActivityTypeProperties() {
     }
 
     /**
      * Get the sinks property: (Deprecated. Please use Queries). List of Power Query activity sinks mapped to a
      * queryName.
-     *
+     * 
      * @return the sinks value.
      */
     public Map<String, PowerQuerySink> sinks() {
@@ -49,7 +53,7 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
     /**
      * Set the sinks property: (Deprecated. Please use Queries). List of Power Query activity sinks mapped to a
      * queryName.
-     *
+     * 
      * @param sinks the sinks value to set.
      * @return the ExecutePowerQueryActivityTypeProperties object itself.
      */
@@ -60,7 +64,7 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
 
     /**
      * Get the queries property: List of mapping for Power Query mashup query to sink dataset(s).
-     *
+     * 
      * @return the queries value.
      */
     public List<PowerQuerySinkMapping> queries() {
@@ -69,7 +73,7 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
 
     /**
      * Set the queries property: List of mapping for Power Query mashup query to sink dataset(s).
-     *
+     * 
      * @param queries the queries value to set.
      * @return the ExecutePowerQueryActivityTypeProperties object itself.
      */
@@ -78,57 +82,73 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePowerQueryActivityTypeProperties withDataFlow(DataFlowReference dataFlow) {
         super.withDataFlow(dataFlow);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePowerQueryActivityTypeProperties withStaging(DataFlowStagingInfo staging) {
         super.withStaging(staging);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ExecutePowerQueryActivityTypeProperties withIntegrationRuntime(
-        IntegrationRuntimeReference integrationRuntime) {
+    public ExecutePowerQueryActivityTypeProperties
+        withIntegrationRuntime(IntegrationRuntimeReference integrationRuntime) {
         super.withIntegrationRuntime(integrationRuntime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePowerQueryActivityTypeProperties withCompute(ExecuteDataFlowActivityTypePropertiesCompute compute) {
         super.withCompute(compute);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePowerQueryActivityTypeProperties withTraceLevel(Object traceLevel) {
         super.withTraceLevel(traceLevel);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePowerQueryActivityTypeProperties withContinueOnError(Object continueOnError) {
         super.withContinueOnError(continueOnError);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePowerQueryActivityTypeProperties withRunConcurrently(Object runConcurrently) {
         super.withRunConcurrently(runConcurrently);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePowerQueryActivityTypeProperties withSourceStagingConcurrency(Object sourceStagingConcurrency) {
         super.withSourceStagingConcurrency(sourceStagingConcurrency);
@@ -137,21 +157,18 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (sinks() != null) {
-            sinks()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            sinks().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (queries() != null) {
             queries().forEach(e -> e.validate());

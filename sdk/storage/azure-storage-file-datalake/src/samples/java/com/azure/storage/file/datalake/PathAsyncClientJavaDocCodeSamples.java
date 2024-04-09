@@ -5,6 +5,7 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.file.datalake.models.AccessControlChanges;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
@@ -15,6 +16,7 @@ import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
+import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -26,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
@@ -86,7 +87,7 @@ public class PathAsyncClientJavaDocCodeSamples {
         String umask = "umask";
         String owner = "rwx";
         String group = "r--";
-        String leaseId = UUID.randomUUID().toString();
+        String leaseId = CoreUtils.randomUuid().toString();
         Integer duration = 15;
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
             .setPermissions(permissions)
@@ -154,12 +155,22 @@ public class PathAsyncClientJavaDocCodeSamples {
 
     /**
      * Code snippets for {@link DataLakePathAsyncClient#getProperties()}
+     * and {@link DataLakePathAsyncClient#getProperties(PathGetPropertiesOptions)}
      */
     public void getPropertiesCodeSnippet() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.getProperties
         client.getProperties().subscribe(response ->
             System.out.printf("Creation Time: %s, Size: %d%n", response.getCreationTime(), response.getFileSize()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.getProperties
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.getProperties#PathGetPropertiesOptions
+        PathGetPropertiesOptions options = new PathGetPropertiesOptions().setUserPrincipalName(true);
+
+        client.getProperties(options).subscribe(response ->
+            System.out.printf("Creation Time: %s, Size: %d%n", response.getCreationTime(), response.getFileSize()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.getProperties#PathGetPropertiesOptions
+
+
     }
 
     /**

@@ -56,8 +56,6 @@ public final class SignalRReplicasDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .signalRReplicas()
-            .deleteWithResponse("josovyrrl", "a", "sinuqtljqobbpih", com.azure.core.util.Context.NONE);
+        manager.signalRReplicas().deleteWithResponse("ommpvfqaw", "fgbrtt", "iac", com.azure.core.util.Context.NONE);
     }
 }

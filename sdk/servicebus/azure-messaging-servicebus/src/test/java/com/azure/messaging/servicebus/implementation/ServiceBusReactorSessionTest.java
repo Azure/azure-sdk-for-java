@@ -32,9 +32,7 @@ import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -124,16 +122,7 @@ public class ServiceBusReactorSessionTest {
     private AmqpConnection connection;
 
     private ServiceBusReactorSession serviceBusReactorSession;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(60));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
+    private final ServiceBusAmqpLinkProvider linkProvider = new ServiceBusAmqpLinkProvider();
 
     @BeforeEach
     void setup(TestInfo testInfo) {
@@ -199,8 +188,8 @@ public class ServiceBusReactorSessionTest {
 
         when(connection.getShutdownSignals()).thenReturn(Flux.empty());
         serviceBusReactorSession = new ServiceBusReactorSession(connection, session, handler, SESSION_NAME, reactorProvider,
-            handlerProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer, retryOptions,
-            new ServiceBusCreateSessionOptions(false));
+            handlerProvider, linkProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer, retryOptions,
+            new ServiceBusCreateSessionOptions(false), true);
         when(connection.getShutdownSignals()).thenReturn(Flux.never());
     }
 
@@ -252,7 +241,8 @@ public class ServiceBusReactorSessionTest {
         // Act
         StepVerifier.create(serviceBusReactorSession.createProducer(VIA_ENTITY_PATH_SENDER_LINK_NAME, VIA_ENTITY_PATH,
             retryOptions.getTryTimeout(), retryPolicy, ENTITY_PATH, CLIENT_IDENTIFIER))
-            .verifyError(RuntimeException.class);
+            .expectError(RuntimeException.class)
+            .verify(Duration.ofSeconds(60));
 
         // Assert
         verify(tokenManagerEntity).authorize();
@@ -302,8 +292,8 @@ public class ServiceBusReactorSessionTest {
         when(session.sender(transactionLinkName)).thenReturn(coordinatorSenderEntity);
 
         final ServiceBusReactorSession serviceBusReactorSession = new ServiceBusReactorSession(connection, session, handler,
-            SESSION_NAME, reactorProvider, handlerProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer,
-            retryOptions, new ServiceBusCreateSessionOptions(true));
+            SESSION_NAME, reactorProvider, handlerProvider, linkProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer,
+            retryOptions, new ServiceBusCreateSessionOptions(true), true);
 
         when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, transactionLinkName, transactionLinkName))
             .thenReturn(sendEntityLinkHandler);

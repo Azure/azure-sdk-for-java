@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Result of the request to list endpoints. It contains a list of endpoint objects and a URL link to get the next set of
- * results.
+ * Result of the request to list endpoints. It contains a list of endpoint objects and a URL link to get the next set
+ * of results.
  */
 @Fluent
 public final class EndpointListResult {
@@ -28,8 +28,14 @@ public final class EndpointListResult {
     private String nextLink;
 
     /**
+     * Creates an instance of EndpointListResult class.
+     */
+    public EndpointListResult() {
+    }
+
+    /**
      * Get the value property: List of CDN endpoints within a profile.
-     *
+     * 
      * @return the value value.
      */
     public List<EndpointInner> value() {
@@ -38,7 +44,7 @@ public final class EndpointListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of endpoint objects if there is any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -47,7 +53,7 @@ public final class EndpointListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of endpoint objects if there is any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the EndpointListResult object itself.
      */
@@ -58,7 +64,7 @@ public final class EndpointListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

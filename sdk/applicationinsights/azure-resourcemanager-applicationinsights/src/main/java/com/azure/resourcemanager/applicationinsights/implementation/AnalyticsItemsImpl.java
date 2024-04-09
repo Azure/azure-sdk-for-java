@@ -33,22 +33,6 @@ public final class AnalyticsItemsImpl implements AnalyticsItems {
         this.serviceManager = serviceManager;
     }
 
-    public List<ApplicationInsightsComponentAnalyticsItem> list(
-        String resourceGroupName, String resourceName, ItemScopePath scopePath) {
-        List<ApplicationInsightsComponentAnalyticsItemInner> inner =
-            this.serviceClient().list(resourceGroupName, resourceName, scopePath);
-        if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ApplicationInsightsComponentAnalyticsItemImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
     public Response<List<ApplicationInsightsComponentAnalyticsItem>> listWithResponse(
         String resourceGroupName,
         String resourceName,
@@ -76,14 +60,19 @@ public final class AnalyticsItemsImpl implements AnalyticsItems {
         }
     }
 
-    public ApplicationInsightsComponentAnalyticsItem get(
+    public List<ApplicationInsightsComponentAnalyticsItem> list(
         String resourceGroupName, String resourceName, ItemScopePath scopePath) {
-        ApplicationInsightsComponentAnalyticsItemInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName, scopePath);
+        List<ApplicationInsightsComponentAnalyticsItemInner> inner =
+            this.serviceClient().list(resourceGroupName, resourceName, scopePath);
         if (inner != null) {
-            return new ApplicationInsightsComponentAnalyticsItemImpl(inner, this.manager());
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new ApplicationInsightsComponentAnalyticsItemImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
         } else {
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -107,13 +96,10 @@ public final class AnalyticsItemsImpl implements AnalyticsItems {
         }
     }
 
-    public ApplicationInsightsComponentAnalyticsItem put(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        ApplicationInsightsComponentAnalyticsItemInner itemProperties) {
+    public ApplicationInsightsComponentAnalyticsItem get(
+        String resourceGroupName, String resourceName, ItemScopePath scopePath) {
         ApplicationInsightsComponentAnalyticsItemInner inner =
-            this.serviceClient().put(resourceGroupName, resourceName, scopePath, itemProperties);
+            this.serviceClient().get(resourceGroupName, resourceName, scopePath);
         if (inner != null) {
             return new ApplicationInsightsComponentAnalyticsItemImpl(inner, this.manager());
         } else {
@@ -143,8 +129,18 @@ public final class AnalyticsItemsImpl implements AnalyticsItems {
         }
     }
 
-    public void delete(String resourceGroupName, String resourceName, ItemScopePath scopePath) {
-        this.serviceClient().delete(resourceGroupName, resourceName, scopePath);
+    public ApplicationInsightsComponentAnalyticsItem put(
+        String resourceGroupName,
+        String resourceName,
+        ItemScopePath scopePath,
+        ApplicationInsightsComponentAnalyticsItemInner itemProperties) {
+        ApplicationInsightsComponentAnalyticsItemInner inner =
+            this.serviceClient().put(resourceGroupName, resourceName, scopePath, itemProperties);
+        if (inner != null) {
+            return new ApplicationInsightsComponentAnalyticsItemImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -155,6 +151,10 @@ public final class AnalyticsItemsImpl implements AnalyticsItems {
         String name,
         Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, scopePath, id, name, context);
+    }
+
+    public void delete(String resourceGroupName, String resourceName, ItemScopePath scopePath) {
+        this.serviceClient().delete(resourceGroupName, resourceName, scopePath);
     }
 
     private AnalyticsItemsClient serviceClient() {

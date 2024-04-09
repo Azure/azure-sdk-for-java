@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cosmos DB MongoDB collection resource object. */
+/**
+ * Cosmos DB MongoDB collection resource object.
+ */
 @Fluent
 public final class MongoIndexKeys {
     /*
@@ -17,13 +19,15 @@ public final class MongoIndexKeys {
     @JsonProperty(value = "keys")
     private List<String> keys;
 
-    /** Creates an instance of MongoIndexKeys class. */
+    /**
+     * Creates an instance of MongoIndexKeys class.
+     */
     public MongoIndexKeys() {
     }
 
     /**
      * Get the keys property: List of keys for each MongoDB collection in the Azure Cosmos DB service.
-     *
+     * 
      * @return the keys value.
      */
     public List<String> keys() {
@@ -32,7 +36,7 @@ public final class MongoIndexKeys {
 
     /**
      * Set the keys property: List of keys for each MongoDB collection in the Azure Cosmos DB service.
-     *
+     * 
      * @param keys the keys value to set.
      * @return the MongoIndexKeys object itself.
      */
@@ -43,7 +47,7 @@ public final class MongoIndexKeys {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

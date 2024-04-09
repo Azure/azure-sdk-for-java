@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Office365 linked service. */
+/**
+ * Office365 linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Office365")
 @Fluent
@@ -24,41 +26,51 @@ public final class Office365LinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private Office365LinkedServiceTypeProperties innerTypeProperties = new Office365LinkedServiceTypeProperties();
 
-    /** Creates an instance of Office365LinkedService class. */
+    /**
+     * Creates an instance of Office365LinkedService class.
+     */
     public Office365LinkedService() {
     }
 
     /**
      * Get the innerTypeProperties property: Office365 linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private Office365LinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Office365LinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Office365LinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Office365LinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Office365LinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -68,7 +80,7 @@ public final class Office365LinkedService extends LinkedService {
     /**
      * Get the office365TenantId property: Azure tenant ID to which the Office 365 account belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the office365TenantId value.
      */
     public Object office365TenantId() {
@@ -78,7 +90,7 @@ public final class Office365LinkedService extends LinkedService {
     /**
      * Set the office365TenantId property: Azure tenant ID to which the Office 365 account belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param office365TenantId the office365TenantId value to set.
      * @return the Office365LinkedService object itself.
      */
@@ -93,7 +105,7 @@ public final class Office365LinkedService extends LinkedService {
     /**
      * Get the servicePrincipalTenantId property: Specify the tenant information under which your Azure AD web
      * application resides. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the servicePrincipalTenantId value.
      */
     public Object servicePrincipalTenantId() {
@@ -103,7 +115,7 @@ public final class Office365LinkedService extends LinkedService {
     /**
      * Set the servicePrincipalTenantId property: Specify the tenant information under which your Azure AD web
      * application resides. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param servicePrincipalTenantId the servicePrincipalTenantId value to set.
      * @return the Office365LinkedService object itself.
      */
@@ -118,7 +130,7 @@ public final class Office365LinkedService extends LinkedService {
     /**
      * Get the servicePrincipalId property: Specify the application's client ID. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the servicePrincipalId value.
      */
     public Object servicePrincipalId() {
@@ -128,7 +140,7 @@ public final class Office365LinkedService extends LinkedService {
     /**
      * Set the servicePrincipalId property: Specify the application's client ID. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the Office365LinkedService object itself.
      */
@@ -142,7 +154,7 @@ public final class Office365LinkedService extends LinkedService {
 
     /**
      * Get the servicePrincipalKey property: Specify the application's key.
-     *
+     * 
      * @return the servicePrincipalKey value.
      */
     public SecretBase servicePrincipalKey() {
@@ -151,7 +163,7 @@ public final class Office365LinkedService extends LinkedService {
 
     /**
      * Set the servicePrincipalKey property: Specify the application's key.
-     *
+     * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the Office365LinkedService object itself.
      */
@@ -164,23 +176,23 @@ public final class Office365LinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the Office365LinkedService object itself.
      */
-    public Office365LinkedService withEncryptedCredential(Object encryptedCredential) {
+    public Office365LinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new Office365LinkedServiceTypeProperties();
         }
@@ -190,17 +202,15 @@ public final class Office365LinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model Office365LinkedService"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model Office365LinkedService"));
         } else {
             innerTypeProperties().validate();
         }

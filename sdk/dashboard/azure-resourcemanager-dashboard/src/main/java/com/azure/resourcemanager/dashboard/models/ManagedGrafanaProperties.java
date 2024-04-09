@@ -6,10 +6,14 @@ package com.azure.resourcemanager.dashboard.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.dashboard.fluent.models.PrivateEndpointConnectionInner;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
-/** Properties specific to the grafana resource. */
+/**
+ * Properties specific to the grafana resource.
+ */
 @Fluent
 public final class ManagedGrafanaProperties {
     /*
@@ -79,9 +83,40 @@ public final class ManagedGrafanaProperties {
     @JsonProperty(value = "grafanaIntegrations")
     private GrafanaIntegrations grafanaIntegrations;
 
+    /*
+     * Enterprise settings of a Grafana instance
+     */
+    @JsonProperty(value = "enterpriseConfigurations")
+    private EnterpriseConfigurations enterpriseConfigurations;
+
+    /*
+     * Server configurations of a Grafana instance
+     */
+    @JsonProperty(value = "grafanaConfigurations")
+    private GrafanaConfigurations grafanaConfigurations;
+
+    /*
+     * Installed plugin list of the Grafana instance. Key is plugin id, value is plugin definition.
+     */
+    @JsonProperty(value = "grafanaPlugins")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, GrafanaPlugin> grafanaPlugins;
+
+    /*
+     * The major Grafana software version to target.
+     */
+    @JsonProperty(value = "grafanaMajorVersion")
+    private String grafanaMajorVersion;
+
+    /**
+     * Creates an instance of ManagedGrafanaProperties class.
+     */
+    public ManagedGrafanaProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -90,7 +125,7 @@ public final class ManagedGrafanaProperties {
 
     /**
      * Get the grafanaVersion property: The Grafana software version.
-     *
+     * 
      * @return the grafanaVersion value.
      */
     public String grafanaVersion() {
@@ -99,7 +134,7 @@ public final class ManagedGrafanaProperties {
 
     /**
      * Get the endpoint property: The endpoint of the Grafana instance.
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -107,8 +142,9 @@ public final class ManagedGrafanaProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: Indicate the state for enable or disable traffic over the public interface.
-     *
+     * Get the publicNetworkAccess property: Indicate the state for enable or disable traffic over the public
+     * interface.
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -116,8 +152,9 @@ public final class ManagedGrafanaProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: Indicate the state for enable or disable traffic over the public interface.
-     *
+     * Set the publicNetworkAccess property: Indicate the state for enable or disable traffic over the public
+     * interface.
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ManagedGrafanaProperties object itself.
      */
@@ -128,7 +165,7 @@ public final class ManagedGrafanaProperties {
 
     /**
      * Get the zoneRedundancy property: The zone redundancy setting of the Grafana instance.
-     *
+     * 
      * @return the zoneRedundancy value.
      */
     public ZoneRedundancy zoneRedundancy() {
@@ -137,7 +174,7 @@ public final class ManagedGrafanaProperties {
 
     /**
      * Set the zoneRedundancy property: The zone redundancy setting of the Grafana instance.
-     *
+     * 
      * @param zoneRedundancy the zoneRedundancy value to set.
      * @return the ManagedGrafanaProperties object itself.
      */
@@ -148,7 +185,7 @@ public final class ManagedGrafanaProperties {
 
     /**
      * Get the apiKey property: The api key setting of the Grafana instance.
-     *
+     * 
      * @return the apiKey value.
      */
     public ApiKey apiKey() {
@@ -157,7 +194,7 @@ public final class ManagedGrafanaProperties {
 
     /**
      * Set the apiKey property: The api key setting of the Grafana instance.
-     *
+     * 
      * @param apiKey the apiKey value to set.
      * @return the ManagedGrafanaProperties object itself.
      */
@@ -168,7 +205,7 @@ public final class ManagedGrafanaProperties {
 
     /**
      * Get the deterministicOutboundIp property: Whether a Grafana instance uses deterministic outbound IPs.
-     *
+     * 
      * @return the deterministicOutboundIp value.
      */
     public DeterministicOutboundIp deterministicOutboundIp() {
@@ -177,7 +214,7 @@ public final class ManagedGrafanaProperties {
 
     /**
      * Set the deterministicOutboundIp property: Whether a Grafana instance uses deterministic outbound IPs.
-     *
+     * 
      * @param deterministicOutboundIp the deterministicOutboundIp value to set.
      * @return the ManagedGrafanaProperties object itself.
      */
@@ -188,7 +225,7 @@ public final class ManagedGrafanaProperties {
 
     /**
      * Get the outboundIPs property: List of outbound IPs if deterministicOutboundIP is enabled.
-     *
+     * 
      * @return the outboundIPs value.
      */
     public List<String> outboundIPs() {
@@ -197,7 +234,7 @@ public final class ManagedGrafanaProperties {
 
     /**
      * Get the privateEndpointConnections property: The private endpoint connections of the Grafana instance.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -206,7 +243,7 @@ public final class ManagedGrafanaProperties {
 
     /**
      * Get the autoGeneratedDomainNameLabelScope property: Scope for dns deterministic name hash calculation.
-     *
+     * 
      * @return the autoGeneratedDomainNameLabelScope value.
      */
     public AutoGeneratedDomainNameLabelScope autoGeneratedDomainNameLabelScope() {
@@ -215,12 +252,12 @@ public final class ManagedGrafanaProperties {
 
     /**
      * Set the autoGeneratedDomainNameLabelScope property: Scope for dns deterministic name hash calculation.
-     *
+     * 
      * @param autoGeneratedDomainNameLabelScope the autoGeneratedDomainNameLabelScope value to set.
      * @return the ManagedGrafanaProperties object itself.
      */
-    public ManagedGrafanaProperties withAutoGeneratedDomainNameLabelScope(
-        AutoGeneratedDomainNameLabelScope autoGeneratedDomainNameLabelScope) {
+    public ManagedGrafanaProperties
+        withAutoGeneratedDomainNameLabelScope(AutoGeneratedDomainNameLabelScope autoGeneratedDomainNameLabelScope) {
         this.autoGeneratedDomainNameLabelScope = autoGeneratedDomainNameLabelScope;
         return this;
     }
@@ -228,7 +265,7 @@ public final class ManagedGrafanaProperties {
     /**
      * Get the grafanaIntegrations property: GrafanaIntegrations is a bundled observability experience (e.g.
      * pre-configured data source, tailored Grafana dashboards, alerting defaults) for common monitoring scenarios.
-     *
+     * 
      * @return the grafanaIntegrations value.
      */
     public GrafanaIntegrations grafanaIntegrations() {
@@ -238,7 +275,7 @@ public final class ManagedGrafanaProperties {
     /**
      * Set the grafanaIntegrations property: GrafanaIntegrations is a bundled observability experience (e.g.
      * pre-configured data source, tailored Grafana dashboards, alerting defaults) for common monitoring scenarios.
-     *
+     * 
      * @param grafanaIntegrations the grafanaIntegrations value to set.
      * @return the ManagedGrafanaProperties object itself.
      */
@@ -248,8 +285,90 @@ public final class ManagedGrafanaProperties {
     }
 
     /**
+     * Get the enterpriseConfigurations property: Enterprise settings of a Grafana instance.
+     * 
+     * @return the enterpriseConfigurations value.
+     */
+    public EnterpriseConfigurations enterpriseConfigurations() {
+        return this.enterpriseConfigurations;
+    }
+
+    /**
+     * Set the enterpriseConfigurations property: Enterprise settings of a Grafana instance.
+     * 
+     * @param enterpriseConfigurations the enterpriseConfigurations value to set.
+     * @return the ManagedGrafanaProperties object itself.
+     */
+    public ManagedGrafanaProperties withEnterpriseConfigurations(EnterpriseConfigurations enterpriseConfigurations) {
+        this.enterpriseConfigurations = enterpriseConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the grafanaConfigurations property: Server configurations of a Grafana instance.
+     * 
+     * @return the grafanaConfigurations value.
+     */
+    public GrafanaConfigurations grafanaConfigurations() {
+        return this.grafanaConfigurations;
+    }
+
+    /**
+     * Set the grafanaConfigurations property: Server configurations of a Grafana instance.
+     * 
+     * @param grafanaConfigurations the grafanaConfigurations value to set.
+     * @return the ManagedGrafanaProperties object itself.
+     */
+    public ManagedGrafanaProperties withGrafanaConfigurations(GrafanaConfigurations grafanaConfigurations) {
+        this.grafanaConfigurations = grafanaConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the grafanaPlugins property: Installed plugin list of the Grafana instance. Key is plugin id, value is
+     * plugin definition.
+     * 
+     * @return the grafanaPlugins value.
+     */
+    public Map<String, GrafanaPlugin> grafanaPlugins() {
+        return this.grafanaPlugins;
+    }
+
+    /**
+     * Set the grafanaPlugins property: Installed plugin list of the Grafana instance. Key is plugin id, value is
+     * plugin definition.
+     * 
+     * @param grafanaPlugins the grafanaPlugins value to set.
+     * @return the ManagedGrafanaProperties object itself.
+     */
+    public ManagedGrafanaProperties withGrafanaPlugins(Map<String, GrafanaPlugin> grafanaPlugins) {
+        this.grafanaPlugins = grafanaPlugins;
+        return this;
+    }
+
+    /**
+     * Get the grafanaMajorVersion property: The major Grafana software version to target.
+     * 
+     * @return the grafanaMajorVersion value.
+     */
+    public String grafanaMajorVersion() {
+        return this.grafanaMajorVersion;
+    }
+
+    /**
+     * Set the grafanaMajorVersion property: The major Grafana software version to target.
+     * 
+     * @param grafanaMajorVersion the grafanaMajorVersion value to set.
+     * @return the ManagedGrafanaProperties object itself.
+     */
+    public ManagedGrafanaProperties withGrafanaMajorVersion(String grafanaMajorVersion) {
+        this.grafanaMajorVersion = grafanaMajorVersion;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -258,6 +377,19 @@ public final class ManagedGrafanaProperties {
         }
         if (grafanaIntegrations() != null) {
             grafanaIntegrations().validate();
+        }
+        if (enterpriseConfigurations() != null) {
+            enterpriseConfigurations().validate();
+        }
+        if (grafanaConfigurations() != null) {
+            grafanaConfigurations().validate();
+        }
+        if (grafanaPlugins() != null) {
+            grafanaPlugins().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

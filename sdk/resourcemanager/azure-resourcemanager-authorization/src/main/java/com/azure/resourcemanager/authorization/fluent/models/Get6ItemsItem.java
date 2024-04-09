@@ -785,6 +785,15 @@ public final class Get6ItemsItem extends ExpandableStringEnum<Get6ItemsItem> {
     public static final Get6ItemsItem VERIFICATION_DNS_RECORDS = fromString("verificationDnsRecords");
 
     /**
+     * Creates a new instance of Get6ItemsItem value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Get6ItemsItem() {
+    }
+
+    /**
      * Creates or finds a Get6ItemsItem from its string representation.
      *
      * @param name a name to look for.

@@ -19,19 +19,19 @@ public final class SessionHostListTests {
         SessionHostList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"objectId\":\"ugjhky\",\"lastHeartBeat\":\"2020-12-25T16:19:20Z\",\"sessions\":642347272,\"agentVersion\":\"gssofwq\",\"allowNewSession\":false,\"virtualMachineId\":\"lkrm\",\"resourceId\":\"i\",\"assignedUser\":\"xacqqudfnbyx\",\"friendlyName\":\"aabjyvayffimrz\",\"status\":\"SxSStackListenerNotReady\",\"statusTimestamp\":\"2021-04-17T19:16:23Z\",\"osVersion\":\"gsexne\",\"sxSStackVersion\":\"dnw\",\"updateState\":\"Failed\",\"lastUpdateTime\":\"2021-01-03T05:03:28Z\",\"updateErrorMessage\":\"syyceuzsoibjud\",\"sessionHostHealthCheckResults\":[]},\"id\":\"rx\",\"name\":\"rthzvaytdwkqbrqu\",\"type\":\"paxh\"}],\"nextLink\":\"iilivpdtiirqtd\"}")
+                    "{\"value\":[{\"properties\":{\"objectId\":\"ygvjayvblmh\",\"lastHeartBeat\":\"2021-07-26T11:14:50Z\",\"sessions\":2100624724,\"agentVersion\":\"xvvy\",\"allowNewSession\":false,\"virtualMachineId\":\"pbyrqufegxu\",\"resourceId\":\"zfbn\",\"assignedUser\":\"mctlpdngitv\",\"friendlyName\":\"mhrixkwmyijejve\",\"status\":\"NeedsAssistance\",\"statusTimestamp\":\"2021-09-18T06:49:11Z\",\"osVersion\":\"aixexccbdreaxh\",\"sxSStackVersion\":\"xdrrvqahqkghtp\",\"updateState\":\"Initial\",\"lastUpdateTime\":\"2021-03-19T04:26:57Z\",\"updateErrorMessage\":\"jsvfycxzbfvoowv\",\"sessionHostHealthCheckResults\":[{\"healthCheckName\":\"WebRTCRedirectorCheck\",\"healthCheckResult\":\"Unknown\",\"additionalFailureDetails\":{}}]},\"id\":\"pyostronzmyhgfi\",\"name\":\"nsxkmcwaekrrjr\",\"type\":\"afxtsgum\"},{\"properties\":{\"objectId\":\"ikkx\",\"lastHeartBeat\":\"2021-05-16T06:07:50Z\",\"sessions\":1513768261,\"agentVersion\":\"qpvuzlmvfelf\",\"allowNewSession\":true,\"virtualMachineId\":\"lcrpw\",\"resourceId\":\"eznoig\",\"assignedUser\":\"njwmwkpnbsazejj\",\"friendlyName\":\"kagfhsxtt\",\"status\":\"Available\",\"statusTimestamp\":\"2021-04-24T19:56:55Z\",\"osVersion\":\"faazpxdtnkdmkqjj\",\"sxSStackVersion\":\"uenvrkp\",\"updateState\":\"Failed\",\"lastUpdateTime\":\"2021-06-02T18:39:14Z\",\"updateErrorMessage\":\"rebqaaysjk\",\"sessionHostHealthCheckResults\":[{\"healthCheckName\":\"SxSStackListenerCheck\",\"healthCheckResult\":\"HealthCheckSucceeded\",\"additionalFailureDetails\":{}},{\"healthCheckName\":\"UrlsAccessibleCheck\",\"healthCheckResult\":\"Unknown\",\"additionalFailureDetails\":{}}]},\"id\":\"ffiakp\",\"name\":\"pqqmted\",\"type\":\"tmmjihyeozph\"},{\"properties\":{\"objectId\":\"y\",\"lastHeartBeat\":\"2021-05-03T13:45:25Z\",\"sessions\":1385853585,\"agentVersion\":\"p\",\"allowNewSession\":false,\"virtualMachineId\":\"mdscwxqupev\",\"resourceId\":\"f\",\"assignedUser\":\"otxhojujby\",\"friendlyName\":\"lmcuvhixb\",\"status\":\"NeedsAssistance\",\"statusTimestamp\":\"2021-03-04T07:09:13Z\",\"osVersion\":\"yl\",\"sxSStackVersion\":\"ool\",\"updateState\":\"Started\",\"lastUpdateTime\":\"2021-01-29T16:46:41Z\",\"updateErrorMessage\":\"w\",\"sessionHostHealthCheckResults\":[{\"healthCheckName\":\"MetaDataServiceCheck\",\"healthCheckResult\":\"HealthCheckFailed\",\"additionalFailureDetails\":{}},{\"healthCheckName\":\"DomainTrustCheck\",\"healthCheckResult\":\"Unknown\",\"additionalFailureDetails\":{}},{\"healthCheckName\":\"SupportedEncryptionCheck\",\"healthCheckResult\":\"Unknown\",\"additionalFailureDetails\":{}},{\"healthCheckName\":\"MetaDataServiceCheck\",\"healthCheckResult\":\"HealthCheckFailed\",\"additionalFailureDetails\":{}}]},\"id\":\"wiithtywub\",\"name\":\"cbihwqk\",\"type\":\"fdntwjchrdgoih\"},{\"properties\":{\"objectId\":\"ctondz\",\"lastHeartBeat\":\"2021-05-20T02:25:29Z\",\"sessions\":382280149,\"agentVersion\":\"dlwggytsbwtovv\",\"allowNewSession\":true,\"virtualMachineId\":\"inqfiufxqknpirgn\",\"resourceId\":\"ttwqmsni\",\"assignedUser\":\"cdm\",\"friendlyName\":\"r\",\"status\":\"Disconnected\",\"statusTimestamp\":\"2021-07-05T10:57:07Z\",\"osVersion\":\"nkrxfrddhcr\",\"sxSStackVersion\":\"izzronasxiftozqy\",\"updateState\":\"Failed\",\"lastUpdateTime\":\"2021-07-28T03:20:11Z\",\"updateErrorMessage\":\"sgogczhonnxk\",\"sessionHostHealthCheckResults\":[{\"healthCheckName\":\"DomainReachable\",\"healthCheckResult\":\"SessionHostShutdown\",\"additionalFailureDetails\":{}},{\"healthCheckName\":\"WebRTCRedirectorCheck\",\"healthCheckResult\":\"HealthCheckSucceeded\",\"additionalFailureDetails\":{}},{\"healthCheckName\":\"WebRTCRedirectorCheck\",\"healthCheckResult\":\"SessionHostShutdown\",\"additionalFailureDetails\":{}}]},\"id\":\"gh\",\"name\":\"jbdhqxvc\",\"type\":\"gf\"}],\"nextLink\":\"dsofbshrns\"}")
                 .toObject(SessionHostList.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-25T16:19:20Z"), model.value().get(0).lastHeartBeat());
-        Assertions.assertEquals(642347272, model.value().get(0).sessions());
-        Assertions.assertEquals("gssofwq", model.value().get(0).agentVersion());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T11:14:50Z"), model.value().get(0).lastHeartBeat());
+        Assertions.assertEquals(2100624724, model.value().get(0).sessions());
+        Assertions.assertEquals("xvvy", model.value().get(0).agentVersion());
         Assertions.assertEquals(false, model.value().get(0).allowNewSession());
-        Assertions.assertEquals("xacqqudfnbyx", model.value().get(0).assignedUser());
-        Assertions.assertEquals("aabjyvayffimrz", model.value().get(0).friendlyName());
-        Assertions.assertEquals(Status.SX_SSTACK_LISTENER_NOT_READY, model.value().get(0).status());
-        Assertions.assertEquals("gsexne", model.value().get(0).osVersion());
-        Assertions.assertEquals("dnw", model.value().get(0).sxSStackVersion());
-        Assertions.assertEquals(UpdateState.FAILED, model.value().get(0).updateState());
-        Assertions.assertEquals("syyceuzsoibjud", model.value().get(0).updateErrorMessage());
+        Assertions.assertEquals("mctlpdngitv", model.value().get(0).assignedUser());
+        Assertions.assertEquals("mhrixkwmyijejve", model.value().get(0).friendlyName());
+        Assertions.assertEquals(Status.NEEDS_ASSISTANCE, model.value().get(0).status());
+        Assertions.assertEquals("aixexccbdreaxh", model.value().get(0).osVersion());
+        Assertions.assertEquals("xdrrvqahqkghtp", model.value().get(0).sxSStackVersion());
+        Assertions.assertEquals(UpdateState.INITIAL, model.value().get(0).updateState());
+        Assertions.assertEquals("jsvfycxzbfvoowv", model.value().get(0).updateErrorMessage());
     }
 
     @org.junit.jupiter.api.Test
@@ -42,28 +42,64 @@ public final class SessionHostListTests {
                     Arrays
                         .asList(
                             new SessionHostInner()
-                                .withLastHeartBeat(OffsetDateTime.parse("2020-12-25T16:19:20Z"))
-                                .withSessions(642347272)
-                                .withAgentVersion("gssofwq")
+                                .withLastHeartBeat(OffsetDateTime.parse("2021-07-26T11:14:50Z"))
+                                .withSessions(2100624724)
+                                .withAgentVersion("xvvy")
                                 .withAllowNewSession(false)
-                                .withAssignedUser("xacqqudfnbyx")
-                                .withFriendlyName("aabjyvayffimrz")
-                                .withStatus(Status.SX_SSTACK_LISTENER_NOT_READY)
-                                .withOsVersion("gsexne")
-                                .withSxSStackVersion("dnw")
+                                .withAssignedUser("mctlpdngitv")
+                                .withFriendlyName("mhrixkwmyijejve")
+                                .withStatus(Status.NEEDS_ASSISTANCE)
+                                .withOsVersion("aixexccbdreaxh")
+                                .withSxSStackVersion("xdrrvqahqkghtp")
+                                .withUpdateState(UpdateState.INITIAL)
+                                .withUpdateErrorMessage("jsvfycxzbfvoowv"),
+                            new SessionHostInner()
+                                .withLastHeartBeat(OffsetDateTime.parse("2021-05-16T06:07:50Z"))
+                                .withSessions(1513768261)
+                                .withAgentVersion("qpvuzlmvfelf")
+                                .withAllowNewSession(true)
+                                .withAssignedUser("njwmwkpnbsazejj")
+                                .withFriendlyName("kagfhsxtt")
+                                .withStatus(Status.AVAILABLE)
+                                .withOsVersion("faazpxdtnkdmkqjj")
+                                .withSxSStackVersion("uenvrkp")
                                 .withUpdateState(UpdateState.FAILED)
-                                .withUpdateErrorMessage("syyceuzsoibjud")));
+                                .withUpdateErrorMessage("rebqaaysjk"),
+                            new SessionHostInner()
+                                .withLastHeartBeat(OffsetDateTime.parse("2021-05-03T13:45:25Z"))
+                                .withSessions(1385853585)
+                                .withAgentVersion("p")
+                                .withAllowNewSession(false)
+                                .withAssignedUser("otxhojujby")
+                                .withFriendlyName("lmcuvhixb")
+                                .withStatus(Status.NEEDS_ASSISTANCE)
+                                .withOsVersion("yl")
+                                .withSxSStackVersion("ool")
+                                .withUpdateState(UpdateState.STARTED)
+                                .withUpdateErrorMessage("w"),
+                            new SessionHostInner()
+                                .withLastHeartBeat(OffsetDateTime.parse("2021-05-20T02:25:29Z"))
+                                .withSessions(382280149)
+                                .withAgentVersion("dlwggytsbwtovv")
+                                .withAllowNewSession(true)
+                                .withAssignedUser("cdm")
+                                .withFriendlyName("r")
+                                .withStatus(Status.DISCONNECTED)
+                                .withOsVersion("nkrxfrddhcr")
+                                .withSxSStackVersion("izzronasxiftozqy")
+                                .withUpdateState(UpdateState.FAILED)
+                                .withUpdateErrorMessage("sgogczhonnxk")));
         model = BinaryData.fromObject(model).toObject(SessionHostList.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-25T16:19:20Z"), model.value().get(0).lastHeartBeat());
-        Assertions.assertEquals(642347272, model.value().get(0).sessions());
-        Assertions.assertEquals("gssofwq", model.value().get(0).agentVersion());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T11:14:50Z"), model.value().get(0).lastHeartBeat());
+        Assertions.assertEquals(2100624724, model.value().get(0).sessions());
+        Assertions.assertEquals("xvvy", model.value().get(0).agentVersion());
         Assertions.assertEquals(false, model.value().get(0).allowNewSession());
-        Assertions.assertEquals("xacqqudfnbyx", model.value().get(0).assignedUser());
-        Assertions.assertEquals("aabjyvayffimrz", model.value().get(0).friendlyName());
-        Assertions.assertEquals(Status.SX_SSTACK_LISTENER_NOT_READY, model.value().get(0).status());
-        Assertions.assertEquals("gsexne", model.value().get(0).osVersion());
-        Assertions.assertEquals("dnw", model.value().get(0).sxSStackVersion());
-        Assertions.assertEquals(UpdateState.FAILED, model.value().get(0).updateState());
-        Assertions.assertEquals("syyceuzsoibjud", model.value().get(0).updateErrorMessage());
+        Assertions.assertEquals("mctlpdngitv", model.value().get(0).assignedUser());
+        Assertions.assertEquals("mhrixkwmyijejve", model.value().get(0).friendlyName());
+        Assertions.assertEquals(Status.NEEDS_ASSISTANCE, model.value().get(0).status());
+        Assertions.assertEquals("aixexccbdreaxh", model.value().get(0).osVersion());
+        Assertions.assertEquals("xdrrvqahqkghtp", model.value().get(0).sxSStackVersion());
+        Assertions.assertEquals(UpdateState.INITIAL, model.value().get(0).updateState());
+        Assertions.assertEquals("jsvfycxzbfvoowv", model.value().get(0).updateErrorMessage());
     }
 }

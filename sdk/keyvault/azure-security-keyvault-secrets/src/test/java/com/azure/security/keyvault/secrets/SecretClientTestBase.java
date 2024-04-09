@@ -38,7 +38,9 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class SecretClientTestBase extends TestProxyTestBase {
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
@@ -358,6 +360,19 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
         assertEquals(expected.getValue(), actual.getValue());
         assertEquals(expected.getProperties().getExpiresOn(), actual.getProperties().getExpiresOn());
         assertEquals(expected.getProperties().getNotBefore(), actual.getProperties().getNotBefore());
+        assertEquals(expected.getProperties().getContentType(), actual.getProperties().getContentType());
+        assertTagsEquals(expected.getProperties().getTags(), actual.getProperties().getTags());
+    }
+
+    static void assertTagsEquals(Map<String, String> expected, Map<String, String> actual) {
+        if (expected == null) {
+            assertNull(actual);
+        } else if (actual == null) {
+            fail("'expected' tags are null but 'actual' tags are not.");
+        } else {
+            assertEquals(expected.size(), actual.size());
+            expected.forEach((key, value) -> assertEquals(value, actual.get(key)));
+        }
     }
 
     public String getEndpoint() {

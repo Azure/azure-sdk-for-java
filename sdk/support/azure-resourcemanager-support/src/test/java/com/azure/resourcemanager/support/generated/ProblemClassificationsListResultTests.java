@@ -7,31 +7,39 @@ package com.azure.resourcemanager.support.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.support.fluent.models.ProblemClassificationInner;
 import com.azure.resourcemanager.support.models.ProblemClassificationsListResult;
+import com.azure.resourcemanager.support.models.SecondaryConsentEnabled;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class ProblemClassificationsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProblemClassificationsListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"ozkrwfndiodjpslw\",\"name\":\"dpvwryoqpsoaccta\",\"type\":\"kljla\",\"properties\":{\"displayName\":\"ryffdfdosy\"}},{\"id\":\"xpaojakhmsbz\",\"name\":\"crzevdphlx\",\"type\":\"lthqtrgqjbp\",\"properties\":{\"displayName\":\"s\"}},{\"id\":\"zgvfcjrwz\",\"name\":\"xjtfelluwfzit\",\"type\":\"peqfpjkjl\",\"properties\":{\"displayName\":\"pdvhpfxxypin\"}}]}")
-                .toObject(ProblemClassificationsListResult.class);
-        Assertions.assertEquals("ryffdfdosy", model.value().get(0).displayName());
+        ProblemClassificationsListResult model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"w\",\"name\":\"m\",\"type\":\"hrzayvvtpgvdf\",\"properties\":{\"displayName\":\"tkftutqxlngx\",\"secondaryConsentEnabled\":[{\"description\":\"ugnxkrxdqmi\",\"type\":\"thz\"},{\"description\":\"qdrabhjybigehoqf\",\"type\":\"wska\"},{\"description\":\"ktzlcuiywg\",\"type\":\"wgndrvynhzgpp\"},{\"description\":\"cgyncocpecf\",\"type\":\"mcoo\"}],\"metadata\":{\"y\":\"lzevgbmqjqab\",\"wnfnbacf\":\"mivkwlzuvcc\",\"bqqwxrj\":\"onlebxetqgtzxdpn\",\"mpmngnzscxaqwoo\":\"eallnwsubisnj\"},\"parentProblemClassification\":{\"id\":\"bonqvpkvlrxnjeas\",\"name\":\"pheoflokeyy\",\"type\":\"nj\",\"properties\":{\"displayName\":\"wtgrhpdjpj\",\"secondaryConsentEnabled\":[{},{},{},{}],\"metadata\":{\"jj\":\"azjpqyegualhbxxh\",\"ynpwlbj\":\"zvdudgwdslfhotwm\",\"sop\":\"pgacftadehxnlty\"},\"parentProblemClassification\":{}}}}}]}")
+            .toObject(ProblemClassificationsListResult.class);
+        Assertions.assertEquals("tkftutqxlngx", model.value().get(0).displayName());
+        Assertions.assertEquals("ugnxkrxdqmi", model.value().get(0).secondaryConsentEnabled().get(0).description());
+        Assertions.assertEquals("thz", model.value().get(0).secondaryConsentEnabled().get(0).type());
+        Assertions.assertEquals("wtgrhpdjpj", model.value().get(0).parentProblemClassification().displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProblemClassificationsListResult model =
-            new ProblemClassificationsListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ProblemClassificationInner().withDisplayName("ryffdfdosy"),
-                            new ProblemClassificationInner().withDisplayName("s"),
-                            new ProblemClassificationInner().withDisplayName("pdvhpfxxypin")));
+        ProblemClassificationsListResult model = new ProblemClassificationsListResult()
+            .withValue(Arrays.asList(new ProblemClassificationInner().withDisplayName("tkftutqxlngx")
+                .withSecondaryConsentEnabled(Arrays.asList(
+                    new SecondaryConsentEnabled().withDescription("ugnxkrxdqmi").withType("thz"),
+                    new SecondaryConsentEnabled().withDescription("qdrabhjybigehoqf").withType("wska"),
+                    new SecondaryConsentEnabled().withDescription("ktzlcuiywg").withType("wgndrvynhzgpp"),
+                    new SecondaryConsentEnabled().withDescription("cgyncocpecf").withType("mcoo")))
+                .withParentProblemClassification(new ProblemClassificationInner().withDisplayName("wtgrhpdjpj")
+                    .withSecondaryConsentEnabled(Arrays.asList(new SecondaryConsentEnabled(),
+                        new SecondaryConsentEnabled(), new SecondaryConsentEnabled(), new SecondaryConsentEnabled()))
+                    .withParentProblemClassification(new ProblemClassificationInner()))));
         model = BinaryData.fromObject(model).toObject(ProblemClassificationsListResult.class);
-        Assertions.assertEquals("ryffdfdosy", model.value().get(0).displayName());
+        Assertions.assertEquals("tkftutqxlngx", model.value().get(0).displayName());
+        Assertions.assertEquals("ugnxkrxdqmi", model.value().get(0).secondaryConsentEnabled().get(0).description());
+        Assertions.assertEquals("thz", model.value().get(0).secondaryConsentEnabled().get(0).type());
+        Assertions.assertEquals("wtgrhpdjpj", model.value().get(0).parentProblemClassification().displayName());
     }
 }

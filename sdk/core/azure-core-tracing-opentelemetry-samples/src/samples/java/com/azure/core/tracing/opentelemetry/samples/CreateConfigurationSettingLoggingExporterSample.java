@@ -3,6 +3,9 @@
 
 package com.azure.core.tracing.opentelemetry.samples;
 
+import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.TracingOptions;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import io.opentelemetry.api.trace.Span;
@@ -18,7 +21,6 @@ import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
  * in App Configuration through the {@link ConfigurationClient}.
  */
 public class CreateConfigurationSettingLoggingExporterSample {
-    private static final Tracer TRACER = configureLoggingExporter();
     private static final String CONNECTION_STRING = "<YOUR_CONNECTION_STRING>";
 
     /**
@@ -26,40 +28,22 @@ public class CreateConfigurationSettingLoggingExporterSample {
      *
      * @param args Ignored args.
      */
+    @SuppressWarnings("try")
     public static void main(String[] args) {
-        configureLoggingExporter();
+        OpenTelemetrySdk openTelemetry = configureTracing();
+
+        // In this sample we configured OpenTelemetry without registering global instance, so we need to pass it explicitly to the Azure SDK.
+        // If we used ApplicationInsights or OpenTelemetry agent, or registered global instance, we would not need to pass it explicitly.
+        TracingOptions tracingOptions = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
         ConfigurationClient client = new ConfigurationClientBuilder()
             .connectionString(CONNECTION_STRING)
+            .clientOptions(new ClientOptions().setTracingOptions(tracingOptions))
             .buildClient();
 
-        doClientWork(client);
-    }
+        Tracer tracer = openTelemetry.getTracer("sample");
 
-    /**
-     * Configure the OpenTelemetry {@link LoggingSpanExporter} to enable tracing.
-     *
-     * @return The OpenTelemetry {@link Tracer} instance.
-     */
-    private static Tracer configureLoggingExporter() {
-        SdkTracerProvider tracerProvider =
-            SdkTracerProvider.builder()
-                .addSpanProcessor(BatchSpanProcessor.builder(LoggingSpanExporter.create()).build())
-                .build();
-
-        return OpenTelemetrySdk.builder()
-            .setTracerProvider(tracerProvider)
-            .buildAndRegisterGlobal()
-            .getTracer("AppConfig-Sample");
-    }
-
-    /**
-     * Creates the {@link ConfigurationClient} and creates a configuration in Azure App Configuration with distributed
-     * tracing enabled and using the Logging exporter to export telemetry events.
-     */
-    @SuppressWarnings("try")
-    private static void doClientWork(ConfigurationClient client) {
-        Span span = TRACER.spanBuilder("my-span").startSpan();
+        Span span = tracer.spanBuilder("my-span").startSpan();
         try (Scope s = span.makeCurrent()) {
             // current span propagates into synchronous calls automatically. ApplicationInsights or OpenTelemetry agent
             // also propagate context through async reactor calls.
@@ -67,5 +51,22 @@ public class CreateConfigurationSettingLoggingExporterSample {
         } finally {
             span.end();
         }
+
+        openTelemetry.close();
+    }
+
+    /**
+     * Configure the OpenTelemetry to print traces with {@link LoggingSpanExporter}.
+     */
+    private static OpenTelemetrySdk configureTracing() {
+        // configure OpenTelemetry explicitly or with io.opentelemetry:opentelemetry-sdk-extension-autoconfigure package
+        SdkTracerProvider tracerProvider =
+            SdkTracerProvider.builder()
+                .addSpanProcessor(BatchSpanProcessor.builder(LoggingSpanExporter.create()).build())
+                .build();
+
+        return OpenTelemetrySdk.builder()
+            .setTracerProvider(tracerProvider)
+            .build();
     }
 }

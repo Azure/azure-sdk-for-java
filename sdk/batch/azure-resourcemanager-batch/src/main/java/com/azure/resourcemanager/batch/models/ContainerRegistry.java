@@ -7,7 +7,9 @@ package com.azure.resourcemanager.batch.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A private container registry. */
+/**
+ * A private container registry.
+ */
 @Fluent
 public final class ContainerRegistry {
     /*
@@ -24,7 +26,7 @@ public final class ContainerRegistry {
 
     /*
      * The registry URL.
-     *
+     * 
      * If omitted, the default is "docker.io".
      */
     @JsonProperty(value = "registryServer")
@@ -36,13 +38,15 @@ public final class ContainerRegistry {
     @JsonProperty(value = "identityReference")
     private ComputeNodeIdentityReference identityReference;
 
-    /** Creates an instance of ContainerRegistry class. */
+    /**
+     * Creates an instance of ContainerRegistry class.
+     */
     public ContainerRegistry() {
     }
 
     /**
      * Get the username property: The user name to log into the registry server.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -51,7 +55,7 @@ public final class ContainerRegistry {
 
     /**
      * Set the username property: The user name to log into the registry server.
-     *
+     * 
      * @param username the username value to set.
      * @return the ContainerRegistry object itself.
      */
@@ -62,7 +66,7 @@ public final class ContainerRegistry {
 
     /**
      * Get the password property: The password to log into the registry server.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -71,7 +75,7 @@ public final class ContainerRegistry {
 
     /**
      * Set the password property: The password to log into the registry server.
-     *
+     * 
      * @param password the password value to set.
      * @return the ContainerRegistry object itself.
      */
@@ -82,9 +86,9 @@ public final class ContainerRegistry {
 
     /**
      * Get the registryServer property: The registry URL.
-     *
-     * <p>If omitted, the default is "docker.io".
-     *
+     * 
+     * If omitted, the default is "docker.io".
+     * 
      * @return the registryServer value.
      */
     public String registryServer() {
@@ -93,9 +97,9 @@ public final class ContainerRegistry {
 
     /**
      * Set the registryServer property: The registry URL.
-     *
-     * <p>If omitted, the default is "docker.io".
-     *
+     * 
+     * If omitted, the default is "docker.io".
+     * 
      * @param registryServer the registryServer value to set.
      * @return the ContainerRegistry object itself.
      */
@@ -107,7 +111,7 @@ public final class ContainerRegistry {
     /**
      * Get the identityReference property: The reference to a user assigned identity associated with the Batch pool
      * which a compute node will use.
-     *
+     * 
      * @return the identityReference value.
      */
     public ComputeNodeIdentityReference identityReference() {
@@ -117,7 +121,7 @@ public final class ContainerRegistry {
     /**
      * Set the identityReference property: The reference to a user assigned identity associated with the Batch pool
      * which a compute node will use.
-     *
+     * 
      * @param identityReference the identityReference value to set.
      * @return the ContainerRegistry object itself.
      */
@@ -128,7 +132,7 @@ public final class ContainerRegistry {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

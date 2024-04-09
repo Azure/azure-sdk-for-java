@@ -499,6 +499,29 @@ public class ReactiveCosmosTemplateIT {
     }
 
     @Test
+    public void testDeleteByQuery() {
+        cosmosTemplate.insert(TEST_PERSON_4,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_4))).block();
+
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "id",
+            Collections.singletonList(TEST_PERSON_4.getId()), Part.IgnoreCaseType.NEVER);
+
+        final CosmosQuery query = new CosmosQuery(criteria);
+        Flux<Person> deleteFlux = cosmosTemplate.delete(query, Person.class, Person.class.getSimpleName());
+        StepVerifier.create(deleteFlux).expectNextCount(1).verifyComplete();
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+
+        Mono<Person> itemMono = cosmosTemplate.findById(TEST_PERSON_4.getId(), Person.class);
+        StepVerifier.create(itemMono).expectNextCount(0).verifyComplete();
+    }
+
+    @Test
     public void testDeleteByIdBySecondaryKey() {
         azureKeyCredential.update(cosmosDbSecondaryKey);
         cosmosTemplate.insert(TEST_PERSON_4,

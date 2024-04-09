@@ -34,7 +34,7 @@ public final class UserSessionsListByHostPoolMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"objectId\":\"btijvacvbm\",\"userPrincipalName\":\"bqqxlaj\",\"applicationType\":\"Desktop\",\"sessionState\":\"UserProfileDiskMounted\",\"activeDirectoryUserName\":\"evehjkuyxoaf\",\"createTime\":\"2021-03-08T11:58:40Z\"},\"id\":\"qltfaey\",\"name\":\"inmfgvxirp\",\"type\":\"hriypoqeyhlqhy\"}]}";
+            "{\"value\":[{\"properties\":{\"objectId\":\"qnrmvvfko\",\"userPrincipalName\":\"lghktuidvrm\",\"applicationType\":\"Desktop\",\"sessionState\":\"Pending\",\"activeDirectoryUserName\":\"wex\",\"createTime\":\"2021-08-07T05:35:14Z\"},\"id\":\"vlazipbhpwvqsgny\",\"name\":\"uuzivensrpmeyyvp\",\"type\":\"patlbijp\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,18 +66,12 @@ public final class UserSessionsListByHostPoolMockTests {
             manager
                 .userSessions()
                 .listByHostPool(
-                    "yhsgz",
-                    "czbgomfgbeg",
-                    "qgleohibetnluank",
-                    416708927,
-                    true,
-                    1893496735,
-                    com.azure.core.util.Context.NONE);
+                    "duczkgof", "y", "srucvcrrpcjtt", 411078462, false, 2056089114, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bqqxlaj", response.iterator().next().userPrincipalName());
+        Assertions.assertEquals("lghktuidvrm", response.iterator().next().userPrincipalName());
         Assertions.assertEquals(ApplicationType.DESKTOP, response.iterator().next().applicationType());
-        Assertions.assertEquals(SessionState.USER_PROFILE_DISK_MOUNTED, response.iterator().next().sessionState());
-        Assertions.assertEquals("evehjkuyxoaf", response.iterator().next().activeDirectoryUsername());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-08T11:58:40Z"), response.iterator().next().createTime());
+        Assertions.assertEquals(SessionState.PENDING, response.iterator().next().sessionState());
+        Assertions.assertEquals("wex", response.iterator().next().activeDirectoryUsername());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-07T05:35:14Z"), response.iterator().next().createTime());
     }
 }

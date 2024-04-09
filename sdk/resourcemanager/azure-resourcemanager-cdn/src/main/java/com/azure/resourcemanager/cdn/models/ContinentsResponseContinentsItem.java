@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContinentsResponseContinentsItem model. */
+/**
+ * The ContinentsResponseContinentsItem model.
+ */
 @Fluent
 public final class ContinentsResponseContinentsItem {
     /*
@@ -17,8 +19,14 @@ public final class ContinentsResponseContinentsItem {
     private String id;
 
     /**
+     * Creates an instance of ContinentsResponseContinentsItem class.
+     */
+    public ContinentsResponseContinentsItem() {
+    }
+
+    /**
      * Get the id property: The id property.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -27,7 +35,7 @@ public final class ContinentsResponseContinentsItem {
 
     /**
      * Set the id property: The id property.
-     *
+     * 
      * @param id the id value to set.
      * @return the ContinentsResponseContinentsItem object itself.
      */
@@ -38,7 +46,7 @@ public final class ContinentsResponseContinentsItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

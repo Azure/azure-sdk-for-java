@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The folder that this SQL script is in. If not specified, this SQL script will appear at the root level. */
+/**
+ * The folder that this SQL script is in. If not specified, this SQL script will appear at the root level.
+ */
 @Fluent
 public final class SqlScriptFolder {
     /*
@@ -16,12 +18,15 @@ public final class SqlScriptFolder {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of SqlScriptFolder class. */
-    public SqlScriptFolder() {}
+    /**
+     * Creates an instance of SqlScriptFolder class.
+     */
+    public SqlScriptFolder() {
+    }
 
     /**
      * Get the name property: The name of the folder that this SQL script is in.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -30,7 +35,7 @@ public final class SqlScriptFolder {
 
     /**
      * Set the name property: The name of the folder that this SQL script is in.
-     *
+     * 
      * @param name the name value to set.
      * @return the SqlScriptFolder object itself.
      */

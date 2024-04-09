@@ -6,18 +6,20 @@ package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionFullUrlInner;
 
-/** An immutable client-side representation of EventSubscriptionFullUrl. */
+/**
+ * An immutable client-side representation of EventSubscriptionFullUrl.
+ */
 public interface EventSubscriptionFullUrl {
     /**
      * Gets the endpointUrl property: The URL that represents the endpoint of the destination of an event subscription.
-     *
+     * 
      * @return the endpointUrl value.
      */
     String endpointUrl();
 
     /**
      * Gets the inner com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionFullUrlInner object.
-     *
+     * 
      * @return the inner object.
      */
     EventSubscriptionFullUrlInner innerModel();

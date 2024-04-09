@@ -6,31 +6,26 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.models.HealthDataClassification;
-import com.azure.resourcemanager.security.models.ScopeName;
 import org.junit.jupiter.api.Assertions;
 
 public final class HealthDataClassificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HealthDataClassification model =
-            BinaryData
-                .fromString("{\"component\":\"fxjelg\",\"scenario\":\"pzqjhhhq\",\"scope\":\"Connectors\"}")
+        HealthDataClassification model
+            = BinaryData.fromString("{\"component\":\"qepqwhixmon\",\"scenario\":\"shiy\",\"scope\":\"velfcldu\"}")
                 .toObject(HealthDataClassification.class);
-        Assertions.assertEquals("fxjelg", model.component());
-        Assertions.assertEquals("pzqjhhhq", model.scenario());
-        Assertions.assertEquals(ScopeName.CONNECTORS, model.scope());
+        Assertions.assertEquals("qepqwhixmon", model.component());
+        Assertions.assertEquals("shiy", model.scenario());
+        Assertions.assertEquals("velfcldu", model.scope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HealthDataClassification model =
-            new HealthDataClassification()
-                .withComponent("fxjelg")
-                .withScenario("pzqjhhhq")
-                .withScope(ScopeName.CONNECTORS);
+        HealthDataClassification model
+            = new HealthDataClassification().withComponent("qepqwhixmon").withScenario("shiy").withScope("velfcldu");
         model = BinaryData.fromObject(model).toObject(HealthDataClassification.class);
-        Assertions.assertEquals("fxjelg", model.component());
-        Assertions.assertEquals("pzqjhhhq", model.scenario());
-        Assertions.assertEquals(ScopeName.CONNECTORS, model.scope());
+        Assertions.assertEquals("qepqwhixmon", model.component());
+        Assertions.assertEquals("shiy", model.scenario());
+        Assertions.assertEquals("velfcldu", model.scope());
     }
 }

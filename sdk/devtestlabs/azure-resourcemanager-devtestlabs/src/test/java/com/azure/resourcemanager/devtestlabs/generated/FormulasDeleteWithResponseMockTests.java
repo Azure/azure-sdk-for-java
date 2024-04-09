@@ -56,6 +56,6 @@ public final class FormulasDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.formulas().deleteWithResponse("lkvec", "ujcngo", "dyedmzrgjfo", com.azure.core.util.Context.NONE);
+        manager.formulas().deleteWithResponse("ke", "sm", "p", com.azure.core.util.Context.NONE);
     }
 }

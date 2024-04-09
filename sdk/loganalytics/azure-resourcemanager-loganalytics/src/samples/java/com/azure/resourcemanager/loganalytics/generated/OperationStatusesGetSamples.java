@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OperationStatuses Get. */
 public final class OperationStatusesGetSamples {
     /*
@@ -17,6 +15,8 @@ public final class OperationStatusesGetSamples {
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void getSpecificOperationStatus(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.operationStatuses().getWithResponse("West US", "713192d7-503f-477a-9cfe-4efc3ee2bd11", Context.NONE);
+        manager
+            .operationStatuses()
+            .getWithResponse("West US", "713192d7-503f-477a-9cfe-4efc3ee2bd11", com.azure.core.util.Context.NONE);
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.newrelicobservability.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Account Info of the NewRelic account. */
+/**
+ * Account Info of the NewRelic account.
+ */
 @Fluent
 public final class AccountInfo {
     /*
@@ -23,18 +25,20 @@ public final class AccountInfo {
     private String ingestionKey;
 
     /*
-     * NewRelic account region
+     * Region where New Relic account is present
      */
     @JsonProperty(value = "region")
     private String region;
 
-    /** Creates an instance of AccountInfo class. */
+    /**
+     * Creates an instance of AccountInfo class.
+     */
     public AccountInfo() {
     }
 
     /**
      * Get the accountId property: Account id.
-     *
+     * 
      * @return the accountId value.
      */
     public String accountId() {
@@ -43,7 +47,7 @@ public final class AccountInfo {
 
     /**
      * Set the accountId property: Account id.
-     *
+     * 
      * @param accountId the accountId value to set.
      * @return the AccountInfo object itself.
      */
@@ -54,7 +58,7 @@ public final class AccountInfo {
 
     /**
      * Get the ingestionKey property: ingestion key of account.
-     *
+     * 
      * @return the ingestionKey value.
      */
     public String ingestionKey() {
@@ -63,7 +67,7 @@ public final class AccountInfo {
 
     /**
      * Set the ingestionKey property: ingestion key of account.
-     *
+     * 
      * @param ingestionKey the ingestionKey value to set.
      * @return the AccountInfo object itself.
      */
@@ -73,8 +77,8 @@ public final class AccountInfo {
     }
 
     /**
-     * Get the region property: NewRelic account region.
-     *
+     * Get the region property: Region where New Relic account is present.
+     * 
      * @return the region value.
      */
     public String region() {
@@ -82,8 +86,8 @@ public final class AccountInfo {
     }
 
     /**
-     * Set the region property: NewRelic account region.
-     *
+     * Set the region property: Region where New Relic account is present.
+     * 
      * @param region the region value to set.
      * @return the AccountInfo object itself.
      */
@@ -94,7 +98,7 @@ public final class AccountInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of UnprepareNetworkPolicies for Subnet. */
+/**
+ * Details of UnprepareNetworkPolicies for Subnet.
+ */
 @Fluent
 public final class UnprepareNetworkPoliciesRequest {
     /*
@@ -16,13 +18,15 @@ public final class UnprepareNetworkPoliciesRequest {
     @JsonProperty(value = "serviceName")
     private String serviceName;
 
-    /** Creates an instance of UnprepareNetworkPoliciesRequest class. */
+    /**
+     * Creates an instance of UnprepareNetworkPoliciesRequest class.
+     */
     public UnprepareNetworkPoliciesRequest() {
     }
 
     /**
      * Get the serviceName property: The name of the service for which subnet is being unprepared for.
-     *
+     * 
      * @return the serviceName value.
      */
     public String serviceName() {
@@ -31,7 +35,7 @@ public final class UnprepareNetworkPoliciesRequest {
 
     /**
      * Set the serviceName property: The name of the service for which subnet is being unprepared for.
-     *
+     * 
      * @param serviceName the serviceName value to set.
      * @return the UnprepareNetworkPoliciesRequest object itself.
      */
@@ -42,7 +46,7 @@ public final class UnprepareNetworkPoliciesRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -18,6 +18,15 @@ public final class MicrosoftGraphManagedAppFlaggedReason
     public static final MicrosoftGraphManagedAppFlaggedReason ROOTED_DEVICE = fromString("rootedDevice");
 
     /**
+     * Creates a new instance of MicrosoftGraphManagedAppFlaggedReason value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphManagedAppFlaggedReason() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphManagedAppFlaggedReason from its string representation.
      *
      * @param name a name to look for.

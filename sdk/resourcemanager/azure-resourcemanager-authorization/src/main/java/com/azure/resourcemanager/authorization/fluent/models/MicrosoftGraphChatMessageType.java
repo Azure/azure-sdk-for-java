@@ -23,6 +23,15 @@ public final class MicrosoftGraphChatMessageType extends ExpandableStringEnum<Mi
     public static final MicrosoftGraphChatMessageType UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphChatMessageType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphChatMessageType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphChatMessageType from its string representation.
      *
      * @param name a name to look for.

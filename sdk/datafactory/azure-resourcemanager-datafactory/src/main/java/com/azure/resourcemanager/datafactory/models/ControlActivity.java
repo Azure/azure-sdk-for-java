@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Base class for all control activities like IfCondition, ForEach , Until. */
+/**
+ * Base class for all control activities like IfCondition, ForEach , Until.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -29,36 +31,63 @@ import java.util.List;
     @JsonSubTypes.Type(name = "Filter", value = FilterActivity.class),
     @JsonSubTypes.Type(name = "SetVariable", value = SetVariableActivity.class),
     @JsonSubTypes.Type(name = "AppendVariable", value = AppendVariableActivity.class),
-    @JsonSubTypes.Type(name = "WebHook", value = WebhookActivity.class)
-})
+    @JsonSubTypes.Type(name = "WebHook", value = WebhookActivity.class) })
 @Fluent
 public class ControlActivity extends Activity {
-    /** Creates an instance of ControlActivity class. */
+    /**
+     * Creates an instance of ControlActivity class.
+     */
     public ControlActivity() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ControlActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ControlActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ControlActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ControlActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ControlActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ControlActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -67,7 +96,7 @@ public class ControlActivity extends Activity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

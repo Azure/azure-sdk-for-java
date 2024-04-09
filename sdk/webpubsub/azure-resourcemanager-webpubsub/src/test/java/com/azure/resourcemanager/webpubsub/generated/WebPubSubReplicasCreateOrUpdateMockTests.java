@@ -35,7 +35,7 @@ public final class WebPubSubReplicasCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"sku\":{\"name\":\"wskondcbrwimuvqe\",\"tier\":\"Free\",\"size\":\"vyrrleaesinuq\",\"family\":\"jqo\",\"capacity\":1763617442},\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"cecybmrqbrjbbmpx\",\"tags\":{\"rexcrseqwjksghu\":\"yk\",\"ggsvoujkxibdaf\":\"gzhxog\",\"xfbvfb\":\"rkmdyom\"},\"id\":\"dy\",\"name\":\"rhpw\",\"type\":\"gddeimaw\"}";
+            "{\"sku\":{\"name\":\"ltxdwhmozu\",\"tier\":\"Standard\",\"size\":\"ln\",\"family\":\"nj\",\"capacity\":1586632226},\"properties\":{\"provisioningState\":\"Succeeded\",\"regionEndpointEnabled\":\"pymwamxqzragp\",\"resourceStopped\":\"phtvdu\"},\"location\":\"jvlej\",\"tags\":{\"updwv\":\"srlzknmzlan\",\"mqrhvthl\":\"phcnzqtpj\",\"xetlgydlhqv\":\"iwdcxsmlzzhzd\"},\"id\":\"n\",\"name\":\"pxy\",\"type\":\"afiqgeaarbgjekg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,33 +66,25 @@ public final class WebPubSubReplicasCreateOrUpdateMockTests {
         Replica response =
             manager
                 .webPubSubReplicas()
-                .define("mqrhvthl")
-                .withRegion("ekglklb")
-                .withExistingWebPubSub("dwv", "phcnzqtpj")
-                .withTags(
-                    mapOf(
-                        "hj",
-                        "idwcwvmzegjon",
-                        "zhzmtksjci",
-                        "rwgdnqzbrfks",
-                        "plkeuachtomflryt",
-                        "digsxcdgl",
-                        "mskwhqjjysl",
-                        "wfpfmdgycx"))
-                .withSku(
-                    new ResourceSku()
-                        .withName("wdcxsmlzzhz")
-                        .withTier(WebPubSubSkuTier.STANDARD)
-                        .withCapacity(105087140))
+                .define("psfxsf")
+                .withRegion("lfojuidjp")
+                .withExistingWebPubSub("y", "izrzb")
+                .withTags(mapOf("je", "jucejikzoeovvtz", "zkdbqzolx", "jklntikyj", "pcrrk", "zvhqjwtrhtgvg"))
+                .withSku(new ResourceSku().withName("tl").withTier(WebPubSubSkuTier.PREMIUM).withCapacity(764099622))
+                .withRegionEndpointEnabled("mjm")
+                .withResourceStopped("wyzgiblkuj")
                 .create();
 
-        Assertions.assertEquals("cecybmrqbrjbbmpx", response.location());
-        Assertions.assertEquals("yk", response.tags().get("rexcrseqwjksghu"));
-        Assertions.assertEquals("wskondcbrwimuvqe", response.sku().name());
-        Assertions.assertEquals(WebPubSubSkuTier.FREE, response.sku().tier());
-        Assertions.assertEquals(1763617442, response.sku().capacity());
+        Assertions.assertEquals("jvlej", response.location());
+        Assertions.assertEquals("srlzknmzlan", response.tags().get("updwv"));
+        Assertions.assertEquals("ltxdwhmozu", response.sku().name());
+        Assertions.assertEquals(WebPubSubSkuTier.STANDARD, response.sku().tier());
+        Assertions.assertEquals(1586632226, response.sku().capacity());
+        Assertions.assertEquals("pymwamxqzragp", response.regionEndpointEnabled());
+        Assertions.assertEquals("phtvdu", response.resourceStopped());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

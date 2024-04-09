@@ -22,29 +22,33 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.confluent.fluent.ValidationsClient;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
+import com.azure.resourcemanager.confluent.fluent.models.ValidationResponseInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ValidationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ValidationsClient.
+ */
 public final class ValidationsClientImpl implements ValidationsClient {
-    private final ClientLogger logger = new ClientLogger(ValidationsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ValidationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ConfluentManagementClientImpl client;
 
     /**
      * Initializes an instance of ValidationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ValidationsClientImpl(ConfluentManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ValidationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ValidationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,27 +58,153 @@ public final class ValidationsClientImpl implements ValidationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ConfluentManagementC")
-    private interface ValidationsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent"
-                + "/validations/{organizationName}/orgvalidate")
-        @ExpectedResponses({200})
+    public interface ValidationsService {
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/validations/{organizationName}/orgvalidate")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OrganizationResourceInner>> validateOrganization(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<OrganizationResourceInner>> validateOrganization(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("organizationName") String organizationName,
-            @BodyParam("application/json") OrganizationResourceInner body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") OrganizationResourceInner body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/validations/{organizationName}/orgvalidateV2")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ValidationResponseInner>> validateOrganizationV2(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName,
+            @BodyParam("application/json") OrganizationResourceInner body, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Organization Validate proxy resource.
-     *
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param organizationName Organization resource name.
+     * @param body Organization resource model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return organization resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<OrganizationResourceInner>> validateOrganizationWithResponseAsync(String resourceGroupName,
+        String organizationName, OrganizationResourceInner body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.validateOrganization(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, organizationName, body, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Organization Validate proxy resource.
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param organizationName Organization resource name.
+     * @param body Organization resource model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return organization resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<OrganizationResourceInner>> validateOrganizationWithResponseAsync(String resourceGroupName,
+        String organizationName, OrganizationResourceInner body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.validateOrganization(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, body, accept, context);
+    }
+
+    /**
+     * Organization Validate proxy resource.
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param organizationName Organization resource name.
+     * @param body Organization resource model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return organization resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OrganizationResourceInner> validateOrganizationAsync(String resourceGroupName, String organizationName,
+        OrganizationResourceInner body) {
+        return validateOrganizationWithResponseAsync(resourceGroupName, organizationName, body)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Organization Validate proxy resource.
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param organizationName Organization resource name.
+     * @param body Organization resource model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return organization resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<OrganizationResourceInner> validateOrganizationWithResponse(String resourceGroupName,
+        String organizationName, OrganizationResourceInner body, Context context) {
+        return validateOrganizationWithResponseAsync(resourceGroupName, organizationName, body, context).block();
+    }
+
+    /**
+     * Organization Validate proxy resource.
+     * 
      * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
@@ -84,19 +214,32 @@ public final class ValidationsClientImpl implements ValidationsClient {
      * @return organization resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OrganizationResourceInner>> validateOrganizationWithResponseAsync(
-        String resourceGroupName, String organizationName, OrganizationResourceInner body) {
+    public OrganizationResourceInner validateOrganization(String resourceGroupName, String organizationName,
+        OrganizationResourceInner body) {
+        return validateOrganizationWithResponse(resourceGroupName, organizationName, body, Context.NONE).getValue();
+    }
+
+    /**
+     * Organization Validate proxy resource.
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param organizationName Organization resource name.
+     * @param body Organization resource model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validationResponse along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ValidationResponseInner>> validateOrganizationV2WithResponseAsync(String resourceGroupName,
+        String organizationName, OrganizationResourceInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -114,23 +257,14 @@ public final class ValidationsClientImpl implements ValidationsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .validateOrganization(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            organizationName,
-                            body,
-                            accept,
-                            context))
+                context -> service.validateOrganizationV2(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, organizationName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Organization Validate proxy resource.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
@@ -138,22 +272,18 @@ public final class ValidationsClientImpl implements ValidationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return organization resource.
+     * @return validationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OrganizationResourceInner>> validateOrganizationWithResponseAsync(
-        String resourceGroupName, String organizationName, OrganizationResourceInner body, Context context) {
+    private Mono<Response<ValidationResponseInner>> validateOrganizationV2WithResponseAsync(String resourceGroupName,
+        String organizationName, OrganizationResourceInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -170,63 +300,31 @@ public final class ValidationsClientImpl implements ValidationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .validateOrganization(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                organizationName,
-                body,
-                accept,
-                context);
+        return service.validateOrganizationV2(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, body, accept, context);
     }
 
     /**
      * Organization Validate proxy resource.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return organization resource.
+     * @return validationResponse on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OrganizationResourceInner> validateOrganizationAsync(
-        String resourceGroupName, String organizationName, OrganizationResourceInner body) {
-        return validateOrganizationWithResponseAsync(resourceGroupName, organizationName, body)
-            .flatMap(
-                (Response<OrganizationResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    private Mono<ValidationResponseInner> validateOrganizationV2Async(String resourceGroupName, String organizationName,
+        OrganizationResourceInner body) {
+        return validateOrganizationV2WithResponseAsync(resourceGroupName, organizationName, body)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Organization Validate proxy resource.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param organizationName Organization resource name.
-     * @param body Organization resource model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return organization resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OrganizationResourceInner validateOrganization(
-        String resourceGroupName, String organizationName, OrganizationResourceInner body) {
-        return validateOrganizationAsync(resourceGroupName, organizationName, body).block();
-    }
-
-    /**
-     * Organization Validate proxy resource.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
@@ -234,11 +332,28 @@ public final class ValidationsClientImpl implements ValidationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return organization resource.
+     * @return validationResponse along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OrganizationResourceInner> validateOrganizationWithResponse(
-        String resourceGroupName, String organizationName, OrganizationResourceInner body, Context context) {
-        return validateOrganizationWithResponseAsync(resourceGroupName, organizationName, body, context).block();
+    public Response<ValidationResponseInner> validateOrganizationV2WithResponse(String resourceGroupName,
+        String organizationName, OrganizationResourceInner body, Context context) {
+        return validateOrganizationV2WithResponseAsync(resourceGroupName, organizationName, body, context).block();
+    }
+
+    /**
+     * Organization Validate proxy resource.
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param organizationName Organization resource name.
+     * @param body Organization resource model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validationResponse.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ValidationResponseInner validateOrganizationV2(String resourceGroupName, String organizationName,
+        OrganizationResourceInner body) {
+        return validateOrganizationV2WithResponse(resourceGroupName, organizationName, body, Context.NONE).getValue();
     }
 }

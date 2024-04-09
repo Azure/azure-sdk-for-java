@@ -9,12 +9,14 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** An instance of this class provides access to all the operations defined in JobCancellationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobCancellationsClient.
+ */
 public interface JobCancellationsClient {
     /**
      * Cancels a job. This is an asynchronous operation. To know the status of the cancellation, call
      * GetCancelOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Name of the job to cancel.
@@ -30,7 +32,7 @@ public interface JobCancellationsClient {
     /**
      * Cancels a job. This is an asynchronous operation. To know the status of the cancellation, call
      * GetCancelOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Name of the job to cancel.

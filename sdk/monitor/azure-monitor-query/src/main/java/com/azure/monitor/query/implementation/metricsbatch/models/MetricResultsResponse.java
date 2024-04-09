@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The metrics result for a resource. */
+/**
+ * The metrics result for a resource.
+ */
 @Fluent
 public final class MetricResultsResponse {
     /*
@@ -17,12 +19,15 @@ public final class MetricResultsResponse {
     @JsonProperty(value = "values")
     private List<MetricResultsResponseValuesItem> values;
 
-    /** Creates an instance of MetricResultsResponse class. */
-    public MetricResultsResponse() {}
+    /**
+     * Creates an instance of MetricResultsResponse class.
+     */
+    public MetricResultsResponse() {
+    }
 
     /**
      * Get the values property: The collection of metric data responses per resource, per metric.
-     *
+     * 
      * @return the values value.
      */
     public List<MetricResultsResponseValuesItem> getValues() {
@@ -31,7 +36,7 @@ public final class MetricResultsResponse {
 
     /**
      * Set the values property: The collection of metric data responses per resource, per metric.
-     *
+     * 
      * @param values the values value to set.
      * @return the MetricResultsResponse object itself.
      */

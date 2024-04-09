@@ -25,6 +25,10 @@ public final class SearchGetSchemaResponseInner {
     @JsonProperty(value = "value")
     private List<SearchSchemaValue> value;
 
+    /** Creates an instance of SearchGetSchemaResponseInner class. */
+    public SearchGetSchemaResponseInner() {
+    }
+
     /**
      * Get the metadata property: The metadata from search results.
      *

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.desktopvirtualization.models.AgentUpdatePatchProperties;
+import com.azure.resourcemanager.desktopvirtualization.models.HostpoolPublicNetworkAccess;
 import com.azure.resourcemanager.desktopvirtualization.models.LoadBalancerType;
 import com.azure.resourcemanager.desktopvirtualization.models.PersonalDesktopAssignmentType;
 import com.azure.resourcemanager.desktopvirtualization.models.PreferredAppGroupType;
@@ -111,6 +112,12 @@ public final class HostPoolPatchProperties {
      */
     @JsonProperty(value = "startVMOnConnect")
     private Boolean startVMOnConnect;
+
+    /*
+     * Enabled to allow this resource to be access from the public network
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private HostpoolPublicNetworkAccess publicNetworkAccess;
 
     /*
      * The session host configuration for updating agent, monitoring agent, and stack component.
@@ -444,6 +451,26 @@ public final class HostPoolPatchProperties {
      */
     public HostPoolPatchProperties withStartVMOnConnect(Boolean startVMOnConnect) {
         this.startVMOnConnect = startVMOnConnect;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Enabled to allow this resource to be access from the public network.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public HostpoolPublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Enabled to allow this resource to be access from the public network.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the HostPoolPatchProperties object itself.
+     */
+    public HostPoolPatchProperties withPublicNetworkAccess(HostpoolPublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 

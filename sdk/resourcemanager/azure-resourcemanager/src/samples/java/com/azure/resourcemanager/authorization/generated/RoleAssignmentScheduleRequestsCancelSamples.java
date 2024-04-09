@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RoleAssignmentScheduleRequests Cancel. */
 public final class RoleAssignmentScheduleRequestsCancelSamples {
     /*
@@ -26,6 +24,6 @@ public final class RoleAssignmentScheduleRequestsCancelSamples {
             .cancelWithResponse(
                 "providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f",
                 "fea7a502-9a96-4806-a26f-eee560e52045",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -16,8 +16,7 @@ import java.util.Map;
 @Fluent
 public final class DataSourceInner extends ProxyResource {
     /*
-     * The data source properties in raw json format, each kind of data source
-     * have it's own schema.
+     * The data source properties in raw json format, each kind of data source have it's own schema.
      */
     @JsonProperty(value = "properties", required = true)
     private Object properties;
@@ -40,6 +39,10 @@ public final class DataSourceInner extends ProxyResource {
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of DataSourceInner class. */
+    public DataSourceInner() {
+    }
 
     /**
      * Get the properties property: The data source properties in raw json format, each kind of data source have it's

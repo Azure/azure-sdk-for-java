@@ -14,6 +14,8 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.core.util.tracing.TracingLink;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -56,6 +58,7 @@ public class LoggingTracerProvider implements TracerProvider {
      */
     private static class LoggingTracer implements Tracer {
         private final boolean isEnabled;
+
         LoggingTracer(TracingOptions options) {
             this.isEnabled = options.isEnabled();
         }
@@ -70,8 +73,8 @@ public class LoggingTracerProvider implements TracerProvider {
             if (!isEnabled) {
                 return context;
             }
-            LoggingSpan span = new LoggingSpan(name, SpanKind.INTERNAL, getSpan(context));
-            return context.addData("span", span);
+
+            return start(name, new StartSpanOptions(SpanKind.INTERNAL), context);
         }
 
         @Override
@@ -81,10 +84,11 @@ public class LoggingTracerProvider implements TracerProvider {
             }
 
             LoggingSpan span = new LoggingSpan(name, options.getSpanKind(), getSpan(context));
+            span.startTimestamp = options.getStartTimestamp() == null ? Instant.now() : options.getStartTimestamp();
+
             if (options.getAttributes() != null) {
                 options.getAttributes().forEach((k, v) -> span.addKeyValue(k, v));
             }
-            span.addKeyValue("startTimestamp", options.getStartTimestamp());
 
             if (options.getLinks() != null) {
                 for (int i = 0; i < options.getLinks().size(); i++) {
@@ -135,8 +139,8 @@ public class LoggingTracerProvider implements TracerProvider {
             }
 
             // follows https://www.w3.org/TR/trace-context/
-            return new Context("traceId", traceparent.substring(3, 35))
-                .addData("spanId", traceparent.substring(36, 52));
+            return new Context("traceId", traceparent.substring(3, 35)).addData("spanId",
+                traceparent.substring(36, 52));
         }
 
         private LoggingSpan getSpan(Context context) {
@@ -158,6 +162,7 @@ public class LoggingTracerProvider implements TracerProvider {
         private final String spanId;
         private final LoggingEventBuilder log;
         private final boolean enabled;
+        private Instant startTimestamp;
 
         private LoggingSpan() {
             this.traceId = null;
@@ -201,6 +206,9 @@ public class LoggingTracerProvider implements TracerProvider {
 
         public void end(Throwable throwable) {
             if (enabled) {
+                log.addKeyValue("startTimestamp", startTimestamp)
+                    .addKeyValue("durationMs", Duration.between(startTimestamp, Instant.now()).toMillis());
+
                 if (throwable != null) {
                     log.log("span ended", throwable);
                 } else {
@@ -213,9 +221,7 @@ public class LoggingTracerProvider implements TracerProvider {
          * Generates random id with given length up to 32 chars.
          */
         private static String getRandomId(int length) {
-            return CoreUtils.randomUuid().toString()
-                .replace("-", "")
-                .substring(32 - length);
+            return CoreUtils.randomUuid().toString().replace("-", "").substring(32 - length);
         }
     }
 }

@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Custom Events Trigger properties. */
+/**
+ * Custom Events Trigger properties.
+ */
 @Fluent
 public final class CustomEventsTriggerTypeProperties {
     /*
@@ -38,14 +40,16 @@ public final class CustomEventsTriggerTypeProperties {
     @JsonProperty(value = "scope", required = true)
     private String scope;
 
-    /** Creates an instance of CustomEventsTriggerTypeProperties class. */
+    /**
+     * Creates an instance of CustomEventsTriggerTypeProperties class.
+     */
     public CustomEventsTriggerTypeProperties() {
     }
 
     /**
      * Get the subjectBeginsWith property: The event subject must begin with the pattern provided for trigger to fire.
      * At least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     *
+     * 
      * @return the subjectBeginsWith value.
      */
     public String subjectBeginsWith() {
@@ -55,7 +59,7 @@ public final class CustomEventsTriggerTypeProperties {
     /**
      * Set the subjectBeginsWith property: The event subject must begin with the pattern provided for trigger to fire.
      * At least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     *
+     * 
      * @param subjectBeginsWith the subjectBeginsWith value to set.
      * @return the CustomEventsTriggerTypeProperties object itself.
      */
@@ -67,7 +71,7 @@ public final class CustomEventsTriggerTypeProperties {
     /**
      * Get the subjectEndsWith property: The event subject must end with the pattern provided for trigger to fire. At
      * least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     *
+     * 
      * @return the subjectEndsWith value.
      */
     public String subjectEndsWith() {
@@ -77,7 +81,7 @@ public final class CustomEventsTriggerTypeProperties {
     /**
      * Set the subjectEndsWith property: The event subject must end with the pattern provided for trigger to fire. At
      * least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     *
+     * 
      * @param subjectEndsWith the subjectEndsWith value to set.
      * @return the CustomEventsTriggerTypeProperties object itself.
      */
@@ -88,7 +92,7 @@ public final class CustomEventsTriggerTypeProperties {
 
     /**
      * Get the events property: The list of event types that cause this trigger to fire.
-     *
+     * 
      * @return the events value.
      */
     public List<Object> events() {
@@ -97,7 +101,7 @@ public final class CustomEventsTriggerTypeProperties {
 
     /**
      * Set the events property: The list of event types that cause this trigger to fire.
-     *
+     * 
      * @param events the events value to set.
      * @return the CustomEventsTriggerTypeProperties object itself.
      */
@@ -108,7 +112,7 @@ public final class CustomEventsTriggerTypeProperties {
 
     /**
      * Get the scope property: The ARM resource ID of the Azure Event Grid Topic.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -117,7 +121,7 @@ public final class CustomEventsTriggerTypeProperties {
 
     /**
      * Set the scope property: The ARM resource ID of the Azure Event Grid Topic.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the CustomEventsTriggerTypeProperties object itself.
      */
@@ -128,21 +132,17 @@ public final class CustomEventsTriggerTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (events() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property events in model CustomEventsTriggerTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property events in model CustomEventsTriggerTypeProperties"));
         }
         if (scope() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property scope in model CustomEventsTriggerTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property scope in model CustomEventsTriggerTypeProperties"));
         }
     }
 

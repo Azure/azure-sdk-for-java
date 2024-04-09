@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.HubBgpConnectionStatus;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Virtual Appliance Site resource. */
+/**
+ * Virtual Appliance Site resource.
+ */
 @Fluent
 public final class BgpConnectionInner extends SubResource {
     /*
@@ -37,13 +39,15 @@ public final class BgpConnectionInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of BgpConnectionInner class. */
+    /**
+     * Creates an instance of BgpConnectionInner class.
+     */
     public BgpConnectionInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the Bgp connections.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BgpConnectionProperties innerProperties() {
@@ -52,7 +56,7 @@ public final class BgpConnectionInner extends SubResource {
 
     /**
      * Get the name property: Name of the connection.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +65,7 @@ public final class BgpConnectionInner extends SubResource {
 
     /**
      * Set the name property: Name of the connection.
-     *
+     * 
      * @param name the name value to set.
      * @return the BgpConnectionInner object itself.
      */
@@ -72,7 +76,7 @@ public final class BgpConnectionInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -81,14 +85,16 @@ public final class BgpConnectionInner extends SubResource {
 
     /**
      * Get the type property: Connection type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BgpConnectionInner withId(String id) {
         super.withId(id);
@@ -97,7 +103,7 @@ public final class BgpConnectionInner extends SubResource {
 
     /**
      * Get the peerAsn property: Peer ASN.
-     *
+     * 
      * @return the peerAsn value.
      */
     public Long peerAsn() {
@@ -106,7 +112,7 @@ public final class BgpConnectionInner extends SubResource {
 
     /**
      * Set the peerAsn property: Peer ASN.
-     *
+     * 
      * @param peerAsn the peerAsn value to set.
      * @return the BgpConnectionInner object itself.
      */
@@ -120,7 +126,7 @@ public final class BgpConnectionInner extends SubResource {
 
     /**
      * Get the peerIp property: Peer IP.
-     *
+     * 
      * @return the peerIp value.
      */
     public String peerIp() {
@@ -129,7 +135,7 @@ public final class BgpConnectionInner extends SubResource {
 
     /**
      * Set the peerIp property: Peer IP.
-     *
+     * 
      * @param peerIp the peerIp value to set.
      * @return the BgpConnectionInner object itself.
      */
@@ -143,7 +149,7 @@ public final class BgpConnectionInner extends SubResource {
 
     /**
      * Get the hubVirtualNetworkConnection property: The reference to the HubVirtualNetworkConnection resource.
-     *
+     * 
      * @return the hubVirtualNetworkConnection value.
      */
     public SubResource hubVirtualNetworkConnection() {
@@ -152,7 +158,7 @@ public final class BgpConnectionInner extends SubResource {
 
     /**
      * Set the hubVirtualNetworkConnection property: The reference to the HubVirtualNetworkConnection resource.
-     *
+     * 
      * @param hubVirtualNetworkConnection the hubVirtualNetworkConnection value to set.
      * @return the BgpConnectionInner object itself.
      */
@@ -166,7 +172,7 @@ public final class BgpConnectionInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -175,7 +181,7 @@ public final class BgpConnectionInner extends SubResource {
 
     /**
      * Get the connectionState property: The current state of the VirtualHub to Peer.
-     *
+     * 
      * @return the connectionState value.
      */
     public HubBgpConnectionStatus connectionState() {
@@ -184,7 +190,7 @@ public final class BgpConnectionInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

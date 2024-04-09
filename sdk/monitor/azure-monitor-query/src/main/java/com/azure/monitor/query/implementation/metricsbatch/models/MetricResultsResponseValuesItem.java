@@ -7,10 +7,11 @@ package com.azure.monitor.query.implementation.metricsbatch.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.Duration;
 import java.util.List;
 
-/** The MetricResultsResponseValuesItem model. */
+/**
+ * The MetricResultsResponseValuesItem model.
+ */
 @Fluent
 public final class MetricResultsResponseValuesItem {
     /*
@@ -26,12 +27,13 @@ public final class MetricResultsResponseValuesItem {
     private String endtime;
 
     /*
-     * The interval (window size) for which the metric data was returned in. Follows the IS8601/RFC3339 duration format
-     * (e.g. 'P1D' for 1 day). This may be adjusted in the future and returned back from what was originally requested.
-     * This is not present if a metadata request was made.
+     * The interval (window size) for which the metric data was returned in ISO 8601 duration format with a special
+     * case for 'FULL' value that returns single datapoint for entire time span requested (*Examples: PT15M, PT1H, P1D,
+     * FULL*).
+     * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
      */
     @JsonProperty(value = "interval")
-    private Duration interval;
+    private String interval;
 
     /*
      * The namespace of the metrics been queried
@@ -59,16 +61,15 @@ public final class MetricResultsResponseValuesItem {
 
     /**
      * Creates an instance of MetricResultsResponseValuesItem class.
-     *
+     * 
      * @param starttime the starttime value to set.
      * @param endtime the endtime value to set.
      * @param value the value value to set.
      */
     @JsonCreator
-    public MetricResultsResponseValuesItem(
-            @JsonProperty(value = "starttime", required = true) String starttime,
-            @JsonProperty(value = "endtime", required = true) String endtime,
-            @JsonProperty(value = "value", required = true) List<Metric> value) {
+    public MetricResultsResponseValuesItem(@JsonProperty(value = "starttime", required = true) String starttime,
+        @JsonProperty(value = "endtime", required = true) String endtime,
+        @JsonProperty(value = "value", required = true) List<Metric> value) {
         this.starttime = starttime;
         this.endtime = endtime;
         this.value = value;
@@ -76,7 +77,7 @@ public final class MetricResultsResponseValuesItem {
 
     /**
      * Get the starttime property: The start time, in datetime format, for which the data was retrieved.
-     *
+     * 
      * @return the starttime value.
      */
     public String getStarttime() {
@@ -85,7 +86,7 @@ public final class MetricResultsResponseValuesItem {
 
     /**
      * Get the endtime property: The end time, in datetime format, for which the data was retrieved.
-     *
+     * 
      * @return the endtime value.
      */
     public String getEndtime() {
@@ -93,32 +94,34 @@ public final class MetricResultsResponseValuesItem {
     }
 
     /**
-     * Get the interval property: The interval (window size) for which the metric data was returned in. Follows the
-     * IS8601/RFC3339 duration format (e.g. 'P1D' for 1 day). This may be adjusted in the future and returned back from
-     * what was originally requested. This is not present if a metadata request was made.
-     *
+     * Get the interval property: The interval (window size) for which the metric data was returned in ISO 8601
+     * duration format with a special case for 'FULL' value that returns single datapoint for entire time span
+     * requested (*Examples: PT15M, PT1H, P1D, FULL*).
+     * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
+     * 
      * @return the interval value.
      */
-    public Duration getInterval() {
+    public String getInterval() {
         return this.interval;
     }
 
     /**
-     * Set the interval property: The interval (window size) for which the metric data was returned in. Follows the
-     * IS8601/RFC3339 duration format (e.g. 'P1D' for 1 day). This may be adjusted in the future and returned back from
-     * what was originally requested. This is not present if a metadata request was made.
-     *
+     * Set the interval property: The interval (window size) for which the metric data was returned in ISO 8601
+     * duration format with a special case for 'FULL' value that returns single datapoint for entire time span
+     * requested (*Examples: PT15M, PT1H, P1D, FULL*).
+     * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
+     * 
      * @param interval the interval value to set.
      * @return the MetricResultsResponseValuesItem object itself.
      */
-    public MetricResultsResponseValuesItem setInterval(Duration interval) {
+    public MetricResultsResponseValuesItem setInterval(String interval) {
         this.interval = interval;
         return this;
     }
 
     /**
      * Get the namespace property: The namespace of the metrics been queried.
-     *
+     * 
      * @return the namespace value.
      */
     public String getNamespace() {
@@ -127,7 +130,7 @@ public final class MetricResultsResponseValuesItem {
 
     /**
      * Set the namespace property: The namespace of the metrics been queried.
-     *
+     * 
      * @param namespace the namespace value to set.
      * @return the MetricResultsResponseValuesItem object itself.
      */
@@ -138,7 +141,7 @@ public final class MetricResultsResponseValuesItem {
 
     /**
      * Get the resourceregion property: The region of the resource been queried for metrics.
-     *
+     * 
      * @return the resourceregion value.
      */
     public String getResourceregion() {
@@ -147,7 +150,7 @@ public final class MetricResultsResponseValuesItem {
 
     /**
      * Set the resourceregion property: The region of the resource been queried for metrics.
-     *
+     * 
      * @param resourceregion the resourceregion value to set.
      * @return the MetricResultsResponseValuesItem object itself.
      */
@@ -158,7 +161,7 @@ public final class MetricResultsResponseValuesItem {
 
     /**
      * Get the resourceid property: The resource that has been queried for metrics.
-     *
+     * 
      * @return the resourceid value.
      */
     public String getResourceid() {
@@ -167,7 +170,7 @@ public final class MetricResultsResponseValuesItem {
 
     /**
      * Set the resourceid property: The resource that has been queried for metrics.
-     *
+     * 
      * @param resourceid the resourceid value to set.
      * @return the MetricResultsResponseValuesItem object itself.
      */
@@ -178,7 +181,7 @@ public final class MetricResultsResponseValuesItem {
 
     /**
      * Get the value property: The value of the collection.
-     *
+     * 
      * @return the value value.
      */
     public List<Metric> getValue() {

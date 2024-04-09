@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the partner that created the assessment. */
+/**
+ * Describes the partner that created the assessment.
+ */
 @Fluent
 public final class SecurityAssessmentMetadataPartnerData {
     /*
@@ -26,16 +28,18 @@ public final class SecurityAssessmentMetadataPartnerData {
     /*
      * Secret to authenticate the partner and verify it created the assessment - write only
      */
-    @JsonProperty(value = "secret", required = true)
+    @JsonProperty(value = "secret")
     private String secret;
 
-    /** Creates an instance of SecurityAssessmentMetadataPartnerData class. */
+    /**
+     * Creates an instance of SecurityAssessmentMetadataPartnerData class.
+     */
     public SecurityAssessmentMetadataPartnerData() {
     }
 
     /**
      * Get the partnerName property: Name of the company of the partner.
-     *
+     * 
      * @return the partnerName value.
      */
     public String partnerName() {
@@ -44,7 +48,7 @@ public final class SecurityAssessmentMetadataPartnerData {
 
     /**
      * Set the partnerName property: Name of the company of the partner.
-     *
+     * 
      * @param partnerName the partnerName value to set.
      * @return the SecurityAssessmentMetadataPartnerData object itself.
      */
@@ -55,7 +59,7 @@ public final class SecurityAssessmentMetadataPartnerData {
 
     /**
      * Get the productName property: Name of the product of the partner that created the assessment.
-     *
+     * 
      * @return the productName value.
      */
     public String productName() {
@@ -64,7 +68,7 @@ public final class SecurityAssessmentMetadataPartnerData {
 
     /**
      * Set the productName property: Name of the product of the partner that created the assessment.
-     *
+     * 
      * @param productName the productName value to set.
      * @return the SecurityAssessmentMetadataPartnerData object itself.
      */
@@ -75,7 +79,7 @@ public final class SecurityAssessmentMetadataPartnerData {
 
     /**
      * Get the secret property: Secret to authenticate the partner and verify it created the assessment - write only.
-     *
+     * 
      * @return the secret value.
      */
     public String secret() {
@@ -84,7 +88,7 @@ public final class SecurityAssessmentMetadataPartnerData {
 
     /**
      * Set the secret property: Secret to authenticate the partner and verify it created the assessment - write only.
-     *
+     * 
      * @param secret the secret value to set.
      * @return the SecurityAssessmentMetadataPartnerData object itself.
      */
@@ -95,21 +99,17 @@ public final class SecurityAssessmentMetadataPartnerData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (partnerName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property partnerName in model SecurityAssessmentMetadataPartnerData"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property partnerName in model SecurityAssessmentMetadataPartnerData"));
         }
         if (secret() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property secret in model SecurityAssessmentMetadataPartnerData"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property secret in model SecurityAssessmentMetadataPartnerData"));
         }
     }
 

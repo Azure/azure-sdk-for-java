@@ -50,6 +50,13 @@ public @interface SearchableField {
     boolean isSortable() default false;
 
     /**
+     * Indicates if whether the field will be persisted separately on disk to be returned in a search result.
+     *
+     * @return A flag indicating if the field or method should generate as a stored {@link SearchField field}.
+     */
+    boolean isStored() default true;
+
+    /**
      * Indicates if the field or method should generate as a filterable {@link SearchField field}.
      *
      * @return A flag indicating if the field or method should generate as a filterable {@link SearchField field}.
@@ -99,4 +106,24 @@ public @interface SearchableField {
      * @return The {@link SynonymMap} names that will be associated with the {@link SearchField field}.
      */
     String[] synonymMapNames() default {};
+
+    /**
+     * The dimensionality of the vector field.
+     * <p>
+     * If the value is negative or 0, the field won't have a {@link SearchField#getVectorSearchDimensions()} value.
+     *
+     * @return The dimensionality of the vector {@link SearchField field}.
+     */
+    int vectorSearchDimensions() default -1;
+
+    /**
+     * The name of the vector search profile that specifies the parameters for searching the vector field.
+     * <p>
+     * If the value is empty, the field won't have a {@link SearchField#getVectorSearchProfileName()} ()} value.
+     *
+     * @return The name of the vector search profile that specifies the parameters for searching the vector
+     * {@link SearchField field}.
+     */
+    String vectorSearchProfileName() default "";
+
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.search.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for PrivateLinkServiceConnectionStatus. */
+/** Status of the the private link service connection. Valid values are Pending, Approved, Rejected, or Disconnected. */
 public enum PrivateLinkServiceConnectionStatus {
     /** Enum value Pending. */
     PENDING("Pending"),
@@ -36,6 +36,9 @@ public enum PrivateLinkServiceConnectionStatus {
      */
     @JsonCreator
     public static PrivateLinkServiceConnectionStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         PrivateLinkServiceConnectionStatus[] items = PrivateLinkServiceConnectionStatus.values();
         for (PrivateLinkServiceConnectionStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum PrivateLinkServiceConnectionStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

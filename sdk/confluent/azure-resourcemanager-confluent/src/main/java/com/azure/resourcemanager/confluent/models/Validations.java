@@ -8,25 +8,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
 
-/** Resource collection API of Validations. */
+/**
+ * Resource collection API of Validations.
+ */
 public interface Validations {
     /**
      * Organization Validate proxy resource.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param organizationName Organization resource name.
-     * @param body Organization resource model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return organization resource.
-     */
-    OrganizationResource validateOrganization(
-        String resourceGroupName, String organizationName, OrganizationResourceInner body);
-
-    /**
-     * Organization Validate proxy resource.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
@@ -34,8 +22,51 @@ public interface Validations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return organization resource along with {@link Response}.
+     */
+    Response<OrganizationResource> validateOrganizationWithResponse(String resourceGroupName, String organizationName,
+        OrganizationResourceInner body, Context context);
+
+    /**
+     * Organization Validate proxy resource.
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param organizationName Organization resource name.
+     * @param body Organization resource model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return organization resource.
      */
-    Response<OrganizationResource> validateOrganizationWithResponse(
-        String resourceGroupName, String organizationName, OrganizationResourceInner body, Context context);
+    OrganizationResource validateOrganization(String resourceGroupName, String organizationName,
+        OrganizationResourceInner body);
+
+    /**
+     * Organization Validate proxy resource.
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param organizationName Organization resource name.
+     * @param body Organization resource model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validationResponse along with {@link Response}.
+     */
+    Response<ValidationResponse> validateOrganizationV2WithResponse(String resourceGroupName, String organizationName,
+        OrganizationResourceInner body, Context context);
+
+    /**
+     * Organization Validate proxy resource.
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param organizationName Organization resource name.
+     * @param body Organization resource model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validationResponse.
+     */
+    ValidationResponse validateOrganizationV2(String resourceGroupName, String organizationName,
+        OrganizationResourceInner body);
 }

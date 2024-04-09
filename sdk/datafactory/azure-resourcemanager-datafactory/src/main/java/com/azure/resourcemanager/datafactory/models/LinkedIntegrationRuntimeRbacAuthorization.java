@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The role based access control (RBAC) authorization type integration runtime. */
+/**
+ * The role based access control (RBAC) authorization type integration runtime.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authorizationType")
 @JsonTypeName("RBAC")
 @Fluent
@@ -27,13 +29,15 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
     @JsonProperty(value = "credential")
     private CredentialReference credential;
 
-    /** Creates an instance of LinkedIntegrationRuntimeRbacAuthorization class. */
+    /**
+     * Creates an instance of LinkedIntegrationRuntimeRbacAuthorization class.
+     */
     public LinkedIntegrationRuntimeRbacAuthorization() {
     }
 
     /**
      * Get the resourceId property: The resource identifier of the integration runtime to be shared.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -42,7 +46,7 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
 
     /**
      * Set the resourceId property: The resource identifier of the integration runtime to be shared.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the LinkedIntegrationRuntimeRbacAuthorization object itself.
      */
@@ -53,7 +57,7 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
 
     /**
      * Get the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @return the credential value.
      */
     public CredentialReference credential() {
@@ -62,7 +66,7 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
 
     /**
      * Set the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the LinkedIntegrationRuntimeRbacAuthorization object itself.
      */
@@ -73,17 +77,15 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (resourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceId in model LinkedIntegrationRuntimeRbacAuthorization"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property resourceId in model LinkedIntegrationRuntimeRbacAuthorization"));
         }
         if (credential() != null) {
             credential().validate();

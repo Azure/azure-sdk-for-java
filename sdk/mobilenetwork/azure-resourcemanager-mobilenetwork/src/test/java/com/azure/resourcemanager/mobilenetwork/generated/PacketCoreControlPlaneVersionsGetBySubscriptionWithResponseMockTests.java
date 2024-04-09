@@ -34,46 +34,32 @@ public final class PacketCoreControlPlaneVersionsGetBySubscriptionWithResponseMo
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Unknown\",\"platforms\":[{\"platformType\":\"AKS-HCI\",\"versionState\":\"Preview\",\"minimumPlatformSoftwareVersion\":\"bukklels\",\"maximumPlatformSoftwareVersion\":\"blycsxzujksr\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"Obsolete\"},{\"platformType\":\"AKS-HCI\",\"versionState\":\"Deprecated\",\"minimumPlatformSoftwareVersion\":\"vmjcdoewb\",\"maximumPlatformSoftwareVersion\":\"yvteowxvgpiudeu\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"Obsolete\"}]},\"id\":\"ecpaxwkufyk\",\"name\":\"vuhx\",\"type\":\"pmru\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"platforms\":[{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"Validating\",\"minimumPlatformSoftwareVersion\":\"mgbro\",\"maximumPlatformSoftwareVersion\":\"ddbhf\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"Obsolete\"},{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"Preview\",\"minimumPlatformSoftwareVersion\":\"wjxhpdulon\",\"maximumPlatformSoftwareVersion\":\"cnpqwteht\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"Obsolete\"},{\"platformType\":\"AKS-HCI\",\"versionState\":\"Preview\",\"minimumPlatformSoftwareVersion\":\"ogwxhnsduugwb\",\"maximumPlatformSoftwareVersion\":\"e\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"NotObsolete\"}]},\"id\":\"uarenlv\",\"name\":\"htkln\",\"type\":\"nafvvkyfedev\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MobileNetworkManager manager = MobileNetworkManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PacketCoreControlPlaneVersion response =
-            manager
-                .packetCoreControlPlaneVersions()
-                .getBySubscriptionWithResponse("eml", com.azure.core.util.Context.NONE)
-                .getValue();
+        PacketCoreControlPlaneVersion response = manager.packetCoreControlPlaneVersions()
+            .getBySubscriptionWithResponse("arfdlpukhpyrnei", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(PlatformType.AKS_HCI, response.platforms().get(0).platformType());
-        Assertions.assertEquals(VersionState.PREVIEW, response.platforms().get(0).versionState());
-        Assertions.assertEquals("bukklels", response.platforms().get(0).minimumPlatformSoftwareVersion());
-        Assertions.assertEquals("blycsxzujksr", response.platforms().get(0).maximumPlatformSoftwareVersion());
-        Assertions.assertEquals(RecommendedVersion.RECOMMENDED, response.platforms().get(0).recommendedVersion());
+        Assertions.assertEquals(PlatformType.THREE_P_AZURE_STACK_HCI, response.platforms().get(0).platformType());
+        Assertions.assertEquals(VersionState.VALIDATING, response.platforms().get(0).versionState());
+        Assertions.assertEquals("mgbro", response.platforms().get(0).minimumPlatformSoftwareVersion());
+        Assertions.assertEquals("ddbhf", response.platforms().get(0).maximumPlatformSoftwareVersion());
+        Assertions.assertEquals(RecommendedVersion.NOT_RECOMMENDED, response.platforms().get(0).recommendedVersion());
         Assertions.assertEquals(ObsoleteVersion.OBSOLETE, response.platforms().get(0).obsoleteVersion());
     }
 }

@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for Smartsheet. */
+/**
+ * Linked service for Smartsheet.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Smartsheet")
 @Fluent
@@ -24,41 +26,51 @@ public final class SmartsheetLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private SmartsheetLinkedServiceTypeProperties innerTypeProperties = new SmartsheetLinkedServiceTypeProperties();
 
-    /** Creates an instance of SmartsheetLinkedService class. */
+    /**
+     * Creates an instance of SmartsheetLinkedService class.
+     */
     public SmartsheetLinkedService() {
     }
 
     /**
      * Get the innerTypeProperties property: Smartsheet linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private SmartsheetLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SmartsheetLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SmartsheetLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SmartsheetLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SmartsheetLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -67,7 +79,7 @@ public final class SmartsheetLinkedService extends LinkedService {
 
     /**
      * Get the apiToken property: The api token for the Smartsheet source.
-     *
+     * 
      * @return the apiToken value.
      */
     public SecretBase apiToken() {
@@ -76,7 +88,7 @@ public final class SmartsheetLinkedService extends LinkedService {
 
     /**
      * Set the apiToken property: The api token for the Smartsheet source.
-     *
+     * 
      * @param apiToken the apiToken value to set.
      * @return the SmartsheetLinkedService object itself.
      */
@@ -89,23 +101,23 @@ public final class SmartsheetLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SmartsheetLinkedService object itself.
      */
-    public SmartsheetLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public SmartsheetLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new SmartsheetLinkedServiceTypeProperties();
         }
@@ -115,17 +127,15 @@ public final class SmartsheetLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model SmartsheetLinkedService"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model SmartsheetLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

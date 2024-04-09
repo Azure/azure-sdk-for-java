@@ -4,43 +4,40 @@
 
 package com.azure.resourcemanager.confluent.generated;
 
+import com.azure.resourcemanager.confluent.models.LinkOrganization;
 import com.azure.resourcemanager.confluent.models.OfferDetail;
 import com.azure.resourcemanager.confluent.models.UserDetail;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Organization Create. */
+/**
+ * Samples for Organization Create.
+ */
 public final class OrganizationCreateSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/Organization_Create.json
+     * x-ms-original-file:
+     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_Create.json
      */
     /**
      * Sample code: Organization_Create.
-     *
+     * 
      * @param manager Entry point to ConfluentManager.
      */
     public static void organizationCreate(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager
-            .organizations()
-            .define("myOrganization")
-            .withRegion("West US")
+        manager.organizations().define("myOrganization").withRegion("West US")
             .withExistingResourceGroup("myResourceGroup")
             .withOfferDetail(
-                new OfferDetail()
-                    .withPublisherId("string")
-                    .withId("string")
-                    .withPlanId("string")
-                    .withPlanName("string")
-                    .withTermUnit("string"))
-            .withUserDetail(
-                new UserDetail()
-                    .withFirstName("string")
-                    .withLastName("string")
-                    .withEmailAddress("contoso@microsoft.com"))
+                new OfferDetail().withPublisherId("string").withId("string").withPlanId("string").withPlanName("string")
+                    .withTermUnit("string").withPrivateOfferId("string").withPrivateOfferIds(Arrays.asList("string")))
+            .withUserDetail(new UserDetail().withFirstName("string").withLastName("string")
+                .withEmailAddress("contoso@microsoft.com").withUserPrincipalName("contoso@microsoft.com")
+                .withAadEmail("contoso@microsoft.com"))
             .withTags(mapOf("Environment", "Dev"))
-            .create();
+            .withLinkOrganization(new LinkOrganization().withToken("fakeTokenPlaceholder")).create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

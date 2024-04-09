@@ -8,26 +8,47 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The approval status for the connection to the Private Link. */
+/**
+ * The approval status for the connection to the Private Link.
+ */
 public final class PrivateEndpointStatus extends ExpandableStringEnum<PrivateEndpointStatus> {
-    /** Static value Pending for PrivateEndpointStatus. */
+    /**
+     * Static value Pending for PrivateEndpointStatus.
+     */
     public static final PrivateEndpointStatus PENDING = fromString("Pending");
 
-    /** Static value Approved for PrivateEndpointStatus. */
+    /**
+     * Static value Approved for PrivateEndpointStatus.
+     */
     public static final PrivateEndpointStatus APPROVED = fromString("Approved");
 
-    /** Static value Rejected for PrivateEndpointStatus. */
+    /**
+     * Static value Rejected for PrivateEndpointStatus.
+     */
     public static final PrivateEndpointStatus REJECTED = fromString("Rejected");
 
-    /** Static value Disconnected for PrivateEndpointStatus. */
+    /**
+     * Static value Disconnected for PrivateEndpointStatus.
+     */
     public static final PrivateEndpointStatus DISCONNECTED = fromString("Disconnected");
 
-    /** Static value Timeout for PrivateEndpointStatus. */
+    /**
+     * Static value Timeout for PrivateEndpointStatus.
+     */
     public static final PrivateEndpointStatus TIMEOUT = fromString("Timeout");
 
     /**
+     * Creates a new instance of PrivateEndpointStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrivateEndpointStatus() {
+    }
+
+    /**
      * Creates or finds a PrivateEndpointStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PrivateEndpointStatus.
      */
@@ -38,7 +59,7 @@ public final class PrivateEndpointStatus extends ExpandableStringEnum<PrivateEnd
 
     /**
      * Gets known PrivateEndpointStatus values.
-     *
+     * 
      * @return known PrivateEndpointStatus values.
      */
     public static Collection<PrivateEndpointStatus> values() {

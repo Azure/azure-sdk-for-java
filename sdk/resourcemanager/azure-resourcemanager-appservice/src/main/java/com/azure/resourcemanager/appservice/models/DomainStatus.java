@@ -7,72 +7,118 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Domain registration status. */
+/**
+ * Domain registration status.
+ */
 public enum DomainStatus {
-    /** Enum value Active. */
+    /**
+     * Enum value Active.
+     */
     ACTIVE("Active"),
 
-    /** Enum value Awaiting. */
+    /**
+     * Enum value Awaiting.
+     */
     AWAITING("Awaiting"),
 
-    /** Enum value Cancelled. */
+    /**
+     * Enum value Cancelled.
+     */
     CANCELLED("Cancelled"),
 
-    /** Enum value Confiscated. */
+    /**
+     * Enum value Confiscated.
+     */
     CONFISCATED("Confiscated"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled"),
 
-    /** Enum value Excluded. */
+    /**
+     * Enum value Excluded.
+     */
     EXCLUDED("Excluded"),
 
-    /** Enum value Expired. */
+    /**
+     * Enum value Expired.
+     */
     EXPIRED("Expired"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed"),
 
-    /** Enum value Held. */
+    /**
+     * Enum value Held.
+     */
     HELD("Held"),
 
-    /** Enum value Locked. */
+    /**
+     * Enum value Locked.
+     */
     LOCKED("Locked"),
 
-    /** Enum value Parked. */
+    /**
+     * Enum value Parked.
+     */
     PARKED("Parked"),
 
-    /** Enum value Pending. */
+    /**
+     * Enum value Pending.
+     */
     PENDING("Pending"),
 
-    /** Enum value Reserved. */
+    /**
+     * Enum value Reserved.
+     */
     RESERVED("Reserved"),
 
-    /** Enum value Reverted. */
+    /**
+     * Enum value Reverted.
+     */
     REVERTED("Reverted"),
 
-    /** Enum value Suspended. */
+    /**
+     * Enum value Suspended.
+     */
     SUSPENDED("Suspended"),
 
-    /** Enum value Transferred. */
+    /**
+     * Enum value Transferred.
+     */
     TRANSFERRED("Transferred"),
 
-    /** Enum value Unknown. */
+    /**
+     * Enum value Unknown.
+     */
     UNKNOWN("Unknown"),
 
-    /** Enum value Unlocked. */
+    /**
+     * Enum value Unlocked.
+     */
     UNLOCKED("Unlocked"),
 
-    /** Enum value Unparked. */
+    /**
+     * Enum value Unparked.
+     */
     UNPARKED("Unparked"),
 
-    /** Enum value Updated. */
+    /**
+     * Enum value Updated.
+     */
     UPDATED("Updated"),
 
-    /** Enum value JsonConverterFailed. */
+    /**
+     * Enum value JsonConverterFailed.
+     */
     JSON_CONVERTER_FAILED("JsonConverterFailed");
 
-    /** The actual serialized value for a DomainStatus instance. */
+    /**
+     * The actual serialized value for a DomainStatus instance.
+     */
     private final String value;
 
     DomainStatus(String value) {
@@ -81,7 +127,7 @@ public enum DomainStatus {
 
     /**
      * Parses a serialized value to a DomainStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DomainStatus object, or null if unable to parse.
      */
@@ -99,7 +145,9 @@ public enum DomainStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -11,7 +11,7 @@ import org.apache.spark.sql.connector.catalog.{NamespaceChange, SupportsNamespac
 
 // scalastyle:off underscore.import
 
-class CosmosCatalog
+private[spark] class CosmosCatalog
     extends CosmosCatalogBase
         with SupportsNamespaces {
 

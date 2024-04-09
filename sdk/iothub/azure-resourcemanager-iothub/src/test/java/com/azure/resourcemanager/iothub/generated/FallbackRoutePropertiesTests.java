@@ -16,12 +16,12 @@ public final class FallbackRoutePropertiesTests {
         FallbackRouteProperties model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"lyaxuc\",\"source\":\"DeviceJobLifecycleEvents\",\"condition\":\"qszf\",\"endpointNames\":[\"eyp\",\"wrmjmwvvjektc\",\"senhwlrs\"],\"isEnabled\":true}")
+                    "{\"name\":\"tsthsucocm\",\"source\":\"DeviceConnectionStateEvents\",\"condition\":\"azt\",\"endpointNames\":[\"twwrqp\"],\"isEnabled\":true}")
                 .toObject(FallbackRouteProperties.class);
-        Assertions.assertEquals("lyaxuc", model.name());
-        Assertions.assertEquals(RoutingSource.DEVICE_JOB_LIFECYCLE_EVENTS, model.source());
-        Assertions.assertEquals("qszf", model.condition());
-        Assertions.assertEquals("eyp", model.endpointNames().get(0));
+        Assertions.assertEquals("tsthsucocm", model.name());
+        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.source());
+        Assertions.assertEquals("azt", model.condition());
+        Assertions.assertEquals("twwrqp", model.endpointNames().get(0));
         Assertions.assertEquals(true, model.isEnabled());
     }
 
@@ -29,16 +29,16 @@ public final class FallbackRoutePropertiesTests {
     public void testSerialize() throws Exception {
         FallbackRouteProperties model =
             new FallbackRouteProperties()
-                .withName("lyaxuc")
-                .withSource(RoutingSource.DEVICE_JOB_LIFECYCLE_EVENTS)
-                .withCondition("qszf")
-                .withEndpointNames(Arrays.asList("eyp", "wrmjmwvvjektc", "senhwlrs"))
+                .withName("tsthsucocm")
+                .withSource(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS)
+                .withCondition("azt")
+                .withEndpointNames(Arrays.asList("twwrqp"))
                 .withIsEnabled(true);
         model = BinaryData.fromObject(model).toObject(FallbackRouteProperties.class);
-        Assertions.assertEquals("lyaxuc", model.name());
-        Assertions.assertEquals(RoutingSource.DEVICE_JOB_LIFECYCLE_EVENTS, model.source());
-        Assertions.assertEquals("qszf", model.condition());
-        Assertions.assertEquals("eyp", model.endpointNames().get(0));
+        Assertions.assertEquals("tsthsucocm", model.name());
+        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.source());
+        Assertions.assertEquals("azt", model.condition());
+        Assertions.assertEquals("twwrqp", model.endpointNames().get(0));
         Assertions.assertEquals(true, model.isEnabled());
     }
 }

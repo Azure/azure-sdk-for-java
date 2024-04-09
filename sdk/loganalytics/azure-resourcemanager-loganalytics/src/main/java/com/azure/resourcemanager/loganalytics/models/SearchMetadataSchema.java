@@ -22,6 +22,10 @@ public final class SearchMetadataSchema {
     @JsonProperty(value = "version")
     private Integer version;
 
+    /** Creates an instance of SearchMetadataSchema class. */
+    public SearchMetadataSchema() {
+    }
+
     /**
      * Get the name property: The name of the metadata schema.
      *

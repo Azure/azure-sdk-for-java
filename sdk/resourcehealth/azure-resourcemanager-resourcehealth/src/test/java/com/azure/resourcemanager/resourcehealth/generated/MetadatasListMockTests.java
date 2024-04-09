@@ -33,7 +33,7 @@ public final class MetadatasListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"nzar\",\"dependsOn\":[\"q\",\"uijfqk\",\"cewiipfpub\",\"ibwwiftohqkv\"],\"applicableScenarios\":[\"Alerts\",\"Alerts\",\"Alerts\",\"Alerts\"],\"supportedValues\":[]},\"id\":\"kn\",\"name\":\"n\",\"type\":\"synljphuopxodl\"}]}";
+            "{\"value\":[{\"properties\":{\"displayName\":\"ciayzriykhya\",\"dependsOn\":[\"jlb\",\"xqvkjlmxhomdyn\",\"dwdigumb\"],\"applicableScenarios\":[\"Alerts\",\"Alerts\",\"Alerts\",\"Alerts\"],\"supportedValues\":[{\"id\":\"a\",\"displayName\":\"sdzhezww\",\"resourceTypes\":[\"qyuvvfonkp\",\"hqyikvy\"]}]},\"id\":\"uyav\",\"name\":\"uwmncs\",\"type\":\"tijfybvp\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,8 +63,12 @@ public final class MetadatasListMockTests {
 
         PagedIterable<MetadataEntity> response = manager.metadatas().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nzar", response.iterator().next().displayName());
-        Assertions.assertEquals("q", response.iterator().next().dependsOn().get(0));
+        Assertions.assertEquals("ciayzriykhya", response.iterator().next().displayName());
+        Assertions.assertEquals("jlb", response.iterator().next().dependsOn().get(0));
         Assertions.assertEquals(Scenario.ALERTS, response.iterator().next().applicableScenarios().get(0));
+        Assertions.assertEquals("a", response.iterator().next().supportedValues().get(0).id());
+        Assertions.assertEquals("sdzhezww", response.iterator().next().supportedValues().get(0).displayName());
+        Assertions
+            .assertEquals("qyuvvfonkp", response.iterator().next().supportedValues().get(0).resourceTypes().get(0));
     }
 }

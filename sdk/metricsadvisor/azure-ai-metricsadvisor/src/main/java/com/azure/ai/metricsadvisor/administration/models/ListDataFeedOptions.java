@@ -15,6 +15,12 @@ public final class ListDataFeedOptions {
     private Integer skip;
 
     /**
+     * Creates an instance of ListDataFeedOptions.
+     */
+    public ListDataFeedOptions() {
+    }
+
+    /**
      * Get the additional data feed filter options that can be passed for filtering the result of the data feeds
      * returned by the service
      *

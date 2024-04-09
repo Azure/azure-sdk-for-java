@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.connectedvmware.models.VirtualNetwork;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for VirtualNetworks Update. */
 public final class VirtualNetworksUpdateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/UpdateVirtualNetwork.json
+     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/UpdateVirtualNetwork.json
      */
     /**
      * Sample code: UpdateVirtualNetwork.
@@ -21,10 +20,14 @@ public final class VirtualNetworksUpdateSamples {
      */
     public static void updateVirtualNetwork(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
         VirtualNetwork resource =
-            manager.virtualNetworks().getByResourceGroupWithResponse("testrg", "ProdNetwork", Context.NONE).getValue();
+            manager
+                .virtualNetworks()
+                .getByResourceGroupWithResponse("testrg", "ProdNetwork", com.azure.core.util.Context.NONE)
+                .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

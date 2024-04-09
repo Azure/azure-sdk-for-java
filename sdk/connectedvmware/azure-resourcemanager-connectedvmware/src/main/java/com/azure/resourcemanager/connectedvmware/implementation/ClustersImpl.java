@@ -27,15 +27,6 @@ public final class ClustersImpl implements Clusters {
         this.serviceManager = serviceManager;
     }
 
-    public Cluster getByResourceGroup(String resourceGroupName, String clusterName) {
-        ClusterInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, clusterName);
-        if (inner != null) {
-            return new ClusterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Cluster> getByResourceGroupWithResponse(
         String resourceGroupName, String clusterName, Context context) {
         Response<ClusterInner> inner =
@@ -51,8 +42,13 @@ public final class ClustersImpl implements Clusters {
         }
     }
 
-    public void delete(String resourceGroupName, String clusterName, Boolean force) {
-        this.serviceClient().delete(resourceGroupName, clusterName, force);
+    public Cluster getByResourceGroup(String resourceGroupName, String clusterName) {
+        ClusterInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, clusterName);
+        if (inner != null) {
+            return new ClusterImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public void delete(String resourceGroupName, String clusterName) {

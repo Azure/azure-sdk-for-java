@@ -7,6 +7,8 @@ package com.azure.resourcemanager.servicenetworking.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicenetworking.fluent.models.AssociationInner;
 import com.azure.resourcemanager.servicenetworking.models.AssociationListResult;
+import com.azure.resourcemanager.servicenetworking.models.AssociationProperties;
+import com.azure.resourcemanager.servicenetworking.models.AssociationSubnet;
 import com.azure.resourcemanager.servicenetworking.models.AssociationType;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,64 +18,34 @@ import org.junit.jupiter.api.Assertions;
 public final class AssociationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssociationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"associationType\":\"subnets\",\"provisioningState\":\"Succeeded\"},\"location\":\"bkzgcwrwclx\",\"tags\":{\"qvkoc\":\"ljdousk\",\"sqrglssainq\":\"cjdkwtnhxbnjbi\",\"eebvmgxsab\":\"jwnzlljfmp\"},\"id\":\"yqduujit\",\"name\":\"jczdzevndh\",\"type\":\"rwpdappdsbdkvwrw\"},{\"properties\":{\"associationType\":\"subnets\",\"provisioningState\":\"Accepted\"},\"location\":\"utjeltmrldhugj\",\"tags\":{\"dgeablgphu\":\"atqxho\",\"xhurok\":\"icndvkaozwyifty\",\"kjfkg\":\"tyxolniwpwc\",\"plwckbas\":\"awxklr\"},\"id\":\"ypnddhsgcb\",\"name\":\"cph\",\"type\":\"jkot\"},{\"properties\":{\"associationType\":\"subnets\",\"provisioningState\":\"Updating\"},\"location\":\"zndlikwy\",\"tags\":{\"rxybz\":\"fgibmadgakeq\",\"mnkzsmod\":\"qedqytbciqfoufl\"},\"id\":\"glougpbk\",\"name\":\"tmut\",\"type\":\"uqktap\"},{\"properties\":{\"associationType\":\"subnets\",\"provisioningState\":\"Canceled\"},\"location\":\"rtumkdosvq\",\"tags\":{\"mbmbexppbh\":\"mdgbbjfdd\"},\"id\":\"q\",\"name\":\"rolfpfp\",\"type\":\"algbquxigjyjg\"}],\"nextLink\":\"aoyfhrtxilnerkuj\"}")
-                .toObject(AssociationListResult.class);
-        Assertions.assertEquals("bkzgcwrwclx", model.value().get(0).location());
-        Assertions.assertEquals("ljdousk", model.value().get(0).tags().get("qvkoc"));
-        Assertions.assertEquals(AssociationType.SUBNETS, model.value().get(0).associationType());
-        Assertions.assertEquals("aoyfhrtxilnerkuj", model.nextLink());
+        AssociationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"aozwyiftyhxhu\"},\"provisioningState\":\"Provisioning\"},\"location\":\"tyxolniwpwc\",\"tags\":{\"ryplwckbasyypn\":\"fkgiawxk\",\"phejkotynqgoulz\":\"dhsgcba\",\"gakeqsr\":\"dlikwyqkgfgibma\"},\"id\":\"yb\",\"name\":\"qqedqytbciqfou\",\"type\":\"lmmnkzsmodmglo\"}],\"nextLink\":\"pbkwtmu\"}")
+            .toObject(AssociationListResult.class);
+        Assertions.assertEquals("tyxolniwpwc", model.value().get(0).location());
+        Assertions.assertEquals("fkgiawxk", model.value().get(0).tags().get("ryplwckbasyypn"));
+        Assertions.assertEquals(AssociationType.SUBNETS, model.value().get(0).properties().associationType());
+        Assertions.assertEquals("aozwyiftyhxhu", model.value().get(0).properties().subnet().id());
+        Assertions.assertEquals("pbkwtmu", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssociationListResult model =
-            new AssociationListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AssociationInner()
-                                .withLocation("bkzgcwrwclx")
-                                .withTags(
-                                    mapOf(
-                                        "qvkoc",
-                                        "ljdousk",
-                                        "sqrglssainq",
-                                        "cjdkwtnhxbnjbi",
-                                        "eebvmgxsab",
-                                        "jwnzlljfmp"))
-                                .withAssociationType(AssociationType.SUBNETS),
-                            new AssociationInner()
-                                .withLocation("utjeltmrldhugj")
-                                .withTags(
-                                    mapOf(
-                                        "dgeablgphu",
-                                        "atqxho",
-                                        "xhurok",
-                                        "icndvkaozwyifty",
-                                        "kjfkg",
-                                        "tyxolniwpwc",
-                                        "plwckbas",
-                                        "awxklr"))
-                                .withAssociationType(AssociationType.SUBNETS),
-                            new AssociationInner()
-                                .withLocation("zndlikwy")
-                                .withTags(mapOf("rxybz", "fgibmadgakeq", "mnkzsmod", "qedqytbciqfoufl"))
-                                .withAssociationType(AssociationType.SUBNETS),
-                            new AssociationInner()
-                                .withLocation("rtumkdosvq")
-                                .withTags(mapOf("mbmbexppbh", "mdgbbjfdd"))
-                                .withAssociationType(AssociationType.SUBNETS)))
-                .withNextLink("aoyfhrtxilnerkuj");
+        AssociationListResult model
+            = new AssociationListResult().withValue(Arrays.asList(new AssociationInner().withLocation("tyxolniwpwc")
+                .withTags(
+                    mapOf("ryplwckbasyypn", "fkgiawxk", "phejkotynqgoulz", "dhsgcba", "gakeqsr", "dlikwyqkgfgibma"))
+                .withProperties(new AssociationProperties().withAssociationType(AssociationType.SUBNETS)
+                    .withSubnet(new AssociationSubnet().withId("aozwyiftyhxhu")))))
+                .withNextLink("pbkwtmu");
         model = BinaryData.fromObject(model).toObject(AssociationListResult.class);
-        Assertions.assertEquals("bkzgcwrwclx", model.value().get(0).location());
-        Assertions.assertEquals("ljdousk", model.value().get(0).tags().get("qvkoc"));
-        Assertions.assertEquals(AssociationType.SUBNETS, model.value().get(0).associationType());
-        Assertions.assertEquals("aoyfhrtxilnerkuj", model.nextLink());
+        Assertions.assertEquals("tyxolniwpwc", model.value().get(0).location());
+        Assertions.assertEquals("fkgiawxk", model.value().get(0).tags().get("ryplwckbasyypn"));
+        Assertions.assertEquals(AssociationType.SUBNETS, model.value().get(0).properties().associationType());
+        Assertions.assertEquals("aozwyiftyhxhu", model.value().get(0).properties().subnet().id());
+        Assertions.assertEquals("pbkwtmu", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

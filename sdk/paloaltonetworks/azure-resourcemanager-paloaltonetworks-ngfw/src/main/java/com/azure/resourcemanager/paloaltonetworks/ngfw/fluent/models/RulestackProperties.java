@@ -12,7 +12,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.SecurityServices;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** PAN Rulestack Describe Object. */
+/**
+ * PAN Rulestack Describe Object.
+ */
 @Fluent
 public final class RulestackProperties {
     /*
@@ -69,13 +71,15 @@ public final class RulestackProperties {
     @JsonProperty(value = "securityServices")
     private SecurityServices securityServices;
 
-    /** Creates an instance of RulestackProperties class. */
+    /**
+     * Creates an instance of RulestackProperties class.
+     */
     public RulestackProperties() {
     }
 
     /**
      * Get the panEtag property: PanEtag info.
-     *
+     * 
      * @return the panEtag value.
      */
     public String panEtag() {
@@ -84,7 +88,7 @@ public final class RulestackProperties {
 
     /**
      * Set the panEtag property: PanEtag info.
-     *
+     * 
      * @param panEtag the panEtag value to set.
      * @return the RulestackProperties object itself.
      */
@@ -95,7 +99,7 @@ public final class RulestackProperties {
 
     /**
      * Get the panLocation property: Rulestack Location, Required for GlobalRulestacks, Not for LocalRulestacks.
-     *
+     * 
      * @return the panLocation value.
      */
     public String panLocation() {
@@ -104,7 +108,7 @@ public final class RulestackProperties {
 
     /**
      * Set the panLocation property: Rulestack Location, Required for GlobalRulestacks, Not for LocalRulestacks.
-     *
+     * 
      * @param panLocation the panLocation value to set.
      * @return the RulestackProperties object itself.
      */
@@ -115,7 +119,7 @@ public final class RulestackProperties {
 
     /**
      * Get the scope property: Rulestack Type.
-     *
+     * 
      * @return the scope value.
      */
     public ScopeType scope() {
@@ -124,7 +128,7 @@ public final class RulestackProperties {
 
     /**
      * Set the scope property: Rulestack Type.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the RulestackProperties object itself.
      */
@@ -135,7 +139,7 @@ public final class RulestackProperties {
 
     /**
      * Get the associatedSubscriptions property: subscription scope of global rulestack.
-     *
+     * 
      * @return the associatedSubscriptions value.
      */
     public List<String> associatedSubscriptions() {
@@ -144,7 +148,7 @@ public final class RulestackProperties {
 
     /**
      * Set the associatedSubscriptions property: subscription scope of global rulestack.
-     *
+     * 
      * @param associatedSubscriptions the associatedSubscriptions value to set.
      * @return the RulestackProperties object itself.
      */
@@ -155,7 +159,7 @@ public final class RulestackProperties {
 
     /**
      * Get the description property: rulestack description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -164,7 +168,7 @@ public final class RulestackProperties {
 
     /**
      * Set the description property: rulestack description.
-     *
+     * 
      * @param description the description value to set.
      * @return the RulestackProperties object itself.
      */
@@ -175,7 +179,7 @@ public final class RulestackProperties {
 
     /**
      * Get the defaultMode property: Mode for default rules creation.
-     *
+     * 
      * @return the defaultMode value.
      */
     public DefaultMode defaultMode() {
@@ -184,7 +188,7 @@ public final class RulestackProperties {
 
     /**
      * Set the defaultMode property: Mode for default rules creation.
-     *
+     * 
      * @param defaultMode the defaultMode value to set.
      * @return the RulestackProperties object itself.
      */
@@ -195,7 +199,7 @@ public final class RulestackProperties {
 
     /**
      * Get the minAppIdVersion property: minimum version.
-     *
+     * 
      * @return the minAppIdVersion value.
      */
     public String minAppIdVersion() {
@@ -204,7 +208,7 @@ public final class RulestackProperties {
 
     /**
      * Set the minAppIdVersion property: minimum version.
-     *
+     * 
      * @param minAppIdVersion the minAppIdVersion value to set.
      * @return the RulestackProperties object itself.
      */
@@ -215,7 +219,7 @@ public final class RulestackProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -224,7 +228,7 @@ public final class RulestackProperties {
 
     /**
      * Get the securityServices property: Security Profile.
-     *
+     * 
      * @return the securityServices value.
      */
     public SecurityServices securityServices() {
@@ -233,7 +237,7 @@ public final class RulestackProperties {
 
     /**
      * Set the securityServices property: Security Profile.
-     *
+     * 
      * @param securityServices the securityServices value to set.
      * @return the RulestackProperties object itself.
      */
@@ -244,7 +248,7 @@ public final class RulestackProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

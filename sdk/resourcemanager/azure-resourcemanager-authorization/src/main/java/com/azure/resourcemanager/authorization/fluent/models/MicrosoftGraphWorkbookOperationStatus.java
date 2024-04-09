@@ -24,6 +24,15 @@ public final class MicrosoftGraphWorkbookOperationStatus
     public static final MicrosoftGraphWorkbookOperationStatus FAILED = fromString("failed");
 
     /**
+     * Creates a new instance of MicrosoftGraphWorkbookOperationStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphWorkbookOperationStatus() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphWorkbookOperationStatus from its string representation.
      *
      * @param name a name to look for.

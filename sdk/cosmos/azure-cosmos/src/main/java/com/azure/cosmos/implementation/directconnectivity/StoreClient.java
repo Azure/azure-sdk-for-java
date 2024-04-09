@@ -78,7 +78,6 @@ public class StoreClient implements IStoreClient {
             this.transportClient,
             serviceConfigurationReader,
             userTokenProvider,
-            false,
             useMultipleWriteLocations,
             sessionRetryOptions);
 
@@ -171,7 +170,9 @@ public class StoreClient implements IStoreClient {
         RxDocumentServiceRequest request) throws InternalServerErrorException {
 
         if (storeResponse.getResponseHeaderNames().length != storeResponse.getResponseHeaderValues().length) {
-            throw new InternalServerErrorException(RMResources.InvalidBackendResponse);
+            throw new InternalServerErrorException(
+                Exceptions.getInternalServerErrorMessage(RMResources.InvalidBackendResponse),
+                HttpConstants.SubStatusCodes.INVALID_BACKEND_RESPONSE);
         }
 
         Map<String, String> headers = new HashMap<>(storeResponse.getResponseHeaderNames().length);

@@ -22,7 +22,6 @@ import com.azure.messaging.servicebus.administration.implementation.EntitiesImpl
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.implementation.RulesImpl;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
-import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyImpl;
@@ -60,9 +59,40 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.TOPICS_ENTITY_TYPE;
 
 /**
- * A <b>synchronous</b> client for managing a Service Bus namespace.
+ * A <b>synchronous</b> client for managing a Service Bus namespace. Instantiated via
+ * {@link ServiceBusAdministrationClientBuilder}.
+ * <p><strong>Sample: Create the async client</strong></p>
  *
- * <p><strong>Create a queue</strong></p>
+ * <p>The follow code sample demonstrates the creation of the async administration client.  The credential used in the
+ * following sample is {@code DefaultAzureCredential} for authentication. It is appropriate for most scenarios,
+ * including local development and production environments. Additionally, we recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.  You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation</a>.
+ * </p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationclient.instantiation -->
+ * <pre>
+ * HttpLogOptions logOptions = new HttpLogOptions&#40;&#41;
+ *     .setLogLevel&#40;HttpLogDetailLevel.HEADERS&#41;;
+ *
+ * &#47;&#47; DefaultAzureCredential creates a credential based on the environment it is executed in.
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
+ *     .httpLogOptions&#40;logOptions&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationclient.instantiation -->
+ *
+ * <p><strong>Sample: Create a queue</strong></p>
+ *
+ * <p>The following sample creates a queue with default values.  Default values are listed in
+ * {@link CreateQueueOptions#CreateQueueOptions()}.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string -->
  * <pre>
  * QueueProperties queue = client.createQueue&#40;&quot;my-new-queue&quot;&#41;;
@@ -71,7 +101,11 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
  * </pre>
  * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string -->
  *
- * <p><strong>Edit an existing subscription</strong></p>
+ * <p><strong>Sample: Edit an existing subscription</strong></p>
+ *
+ * <p>The following code sample demonstrates updating an existing subscription.  Users should fetch the subscription's
+ * properties, modify the properties, and then pass the object to update method.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationclient.updatesubscription#subscriptionproperties -->
  * <pre>
  * &#47;&#47; To update the subscription we have to:
@@ -93,7 +127,10 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
  * </pre>
  * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationclient.updatesubscription#subscriptionproperties -->
  *
- * <p><strong>List all queues</strong></p>
+ * <p><strong>Sample: List all queues</strong></p>
+ *
+ * <p>The following code sample lists all the queues in the Service Bus namespace.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationclient.listQueues -->
  * <pre>
  * client.listQueues&#40;&#41;.forEach&#40;queue -&gt; &#123;
@@ -102,6 +139,20 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
  * &#125;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationclient.listQueues -->
+ *
+ * <p><strong>Sample: Delete queue</strong></p>
+ *
+ * <p>The code sample below demonstrates deleting an existing queue.</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationclient.deletequeue -->
+ * <pre>
+ * try &#123;
+ *     client.deleteQueue&#40;&quot;my-existing-queue&quot;&#41;;
+ * &#125; catch &#40;AzureException exception&#41; &#123;
+ *     System.err.println&#40;&quot;Exception occurred deleting queue: &quot; + exception&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationclient.deletequeue -->
  *
  * @see ServiceBusAdministrationClientBuilder
  * @see ServiceBusAdministrationAsyncClient ServiceBusAdministrationAsyncClient for an asynchronous client.
@@ -119,17 +170,14 @@ public final class ServiceBusAdministrationClient {
      * Creates a new instance with the given client.
      *
      * @param managementClient Client to make management calls.
-     * @param serializer Serializer to deserialize ATOM XML responses.
-     * @throws NullPointerException if any one of {@code managementClient, serializer, credential} is null.
+     * @throws NullPointerException if {@code managementClient} is null.
      */
-    ServiceBusAdministrationClient(ServiceBusManagementClientImpl managementClient,
-        ServiceBusManagementSerializer serializer) {
-        Objects.requireNonNull(serializer, "'serializer' cannot be null.");
+    ServiceBusAdministrationClient(ServiceBusManagementClientImpl managementClient) {
 
         this.managementClient = Objects.requireNonNull(managementClient, "'managementClient' cannot be null.");
         this.entityClient = managementClient.getEntities();
         this.rulesClient = managementClient.getRules();
-        this.converter = new AdministrationModelConverter(LOGGER, managementClient.getEndpoint(), serializer);
+        this.converter = new AdministrationModelConverter(LOGGER, managementClient.getEndpoint());
     }
 
     /**
@@ -1164,7 +1212,7 @@ public final class ServiceBusAdministrationClient {
     private PagedResponse<QueueProperties> listQueues(int skip, Context context) {
         final Response<Object> response = executeAndThrowException(() -> managementClient.listEntitiesWithResponse(
             QUEUES_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS, enableSyncContext(context)));
-        final Response<QueueDescriptionFeedImpl> feedResponse = converter.deserialize(response, QueueDescriptionFeedImpl.class);
+        final Response<QueueDescriptionFeedImpl> feedResponse = converter.deserializeQueueFeed(response);
         final QueueDescriptionFeedImpl feed = feedResponse.getValue();
 
         if (feed == null) {
@@ -1357,7 +1405,7 @@ public final class ServiceBusAdministrationClient {
         final Response<Object> response = executeAndThrowException(() ->
             managementClient.listEntitiesWithResponse(TOPICS_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS,
                 enableSyncContext(context)));
-        final Response<TopicDescriptionFeedImpl> feedResponse = converter.deserialize(response, TopicDescriptionFeedImpl.class);
+        final Response<TopicDescriptionFeedImpl> feedResponse = converter.deserializeTopicFeed(response);
         final TopicDescriptionFeedImpl feed = feedResponse.getValue();
 
         if (feed == null) {

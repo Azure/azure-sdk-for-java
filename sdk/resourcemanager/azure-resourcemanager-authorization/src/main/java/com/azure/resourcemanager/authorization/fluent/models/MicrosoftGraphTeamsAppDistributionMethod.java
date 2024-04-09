@@ -25,6 +25,15 @@ public final class MicrosoftGraphTeamsAppDistributionMethod
         fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphTeamsAppDistributionMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphTeamsAppDistributionMethod() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphTeamsAppDistributionMethod from its string representation.
      *
      * @param name a name to look for.

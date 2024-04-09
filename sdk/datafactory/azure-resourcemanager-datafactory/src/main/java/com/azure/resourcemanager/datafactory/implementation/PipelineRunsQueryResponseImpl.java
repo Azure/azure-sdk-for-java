@@ -17,8 +17,7 @@ public final class PipelineRunsQueryResponseImpl implements PipelineRunsQueryRes
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    PipelineRunsQueryResponseImpl(
-        PipelineRunsQueryResponseInner innerObject,
+    PipelineRunsQueryResponseImpl(PipelineRunsQueryResponseInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,8 @@ public final class PipelineRunsQueryResponseImpl implements PipelineRunsQueryRes
     public List<PipelineRun> value() {
         List<PipelineRunInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PipelineRunImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new PipelineRunImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

@@ -28,6 +28,7 @@ import com.azure.cosmos.implementation.changefeed.common.DefaultObserverFactory;
 import com.azure.cosmos.implementation.changefeed.common.EqualPartitionsBalancingStrategy;
 import com.azure.cosmos.implementation.changefeed.common.PartitionedByIdCollectionRequestOptionsFactory;
 import com.azure.cosmos.implementation.changefeed.common.TraceHealthMonitor;
+import com.azure.cosmos.ChangeFeedProcessorContext;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
@@ -46,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
@@ -75,7 +77,6 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
     private HealthMonitor healthMonitor;
     private volatile PartitionManager partitionManager;
 
-
     public ChangeFeedProcessorImplBase(
             String hostName,
             CosmosAsyncContainer feedContainer,
@@ -103,6 +104,33 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
         this.leaseContextClient.setScheduler(this.scheduler);
         this.changeFeedMode = changeFeedMode;
         this.observerFactory = new DefaultObserverFactory<>(consumer);
+    }
+
+    public ChangeFeedProcessorImplBase(String hostName,
+                                       CosmosAsyncContainer feedContainer,
+                                       CosmosAsyncContainer leaseContainer,
+                                       ChangeFeedProcessorOptions changeFeedProcessorOptions,
+                                       BiConsumer<List<T>, ChangeFeedProcessorContext> biConsumer,
+                                       ChangeFeedMode changeFeedMode) {
+        checkNotNull(hostName, "Argument 'hostName' can not be null");
+        checkNotNull(feedContainer, "Argument 'feedContainer' can not be null");
+        checkNotNull(biConsumer, "Argument 'biConsumer' can not be null");
+
+        if (changeFeedProcessorOptions == null) {
+            changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
+        }
+        this.validateChangeFeedProcessorOptions(changeFeedProcessorOptions);
+        this.validateLeaseContainer(leaseContainer);
+
+        this.hostName = hostName;
+        this.changeFeedProcessorOptions = changeFeedProcessorOptions;
+        this.feedContextClient = new ChangeFeedContextClientImpl(feedContainer);
+        this.leaseContextClient = new ChangeFeedContextClientImpl(leaseContainer);
+        this.scheduler = this.changeFeedProcessorOptions.getScheduler();
+        this.feedContextClient.setScheduler(this.scheduler);
+        this.leaseContextClient.setScheduler(this.scheduler);
+        this.changeFeedMode = changeFeedMode;
+        this.observerFactory = new DefaultObserverFactory<>(biConsumer);
     }
 
     abstract CosmosChangeFeedRequestOptions createRequestOptionsForProcessingFromNow(FeedRange feedRange);
@@ -203,7 +231,7 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                             CosmosChangeFeedRequestOptions options = this.createRequestOptionsForProcessingFromNow(lease.getFeedRange());
 
                             return this.feedContextClient
-                                    .createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options, ChangeFeedProcessorItem.class)
+                                    .createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options, ChangeFeedProcessorItem.class, false)
                                     .take(1)
                                     .map(feedResponse -> {
                                         ChangeFeedProcessorState changeFeedProcessorState = new ChangeFeedProcessorState()
@@ -385,6 +413,8 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 this.sleepTime);
         }
 
+        FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager = this.getFeedRangeThroughputControlConfigManager();
+
         PartitionSupervisorFactory partitionSupervisorFactory = new PartitionSupervisorFactoryImpl<>(
                 factory,
                 leaseStoreManager,
@@ -394,7 +424,8 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                         leaseStoreManager,
                         this.feedContextClient.getContainerClient(),
                         this.collectionResourceId,
-                        this.changeFeedMode),
+                        this.changeFeedMode,
+                        feedRangeThroughputControlConfigManager),
                 this.changeFeedProcessorOptions,
                 this.scheduler,
                 this.getPartitionProcessorItemType()
@@ -421,12 +452,23 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 leaseStoreManager,
                 this.loadBalancingStrategy,
                 this.changeFeedProcessorOptions.getLeaseAcquireInterval(),
-                this.scheduler
+                this.scheduler,
+                feedRangeThroughputControlConfigManager
         );
 
         PartitionManager partitionManager = new PartitionManagerImpl(bootstrapper, partitionController, partitionLoadBalancer);
 
         return Mono.just(partitionManager);
+    }
+
+    private FeedRangeThroughputControlConfigManager getFeedRangeThroughputControlConfigManager() {
+        if (this.changeFeedProcessorOptions != null && this.changeFeedProcessorOptions.getFeedPollThroughputControlGroupConfig() != null) {
+            return new FeedRangeThroughputControlConfigManager(
+                this.changeFeedProcessorOptions.getFeedPollThroughputControlGroupConfig(),
+                this.feedContextClient);
+        }
+
+        return null;
     }
 
     @Override

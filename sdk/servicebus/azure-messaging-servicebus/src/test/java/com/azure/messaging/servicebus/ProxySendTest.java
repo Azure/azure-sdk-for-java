@@ -38,8 +38,6 @@ public class ProxySendTest extends IntegrationTestBase {
 
     @BeforeEach
     public void initialize() throws Exception {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-
         proxyServer = new SimpleProxy(PROXY_PORT);
         proxyServer.start(error -> logger.error("Exception occurred in proxy.", error));
 
@@ -59,8 +57,6 @@ public class ProxySendTest extends IntegrationTestBase {
 
     @AfterEach
     public void cleanup() throws Exception {
-        StepVerifier.resetDefaultTimeout();
-
         ProxySelector.setDefault(defaultProxySelector);
 
         if (proxyServer != null) {
@@ -99,6 +95,7 @@ public class ProxySendTest extends IntegrationTestBase {
 
                 return sender.sendMessages(batch);
             }))
-            .verifyComplete();
+            .expectComplete()
+            .verify(Duration.ofSeconds(30));
     }
 }

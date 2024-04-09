@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The tracking states for afd resources. */
+/**
+ * The tracking states for afd resources.
+ */
 @Immutable
 public class AfdStateProperties {
     /*
@@ -23,8 +25,14 @@ public class AfdStateProperties {
     private DeploymentStatus deploymentStatus;
 
     /**
+     * Creates an instance of AfdStateProperties class.
+     */
+    public AfdStateProperties() {
+    }
+
+    /**
      * Get the provisioningState property: Provisioning status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AfdProvisioningState provisioningState() {
@@ -33,7 +41,7 @@ public class AfdStateProperties {
 
     /**
      * Get the deploymentStatus property: The deploymentStatus property.
-     *
+     * 
      * @return the deploymentStatus value.
      */
     public DeploymentStatus deploymentStatus() {
@@ -42,7 +50,7 @@ public class AfdStateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of p2s vpn connections to be disconnected. */
+/**
+ * List of p2s vpn connections to be disconnected.
+ */
 @Fluent
 public final class P2SVpnConnectionRequest {
     /*
@@ -17,13 +19,15 @@ public final class P2SVpnConnectionRequest {
     @JsonProperty(value = "vpnConnectionIds")
     private List<String> vpnConnectionIds;
 
-    /** Creates an instance of P2SVpnConnectionRequest class. */
+    /**
+     * Creates an instance of P2SVpnConnectionRequest class.
+     */
     public P2SVpnConnectionRequest() {
     }
 
     /**
      * Get the vpnConnectionIds property: List of p2s vpn connection Ids.
-     *
+     * 
      * @return the vpnConnectionIds value.
      */
     public List<String> vpnConnectionIds() {
@@ -32,7 +36,7 @@ public final class P2SVpnConnectionRequest {
 
     /**
      * Set the vpnConnectionIds property: List of p2s vpn connection Ids.
-     *
+     * 
      * @param vpnConnectionIds the vpnConnectionIds value to set.
      * @return the P2SVpnConnectionRequest object itself.
      */
@@ -43,7 +47,7 @@ public final class P2SVpnConnectionRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

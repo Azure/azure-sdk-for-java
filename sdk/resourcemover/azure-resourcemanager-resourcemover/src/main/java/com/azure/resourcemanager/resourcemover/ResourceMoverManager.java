@@ -218,7 +218,7 @@ public final class ResourceMoverManager {
                 .append("-")
                 .append("com.azure.resourcemanager.resourcemover")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -325,8 +325,10 @@ public final class ResourceMoverManager {
     }
 
     /**
-     * @return Wrapped service client ResourceMoverServiceApi providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client ResourceMoverServiceApi providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client ResourceMoverServiceApi.
      */
     public ResourceMoverServiceApi serviceClient() {
         return this.clientObject;

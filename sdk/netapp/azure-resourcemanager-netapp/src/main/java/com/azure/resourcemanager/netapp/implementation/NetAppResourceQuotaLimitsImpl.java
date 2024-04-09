@@ -21,8 +21,7 @@ public final class NetAppResourceQuotaLimitsImpl implements NetAppResourceQuotaL
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    public NetAppResourceQuotaLimitsImpl(
-        NetAppResourceQuotaLimitsClient innerClient,
+    public NetAppResourceQuotaLimitsImpl(NetAppResourceQuotaLimitsClient innerClient,
         com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,22 +29,19 @@ public final class NetAppResourceQuotaLimitsImpl implements NetAppResourceQuotaL
 
     public PagedIterable<SubscriptionQuotaItem> list(String location) {
         PagedIterable<SubscriptionQuotaItemInner> inner = this.serviceClient().list(location);
-        return Utils.mapPage(inner, inner1 -> new SubscriptionQuotaItemImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SubscriptionQuotaItemImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SubscriptionQuotaItem> list(String location, Context context) {
         PagedIterable<SubscriptionQuotaItemInner> inner = this.serviceClient().list(location, context);
-        return Utils.mapPage(inner, inner1 -> new SubscriptionQuotaItemImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SubscriptionQuotaItemImpl(inner1, this.manager()));
     }
 
     public Response<SubscriptionQuotaItem> getWithResponse(String location, String quotaLimitName, Context context) {
-        Response<SubscriptionQuotaItemInner> inner =
-            this.serviceClient().getWithResponse(location, quotaLimitName, context);
+        Response<SubscriptionQuotaItemInner> inner
+            = this.serviceClient().getWithResponse(location, quotaLimitName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SubscriptionQuotaItemImpl(inner.getValue(), this.manager()));
         } else {
             return null;

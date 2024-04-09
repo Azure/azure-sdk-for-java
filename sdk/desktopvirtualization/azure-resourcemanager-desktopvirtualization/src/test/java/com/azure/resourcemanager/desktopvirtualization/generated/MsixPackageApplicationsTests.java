@@ -14,29 +14,29 @@ public final class MsixPackageApplicationsTests {
         MsixPackageApplications model =
             BinaryData
                 .fromString(
-                    "{\"appId\":\"yylhalnswhccsp\",\"description\":\"aivwitqscywu\",\"appUserModelID\":\"woluhczbwemhair\",\"friendlyName\":\"rgzdwmsweyp\",\"iconImageName\":\"dxggicccnxqhuexm\"}")
+                    "{\"appId\":\"xeclzedqbcvhzlhp\",\"description\":\"dqkdlwwqfbu\",\"appUserModelID\":\"kxtrq\",\"friendlyName\":\"smlmbtxhwgfwsrta\",\"iconImageName\":\"oezbrhubsk\"}")
                 .toObject(MsixPackageApplications.class);
-        Assertions.assertEquals("yylhalnswhccsp", model.appId());
-        Assertions.assertEquals("aivwitqscywu", model.description());
-        Assertions.assertEquals("woluhczbwemhair", model.appUserModelId());
-        Assertions.assertEquals("rgzdwmsweyp", model.friendlyName());
-        Assertions.assertEquals("dxggicccnxqhuexm", model.iconImageName());
+        Assertions.assertEquals("xeclzedqbcvhzlhp", model.appId());
+        Assertions.assertEquals("dqkdlwwqfbu", model.description());
+        Assertions.assertEquals("kxtrq", model.appUserModelId());
+        Assertions.assertEquals("smlmbtxhwgfwsrta", model.friendlyName());
+        Assertions.assertEquals("oezbrhubsk", model.iconImageName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MsixPackageApplications model =
             new MsixPackageApplications()
-                .withAppId("yylhalnswhccsp")
-                .withDescription("aivwitqscywu")
-                .withAppUserModelId("woluhczbwemhair")
-                .withFriendlyName("rgzdwmsweyp")
-                .withIconImageName("dxggicccnxqhuexm");
+                .withAppId("xeclzedqbcvhzlhp")
+                .withDescription("dqkdlwwqfbu")
+                .withAppUserModelId("kxtrq")
+                .withFriendlyName("smlmbtxhwgfwsrta")
+                .withIconImageName("oezbrhubsk");
         model = BinaryData.fromObject(model).toObject(MsixPackageApplications.class);
-        Assertions.assertEquals("yylhalnswhccsp", model.appId());
-        Assertions.assertEquals("aivwitqscywu", model.description());
-        Assertions.assertEquals("woluhczbwemhair", model.appUserModelId());
-        Assertions.assertEquals("rgzdwmsweyp", model.friendlyName());
-        Assertions.assertEquals("dxggicccnxqhuexm", model.iconImageName());
+        Assertions.assertEquals("xeclzedqbcvhzlhp", model.appId());
+        Assertions.assertEquals("dqkdlwwqfbu", model.description());
+        Assertions.assertEquals("kxtrq", model.appUserModelId());
+        Assertions.assertEquals("smlmbtxhwgfwsrta", model.friendlyName());
+        Assertions.assertEquals("oezbrhubsk", model.iconImageName());
     }
 }

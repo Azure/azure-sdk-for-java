@@ -14,18 +14,17 @@ public final class DesktopPropertiesTests {
         DesktopProperties model =
             BinaryData
                 .fromString(
-                    "{\"objectId\":\"ss\",\"description\":\"bzmnvdfznud\",\"friendlyName\":\"dvxzbncblylpst\",\"iconHash\":\"hh\"}")
+                    "{\"objectId\":\"glsbjjc\",\"description\":\"vxb\",\"friendlyName\":\"vudutncor\",\"iconHash\":\"lxqtvcofudfl\"}")
                 .toObject(DesktopProperties.class);
-        Assertions.assertEquals("bzmnvdfznud", model.description());
-        Assertions.assertEquals("dvxzbncblylpst", model.friendlyName());
+        Assertions.assertEquals("vxb", model.description());
+        Assertions.assertEquals("vudutncor", model.friendlyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DesktopProperties model =
-            new DesktopProperties().withDescription("bzmnvdfznud").withFriendlyName("dvxzbncblylpst");
+        DesktopProperties model = new DesktopProperties().withDescription("vxb").withFriendlyName("vudutncor");
         model = BinaryData.fromObject(model).toObject(DesktopProperties.class);
-        Assertions.assertEquals("bzmnvdfznud", model.description());
-        Assertions.assertEquals("dvxzbncblylpst", model.friendlyName());
+        Assertions.assertEquals("vxb", model.description());
+        Assertions.assertEquals("vudutncor", model.friendlyName());
     }
 }

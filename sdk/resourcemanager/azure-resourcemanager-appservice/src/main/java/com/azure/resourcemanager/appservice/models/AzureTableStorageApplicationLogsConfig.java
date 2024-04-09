@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Application logs to Azure table storage configuration. */
+/**
+ * Application logs to Azure table storage configuration.
+ */
 @Fluent
 public final class AzureTableStorageApplicationLogsConfig {
     /*
@@ -23,13 +25,15 @@ public final class AzureTableStorageApplicationLogsConfig {
     @JsonProperty(value = "sasUrl", required = true)
     private String sasUrl;
 
-    /** Creates an instance of AzureTableStorageApplicationLogsConfig class. */
+    /**
+     * Creates an instance of AzureTableStorageApplicationLogsConfig class.
+     */
     public AzureTableStorageApplicationLogsConfig() {
     }
 
     /**
      * Get the level property: Log level.
-     *
+     * 
      * @return the level value.
      */
     public LogLevel level() {
@@ -38,7 +42,7 @@ public final class AzureTableStorageApplicationLogsConfig {
 
     /**
      * Set the level property: Log level.
-     *
+     * 
      * @param level the level value to set.
      * @return the AzureTableStorageApplicationLogsConfig object itself.
      */
@@ -49,7 +53,7 @@ public final class AzureTableStorageApplicationLogsConfig {
 
     /**
      * Get the sasUrl property: SAS URL to an Azure table with add/query/delete permissions.
-     *
+     * 
      * @return the sasUrl value.
      */
     public String sasUrl() {
@@ -58,7 +62,7 @@ public final class AzureTableStorageApplicationLogsConfig {
 
     /**
      * Set the sasUrl property: SAS URL to an Azure table with add/query/delete permissions.
-     *
+     * 
      * @param sasUrl the sasUrl value to set.
      * @return the AzureTableStorageApplicationLogsConfig object itself.
      */
@@ -69,15 +73,13 @@ public final class AzureTableStorageApplicationLogsConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sasUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sasUrl in model AzureTableStorageApplicationLogsConfig"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sasUrl in model AzureTableStorageApplicationLogsConfig"));
         }
     }
 

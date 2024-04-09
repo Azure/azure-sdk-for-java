@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.ApiKVReferenceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ApiKVReferenceCollection model. */
+/**
+ * The ApiKVReferenceCollection model.
+ */
 @Fluent
 public final class ApiKVReferenceCollection {
     /*
@@ -25,13 +27,15 @@ public final class ApiKVReferenceCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ApiKVReferenceCollection class. */
+    /**
+     * Creates an instance of ApiKVReferenceCollection class.
+     */
     public ApiKVReferenceCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ApiKVReferenceInner> value() {
@@ -40,7 +44,7 @@ public final class ApiKVReferenceCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ApiKVReferenceCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class ApiKVReferenceCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class ApiKVReferenceCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ApiKVReferenceCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model ApiKVReferenceCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

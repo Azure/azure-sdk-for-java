@@ -8,13 +8,16 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a virtual machine scale set network profile. */
+/**
+ * Describes a virtual machine scale set network profile.
+ */
 @Fluent
 public final class VirtualMachineScaleSetNetworkProfile {
     /*
      * A reference to a load balancer probe used to determine the health of an instance in the virtual machine scale
      * set. The reference will be in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{
+     * loadBalancerName}/probes/{probeName}'.
      */
     @JsonProperty(value = "healthProbe")
     private ApiEntityReference healthProbe;
@@ -32,15 +35,17 @@ public final class VirtualMachineScaleSetNetworkProfile {
     @JsonProperty(value = "networkApiVersion")
     private NetworkApiVersion networkApiVersion;
 
-    /** Creates an instance of VirtualMachineScaleSetNetworkProfile class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetNetworkProfile class.
+     */
     public VirtualMachineScaleSetNetworkProfile() {
     }
 
     /**
-     * Get the healthProbe property: A reference to a load balancer probe used to determine the health of an instance in
-     * the virtual machine scale set. The reference will be in the form:
+     * Get the healthProbe property: A reference to a load balancer probe used to determine the health of an instance
+     * in the virtual machine scale set. The reference will be in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
-     *
+     * 
      * @return the healthProbe value.
      */
     public ApiEntityReference healthProbe() {
@@ -48,10 +53,10 @@ public final class VirtualMachineScaleSetNetworkProfile {
     }
 
     /**
-     * Set the healthProbe property: A reference to a load balancer probe used to determine the health of an instance in
-     * the virtual machine scale set. The reference will be in the form:
+     * Set the healthProbe property: A reference to a load balancer probe used to determine the health of an instance
+     * in the virtual machine scale set. The reference will be in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
-     *
+     * 
      * @param healthProbe the healthProbe value to set.
      * @return the VirtualMachineScaleSetNetworkProfile object itself.
      */
@@ -62,7 +67,7 @@ public final class VirtualMachineScaleSetNetworkProfile {
 
     /**
      * Get the networkInterfaceConfigurations property: The list of network configurations.
-     *
+     * 
      * @return the networkInterfaceConfigurations value.
      */
     public List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations() {
@@ -71,7 +76,7 @@ public final class VirtualMachineScaleSetNetworkProfile {
 
     /**
      * Set the networkInterfaceConfigurations property: The list of network configurations.
-     *
+     * 
      * @param networkInterfaceConfigurations the networkInterfaceConfigurations value to set.
      * @return the VirtualMachineScaleSetNetworkProfile object itself.
      */
@@ -85,7 +90,7 @@ public final class VirtualMachineScaleSetNetworkProfile {
      * Get the networkApiVersion property: specifies the Microsoft.Network API version used when creating networking
      * resources in the Network Interface Configurations for Virtual Machine Scale Set with orchestration mode
      * 'Flexible'.
-     *
+     * 
      * @return the networkApiVersion value.
      */
     public NetworkApiVersion networkApiVersion() {
@@ -96,7 +101,7 @@ public final class VirtualMachineScaleSetNetworkProfile {
      * Set the networkApiVersion property: specifies the Microsoft.Network API version used when creating networking
      * resources in the Network Interface Configurations for Virtual Machine Scale Set with orchestration mode
      * 'Flexible'.
-     *
+     * 
      * @param networkApiVersion the networkApiVersion value to set.
      * @return the VirtualMachineScaleSetNetworkProfile object itself.
      */
@@ -107,7 +112,7 @@ public final class VirtualMachineScaleSetNetworkProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

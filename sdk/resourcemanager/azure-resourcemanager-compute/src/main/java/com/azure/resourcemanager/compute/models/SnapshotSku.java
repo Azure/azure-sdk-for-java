@@ -25,13 +25,15 @@ public final class SnapshotSku {
     @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private String tier;
 
-    /** Creates an instance of SnapshotSku class. */
+    /**
+     * Creates an instance of SnapshotSku class.
+     */
     public SnapshotSku() {
     }
 
     /**
      * Get the name property: The sku name.
-     *
+     * 
      * @return the name value.
      */
     public SnapshotStorageAccountTypes name() {
@@ -40,7 +42,7 @@ public final class SnapshotSku {
 
     /**
      * Set the name property: The sku name.
-     *
+     * 
      * @param name the name value to set.
      * @return the SnapshotSku object itself.
      */
@@ -51,7 +53,7 @@ public final class SnapshotSku {
 
     /**
      * Get the tier property: The sku tier.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -60,7 +62,7 @@ public final class SnapshotSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Databricks SparkPython activity properties. */
+/**
+ * Databricks SparkPython activity properties.
+ */
 @Fluent
 public final class DatabricksSparkPythonActivityTypeProperties {
     /*
@@ -32,14 +34,16 @@ public final class DatabricksSparkPythonActivityTypeProperties {
     @JsonProperty(value = "libraries")
     private List<Map<String, Object>> libraries;
 
-    /** Creates an instance of DatabricksSparkPythonActivityTypeProperties class. */
+    /**
+     * Creates an instance of DatabricksSparkPythonActivityTypeProperties class.
+     */
     public DatabricksSparkPythonActivityTypeProperties() {
     }
 
     /**
      * Get the pythonFile property: The URI of the Python file to be executed. DBFS paths are supported. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the pythonFile value.
      */
     public Object pythonFile() {
@@ -49,7 +53,7 @@ public final class DatabricksSparkPythonActivityTypeProperties {
     /**
      * Set the pythonFile property: The URI of the Python file to be executed. DBFS paths are supported. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param pythonFile the pythonFile value to set.
      * @return the DatabricksSparkPythonActivityTypeProperties object itself.
      */
@@ -60,7 +64,7 @@ public final class DatabricksSparkPythonActivityTypeProperties {
 
     /**
      * Get the parameters property: Command line parameters that will be passed to the Python file.
-     *
+     * 
      * @return the parameters value.
      */
     public List<Object> parameters() {
@@ -69,7 +73,7 @@ public final class DatabricksSparkPythonActivityTypeProperties {
 
     /**
      * Set the parameters property: Command line parameters that will be passed to the Python file.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DatabricksSparkPythonActivityTypeProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class DatabricksSparkPythonActivityTypeProperties {
 
     /**
      * Get the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
+     * 
      * @return the libraries value.
      */
     public List<Map<String, Object>> libraries() {
@@ -89,7 +93,7 @@ public final class DatabricksSparkPythonActivityTypeProperties {
 
     /**
      * Set the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
+     * 
      * @param libraries the libraries value to set.
      * @return the DatabricksSparkPythonActivityTypeProperties object itself.
      */
@@ -100,15 +104,13 @@ public final class DatabricksSparkPythonActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (pythonFile() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property pythonFile in model DatabricksSparkPythonActivityTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property pythonFile in model DatabricksSparkPythonActivityTypeProperties"));
         }
     }
 

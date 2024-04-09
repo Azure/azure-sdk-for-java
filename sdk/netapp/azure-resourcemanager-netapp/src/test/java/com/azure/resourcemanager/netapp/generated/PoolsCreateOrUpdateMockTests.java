@@ -35,58 +35,39 @@ public final class PoolsCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"etag\":\"ezwwv\",\"properties\":{\"poolId\":\"qyuvvfonkp\",\"size\":7483475078710435538,\"serviceLevel\":\"Standard\",\"provisioningState\":\"Succeeded\",\"totalThroughputMibps\":80.684784,\"utilizedThroughputMibps\":89.05603,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Single\"},\"location\":\"bvpoekrsgsgbdhu\",\"tags\":{\"zvhxnk\":\"njdgkynscliq\",\"bo\":\"mtk\",\"hihfrbbcevqagtlt\":\"ppnvdxz\",\"vgtrdcnifmzzs\":\"hlfkqojpy\"},\"id\":\"ymbrnysuxmpraf\",\"name\":\"g\",\"type\":\"khocxvdfffwaf\"}";
+        String responseStr
+            = "{\"etag\":\"ajlyjtlvofqzhv\",\"properties\":{\"poolId\":\"ibyfmo\",\"size\":6727856303003361360,\"serviceLevel\":\"StandardZRS\",\"provisioningState\":\"Succeeded\",\"totalThroughputMibps\":78.12518,\"utilizedThroughputMibps\":77.284424,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Double\"},\"location\":\"hyzsxjrkamb\",\"tags\":{\"nvuqeqvldspa\":\"egv\",\"kdmflvestmjlx\":\"tjb\",\"zapeewchpx\":\"ril\"},\"id\":\"ktwkuziyc\",\"name\":\"levufuztcktyhj\",\"type\":\"qedcgzulwm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetAppFilesManager manager =
-            NetAppFilesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetAppFilesManager manager = NetAppFilesManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CapacityPool response =
-            manager
-                .pools()
-                .define("rqzz")
-                .withRegion("ur")
-                .withExistingNetAppAccount("levufuztcktyhj", "qedcgzulwm")
-                .withSize(3439283080051400137L)
-                .withServiceLevel(ServiceLevel.STANDARD)
-                .withTags(mapOf("kpvzmlq", "aecxndtic", "npkc", "mldgxobfirc", "khyawfvjlboxqv", "ayzri"))
-                .withQosType(QosType.AUTO)
-                .withCoolAccess(false)
-                .withEncryptionType(EncryptionType.DOUBLE)
-                .create();
+        CapacityPool response = manager.pools().define("evwrdnhfuk").withRegion("oqcaaewdaomdj")
+            .withExistingNetAppAccount("chp", "db").withSize(3770519572473050056L)
+            .withServiceLevel(ServiceLevel.STANDARD).withTags(mapOf("siykzkdncjdxonbz", "jxxkzbrmsgei", "z", "ggcula"))
+            .withQosType(QosType.AUTO).withCoolAccess(false).withEncryptionType(EncryptionType.SINGLE).create();
 
-        Assertions.assertEquals("bvpoekrsgsgbdhu", response.location());
-        Assertions.assertEquals("njdgkynscliq", response.tags().get("zvhxnk"));
-        Assertions.assertEquals(7483475078710435538L, response.size());
-        Assertions.assertEquals(ServiceLevel.STANDARD, response.serviceLevel());
+        Assertions.assertEquals("hyzsxjrkamb", response.location());
+        Assertions.assertEquals("egv", response.tags().get("nvuqeqvldspa"));
+        Assertions.assertEquals(6727856303003361360L, response.size());
+        Assertions.assertEquals(ServiceLevel.STANDARD_ZRS, response.serviceLevel());
         Assertions.assertEquals(QosType.MANUAL, response.qosType());
         Assertions.assertEquals(false, response.coolAccess());
-        Assertions.assertEquals(EncryptionType.SINGLE, response.encryptionType());
+        Assertions.assertEquals(EncryptionType.DOUBLE, response.encryptionType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

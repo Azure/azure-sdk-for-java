@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProviderOperationsMetadata Get. */
 public final class ProviderOperationsMetadataGetSamples {
     /*
@@ -24,6 +22,6 @@ public final class ProviderOperationsMetadataGetSamples {
             .manager()
             .roleServiceClient()
             .getProviderOperationsMetadatas()
-            .getWithResponse("resourceProviderNamespace", null, Context.NONE);
+            .getWithResponse("resourceProviderNamespace", null, com.azure.core.util.Context.NONE);
     }
 }

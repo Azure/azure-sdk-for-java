@@ -3,6 +3,8 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
+import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.MetadataInstanceResponse;
+import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.RpAttachType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +25,8 @@ public final class PropertyHelper {
     public static final String VERSION_PROPERTY_NAME = "version";
 
     public static final String UNKNOWN_VERSION_VALUE = "unknown";
+
+    private static volatile char rpIntegrationChar;
 
     /**
      * Reads the properties from a properties file.
@@ -84,6 +88,36 @@ public final class PropertyHelper {
 
     public static String getSdkVersionNumber() {
         return SdkPropertyValues.SDK_VERSION_NUMBER;
+    }
+
+    /** Is resource provider (Azure Spring Cloud, AppService, Azure Functions, AKS, VM...). */
+    public static boolean isRpIntegration() {
+        return rpIntegrationChar != 0;
+    }
+
+    public static void setRpIntegrationChar(char ch) {
+        rpIntegrationChar = ch;
+    }
+
+    public static void lazyUpdateVmRpIntegration(MetadataInstanceResponse response) {
+        rpIntegrationChar = 'v';
+        PropertyHelper.setSdkNamePrefix(getRpIntegrationSdkNamePrefix());
+        RpAttachType.setRpAttachType(RpAttachType.STANDALONE_AUTO);
+    }
+
+    public static String getRpIntegrationSdkNamePrefix() {
+        StringBuilder sdkNamePrefix = new StringBuilder(3);
+        sdkNamePrefix.append(rpIntegrationChar);
+        if (SystemInformation.isWindows()) {
+            sdkNamePrefix.append("w");
+        } else if (SystemInformation.isLinux()) {
+            sdkNamePrefix.append("l");
+        } else {
+            logger.warn("could not detect os: {}", System.getProperty("os.name"));
+            sdkNamePrefix.append("u");
+        }
+        sdkNamePrefix.append("_");
+        return sdkNamePrefix.toString();
     }
 
     private static class SdkPropertyValues {

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.datadog.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** User info. */
+/** Includes name, email and optionally, phone number. User Information can't be null. */
 @Fluent
 public final class UserInfo {
     /*

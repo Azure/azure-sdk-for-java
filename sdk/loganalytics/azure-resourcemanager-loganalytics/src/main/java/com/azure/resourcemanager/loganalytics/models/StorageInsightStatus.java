@@ -23,6 +23,10 @@ public final class StorageInsightStatus {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of StorageInsightStatus class. */
+    public StorageInsightStatus() {
+    }
+
     /**
      * Get the state property: The state of the storage insight connection to the workspace.
      *

@@ -20,6 +20,15 @@ public final class MicrosoftGraphAttendeeType extends ExpandableStringEnum<Micro
     public static final MicrosoftGraphAttendeeType RESOURCE = fromString("resource");
 
     /**
+     * Creates a new instance of MicrosoftGraphAttendeeType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphAttendeeType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphAttendeeType from its string representation.
      *
      * @param name a name to look for.

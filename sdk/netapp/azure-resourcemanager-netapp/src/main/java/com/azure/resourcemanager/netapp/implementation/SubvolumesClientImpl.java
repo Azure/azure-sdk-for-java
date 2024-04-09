@@ -42,22 +42,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SubvolumesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SubvolumesClient.
+ */
 public final class SubvolumesClientImpl implements SubvolumesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SubvolumesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetAppManagementClientImpl client;
 
     /**
      * Initializes an instance of SubvolumesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SubvolumesClientImpl(NetAppManagementClientImpl client) {
-        this.service =
-            RestProxy.create(SubvolumesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SubvolumesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,124 +74,86 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     @Host("{$host}")
     @ServiceInterface(name = "NetAppManagementClie")
     public interface SubvolumesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubvolumesList>> listByVolume(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SubvolumesList>> listByVolume(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @PathParam("volumeName") String volumeName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SubvolumeInfoInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @PathParam("subvolumeName") String subvolumeName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @PathParam("subvolumeName") String subvolumeName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SubvolumeInfoInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubvolumeInfoInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @PathParam("volumeName") String volumeName,
-            @PathParam("subvolumeName") String subvolumeName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @PathParam("subvolumeName") String subvolumeName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SubvolumePatchRequest body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @PathParam("volumeName") String volumeName,
-            @PathParam("subvolumeName") String subvolumeName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SubvolumeInfoInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @PathParam("subvolumeName") String subvolumeName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}/getMetadata")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> getMetadata(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @PathParam("volumeName") String volumeName,
-            @PathParam("subvolumeName") String subvolumeName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SubvolumePatchRequest body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @PathParam("subvolumeName") String subvolumeName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @PathParam("volumeName") String volumeName,
-            @PathParam("subvolumeName") String subvolumeName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}/getMetadata")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> getMetadata(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @PathParam("volumeName") String volumeName,
-            @PathParam("subvolumeName") String subvolumeName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubvolumesList>> listByVolumeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SubvolumesList>> listByVolumeNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List of all the subvolumes
-     *
-     * <p>Returns a list of the subvolumes in the volume.
-     *
+     * 
+     * Returns a list of the subvolumes in the volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -196,19 +164,15 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return list of Subvolumes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SubvolumeInfoInner>> listByVolumeSinglePageAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
+    private Mono<PagedResponse<SubvolumeInfoInner>> listByVolumeSinglePageAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -225,36 +189,18 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByVolume(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            volumeName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<SubvolumeInfoInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByVolume(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<SubvolumeInfoInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List of all the subvolumes
-     *
-     * <p>Returns a list of the subvolumes in the volume.
-     *
+     * 
+     * Returns a list of the subvolumes in the volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -266,19 +212,15 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return list of Subvolumes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SubvolumeInfoInner>> listByVolumeSinglePageAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+    private Mono<PagedResponse<SubvolumeInfoInner>> listByVolumeSinglePageAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -296,32 +238,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByVolume(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                volumeName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByVolume(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+                poolName, volumeName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List of all the subvolumes
-     *
-     * <p>Returns a list of the subvolumes in the volume.
-     *
+     * 
+     * Returns a list of the subvolumes in the volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -332,18 +259,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return list of Subvolumes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SubvolumeInfoInner> listByVolumeAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
-        return new PagedFlux<>(
-            () -> listByVolumeSinglePageAsync(resourceGroupName, accountName, poolName, volumeName),
+    private PagedFlux<SubvolumeInfoInner> listByVolumeAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
+        return new PagedFlux<>(() -> listByVolumeSinglePageAsync(resourceGroupName, accountName, poolName, volumeName),
             nextLink -> listByVolumeNextSinglePageAsync(nextLink));
     }
 
     /**
      * List of all the subvolumes
-     *
-     * <p>Returns a list of the subvolumes in the volume.
-     *
+     * 
+     * Returns a list of the subvolumes in the volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -355,8 +281,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return list of Subvolumes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SubvolumeInfoInner> listByVolumeAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+    private PagedFlux<SubvolumeInfoInner> listByVolumeAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context) {
         return new PagedFlux<>(
             () -> listByVolumeSinglePageAsync(resourceGroupName, accountName, poolName, volumeName, context),
             nextLink -> listByVolumeNextSinglePageAsync(nextLink, context));
@@ -364,9 +290,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
 
     /**
      * List of all the subvolumes
-     *
-     * <p>Returns a list of the subvolumes in the volume.
-     *
+     * 
+     * Returns a list of the subvolumes in the volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -377,16 +303,16 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return list of Subvolumes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SubvolumeInfoInner> listByVolume(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
+    public PagedIterable<SubvolumeInfoInner> listByVolume(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
         return new PagedIterable<>(listByVolumeAsync(resourceGroupName, accountName, poolName, volumeName));
     }
 
     /**
      * List of all the subvolumes
-     *
-     * <p>Returns a list of the subvolumes in the volume.
-     *
+     * 
+     * Returns a list of the subvolumes in the volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -398,16 +324,16 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return list of Subvolumes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SubvolumeInfoInner> listByVolume(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+    public PagedIterable<SubvolumeInfoInner> listByVolume(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context) {
         return new PagedIterable<>(listByVolumeAsync(resourceGroupName, accountName, poolName, volumeName, context));
     }
 
     /**
      * Get the path associated with the subvolumeName
-     *
-     * <p>Returns the path associated with the subvolumeName provided.
-     *
+     * 
+     * Returns the path associated with the subvolumeName provided.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -419,19 +345,15 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return subvolume Information properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SubvolumeInfoInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName) {
+    private Mono<Response<SubvolumeInfoInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String subvolumeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -452,27 +374,16 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            volumeName,
-                            subvolumeName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the path associated with the subvolumeName
-     *
-     * <p>Returns the path associated with the subvolumeName provided.
-     *
+     * 
+     * Returns the path associated with the subvolumeName provided.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -485,24 +396,15 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return subvolume Information properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SubvolumeInfoInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        Context context) {
+    private Mono<Response<SubvolumeInfoInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String subvolumeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -522,25 +424,15 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                volumeName,
-                subvolumeName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            poolName, volumeName, subvolumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get the path associated with the subvolumeName
-     *
-     * <p>Returns the path associated with the subvolumeName provided.
-     *
+     * 
+     * Returns the path associated with the subvolumeName provided.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -552,17 +444,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return subvolume Information properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SubvolumeInfoInner> getAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName) {
+    private Mono<SubvolumeInfoInner> getAsync(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName) {
         return getWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the path associated with the subvolumeName
-     *
-     * <p>Returns the path associated with the subvolumeName provided.
-     *
+     * 
+     * Returns the path associated with the subvolumeName provided.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -575,22 +467,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return subvolume Information properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubvolumeInfoInner> getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        Context context) {
+    public Response<SubvolumeInfoInner> getWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context)
             .block();
     }
 
     /**
      * Get the path associated with the subvolumeName
-     *
-     * <p>Returns the path associated with the subvolumeName provided.
-     *
+     * 
+     * Returns the path associated with the subvolumeName provided.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -602,17 +489,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubvolumeInfoInner get(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName) {
+    public SubvolumeInfoInner get(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName) {
         return getWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName, Context.NONE)
             .getValue();
     }
 
     /**
      * Create or clone a new subvolume
-     *
-     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
-     *
+     * 
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -625,24 +512,15 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return subvolume Information properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumeInfoInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String subvolumeName, SubvolumeInfoInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -667,29 +545,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            volumeName,
-                            subvolumeName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), body,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or clone a new subvolume
-     *
-     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
-     *
+     * 
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -703,25 +569,15 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return subvolume Information properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumeInfoInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String subvolumeName, SubvolumeInfoInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -746,26 +602,15 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                volumeName,
-                subvolumeName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Create or clone a new subvolume
-     *
-     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
-     *
+     * 
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -778,30 +623,19 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return the {@link PollerFlux} for polling of subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginCreateAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumeInfoInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body);
-        return this
-            .client
-            .<SubvolumeInfoInner, SubvolumeInfoInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SubvolumeInfoInner.class,
-                SubvolumeInfoInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginCreateAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String subvolumeName, SubvolumeInfoInner body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body);
+        return this.client.<SubvolumeInfoInner, SubvolumeInfoInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SubvolumeInfoInner.class, SubvolumeInfoInner.class, this.client.getContext());
     }
 
     /**
      * Create or clone a new subvolume
-     *
-     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
-     *
+     * 
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -815,28 +649,21 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return the {@link PollerFlux} for polling of subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginCreateAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumeInfoInner body,
+    private PollerFlux<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginCreateAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String subvolumeName, SubvolumeInfoInner body,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context);
-        return this
-            .client
-            .<SubvolumeInfoInner, SubvolumeInfoInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SubvolumeInfoInner.class, SubvolumeInfoInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, accountName, poolName,
+            volumeName, subvolumeName, body, context);
+        return this.client.<SubvolumeInfoInner, SubvolumeInfoInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SubvolumeInfoInner.class, SubvolumeInfoInner.class, context);
     }
 
     /**
      * Create or clone a new subvolume
-     *
-     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
-     *
+     * 
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -849,23 +676,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return the {@link SyncPoller} for polling of subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumeInfoInner body) {
-        return this
-            .beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body)
+    public SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginCreate(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String subvolumeName, SubvolumeInfoInner body) {
+        return this.beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body)
             .getSyncPoller();
     }
 
     /**
      * Create or clone a new subvolume
-     *
-     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
-     *
+     * 
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -879,24 +700,18 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return the {@link SyncPoller} for polling of subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumeInfoInner body,
+    public SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginCreate(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String subvolumeName, SubvolumeInfoInner body,
         Context context) {
-        return this
-            .beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context)
+        return this.beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context)
             .getSyncPoller();
     }
 
     /**
      * Create or clone a new subvolume
-     *
-     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
-     *
+     * 
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -909,23 +724,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return subvolume Information properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SubvolumeInfoInner> createAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumeInfoInner body) {
-        return beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body)
-            .last()
+    private Mono<SubvolumeInfoInner> createAsync(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName, SubvolumeInfoInner body) {
+        return beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or clone a new subvolume
-     *
-     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
-     *
+     * 
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -939,24 +748,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return subvolume Information properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SubvolumeInfoInner> createAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumeInfoInner body,
-        Context context) {
+    private Mono<SubvolumeInfoInner> createAsync(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName, SubvolumeInfoInner body, Context context) {
         return beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or clone a new subvolume
-     *
-     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
-     *
+     * 
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -969,21 +771,16 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubvolumeInfoInner create(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumeInfoInner body) {
+    public SubvolumeInfoInner create(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName, SubvolumeInfoInner body) {
         return createAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body).block();
     }
 
     /**
      * Create or clone a new subvolume
-     *
-     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
-     *
+     * 
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -997,22 +794,16 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubvolumeInfoInner create(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumeInfoInner body,
-        Context context) {
+    public SubvolumeInfoInner create(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName, SubvolumeInfoInner body, Context context) {
         return createAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context).block();
     }
 
     /**
      * Update a subvolume
-     *
-     * <p>Patch a subvolume.
-     *
+     * 
+     * Patch a subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1025,24 +816,15 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return subvolume Information properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumePatchRequest body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String subvolumeName, SubvolumePatchRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1067,29 +849,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            volumeName,
-                            subvolumeName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), body,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a subvolume
-     *
-     * <p>Patch a subvolume.
-     *
+     * 
+     * Patch a subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1103,25 +873,15 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return subvolume Information properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumePatchRequest body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String subvolumeName, SubvolumePatchRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1146,26 +906,15 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                volumeName,
-                subvolumeName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Update a subvolume
-     *
-     * <p>Patch a subvolume.
-     *
+     * 
+     * Patch a subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1178,30 +927,19 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return the {@link PollerFlux} for polling of subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumePatchRequest body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body);
-        return this
-            .client
-            .<SubvolumeInfoInner, SubvolumeInfoInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SubvolumeInfoInner.class,
-                SubvolumeInfoInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String subvolumeName, SubvolumePatchRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body);
+        return this.client.<SubvolumeInfoInner, SubvolumeInfoInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SubvolumeInfoInner.class, SubvolumeInfoInner.class, this.client.getContext());
     }
 
     /**
      * Update a subvolume
-     *
-     * <p>Patch a subvolume.
-     *
+     * 
+     * Patch a subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1215,28 +953,21 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return the {@link PollerFlux} for polling of subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumePatchRequest body,
+    private PollerFlux<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String subvolumeName, SubvolumePatchRequest body,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context);
-        return this
-            .client
-            .<SubvolumeInfoInner, SubvolumeInfoInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SubvolumeInfoInner.class, SubvolumeInfoInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, accountName, poolName,
+            volumeName, subvolumeName, body, context);
+        return this.client.<SubvolumeInfoInner, SubvolumeInfoInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SubvolumeInfoInner.class, SubvolumeInfoInner.class, context);
     }
 
     /**
      * Update a subvolume
-     *
-     * <p>Patch a subvolume.
-     *
+     * 
+     * Patch a subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1249,23 +980,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return the {@link SyncPoller} for polling of subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumePatchRequest body) {
-        return this
-            .beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body)
+    public SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginUpdate(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String subvolumeName, SubvolumePatchRequest body) {
+        return this.beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body)
             .getSyncPoller();
     }
 
     /**
      * Update a subvolume
-     *
-     * <p>Patch a subvolume.
-     *
+     * 
+     * Patch a subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1279,24 +1004,18 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return the {@link SyncPoller} for polling of subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumePatchRequest body,
+    public SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginUpdate(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String subvolumeName, SubvolumePatchRequest body,
         Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context)
+        return this.beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context)
             .getSyncPoller();
     }
 
     /**
      * Update a subvolume
-     *
-     * <p>Patch a subvolume.
-     *
+     * 
+     * Patch a subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1309,23 +1028,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return subvolume Information properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SubvolumeInfoInner> updateAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumePatchRequest body) {
-        return beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body)
-            .last()
+    private Mono<SubvolumeInfoInner> updateAsync(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName, SubvolumePatchRequest body) {
+        return beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a subvolume
-     *
-     * <p>Patch a subvolume.
-     *
+     * 
+     * Patch a subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1339,24 +1052,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return subvolume Information properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SubvolumeInfoInner> updateAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumePatchRequest body,
-        Context context) {
+    private Mono<SubvolumeInfoInner> updateAsync(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName, SubvolumePatchRequest body, Context context) {
         return beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a subvolume
-     *
-     * <p>Patch a subvolume.
-     *
+     * 
+     * Patch a subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1369,21 +1075,16 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubvolumeInfoInner update(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumePatchRequest body) {
+    public SubvolumeInfoInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName, SubvolumePatchRequest body) {
         return updateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body).block();
     }
 
     /**
      * Update a subvolume
-     *
-     * <p>Patch a subvolume.
-     *
+     * 
+     * Patch a subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1397,22 +1098,16 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubvolumeInfoInner update(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumePatchRequest body,
-        Context context) {
+    public SubvolumeInfoInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName, SubvolumePatchRequest body, Context context) {
         return updateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context).block();
     }
 
     /**
      * Delete a subvolume
-     *
-     * <p>Delete subvolume.
-     *
+     * 
+     * Delete subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1424,19 +1119,15 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String subvolumeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1454,28 +1145,19 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
         if (subvolumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter subvolumeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            volumeName,
-                            subvolumeName,
-                            this.client.getApiVersion(),
-                            context))
+                context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a subvolume
-     *
-     * <p>Delete subvolume.
-     *
+     * 
+     * Delete subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1488,24 +1170,15 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String subvolumeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1523,25 +1196,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
         if (subvolumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter subvolumeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                volumeName,
-                subvolumeName,
-                this.client.getApiVersion(),
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete a subvolume
-     *
-     * <p>Delete subvolume.
-     *
+     * 
+     * Delete subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1553,21 +1218,19 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String subvolumeName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a subvolume
-     *
-     * <p>Delete subvolume.
-     *
+     * 
+     * Delete subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1580,26 +1243,20 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String subvolumeName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a subvolume
-     *
-     * <p>Delete subvolume.
-     *
+     * 
+     * Delete subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1611,18 +1268,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName) {
-        return this
-            .beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName) {
+        return this.beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName)
             .getSyncPoller();
     }
 
     /**
      * Delete a subvolume
-     *
-     * <p>Delete subvolume.
-     *
+     * 
+     * Delete subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1635,23 +1291,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context)
             .getSyncPoller();
     }
 
     /**
      * Delete a subvolume
-     *
-     * <p>Delete subvolume.
-     *
+     * 
+     * Delete subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1663,18 +1313,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName) {
-        return beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName) {
+        return beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a subvolume
-     *
-     * <p>Delete subvolume.
-     *
+     * 
+     * Delete subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1687,23 +1336,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName, Context context) {
+        return beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a subvolume
-     *
-     * <p>Delete subvolume.
-     *
+     * 
+     * Delete subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1714,16 +1357,16 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName) {
+    public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName) {
         deleteAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName).block();
     }
 
     /**
      * Delete a subvolume
-     *
-     * <p>Delete subvolume.
-     *
+     * 
+     * Delete subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1735,21 +1378,16 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        Context context) {
+    public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName, Context context) {
         deleteAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context).block();
     }
 
     /**
      * Describe a subvolume
-     *
-     * <p>Get details of the specified subvolume.
-     *
+     * 
+     * Get details of the specified subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1761,19 +1399,15 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return details of the specified subvolume along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getMetadataWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName) {
+    private Mono<Response<Flux<ByteBuffer>>> getMetadataWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String subvolumeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1793,28 +1427,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getMetadata(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            volumeName,
-                            subvolumeName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getMetadata(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(),
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Describe a subvolume
-     *
-     * <p>Get details of the specified subvolume.
-     *
+     * 
+     * Get details of the specified subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1827,24 +1450,15 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return details of the specified subvolume along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getMetadataWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> getMetadataWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String subvolumeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1864,25 +1478,15 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getMetadata(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                volumeName,
-                subvolumeName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getMetadata(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Describe a subvolume
-     *
-     * <p>Get details of the specified subvolume.
-     *
+     * 
+     * Get details of the specified subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1896,23 +1500,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SubvolumeModelInner>, SubvolumeModelInner> beginGetMetadataAsync(
         String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getMetadataWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName);
-        return this
-            .client
-            .<SubvolumeModelInner, SubvolumeModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SubvolumeModelInner.class,
-                SubvolumeModelInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = getMetadataWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName);
+        return this.client.<SubvolumeModelInner, SubvolumeModelInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SubvolumeModelInner.class, SubvolumeModelInner.class, this.client.getContext());
     }
 
     /**
      * Describe a subvolume
-     *
-     * <p>Get details of the specified subvolume.
-     *
+     * 
+     * Get details of the specified subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1926,26 +1524,20 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SubvolumeModelInner>, SubvolumeModelInner> beginGetMetadataAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
+        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getMetadataWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context);
-        return this
-            .client
-            .<SubvolumeModelInner, SubvolumeModelInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SubvolumeModelInner.class, SubvolumeModelInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = getMetadataWithResponseAsync(resourceGroupName, accountName, poolName,
+            volumeName, subvolumeName, context);
+        return this.client.<SubvolumeModelInner, SubvolumeModelInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SubvolumeModelInner.class, SubvolumeModelInner.class, context);
     }
 
     /**
      * Describe a subvolume
-     *
-     * <p>Get details of the specified subvolume.
-     *
+     * 
+     * Get details of the specified subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1957,18 +1549,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return the {@link SyncPoller} for polling of details of the specified subvolume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SubvolumeModelInner>, SubvolumeModelInner> beginGetMetadata(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName) {
-        return this
-            .beginGetMetadataAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName)
+    public SyncPoller<PollResult<SubvolumeModelInner>, SubvolumeModelInner> beginGetMetadata(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String subvolumeName) {
+        return this.beginGetMetadataAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName)
             .getSyncPoller();
     }
 
     /**
      * Describe a subvolume
-     *
-     * <p>Get details of the specified subvolume.
-     *
+     * 
+     * Get details of the specified subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1981,23 +1572,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return the {@link SyncPoller} for polling of details of the specified subvolume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SubvolumeModelInner>, SubvolumeModelInner> beginGetMetadata(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        Context context) {
-        return this
-            .beginGetMetadataAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context)
+    public SyncPoller<PollResult<SubvolumeModelInner>, SubvolumeModelInner> beginGetMetadata(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String subvolumeName, Context context) {
+        return this.beginGetMetadataAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context)
             .getSyncPoller();
     }
 
     /**
      * Describe a subvolume
-     *
-     * <p>Get details of the specified subvolume.
-     *
+     * 
+     * Get details of the specified subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -2009,18 +1594,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return details of the specified subvolume on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SubvolumeModelInner> getMetadataAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName) {
-        return beginGetMetadataAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName)
-            .last()
+    private Mono<SubvolumeModelInner> getMetadataAsync(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName) {
+        return beginGetMetadataAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Describe a subvolume
-     *
-     * <p>Get details of the specified subvolume.
-     *
+     * 
+     * Get details of the specified subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -2033,23 +1617,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return details of the specified subvolume on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SubvolumeModelInner> getMetadataAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        Context context) {
+    private Mono<SubvolumeModelInner> getMetadataAsync(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName, Context context) {
         return beginGetMetadataAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Describe a subvolume
-     *
-     * <p>Get details of the specified subvolume.
-     *
+     * 
+     * Get details of the specified subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -2061,16 +1639,16 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return details of the specified subvolume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubvolumeModelInner getMetadata(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName) {
+    public SubvolumeModelInner getMetadata(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName) {
         return getMetadataAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName).block();
     }
 
     /**
      * Describe a subvolume
-     *
-     * <p>Get details of the specified subvolume.
-     *
+     * 
+     * Get details of the specified subvolume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -2083,21 +1661,17 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @return details of the specified subvolume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubvolumeModelInner getMetadata(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        Context context) {
+    public SubvolumeModelInner getMetadata(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName, Context context) {
         return getMetadataAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2109,31 +1683,23 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByVolumeNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SubvolumeInfoInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SubvolumeInfoInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2146,23 +1712,13 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByVolumeNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByVolumeNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

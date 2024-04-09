@@ -25,7 +25,7 @@ class CosmosClientCacheITest
     "spark.cosmos.database" -> cosmosDatabase,
     "spark.cosmos.container" -> cosmosContainer
   )
-  private val clientConfig = CosmosClientConfiguration(userConfigTemplate, useEventualConsistency = true)
+  private val clientConfig = CosmosClientConfiguration(userConfigTemplate, useEventualConsistency = true, sparkEnvironmentInfo = "")
 
   "CosmosClientCache" should "get cached object with same config" in {
 
@@ -37,7 +37,8 @@ class CosmosClientCacheITest
           "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
           "spark.cosmos.accountKey" -> cosmosMasterKey
         ),
-        useEventualConsistency = true)
+        useEventualConsistency = true,
+        sparkEnvironmentInfo = "")
       ),
       (
         "StandardCtorWithoutPreferredRegions",
@@ -48,6 +49,9 @@ class CosmosClientCacheITest
           Some("SampleApplicationName"),
           "SampleApplicationName",
           useGatewayMode = true,
+          proactiveConnectionInitialization = None,
+          proactiveConnectionInitializationDurationInSeconds = 120,
+          httpConnectionPoolSize = 1000,
           useEventualConsistency = true,
           enableClientTelemetry = false,
           disableTcpConnectionEndpointRediscovery = false,
@@ -56,7 +60,8 @@ class CosmosClientCacheITest
           subscriptionId = None,
           tenantId = None,
           resourceGroupName = None,
-          azureEnvironment = AzureEnvironment.AZURE)
+          azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+          sparkEnvironmentInfo = "")
       ),
       (
         "StandardCtorWithEmptyPreferredRegions",
@@ -67,6 +72,9 @@ class CosmosClientCacheITest
           Some("SampleApplicationName"),
           "SampleApplicationName",
           useGatewayMode = true,
+          proactiveConnectionInitialization = None,
+          proactiveConnectionInitializationDurationInSeconds = 120,
+          httpConnectionPoolSize = 1000,
           useEventualConsistency = true,
           enableClientTelemetry = false,
           disableTcpConnectionEndpointRediscovery = false,
@@ -75,7 +83,8 @@ class CosmosClientCacheITest
           subscriptionId = None,
           tenantId = None,
           resourceGroupName = None,
-          azureEnvironment = AzureEnvironment.AZURE)
+          azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+          sparkEnvironmentInfo = "")
       ),
       (
         "StandardCtorWithOnePreferredRegion",
@@ -86,6 +95,9 @@ class CosmosClientCacheITest
           None,
           "SampleApplicationName",
           useGatewayMode = true,
+          proactiveConnectionInitialization = None,
+          proactiveConnectionInitializationDurationInSeconds = 120,
+          httpConnectionPoolSize = 1000,
           useEventualConsistency = true,
           enableClientTelemetry = false,
           disableTcpConnectionEndpointRediscovery = false,
@@ -94,7 +106,8 @@ class CosmosClientCacheITest
           subscriptionId = None,
           tenantId = None,
           resourceGroupName = None,
-          azureEnvironment = AzureEnvironment.AZURE)
+          azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+          sparkEnvironmentInfo = "")
       ),
       (
         "StandardCtorWithTwoPreferredRegions",
@@ -105,6 +118,9 @@ class CosmosClientCacheITest
           None,
           "SampleApplicationName",
           useGatewayMode = true,
+          proactiveConnectionInitialization = None,
+          proactiveConnectionInitializationDurationInSeconds = 120,
+          httpConnectionPoolSize = 1000,
           useEventualConsistency = true,
           enableClientTelemetry = false,
           disableTcpConnectionEndpointRediscovery = false,
@@ -113,7 +129,8 @@ class CosmosClientCacheITest
           subscriptionId = None,
           tenantId = None,
           resourceGroupName = None,
-          azureEnvironment = AzureEnvironment.AZURE)
+          azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+          sparkEnvironmentInfo = "")
       )
     )
 
@@ -128,6 +145,9 @@ class CosmosClientCacheITest
         userConfig.customApplicationNameSuffix,
         userConfig.applicationName,
         userConfig.useGatewayMode,
+        userConfig.proactiveConnectionInitialization,
+        userConfig.proactiveConnectionInitializationDurationInSeconds,
+        userConfig.httpConnectionPoolSize,
         userConfig.useEventualConsistency,
         enableClientTelemetry = false,
         disableTcpConnectionEndpointRediscovery = false,
@@ -139,7 +159,8 @@ class CosmosClientCacheITest
         userConfig.subscriptionId,
         userConfig.tenantId,
         userConfig.resourceGroupName,
-        userConfig.azureEnvironment
+        userConfig.azureEnvironmentEndpoints,
+        sparkEnvironmentInfo = ""
       )
 
       logInfo(s"TestCase: {$testCaseName}")
@@ -173,7 +194,7 @@ class CosmosClientCacheITest
     val userConfig = CosmosClientConfiguration(Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey
-    ), useEventualConsistency = true)
+    ), useEventualConsistency = true, sparkEnvironmentInfo = "")
 
     Loan(
      List[Option[CosmosClientCacheItem]](
@@ -197,7 +218,7 @@ class CosmosClientCacheITest
     val userConfig = CosmosClientConfiguration(Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey
-    ), useEventualConsistency = true)
+    ), useEventualConsistency = true, sparkEnvironmentInfo = "")
 
     val cosmosClientCacheSnapshot = mock(classOf[CosmosClientMetadataCachesSnapshot])
     Loan(

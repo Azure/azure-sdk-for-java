@@ -9,7 +9,7 @@ import com.azure.resourcemanager.storagemover.models.EndpointBaseProperties;
 /** Samples for Endpoints CreateOrUpdate. */
 public final class EndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_CreateOrUpdate_AzureStorageBlobContainer.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/Endpoints_CreateOrUpdate_AzureStorageBlobContainer.json
      */
     /**
      * Sample code: Endpoints_CreateOrUpdate_AzureStorageBlobContainer.
@@ -27,7 +27,7 @@ public final class EndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_CreateOrUpdate_NfsMount.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/Endpoints_CreateOrUpdate_NfsMount.json
      */
     /**
      * Sample code: Endpoints_CreateOrUpdate_NfsMount.
@@ -45,7 +45,7 @@ public final class EndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_CreateOrUpdate_AzureStorageSmbFileShare.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/Endpoints_CreateOrUpdate_AzureStorageSmbFileShare.json
      */
     /**
      * Sample code: Endpoints_CreateOrUpdate_AzureStorageSmbFileShare.
@@ -63,7 +63,7 @@ public final class EndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_CreateOrUpdate_SmbMount.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/Endpoints_CreateOrUpdate_SmbMount.json
      */
     /**
      * Sample code: Endpoints_CreateOrUpdate_SmbMount.

@@ -7,23 +7,28 @@ package com.azure.resourcemanager.notificationhubs.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.notificationhubs.fluent.models.BaiduCredentialProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Description of a NotificationHub BaiduCredential. */
+/**
+ * Description of a NotificationHub BaiduCredential.
+ */
 @Fluent
 public final class BaiduCredential {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BaiduCredential.class);
-
     /*
-     * Properties of NotificationHub BaiduCredential.
+     * Description of a NotificationHub BaiduCredential.
      */
-    @JsonProperty(value = "properties")
-    private BaiduCredentialProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private BaiduCredentialProperties innerProperties = new BaiduCredentialProperties();
 
     /**
-     * Get the innerProperties property: Properties of NotificationHub BaiduCredential.
-     *
+     * Creates an instance of BaiduCredential class.
+     */
+    public BaiduCredential() {
+    }
+
+    /**
+     * Get the innerProperties property: Description of a NotificationHub BaiduCredential.
+     * 
      * @return the innerProperties value.
      */
     private BaiduCredentialProperties innerProperties() {
@@ -31,8 +36,8 @@ public final class BaiduCredential {
     }
 
     /**
-     * Get the baiduApiKey property: Baidu Api Key.
-     *
+     * Get the baiduApiKey property: Gets or sets baidu Api Key.
+     * 
      * @return the baiduApiKey value.
      */
     public String baiduApiKey() {
@@ -40,8 +45,8 @@ public final class BaiduCredential {
     }
 
     /**
-     * Set the baiduApiKey property: Baidu Api Key.
-     *
+     * Set the baiduApiKey property: Gets or sets baidu Api Key.
+     * 
      * @param baiduApiKey the baiduApiKey value to set.
      * @return the BaiduCredential object itself.
      */
@@ -54,8 +59,8 @@ public final class BaiduCredential {
     }
 
     /**
-     * Get the baiduEndPoint property: Baidu Endpoint.
-     *
+     * Get the baiduEndPoint property: Gets or sets baidu Endpoint.
+     * 
      * @return the baiduEndPoint value.
      */
     public String baiduEndPoint() {
@@ -63,8 +68,8 @@ public final class BaiduCredential {
     }
 
     /**
-     * Set the baiduEndPoint property: Baidu Endpoint.
-     *
+     * Set the baiduEndPoint property: Gets or sets baidu Endpoint.
+     * 
      * @param baiduEndPoint the baiduEndPoint value to set.
      * @return the BaiduCredential object itself.
      */
@@ -77,8 +82,8 @@ public final class BaiduCredential {
     }
 
     /**
-     * Get the baiduSecretKey property: Baidu Secret Key.
-     *
+     * Get the baiduSecretKey property: Gets or sets baidu Secret Key.
+     * 
      * @return the baiduSecretKey value.
      */
     public String baiduSecretKey() {
@@ -86,8 +91,8 @@ public final class BaiduCredential {
     }
 
     /**
-     * Set the baiduSecretKey property: Baidu Secret Key.
-     *
+     * Set the baiduSecretKey property: Gets or sets baidu Secret Key.
+     * 
      * @param baiduSecretKey the baiduSecretKey value to set.
      * @return the BaiduCredential object itself.
      */
@@ -101,12 +106,17 @@ public final class BaiduCredential {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model BaiduCredential"));
+        } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BaiduCredential.class);
 }

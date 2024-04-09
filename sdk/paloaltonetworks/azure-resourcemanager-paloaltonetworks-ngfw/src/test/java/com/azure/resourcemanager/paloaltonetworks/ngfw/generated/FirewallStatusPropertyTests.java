@@ -10,11 +10,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.FirewallSta
 public final class FirewallStatusPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FirewallStatusProperty model =
-            BinaryData
-                .fromString(
-                    "{\"isPanoramaManaged\":\"TRUE\",\"healthStatus\":\"RED\",\"healthReason\":\"wdlenrdsut\",\"panoramaStatus\":{\"panoramaServerStatus\":\"UP\",\"panoramaServer2Status\":\"DOWN\"},\"provisioningState\":\"Succeeded\"}")
-                .toObject(FirewallStatusProperty.class);
+        FirewallStatusProperty model = BinaryData.fromString(
+            "{\"isPanoramaManaged\":\"TRUE\",\"healthStatus\":\"GREEN\",\"healthReason\":\"jcivmmg\",\"panoramaStatus\":{\"panoramaServerStatus\":\"UP\",\"panoramaServer2Status\":\"DOWN\"},\"provisioningState\":\"Deleted\"}")
+            .toObject(FirewallStatusProperty.class);
     }
 
     @org.junit.jupiter.api.Test

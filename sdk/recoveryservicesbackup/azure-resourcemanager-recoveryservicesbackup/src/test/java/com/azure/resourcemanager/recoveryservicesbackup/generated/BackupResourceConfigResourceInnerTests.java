@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupResourceConfigResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupResourceConfigResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"storageModelType\":\"Invalid\",\"storageType\":\"ZoneRedundant\",\"storageTypeState\":\"Invalid\",\"crossRegionRestoreFlag\":false,\"dedupState\":\"Invalid\",\"xcoolState\":\"Disabled\"},\"eTag\":\"m\",\"location\":\"hmtzopbsphrup\",\"tags\":{\"ycm\":\"sybbejhph\",\"htbmuf\":\"xaobhdxbmtqioqjz\",\"rxybqsoq\":\"ownoizhw\"},\"id\":\"jgkdmbpazlobcu\",\"name\":\"pdznrbtcqqjnqgl\",\"type\":\"qgn\"}")
-                .toObject(BackupResourceConfigResourceInner.class);
+        BackupResourceConfigResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"storageModelType\":\"Invalid\",\"storageType\":\"ZoneRedundant\",\"storageTypeState\":\"Invalid\",\"crossRegionRestoreFlag\":false,\"dedupState\":\"Invalid\",\"xcoolState\":\"Disabled\"},\"eTag\":\"m\",\"location\":\"hmtzopbsphrup\",\"tags\":{\"ycm\":\"sybbejhph\",\"htbmuf\":\"xaobhdxbmtqioqjz\",\"rxybqsoq\":\"ownoizhw\"},\"id\":\"jgkdmbpazlobcu\",\"name\":\"pdznrbtcqqjnqgl\",\"type\":\"qgn\"}")
+            .toObject(BackupResourceConfigResourceInner.class);
         Assertions.assertEquals("hmtzopbsphrup", model.location());
         Assertions.assertEquals("sybbejhph", model.tags().get("ycm"));
         Assertions.assertEquals(StorageType.INVALID, model.properties().storageModelType());
@@ -36,19 +34,13 @@ public final class BackupResourceConfigResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupResourceConfigResourceInner model =
-            new BackupResourceConfigResourceInner()
-                .withLocation("hmtzopbsphrup")
-                .withTags(mapOf("ycm", "sybbejhph", "htbmuf", "xaobhdxbmtqioqjz", "rxybqsoq", "ownoizhw"))
-                .withProperties(
-                    new BackupResourceConfig()
-                        .withStorageModelType(StorageType.INVALID)
-                        .withStorageType(StorageType.ZONE_REDUNDANT)
-                        .withStorageTypeState(StorageTypeState.INVALID)
-                        .withCrossRegionRestoreFlag(false)
-                        .withDedupState(DedupState.INVALID)
-                        .withXcoolState(XcoolState.DISABLED))
-                .withEtag("m");
+        BackupResourceConfigResourceInner model = new BackupResourceConfigResourceInner().withLocation("hmtzopbsphrup")
+            .withTags(mapOf("ycm", "sybbejhph", "htbmuf", "xaobhdxbmtqioqjz", "rxybqsoq", "ownoizhw"))
+            .withProperties(new BackupResourceConfig().withStorageModelType(StorageType.INVALID)
+                .withStorageType(StorageType.ZONE_REDUNDANT).withStorageTypeState(StorageTypeState.INVALID)
+                .withCrossRegionRestoreFlag(false).withDedupState(DedupState.INVALID)
+                .withXcoolState(XcoolState.DISABLED))
+            .withEtag("m");
         model = BinaryData.fromObject(model).toObject(BackupResourceConfigResourceInner.class);
         Assertions.assertEquals("hmtzopbsphrup", model.location());
         Assertions.assertEquals("sybbejhph", model.tags().get("ycm"));
@@ -61,6 +53,7 @@ public final class BackupResourceConfigResourceInnerTests {
         Assertions.assertEquals("m", model.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

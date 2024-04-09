@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class EncryptionIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EncryptionIdentity model =
-            BinaryData
-                .fromString("{\"principalId\":\"vcltbgsncgh\",\"userAssignedIdentity\":\"esz\"}")
+        EncryptionIdentity model
+            = BinaryData.fromString("{\"principalId\":\"pnazzm\",\"userAssignedIdentity\":\"runmp\"}")
                 .toObject(EncryptionIdentity.class);
-        Assertions.assertEquals("esz", model.userAssignedIdentity());
+        Assertions.assertEquals("runmp", model.userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EncryptionIdentity model = new EncryptionIdentity().withUserAssignedIdentity("esz");
+        EncryptionIdentity model = new EncryptionIdentity().withUserAssignedIdentity("runmp");
         model = BinaryData.fromObject(model).toObject(EncryptionIdentity.class);
-        Assertions.assertEquals("esz", model.userAssignedIdentity());
+        Assertions.assertEquals("runmp", model.userAssignedIdentity());
     }
 }

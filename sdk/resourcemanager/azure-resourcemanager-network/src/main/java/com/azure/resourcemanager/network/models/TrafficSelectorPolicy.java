@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An traffic selector policy for a virtual network gateway connection. */
+/**
+ * An traffic selector policy for a virtual network gateway connection.
+ */
 @Fluent
 public final class TrafficSelectorPolicy {
     /*
@@ -24,13 +26,15 @@ public final class TrafficSelectorPolicy {
     @JsonProperty(value = "remoteAddressRanges", required = true)
     private List<String> remoteAddressRanges;
 
-    /** Creates an instance of TrafficSelectorPolicy class. */
+    /**
+     * Creates an instance of TrafficSelectorPolicy class.
+     */
     public TrafficSelectorPolicy() {
     }
 
     /**
      * Get the localAddressRanges property: A collection of local address spaces in CIDR format.
-     *
+     * 
      * @return the localAddressRanges value.
      */
     public List<String> localAddressRanges() {
@@ -39,7 +43,7 @@ public final class TrafficSelectorPolicy {
 
     /**
      * Set the localAddressRanges property: A collection of local address spaces in CIDR format.
-     *
+     * 
      * @param localAddressRanges the localAddressRanges value to set.
      * @return the TrafficSelectorPolicy object itself.
      */
@@ -50,7 +54,7 @@ public final class TrafficSelectorPolicy {
 
     /**
      * Get the remoteAddressRanges property: A collection of remote address spaces in CIDR format.
-     *
+     * 
      * @return the remoteAddressRanges value.
      */
     public List<String> remoteAddressRanges() {
@@ -59,7 +63,7 @@ public final class TrafficSelectorPolicy {
 
     /**
      * Set the remoteAddressRanges property: A collection of remote address spaces in CIDR format.
-     *
+     * 
      * @param remoteAddressRanges the remoteAddressRanges value to set.
      * @return the TrafficSelectorPolicy object itself.
      */
@@ -70,21 +74,17 @@ public final class TrafficSelectorPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (localAddressRanges() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property localAddressRanges in model TrafficSelectorPolicy"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property localAddressRanges in model TrafficSelectorPolicy"));
         }
         if (remoteAddressRanges() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property remoteAddressRanges in model TrafficSelectorPolicy"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property remoteAddressRanges in model TrafficSelectorPolicy"));
         }
     }
 

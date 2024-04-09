@@ -82,8 +82,8 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginCreateOrUpdate(
@@ -102,8 +102,8 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginCreateOrUpdate(
@@ -125,7 +125,7 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UpdateRunInner createOrUpdate(
@@ -144,7 +144,7 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UpdateRunInner createOrUpdate(
@@ -224,8 +224,8 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStart(
@@ -242,8 +242,8 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStart(
@@ -258,7 +258,7 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UpdateRunInner start(String resourceGroupName, String fleetName, String updateRunName);
@@ -274,7 +274,7 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UpdateRunInner start(
@@ -289,8 +289,8 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStop(
@@ -307,8 +307,8 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStop(
@@ -323,7 +323,7 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UpdateRunInner stop(String resourceGroupName, String fleetName, String updateRunName);
@@ -339,7 +339,7 @@ public interface UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UpdateRunInner stop(

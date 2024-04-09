@@ -21,8 +21,7 @@ public final class TrafficControllerInterfacesImpl implements TrafficControllerI
 
     private final com.azure.resourcemanager.servicenetworking.TrafficControllerManager serviceManager;
 
-    public TrafficControllerInterfacesImpl(
-        TrafficControllerInterfacesClient innerClient,
+    public TrafficControllerInterfacesImpl(TrafficControllerInterfacesClient innerClient,
         com.azure.resourcemanager.servicenetworking.TrafficControllerManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -44,20 +43,17 @@ public final class TrafficControllerInterfacesImpl implements TrafficControllerI
     }
 
     public PagedIterable<TrafficController> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<TrafficControllerInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        PagedIterable<TrafficControllerInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
         return Utils.mapPage(inner, inner1 -> new TrafficControllerImpl(inner1, this.manager()));
     }
 
-    public Response<TrafficController> getByResourceGroupWithResponse(
-        String resourceGroupName, String trafficControllerName, Context context) {
-        Response<TrafficControllerInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, trafficControllerName, context);
+    public Response<TrafficController> getByResourceGroupWithResponse(String resourceGroupName,
+        String trafficControllerName, Context context) {
+        Response<TrafficControllerInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, trafficControllerName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TrafficControllerImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -65,8 +61,8 @@ public final class TrafficControllerInterfacesImpl implements TrafficControllerI
     }
 
     public TrafficController getByResourceGroup(String resourceGroupName, String trafficControllerName) {
-        TrafficControllerInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, trafficControllerName);
+        TrafficControllerInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, trafficControllerName);
         if (inner != null) {
             return new TrafficControllerImpl(inner, this.manager());
         } else {
@@ -85,20 +81,13 @@ public final class TrafficControllerInterfacesImpl implements TrafficControllerI
     public TrafficController getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String trafficControllerName = Utils.getValueFromIdByName(id, "trafficControllers");
         if (trafficControllerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, trafficControllerName, Context.NONE).getValue();
     }
@@ -106,20 +95,13 @@ public final class TrafficControllerInterfacesImpl implements TrafficControllerI
     public Response<TrafficController> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String trafficControllerName = Utils.getValueFromIdByName(id, "trafficControllers");
         if (trafficControllerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, trafficControllerName, context);
     }
@@ -127,20 +109,13 @@ public final class TrafficControllerInterfacesImpl implements TrafficControllerI
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String trafficControllerName = Utils.getValueFromIdByName(id, "trafficControllers");
         if (trafficControllerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
         }
         this.delete(resourceGroupName, trafficControllerName, Context.NONE);
     }
@@ -148,20 +123,13 @@ public final class TrafficControllerInterfacesImpl implements TrafficControllerI
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String trafficControllerName = Utils.getValueFromIdByName(id, "trafficControllers");
         if (trafficControllerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
         }
         this.delete(resourceGroupName, trafficControllerName, context);
     }

@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for Extensions Create. */
 public final class ExtensionsCreateSamples {
     /*
-     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/CreateExtension.json
+     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/examples/CreateExtension.json
      */
     /**
      * Sample code: Create Extension.
@@ -38,16 +38,13 @@ public final class ExtensionsCreateSamples {
                     .withScope(new Scope().withCluster(new ScopeCluster().withReleaseNamespace("kube-system")))
                     .withConfigurationSettings(
                         mapOf(
-                            "omsagent.env.clusterName",
-                            "clusterName1",
-                            "omsagent.secret.wsid",
-                            "a38cef99-5a89-52ed-b6db-22095c23664b"))
-                    .withConfigurationProtectedSettings(mapOf("omsagent.secret.key", "secretKeyValue01")),
+                            "omsagent.env.clusterName", "clusterName1", "omsagent.secret.wsid", "fakeTokenPlaceholder"))
+                    .withConfigurationProtectedSettings(mapOf("omsagent.secret.key", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/CreateExtensionWithPlan.json
+     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/examples/CreateExtensionWithPlan.json
      */
     /**
      * Sample code: Create Extension with Plan.
@@ -76,6 +73,7 @@ public final class ExtensionsCreateSamples {
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

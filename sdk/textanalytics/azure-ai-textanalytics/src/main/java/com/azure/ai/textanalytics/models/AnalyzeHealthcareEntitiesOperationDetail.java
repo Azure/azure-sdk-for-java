@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
 import java.time.OffsetDateTime;
 
 /**
- * The {@link AnalyzeHealthcareEntitiesOperationDetail} model.
+ * The {@code AnalyzeHealthcareEntitiesOperationDetail} model.
  */
 @Immutable
 public final class AnalyzeHealthcareEntitiesOperationDetail {
@@ -56,18 +56,24 @@ public final class AnalyzeHealthcareEntitiesOperationDetail {
     }
 
     /**
-     * Gets the operationId property of the {@link AnalyzeHealthcareEntitiesOperationDetail}.
+     * Constructs a {@code AnalyzeHealthcareEntitiesOperationDetail} model.
+     */
+    public AnalyzeHealthcareEntitiesOperationDetail() {
+    }
+
+    /**
+     * Gets the operationId property of the {@code AnalyzeHealthcareEntitiesOperationDetail}.
      *
-     * @return The operationId property of the {@link AnalyzeHealthcareEntitiesOperationDetail}.
+     * @return The operationId property of the {@code AnalyzeHealthcareEntitiesOperationDetail}.
      */
     public String getOperationId() {
         return operationId;
     }
 
     /**
-     * Gets the displayName property of the {@link AnalyzeHealthcareEntitiesOperationDetail}.
+     * Gets the displayName property of the {@code AnalyzeHealthcareEntitiesOperationDetail}.
      *
-     * @return The displayName property of the {@link AnalyzeHealthcareEntitiesOperationDetail}.
+     * @return The displayName property of the {@code AnalyzeHealthcareEntitiesOperationDetail}.
      */
     public String getDisplayName() {
         return displayName;

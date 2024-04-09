@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Names for connection strings, application settings, and external Azure storage account configuration identifiers to
- * be marked as sticky to the deployment slot and not moved during a swap operation. This is valid for all deployment
- * slots in an app.
+ * Names for connection strings, application settings, and external Azure storage account configuration
+ * identifiers to be marked as sticky to the deployment slot and not moved during a swap operation.
+ * This is valid for all deployment slots in an app.
  */
 @Fluent
 public final class SlotConfigNames {
@@ -33,13 +33,15 @@ public final class SlotConfigNames {
     @JsonProperty(value = "azureStorageConfigNames")
     private List<String> azureStorageConfigNames;
 
-    /** Creates an instance of SlotConfigNames class. */
+    /**
+     * Creates an instance of SlotConfigNames class.
+     */
     public SlotConfigNames() {
     }
 
     /**
      * Get the connectionStringNames property: List of connection string names.
-     *
+     * 
      * @return the connectionStringNames value.
      */
     public List<String> connectionStringNames() {
@@ -48,7 +50,7 @@ public final class SlotConfigNames {
 
     /**
      * Set the connectionStringNames property: List of connection string names.
-     *
+     * 
      * @param connectionStringNames the connectionStringNames value to set.
      * @return the SlotConfigNames object itself.
      */
@@ -59,7 +61,7 @@ public final class SlotConfigNames {
 
     /**
      * Get the appSettingNames property: List of application settings names.
-     *
+     * 
      * @return the appSettingNames value.
      */
     public List<String> appSettingNames() {
@@ -68,7 +70,7 @@ public final class SlotConfigNames {
 
     /**
      * Set the appSettingNames property: List of application settings names.
-     *
+     * 
      * @param appSettingNames the appSettingNames value to set.
      * @return the SlotConfigNames object itself.
      */
@@ -79,7 +81,7 @@ public final class SlotConfigNames {
 
     /**
      * Get the azureStorageConfigNames property: List of external Azure storage account identifiers.
-     *
+     * 
      * @return the azureStorageConfigNames value.
      */
     public List<String> azureStorageConfigNames() {
@@ -88,7 +90,7 @@ public final class SlotConfigNames {
 
     /**
      * Set the azureStorageConfigNames property: List of external Azure storage account identifiers.
-     *
+     * 
      * @param azureStorageConfigNames the azureStorageConfigNames value to set.
      * @return the SlotConfigNames object itself.
      */
@@ -99,7 +101,7 @@ public final class SlotConfigNames {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.cdn.models.ResourceUsageUnit;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Output of check resource usage API. */
+/**
+ * Output of check resource usage API.
+ */
 @Immutable
 public final class ResourceUsageInner {
     /*
@@ -36,8 +38,14 @@ public final class ResourceUsageInner {
     private Integer limit;
 
     /**
+     * Creates an instance of ResourceUsageInner class.
+     */
+    public ResourceUsageInner() {
+    }
+
+    /**
      * Get the resourceType property: Resource type for which the usage is provided.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -46,7 +54,7 @@ public final class ResourceUsageInner {
 
     /**
      * Get the unit property: Unit of the usage. e.g. count.
-     *
+     * 
      * @return the unit value.
      */
     public ResourceUsageUnit unit() {
@@ -55,7 +63,7 @@ public final class ResourceUsageInner {
 
     /**
      * Get the currentValue property: Actual value of usage on the specified resource type.
-     *
+     * 
      * @return the currentValue value.
      */
     public Integer currentValue() {
@@ -64,7 +72,7 @@ public final class ResourceUsageInner {
 
     /**
      * Get the limit property: Quota of the specified resource type.
-     *
+     * 
      * @return the limit value.
      */
     public Integer limit() {
@@ -73,7 +81,7 @@ public final class ResourceUsageInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

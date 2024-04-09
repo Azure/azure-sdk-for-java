@@ -8,19 +8,26 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An access policy entry. */
+/**
+ * An access policy entry.
+ */
 @Fluent
 public final class ServiceAccessPolicyEntry {
     /*
-     * An Azure AD object ID (User or Apps) that is allowed access to the FHIR
-     * service.
+     * An Azure AD object ID (User or Apps) that is allowed access to the FHIR service.
      */
     @JsonProperty(value = "objectId", required = true)
     private String objectId;
 
     /**
+     * Creates an instance of ServiceAccessPolicyEntry class.
+     */
+    public ServiceAccessPolicyEntry() {
+    }
+
+    /**
      * Get the objectId property: An Azure AD object ID (User or Apps) that is allowed access to the FHIR service.
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -29,7 +36,7 @@ public final class ServiceAccessPolicyEntry {
 
     /**
      * Set the objectId property: An Azure AD object ID (User or Apps) that is allowed access to the FHIR service.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the ServiceAccessPolicyEntry object itself.
      */
@@ -40,15 +47,13 @@ public final class ServiceAccessPolicyEntry {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (objectId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property objectId in model ServiceAccessPolicyEntry"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property objectId in model ServiceAccessPolicyEntry"));
         }
     }
 

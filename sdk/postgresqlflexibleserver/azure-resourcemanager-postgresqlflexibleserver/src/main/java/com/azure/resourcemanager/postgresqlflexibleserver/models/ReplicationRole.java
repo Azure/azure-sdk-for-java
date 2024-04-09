@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Used to indicate role of the server in replication set. */
+/**
+ * Used to indicate role of the server in replication set.
+ */
 public final class ReplicationRole extends ExpandableStringEnum<ReplicationRole> {
-    /** Static value None for ReplicationRole. */
+    /**
+     * Static value None for ReplicationRole.
+     */
     public static final ReplicationRole NONE = fromString("None");
 
-    /** Static value Primary for ReplicationRole. */
+    /**
+     * Static value Primary for ReplicationRole.
+     */
     public static final ReplicationRole PRIMARY = fromString("Primary");
 
-    /** Static value AsyncReplica for ReplicationRole. */
+    /**
+     * Static value AsyncReplica for ReplicationRole.
+     */
     public static final ReplicationRole ASYNC_REPLICA = fromString("AsyncReplica");
 
-    /** Static value GeoAsyncReplica for ReplicationRole. */
+    /**
+     * Static value GeoAsyncReplica for ReplicationRole.
+     */
     public static final ReplicationRole GEO_ASYNC_REPLICA = fromString("GeoAsyncReplica");
 
     /**
      * Creates a new instance of ReplicationRole value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class ReplicationRole extends ExpandableStringEnum<ReplicationRole>
 
     /**
      * Creates or finds a ReplicationRole from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReplicationRole.
      */
@@ -44,7 +54,7 @@ public final class ReplicationRole extends ExpandableStringEnum<ReplicationRole>
 
     /**
      * Gets known ReplicationRole values.
-     *
+     * 
      * @return known ReplicationRole values.
      */
     public static Collection<ReplicationRole> values() {

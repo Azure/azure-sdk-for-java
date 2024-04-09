@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** HvrA provider specific input for test failover. */
+/**
+ * HvrA provider specific input for test failover.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("HyperVReplicaAzure")
 @Fluent
@@ -33,13 +35,21 @@ public final class HyperVReplicaAzureTestFailoverInput extends TestFailoverProvi
     @JsonProperty(value = "recoveryPointId")
     private String recoveryPointId;
 
-    /** Creates an instance of HyperVReplicaAzureTestFailoverInput class. */
+    /*
+     * A value indicating the inplace OS Upgrade version.
+     */
+    @JsonProperty(value = "osUpgradeVersion")
+    private String osUpgradeVersion;
+
+    /**
+     * Creates an instance of HyperVReplicaAzureTestFailoverInput class.
+     */
     public HyperVReplicaAzureTestFailoverInput() {
     }
 
     /**
      * Get the primaryKekCertificatePfx property: Primary kek certificate pfx.
-     *
+     * 
      * @return the primaryKekCertificatePfx value.
      */
     public String primaryKekCertificatePfx() {
@@ -48,7 +58,7 @@ public final class HyperVReplicaAzureTestFailoverInput extends TestFailoverProvi
 
     /**
      * Set the primaryKekCertificatePfx property: Primary kek certificate pfx.
-     *
+     * 
      * @param primaryKekCertificatePfx the primaryKekCertificatePfx value to set.
      * @return the HyperVReplicaAzureTestFailoverInput object itself.
      */
@@ -59,7 +69,7 @@ public final class HyperVReplicaAzureTestFailoverInput extends TestFailoverProvi
 
     /**
      * Get the secondaryKekCertificatePfx property: Secondary kek certificate pfx.
-     *
+     * 
      * @return the secondaryKekCertificatePfx value.
      */
     public String secondaryKekCertificatePfx() {
@@ -68,7 +78,7 @@ public final class HyperVReplicaAzureTestFailoverInput extends TestFailoverProvi
 
     /**
      * Set the secondaryKekCertificatePfx property: Secondary kek certificate pfx.
-     *
+     * 
      * @param secondaryKekCertificatePfx the secondaryKekCertificatePfx value to set.
      * @return the HyperVReplicaAzureTestFailoverInput object itself.
      */
@@ -80,7 +90,7 @@ public final class HyperVReplicaAzureTestFailoverInput extends TestFailoverProvi
     /**
      * Get the recoveryPointId property: The recovery point id to be passed to test failover to a particular recovery
      * point. In case of latest recovery point, null should be passed.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -90,7 +100,7 @@ public final class HyperVReplicaAzureTestFailoverInput extends TestFailoverProvi
     /**
      * Set the recoveryPointId property: The recovery point id to be passed to test failover to a particular recovery
      * point. In case of latest recovery point, null should be passed.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the HyperVReplicaAzureTestFailoverInput object itself.
      */
@@ -100,8 +110,28 @@ public final class HyperVReplicaAzureTestFailoverInput extends TestFailoverProvi
     }
 
     /**
+     * Get the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     * 
+     * @return the osUpgradeVersion value.
+     */
+    public String osUpgradeVersion() {
+        return this.osUpgradeVersion;
+    }
+
+    /**
+     * Set the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     * 
+     * @param osUpgradeVersion the osUpgradeVersion value to set.
+     * @return the HyperVReplicaAzureTestFailoverInput object itself.
+     */
+    public HyperVReplicaAzureTestFailoverInput withOsUpgradeVersion(String osUpgradeVersion) {
+        this.osUpgradeVersion = osUpgradeVersion;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

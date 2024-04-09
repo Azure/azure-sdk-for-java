@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for Amazon S3 Compatible. */
+/**
+ * Linked service for Amazon S3 Compatible.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AmazonS3Compatible")
 @Fluent
@@ -22,44 +24,54 @@ public final class AmazonS3CompatibleLinkedService extends LinkedService {
      * Amazon S3 Compatible linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
-    private AmazonS3CompatibleLinkedServiceTypeProperties innerTypeProperties =
-        new AmazonS3CompatibleLinkedServiceTypeProperties();
+    private AmazonS3CompatibleLinkedServiceTypeProperties innerTypeProperties
+        = new AmazonS3CompatibleLinkedServiceTypeProperties();
 
-    /** Creates an instance of AmazonS3CompatibleLinkedService class. */
+    /**
+     * Creates an instance of AmazonS3CompatibleLinkedService class.
+     */
     public AmazonS3CompatibleLinkedService() {
     }
 
     /**
      * Get the innerTypeProperties property: Amazon S3 Compatible linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private AmazonS3CompatibleLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonS3CompatibleLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonS3CompatibleLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonS3CompatibleLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonS3CompatibleLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -69,7 +81,7 @@ public final class AmazonS3CompatibleLinkedService extends LinkedService {
     /**
      * Get the accessKeyId property: The access key identifier of the Amazon S3 Compatible Identity and Access
      * Management (IAM) user. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the accessKeyId value.
      */
     public Object accessKeyId() {
@@ -79,7 +91,7 @@ public final class AmazonS3CompatibleLinkedService extends LinkedService {
     /**
      * Set the accessKeyId property: The access key identifier of the Amazon S3 Compatible Identity and Access
      * Management (IAM) user. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param accessKeyId the accessKeyId value to set.
      * @return the AmazonS3CompatibleLinkedService object itself.
      */
@@ -94,7 +106,7 @@ public final class AmazonS3CompatibleLinkedService extends LinkedService {
     /**
      * Get the secretAccessKey property: The secret access key of the Amazon S3 Compatible Identity and Access
      * Management (IAM) user.
-     *
+     * 
      * @return the secretAccessKey value.
      */
     public SecretBase secretAccessKey() {
@@ -104,7 +116,7 @@ public final class AmazonS3CompatibleLinkedService extends LinkedService {
     /**
      * Set the secretAccessKey property: The secret access key of the Amazon S3 Compatible Identity and Access
      * Management (IAM) user.
-     *
+     * 
      * @param secretAccessKey the secretAccessKey value to set.
      * @return the AmazonS3CompatibleLinkedService object itself.
      */
@@ -117,10 +129,10 @@ public final class AmazonS3CompatibleLinkedService extends LinkedService {
     }
 
     /**
-     * Get the serviceUrl property: This value specifies the endpoint to access with the Amazon S3 Compatible Connector.
-     * This is an optional property; change it only if you want to try a different service endpoint or want to switch
-     * between https and http. Type: string (or Expression with resultType string).
-     *
+     * Get the serviceUrl property: This value specifies the endpoint to access with the Amazon S3 Compatible
+     * Connector. This is an optional property; change it only if you want to try a different service endpoint or want
+     * to switch between https and http. Type: string (or Expression with resultType string).
+     * 
      * @return the serviceUrl value.
      */
     public Object serviceUrl() {
@@ -128,10 +140,10 @@ public final class AmazonS3CompatibleLinkedService extends LinkedService {
     }
 
     /**
-     * Set the serviceUrl property: This value specifies the endpoint to access with the Amazon S3 Compatible Connector.
-     * This is an optional property; change it only if you want to try a different service endpoint or want to switch
-     * between https and http. Type: string (or Expression with resultType string).
-     *
+     * Set the serviceUrl property: This value specifies the endpoint to access with the Amazon S3 Compatible
+     * Connector. This is an optional property; change it only if you want to try a different service endpoint or want
+     * to switch between https and http. Type: string (or Expression with resultType string).
+     * 
      * @param serviceUrl the serviceUrl value to set.
      * @return the AmazonS3CompatibleLinkedService object itself.
      */
@@ -146,7 +158,7 @@ public final class AmazonS3CompatibleLinkedService extends LinkedService {
     /**
      * Get the forcePathStyle property: If true, use S3 path-style access instead of virtual hosted-style access.
      * Default value is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the forcePathStyle value.
      */
     public Object forcePathStyle() {
@@ -156,7 +168,7 @@ public final class AmazonS3CompatibleLinkedService extends LinkedService {
     /**
      * Set the forcePathStyle property: If true, use S3 path-style access instead of virtual hosted-style access.
      * Default value is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param forcePathStyle the forcePathStyle value to set.
      * @return the AmazonS3CompatibleLinkedService object itself.
      */
@@ -169,23 +181,23 @@ public final class AmazonS3CompatibleLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AmazonS3CompatibleLinkedService object itself.
      */
-    public AmazonS3CompatibleLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public AmazonS3CompatibleLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AmazonS3CompatibleLinkedServiceTypeProperties();
         }
@@ -195,17 +207,15 @@ public final class AmazonS3CompatibleLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model AmazonS3CompatibleLinkedService"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model AmazonS3CompatibleLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

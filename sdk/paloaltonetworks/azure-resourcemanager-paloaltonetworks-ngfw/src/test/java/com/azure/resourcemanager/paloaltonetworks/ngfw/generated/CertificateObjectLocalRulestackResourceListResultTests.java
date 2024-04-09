@@ -14,39 +14,34 @@ import org.junit.jupiter.api.Assertions;
 public final class CertificateObjectLocalRulestackResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CertificateObjectLocalRulestackResourceListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"certificateSignerResourceId\":\"oorb\",\"certificateSelfSigned\":\"FALSE\",\"auditComment\":\"ybfhjxa\",\"description\":\"vjgsl\",\"etag\":\"dilmyww\",\"provisioningState\":\"Succeeded\"},\"id\":\"xnyed\",\"name\":\"b\",\"type\":\"yvudtjuewbci\"}],\"nextLink\":\"uuwhcjyxcc\"}")
-                .toObject(CertificateObjectLocalRulestackResourceListResult.class);
-        Assertions.assertEquals("oorb", model.value().get(0).certificateSignerResourceId());
-        Assertions.assertEquals(BooleanEnum.FALSE, model.value().get(0).certificateSelfSigned());
-        Assertions.assertEquals("ybfhjxa", model.value().get(0).auditComment());
-        Assertions.assertEquals("vjgsl", model.value().get(0).description());
-        Assertions.assertEquals("dilmyww", model.value().get(0).etag());
-        Assertions.assertEquals("uuwhcjyxcc", model.nextLink());
+        CertificateObjectLocalRulestackResourceListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"certificateSignerResourceId\":\"kkzddrtkgdojbmx\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"refdee\",\"description\":\"ecuijpxtxs\",\"etag\":\"prtujwsawdd\",\"provisioningState\":\"Accepted\"},\"id\":\"bxv\",\"name\":\"titvtzeexavox\",\"type\":\"fglecdmdqbwp\"},{\"properties\":{\"certificateSignerResourceId\":\"q\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"fjacbslhhxudb\",\"description\":\"odhtnsirudhzm\",\"etag\":\"sckdlp\",\"provisioningState\":\"Canceled\"},\"id\":\"cxfailcfxwmdboxd\",\"name\":\"gsftufqobrjlnacg\",\"type\":\"ckknhxkizvy\"}],\"nextLink\":\"rzvul\"}")
+            .toObject(CertificateObjectLocalRulestackResourceListResult.class);
+        Assertions.assertEquals("kkzddrtkgdojbmx", model.value().get(0).certificateSignerResourceId());
+        Assertions.assertEquals(BooleanEnum.TRUE, model.value().get(0).certificateSelfSigned());
+        Assertions.assertEquals("refdee", model.value().get(0).auditComment());
+        Assertions.assertEquals("ecuijpxtxs", model.value().get(0).description());
+        Assertions.assertEquals("prtujwsawdd", model.value().get(0).etag());
+        Assertions.assertEquals("rzvul", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertificateObjectLocalRulestackResourceListResult model =
-            new CertificateObjectLocalRulestackResourceListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new CertificateObjectLocalRulestackResourceInner()
-                                .withCertificateSignerResourceId("oorb")
-                                .withCertificateSelfSigned(BooleanEnum.FALSE)
-                                .withAuditComment("ybfhjxa")
-                                .withDescription("vjgsl")
-                                .withEtag("dilmyww")))
-                .withNextLink("uuwhcjyxcc");
+        CertificateObjectLocalRulestackResourceListResult model
+            = new CertificateObjectLocalRulestackResourceListResult().withValue(Arrays.asList(
+                new CertificateObjectLocalRulestackResourceInner().withCertificateSignerResourceId("kkzddrtkgdojbmx")
+                    .withCertificateSelfSigned(BooleanEnum.TRUE).withAuditComment("refdee")
+                    .withDescription("ecuijpxtxs").withEtag("prtujwsawdd"),
+                new CertificateObjectLocalRulestackResourceInner().withCertificateSignerResourceId("q")
+                    .withCertificateSelfSigned(BooleanEnum.TRUE).withAuditComment("fjacbslhhxudb")
+                    .withDescription("odhtnsirudhzm").withEtag("sckdlp")))
+                .withNextLink("rzvul");
         model = BinaryData.fromObject(model).toObject(CertificateObjectLocalRulestackResourceListResult.class);
-        Assertions.assertEquals("oorb", model.value().get(0).certificateSignerResourceId());
-        Assertions.assertEquals(BooleanEnum.FALSE, model.value().get(0).certificateSelfSigned());
-        Assertions.assertEquals("ybfhjxa", model.value().get(0).auditComment());
-        Assertions.assertEquals("vjgsl", model.value().get(0).description());
-        Assertions.assertEquals("dilmyww", model.value().get(0).etag());
-        Assertions.assertEquals("uuwhcjyxcc", model.nextLink());
+        Assertions.assertEquals("kkzddrtkgdojbmx", model.value().get(0).certificateSignerResourceId());
+        Assertions.assertEquals(BooleanEnum.TRUE, model.value().get(0).certificateSelfSigned());
+        Assertions.assertEquals("refdee", model.value().get(0).auditComment());
+        Assertions.assertEquals("ecuijpxtxs", model.value().get(0).description());
+        Assertions.assertEquals("prtujwsawdd", model.value().get(0).etag());
+        Assertions.assertEquals("rzvul", model.nextLink());
     }
 }

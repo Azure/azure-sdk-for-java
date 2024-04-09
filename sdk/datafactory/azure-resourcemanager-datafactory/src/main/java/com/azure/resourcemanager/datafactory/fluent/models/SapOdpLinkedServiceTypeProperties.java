@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties specific to this linked service type. */
+/**
+ * Properties specific to this linked service type.
+ */
 @Fluent
 public final class SapOdpLinkedServiceTypeProperties {
     /*
@@ -124,19 +126,21 @@ public final class SapOdpLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of SapOdpLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of SapOdpLinkedServiceTypeProperties class.
+     */
     public SapOdpLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the server property: Host name of the SAP instance where the table is located. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the server value.
      */
     public Object server() {
@@ -146,7 +150,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Set the server property: Host name of the SAP instance where the table is located. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param server the server value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.
      */
@@ -158,7 +162,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Get the systemNumber property: System number of the SAP system where the table is located. (Usually a two-digit
      * decimal number represented as a string.) Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the systemNumber value.
      */
     public Object systemNumber() {
@@ -168,7 +172,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Set the systemNumber property: System number of the SAP system where the table is located. (Usually a two-digit
      * decimal number represented as a string.) Type: string (or Expression with resultType string).
-     *
+     * 
      * @param systemNumber the systemNumber value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.
      */
@@ -180,7 +184,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Get the clientId property: Client ID of the client on the SAP system where the table is located. (Usually a
      * three-digit decimal number represented as a string) Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the clientId value.
      */
     public Object clientId() {
@@ -190,7 +194,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Set the clientId property: Client ID of the client on the SAP system where the table is located. (Usually a
      * three-digit decimal number represented as a string) Type: string (or Expression with resultType string).
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.
      */
@@ -202,7 +206,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Get the language property: Language of the SAP system where the table is located. The default value is EN. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @return the language value.
      */
     public Object language() {
@@ -212,7 +216,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Set the language property: Language of the SAP system where the table is located. The default value is EN. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @param language the language value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.
      */
@@ -224,7 +228,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Get the systemId property: SystemID of the SAP system where the table is located. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the systemId value.
      */
     public Object systemId() {
@@ -234,7 +238,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Set the systemId property: SystemID of the SAP system where the table is located. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param systemId the systemId value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.
      */
@@ -246,7 +250,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Get the username property: Username to access the SAP server where the table is located. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -256,7 +260,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Set the username property: Username to access the SAP server where the table is located. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param username the username value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.
      */
@@ -267,7 +271,7 @@ public final class SapOdpLinkedServiceTypeProperties {
 
     /**
      * Get the password property: Password to access the SAP server where the table is located.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -276,7 +280,7 @@ public final class SapOdpLinkedServiceTypeProperties {
 
     /**
      * Set the password property: Password to access the SAP server where the table is located.
-     *
+     * 
      * @param password the password value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.
      */
@@ -288,7 +292,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Get the messageServer property: The hostname of the SAP Message Server. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the messageServer value.
      */
     public Object messageServer() {
@@ -298,7 +302,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Set the messageServer property: The hostname of the SAP Message Server. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param messageServer the messageServer value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.
      */
@@ -310,7 +314,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Get the messageServerService property: The service name or port number of the Message Server. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the messageServerService value.
      */
     public Object messageServerService() {
@@ -320,7 +324,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Set the messageServerService property: The service name or port number of the Message Server. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param messageServerService the messageServerService value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.
      */
@@ -332,7 +336,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Get the sncMode property: SNC activation indicator to access the SAP server where the table is located. Must be
      * either 0 (off) or 1 (on). Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the sncMode value.
      */
     public Object sncMode() {
@@ -342,7 +346,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Set the sncMode property: SNC activation indicator to access the SAP server where the table is located. Must be
      * either 0 (off) or 1 (on). Type: string (or Expression with resultType string).
-     *
+     * 
      * @param sncMode the sncMode value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.
      */
@@ -354,7 +358,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Get the sncMyName property: Initiator's SNC name to access the SAP server where the table is located. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @return the sncMyName value.
      */
     public Object sncMyName() {
@@ -364,7 +368,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Set the sncMyName property: Initiator's SNC name to access the SAP server where the table is located. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @param sncMyName the sncMyName value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.
      */
@@ -376,7 +380,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Get the sncPartnerName property: Communication partner's SNC name to access the SAP server where the table is
      * located. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the sncPartnerName value.
      */
     public Object sncPartnerName() {
@@ -386,7 +390,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Set the sncPartnerName property: Communication partner's SNC name to access the SAP server where the table is
      * located. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param sncPartnerName the sncPartnerName value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.
      */
@@ -398,7 +402,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Get the sncLibraryPath property: External security product's library to access the SAP server where the table is
      * located. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the sncLibraryPath value.
      */
     public Object sncLibraryPath() {
@@ -408,7 +412,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Set the sncLibraryPath property: External security product's library to access the SAP server where the table is
      * located. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param sncLibraryPath the sncLibraryPath value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.
      */
@@ -420,7 +424,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Get the sncQop property: SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the sncQop value.
      */
     public Object sncQop() {
@@ -430,7 +434,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Set the sncQop property: SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param sncQop the sncQop value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.
      */
@@ -440,9 +444,9 @@ public final class SapOdpLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the x509CertificatePath property: SNC X509 certificate file path. Type: string (or Expression with resultType
-     * string).
-     *
+     * Get the x509CertificatePath property: SNC X509 certificate file path. Type: string (or Expression with
+     * resultType string).
+     * 
      * @return the x509CertificatePath value.
      */
     public Object x509CertificatePath() {
@@ -450,9 +454,9 @@ public final class SapOdpLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the x509CertificatePath property: SNC X509 certificate file path. Type: string (or Expression with resultType
-     * string).
-     *
+     * Set the x509CertificatePath property: SNC X509 certificate file path. Type: string (or Expression with
+     * resultType string).
+     * 
      * @param x509CertificatePath the x509CertificatePath value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.
      */
@@ -464,7 +468,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Get the logonGroup property: The Logon Group for the SAP System. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the logonGroup value.
      */
     public Object logonGroup() {
@@ -474,7 +478,7 @@ public final class SapOdpLinkedServiceTypeProperties {
     /**
      * Set the logonGroup property: The Logon Group for the SAP System. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param logonGroup the logonGroup value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.
      */
@@ -485,7 +489,7 @@ public final class SapOdpLinkedServiceTypeProperties {
 
     /**
      * Get the subscriberName property: The subscriber name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the subscriberName value.
      */
     public Object subscriberName() {
@@ -494,7 +498,7 @@ public final class SapOdpLinkedServiceTypeProperties {
 
     /**
      * Set the subscriberName property: The subscriber name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param subscriberName the subscriberName value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.
      */
@@ -504,30 +508,30 @@ public final class SapOdpLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.
      */
-    public SapOdpLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public SapOdpLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

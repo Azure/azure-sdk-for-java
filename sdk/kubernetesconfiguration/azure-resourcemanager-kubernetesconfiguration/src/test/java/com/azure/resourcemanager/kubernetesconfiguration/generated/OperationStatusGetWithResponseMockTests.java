@@ -31,7 +31,7 @@ public final class OperationStatusGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"id\":\"lcxog\",\"name\":\"konzmnsik\",\"status\":\"mkqzeqqkdltfzxmh\",\"properties\":{\"tibqdxbxwakb\":\"gureodkwobdag\",\"podxunkb\":\"gqxndlkzgxhuripl\"}}";
+            "{\"id\":\"xywsuws\",\"name\":\"s\",\"status\":\"dsytgadgvr\",\"properties\":{\"qnzarrwl\":\"en\",\"jfqka\":\"uu\",\"iipfpubj\":\"e\"}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +63,18 @@ public final class OperationStatusGetWithResponseMockTests {
             manager
                 .operationStatus()
                 .getWithResponse(
-                    "semwabnet", "hhszh", "d", "lvwiwubmwmbesl", "nkww", "pp", com.azure.core.util.Context.NONE)
+                    "pqwcciuqgbdbutau",
+                    "fbtkuwhhmhyk",
+                    "joxafnndlpi",
+                    "hkoymkcdyhbp",
+                    "kpw",
+                    "reqnovvqfov",
+                    com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("lcxog", response.id());
-        Assertions.assertEquals("konzmnsik", response.name());
-        Assertions.assertEquals("mkqzeqqkdltfzxmh", response.status());
-        Assertions.assertEquals("gureodkwobdag", response.properties().get("tibqdxbxwakb"));
+        Assertions.assertEquals("xywsuws", response.id());
+        Assertions.assertEquals("s", response.name());
+        Assertions.assertEquals("dsytgadgvr", response.status());
+        Assertions.assertEquals("en", response.properties().get("qnzarrwl"));
     }
 }

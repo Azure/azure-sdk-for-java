@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines a managed rule group override setting. */
+/**
+ * Defines a managed rule group override setting.
+ */
 @Fluent
 public final class ManagedRuleGroupOverride {
     /*
@@ -25,8 +27,14 @@ public final class ManagedRuleGroupOverride {
     private List<ManagedRuleOverride> rules;
 
     /**
+     * Creates an instance of ManagedRuleGroupOverride class.
+     */
+    public ManagedRuleGroupOverride() {
+    }
+
+    /**
      * Get the ruleGroupName property: Describes the managed rule group within the rule set to override.
-     *
+     * 
      * @return the ruleGroupName value.
      */
     public String ruleGroupName() {
@@ -35,7 +43,7 @@ public final class ManagedRuleGroupOverride {
 
     /**
      * Set the ruleGroupName property: Describes the managed rule group within the rule set to override.
-     *
+     * 
      * @param ruleGroupName the ruleGroupName value to set.
      * @return the ManagedRuleGroupOverride object itself.
      */
@@ -47,7 +55,7 @@ public final class ManagedRuleGroupOverride {
     /**
      * Get the rules property: List of rules that will be enabled. If none specified, all rules in the group will be
      * disabled.
-     *
+     * 
      * @return the rules value.
      */
     public List<ManagedRuleOverride> rules() {
@@ -57,7 +65,7 @@ public final class ManagedRuleGroupOverride {
     /**
      * Set the rules property: List of rules that will be enabled. If none specified, all rules in the group will be
      * disabled.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the ManagedRuleGroupOverride object itself.
      */
@@ -68,15 +76,13 @@ public final class ManagedRuleGroupOverride {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleGroupName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ruleGroupName in model ManagedRuleGroupOverride"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property ruleGroupName in model ManagedRuleGroupOverride"));
         }
         if (rules() != null) {
             rules().forEach(e -> e.validate());

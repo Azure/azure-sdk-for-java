@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  * ExpressRouteLink List Result
- *
- * <p>Response for ListExpressRouteLinks API service call.
+ * 
+ * Response for ListExpressRouteLinks API service call.
  */
 @Fluent
 public final class ExpressRouteLinkListResult {
@@ -28,13 +28,15 @@ public final class ExpressRouteLinkListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ExpressRouteLinkListResult class. */
+    /**
+     * Creates an instance of ExpressRouteLinkListResult class.
+     */
     public ExpressRouteLinkListResult() {
     }
 
     /**
      * Get the value property: The list of ExpressRouteLink sub-resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ExpressRouteLinkInner> value() {
@@ -43,7 +45,7 @@ public final class ExpressRouteLinkListResult {
 
     /**
      * Set the value property: The list of ExpressRouteLink sub-resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ExpressRouteLinkListResult object itself.
      */
@@ -54,7 +56,7 @@ public final class ExpressRouteLinkListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +65,7 @@ public final class ExpressRouteLinkListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ExpressRouteLinkListResult object itself.
      */
@@ -74,7 +76,7 @@ public final class ExpressRouteLinkListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -21,35 +21,31 @@ public final class AssociationsInterfacesImpl implements AssociationsInterfaces 
 
     private final com.azure.resourcemanager.servicenetworking.TrafficControllerManager serviceManager;
 
-    public AssociationsInterfacesImpl(
-        AssociationsInterfacesClient innerClient,
+    public AssociationsInterfacesImpl(AssociationsInterfacesClient innerClient,
         com.azure.resourcemanager.servicenetworking.TrafficControllerManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Association> listByTrafficController(String resourceGroupName, String trafficControllerName) {
-        PagedIterable<AssociationInner> inner =
-            this.serviceClient().listByTrafficController(resourceGroupName, trafficControllerName);
+        PagedIterable<AssociationInner> inner
+            = this.serviceClient().listByTrafficController(resourceGroupName, trafficControllerName);
         return Utils.mapPage(inner, inner1 -> new AssociationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Association> listByTrafficController(
-        String resourceGroupName, String trafficControllerName, Context context) {
-        PagedIterable<AssociationInner> inner =
-            this.serviceClient().listByTrafficController(resourceGroupName, trafficControllerName, context);
+    public PagedIterable<Association> listByTrafficController(String resourceGroupName, String trafficControllerName,
+        Context context) {
+        PagedIterable<AssociationInner> inner
+            = this.serviceClient().listByTrafficController(resourceGroupName, trafficControllerName, context);
         return Utils.mapPage(inner, inner1 -> new AssociationImpl(inner1, this.manager()));
     }
 
-    public Response<Association> getWithResponse(
-        String resourceGroupName, String trafficControllerName, String associationName, Context context) {
-        Response<AssociationInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, trafficControllerName, associationName, context);
+    public Response<Association> getWithResponse(String resourceGroupName, String trafficControllerName,
+        String associationName, Context context) {
+        Response<AssociationInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, trafficControllerName, associationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AssociationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -69,35 +65,26 @@ public final class AssociationsInterfacesImpl implements AssociationsInterfaces 
         this.serviceClient().delete(resourceGroupName, trafficControllerName, associationName);
     }
 
-    public void delete(
-        String resourceGroupName, String trafficControllerName, String associationName, Context context) {
+    public void delete(String resourceGroupName, String trafficControllerName, String associationName,
+        Context context) {
         this.serviceClient().delete(resourceGroupName, trafficControllerName, associationName, context);
     }
 
     public Association getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String trafficControllerName = Utils.getValueFromIdByName(id, "trafficControllers");
         if (trafficControllerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
         }
         String associationName = Utils.getValueFromIdByName(id, "associations");
         if (associationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'associations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'associations'.", id)));
         }
         return this.getWithResponse(resourceGroupName, trafficControllerName, associationName, Context.NONE).getValue();
     }
@@ -105,27 +92,18 @@ public final class AssociationsInterfacesImpl implements AssociationsInterfaces 
     public Response<Association> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String trafficControllerName = Utils.getValueFromIdByName(id, "trafficControllers");
         if (trafficControllerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
         }
         String associationName = Utils.getValueFromIdByName(id, "associations");
         if (associationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'associations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'associations'.", id)));
         }
         return this.getWithResponse(resourceGroupName, trafficControllerName, associationName, context);
     }
@@ -133,27 +111,18 @@ public final class AssociationsInterfacesImpl implements AssociationsInterfaces 
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String trafficControllerName = Utils.getValueFromIdByName(id, "trafficControllers");
         if (trafficControllerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
         }
         String associationName = Utils.getValueFromIdByName(id, "associations");
         if (associationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'associations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'associations'.", id)));
         }
         this.delete(resourceGroupName, trafficControllerName, associationName, Context.NONE);
     }
@@ -161,27 +130,18 @@ public final class AssociationsInterfacesImpl implements AssociationsInterfaces 
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String trafficControllerName = Utils.getValueFromIdByName(id, "trafficControllers");
         if (trafficControllerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'trafficControllers'.", id)));
         }
         String associationName = Utils.getValueFromIdByName(id, "associations");
         if (associationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'associations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'associations'.", id)));
         }
         this.delete(resourceGroupName, trafficControllerName, associationName, context);
     }

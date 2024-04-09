@@ -29,8 +29,7 @@ public final class FleetsListCredentialsWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"kubeconfigs\":[{\"name\":\"wlxkvugfhzovaw\"},{\"name\":\"u\"},{\"name\":\"thnnpr\"},{\"name\":\"peilpjzuaejxdu\"}]}";
+        String responseStr = "{\"kubeconfigs\":[{\"name\":\"pwo\"},{\"name\":\"kfpbs\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +60,7 @@ public final class FleetsListCredentialsWithResponseMockTests {
         FleetCredentialResults response =
             manager
                 .fleets()
-                .listCredentialsWithResponse("qsgzvahapj", "zhpvgqzcjrvxd", com.azure.core.util.Context.NONE)
+                .listCredentialsWithResponse("ultskzbbtdz", "mv", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

@@ -14,6 +14,15 @@ public final class NotificationDeliveryMechanism extends ExpandableStringEnum<No
     public static final NotificationDeliveryMechanism EMAIL = fromString("Email");
 
     /**
+     * Creates a new instance of NotificationDeliveryMechanism value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NotificationDeliveryMechanism() {
+    }
+
+    /**
      * Creates or finds a NotificationDeliveryMechanism from its string representation.
      *
      * @param name a name to look for.

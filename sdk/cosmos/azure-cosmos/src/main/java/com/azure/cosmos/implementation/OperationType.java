@@ -62,4 +62,14 @@ public enum OperationType {
             this == Patch ||
             this == Read;
     }
+
+    public boolean isReadOnlyOperation() {
+        return this == Read
+            || this == ReadFeed
+            || this == Head
+            || this == HeadFeed
+            || this == Query
+            || this == SqlQuery
+            || this == QueryPlan;
+    }
 }

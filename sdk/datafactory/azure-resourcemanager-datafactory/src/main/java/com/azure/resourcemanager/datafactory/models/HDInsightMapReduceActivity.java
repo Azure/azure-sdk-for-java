@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** HDInsight MapReduce activity type. */
+/**
+ * HDInsight MapReduce activity type.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("HDInsightMapReduce")
 @Fluent
@@ -22,58 +24,90 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
      * HDInsight MapReduce activity properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
-    private HDInsightMapReduceActivityTypeProperties innerTypeProperties =
-        new HDInsightMapReduceActivityTypeProperties();
+    private HDInsightMapReduceActivityTypeProperties innerTypeProperties
+        = new HDInsightMapReduceActivityTypeProperties();
 
-    /** Creates an instance of HDInsightMapReduceActivity class. */
+    /**
+     * Creates an instance of HDInsightMapReduceActivity class.
+     */
     public HDInsightMapReduceActivity() {
     }
 
     /**
      * Get the innerTypeProperties property: HDInsight MapReduce activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private HDInsightMapReduceActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightMapReduceActivity withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightMapReduceActivity withPolicy(ActivityPolicy policy) {
         super.withPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightMapReduceActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightMapReduceActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public HDInsightMapReduceActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public HDInsightMapReduceActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightMapReduceActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightMapReduceActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -82,7 +116,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Get the storageLinkedServices property: Storage linked service references.
-     *
+     * 
      * @return the storageLinkedServices value.
      */
     public List<LinkedServiceReference> storageLinkedServices() {
@@ -91,7 +125,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Set the storageLinkedServices property: Storage linked service references.
-     *
+     * 
      * @param storageLinkedServices the storageLinkedServices value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
@@ -105,7 +139,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Get the arguments property: User specified arguments to HDInsightActivity.
-     *
+     * 
      * @return the arguments value.
      */
     public List<Object> arguments() {
@@ -114,7 +148,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Set the arguments property: User specified arguments to HDInsightActivity.
-     *
+     * 
      * @param arguments the arguments value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
@@ -128,7 +162,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Get the getDebugInfo property: Debug info option.
-     *
+     * 
      * @return the getDebugInfo value.
      */
     public HDInsightActivityDebugInfoOption getDebugInfo() {
@@ -137,7 +171,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Set the getDebugInfo property: Debug info option.
-     *
+     * 
      * @param getDebugInfo the getDebugInfo value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
@@ -151,7 +185,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Get the className property: Class name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the className value.
      */
     public Object className() {
@@ -160,7 +194,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Set the className property: Class name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param className the className value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
@@ -174,7 +208,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Get the jarFilePath property: Jar path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the jarFilePath value.
      */
     public Object jarFilePath() {
@@ -183,7 +217,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Set the jarFilePath property: Jar path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param jarFilePath the jarFilePath value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
@@ -197,7 +231,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Get the jarLinkedService property: Jar linked service reference.
-     *
+     * 
      * @return the jarLinkedService value.
      */
     public LinkedServiceReference jarLinkedService() {
@@ -206,7 +240,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Set the jarLinkedService property: Jar linked service reference.
-     *
+     * 
      * @param jarLinkedService the jarLinkedService value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
@@ -220,7 +254,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Get the jarLibs property: Jar libs.
-     *
+     * 
      * @return the jarLibs value.
      */
     public List<Object> jarLibs() {
@@ -229,7 +263,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Set the jarLibs property: Jar libs.
-     *
+     * 
      * @param jarLibs the jarLibs value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
@@ -243,7 +277,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Get the defines property: Allows user to specify defines for the MapReduce job request.
-     *
+     * 
      * @return the defines value.
      */
     public Map<String, Object> defines() {
@@ -252,7 +286,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Set the defines property: Allows user to specify defines for the MapReduce job request.
-     *
+     * 
      * @param defines the defines value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
@@ -266,17 +300,15 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model HDInsightMapReduceActivity"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model HDInsightMapReduceActivity"));
         } else {
             innerTypeProperties().validate();
         }

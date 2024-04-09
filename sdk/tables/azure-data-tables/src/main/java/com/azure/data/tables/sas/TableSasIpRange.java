@@ -13,6 +13,14 @@ public final class TableSasIpRange {
     private String ipMin;
     private String ipMax;
 
+    // empty constructor necessary due to Javadoc warnings
+    /**
+     * Creates an instance of {@link TableSasIpRange}.
+     */
+    public TableSasIpRange() {
+
+    }
+
     /**
      * Creates a {@link TableSasIpRange} from the specified string.
      *
@@ -32,6 +40,7 @@ public final class TableSasIpRange {
     }
 
     /**
+     * Returns the minimum IP address of the range.
      * @return The minimum IP address of the range.
      */
     public String getIpMin() {
@@ -51,6 +60,7 @@ public final class TableSasIpRange {
     }
 
     /**
+     * Returns the maximum IP address of the range.
      * @return The maximum IP address of the range.
      */
     public String getIpMax() {

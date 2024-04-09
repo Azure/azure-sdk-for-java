@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List Restore Ranges Response. */
+/**
+ * List Restore Ranges Response.
+ */
 @Fluent
 public final class AzureBackupFindRestorableTimeRangesResponse {
     /*
@@ -23,13 +25,15 @@ public final class AzureBackupFindRestorableTimeRangesResponse {
     @JsonProperty(value = "objectType")
     private String objectType;
 
-    /** Creates an instance of AzureBackupFindRestorableTimeRangesResponse class. */
+    /**
+     * Creates an instance of AzureBackupFindRestorableTimeRangesResponse class.
+     */
     public AzureBackupFindRestorableTimeRangesResponse() {
     }
 
     /**
      * Get the restorableTimeRanges property: Returns the Restore Ranges available on the Backup Instance.
-     *
+     * 
      * @return the restorableTimeRanges value.
      */
     public List<RestorableTimeRange> restorableTimeRanges() {
@@ -38,19 +42,19 @@ public final class AzureBackupFindRestorableTimeRangesResponse {
 
     /**
      * Set the restorableTimeRanges property: Returns the Restore Ranges available on the Backup Instance.
-     *
+     * 
      * @param restorableTimeRanges the restorableTimeRanges value to set.
      * @return the AzureBackupFindRestorableTimeRangesResponse object itself.
      */
-    public AzureBackupFindRestorableTimeRangesResponse withRestorableTimeRanges(
-        List<RestorableTimeRange> restorableTimeRanges) {
+    public AzureBackupFindRestorableTimeRangesResponse
+        withRestorableTimeRanges(List<RestorableTimeRange> restorableTimeRanges) {
         this.restorableTimeRanges = restorableTimeRanges;
         return this;
     }
 
     /**
      * Get the objectType property: The objectType property.
-     *
+     * 
      * @return the objectType value.
      */
     public String objectType() {
@@ -59,7 +63,7 @@ public final class AzureBackupFindRestorableTimeRangesResponse {
 
     /**
      * Set the objectType property: The objectType property.
-     *
+     * 
      * @param objectType the objectType value to set.
      * @return the AzureBackupFindRestorableTimeRangesResponse object itself.
      */
@@ -70,7 +74,7 @@ public final class AzureBackupFindRestorableTimeRangesResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

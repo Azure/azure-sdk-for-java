@@ -13,15 +13,19 @@ import java.util.Collection;
  * applies to.
  */
 public final class ScrubbingRuleEntryMatchOperator extends ExpandableStringEnum<ScrubbingRuleEntryMatchOperator> {
-    /** Static value Equals for ScrubbingRuleEntryMatchOperator. */
+    /**
+     * Static value Equals for ScrubbingRuleEntryMatchOperator.
+     */
     public static final ScrubbingRuleEntryMatchOperator EQUALS = fromString("Equals");
 
-    /** Static value EqualsAny for ScrubbingRuleEntryMatchOperator. */
+    /**
+     * Static value EqualsAny for ScrubbingRuleEntryMatchOperator.
+     */
     public static final ScrubbingRuleEntryMatchOperator EQUALS_ANY = fromString("EqualsAny");
 
     /**
      * Creates a new instance of ScrubbingRuleEntryMatchOperator value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class ScrubbingRuleEntryMatchOperator extends ExpandableStringEnum<
 
     /**
      * Creates or finds a ScrubbingRuleEntryMatchOperator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScrubbingRuleEntryMatchOperator.
      */
@@ -41,7 +45,7 @@ public final class ScrubbingRuleEntryMatchOperator extends ExpandableStringEnum<
 
     /**
      * Gets known ScrubbingRuleEntryMatchOperator values.
-     *
+     * 
      * @return known ScrubbingRuleEntryMatchOperator values.
      */
     public static Collection<ScrubbingRuleEntryMatchOperator> values() {

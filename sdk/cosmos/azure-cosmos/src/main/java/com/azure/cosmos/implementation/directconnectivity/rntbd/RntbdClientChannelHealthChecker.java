@@ -58,8 +58,6 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
     @JsonProperty
     private final long writeDelayLimitInNanos;
     @JsonProperty
-    private final long networkRequestTimeoutInNanos;
-    @JsonProperty
     private final boolean timeoutDetectionEnabled;
     @JsonProperty
     private final double timeoutDetectionDisableCPUThreshold;
@@ -77,7 +75,6 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
     private final long nonRespondingChannelReadDelayTimeLimitInNanos;
     @JsonProperty
     private final int cancellationCountSinceLastReadThreshold;
-
 
     // endregion
 
@@ -98,7 +95,6 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         this.idleConnectionTimeoutInNanos = config.idleConnectionTimeoutInNanos();
         this.readDelayLimitInNanos = config.receiveHangDetectionTimeInNanos();
         this.writeDelayLimitInNanos = config.sendHangDetectionTimeInNanos();
-        this.networkRequestTimeoutInNanos = config.tcpNetworkRequestTimeoutInNanos();
         this.timeoutDetectionEnabled = config.timeoutDetectionEnabled();
         this.timeoutDetectionDisableCPUThreshold = config.timeoutDetectionDisableCPUThreshold();
         this.timeoutTimeLimitInNanos = config.timeoutDetectionTimeLimitInNanos();
@@ -327,6 +323,9 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             // When request timeout due to high CPU,
             // close the existing the connection and re-establish a new one will not help the issue but rather make it worse, return fast
             if (CpuMemoryMonitor.getCpuLoad().isCpuOverThreshold(this.timeoutDetectionDisableCPUThreshold)) {
+                // reset the transit timeout here
+                // else when the CPU back to below the threshold, the connection may still trigger a connection close right away
+                timestamps.resetTransitTimeout();
                 return transitTimeoutValidationMessage;
             }
 
@@ -418,6 +417,9 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             // When request cancellations are due to high CPU,
             // close the existing the connection and re-establish a new one will not help the issue but rather make it worse, return fast
             if (CpuMemoryMonitor.getCpuLoad().isCpuOverThreshold(this.timeoutDetectionDisableCPUThreshold)) {
+                // reset the cancellation count here
+                // else when the CPU back to below the threshold, the connection may still trigger a connection close right away
+                timestamps.resetCancellationCount();
                 return errorMessage;
             }
 
@@ -489,10 +491,11 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         private volatile Instant transitTimeoutStartingTime;
         private volatile int cancellationCount;
         public Timestamps() {
-            lastPingUpdater.set(this, Instant.now());
-            lastReadUpdater.set(this, Instant.now());
-            lastWriteUpdater.set(this, Instant.now());
-            lastWriteAttemptUpdater.set(this, Instant.now());
+            Instant nowSnapshot = Instant.now();
+            lastPingUpdater.set(this, nowSnapshot);
+            lastReadUpdater.set(this, nowSnapshot);
+            lastWriteUpdater.set(this, nowSnapshot);
+            lastWriteAttemptUpdater.set(this, nowSnapshot);
         }
 
         @SuppressWarnings("CopyConstructorMissesField")

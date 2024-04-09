@@ -5,66 +5,86 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.AzureSqlDatabaseDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/** The properties that are associated with an Azure SQL database output. */
+/**
+ * The properties that are associated with an Azure SQL database output.
+ */
 @Fluent
 public final class AzureSqlDatabaseOutputDataSourceProperties extends AzureSqlDatabaseDataSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSqlDatabaseOutputDataSourceProperties.class);
+    /**
+     * Creates an instance of AzureSqlDatabaseOutputDataSourceProperties class.
+     */
+    public AzureSqlDatabaseOutputDataSourceProperties() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseOutputDataSourceProperties withServer(String server) {
         super.withServer(server);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseOutputDataSourceProperties withDatabase(String database) {
         super.withDatabase(database);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseOutputDataSourceProperties withUser(String user) {
         super.withUser(user);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseOutputDataSourceProperties withPassword(String password) {
         super.withPassword(password);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseOutputDataSourceProperties withTable(String table) {
         super.withTable(table);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseOutputDataSourceProperties withMaxBatchCount(Float maxBatchCount) {
         super.withMaxBatchCount(maxBatchCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseOutputDataSourceProperties withMaxWriterCount(Float maxWriterCount) {
         super.withMaxWriterCount(maxWriterCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseOutputDataSourceProperties withAuthenticationMode(AuthenticationMode authenticationMode) {
         super.withAuthenticationMode(authenticationMode);
@@ -73,7 +93,7 @@ public final class AzureSqlDatabaseOutputDataSourceProperties extends AzureSqlDa
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

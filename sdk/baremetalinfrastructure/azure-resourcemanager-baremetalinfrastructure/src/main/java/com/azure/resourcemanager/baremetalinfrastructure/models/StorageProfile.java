@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specifies the storage settings for the AzureBareMetal instance disks. */
+/** Specifies the storage settings for the Azure Bare Metal instance disks. */
 @Fluent
 public final class StorageProfile {
     /*
@@ -18,7 +18,7 @@ public final class StorageProfile {
     private String nfsIpAddress;
 
     /*
-     * Specifies information about the operating system disk used by baremetal instance.
+     * Specifies information about the operating system disk used by bare metal instance.
      */
     @JsonProperty(value = "osDisks")
     private List<Disk> osDisks;
@@ -37,7 +37,7 @@ public final class StorageProfile {
     }
 
     /**
-     * Get the osDisks property: Specifies information about the operating system disk used by baremetal instance.
+     * Get the osDisks property: Specifies information about the operating system disk used by bare metal instance.
      *
      * @return the osDisks value.
      */
@@ -46,7 +46,7 @@ public final class StorageProfile {
     }
 
     /**
-     * Set the osDisks property: Specifies information about the operating system disk used by baremetal instance.
+     * Set the osDisks property: Specifies information about the operating system disk used by bare metal instance.
      *
      * @param osDisks the osDisks value to set.
      * @return the StorageProfile object itself.

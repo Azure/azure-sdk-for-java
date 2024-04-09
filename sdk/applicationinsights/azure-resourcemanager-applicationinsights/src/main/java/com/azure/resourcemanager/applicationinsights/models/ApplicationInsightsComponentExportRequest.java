@@ -11,10 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ApplicationInsightsComponentExportRequest {
     /*
-     * The document types to be exported, as comma separated values. Allowed
-     * values include 'Requests', 'Event', 'Exceptions', 'Metrics',
-     * 'PageViews', 'PageViewPerformance', 'Rdd', 'PerformanceCounters',
-     * 'Availability', 'Messages'.
+     * The document types to be exported, as comma separated values. Allowed values include 'Requests', 'Event',
+     * 'Exceptions', 'Metrics', 'PageViews', 'PageViewPerformance', 'Rdd', 'PerformanceCounters', 'Availability',
+     * 'Messages'.
      */
     @JsonProperty(value = "RecordTypes")
     private String recordTypes;
@@ -26,15 +25,13 @@ public final class ApplicationInsightsComponentExportRequest {
     private String destinationType;
 
     /*
-     * The SAS URL for the destination storage container. It must grant write
-     * permission.
+     * The SAS URL for the destination storage container. It must grant write permission.
      */
     @JsonProperty(value = "DestinationAddress")
     private String destinationAddress;
 
     /*
-     * Set to 'true' to create a Continuous Export configuration as enabled,
-     * otherwise set it to 'false'.
+     * Set to 'true' to create a Continuous Export configuration as enabled, otherwise set it to 'false'.
      */
     @JsonProperty(value = "IsEnabled")
     private String isEnabled;
@@ -68,6 +65,10 @@ public final class ApplicationInsightsComponentExportRequest {
      */
     @JsonProperty(value = "DestinationAccountId")
     private String destinationAccountId;
+
+    /** Creates an instance of ApplicationInsightsComponentExportRequest class. */
+    public ApplicationInsightsComponentExportRequest() {
+    }
 
     /**
      * Get the recordTypes property: The document types to be exported, as comma separated values. Allowed values

@@ -30,45 +30,32 @@ public final class ProtectionPolicyOperationResultsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":820174977,\"resourceGuardOperationRequests\":[\"hpdujdigatole\",\"scbctnanqim\"]},\"eTag\":\"zxpdcldpkawnsnl\",\"location\":\"imouxwksqmudmfco\",\"tags\":{\"wswjrkbqsjh\":\"cziu\",\"scyrfwbivqv\":\"tqqvy\",\"hlimby\":\"gfuyzwv\",\"odlikcdrdaasax\":\"ecr\"},\"id\":\"obsmf\",\"name\":\"wiyjvzuko\",\"type\":\"r\"}";
+        String responseStr
+            = "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1320591219,\"resourceGuardOperationRequests\":[\"eboywhczzqrhm\",\"gqbedygi\",\"rzwnyk\"]},\"eTag\":\"djchlr\",\"location\":\"pwctofl\",\"tags\":{\"g\":\"acdhztxkbr\",\"fj\":\"rwjiyew\"},\"id\":\"rwq\",\"name\":\"xet\",\"type\":\"gcwvrrmdqntycna\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        RecoveryServicesBackupManager manager =
-            RecoveryServicesBackupManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ProtectionPolicyResource response =
-            manager
-                .protectionPolicyOperationResults()
-                .getWithResponse("fgtdmbvx", "kraokq", "budbt", "aokbavlyttaaknwf", com.azure.core.util.Context.NONE)
-                .getValue();
+        ProtectionPolicyResource response = manager.protectionPolicyOperationResults()
+            .getWithResponse("fftedousnktj", "gravaqogfkbebauz", "qbtxxwpf", "njzudr", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("imouxwksqmudmfco", response.location());
-        Assertions.assertEquals("cziu", response.tags().get("wswjrkbqsjh"));
-        Assertions.assertEquals(820174977, response.properties().protectedItemsCount());
-        Assertions.assertEquals("hpdujdigatole", response.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("zxpdcldpkawnsnl", response.etag());
+        Assertions.assertEquals("pwctofl", response.location());
+        Assertions.assertEquals("acdhztxkbr", response.tags().get("g"));
+        Assertions.assertEquals(1320591219, response.properties().protectedItemsCount());
+        Assertions.assertEquals("eboywhczzqrhm", response.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("djchlr", response.etag());
     }
 }

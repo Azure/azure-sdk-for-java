@@ -497,7 +497,7 @@ public class EncryptionProcessor {
         return cipherTextWithTypeMarker;
     }
 
-    public Mono<byte[]> decrypt(byte[] input) {
+    public Mono<Pair<byte[], JsonNode>> decrypt(byte[] input) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Encrypting byte[] of size [{}] on thread [{}]",
                 input == null ? null : input.length,
@@ -512,8 +512,10 @@ public class EncryptionProcessor {
         return decrypt(itemJObj);
     }
 
-    public Mono<byte[]> decrypt(JsonNode itemJObj) {
-        return decryptJsonNode(itemJObj).map(decryptedObjectNode -> EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), decryptedObjectNode));
+    public Mono<Pair<byte[], JsonNode>> decrypt(JsonNode itemJObj) {
+        return decryptJsonNode(itemJObj).map(decryptedObjectNode -> Pair.of(
+            EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), decryptedObjectNode),
+            decryptedObjectNode));
     }
 
     public Mono<JsonNode> decryptJsonNode(JsonNode itemJObj) {

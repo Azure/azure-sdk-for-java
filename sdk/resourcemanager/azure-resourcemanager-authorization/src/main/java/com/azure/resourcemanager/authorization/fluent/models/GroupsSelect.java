@@ -17,6 +17,15 @@ public final class GroupsSelect extends ExpandableStringEnum<GroupsSelect> {
     public static final GroupsSelect DELETED_DATE_TIME = fromString("deletedDateTime");
 
     /**
+     * Creates a new instance of GroupsSelect value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GroupsSelect() {
+    }
+
+    /**
      * Creates or finds a GroupsSelect from its string representation.
      *
      * @param name a name to look for.

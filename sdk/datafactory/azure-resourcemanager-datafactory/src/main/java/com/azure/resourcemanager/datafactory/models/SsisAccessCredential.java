@@ -8,17 +8,19 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SSIS access credential. */
+/**
+ * SSIS access credential.
+ */
 @Fluent
 public final class SsisAccessCredential {
     /*
-     * Domain for windows authentication.
+     * Domain for windows authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "domain", required = true)
     private Object domain;
 
     /*
-     * UseName for windows authentication.
+     * UseName for windows authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName", required = true)
     private Object username;
@@ -29,13 +31,15 @@ public final class SsisAccessCredential {
     @JsonProperty(value = "password", required = true)
     private SecretBase password;
 
-    /** Creates an instance of SsisAccessCredential class. */
+    /**
+     * Creates an instance of SsisAccessCredential class.
+     */
     public SsisAccessCredential() {
     }
 
     /**
-     * Get the domain property: Domain for windows authentication.
-     *
+     * Get the domain property: Domain for windows authentication. Type: string (or Expression with resultType string).
+     * 
      * @return the domain value.
      */
     public Object domain() {
@@ -43,8 +47,8 @@ public final class SsisAccessCredential {
     }
 
     /**
-     * Set the domain property: Domain for windows authentication.
-     *
+     * Set the domain property: Domain for windows authentication. Type: string (or Expression with resultType string).
+     * 
      * @param domain the domain value to set.
      * @return the SsisAccessCredential object itself.
      */
@@ -54,8 +58,9 @@ public final class SsisAccessCredential {
     }
 
     /**
-     * Get the username property: UseName for windows authentication.
-     *
+     * Get the username property: UseName for windows authentication. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -63,8 +68,9 @@ public final class SsisAccessCredential {
     }
 
     /**
-     * Set the username property: UseName for windows authentication.
-     *
+     * Set the username property: UseName for windows authentication. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param username the username value to set.
      * @return the SsisAccessCredential object itself.
      */
@@ -75,7 +81,7 @@ public final class SsisAccessCredential {
 
     /**
      * Get the password property: Password for windows authentication.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -84,7 +90,7 @@ public final class SsisAccessCredential {
 
     /**
      * Set the password property: Password for windows authentication.
-     *
+     * 
      * @param password the password value to set.
      * @return the SsisAccessCredential object itself.
      */
@@ -95,24 +101,21 @@ public final class SsisAccessCredential {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (domain() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property domain in model SsisAccessCredential"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property domain in model SsisAccessCredential"));
         }
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property username in model SsisAccessCredential"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property username in model SsisAccessCredential"));
         }
         if (password() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property password in model SsisAccessCredential"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property password in model SsisAccessCredential"));
         } else {
             password().validate();
         }

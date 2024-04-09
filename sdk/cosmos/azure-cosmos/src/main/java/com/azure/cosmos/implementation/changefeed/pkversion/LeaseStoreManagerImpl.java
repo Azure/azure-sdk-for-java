@@ -165,7 +165,11 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             .withContinuationToken(continuationToken)
             .withProperties(properties);
 
-        return this.leaseDocumentClient.createItem(this.settings.getLeaseCollectionLink(), documentServiceLease, null, false)
+        return this.leaseDocumentClient.createItem(
+            this.settings.getLeaseCollectionLink(),
+                documentServiceLease,
+                this.requestOptionsFactory.createItemRequestOptions(documentServiceLease),
+                false)
             .onErrorResume( ex -> {
                 if (ex instanceof CosmosException) {
                     CosmosException e = (CosmosException) ex;
@@ -198,8 +202,10 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         }
 
         return this.leaseDocumentClient
-            .deleteItem(lease.getId(), new PartitionKey(lease.getId()),
-                        this.requestOptionsFactory.createItemRequestOptions(lease))
+            .deleteItem(
+                lease.getId(),
+                new PartitionKey(lease.getId()),
+                this.requestOptionsFactory.createItemRequestOptions(lease))
             .onErrorResume( ex -> {
                 if (ex instanceof CosmosException) {
                     CosmosException e = (CosmosException) ex;

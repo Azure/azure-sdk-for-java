@@ -17,15 +17,15 @@ public final class OperationListResultTests {
         OperationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"uouq\",\"display\":{\"provider\":\"wzwbnguitn\",\"resource\":\"izgazxu\",\"operation\":\"zuckyfi\",\"description\":\"fidfvzw\"},\"isDataAction\":false},{\"name\":\"tymw\",\"display\":{\"provider\":\"kfthwxmntei\",\"resource\":\"opvkmijcm\",\"operation\":\"dcuf\",\"description\":\"srp\"},\"isDataAction\":true},{\"name\":\"dnsezcxtbzs\",\"display\":{\"provider\":\"c\",\"resource\":\"newmdwzjeiachbo\",\"operation\":\"flnrosfqpteehzz\",\"description\":\"pyqr\"},\"isDataAction\":false},{\"name\":\"npvswjdkirso\",\"display\":{\"provider\":\"xhcr\",\"resource\":\"ohjtckw\",\"operation\":\"soifiyipjxsqw\",\"description\":\"rjb\"},\"isDataAction\":true}],\"nextLink\":\"cjxvsnbyxqab\"}")
+                    "{\"value\":[{\"name\":\"bnmo\",\"display\":{\"provider\":\"ysh\",\"resource\":\"zafb\",\"operation\":\"j\",\"description\":\"btoqcjmkljavbqid\"},\"isDataAction\":false},{\"name\":\"zyulp\",\"display\":{\"provider\":\"jkrlkhbzhfepg\",\"resource\":\"qex\",\"operation\":\"ocxscpaierhhbcs\",\"description\":\"ummajtjaod\"},\"isDataAction\":true}],\"nextLink\":\"bdxkqpxokaj\"}")
                 .toObject(OperationListResult.class);
-        Assertions.assertEquals("uouq", model.value().get(0).name());
-        Assertions.assertEquals("wzwbnguitn", model.value().get(0).display().provider());
-        Assertions.assertEquals("izgazxu", model.value().get(0).display().resource());
-        Assertions.assertEquals("zuckyfi", model.value().get(0).display().operation());
-        Assertions.assertEquals("fidfvzw", model.value().get(0).display().description());
+        Assertions.assertEquals("bnmo", model.value().get(0).name());
+        Assertions.assertEquals("ysh", model.value().get(0).display().provider());
+        Assertions.assertEquals("zafb", model.value().get(0).display().resource());
+        Assertions.assertEquals("j", model.value().get(0).display().operation());
+        Assertions.assertEquals("btoqcjmkljavbqid", model.value().get(0).display().description());
         Assertions.assertEquals(false, model.value().get(0).isDataAction());
-        Assertions.assertEquals("cjxvsnbyxqab", model.nextLink());
+        Assertions.assertEquals("bdxkqpxokaj", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,49 +36,31 @@ public final class OperationListResultTests {
                     Arrays
                         .asList(
                             new OperationResultInner()
-                                .withName("uouq")
+                                .withName("bnmo")
                                 .withDisplay(
                                     new OperationDisplay()
-                                        .withProvider("wzwbnguitn")
-                                        .withResource("izgazxu")
-                                        .withOperation("zuckyfi")
-                                        .withDescription("fidfvzw"))
+                                        .withProvider("ysh")
+                                        .withResource("zafb")
+                                        .withOperation("j")
+                                        .withDescription("btoqcjmkljavbqid"))
                                 .withIsDataAction(false),
                             new OperationResultInner()
-                                .withName("tymw")
+                                .withName("zyulp")
                                 .withDisplay(
                                     new OperationDisplay()
-                                        .withProvider("kfthwxmntei")
-                                        .withResource("opvkmijcm")
-                                        .withOperation("dcuf")
-                                        .withDescription("srp"))
-                                .withIsDataAction(true),
-                            new OperationResultInner()
-                                .withName("dnsezcxtbzs")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("c")
-                                        .withResource("newmdwzjeiachbo")
-                                        .withOperation("flnrosfqpteehzz")
-                                        .withDescription("pyqr"))
-                                .withIsDataAction(false),
-                            new OperationResultInner()
-                                .withName("npvswjdkirso")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("xhcr")
-                                        .withResource("ohjtckw")
-                                        .withOperation("soifiyipjxsqw")
-                                        .withDescription("rjb"))
+                                        .withProvider("jkrlkhbzhfepg")
+                                        .withResource("qex")
+                                        .withOperation("ocxscpaierhhbcs")
+                                        .withDescription("ummajtjaod"))
                                 .withIsDataAction(true)))
-                .withNextLink("cjxvsnbyxqab");
+                .withNextLink("bdxkqpxokaj");
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
-        Assertions.assertEquals("uouq", model.value().get(0).name());
-        Assertions.assertEquals("wzwbnguitn", model.value().get(0).display().provider());
-        Assertions.assertEquals("izgazxu", model.value().get(0).display().resource());
-        Assertions.assertEquals("zuckyfi", model.value().get(0).display().operation());
-        Assertions.assertEquals("fidfvzw", model.value().get(0).display().description());
+        Assertions.assertEquals("bnmo", model.value().get(0).name());
+        Assertions.assertEquals("ysh", model.value().get(0).display().provider());
+        Assertions.assertEquals("zafb", model.value().get(0).display().resource());
+        Assertions.assertEquals("j", model.value().get(0).display().operation());
+        Assertions.assertEquals("btoqcjmkljavbqid", model.value().get(0).display().description());
         Assertions.assertEquals(false, model.value().get(0).isDataAction());
-        Assertions.assertEquals("cjxvsnbyxqab", model.nextLink());
+        Assertions.assertEquals("bdxkqpxokaj", model.nextLink());
     }
 }

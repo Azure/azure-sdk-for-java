@@ -15,6 +15,12 @@ public final class MetricAnomalyAlertConditions {
     private SeverityCondition severityCondition;
 
     /**
+     * Creates a new instance of MetricAnomalyAlertConditions.
+     */
+    public MetricAnomalyAlertConditions() {
+    }
+
+    /**
      * Gets the boundary condition, an anomaly will be included in the alert
      * if it's value is not within the boundary.
      *

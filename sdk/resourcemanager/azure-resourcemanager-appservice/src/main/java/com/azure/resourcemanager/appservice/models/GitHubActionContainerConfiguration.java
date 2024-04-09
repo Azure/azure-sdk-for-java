@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GitHub action container configuration. */
+/**
+ * The GitHub action container configuration.
+ */
 @Fluent
 public final class GitHubActionContainerConfiguration {
     /*
@@ -34,13 +36,15 @@ public final class GitHubActionContainerConfiguration {
     @JsonProperty(value = "password")
     private String password;
 
-    /** Creates an instance of GitHubActionContainerConfiguration class. */
+    /**
+     * Creates an instance of GitHubActionContainerConfiguration class.
+     */
     public GitHubActionContainerConfiguration() {
     }
 
     /**
      * Get the serverUrl property: The server URL for the container registry where the build will be hosted.
-     *
+     * 
      * @return the serverUrl value.
      */
     public String serverUrl() {
@@ -49,7 +53,7 @@ public final class GitHubActionContainerConfiguration {
 
     /**
      * Set the serverUrl property: The server URL for the container registry where the build will be hosted.
-     *
+     * 
      * @param serverUrl the serverUrl value to set.
      * @return the GitHubActionContainerConfiguration object itself.
      */
@@ -60,7 +64,7 @@ public final class GitHubActionContainerConfiguration {
 
     /**
      * Get the imageName property: The image name for the build.
-     *
+     * 
      * @return the imageName value.
      */
     public String imageName() {
@@ -69,7 +73,7 @@ public final class GitHubActionContainerConfiguration {
 
     /**
      * Set the imageName property: The image name for the build.
-     *
+     * 
      * @param imageName the imageName value to set.
      * @return the GitHubActionContainerConfiguration object itself.
      */
@@ -80,7 +84,7 @@ public final class GitHubActionContainerConfiguration {
 
     /**
      * Get the username property: The username used to upload the image to the container registry.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -89,7 +93,7 @@ public final class GitHubActionContainerConfiguration {
 
     /**
      * Set the username property: The username used to upload the image to the container registry.
-     *
+     * 
      * @param username the username value to set.
      * @return the GitHubActionContainerConfiguration object itself.
      */
@@ -100,7 +104,7 @@ public final class GitHubActionContainerConfiguration {
 
     /**
      * Get the password property: The password used to upload the image to the container registry.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -109,7 +113,7 @@ public final class GitHubActionContainerConfiguration {
 
     /**
      * Set the password property: The password used to upload the image to the container registry.
-     *
+     * 
      * @param password the password value to set.
      * @return the GitHubActionContainerConfiguration object itself.
      */
@@ -120,7 +124,7 @@ public final class GitHubActionContainerConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

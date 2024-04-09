@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InstallationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Installation model =
-            BinaryData
-                .fromString(
-                    "{\"desiredState\":\"Uninstalled\",\"state\":\"Failed\",\"reinstallRequired\":\"Required\",\"reasons\":[\"NoSlices\",\"NoAttachedDataNetworks\"],\"operation\":{\"id\":\"dwzbaiue\"}}")
-                .toObject(Installation.class);
+        Installation model = BinaryData.fromString(
+            "{\"desiredState\":\"Uninstalled\",\"state\":\"Reinstalling\",\"reinstallRequired\":\"Required\",\"reasons\":[\"NoAttachedDataNetworks\"],\"operation\":{\"id\":\"zntxhdz\"}}")
+            .toObject(Installation.class);
         Assertions.assertEquals(DesiredInstallationState.UNINSTALLED, model.desiredState());
     }
 

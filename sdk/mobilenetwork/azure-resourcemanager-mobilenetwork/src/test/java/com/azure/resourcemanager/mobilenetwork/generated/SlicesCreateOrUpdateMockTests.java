@@ -33,53 +33,38 @@ public final class SlicesCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"snssai\":{\"sst\":772892522,\"sd\":\"mbjwcolbmxlb\"},\"description\":\"tpc\"},\"location\":\"hprzrvxhmtfho\",\"tags\":{\"isn\":\"zcmjhngxnoqrxt\",\"hepfwwtjfdoes\":\"evhdlmydid\",\"dbckyo\":\"xhmw\"},\"id\":\"kxkxhnegk\",\"name\":\"jzrbhtmeplv\",\"type\":\"kaobrl\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"snssai\":{\"sst\":631894274,\"sd\":\"gmxitpfi\"},\"description\":\"cpdltkrlg\"},\"location\":\"tbdrvcqgue\",\"tags\":{\"lyujlfyoump\":\"ompheqdur\",\"brzmqxucycijoclx\":\"kyeclcdigpta\",\"zjd\":\"utgjcyz\",\"jb\":\"r\"},\"id\":\"xjeaoqaqbzgyh\",\"name\":\"w\",\"type\":\"v\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MobileNetworkManager manager = MobileNetworkManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Slice response =
-            manager
-                .slices()
-                .define("y")
-                .withRegion("zvdhctmmkosz")
-                .withExistingMobileNetwork("f", "kzxuiz")
-                .withSnssai(new Snssai().withSst(905530117).withSd("peti"))
-                .withTags(mapOf("qkio", "lnsntrpc", "fmhklbnld", "kb", "hez", "vcb"))
-                .withDescription("xqiubxdukecpx")
-                .create();
+        Slice response
+            = manager.slices().define("sgftipwc").withRegion("byl").withExistingMobileNetwork("ccgzpraoxnyu", "fa")
+                .withSnssai(new Snssai().withSst(437350600).withSd("hiqdxy"))
+                .withTags(mapOf("rkdlb", "gvxvatv", "ov", "bqxvhcsyhzlwxae", "ead", "rexdndsbd"))
+                .withDescription("npnuhzafccnuhi").create();
 
-        Assertions.assertEquals("hprzrvxhmtfho", response.location());
-        Assertions.assertEquals("zcmjhngxnoqrxt", response.tags().get("isn"));
-        Assertions.assertEquals(772892522, response.snssai().sst());
-        Assertions.assertEquals("mbjwcolbmxlb", response.snssai().sd());
-        Assertions.assertEquals("tpc", response.description());
+        Assertions.assertEquals("tbdrvcqgue", response.location());
+        Assertions.assertEquals("ompheqdur", response.tags().get("lyujlfyoump"));
+        Assertions.assertEquals(631894274, response.snssai().sst());
+        Assertions.assertEquals("gmxitpfi", response.snssai().sd());
+        Assertions.assertEquals("cpdltkrlg", response.description());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBasicAuthPro
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of static site basic auth. */
+/**
+ * Collection of static site basic auth.
+ */
 @Fluent
 public final class StaticSiteBasicAuthPropertiesCollection {
     /*
@@ -25,13 +27,15 @@ public final class StaticSiteBasicAuthPropertiesCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of StaticSiteBasicAuthPropertiesCollection class. */
+    /**
+     * Creates an instance of StaticSiteBasicAuthPropertiesCollection class.
+     */
     public StaticSiteBasicAuthPropertiesCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<StaticSiteBasicAuthPropertiesArmResourceInner> value() {
@@ -40,19 +44,19 @@ public final class StaticSiteBasicAuthPropertiesCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the StaticSiteBasicAuthPropertiesCollection object itself.
      */
-    public StaticSiteBasicAuthPropertiesCollection withValue(
-        List<StaticSiteBasicAuthPropertiesArmResourceInner> value) {
+    public StaticSiteBasicAuthPropertiesCollection
+        withValue(List<StaticSiteBasicAuthPropertiesArmResourceInner> value) {
         this.value = value;
         return this;
     }
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,15 +65,13 @@ public final class StaticSiteBasicAuthPropertiesCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model StaticSiteBasicAuthPropertiesCollection"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model StaticSiteBasicAuthPropertiesCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

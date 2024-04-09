@@ -33,7 +33,7 @@ public final class ApplicationsCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"objectId\":\"jsvg\",\"description\":\"whryvycytdcl\",\"friendlyName\":\"ccknfnwmbtmvp\",\"filePath\":\"jdhttzaefedxi\",\"msixPackageFamilyName\":\"hrphkmcrjdqn\",\"msixPackageApplicationId\":\"fzpbgtgkyl\",\"applicationType\":\"MsixApplication\",\"commandLineSetting\":\"DoNotAllow\",\"commandLineArguments\":\"jeuut\",\"showInPortal\":false,\"iconPath\":\"z\",\"iconIndex\":2023455303,\"iconHash\":\"kvbwnhhtqlgeh\"},\"id\":\"pipifh\",\"name\":\"f\",\"type\":\"oajvgcxtxjcs\"}";
+            "{\"properties\":{\"objectId\":\"qwcabvnui\",\"description\":\"ey\",\"friendlyName\":\"wlpaugmrmfjlrxwt\",\"filePath\":\"ukhfkvc\",\"msixPackageFamilyName\":\"izmoaeds\",\"msixPackageApplicationId\":\"wuived\",\"applicationType\":\"MsixApplication\",\"commandLineSetting\":\"Require\",\"commandLineArguments\":\"ewxeiqbpsm\",\"showInPortal\":false,\"iconPath\":\"u\",\"iconIndex\":468041184,\"iconHash\":\"dlrgms\"},\"id\":\"zgaufcshhvn\",\"name\":\"wgnxkympqanxrj\",\"type\":\"ixt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,31 +64,31 @@ public final class ApplicationsCreateOrUpdateWithResponseMockTests {
         Application response =
             manager
                 .applications()
-                .define("ecdmdqbwpy")
-                .withExistingApplicationGroup("vit", "tvtzeexavoxtfg")
-                .withCommandLineSetting(CommandLineSetting.ALLOW)
-                .withDescription("lhhxudbxvodhtnsi")
-                .withFriendlyName("dhzmmesckdlp")
-                .withFilePath("zrcxfailcfxwmdbo")
-                .withMsixPackageFamilyName("fgsftufqob")
-                .withMsixPackageApplicationId("lnacgcc")
-                .withApplicationType(RemoteApplicationType.IN_BUILT)
-                .withCommandLineArguments("kizvytn")
+                .define("gygqwah")
+                .withExistingApplicationGroup("dtguk", "anblwphqlkccu")
+                .withCommandLineSetting(CommandLineSetting.DO_NOT_ALLOW)
+                .withDescription("d")
+                .withFriendlyName("ypivlsbb")
+                .withFilePath("mcub")
+                .withMsixPackageFamilyName("ifoxxkubvphav")
+                .withMsixPackageApplicationId("h")
+                .withApplicationType(RemoteApplicationType.MSIX_APPLICATION)
+                .withCommandLineArguments("vgovpbbttefjokn")
                 .withShowInPortal(true)
-                .withIconPath("lj")
-                .withIconIndex(2075017284)
+                .withIconPath("zqedikdfrdbi")
+                .withIconIndex(1455317057)
                 .create();
 
-        Assertions.assertEquals("whryvycytdcl", response.description());
-        Assertions.assertEquals("ccknfnwmbtmvp", response.friendlyName());
-        Assertions.assertEquals("jdhttzaefedxi", response.filePath());
-        Assertions.assertEquals("hrphkmcrjdqn", response.msixPackageFamilyName());
-        Assertions.assertEquals("fzpbgtgkyl", response.msixPackageApplicationId());
+        Assertions.assertEquals("ey", response.description());
+        Assertions.assertEquals("wlpaugmrmfjlrxwt", response.friendlyName());
+        Assertions.assertEquals("ukhfkvc", response.filePath());
+        Assertions.assertEquals("izmoaeds", response.msixPackageFamilyName());
+        Assertions.assertEquals("wuived", response.msixPackageApplicationId());
         Assertions.assertEquals(RemoteApplicationType.MSIX_APPLICATION, response.applicationType());
-        Assertions.assertEquals(CommandLineSetting.DO_NOT_ALLOW, response.commandLineSetting());
-        Assertions.assertEquals("jeuut", response.commandLineArguments());
+        Assertions.assertEquals(CommandLineSetting.REQUIRE, response.commandLineSetting());
+        Assertions.assertEquals("ewxeiqbpsm", response.commandLineArguments());
         Assertions.assertEquals(false, response.showInPortal());
-        Assertions.assertEquals("z", response.iconPath());
-        Assertions.assertEquals(2023455303, response.iconIndex());
+        Assertions.assertEquals("u", response.iconPath());
+        Assertions.assertEquals(468041184, response.iconIndex());
     }
 }

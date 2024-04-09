@@ -7,17 +7,20 @@ package com.azure.resourcemanager.selfhelp.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.selfhelp.models.Diagnostic;
 import com.azure.resourcemanager.selfhelp.models.DiagnosticInvocation;
-import com.azure.resourcemanager.selfhelp.models.ProvisioningState;
+import com.azure.resourcemanager.selfhelp.models.DiagnosticProvisioningState;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Diagnostic resource properties. */
+/**
+ * Diagnostic resource properties.
+ */
 @Fluent
 public final class DiagnosticResourceProperties {
     /*
-     * Global parameters that can be passed to all solutionIds.
+     * Global parameters is an optional map which can be used to add key and value to request body to improve the
+     * diagnostics results
      */
     @JsonProperty(value = "globalParameters")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -39,7 +42,7 @@ public final class DiagnosticResourceProperties {
      * Status of diagnostic provisioning.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private DiagnosticProvisioningState provisioningState;
 
     /*
      * Array of Diagnostics.
@@ -47,13 +50,16 @@ public final class DiagnosticResourceProperties {
     @JsonProperty(value = "diagnostics", access = JsonProperty.Access.WRITE_ONLY)
     private List<Diagnostic> diagnostics;
 
-    /** Creates an instance of DiagnosticResourceProperties class. */
+    /**
+     * Creates an instance of DiagnosticResourceProperties class.
+     */
     public DiagnosticResourceProperties() {
     }
 
     /**
-     * Get the globalParameters property: Global parameters that can be passed to all solutionIds.
-     *
+     * Get the globalParameters property: Global parameters is an optional map which can be used to add key and value
+     * to request body to improve the diagnostics results.
+     * 
      * @return the globalParameters value.
      */
     public Map<String, String> globalParameters() {
@@ -61,8 +67,9 @@ public final class DiagnosticResourceProperties {
     }
 
     /**
-     * Set the globalParameters property: Global parameters that can be passed to all solutionIds.
-     *
+     * Set the globalParameters property: Global parameters is an optional map which can be used to add key and value
+     * to request body to improve the diagnostics results.
+     * 
      * @param globalParameters the globalParameters value to set.
      * @return the DiagnosticResourceProperties object itself.
      */
@@ -73,7 +80,7 @@ public final class DiagnosticResourceProperties {
 
     /**
      * Get the insights property: SolutionIds that are needed to be invoked.
-     *
+     * 
      * @return the insights value.
      */
     public List<DiagnosticInvocation> insights() {
@@ -82,7 +89,7 @@ public final class DiagnosticResourceProperties {
 
     /**
      * Set the insights property: SolutionIds that are needed to be invoked.
-     *
+     * 
      * @param insights the insights value to set.
      * @return the DiagnosticResourceProperties object itself.
      */
@@ -93,7 +100,7 @@ public final class DiagnosticResourceProperties {
 
     /**
      * Get the acceptedAt property: Diagnostic Request Accepted time.
-     *
+     * 
      * @return the acceptedAt value.
      */
     public String acceptedAt() {
@@ -102,16 +109,16 @@ public final class DiagnosticResourceProperties {
 
     /**
      * Get the provisioningState property: Status of diagnostic provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public DiagnosticProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
     /**
      * Get the diagnostics property: Array of Diagnostics.
-     *
+     * 
      * @return the diagnostics value.
      */
     public List<Diagnostic> diagnostics() {
@@ -120,7 +127,7 @@ public final class DiagnosticResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

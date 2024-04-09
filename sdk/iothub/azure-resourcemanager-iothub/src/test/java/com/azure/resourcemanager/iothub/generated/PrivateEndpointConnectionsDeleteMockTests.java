@@ -32,7 +32,7 @@ public final class PrivateEndpointConnectionsDeleteMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"ubkwdle\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"d\",\"actionsRequired\":\"tujbazpju\"}},\"id\":\"hminyflnorwmduv\",\"name\":\"pklvxw\",\"type\":\"ygdxpgpqchis\"}";
+            "{\"properties\":{\"privateEndpoint\":{\"id\":\"ibyowbblgyavutp\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"joxoism\",\"actionsRequired\":\"sbpimlq\"}},\"id\":\"ljxkcgxxlx\",\"name\":\"ffgcvizqz\",\"type\":\"wlvwlyoupf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,14 +63,13 @@ public final class PrivateEndpointConnectionsDeleteMockTests {
         PrivateEndpointConnection response =
             manager
                 .privateEndpointConnections()
-                .delete("kahzo", "ajjziuxxpshne", "kulfg", com.azure.core.util.Context.NONE);
+                .delete("rrilbywdxsmic", "wrwfscjfnyns", "qujizdvo", com.azure.core.util.Context.NONE);
 
         Assertions
             .assertEquals(
-                PrivateLinkServiceConnectionStatus.PENDING,
+                PrivateLinkServiceConnectionStatus.APPROVED,
                 response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("d", response.properties().privateLinkServiceConnectionState().description());
-        Assertions
-            .assertEquals("tujbazpju", response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("joxoism", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("sbpimlq", response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

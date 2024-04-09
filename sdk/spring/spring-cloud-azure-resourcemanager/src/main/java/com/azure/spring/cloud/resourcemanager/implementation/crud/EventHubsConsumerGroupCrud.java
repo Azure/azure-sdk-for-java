@@ -15,7 +15,7 @@ import reactor.util.function.Tuples;
  * Resource manager for Azure Event Hubs consumer group.
  */
 public class EventHubsConsumerGroupCrud
-    extends AbstractResourceCrud<EventHubConsumerGroup, Tuple3<String, String, String>> {
+    extends AbstractResourceCrud<EventHubConsumerGroup, Tuple3<String, String, String>, Object> {
 
     public EventHubsConsumerGroupCrud(AzureResourceManager azureResourceManager,
                                       AzureResourceMetadata resourceMetadata) {

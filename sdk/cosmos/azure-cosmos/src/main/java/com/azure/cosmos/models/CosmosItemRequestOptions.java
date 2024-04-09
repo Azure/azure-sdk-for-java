@@ -525,6 +525,16 @@ public class CosmosItemRequestOptions {
     }
 
     /**
+     * Gets the diagnostic thresholds used as an override for a specific operation. If no operation specific
+     * diagnostic threshold has been specified, this method will return null, although at runtime the default
+     * thresholds specified at the client-level will be used.
+     * @return the diagnostic thresholds used as an override for a specific operation.
+     */
+    public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
+        return this.thresholds;
+    }
+
+    /**
      * Gets the custom item request options
      *
      * @return Map of custom request options
@@ -626,6 +636,17 @@ public class CosmosItemRequestOptions {
                         false,
                         false);
                     return WriteRetryPolicy.DISABLED;
+                }
+
+                @Override
+                public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(
+                    CosmosItemRequestOptions options) {
+
+                    if (options == null) {
+                        return null;
+                    }
+
+                    return options.getCosmosEndToEndOperationLatencyPolicyConfig();
                 }
             }
         );

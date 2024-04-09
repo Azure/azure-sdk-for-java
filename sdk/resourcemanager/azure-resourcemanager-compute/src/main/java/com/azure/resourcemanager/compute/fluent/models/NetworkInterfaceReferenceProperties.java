@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a network interface reference properties. */
+/**
+ * Describes a network interface reference properties.
+ */
 @Fluent
 public final class NetworkInterfaceReferenceProperties {
     /*
@@ -23,14 +25,16 @@ public final class NetworkInterfaceReferenceProperties {
     @JsonProperty(value = "deleteOption")
     private DeleteOptions deleteOption;
 
-    /** Creates an instance of NetworkInterfaceReferenceProperties class. */
+    /**
+     * Creates an instance of NetworkInterfaceReferenceProperties class.
+     */
     public NetworkInterfaceReferenceProperties() {
     }
 
     /**
      * Get the primary property: Specifies the primary network interface in case the virtual machine has more than 1
      * network interface.
-     *
+     * 
      * @return the primary value.
      */
     public Boolean primary() {
@@ -40,7 +44,7 @@ public final class NetworkInterfaceReferenceProperties {
     /**
      * Set the primary property: Specifies the primary network interface in case the virtual machine has more than 1
      * network interface.
-     *
+     * 
      * @param primary the primary value to set.
      * @return the NetworkInterfaceReferenceProperties object itself.
      */
@@ -51,7 +55,7 @@ public final class NetworkInterfaceReferenceProperties {
 
     /**
      * Get the deleteOption property: Specify what happens to the network interface when the VM is deleted.
-     *
+     * 
      * @return the deleteOption value.
      */
     public DeleteOptions deleteOption() {
@@ -60,7 +64,7 @@ public final class NetworkInterfaceReferenceProperties {
 
     /**
      * Set the deleteOption property: Specify what happens to the network interface when the VM is deleted.
-     *
+     * 
      * @param deleteOption the deleteOption value to set.
      * @return the NetworkInterfaceReferenceProperties object itself.
      */
@@ -71,7 +75,7 @@ public final class NetworkInterfaceReferenceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

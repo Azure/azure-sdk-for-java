@@ -1,6 +1,84 @@
 # Release History
 
-## 1.5.0-beta.2 (Unreleased)
+## 1.6.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+
+## 1.5.3 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+
+
+## 1.6.0-beta.1 (2024-03-04)
+
+### Features Added
+
+- Added Page ETag support in listing configuration setting, which returns empty body and status code `304 not modified` 
+  if settings in the page and ETag of the page are not changed. If status code `200` returns in the page response, 
+  which means page's settings and ETag have changed. A full page of settings and a new page ETag will be returned in
+  response.
+  Use the new parameter `matchConditions` in the `SettingSelector` to assign the page ETags in the request to service.
+
+
+## 1.5.2 (2024-02-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+
+
+## 1.5.1 (2023-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
+- Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+
+
+## 1.5.0 (2023-11-08)
+
+### Features Added
+
+- Added support for the `2023-10-01` service version.
+
+### Breaking Changes
+
+Note: Below breaking changes only affect the version `1.5.0-beta.2`.
+
+- Removed `azure-core-experimental` as a dependency and replaced usage of `PollResult` by `PollOperationDetails`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
+
+## 1.4.10 (2023-10-20)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+
+## 1.5.0-beta.2 (2023-10-11)
 
 ### Features Added
 
@@ -11,12 +89,38 @@
 Note: Below breaking changes only affect the version `1.5.0-beta.1`.
 
 - Changed `listConfigurationSettingsForSnapshot` method's `SettingFields[] fields` parameter type to `List<SettingFields> fields`.
-- Renamed `ConfigurationSettingSnapshot` to `ConfigurationSettingsSnapshot`.
-- Renamed `ConfigurationSettingSnapshot`'s property name, `size` to `sizeInBytes`.
+- Renamed `ConfigurationSettingSnapshot` to `ConfigurationSnapshot`.
+- Renamed `ConfigurationSettingSnapshot`'s properties name,
+  - `size` to `sizeInBytes`,
+  - `compositionType` to `snapshotComposition`.
+- Renamed `SnapshotSettingFilter` to `ConfigurationSettingsFilter`.
+- Added `azure-core-experimental` as a dependency and replaced usage of `CreateSnapshotOperationDetail` by `PollResult` 
+  and removed `CreateSnapshotOperationDetail` class.
+- Replaced
+   - `archiveSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean)` by `archiveSnapshotWithResponse(String, MatchConditions)`
+   - `recoverSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean)` by `recoverSnapshotWithResponse(String, MatchConditions)`
+   - `archiveSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean, Context)` by `archiveSnapshotWithResponse(String, MatchConditions, Context)`
+   - `recoverSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean, Context)` by `recoverSnapshotWithResponse(String, MatchConditions, Context)`
 
 ### Bugs Fixed
+- `FeatureFlagConfigurationSetting` and `SecretReferenceConfigurationSetting` will now retain custom attributes in the setting value.
+  Previously, only attributes that were defined in the associated JSON schema were allowed and unknown attributes were discarded. ([#36725](https://github.com/Azure/azure-sdk-for-java/pull/36725))
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.0`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.8`.
+
+## 1.4.9 (2023-09-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
 
 ## 1.4.8 (2023-08-18)
 

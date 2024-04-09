@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of FirewallStatus. */
+/**
+ * Resource collection API of FirewallStatus.
+ */
 public interface FirewallStatus {
     /**
      * List FirewallStatusResource resources by Firewalls.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface FirewallStatus {
 
     /**
      * List FirewallStatusResource resources by Firewalls.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param context The context to associate with this operation.
@@ -33,12 +35,12 @@ public interface FirewallStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FirewallStatusResource list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<FirewallStatusResource> listByFirewalls(
-        String resourceGroupName, String firewallName, Context context);
+    PagedIterable<FirewallStatusResource> listByFirewalls(String resourceGroupName, String firewallName,
+        Context context);
 
     /**
      * Get a FirewallStatusResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param context The context to associate with this operation.
@@ -51,7 +53,7 @@ public interface FirewallStatus {
 
     /**
      * Get a FirewallStatusResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

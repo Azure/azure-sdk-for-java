@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.connectedvmware.fluent.models.HostModelInner;
 import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
 import com.azure.resourcemanager.connectedvmware.models.HostModel;
+import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourcePatch;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 import java.util.Collections;
@@ -91,7 +92,41 @@ public final class HostModelImpl implements HostModel, HostModel.Definition, Hos
         return this.innerModel().customResourceName();
     }
 
-    public String provisioningState() {
+    public Long overallMemoryUsageGB() {
+        return this.innerModel().overallMemoryUsageGB();
+    }
+
+    public Long memorySizeGB() {
+        return this.innerModel().memorySizeGB();
+    }
+
+    public Long overallCpuUsageMHz() {
+        return this.innerModel().overallCpuUsageMHz();
+    }
+
+    public Long cpuMhz() {
+        return this.innerModel().cpuMhz();
+    }
+
+    public List<String> datastoreIds() {
+        List<String> inner = this.innerModel().datastoreIds();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public List<String> networkIds() {
+        List<String> inner = this.innerModel().networkIds();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 

@@ -105,25 +105,25 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link TextAnalyticsAsyncClient#detectLanguage(String)}
      */
     public void detectLanguage() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#String
         String document = "Bonjour tout le monde";
         textAnalyticsAsyncClient.detectLanguage(document).subscribe(detectedLanguage ->
             System.out.printf("Detected language name: %s, ISO 6391 Name: %s, confidence score: %f.%n",
                 detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore()));
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#String
     }
 
     /**
      * Code snippet for {@link TextAnalyticsAsyncClient#detectLanguage(String, String)}
      */
     public void detectLanguageWithCountryHint() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string-string
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#String-String
         String document = "This text is in English";
         String countryHint = "US";
         textAnalyticsAsyncClient.detectLanguage(document, countryHint).subscribe(detectedLanguage ->
             System.out.printf("Detected language name: %s, ISO 6391 Name: %s, confidence score: %f.%n",
                 detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore()));
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string-string
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#String-String
     }
 
     /**
@@ -191,7 +191,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntities(String)}
      */
     public void recognizeEntities() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#String
         String document = "Satya Nadella is the CEO of Microsoft";
         textAnalyticsAsyncClient.recognizeEntities(document)
             .subscribe(entityCollection -> entityCollection.forEach(entity ->
@@ -199,14 +199,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 entity.getText(),
                 entity.getCategory(),
                 entity.getConfidenceScore())));
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#String
     }
 
     /**
      * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntities(String, String)}
      */
     public void recognizeEntitiesWithLanguage() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string-string
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#String-String
         String document = "Satya Nadella is the CEO of Microsoft";
         textAnalyticsAsyncClient.recognizeEntities(document, "en")
             .subscribe(entityCollection -> entityCollection.forEach(entity ->
@@ -214,7 +214,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 entity.getText(),
                 entity.getCategory(),
                 entity.getConfidenceScore())));
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string-string
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#String-String
     }
 
     /**
@@ -278,7 +278,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntities(String)}
      */
     public void recognizePiiEntities() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#String
         String document = "My SSN is 859-98-0987";
         textAnalyticsAsyncClient.recognizePiiEntities(document).subscribe(piiEntityCollection -> {
             System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
@@ -287,14 +287,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     + " entity subcategory: %s, confidence score: %f.%n",
                 entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
         });
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#String
     }
 
     /**
      * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntities(String, String)}
      */
     public void recognizePiiEntitiesWithLanguage() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#String-String
         String document = "My SSN is 859-98-0987";
         textAnalyticsAsyncClient.recognizePiiEntities(document, "en")
             .subscribe(piiEntityCollection -> {
@@ -304,14 +304,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         + " entity subcategory: %s, confidence score: %f.%n",
                     entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
             });
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#String-String
     }
 
     /**
      * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntities(String, String, RecognizePiiEntitiesOptions)}
      */
     public void recognizePiiEntitiesWithRecognizePiiEntitiesOptions() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string-RecognizePiiEntitiesOptions
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#String-String-RecognizePiiEntitiesOptions
         String document = "My SSN is 859-98-0987";
         textAnalyticsAsyncClient.recognizePiiEntities(document, "en",
             new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomain.PROTECTED_HEALTH_INFORMATION))
@@ -322,7 +322,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         + " entity subcategory: %s, confidence score: %f.%n",
                     entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
             });
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string-RecognizePiiEntitiesOptions
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#String-String-RecognizePiiEntitiesOptions
     }
 
     /**
@@ -399,7 +399,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
      */
     public void recognizeLinkedEntities() {
 
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#String
         String document = "Old Faithful is a geyser at Yellowstone Park.";
         textAnalyticsAsyncClient.recognizeLinkedEntities(document).subscribe(
             linkedEntityCollection -> linkedEntityCollection.forEach(linkedEntity -> {
@@ -411,7 +411,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     "Matched entity: %s, confidence score: %f.%n",
                     entityMatch.getText(), entityMatch.getConfidenceScore()));
             }));
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#String
     }
 
     /**
@@ -419,7 +419,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
      */
     public void recognizeLinkedEntitiesWithLanguage() {
 
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string-string
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#String-String
         String document = "Old Faithful is a geyser at Yellowstone Park.";
         textAnalyticsAsyncClient.recognizeLinkedEntities(document, "en").subscribe(
             linkedEntityCollection -> linkedEntityCollection.forEach(linkedEntity -> {
@@ -431,7 +431,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     "Matched entity: %s, confidence score: %f.%n",
                     entityMatch.getText(), entityMatch.getConfidenceScore()));
             }));
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string-string
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#String-String
     }
 
     /**
@@ -508,22 +508,21 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link TextAnalyticsAsyncClient#extractKeyPhrases(String)}
      */
     public void extractKeyPhrases() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string
-        System.out.println("Extracted phrases:");
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#String
         textAnalyticsAsyncClient.extractKeyPhrases("Bonjour tout le monde").subscribe(keyPhrase ->
             System.out.printf("%s.%n", keyPhrase));
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#String
     }
 
     /**
      * Code snippet for {@link TextAnalyticsAsyncClient#extractKeyPhrases(String, String)}
      */
     public void extractKeyPhrasesWithLanguage() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string-string
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#String-String
         System.out.println("Extracted phrases:");
         textAnalyticsAsyncClient.extractKeyPhrases("Bonjour tout le monde", "fr")
             .subscribe(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string-string
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#String-String
     }
 
     /**
@@ -588,7 +587,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link TextAnalyticsAsyncClient#analyzeSentiment(String)}
      */
     public void analyzeSentiment() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#String
         String document = "The hotel was dark and unclean.";
         textAnalyticsAsyncClient.analyzeSentiment(document).subscribe(documentSentiment -> {
             System.out.printf("Recognized document sentiment: %s.%n", documentSentiment.getSentiment());
@@ -603,7 +602,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     sentenceSentiment.getConfidenceScores().getNegative());
             }
         });
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#String
     }
 
     /**

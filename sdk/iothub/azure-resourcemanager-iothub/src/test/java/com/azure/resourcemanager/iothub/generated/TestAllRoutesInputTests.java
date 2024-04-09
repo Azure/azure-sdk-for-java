@@ -20,39 +20,39 @@ public final class TestAllRoutesInputTests {
         TestAllRoutesInput model =
             BinaryData
                 .fromString(
-                    "{\"routingSource\":\"DigitalTwinChangeEvents\",\"message\":{\"body\":\"uaceopzfqrhhu\",\"appProperties\":{\"ahzxctobgbk\":\"ppcqeqxolz\",\"mgrcfbu\":\"moizpos\",\"mjh\":\"rmfqjhhkxbpvj\"},\"systemProperties\":{\"tswb\":\"yngudivk\"}},\"twin\":{\"tags\":\"datavszjfauvjfdxxi\",\"properties\":{\"desired\":\"datavtcqaqtdo\",\"reported\":\"datacbxvwvxyslqbh\"}}}")
+                    "{\"routingSource\":\"TwinChangeEvents\",\"message\":{\"body\":\"rruvwbhsq\",\"appProperties\":{\"bsrfbj\":\"bcgjbirxbp\",\"otftpvjzbexilz\":\"dtws\",\"qtaruoujmkcjhwq\":\"nfqqnvwp\"},\"systemProperties\":{\"bnw\":\"r\",\"enq\":\"ewgdrjervn\",\"ndoygmifthnzdnd\":\"eh\",\"nayqi\":\"l\"}},\"twin\":{\"tags\":\"dataduhavhqlkt\",\"properties\":{\"desired\":\"dataaqolbgycduiertg\",\"reported\":\"datay\"}}}")
                 .toObject(TestAllRoutesInput.class);
-        Assertions.assertEquals(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS, model.routingSource());
-        Assertions.assertEquals("uaceopzfqrhhu", model.message().body());
-        Assertions.assertEquals("ppcqeqxolz", model.message().appProperties().get("ahzxctobgbk"));
-        Assertions.assertEquals("yngudivk", model.message().systemProperties().get("tswb"));
+        Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.routingSource());
+        Assertions.assertEquals("rruvwbhsq", model.message().body());
+        Assertions.assertEquals("bcgjbirxbp", model.message().appProperties().get("bsrfbj"));
+        Assertions.assertEquals("r", model.message().systemProperties().get("bnw"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TestAllRoutesInput model =
             new TestAllRoutesInput()
-                .withRoutingSource(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS)
+                .withRoutingSource(RoutingSource.TWIN_CHANGE_EVENTS)
                 .withMessage(
                     new RoutingMessage()
-                        .withBody("uaceopzfqrhhu")
+                        .withBody("rruvwbhsq")
                         .withAppProperties(
-                            mapOf("ahzxctobgbk", "ppcqeqxolz", "mgrcfbu", "moizpos", "mjh", "rmfqjhhkxbpvj"))
-                        .withSystemProperties(mapOf("tswb", "yngudivk")))
+                            mapOf("bsrfbj", "bcgjbirxbp", "otftpvjzbexilz", "dtws", "qtaruoujmkcjhwq", "nfqqnvwp"))
+                        .withSystemProperties(
+                            mapOf("bnw", "r", "enq", "ewgdrjervn", "ndoygmifthnzdnd", "eh", "nayqi", "l")))
                 .withTwin(
                     new RoutingTwin()
-                        .withTags("datavszjfauvjfdxxi")
+                        .withTags("dataduhavhqlkt")
                         .withProperties(
-                            new RoutingTwinProperties()
-                                .withDesired("datavtcqaqtdo")
-                                .withReported("datacbxvwvxyslqbh")));
+                            new RoutingTwinProperties().withDesired("dataaqolbgycduiertg").withReported("datay")));
         model = BinaryData.fromObject(model).toObject(TestAllRoutesInput.class);
-        Assertions.assertEquals(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS, model.routingSource());
-        Assertions.assertEquals("uaceopzfqrhhu", model.message().body());
-        Assertions.assertEquals("ppcqeqxolz", model.message().appProperties().get("ahzxctobgbk"));
-        Assertions.assertEquals("yngudivk", model.message().systemProperties().get("tswb"));
+        Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.routingSource());
+        Assertions.assertEquals("rruvwbhsq", model.message().body());
+        Assertions.assertEquals("bcgjbirxbp", model.message().appProperties().get("bsrfbj"));
+        Assertions.assertEquals("r", model.message().systemProperties().get("bnw"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

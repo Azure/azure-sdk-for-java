@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserProvided
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of static site user provided function apps. */
+/**
+ * Collection of static site user provided function apps.
+ */
 @Fluent
 public final class StaticSiteUserProvidedFunctionAppsCollection {
     /*
@@ -25,13 +27,15 @@ public final class StaticSiteUserProvidedFunctionAppsCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of StaticSiteUserProvidedFunctionAppsCollection class. */
+    /**
+     * Creates an instance of StaticSiteUserProvidedFunctionAppsCollection class.
+     */
     public StaticSiteUserProvidedFunctionAppsCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<StaticSiteUserProvidedFunctionAppArmResourceInner> value() {
@@ -40,19 +44,19 @@ public final class StaticSiteUserProvidedFunctionAppsCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the StaticSiteUserProvidedFunctionAppsCollection object itself.
      */
-    public StaticSiteUserProvidedFunctionAppsCollection withValue(
-        List<StaticSiteUserProvidedFunctionAppArmResourceInner> value) {
+    public StaticSiteUserProvidedFunctionAppsCollection
+        withValue(List<StaticSiteUserProvidedFunctionAppArmResourceInner> value) {
         this.value = value;
         return this;
     }
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,15 +65,13 @@ public final class StaticSiteUserProvidedFunctionAppsCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model StaticSiteUserProvidedFunctionAppsCollection"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model StaticSiteUserProvidedFunctionAppsCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

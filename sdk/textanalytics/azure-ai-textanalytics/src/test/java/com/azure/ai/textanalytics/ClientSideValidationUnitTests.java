@@ -24,7 +24,6 @@ import static com.azure.ai.textanalytics.TestUtils.VALID_HTTPS_LOCALHOST;
 import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit tests for Text Analytics client side validation
@@ -131,7 +130,7 @@ public class ClientSideValidationUnitTests {
         StepVerifier.create(asyncClientV30.recognizeEntitiesBatch(dummyDocument, null, enableServiceLogsOption))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(UnsupportedOperationException.class, exception.getClass());
-                assertTrue(DISABLE_SERVICE_LOGS_ERROR_MESSAGE.equals(exception.getMessage()));
+                assertEquals(DISABLE_SERVICE_LOGS_ERROR_MESSAGE, exception.getMessage());
             });
 
         // Sync
@@ -146,7 +145,7 @@ public class ClientSideValidationUnitTests {
         StepVerifier.create(asyncClientV30.recognizePiiEntitiesBatch(dummyDocument, null, null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(UnsupportedOperationException.class, exception.getClass());
-                assertTrue(RECOGNIZE_PII_ENTITIES_ERROR_MESSAGE.equals(exception.getMessage()));
+                assertEquals(RECOGNIZE_PII_ENTITIES_ERROR_MESSAGE, exception.getMessage());
             });
 
         // Sync

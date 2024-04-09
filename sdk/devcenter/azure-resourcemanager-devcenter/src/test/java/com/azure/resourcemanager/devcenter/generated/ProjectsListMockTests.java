@@ -32,7 +32,7 @@ public final class ProjectsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updated\",\"devCenterUri\":\"glikkxwslolb\",\"devCenterId\":\"vuzlm\",\"description\":\"elfk\",\"maxDevBoxesPerUser\":1554558708},\"location\":\"crpw\",\"tags\":{\"w\":\"znoigbrn\",\"jjoqkagf\":\"wkpnbsaz\"},\"id\":\"sxtta\",\"name\":\"gzxnfaazpxdtnk\",\"type\":\"mkqjj\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"devCenterUri\":\"ikvylauya\",\"devCenterId\":\"uwmncs\",\"description\":\"ijf\",\"maxDevBoxesPerUser\":671639646,\"displayName\":\"o\"},\"location\":\"rsg\",\"tags\":{\"nscliqhzvhxnk\":\"dhuzqgnjdgk\"},\"id\":\"mtk\",\"name\":\"bo\",\"type\":\"ppnvdxz\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,12 +60,13 @@ public final class ProjectsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Project> response = manager.projects().list(1090066080, com.azure.core.util.Context.NONE);
+        PagedIterable<Project> response = manager.projects().list(43647677, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("crpw", response.iterator().next().location());
-        Assertions.assertEquals("znoigbrn", response.iterator().next().tags().get("w"));
-        Assertions.assertEquals("vuzlm", response.iterator().next().devCenterId());
-        Assertions.assertEquals("elfk", response.iterator().next().description());
-        Assertions.assertEquals(1554558708, response.iterator().next().maxDevBoxesPerUser());
+        Assertions.assertEquals("rsg", response.iterator().next().location());
+        Assertions.assertEquals("dhuzqgnjdgk", response.iterator().next().tags().get("nscliqhzvhxnk"));
+        Assertions.assertEquals("uwmncs", response.iterator().next().devCenterId());
+        Assertions.assertEquals("ijf", response.iterator().next().description());
+        Assertions.assertEquals(671639646, response.iterator().next().maxDevBoxesPerUser());
+        Assertions.assertEquals("o", response.iterator().next().displayName());
     }
 }

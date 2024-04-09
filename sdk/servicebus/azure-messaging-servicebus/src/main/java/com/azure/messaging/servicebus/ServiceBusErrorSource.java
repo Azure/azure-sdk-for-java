@@ -44,4 +44,15 @@ public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBus
     /** Error while trying to do an operation on the management link. */
     public static final ServiceBusErrorSource MANAGEMENT = fromString("MANAGEMENT",
             ServiceBusErrorSource.class);
+
+    /**
+     * Creates a new instance of the error source.  Use the existing error sources and create a new error source using
+     * {@link ServiceBusErrorSource#fromString(String, Class)}.
+     *
+     * @deprecated Use {@link ServiceBusErrorSource#fromString(String, Class)} instead.
+     */
+    @Deprecated
+    public ServiceBusErrorSource() {
+        super();
+    }
 }

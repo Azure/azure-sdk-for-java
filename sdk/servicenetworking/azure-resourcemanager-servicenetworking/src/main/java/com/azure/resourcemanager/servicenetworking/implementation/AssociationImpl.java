@@ -9,11 +9,9 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicenetworking.fluent.models.AssociationInner;
 import com.azure.resourcemanager.servicenetworking.models.Association;
-import com.azure.resourcemanager.servicenetworking.models.AssociationSubnet;
-import com.azure.resourcemanager.servicenetworking.models.AssociationSubnetUpdate;
-import com.azure.resourcemanager.servicenetworking.models.AssociationType;
+import com.azure.resourcemanager.servicenetworking.models.AssociationProperties;
 import com.azure.resourcemanager.servicenetworking.models.AssociationUpdate;
-import com.azure.resourcemanager.servicenetworking.models.ProvisioningState;
+import com.azure.resourcemanager.servicenetworking.models.AssociationUpdateProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -47,20 +45,12 @@ public final class AssociationImpl implements Association, Association.Definitio
         }
     }
 
+    public AssociationProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public AssociationType associationType() {
-        return this.innerModel().associationType();
-    }
-
-    public AssociationSubnet subnet() {
-        return this.innerModel().subnet();
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
     }
 
     public Region region() {
@@ -98,21 +88,14 @@ public final class AssociationImpl implements Association, Association.Definitio
     }
 
     public Association create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAssociationsInterfaces()
-                .createOrUpdate(
-                    resourceGroupName, trafficControllerName, associationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getAssociationsInterfaces().createOrUpdate(resourceGroupName,
+            trafficControllerName, associationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Association create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAssociationsInterfaces()
-                .createOrUpdate(resourceGroupName, trafficControllerName, associationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getAssociationsInterfaces().createOrUpdate(resourceGroupName,
+            trafficControllerName, associationName, this.innerModel(), context);
         return this;
     }
 
@@ -128,29 +111,20 @@ public final class AssociationImpl implements Association, Association.Definitio
     }
 
     public Association apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAssociationsInterfaces()
-                .updateWithResponse(
-                    resourceGroupName, trafficControllerName, associationName, updateProperties, Context.NONE)
-                .getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getAssociationsInterfaces().updateWithResponse(resourceGroupName,
+                trafficControllerName, associationName, updateProperties, Context.NONE).getValue();
         return this;
     }
 
     public Association apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAssociationsInterfaces()
-                .updateWithResponse(
-                    resourceGroupName, trafficControllerName, associationName, updateProperties, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAssociationsInterfaces()
+            .updateWithResponse(resourceGroupName, trafficControllerName, associationName, updateProperties, context)
+            .getValue();
         return this;
     }
 
-    AssociationImpl(
-        AssociationInner innerObject,
+    AssociationImpl(AssociationInner innerObject,
         com.azure.resourcemanager.servicenetworking.TrafficControllerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -160,22 +134,14 @@ public final class AssociationImpl implements Association, Association.Definitio
     }
 
     public Association refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAssociationsInterfaces()
-                .getWithResponse(resourceGroupName, trafficControllerName, associationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAssociationsInterfaces()
+            .getWithResponse(resourceGroupName, trafficControllerName, associationName, Context.NONE).getValue();
         return this;
     }
 
     public Association refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAssociationsInterfaces()
-                .getWithResponse(resourceGroupName, trafficControllerName, associationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAssociationsInterfaces()
+            .getWithResponse(resourceGroupName, trafficControllerName, associationName, context).getValue();
         return this;
     }
 
@@ -199,23 +165,13 @@ public final class AssociationImpl implements Association, Association.Definitio
         }
     }
 
-    public AssociationImpl withAssociationType(AssociationType associationType) {
-        if (isInCreateMode()) {
-            this.innerModel().withAssociationType(associationType);
-            return this;
-        } else {
-            this.updateProperties.withAssociationType(associationType);
-            return this;
-        }
-    }
-
-    public AssociationImpl withSubnet(AssociationSubnet subnet) {
-        this.innerModel().withSubnet(subnet);
+    public AssociationImpl withProperties(AssociationProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 
-    public AssociationImpl withSubnet(AssociationSubnetUpdate subnet) {
-        this.updateProperties.withSubnet(subnet);
+    public AssociationImpl withProperties(AssociationUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
         return this;
     }
 

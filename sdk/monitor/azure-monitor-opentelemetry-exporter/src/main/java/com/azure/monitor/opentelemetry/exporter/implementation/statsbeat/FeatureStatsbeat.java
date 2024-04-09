@@ -5,10 +5,13 @@ package com.azure.monitor.opentelemetry.exporter.implementation.statsbeat;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.StatsbeatTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
+import io.opentelemetry.sdk.trace.data.SpanData;
 
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.Instrumentations.AZURE_OPENTELEMETRY;
 
 public class FeatureStatsbeat extends BaseStatsbeat {
 
@@ -42,9 +45,23 @@ public class FeatureStatsbeat extends BaseStatsbeat {
         return Instrumentations.encode(instrumentationList);
     }
 
-    // this is used by Exporter
-    public void addInstrumentation(String instrumentation) {
+    // Only for tests
+    void addInstrumentation(String instrumentation) {
         instrumentationList.add(instrumentation);
+    }
+
+   // To use from the Application Insights Java agent
+    public void addInstrumentation(SpanData span) {
+        if (span.getInstrumentationScopeInfo() == null || span.getInstrumentationScopeInfo().getName() == null) {
+            return;
+        }
+        String instrumentationScopeName = span.getInstrumentationScopeInfo().getName();
+        boolean isAnAzureLibraryInstrumentation = instrumentationScopeName.startsWith(
+            "azure-");
+        if (isAnAzureLibraryInstrumentation) {
+            instrumentationScopeName = AZURE_OPENTELEMETRY;
+        }
+        instrumentationList.add(instrumentationScopeName);
     }
 
     public void addFeature(Feature feature) {
@@ -69,11 +86,14 @@ public class FeatureStatsbeat extends BaseStatsbeat {
             featureType = "1";
         }
 
-        StatsbeatTelemetryBuilder telemetryBuilder = createStatsbeatTelemetry(FEATURE_METRIC_NAME, 0);
-        telemetryBuilder.addProperty("feature", featureValue);
-        telemetryBuilder.addProperty("type", featureType);
+        // don't send feature/instrumentation statsbeat when it's empty
+        if (!featureValue.isEmpty()) {
+            StatsbeatTelemetryBuilder telemetryBuilder = createStatsbeatTelemetry(FEATURE_METRIC_NAME, 0);
+            telemetryBuilder.addProperty("feature", featureValue);
+            telemetryBuilder.addProperty("type", featureType);
 
-        telemetryItemExporter.send(Collections.singletonList(telemetryBuilder.build()));
+            telemetryItemExporter.send(Collections.singletonList(telemetryBuilder.build()));
+        }
     }
 
     void trackConfigurationOptions(Set<Feature> featureSet) {

@@ -15,37 +15,31 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureResourceManagerManagedIdentityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureResourceManagerManagedIdentityProperties model =
-            BinaryData
-                .fromString(
-                    "{\"tenantId\":\"appd\",\"principalId\":\"dkvwrwjfe\",\"type\":\"None\",\"userAssignedIdentities\":{\"cdgea\":{\"clientId\":\"tjelt\",\"principalId\":\"ldhugjzzdatqxh\"},\"k\":{\"clientId\":\"gphuticndvka\",\"principalId\":\"wyiftyhxhur\"}}}")
-                .toObject(AzureResourceManagerManagedIdentityProperties.class);
-        Assertions.assertEquals(ManagedIdentityType.NONE, model.type());
-        Assertions.assertEquals("tjelt", model.userAssignedIdentities().get("cdgea").clientId());
-        Assertions.assertEquals("ldhugjzzdatqxh", model.userAssignedIdentities().get("cdgea").principalId());
+        AzureResourceManagerManagedIdentityProperties model = BinaryData.fromString(
+            "{\"tenantId\":\"urzafb\",\"principalId\":\"j\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ulpkudjkrl\":{\"clientId\":\"qcjm\",\"principalId\":\"javbqidtqajz\"},\"scpai\":{\"clientId\":\"bzhfepgzgqexz\",\"principalId\":\"c\"},\"onpimexgstxg\":{\"clientId\":\"hhbcsglummajtjao\",\"principalId\":\"obnbdxkqpxokaj\"}}}")
+            .toObject(AzureResourceManagerManagedIdentityProperties.class);
+        Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals("qcjm", model.userAssignedIdentities().get("ulpkudjkrl").clientId());
+        Assertions.assertEquals("javbqidtqajz", model.userAssignedIdentities().get("ulpkudjkrl").principalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureResourceManagerManagedIdentityProperties model =
-            new AzureResourceManagerManagedIdentityProperties()
-                .withType(ManagedIdentityType.NONE)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "cdgea",
-                        new AzureResourceManagerUserAssignedIdentity()
-                            .withClientId("tjelt")
-                            .withPrincipalId("ldhugjzzdatqxh"),
-                        "k",
-                        new AzureResourceManagerUserAssignedIdentity()
-                            .withClientId("gphuticndvka")
-                            .withPrincipalId("wyiftyhxhur")));
+        AzureResourceManagerManagedIdentityProperties model
+            = new AzureResourceManagerManagedIdentityProperties().withType(ManagedIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("ulpkudjkrl",
+                    new AzureResourceManagerUserAssignedIdentity().withClientId("qcjm").withPrincipalId("javbqidtqajz"),
+                    "scpai",
+                    new AzureResourceManagerUserAssignedIdentity().withClientId("bzhfepgzgqexz").withPrincipalId("c"),
+                    "onpimexgstxg", new AzureResourceManagerUserAssignedIdentity().withClientId("hhbcsglummajtjao")
+                        .withPrincipalId("obnbdxkqpxokaj")));
         model = BinaryData.fromObject(model).toObject(AzureResourceManagerManagedIdentityProperties.class);
-        Assertions.assertEquals(ManagedIdentityType.NONE, model.type());
-        Assertions.assertEquals("tjelt", model.userAssignedIdentities().get("cdgea").clientId());
-        Assertions.assertEquals("ldhugjzzdatqxh", model.userAssignedIdentities().get("cdgea").principalId());
+        Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals("qcjm", model.userAssignedIdentities().get("ulpkudjkrl").clientId());
+        Assertions.assertEquals("javbqidtqajz", model.userAssignedIdentities().get("ulpkudjkrl").principalId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

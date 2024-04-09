@@ -14,6 +14,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.Configuration;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerRole;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -31,38 +32,31 @@ public final class ConfigurationsListByClusterMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"bh\",\"dataType\":\"Boolean\",\"allowedValues\":\"lhrxsbkyvpyc\",\"requiresRestart\":true,\"serverRoleGroupConfigurations\":[],\"provisioningState\":\"Succeeded\"},\"id\":\"kafkuwbcrnwbm\",\"name\":\"hhseyv\",\"type\":\"us\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"description\":\"git\",\"dataType\":\"Integer\",\"allowedValues\":\"jvc\",\"requiresRestart\":true,\"serverRoleGroupConfigurations\":[{\"role\":\"Coordinator\",\"value\":\"wwncwzzhxgk\",\"defaultValue\":\"mgucna\",\"source\":\"t\"}],\"provisioningState\":\"InProgress\"},\"id\":\"lwptfdy\",\"name\":\"pfqbuaceopzf\",\"type\":\"rhhuaopppcqeqx\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CosmosDBForPostgreSqlManager manager =
-            CosmosDBForPostgreSqlManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CosmosDBForPostgreSqlManager manager = CosmosDBForPostgreSqlManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Configuration> response =
-            manager.configurations().listByCluster("udxytlmoyrx", "wfudwpzntxhdzhl", com.azure.core.util.Context.NONE);
+        PagedIterable<Configuration> response
+            = manager.configurations().listByCluster("dtpnapnyiropuhp", "gvpgy", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(true, response.iterator().next().requiresRestart());
+        Assertions.assertEquals(ServerRole.COORDINATOR,
+            response.iterator().next().serverRoleGroupConfigurations().get(0).role());
+        Assertions.assertEquals("wwncwzzhxgk",
+            response.iterator().next().serverRoleGroupConfigurations().get(0).value());
     }
 }

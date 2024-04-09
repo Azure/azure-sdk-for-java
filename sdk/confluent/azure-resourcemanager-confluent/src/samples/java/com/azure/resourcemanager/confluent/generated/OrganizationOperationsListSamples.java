@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.confluent.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for OrganizationOperations List. */
+/**
+ * Samples for OrganizationOperations List.
+ */
 public final class OrganizationOperationsListSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/OrganizationOperations_List.json
+     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
+     * OrganizationOperations_List.json
      */
     /**
      * Sample code: OrganizationOperations_List.
-     *
+     * 
      * @param manager Entry point to ConfluentManager.
      */
     public static void organizationOperationsList(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager.organizationOperations().list(Context.NONE);
+        manager.organizationOperations().list(com.azure.core.util.Context.NONE);
     }
 }

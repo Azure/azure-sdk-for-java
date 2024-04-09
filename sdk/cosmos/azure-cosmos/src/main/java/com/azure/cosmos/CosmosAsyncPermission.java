@@ -5,6 +5,7 @@ package com.azure.cosmos;
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Paths;
+import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosPermissionRequestOptions;
@@ -127,14 +128,16 @@ public class CosmosAsyncPermission {
     private Mono<CosmosPermissionResponse> readInternal(CosmosPermissionRequestOptions options, Context context) {
 
         String spanName = "readPermission." + cosmosUser.getId();
+        RequestOptions nonNullRequestOptions = options != null
+            ? ModelBridgeInternal.toRequestOptions(options)
+            : new RequestOptions();
         Mono<CosmosPermissionResponse> responseMono = cosmosUser.getDatabase()
             .getDocClientWrapper()
-            .readPermission(getLink(), ModelBridgeInternal.toRequestOptions(options))
+            .readPermission(getLink(), nonNullRequestOptions)
             .map(ModelBridgeInternal::createCosmosPermissionResponse)
             .single();
         CosmosAsyncClient client = cosmosUser.getDatabase().getClient();
-        CosmosDiagnosticsThresholds requestDiagnosticThresholds =
-            ModelBridgeInternal.toRequestOptions(options).getDiagnosticsThresholds();
+
         return client.getDiagnosticsProvider().traceEnabledCosmosResponsePublisher(
             responseMono,
             context,
@@ -145,7 +148,7 @@ public class CosmosAsyncPermission {
             null,
             OperationType.Read,
             ResourceType.Permission,
-            client.getEffectiveDiagnosticsThresholds(requestDiagnosticThresholds));
+            nonNullRequestOptions);
     }
 
     private Mono<CosmosPermissionResponse> replaceInternal(CosmosPermissionProperties permissionProperties,
@@ -153,16 +156,16 @@ public class CosmosAsyncPermission {
                                                                 Context context) {
 
         String spanName = "replacePermission." + cosmosUser.getId();
+        RequestOptions nonNullRequestOptions = ensureAndConvertRequestOptions(options);
         CosmosAsyncDatabase databaseContext = cosmosUser.getDatabase();
         Mono<CosmosPermissionResponse> responseMono = cosmosUser.getDatabase()
             .getDocClientWrapper()
             .replacePermission(ModelBridgeInternal.getPermission(permissionProperties, databaseContext.getId()),
-                ModelBridgeInternal.toRequestOptions(options))
+                nonNullRequestOptions)
             .map(ModelBridgeInternal::createCosmosPermissionResponse)
             .single();
         CosmosAsyncClient client = cosmosUser.getDatabase().getClient();
-        CosmosDiagnosticsThresholds requestDiagnosticThresholds =
-            ModelBridgeInternal.toRequestOptions(options).getDiagnosticsThresholds();
+
         return client.getDiagnosticsProvider().traceEnabledCosmosResponsePublisher(
             responseMono,
             context,
@@ -173,21 +176,22 @@ public class CosmosAsyncPermission {
             null,
             OperationType.Replace,
             ResourceType.Permission,
-            client.getEffectiveDiagnosticsThresholds(requestDiagnosticThresholds));
+            nonNullRequestOptions);
     }
 
     private Mono<CosmosPermissionResponse> deleteInternal(CosmosPermissionRequestOptions options,
                                                                Context context) {
 
         String spanName = "deletePermission." + cosmosUser.getId();
+        RequestOptions nonNullRequestOptions = ensureAndConvertRequestOptions(options);
+
         Mono<CosmosPermissionResponse> responseMono = cosmosUser.getDatabase()
             .getDocClientWrapper()
-            .deletePermission(getLink(), ModelBridgeInternal.toRequestOptions(options))
+            .deletePermission(getLink(), nonNullRequestOptions)
             .map(ModelBridgeInternal::createCosmosPermissionResponse)
             .single();
         CosmosAsyncClient client = cosmosUser.getDatabase().getClient();
-        CosmosDiagnosticsThresholds requestDiagnosticThresholds =
-            ModelBridgeInternal.toRequestOptions(options).getDiagnosticsThresholds();
+
         return client.getDiagnosticsProvider().traceEnabledCosmosResponsePublisher(
             responseMono,
             context,
@@ -198,6 +202,13 @@ public class CosmosAsyncPermission {
             null,
             OperationType.Delete,
             ResourceType.Permission,
-            client.getEffectiveDiagnosticsThresholds(requestDiagnosticThresholds));
+            nonNullRequestOptions);
+    }
+
+    private static RequestOptions ensureAndConvertRequestOptions(CosmosPermissionRequestOptions options) {
+        if (options != null) {
+            return ModelBridgeInternal.toRequestOptions(options);
+        }
+        return new RequestOptions();
     }
 }

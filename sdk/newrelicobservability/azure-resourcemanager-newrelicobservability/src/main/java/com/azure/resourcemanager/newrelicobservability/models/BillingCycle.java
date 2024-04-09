@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Different usage type like YEARLY/MONTHLY. */
+/**
+ * Different usage type like YEARLY/MONTHLY.
+ */
 public final class BillingCycle extends ExpandableStringEnum<BillingCycle> {
-    /** Static value YEARLY for BillingCycle. */
+    /**
+     * Static value YEARLY for BillingCycle.
+     */
     public static final BillingCycle YEARLY = fromString("YEARLY");
 
-    /** Static value MONTHLY for BillingCycle. */
+    /**
+     * Static value MONTHLY for BillingCycle.
+     */
     public static final BillingCycle MONTHLY = fromString("MONTHLY");
 
-    /** Static value WEEKLY for BillingCycle. */
+    /**
+     * Static value WEEKLY for BillingCycle.
+     */
     public static final BillingCycle WEEKLY = fromString("WEEKLY");
 
     /**
      * Creates a new instance of BillingCycle value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class BillingCycle extends ExpandableStringEnum<BillingCycle> {
 
     /**
      * Creates or finds a BillingCycle from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BillingCycle.
      */
@@ -41,7 +49,7 @@ public final class BillingCycle extends ExpandableStringEnum<BillingCycle> {
 
     /**
      * Gets known BillingCycle values.
-     *
+     * 
      * @return known BillingCycle values.
      */
     public static Collection<BillingCycle> values() {

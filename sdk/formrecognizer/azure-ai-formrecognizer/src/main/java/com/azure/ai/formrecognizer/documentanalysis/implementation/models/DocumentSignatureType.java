@@ -5,39 +5,44 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Presence of signature. */
+/**
+ * Presence of signature.
+ */
 public final class DocumentSignatureType extends ExpandableStringEnum<DocumentSignatureType> {
-    /** Static value signed for DocumentSignatureType. */
+    /**
+     * A signature is detected.
+     */
     public static final DocumentSignatureType SIGNED = fromString("signed");
 
-    /** Static value unsigned for DocumentSignatureType. */
+    /**
+     * No signatures are detected.
+     */
     public static final DocumentSignatureType UNSIGNED = fromString("unsigned");
 
     /**
      * Creates a new instance of DocumentSignatureType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public DocumentSignatureType() {}
+    public DocumentSignatureType() {
+    }
 
     /**
      * Creates or finds a DocumentSignatureType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DocumentSignatureType.
      */
-    @JsonCreator
     public static DocumentSignatureType fromString(String name) {
         return fromString(name, DocumentSignatureType.class);
     }
 
     /**
      * Gets known DocumentSignatureType values.
-     *
+     * 
      * @return known DocumentSignatureType values.
      */
     public static Collection<DocumentSignatureType> values() {

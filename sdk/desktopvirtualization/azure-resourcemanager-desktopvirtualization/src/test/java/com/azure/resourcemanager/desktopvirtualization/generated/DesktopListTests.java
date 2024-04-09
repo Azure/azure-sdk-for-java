@@ -16,10 +16,10 @@ public final class DesktopListTests {
         DesktopList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"objectId\":\"gureodkwobdag\",\"description\":\"ibqdxbxwakbogqx\",\"friendlyName\":\"lkzgxhuriplbp\",\"iconHash\":\"xunkbebxmubyynt\"},\"id\":\"rbqtkoie\",\"name\":\"seotgqrllt\",\"type\":\"u\"}],\"nextLink\":\"auwzizxbmpgc\"}")
+                    "{\"value\":[{\"properties\":{\"objectId\":\"frvtpuqu\",\"description\":\"qlgkfbtn\",\"friendlyName\":\"aongbj\",\"iconHash\":\"tujitcjedft\"},\"id\":\"ae\",\"name\":\"kojvd\",\"type\":\"pzfoqoui\"},{\"properties\":{\"objectId\":\"arz\",\"description\":\"zuf\",\"friendlyName\":\"ciqopidoa\",\"iconHash\":\"iodhkhazxkhnz\"},\"id\":\"nlwntoe\",\"name\":\"okdwb\",\"type\":\"hksz\"}],\"nextLink\":\"mrv\"}")
                 .toObject(DesktopList.class);
-        Assertions.assertEquals("ibqdxbxwakbogqx", model.value().get(0).description());
-        Assertions.assertEquals("lkzgxhuriplbp", model.value().get(0).friendlyName());
+        Assertions.assertEquals("qlgkfbtn", model.value().get(0).description());
+        Assertions.assertEquals("aongbj", model.value().get(0).friendlyName());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,9 +29,10 @@ public final class DesktopListTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new DesktopInner().withDescription("ibqdxbxwakbogqx").withFriendlyName("lkzgxhuriplbp")));
+                            new DesktopInner().withDescription("qlgkfbtn").withFriendlyName("aongbj"),
+                            new DesktopInner().withDescription("zuf").withFriendlyName("ciqopidoa")));
         model = BinaryData.fromObject(model).toObject(DesktopList.class);
-        Assertions.assertEquals("ibqdxbxwakbogqx", model.value().get(0).description());
-        Assertions.assertEquals("lkzgxhuriplbp", model.value().get(0).friendlyName());
+        Assertions.assertEquals("qlgkfbtn", model.value().get(0).description());
+        Assertions.assertEquals("aongbj", model.value().get(0).friendlyName());
     }
 }

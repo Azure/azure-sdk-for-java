@@ -23,7 +23,7 @@ import java.util.List;
  * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
  *
  * &#47;&#47; Creates a client
- * ElevationClient client = new ElevationClientBuilder&#40;&#41;
+ * ElevationClient client = new ElevationClientBuilder&#40;&#41; 
  *     .credential&#40;keyCredential&#41;
  *     .elevationClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;
  *     .buildClient&#40;&#41;;

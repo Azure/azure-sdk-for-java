@@ -39,7 +39,7 @@ public final class GlobalSchedulesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"rczezkhhlt\",\"weeklyRecurrence\":{\"weekdays\":[],\"time\":\"hqo\"},\"dailyRecurrence\":{\"time\":\"qoyueayfbpcmsplb\"},\"hourlyRecurrence\":{\"minute\":794597163},\"timeZoneId\":\"qthwmgnmbscbb\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":263654967,\"webhookUrl\":\"idlopedbwdpy\",\"emailRecipient\":\"ybxubmdna\",\"notificationLocale\":\"bqwremjela\"},\"createdDate\":\"2021-08-31T06:52:26Z\",\"targetResourceId\":\"geleohdbvq\",\"provisioningState\":\"z\",\"uniqueIdentifier\":\"opwbeonrlkwzd\"},\"location\":\"ybxc\",\"tags\":{\"krtt\":\"xcptsoqfyiaseqc\",\"kiuemv\":\"razisg\"},\"id\":\"nbwzohmnrxxbso\",\"name\":\"klinhmdptysprq\",\"type\":\"gnzxojpslsvj\"}";
+            "{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"ehuxiqhzlraym\",\"weeklyRecurrence\":{\"weekdays\":[\"skihmxrfd\",\"ajrednwyyshtuw\",\"mevuafpwzy\",\"frkgwltxeq\"],\"time\":\"xgzdyimsfayorp\"},\"dailyRecurrence\":{\"time\":\"kj\"},\"hourlyRecurrence\":{\"minute\":535821892},\"timeZoneId\":\"abnsmj\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":441004284,\"webhookUrl\":\"ekqsykvwjtqpkev\",\"emailRecipient\":\"ltjcrspxk\",\"notificationLocale\":\"r\"},\"createdDate\":\"2021-01-04T13:01:46Z\",\"targetResourceId\":\"gxannnoytzposewx\",\"provisioningState\":\"pxvkqma\",\"uniqueIdentifier\":\"xvpif\"},\"location\":\"f\",\"tags\":{\"eidszlfytoi\":\"yzyzeyuu\",\"hoynk\":\"hgygvfltgvd\",\"nn\":\"xwetwkdrcyrucpc\"},\"id\":\"zdqumoe\",\"name\":\"odnaienhqhskndn\",\"type\":\"lqkaadlknwf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -70,42 +70,47 @@ public final class GlobalSchedulesCreateOrUpdateWithResponseMockTests {
         Schedule response =
             manager
                 .globalSchedules()
-                .define("hdrwjjkh")
-                .withRegion("gypxrxvbfihwuhvc")
-                .withExistingResourceGroup("kgmnsghpxyc")
-                .withTags(mapOf("bxrblmliowxihspn", "s"))
+                .define("jb")
+                .withRegion("w")
+                .withExistingResourceGroup("r")
+                .withTags(mapOf("p", "sxwwhnhjtf"))
                 .withStatus(EnableStatus.DISABLED)
-                .withTaskType("ac")
-                .withWeeklyRecurrence(new WeekDetails().withWeekdays(Arrays.asList()).withTime("xnqmhrpqpdfwm"))
-                .withDailyRecurrence(new DayDetails().withTime("sqcssffx"))
-                .withHourlyRecurrence(new HourDetails().withMinute(573045315))
-                .withTimeZoneId("s")
+                .withTaskType("aoqaqbzgyhfwwv")
+                .withWeeklyRecurrence(
+                    new WeekDetails()
+                        .withWeekdays(Arrays.asList("wbqamteuliy", "lpkcvmwfauxxep"))
+                        .withTime("wbormcqmi"))
+                .withDailyRecurrence(new DayDetails().withTime("jqpkzfbo"))
+                .withHourlyRecurrence(new HourDetails().withMinute(1008531310))
+                .withTimeZoneId("smyqwixvcpwnkwyw")
                 .withNotificationSettings(
                     new NotificationSettings()
-                        .withStatus(EnableStatus.ENABLED)
-                        .withTimeInMinutes(862092448)
-                        .withWebhookUrl("zr")
-                        .withEmailRecipient("sylollgtr")
-                        .withNotificationLocale("zydmxzjijpvuaurk"))
-                .withTargetResourceId("rldefxrdcox")
+                        .withStatus(EnableStatus.DISABLED)
+                        .withTimeInMinutes(2034082492)
+                        .withWebhookUrl("ckduoiqtamtyvskn")
+                        .withEmailRecipient("wzawnvsbcfhzagxn")
+                        .withNotificationLocale("ycvdimw"))
+                .withTargetResourceId("gzgy")
                 .create();
 
-        Assertions.assertEquals("ybxc", response.location());
-        Assertions.assertEquals("xcptsoqfyiaseqc", response.tags().get("krtt"));
+        Assertions.assertEquals("f", response.location());
+        Assertions.assertEquals("yzyzeyuu", response.tags().get("eidszlfytoi"));
         Assertions.assertEquals(EnableStatus.ENABLED, response.status());
-        Assertions.assertEquals("rczezkhhlt", response.taskType());
-        Assertions.assertEquals("hqo", response.weeklyRecurrence().time());
-        Assertions.assertEquals("qoyueayfbpcmsplb", response.dailyRecurrence().time());
-        Assertions.assertEquals(794597163, response.hourlyRecurrence().minute());
-        Assertions.assertEquals("qthwmgnmbscbb", response.timeZoneId());
+        Assertions.assertEquals("ehuxiqhzlraym", response.taskType());
+        Assertions.assertEquals("skihmxrfd", response.weeklyRecurrence().weekdays().get(0));
+        Assertions.assertEquals("xgzdyimsfayorp", response.weeklyRecurrence().time());
+        Assertions.assertEquals("kj", response.dailyRecurrence().time());
+        Assertions.assertEquals(535821892, response.hourlyRecurrence().minute());
+        Assertions.assertEquals("abnsmj", response.timeZoneId());
         Assertions.assertEquals(EnableStatus.DISABLED, response.notificationSettings().status());
-        Assertions.assertEquals(263654967, response.notificationSettings().timeInMinutes());
-        Assertions.assertEquals("idlopedbwdpy", response.notificationSettings().webhookUrl());
-        Assertions.assertEquals("ybxubmdna", response.notificationSettings().emailRecipient());
-        Assertions.assertEquals("bqwremjela", response.notificationSettings().notificationLocale());
-        Assertions.assertEquals("geleohdbvq", response.targetResourceId());
+        Assertions.assertEquals(441004284, response.notificationSettings().timeInMinutes());
+        Assertions.assertEquals("ekqsykvwjtqpkev", response.notificationSettings().webhookUrl());
+        Assertions.assertEquals("ltjcrspxk", response.notificationSettings().emailRecipient());
+        Assertions.assertEquals("r", response.notificationSettings().notificationLocale());
+        Assertions.assertEquals("gxannnoytzposewx", response.targetResourceId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

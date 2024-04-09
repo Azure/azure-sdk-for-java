@@ -9,7 +9,9 @@ import com.azure.resourcemanager.dataprotection.fluent.models.DppBaseResourceInn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Base for all lists of V2 resources. */
+/**
+ * Base for all lists of V2 resources.
+ */
 @Fluent
 public final class DppBaseResourceList {
     /*
@@ -24,13 +26,15 @@ public final class DppBaseResourceList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of DppBaseResourceList class. */
+    /**
+     * Creates an instance of DppBaseResourceList class.
+     */
     public DppBaseResourceList() {
     }
 
     /**
      * Get the value property: List of Dpp resources.
-     *
+     * 
      * @return the value value.
      */
     public List<DppBaseResourceInner> value() {
@@ -39,7 +43,7 @@ public final class DppBaseResourceList {
 
     /**
      * Set the value property: List of Dpp resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the DppBaseResourceList object itself.
      */
@@ -51,7 +55,7 @@ public final class DppBaseResourceList {
     /**
      * Get the nextLink property: The uri to fetch the next page of resources. Call ListNext() fetches next page of
      * resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,7 +65,7 @@ public final class DppBaseResourceList {
     /**
      * Set the nextLink property: The uri to fetch the next page of resources. Call ListNext() fetches next page of
      * resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DppBaseResourceList object itself.
      */
@@ -72,7 +76,7 @@ public final class DppBaseResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

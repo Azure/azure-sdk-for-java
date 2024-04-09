@@ -7,7 +7,9 @@ package com.azure.resourcemanager.healthcareapis.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The common properties for any location based resource, tracked or proxy. */
+/**
+ * The common properties for any location based resource, tracked or proxy.
+ */
 @Fluent
 public class LocationBasedResource extends ResourceCore {
     /*
@@ -17,8 +19,14 @@ public class LocationBasedResource extends ResourceCore {
     private String location;
 
     /**
+     * Creates an instance of LocationBasedResource class.
+     */
+    public LocationBasedResource() {
+    }
+
+    /**
      * Get the location property: The resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -27,7 +35,7 @@ public class LocationBasedResource extends ResourceCore {
 
     /**
      * Set the location property: The resource location.
-     *
+     * 
      * @param location the location value to set.
      * @return the LocationBasedResource object itself.
      */
@@ -36,7 +44,9 @@ public class LocationBasedResource extends ResourceCore {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LocationBasedResource withEtag(String etag) {
         super.withEtag(etag);
@@ -45,7 +55,7 @@ public class LocationBasedResource extends ResourceCore {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

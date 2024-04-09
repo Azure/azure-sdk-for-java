@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.streamanalytics.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Clusters List. */
+/**
+ * Samples for Clusters List.
+ */
 public final class ClustersListSamples {
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Cluster_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2020-03-01-preview/examples/
+     * Cluster_ListBySubscription.json
      */
     /**
      * Sample code: List the clusters in a subscription.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
-    public static void listTheClustersInASubscription(
-        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.clusters().list(Context.NONE);
+    public static void
+        listTheClustersInASubscription(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.clusters().list(com.azure.core.util.Context.NONE);
     }
 }

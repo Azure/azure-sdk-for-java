@@ -4,47 +4,39 @@
 
 package com.azure.resourcemanager.confluent.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
 import com.azure.resourcemanager.confluent.models.OfferDetail;
 import com.azure.resourcemanager.confluent.models.UserDetail;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Validations ValidateOrganization. */
+/**
+ * Samples for Validations ValidateOrganization.
+ */
 public final class ValidationsValidateOrganizationSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/Validations_ValidateOrganizations.json
+     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
+     * Validations_ValidateOrganizations.json
      */
     /**
      * Sample code: Validations_ValidateOrganizations.
-     *
+     * 
      * @param manager Entry point to ConfluentManager.
      */
     public static void validationsValidateOrganizations(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager
-            .validations()
-            .validateOrganizationWithResponse(
-                "myResourceGroup",
-                "myOrganization",
-                new OrganizationResourceInner()
-                    .withLocation("West US")
-                    .withTags(mapOf("Environment", "Dev"))
-                    .withOfferDetail(
-                        new OfferDetail()
-                            .withPublisherId("string")
-                            .withId("string")
-                            .withPlanId("string")
-                            .withPlanName("string")
-                            .withTermUnit("string"))
-                    .withUserDetail(
-                        new UserDetail()
-                            .withFirstName("string")
-                            .withLastName("string")
-                            .withEmailAddress("abc@microsoft.com")),
-                Context.NONE);
+        manager.validations().validateOrganizationWithResponse("myResourceGroup", "myOrganization",
+            new OrganizationResourceInner().withLocation("West US").withTags(mapOf("Environment", "Dev"))
+                .withOfferDetail(new OfferDetail().withPublisherId("string").withId("string").withPlanId("string")
+                    .withPlanName("string").withTermUnit("string").withPrivateOfferId("string")
+                    .withPrivateOfferIds(Arrays.asList("string")))
+                .withUserDetail(new UserDetail().withFirstName("string").withLastName("string")
+                    .withEmailAddress("abc@microsoft.com").withUserPrincipalName("abc@microsoft.com")
+                    .withAadEmail("abc@microsoft.com")),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

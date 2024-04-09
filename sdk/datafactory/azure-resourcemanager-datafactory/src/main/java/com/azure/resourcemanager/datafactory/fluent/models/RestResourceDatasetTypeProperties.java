@@ -5,9 +5,13 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
-/** Properties specific to this dataset type. */
+/**
+ * Properties specific to this dataset type.
+ */
 @Fluent
 public final class RestResourceDatasetTypeProperties {
     /*
@@ -32,26 +36,29 @@ public final class RestResourceDatasetTypeProperties {
     private Object requestBody;
 
     /*
-     * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType
-     * string).
+     * The additional HTTP headers in the request to the RESTful API.
      */
     @JsonProperty(value = "additionalHeaders")
-    private Object additionalHeaders;
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, Object> additionalHeaders;
 
     /*
-     * The pagination rules to compose next page requests. Type: string (or Expression with resultType string).
+     * The pagination rules to compose next page requests.
      */
     @JsonProperty(value = "paginationRules")
-    private Object paginationRules;
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, Object> paginationRules;
 
-    /** Creates an instance of RestResourceDatasetTypeProperties class. */
+    /**
+     * Creates an instance of RestResourceDatasetTypeProperties class.
+     */
     public RestResourceDatasetTypeProperties() {
     }
 
     /**
      * Get the relativeUrl property: The relative URL to the resource that the RESTful API provides. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the relativeUrl value.
      */
     public Object relativeUrl() {
@@ -61,7 +68,7 @@ public final class RestResourceDatasetTypeProperties {
     /**
      * Set the relativeUrl property: The relative URL to the resource that the RESTful API provides. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param relativeUrl the relativeUrl value to set.
      * @return the RestResourceDatasetTypeProperties object itself.
      */
@@ -73,7 +80,7 @@ public final class RestResourceDatasetTypeProperties {
     /**
      * Get the requestMethod property: The HTTP method used to call the RESTful API. The default is GET. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the requestMethod value.
      */
     public Object requestMethod() {
@@ -83,7 +90,7 @@ public final class RestResourceDatasetTypeProperties {
     /**
      * Set the requestMethod property: The HTTP method used to call the RESTful API. The default is GET. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param requestMethod the requestMethod value to set.
      * @return the RestResourceDatasetTypeProperties object itself.
      */
@@ -93,9 +100,9 @@ public final class RestResourceDatasetTypeProperties {
     }
 
     /**
-     * Get the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
-     * Expression with resultType string).
-     *
+     * Get the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string
+     * (or Expression with resultType string).
+     * 
      * @return the requestBody value.
      */
     public Object requestBody() {
@@ -103,9 +110,9 @@ public final class RestResourceDatasetTypeProperties {
     }
 
     /**
-     * Set the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
-     * Expression with resultType string).
-     *
+     * Set the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string
+     * (or Expression with resultType string).
+     * 
      * @param requestBody the requestBody value to set.
      * @return the RestResourceDatasetTypeProperties object itself.
      */
@@ -115,52 +122,48 @@ public final class RestResourceDatasetTypeProperties {
     }
 
     /**
-     * Get the additionalHeaders property: The additional HTTP headers in the request to the RESTful API. Type: string
-     * (or Expression with resultType string).
-     *
+     * Get the additionalHeaders property: The additional HTTP headers in the request to the RESTful API.
+     * 
      * @return the additionalHeaders value.
      */
-    public Object additionalHeaders() {
+    public Map<String, Object> additionalHeaders() {
         return this.additionalHeaders;
     }
 
     /**
-     * Set the additionalHeaders property: The additional HTTP headers in the request to the RESTful API. Type: string
-     * (or Expression with resultType string).
-     *
+     * Set the additionalHeaders property: The additional HTTP headers in the request to the RESTful API.
+     * 
      * @param additionalHeaders the additionalHeaders value to set.
      * @return the RestResourceDatasetTypeProperties object itself.
      */
-    public RestResourceDatasetTypeProperties withAdditionalHeaders(Object additionalHeaders) {
+    public RestResourceDatasetTypeProperties withAdditionalHeaders(Map<String, Object> additionalHeaders) {
         this.additionalHeaders = additionalHeaders;
         return this;
     }
 
     /**
-     * Get the paginationRules property: The pagination rules to compose next page requests. Type: string (or Expression
-     * with resultType string).
-     *
+     * Get the paginationRules property: The pagination rules to compose next page requests.
+     * 
      * @return the paginationRules value.
      */
-    public Object paginationRules() {
+    public Map<String, Object> paginationRules() {
         return this.paginationRules;
     }
 
     /**
-     * Set the paginationRules property: The pagination rules to compose next page requests. Type: string (or Expression
-     * with resultType string).
-     *
+     * Set the paginationRules property: The pagination rules to compose next page requests.
+     * 
      * @param paginationRules the paginationRules value to set.
      * @return the RestResourceDatasetTypeProperties object itself.
      */
-    public RestResourceDatasetTypeProperties withPaginationRules(Object paginationRules) {
+    public RestResourceDatasetTypeProperties withPaginationRules(Map<String, Object> paginationRules) {
         this.paginationRules = paginationRules;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

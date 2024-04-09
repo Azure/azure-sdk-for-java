@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Predefined URL category object. */
+/**
+ * Predefined URL category object.
+ */
 @Fluent
 public final class PredefinedUrlCategory {
     /*
@@ -23,13 +25,15 @@ public final class PredefinedUrlCategory {
     @JsonProperty(value = "name", required = true)
     private String name;
 
-    /** Creates an instance of PredefinedUrlCategory class. */
+    /**
+     * Creates an instance of PredefinedUrlCategory class.
+     */
     public PredefinedUrlCategory() {
     }
 
     /**
      * Get the action property: The action property.
-     *
+     * 
      * @return the action value.
      */
     public String action() {
@@ -38,7 +42,7 @@ public final class PredefinedUrlCategory {
 
     /**
      * Set the action property: The action property.
-     *
+     * 
      * @param action the action value to set.
      * @return the PredefinedUrlCategory object itself.
      */
@@ -49,7 +53,7 @@ public final class PredefinedUrlCategory {
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -58,7 +62,7 @@ public final class PredefinedUrlCategory {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the PredefinedUrlCategory object itself.
      */
@@ -69,19 +73,17 @@ public final class PredefinedUrlCategory {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property action in model PredefinedUrlCategory"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property action in model PredefinedUrlCategory"));
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model PredefinedUrlCategory"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model PredefinedUrlCategory"));
         }
     }
 

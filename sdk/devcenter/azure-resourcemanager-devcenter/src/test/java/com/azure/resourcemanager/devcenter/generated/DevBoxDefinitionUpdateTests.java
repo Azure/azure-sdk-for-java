@@ -20,17 +20,17 @@ public final class DevBoxDefinitionUpdateTests {
         DevBoxDefinitionUpdate model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"imageReference\":{\"id\":\"tmgrcfbun\",\"exactVersion\":\"fqjhhkxbpvjymj\"},\"sku\":{\"name\":\"xjyngudivk\",\"tier\":\"Basic\",\"size\":\"bxqz\",\"family\":\"zjf\",\"capacity\":1306170568},\"osStorageType\":\"fdxxivetvtcqaqtd\",\"hibernateSupport\":\"Enabled\"},\"tags\":{\"vxysl\":\"xv\",\"ytkblmpew\":\"bhsfxob\"},\"location\":\"fbkrvrnsvs\"}")
+                    "{\"properties\":{\"imageReference\":{\"id\":\"keqdcvdrhvoods\",\"exactVersion\":\"bobzdopcjwvnhd\"},\"sku\":{\"name\":\"wmgxcxrsl\",\"tier\":\"Free\",\"size\":\"wuoegrpk\",\"family\":\"wniyqsluicpd\",\"capacity\":1810528552},\"osStorageType\":\"zl\",\"hibernateSupport\":\"Enabled\"},\"tags\":{\"wsbpfvm\":\"axmodfvuef\",\"yzvqt\":\"yhrfouyftaakcpw\",\"zksmondj\":\"nubexk\",\"whojvp\":\"quxvypomgkop\"},\"location\":\"qgxy\"}")
                 .toObject(DevBoxDefinitionUpdate.class);
-        Assertions.assertEquals("xv", model.tags().get("vxysl"));
-        Assertions.assertEquals("fbkrvrnsvs", model.location());
-        Assertions.assertEquals("tmgrcfbun", model.imageReference().id());
-        Assertions.assertEquals("xjyngudivk", model.sku().name());
-        Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
-        Assertions.assertEquals("bxqz", model.sku().size());
-        Assertions.assertEquals("zjf", model.sku().family());
-        Assertions.assertEquals(1306170568, model.sku().capacity());
-        Assertions.assertEquals("fdxxivetvtcqaqtd", model.osStorageType());
+        Assertions.assertEquals("axmodfvuef", model.tags().get("wsbpfvm"));
+        Assertions.assertEquals("qgxy", model.location());
+        Assertions.assertEquals("keqdcvdrhvoods", model.imageReference().id());
+        Assertions.assertEquals("wmgxcxrsl", model.sku().name());
+        Assertions.assertEquals(SkuTier.FREE, model.sku().tier());
+        Assertions.assertEquals("wuoegrpk", model.sku().size());
+        Assertions.assertEquals("wniyqsluicpd", model.sku().family());
+        Assertions.assertEquals(1810528552, model.sku().capacity());
+        Assertions.assertEquals("zl", model.osStorageType());
         Assertions.assertEquals(HibernateSupport.ENABLED, model.hibernateSupport());
     }
 
@@ -38,31 +38,41 @@ public final class DevBoxDefinitionUpdateTests {
     public void testSerialize() throws Exception {
         DevBoxDefinitionUpdate model =
             new DevBoxDefinitionUpdate()
-                .withTags(mapOf("vxysl", "xv", "ytkblmpew", "bhsfxob"))
-                .withLocation("fbkrvrnsvs")
-                .withImageReference(new ImageReference().withId("tmgrcfbun"))
+                .withTags(
+                    mapOf(
+                        "wsbpfvm",
+                        "axmodfvuef",
+                        "yzvqt",
+                        "yhrfouyftaakcpw",
+                        "zksmondj",
+                        "nubexk",
+                        "whojvp",
+                        "quxvypomgkop"))
+                .withLocation("qgxy")
+                .withImageReference(new ImageReference().withId("keqdcvdrhvoods"))
                 .withSku(
                     new Sku()
-                        .withName("xjyngudivk")
-                        .withTier(SkuTier.BASIC)
-                        .withSize("bxqz")
-                        .withFamily("zjf")
-                        .withCapacity(1306170568))
-                .withOsStorageType("fdxxivetvtcqaqtd")
+                        .withName("wmgxcxrsl")
+                        .withTier(SkuTier.FREE)
+                        .withSize("wuoegrpk")
+                        .withFamily("wniyqsluicpd")
+                        .withCapacity(1810528552))
+                .withOsStorageType("zl")
                 .withHibernateSupport(HibernateSupport.ENABLED);
         model = BinaryData.fromObject(model).toObject(DevBoxDefinitionUpdate.class);
-        Assertions.assertEquals("xv", model.tags().get("vxysl"));
-        Assertions.assertEquals("fbkrvrnsvs", model.location());
-        Assertions.assertEquals("tmgrcfbun", model.imageReference().id());
-        Assertions.assertEquals("xjyngudivk", model.sku().name());
-        Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
-        Assertions.assertEquals("bxqz", model.sku().size());
-        Assertions.assertEquals("zjf", model.sku().family());
-        Assertions.assertEquals(1306170568, model.sku().capacity());
-        Assertions.assertEquals("fdxxivetvtcqaqtd", model.osStorageType());
+        Assertions.assertEquals("axmodfvuef", model.tags().get("wsbpfvm"));
+        Assertions.assertEquals("qgxy", model.location());
+        Assertions.assertEquals("keqdcvdrhvoods", model.imageReference().id());
+        Assertions.assertEquals("wmgxcxrsl", model.sku().name());
+        Assertions.assertEquals(SkuTier.FREE, model.sku().tier());
+        Assertions.assertEquals("wuoegrpk", model.sku().size());
+        Assertions.assertEquals("wniyqsluicpd", model.sku().family());
+        Assertions.assertEquals(1810528552, model.sku().capacity());
+        Assertions.assertEquals("zl", model.osStorageType());
         Assertions.assertEquals(HibernateSupport.ENABLED, model.hibernateSupport());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

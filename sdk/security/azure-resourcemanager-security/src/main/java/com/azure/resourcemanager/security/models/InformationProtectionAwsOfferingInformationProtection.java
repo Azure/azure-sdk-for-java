@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The native cloud connection configuration. */
+/**
+ * The native cloud connection configuration.
+ */
 @Fluent
 public final class InformationProtectionAwsOfferingInformationProtection {
     /*
@@ -16,13 +18,15 @@ public final class InformationProtectionAwsOfferingInformationProtection {
     @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
 
-    /** Creates an instance of InformationProtectionAwsOfferingInformationProtection class. */
+    /**
+     * Creates an instance of InformationProtectionAwsOfferingInformationProtection class.
+     */
     public InformationProtectionAwsOfferingInformationProtection() {
     }
 
     /**
      * Get the cloudRoleArn property: The cloud role ARN in AWS for this feature.
-     *
+     * 
      * @return the cloudRoleArn value.
      */
     public String cloudRoleArn() {
@@ -31,7 +35,7 @@ public final class InformationProtectionAwsOfferingInformationProtection {
 
     /**
      * Set the cloudRoleArn property: The cloud role ARN in AWS for this feature.
-     *
+     * 
      * @param cloudRoleArn the cloudRoleArn value to set.
      * @return the InformationProtectionAwsOfferingInformationProtection object itself.
      */
@@ -42,7 +46,7 @@ public final class InformationProtectionAwsOfferingInformationProtection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

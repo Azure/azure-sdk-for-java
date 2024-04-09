@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-/** Samples for Topics List. */
+/**
+ * Samples for Topics List.
+ */
 public final class TopicsListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Topics_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * Topics_ListBySubscription.json
      */
     /**
      * Sample code: Topics_ListBySubscription.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void topicsListBySubscription(com.azure.resourcemanager.eventgrid.EventGridManager manager) {

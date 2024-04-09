@@ -41,24 +41,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CloudServiceRoleInstancesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CloudServiceRoleInstancesClient.
+ */
 public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRoleInstancesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CloudServiceRoleInstancesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ComputeManagementClientImpl client;
 
     /**
      * Initializes an instance of CloudServiceRoleInstancesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CloudServiceRoleInstancesClientImpl(ComputeManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    CloudServiceRoleInstancesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(CloudServiceRoleInstancesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,141 +73,98 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     public interface CloudServiceRoleInstancesService {
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("roleInstanceName") String roleInstanceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cloudServiceName") String cloudServiceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("cloudServiceName") String cloudServiceName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<RoleInstanceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RoleInstanceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("roleInstanceName") String roleInstanceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cloudServiceName") String cloudServiceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$expand") InstanceViewTypes expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("cloudServiceName") String cloudServiceName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$expand") InstanceViewTypes expand,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/instanceView")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/instanceView")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<RoleInstanceViewInner>> getInstanceView(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RoleInstanceViewInner>> getInstanceView(@HostParam("$host") String endpoint,
             @PathParam("roleInstanceName") String roleInstanceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cloudServiceName") String cloudServiceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("cloudServiceName") String cloudServiceName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<RoleInstanceListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RoleInstanceListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cloudServiceName") String cloudServiceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$expand") InstanceViewTypes expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("cloudServiceName") String cloudServiceName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$expand") InstanceViewTypes expand,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/restart")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/restart")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> restart(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> restart(@HostParam("$host") String endpoint,
             @PathParam("roleInstanceName") String roleInstanceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cloudServiceName") String cloudServiceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("cloudServiceName") String cloudServiceName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/reimage")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/reimage")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> reimage(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> reimage(@HostParam("$host") String endpoint,
             @PathParam("roleInstanceName") String roleInstanceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cloudServiceName") String cloudServiceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("cloudServiceName") String cloudServiceName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/rebuild")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/rebuild")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> rebuild(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> rebuild(@HostParam("$host") String endpoint,
             @PathParam("roleInstanceName") String roleInstanceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cloudServiceName") String cloudServiceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("cloudServiceName") String cloudServiceName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/remoteDesktopFile")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/remoteDesktopFile")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BinaryData>> getRemoteDesktopFile(
-            @HostParam("$host") String endpoint,
+        Mono<Response<BinaryData>> getRemoteDesktopFile(@HostParam("$host") String endpoint,
             @PathParam("roleInstanceName") String roleInstanceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cloudServiceName") String cloudServiceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("cloudServiceName") String cloudServiceName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<RoleInstanceListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RoleInstanceListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -213,13 +174,11 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleInstanceName == null) {
             return Mono
@@ -234,32 +193,20 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                 .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            roleInstanceName,
-                            resourceGroupName,
-                            cloudServiceName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), roleInstanceName, resourceGroupName,
+                cloudServiceName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -270,13 +217,11 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleInstanceName == null) {
             return Mono
@@ -291,29 +236,19 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                 .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                roleInstanceName,
-                resourceGroupName,
-                cloudServiceName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), roleInstanceName, resourceGroupName, cloudServiceName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -323,19 +258,17 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -346,19 +279,18 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -368,14 +300,14 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName) {
         return this.beginDeleteAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
     }
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -386,14 +318,14 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName, Context context) {
         return this.beginDeleteAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
     }
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -404,14 +336,13 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String roleInstanceName, String resourceGroupName, String cloudServiceName) {
-        return beginDeleteAsync(roleInstanceName, resourceGroupName, cloudServiceName)
-            .last()
+        return beginDeleteAsync(roleInstanceName, resourceGroupName, cloudServiceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -422,16 +353,15 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
-        return beginDeleteAsync(roleInstanceName, resourceGroupName, cloudServiceName, context)
-            .last()
+    private Mono<Void> deleteAsync(String roleInstanceName, String resourceGroupName, String cloudServiceName,
+        Context context) {
+        return beginDeleteAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -446,7 +376,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -462,7 +392,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Gets a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -470,17 +400,15 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role instance from a cloud service along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a role instance from a cloud service along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoleInstanceInner>> getWithResponseAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, InstanceViewTypes expand) {
+    public Mono<Response<RoleInstanceInner>> getWithResponseAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName, InstanceViewTypes expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleInstanceName == null) {
             return Mono
@@ -495,33 +423,20 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                 .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            roleInstanceName,
-                            resourceGroupName,
-                            cloudServiceName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            expand,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), roleInstanceName, resourceGroupName,
+                cloudServiceName, this.client.getSubscriptionId(), apiVersion, expand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -530,21 +445,15 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role instance from a cloud service along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a role instance from a cloud service along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RoleInstanceInner>> getWithResponseAsync(
-        String roleInstanceName,
-        String resourceGroupName,
-        String cloudServiceName,
-        InstanceViewTypes expand,
-        Context context) {
+    private Mono<Response<RoleInstanceInner>> getWithResponseAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName, InstanceViewTypes expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleInstanceName == null) {
             return Mono
@@ -559,30 +468,19 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                 .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                roleInstanceName,
-                resourceGroupName,
-                cloudServiceName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                expand,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), roleInstanceName, resourceGroupName, cloudServiceName,
+            this.client.getSubscriptionId(), apiVersion, expand, accept, context);
     }
 
     /**
      * Gets a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -592,8 +490,8 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return a role instance from a cloud service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoleInstanceInner> getAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
+    public Mono<RoleInstanceInner> getAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName) {
         final InstanceViewTypes expand = null;
         return getWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName, expand)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -601,7 +499,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Gets a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -613,18 +511,14 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return a role instance from a cloud service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoleInstanceInner> getWithResponse(
-        String roleInstanceName,
-        String resourceGroupName,
-        String cloudServiceName,
-        InstanceViewTypes expand,
-        Context context) {
+    public Response<RoleInstanceInner> getWithResponse(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName, InstanceViewTypes expand, Context context) {
         return getWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName, expand, context).block();
     }
 
     /**
      * Gets a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -641,24 +535,22 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Retrieves information about the run-time state of a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the instance view of the role instance along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the instance view of the role instance along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoleInstanceViewInner>> getInstanceViewWithResponseAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
+    public Mono<Response<RoleInstanceViewInner>> getInstanceViewWithResponseAsync(String roleInstanceName,
+        String resourceGroupName, String cloudServiceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleInstanceName == null) {
             return Mono
@@ -673,32 +565,20 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                 .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getInstanceView(
-                            this.client.getEndpoint(),
-                            roleInstanceName,
-                            resourceGroupName,
-                            cloudServiceName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.getInstanceView(this.client.getEndpoint(), roleInstanceName,
+                resourceGroupName, cloudServiceName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves information about the run-time state of a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -706,17 +586,15 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the instance view of the role instance along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the instance view of the role instance along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RoleInstanceViewInner>> getInstanceViewWithResponseAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
+    private Mono<Response<RoleInstanceViewInner>> getInstanceViewWithResponseAsync(String roleInstanceName,
+        String resourceGroupName, String cloudServiceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleInstanceName == null) {
             return Mono
@@ -731,29 +609,19 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                 .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getInstanceView(
-                this.client.getEndpoint(),
-                roleInstanceName,
-                resourceGroupName,
-                cloudServiceName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.getInstanceView(this.client.getEndpoint(), roleInstanceName, resourceGroupName, cloudServiceName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Retrieves information about the run-time state of a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -763,15 +631,15 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the instance view of the role instance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoleInstanceViewInner> getInstanceViewAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
+    public Mono<RoleInstanceViewInner> getInstanceViewAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName) {
         return getInstanceViewWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieves information about the run-time state of a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -782,14 +650,14 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the instance view of the role instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoleInstanceViewInner> getInstanceViewWithResponse(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
+    public Response<RoleInstanceViewInner> getInstanceViewWithResponse(String roleInstanceName,
+        String resourceGroupName, String cloudServiceName, Context context) {
         return getInstanceViewWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).block();
     }
 
     /**
      * Retrieves information about the run-time state of a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -799,8 +667,8 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the instance view of the role instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleInstanceViewInner getInstanceView(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
+    public RoleInstanceViewInner getInstanceView(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName) {
         return getInstanceViewWithResponse(roleInstanceName, resourceGroupName, cloudServiceName, Context.NONE)
             .getValue();
     }
@@ -808,7 +676,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * Gets the list of all role instances in a cloud service. Use nextLink property in the response to get the next
      * page of role instances. Do this till nextLink is null to fetch all the role instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param expand The expand expression to apply to the operation. 'UserData' is not supported for cloud services.
@@ -816,16 +684,14 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of all role instances in a cloud service along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RoleInstanceInner>> listSinglePageAsync(
-        String resourceGroupName, String cloudServiceName, InstanceViewTypes expand) {
+    private Mono<PagedResponse<RoleInstanceInner>> listSinglePageAsync(String resourceGroupName,
+        String cloudServiceName, InstanceViewTypes expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -836,42 +702,23 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                 .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            cloudServiceName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            expand,
-                            accept,
-                            context))
-            .<PagedResponse<RoleInstanceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, cloudServiceName,
+                this.client.getSubscriptionId(), apiVersion, expand, accept, context))
+            .<PagedResponse<RoleInstanceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the list of all role instances in a cloud service. Use nextLink property in the response to get the next
      * page of role instances. Do this till nextLink is null to fetch all the role instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param expand The expand expression to apply to the operation. 'UserData' is not supported for cloud services.
@@ -880,16 +727,14 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of all role instances in a cloud service along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RoleInstanceInner>> listSinglePageAsync(
-        String resourceGroupName, String cloudServiceName, InstanceViewTypes expand, Context context) {
+    private Mono<PagedResponse<RoleInstanceInner>> listSinglePageAsync(String resourceGroupName,
+        String cloudServiceName, InstanceViewTypes expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -900,39 +745,23 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                 .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                cloudServiceName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                expand,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), resourceGroupName, cloudServiceName, this.client.getSubscriptionId(),
+                apiVersion, expand, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets the list of all role instances in a cloud service. Use nextLink property in the response to get the next
      * page of role instances. Do this till nextLink is null to fetch all the role instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param expand The expand expression to apply to the operation. 'UserData' is not supported for cloud services.
@@ -942,17 +771,16 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the list of all role instances in a cloud service as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RoleInstanceInner> listAsync(
-        String resourceGroupName, String cloudServiceName, InstanceViewTypes expand) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, cloudServiceName, expand),
+    public PagedFlux<RoleInstanceInner> listAsync(String resourceGroupName, String cloudServiceName,
+        InstanceViewTypes expand) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, cloudServiceName, expand),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the list of all role instances in a cloud service. Use nextLink property in the response to get the next
      * page of role instances. Do this till nextLink is null to fetch all the role instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -963,15 +791,14 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleInstanceInner> listAsync(String resourceGroupName, String cloudServiceName) {
         final InstanceViewTypes expand = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, cloudServiceName, expand),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, cloudServiceName, expand),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the list of all role instances in a cloud service. Use nextLink property in the response to get the next
      * page of role instances. Do this till nextLink is null to fetch all the role instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param expand The expand expression to apply to the operation. 'UserData' is not supported for cloud services.
@@ -982,17 +809,16 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the list of all role instances in a cloud service as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RoleInstanceInner> listAsync(
-        String resourceGroupName, String cloudServiceName, InstanceViewTypes expand, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, cloudServiceName, expand, context),
+    private PagedFlux<RoleInstanceInner> listAsync(String resourceGroupName, String cloudServiceName,
+        InstanceViewTypes expand, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, cloudServiceName, expand, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets the list of all role instances in a cloud service. Use nextLink property in the response to get the next
      * page of role instances. Do this till nextLink is null to fetch all the role instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1009,7 +835,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * Gets the list of all role instances in a cloud service. Use nextLink property in the response to get the next
      * page of role instances. Do this till nextLink is null to fetch all the role instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param expand The expand expression to apply to the operation. 'UserData' is not supported for cloud services.
@@ -1020,14 +846,14 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the list of all role instances in a cloud service as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RoleInstanceInner> list(
-        String resourceGroupName, String cloudServiceName, InstanceViewTypes expand, Context context) {
+    public PagedIterable<RoleInstanceInner> list(String resourceGroupName, String cloudServiceName,
+        InstanceViewTypes expand, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, cloudServiceName, expand, context));
     }
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1037,13 +863,11 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
+    public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleInstanceName == null) {
             return Mono
@@ -1058,32 +882,20 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                 .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .restart(
-                            this.client.getEndpoint(),
-                            roleInstanceName,
-                            resourceGroupName,
-                            cloudServiceName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.restart(this.client.getEndpoint(), roleInstanceName, resourceGroupName,
+                cloudServiceName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1094,13 +906,11 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleInstanceName == null) {
             return Mono
@@ -1115,29 +925,19 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                 .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .restart(
-                this.client.getEndpoint(),
-                roleInstanceName,
-                resourceGroupName,
-                cloudServiceName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.restart(this.client.getEndpoint(), roleInstanceName, resourceGroupName, cloudServiceName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1147,19 +947,17 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginRestartAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            restartWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginRestartAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = restartWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1170,19 +968,18 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            restartWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = restartWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1192,14 +989,14 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestart(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
+    public SyncPoller<PollResult<Void>, Void> beginRestart(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName) {
         return this.beginRestartAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
     }
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1210,14 +1007,14 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestart(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginRestart(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName, Context context) {
         return this.beginRestartAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
     }
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1228,14 +1025,13 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> restartAsync(String roleInstanceName, String resourceGroupName, String cloudServiceName) {
-        return beginRestartAsync(roleInstanceName, resourceGroupName, cloudServiceName)
-            .last()
+        return beginRestartAsync(roleInstanceName, resourceGroupName, cloudServiceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1246,16 +1042,15 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> restartAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
-        return beginRestartAsync(roleInstanceName, resourceGroupName, cloudServiceName, context)
-            .last()
+    private Mono<Void> restartAsync(String roleInstanceName, String resourceGroupName, String cloudServiceName,
+        Context context) {
+        return beginRestartAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1270,7 +1065,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1287,7 +1082,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1297,13 +1092,11 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
+    public Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleInstanceName == null) {
             return Mono
@@ -1318,33 +1111,21 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                 .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .reimage(
-                            this.client.getEndpoint(),
-                            roleInstanceName,
-                            resourceGroupName,
-                            cloudServiceName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.reimage(this.client.getEndpoint(), roleInstanceName, resourceGroupName,
+                cloudServiceName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1355,13 +1136,11 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleInstanceName == null) {
             return Mono
@@ -1376,30 +1155,20 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                 .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .reimage(
-                this.client.getEndpoint(),
-                roleInstanceName,
-                resourceGroupName,
-                cloudServiceName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.reimage(this.client.getEndpoint(), roleInstanceName, resourceGroupName, cloudServiceName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1409,20 +1178,18 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginReimageAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            reimageWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginReimageAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = reimageWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1433,20 +1200,19 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginReimageAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginReimageAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            reimageWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = reimageWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1456,15 +1222,15 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginReimage(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
+    public SyncPoller<PollResult<Void>, Void> beginReimage(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName) {
         return this.beginReimageAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
     }
 
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1475,15 +1241,15 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginReimage(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginReimage(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName, Context context) {
         return this.beginReimageAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
     }
 
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1494,15 +1260,14 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> reimageAsync(String roleInstanceName, String resourceGroupName, String cloudServiceName) {
-        return beginReimageAsync(roleInstanceName, resourceGroupName, cloudServiceName)
-            .last()
+        return beginReimageAsync(roleInstanceName, resourceGroupName, cloudServiceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1513,17 +1278,16 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> reimageAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
-        return beginReimageAsync(roleInstanceName, resourceGroupName, cloudServiceName, context)
-            .last()
+    private Mono<Void> reimageAsync(String roleInstanceName, String resourceGroupName, String cloudServiceName,
+        Context context) {
+        return beginReimageAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1539,7 +1303,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1557,7 +1321,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1567,13 +1331,11 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> rebuildWithResponseAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
+    public Mono<Response<Flux<ByteBuffer>>> rebuildWithResponseAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleInstanceName == null) {
             return Mono
@@ -1588,26 +1350,14 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                 .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .rebuild(
-                            this.client.getEndpoint(),
-                            roleInstanceName,
-                            resourceGroupName,
-                            cloudServiceName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.rebuild(this.client.getEndpoint(), roleInstanceName, resourceGroupName,
+                cloudServiceName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1615,7 +1365,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1626,13 +1376,11 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> rebuildWithResponseAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> rebuildWithResponseAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleInstanceName == null) {
             return Mono
@@ -1647,31 +1395,21 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                 .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .rebuild(
-                this.client.getEndpoint(),
-                roleInstanceName,
-                resourceGroupName,
-                cloudServiceName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.rebuild(this.client.getEndpoint(), roleInstanceName, resourceGroupName, cloudServiceName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1681,21 +1419,19 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginRebuildAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            rebuildWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginRebuildAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = rebuildWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1706,21 +1442,20 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRebuildAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRebuildAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            rebuildWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = rebuildWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1730,8 +1465,8 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRebuild(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
+    public SyncPoller<PollResult<Void>, Void> beginRebuild(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName) {
         return this.beginRebuildAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
     }
 
@@ -1739,7 +1474,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1750,8 +1485,8 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRebuild(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginRebuild(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName, Context context) {
         return this.beginRebuildAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
     }
 
@@ -1759,7 +1494,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1770,8 +1505,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rebuildAsync(String roleInstanceName, String resourceGroupName, String cloudServiceName) {
-        return beginRebuildAsync(roleInstanceName, resourceGroupName, cloudServiceName)
-            .last()
+        return beginRebuildAsync(roleInstanceName, resourceGroupName, cloudServiceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1779,7 +1513,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1790,10 +1524,9 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> rebuildAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
-        return beginRebuildAsync(roleInstanceName, resourceGroupName, cloudServiceName, context)
-            .last()
+    private Mono<Void> rebuildAsync(String roleInstanceName, String resourceGroupName, String cloudServiceName,
+        Context context) {
+        return beginRebuildAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1801,7 +1534,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1818,7 +1551,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1834,7 +1567,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Gets a remote desktop file for a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1842,16 +1575,14 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a remote desktop file for a role instance in a cloud service along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getRemoteDesktopFileWithResponseAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
+    public Mono<Response<BinaryData>> getRemoteDesktopFileWithResponseAsync(String roleInstanceName,
+        String resourceGroupName, String cloudServiceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleInstanceName == null) {
             return Mono
@@ -1866,32 +1597,20 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                 .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2022-09-04";
         final String accept = "application/x-rdp";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getRemoteDesktopFile(
-                            this.client.getEndpoint(),
-                            roleInstanceName,
-                            resourceGroupName,
-                            cloudServiceName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.getRemoteDesktopFile(this.client.getEndpoint(), roleInstanceName,
+                resourceGroupName, cloudServiceName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a remote desktop file for a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1900,16 +1619,14 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a remote desktop file for a role instance in a cloud service along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> getRemoteDesktopFileWithResponseAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
+    private Mono<Response<BinaryData>> getRemoteDesktopFileWithResponseAsync(String roleInstanceName,
+        String resourceGroupName, String cloudServiceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleInstanceName == null) {
             return Mono
@@ -1924,29 +1641,19 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                 .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2022-09-04";
         final String accept = "application/x-rdp";
         context = this.client.mergeContext(context);
-        return service
-            .getRemoteDesktopFile(
-                this.client.getEndpoint(),
-                roleInstanceName,
-                resourceGroupName,
-                cloudServiceName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.getRemoteDesktopFile(this.client.getEndpoint(), roleInstanceName, resourceGroupName,
+            cloudServiceName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Gets a remote desktop file for a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1956,15 +1663,15 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return a remote desktop file for a role instance in a cloud service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getRemoteDesktopFileAsync(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName) {
+    public Mono<BinaryData> getRemoteDesktopFileAsync(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName) {
         return getRemoteDesktopFileWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a remote desktop file for a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1975,15 +1682,15 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * @return a remote desktop file for a role instance in a cloud service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getRemoteDesktopFileWithResponse(
-        String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
+    public Response<BinaryData> getRemoteDesktopFileWithResponse(String roleInstanceName, String resourceGroupName,
+        String cloudServiceName, Context context) {
         return getRemoteDesktopFileWithResponseAsync(roleInstanceName, resourceGroupName, cloudServiceName, context)
             .block();
     }
 
     /**
      * Gets a remote desktop file for a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -2000,9 +1707,10 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2014,31 +1722,22 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RoleInstanceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<RoleInstanceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2051,23 +1750,13 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

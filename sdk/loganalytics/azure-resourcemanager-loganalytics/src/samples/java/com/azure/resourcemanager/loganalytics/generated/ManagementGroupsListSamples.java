@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagementGroups List. */
 public final class ManagementGroupsListSamples {
     /*
@@ -18,6 +16,6 @@ public final class ManagementGroupsListSamples {
      */
     public static void workspacesListManagementGroups(
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.managementGroups().list("rg1", "TestLinkWS", Context.NONE);
+        manager.managementGroups().list("rg1", "TestLinkWS", com.azure.core.util.Context.NONE);
     }
 }

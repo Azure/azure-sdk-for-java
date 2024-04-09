@@ -13,22 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"nfnbacfionlebxe\",\"display\":{\"provider\":\"tzxdpnqbqqwx\",\"resource\":\"feallnwsu\",\"operation\":\"snjampmng\",\"description\":\"scxaq\"},\"isDataAction\":true,\"origin\":\"NotSpecified\",\"properties\":{\"pkvlrxn\":\"dataonq\",\"eipheoflokeyy\":\"dataea\",\"jp\":\"dataenjbdlwtgrhp\",\"e\":\"dataumasxazjpq\"}},{\"name\":\"alhbx\",\"display\":{\"provider\":\"jj\",\"resource\":\"v\",\"operation\":\"dgwdslfhot\",\"description\":\"cynpwlbjnp\"},\"isDataAction\":false,\"origin\":\"user\",\"properties\":{\"usue\":\"dataehxnltyfsop\",\"orxzdmohctbqvud\":\"datanzwdejba\",\"nvowgujju\":\"dataxdn\",\"zj\":\"datawdkcglhsl\"}}],\"nextLink\":\"ggd\"}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"clhocohsl\",\"display\":{\"provider\":\"leggzfbu\",\"resource\":\"mvfaxkffeiith\",\"operation\":\"m\",\"description\":\"yvshxmz\"},\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"pydptko\":\"dataigrxwburvjxxjn\"}}],\"nextLink\":\"kouknvudwtiu\"}")
+            .toObject(OperationListResult.class);
         Assertions.assertEquals(true, model.value().get(0).isDataAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationListResult model =
-            new OperationListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new OperationInner().withIsDataAction(true), new OperationInner().withIsDataAction(false)));
+        OperationListResult model
+            = new OperationListResult().withValue(Arrays.asList(new OperationInner().withIsDataAction(true)));
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
         Assertions.assertEquals(true, model.value().get(0).isDataAction());
     }

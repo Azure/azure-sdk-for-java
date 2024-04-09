@@ -148,6 +148,28 @@ public interface ReactiveCosmosOperations {
     <T> Mono<T> insert(String containerName, T objectToSave);
 
     /**
+     * Insert all items with bulk.
+     *
+     * @param entityInformation must not be {@literal null}
+     * @param entities must not be {@literal null}
+     * @param <T> type class of domain type
+     * @param <S> type class of domain type
+     * @return Flux of result
+     */
+    <S extends T, T> Flux<S> insertAll(CosmosEntityInformation<T, ?> entityInformation, Iterable<S> entities);
+
+    /**
+     * Insert all items with bulk.
+     *
+     * @param entityInformation must not be {@literal null}
+     * @param entities must not be {@literal null}
+     * @param <T> type class of domain type
+     * @param <S> type class of domain type
+     * @return Flux of result
+     */
+    <S extends T, T> Flux<S> insertAll(CosmosEntityInformation<T, ?> entityInformation, Flux<S> entities);
+
+    /**
      * patches item
      * @param id must not be {@literal null}
      * @param partitionKey must not be {@literal null}
@@ -210,7 +232,29 @@ public interface ReactiveCosmosOperations {
     <T> Mono<Void> deleteEntity(String containerName, T entity);
 
     /**
-     * Delete all items in a container
+     * Delete all items with bulk.
+     *
+     * @param entityInformation must not be {@literal null}
+     * @param entities must not be {@literal null}
+     * @param <T> type class of domain type
+     * @param <S> type class of domain type
+     * @return void Mono
+     */
+    <S extends T, T> Mono<Void> deleteEntities(CosmosEntityInformation<T, ?> entityInformation, Iterable<S> entities);
+
+    /**
+     * Delete all items with bulk.
+     *
+     * @param entityInformation must not be {@literal null}
+     * @param entities must not be {@literal null}
+     * @param <T> type class of domain type
+     * @param <S> type class of domain type
+     * @return void Mono
+     */
+    <S extends T, T> Mono<Void> deleteEntities(CosmosEntityInformation<T, ?> entityInformation, Flux<S> entities);
+
+    /**
+     * Delete all items in a container. Uses bulk if possible.
      *
      * @param containerName the container name
      * @param domainType the domainType

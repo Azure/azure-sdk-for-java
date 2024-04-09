@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Execute spark job activity. */
+/**
+ * Execute spark job activity.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SparkJob")
 @Fluent
@@ -24,55 +26,87 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private SynapseSparkJobActivityTypeProperties innerTypeProperties = new SynapseSparkJobActivityTypeProperties();
 
-    /** Creates an instance of SynapseSparkJobDefinitionActivity class. */
+    /**
+     * Creates an instance of SynapseSparkJobDefinitionActivity class.
+     */
     public SynapseSparkJobDefinitionActivity() {
     }
 
     /**
      * Get the innerTypeProperties property: Execute spark job activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private SynapseSparkJobActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SynapseSparkJobDefinitionActivity withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SynapseSparkJobDefinitionActivity withPolicy(ActivityPolicy policy) {
         super.withPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SynapseSparkJobDefinitionActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SynapseSparkJobDefinitionActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SynapseSparkJobDefinitionActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SynapseSparkJobDefinitionActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SynapseSparkJobDefinitionActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SynapseSparkJobDefinitionActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -81,7 +115,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
 
     /**
      * Get the sparkJob property: Synapse spark job reference.
-     *
+     * 
      * @return the sparkJob value.
      */
     public SynapseSparkJobReference sparkJob() {
@@ -90,7 +124,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
 
     /**
      * Set the sparkJob property: Synapse spark job reference.
-     *
+     * 
      * @param sparkJob the sparkJob value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
@@ -104,7 +138,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
 
     /**
      * Get the arguments property: User specified arguments to SynapseSparkJobDefinitionActivity.
-     *
+     * 
      * @return the arguments value.
      */
     public List<Object> arguments() {
@@ -113,7 +147,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
 
     /**
      * Set the arguments property: User specified arguments to SynapseSparkJobDefinitionActivity.
-     *
+     * 
      * @param arguments the arguments value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
@@ -126,9 +160,9 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the file property: The main file used for the job, which will override the 'file' of the spark job definition
-     * you provide. Type: string (or Expression with resultType string).
-     *
+     * Get the file property: The main file used for the job, which will override the 'file' of the spark job
+     * definition you provide. Type: string (or Expression with resultType string).
+     * 
      * @return the file value.
      */
     public Object file() {
@@ -136,9 +170,9 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the file property: The main file used for the job, which will override the 'file' of the spark job definition
-     * you provide. Type: string (or Expression with resultType string).
-     *
+     * Set the file property: The main file used for the job, which will override the 'file' of the spark job
+     * definition you provide. Type: string (or Expression with resultType string).
+     * 
      * @param file the file value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
@@ -152,9 +186,9 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
 
     /**
      * Get the scanFolder property: Scanning subfolders from the root folder of the main definition file, these files
-     * will be added as reference files. The folders named 'jars', 'pyFiles', 'files' or 'archives' will be scanned, and
-     * the folders name are case sensitive. Type: boolean (or Expression with resultType boolean).
-     *
+     * will be added as reference files. The folders named 'jars', 'pyFiles', 'files' or 'archives' will be scanned,
+     * and the folders name are case sensitive. Type: boolean (or Expression with resultType boolean).
+     * 
      * @return the scanFolder value.
      */
     public Object scanFolder() {
@@ -163,9 +197,9 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
 
     /**
      * Set the scanFolder property: Scanning subfolders from the root folder of the main definition file, these files
-     * will be added as reference files. The folders named 'jars', 'pyFiles', 'files' or 'archives' will be scanned, and
-     * the folders name are case sensitive. Type: boolean (or Expression with resultType boolean).
-     *
+     * will be added as reference files. The folders named 'jars', 'pyFiles', 'files' or 'archives' will be scanned,
+     * and the folders name are case sensitive. Type: boolean (or Expression with resultType boolean).
+     * 
      * @param scanFolder the scanFolder value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
@@ -178,10 +212,10 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the className property: The fully-qualified identifier or the main class that is in the main definition file,
-     * which will override the 'className' of the spark job definition you provide. Type: string (or Expression with
-     * resultType string).
-     *
+     * Get the className property: The fully-qualified identifier or the main class that is in the main definition
+     * file, which will override the 'className' of the spark job definition you provide. Type: string (or Expression
+     * with resultType string).
+     * 
      * @return the className value.
      */
     public Object className() {
@@ -189,10 +223,10 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the className property: The fully-qualified identifier or the main class that is in the main definition file,
-     * which will override the 'className' of the spark job definition you provide. Type: string (or Expression with
-     * resultType string).
-     *
+     * Set the className property: The fully-qualified identifier or the main class that is in the main definition
+     * file, which will override the 'className' of the spark job definition you provide. Type: string (or Expression
+     * with resultType string).
+     * 
      * @param className the className value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
@@ -207,7 +241,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /**
      * Get the files property: (Deprecated. Please use pythonCodeReference and filesV2) Additional files used for
      * reference in the main definition file, which will override the 'files' of the spark job definition you provide.
-     *
+     * 
      * @return the files value.
      */
     public List<Object> files() {
@@ -217,7 +251,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /**
      * Set the files property: (Deprecated. Please use pythonCodeReference and filesV2) Additional files used for
      * reference in the main definition file, which will override the 'files' of the spark job definition you provide.
-     *
+     * 
      * @param files the files value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
@@ -232,7 +266,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /**
      * Get the pythonCodeReference property: Additional python code files used for reference in the main definition
      * file, which will override the 'pyFiles' of the spark job definition you provide.
-     *
+     * 
      * @return the pythonCodeReference value.
      */
     public List<Object> pythonCodeReference() {
@@ -242,7 +276,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /**
      * Set the pythonCodeReference property: Additional python code files used for reference in the main definition
      * file, which will override the 'pyFiles' of the spark job definition you provide.
-     *
+     * 
      * @param pythonCodeReference the pythonCodeReference value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
@@ -257,7 +291,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /**
      * Get the filesV2 property: Additional files used for reference in the main definition file, which will override
      * the 'jars' and 'files' of the spark job definition you provide.
-     *
+     * 
      * @return the filesV2 value.
      */
     public List<Object> filesV2() {
@@ -267,7 +301,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /**
      * Set the filesV2 property: Additional files used for reference in the main definition file, which will override
      * the 'jars' and 'files' of the spark job definition you provide.
-     *
+     * 
      * @param filesV2 the filesV2 value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
@@ -282,7 +316,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /**
      * Get the targetBigDataPool property: The name of the big data pool which will be used to execute the spark batch
      * job, which will override the 'targetBigDataPool' of the spark job definition you provide.
-     *
+     * 
      * @return the targetBigDataPool value.
      */
     public BigDataPoolParametrizationReference targetBigDataPool() {
@@ -292,12 +326,12 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /**
      * Set the targetBigDataPool property: The name of the big data pool which will be used to execute the spark batch
      * job, which will override the 'targetBigDataPool' of the spark job definition you provide.
-     *
+     * 
      * @param targetBigDataPool the targetBigDataPool value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
-    public SynapseSparkJobDefinitionActivity withTargetBigDataPool(
-        BigDataPoolParametrizationReference targetBigDataPool) {
+    public SynapseSparkJobDefinitionActivity
+        withTargetBigDataPool(BigDataPoolParametrizationReference targetBigDataPool) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new SynapseSparkJobActivityTypeProperties();
         }
@@ -309,7 +343,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * Get the executorSize property: Number of core and memory to be used for executors allocated in the specified
      * Spark pool for the job, which will be used for overriding 'executorCores' and 'executorMemory' of the spark job
      * definition you provide. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the executorSize value.
      */
     public Object executorSize() {
@@ -320,7 +354,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * Set the executorSize property: Number of core and memory to be used for executors allocated in the specified
      * Spark pool for the job, which will be used for overriding 'executorCores' and 'executorMemory' of the spark job
      * definition you provide. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param executorSize the executorSize value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
@@ -333,9 +367,9 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the conf property: Spark configuration properties, which will override the 'conf' of the spark job definition
-     * you provide.
-     *
+     * Get the conf property: Spark configuration properties, which will override the 'conf' of the spark job
+     * definition you provide.
+     * 
      * @return the conf value.
      */
     public Object conf() {
@@ -343,9 +377,9 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the conf property: Spark configuration properties, which will override the 'conf' of the spark job definition
-     * you provide.
-     *
+     * Set the conf property: Spark configuration properties, which will override the 'conf' of the spark job
+     * definition you provide.
+     * 
      * @param conf the conf value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
@@ -361,7 +395,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * Get the driverSize property: Number of core and memory to be used for driver allocated in the specified Spark
      * pool for the job, which will be used for overriding 'driverCores' and 'driverMemory' of the spark job definition
      * you provide. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the driverSize value.
      */
     public Object driverSize() {
@@ -372,7 +406,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * Set the driverSize property: Number of core and memory to be used for driver allocated in the specified Spark
      * pool for the job, which will be used for overriding 'driverCores' and 'driverMemory' of the spark job definition
      * you provide. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param driverSize the driverSize value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
@@ -385,9 +419,9 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the numExecutors property: Number of executors to launch for this job, which will override the 'numExecutors'
-     * of the spark job definition you provide. Type: integer (or Expression with resultType integer).
-     *
+     * Get the numExecutors property: Number of executors to launch for this job, which will override the
+     * 'numExecutors' of the spark job definition you provide. Type: integer (or Expression with resultType integer).
+     * 
      * @return the numExecutors value.
      */
     public Object numExecutors() {
@@ -395,9 +429,9 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the numExecutors property: Number of executors to launch for this job, which will override the 'numExecutors'
-     * of the spark job definition you provide. Type: integer (or Expression with resultType integer).
-     *
+     * Set the numExecutors property: Number of executors to launch for this job, which will override the
+     * 'numExecutors' of the spark job definition you provide. Type: integer (or Expression with resultType integer).
+     * 
      * @param numExecutors the numExecutors value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
@@ -411,7 +445,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
 
     /**
      * Get the configurationType property: The type of the spark config.
-     *
+     * 
      * @return the configurationType value.
      */
     public ConfigurationType configurationType() {
@@ -420,7 +454,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
 
     /**
      * Set the configurationType property: The type of the spark config.
-     *
+     * 
      * @param configurationType the configurationType value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
@@ -434,7 +468,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
 
     /**
      * Get the targetSparkConfiguration property: The spark configuration of the spark job.
-     *
+     * 
      * @return the targetSparkConfiguration value.
      */
     public SparkConfigurationParametrizationReference targetSparkConfiguration() {
@@ -443,12 +477,12 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
 
     /**
      * Set the targetSparkConfiguration property: The spark configuration of the spark job.
-     *
+     * 
      * @param targetSparkConfiguration the targetSparkConfiguration value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
-    public SynapseSparkJobDefinitionActivity withTargetSparkConfiguration(
-        SparkConfigurationParametrizationReference targetSparkConfiguration) {
+    public SynapseSparkJobDefinitionActivity
+        withTargetSparkConfiguration(SparkConfigurationParametrizationReference targetSparkConfiguration) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new SynapseSparkJobActivityTypeProperties();
         }
@@ -458,7 +492,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
 
     /**
      * Get the sparkConfig property: Spark configuration property.
-     *
+     * 
      * @return the sparkConfig value.
      */
     public Map<String, Object> sparkConfig() {
@@ -467,7 +501,7 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
 
     /**
      * Set the sparkConfig property: Spark configuration property.
-     *
+     * 
      * @param sparkConfig the sparkConfig value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
@@ -481,17 +515,15 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model SynapseSparkJobDefinitionActivity"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model SynapseSparkJobDefinitionActivity"));
         } else {
             innerTypeProperties().validate();
         }

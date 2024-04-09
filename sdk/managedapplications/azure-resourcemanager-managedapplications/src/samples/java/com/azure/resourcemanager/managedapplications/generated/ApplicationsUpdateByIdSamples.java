@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.managedapplications.generated;
 
-import com.azure.resourcemanager.managedapplications.fluent.models.ApplicationInner;
+import com.azure.resourcemanager.managedapplications.fluent.models.ApplicationPatchableInner;
 
 /** Samples for Applications UpdateById. */
 public final class ApplicationsUpdateByIdSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/updateApplicationById.json
+     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/updateApplicationById.json
      */
     /**
-     * Sample code: Update application by id.
+     * Sample code: Updates an existing managed application.
      *
      * @param manager Entry point to ApplicationManager.
      */
-    public static void updateApplicationById(com.azure.resourcemanager.managedapplications.ApplicationManager manager) {
+    public static void updatesAnExistingManagedApplication(
+        com.azure.resourcemanager.managedapplications.ApplicationManager manager) {
         manager
             .applications()
-            .updateByIdWithResponse(
-                "myApplicationId",
-                new ApplicationInner()
+            .updateById(
+                "subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applications/myManagedApplication",
+                new ApplicationPatchableInner()
                     .withKind("ServiceCatalog")
                     .withManagedResourceGroupId("/subscriptions/subid/resourceGroups/myManagedRG")
                     .withApplicationDefinitionId(

@@ -26,14 +26,16 @@ public final class InMageVolumeExclusionOptions {
     @JsonProperty(value = "onlyExcludeIfSingleVolume")
     private String onlyExcludeIfSingleVolume;
 
-    /** Creates an instance of InMageVolumeExclusionOptions class. */
+    /**
+     * Creates an instance of InMageVolumeExclusionOptions class.
+     */
     public InMageVolumeExclusionOptions() {
     }
 
     /**
      * Get the volumeLabel property: The volume label. The disk having any volume with this label will be excluded from
      * replication.
-     *
+     * 
      * @return the volumeLabel value.
      */
     public String volumeLabel() {
@@ -43,7 +45,7 @@ public final class InMageVolumeExclusionOptions {
     /**
      * Set the volumeLabel property: The volume label. The disk having any volume with this label will be excluded from
      * replication.
-     *
+     * 
      * @param volumeLabel the volumeLabel value to set.
      * @return the InMageVolumeExclusionOptions object itself.
      */
@@ -56,7 +58,7 @@ public final class InMageVolumeExclusionOptions {
      * Get the onlyExcludeIfSingleVolume property: The value indicating whether to exclude multi volume disk or not. If
      * a disk has multiple volumes and one of the volume has label matching with VolumeLabel this disk will be excluded
      * from replication if OnlyExcludeIfSingleVolume is false.
-     *
+     * 
      * @return the onlyExcludeIfSingleVolume value.
      */
     public String onlyExcludeIfSingleVolume() {
@@ -67,7 +69,7 @@ public final class InMageVolumeExclusionOptions {
      * Set the onlyExcludeIfSingleVolume property: The value indicating whether to exclude multi volume disk or not. If
      * a disk has multiple volumes and one of the volume has label matching with VolumeLabel this disk will be excluded
      * from replication if OnlyExcludeIfSingleVolume is false.
-     *
+     * 
      * @param onlyExcludeIfSingleVolume the onlyExcludeIfSingleVolume value to set.
      * @return the InMageVolumeExclusionOptions object itself.
      */
@@ -78,7 +80,7 @@ public final class InMageVolumeExclusionOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

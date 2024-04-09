@@ -11,7 +11,9 @@ import com.azure.resourcemanager.healthcareapis.models.PrivateEndpointConnection
 import com.azure.resourcemanager.healthcareapis.models.PrivateLinkServiceConnectionState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Private Endpoint Connection resource. */
+/**
+ * The Private Endpoint Connection resource.
+ */
 @Fluent
 public final class PrivateEndpointConnectionDescriptionInner extends PrivateEndpointConnection {
     /*
@@ -21,32 +23,42 @@ public final class PrivateEndpointConnectionDescriptionInner extends PrivateEndp
     private SystemData systemData;
 
     /**
+     * Creates an instance of PrivateEndpointConnectionDescriptionInner class.
+     */
+    public PrivateEndpointConnectionDescriptionInner() {
+    }
+
+    /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PrivateEndpointConnectionDescriptionInner withPrivateEndpoint(PrivateEndpoint privateEndpoint) {
         super.withPrivateEndpoint(privateEndpoint);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public PrivateEndpointConnectionDescriptionInner withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionDescriptionInner
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         super.withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

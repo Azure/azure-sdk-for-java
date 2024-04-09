@@ -28,8 +28,14 @@ public final class CdnWebApplicationFirewallPolicyList {
     private String nextLink;
 
     /**
+     * Creates an instance of CdnWebApplicationFirewallPolicyList class.
+     */
+    public CdnWebApplicationFirewallPolicyList() {
+    }
+
+    /**
      * Get the value property: List of Azure CDN WebApplicationFirewallPolicies within a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<CdnWebApplicationFirewallPolicyInner> value() {
@@ -38,7 +44,7 @@ public final class CdnWebApplicationFirewallPolicyList {
 
     /**
      * Get the nextLink property: URL to get the next set of WebApplicationFirewallPolicy objects if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -47,7 +53,7 @@ public final class CdnWebApplicationFirewallPolicyList {
 
     /**
      * Set the nextLink property: URL to get the next set of WebApplicationFirewallPolicy objects if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CdnWebApplicationFirewallPolicyList object itself.
      */
@@ -58,7 +64,7 @@ public final class CdnWebApplicationFirewallPolicyList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

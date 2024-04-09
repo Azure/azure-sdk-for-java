@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Active connectivity configuration. */
+/**
+ * Active connectivity configuration.
+ */
 @Fluent
 public final class ActiveConnectivityConfiguration extends EffectiveConnectivityConfiguration {
     /*
@@ -24,13 +26,15 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
     @JsonProperty(value = "region")
     private String region;
 
-    /** Creates an instance of ActiveConnectivityConfiguration class. */
+    /**
+     * Creates an instance of ActiveConnectivityConfiguration class.
+     */
     public ActiveConnectivityConfiguration() {
     }
 
     /**
      * Get the commitTime property: Deployment time string.
-     *
+     * 
      * @return the commitTime value.
      */
     public OffsetDateTime commitTime() {
@@ -39,7 +43,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Set the commitTime property: Deployment time string.
-     *
+     * 
      * @param commitTime the commitTime value to set.
      * @return the ActiveConnectivityConfiguration object itself.
      */
@@ -50,7 +54,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Get the region property: Deployment region.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -59,7 +63,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Set the region property: Deployment region.
-     *
+     * 
      * @param region the region value to set.
      * @return the ActiveConnectivityConfiguration object itself.
      */
@@ -68,56 +72,72 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActiveConnectivityConfiguration withId(String id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActiveConnectivityConfiguration withConfigurationGroups(List<ConfigurationGroup> configurationGroups) {
         super.withConfigurationGroups(configurationGroups);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActiveConnectivityConfiguration withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActiveConnectivityConfiguration withConnectivityTopology(ConnectivityTopology connectivityTopology) {
         super.withConnectivityTopology(connectivityTopology);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActiveConnectivityConfiguration withHubs(List<Hub> hubs) {
         super.withHubs(hubs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActiveConnectivityConfiguration withIsGlobal(IsGlobal isGlobal) {
         super.withIsGlobal(isGlobal);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActiveConnectivityConfiguration withAppliesToGroups(List<ConnectivityGroupItem> appliesToGroups) {
         super.withAppliesToGroups(appliesToGroups);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActiveConnectivityConfiguration withDeleteExistingPeering(DeleteExistingPeering deleteExistingPeering) {
         super.withDeleteExistingPeering(deleteExistingPeering);
@@ -126,7 +146,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

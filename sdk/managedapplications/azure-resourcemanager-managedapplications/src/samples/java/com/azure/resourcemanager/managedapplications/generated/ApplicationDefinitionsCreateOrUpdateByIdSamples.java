@@ -5,14 +5,14 @@
 package com.azure.resourcemanager.managedapplications.generated;
 
 import com.azure.resourcemanager.managedapplications.fluent.models.ApplicationDefinitionInner;
+import com.azure.resourcemanager.managedapplications.models.ApplicationAuthorization;
 import com.azure.resourcemanager.managedapplications.models.ApplicationLockLevel;
-import com.azure.resourcemanager.managedapplications.models.ApplicationProviderAuthorization;
 import java.util.Arrays;
 
 /** Samples for ApplicationDefinitions CreateOrUpdateById. */
 public final class ApplicationDefinitionsCreateOrUpdateByIdSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/createOrUpdateApplicationDefinition.json
+     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/createOrUpdateApplicationDefinition.json
      */
     /**
      * Sample code: Create or update managed application definition.
@@ -23,17 +23,16 @@ public final class ApplicationDefinitionsCreateOrUpdateByIdSamples {
         com.azure.resourcemanager.managedapplications.ApplicationManager manager) {
         manager
             .applicationDefinitions()
-            .createOrUpdateById(
+            .createOrUpdateByIdWithResponse(
                 "rg",
                 "myManagedApplicationDef",
                 new ApplicationDefinitionInner()
-                    .withLocation("East US 2")
                     .withLockLevel(ApplicationLockLevel.NONE)
                     .withDisplayName("myManagedApplicationDef")
                     .withAuthorizations(
                         Arrays
                             .asList(
-                                new ApplicationProviderAuthorization()
+                                new ApplicationAuthorization()
                                     .withPrincipalId("validprincipalguid")
                                     .withRoleDefinitionId("validroleguid")))
                     .withDescription("myManagedApplicationDef description")

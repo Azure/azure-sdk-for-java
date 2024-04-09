@@ -4,20 +4,21 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-/** Samples for VolumeQuotaRules Get. */
+/**
+ * Samples for VolumeQuotaRules Get.
+ */
 public final class VolumeQuotaRulesGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/VolumeQuotaRules_Get.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/VolumeQuotaRules_Get.json
      */
     /**
      * Sample code: VolumeQuotaRules_Get.
-     *
+     * 
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void volumeQuotaRulesGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager
-            .volumeQuotaRules()
-            .getWithResponse(
-                "myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", com.azure.core.util.Context.NONE);
+        manager.volumeQuotaRules().getWithResponse("myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004",
+            com.azure.core.util.Context.NONE);
     }
 }

@@ -7,38 +7,22 @@ import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAs
 import com.azure.ai.metricsadvisor.administration.models.DataSourceAuthenticationType;
 import com.azure.ai.metricsadvisor.administration.models.DataSourceCredentialEntity;
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.TestBase;
 import com.azure.core.util.CoreUtils;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase {
     private MetricsAdvisorAdministrationAsyncClient client;
-
-    @BeforeAll
-    static void beforeAll() {
-        TestBase.setupClass();
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
@@ -57,13 +41,15 @@ public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase 
                             createdCredential,
                             DataSourceAuthenticationType.AZURE_SQL_CONNECTION_STRING);
                     })
-                    .verifyComplete(), DataSourceAuthenticationType.AZURE_SQL_CONNECTION_STRING);
+                    .expectComplete()
+                    .verify(DEFAULT_TIMEOUT), DataSourceAuthenticationType.AZURE_SQL_CONNECTION_STRING);
 
         } finally {
             if (!CoreUtils.isNullOrEmpty(credentialId.get())) {
                 Mono<Void> deleteCredential = client.deleteDataSourceCredential(credentialId.get());
                 StepVerifier.create(deleteCredential)
-                    .verifyComplete();
+                    .expectComplete()
+                    .verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -85,13 +71,15 @@ public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase 
                             createdCredential,
                             DataSourceAuthenticationType.DATA_LAKE_GEN2_SHARED_KEY);
                     })
-                    .verifyComplete(), DataSourceAuthenticationType.DATA_LAKE_GEN2_SHARED_KEY);
+                    .expectComplete()
+                    .verify(DEFAULT_TIMEOUT), DataSourceAuthenticationType.DATA_LAKE_GEN2_SHARED_KEY);
 
         } finally {
             if (!CoreUtils.isNullOrEmpty(credentialId.get())) {
                 Mono<Void> deleteCredential = client.deleteDataSourceCredential(credentialId.get());
                 StepVerifier.create(deleteCredential)
-                    .verifyComplete();
+                    .expectComplete()
+                    .verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -113,13 +101,15 @@ public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase 
                             createdCredential,
                             DataSourceAuthenticationType.SERVICE_PRINCIPAL);
                     })
-                    .verifyComplete(), DataSourceAuthenticationType.SERVICE_PRINCIPAL);
+                    .expectComplete()
+                    .verify(DEFAULT_TIMEOUT), DataSourceAuthenticationType.SERVICE_PRINCIPAL);
 
         } finally {
             if (!CoreUtils.isNullOrEmpty(credentialId.get())) {
                 Mono<Void> deleteCredential = client.deleteDataSourceCredential(credentialId.get());
                 StepVerifier.create(deleteCredential)
-                    .verifyComplete();
+                    .expectComplete()
+                    .verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -141,13 +131,15 @@ public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase 
                             createdCredential,
                             DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
                     })
-                    .verifyComplete(), DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
+                    .expectComplete()
+                    .verify(DEFAULT_TIMEOUT), DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
 
         } finally {
             if (!CoreUtils.isNullOrEmpty(credentialId.get())) {
                 Mono<Void> deleteCredential = client.deleteDataSourceCredential(credentialId.get());
                 StepVerifier.create(deleteCredential)
-                    .verifyComplete();
+                    .expectComplete()
+                    .verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -173,14 +165,16 @@ public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase 
                         retrievedCredentialList.add(e);
                         return retrievedCredentialList.size() < inputCredentialList.size();
                     })
-                    .thenCancel().verify();
+                    .thenCancel().verify(DEFAULT_TIMEOUT);
 
                 assertEquals(inputCredentialList.size(), retrievedCredentialList.size());
             });
         } finally {
             if (!CoreUtils.isNullOrEmpty(createdCredentialIdList.get())) {
                 createdCredentialIdList.get().forEach(credentialId ->
-                    StepVerifier.create(client.deleteDataSourceCredential(credentialId)).verifyComplete());
+                    StepVerifier.create(client.deleteDataSourceCredential(credentialId))
+                        .expectComplete()
+                        .verify(DEFAULT_TIMEOUT));
             }
         }
     }

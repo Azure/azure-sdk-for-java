@@ -31,40 +31,29 @@ public final class CommunicationsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"communicationType\":\"web\",\"communicationDirection\":\"outbound\",\"sender\":\"tdzumveekgpw\",\"subject\":\"zuhkfpbsjyof\",\"body\":\"xl\",\"createdDate\":\"2021-06-15T07:35:54Z\"},\"id\":\"dttouwaboekqvkel\",\"name\":\"smv\",\"type\":\"xwyjsflhhc\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"communicationType\":\"web\",\"communicationDirection\":\"inbound\",\"sender\":\"txjcsheafidlt\",\"subject\":\"gsresmkssj\",\"body\":\"oiftxfkfwegprh\",\"createdDate\":\"2021-01-06T18:32:33Z\"},\"id\":\"llu\",\"name\":\"biqtgdq\",\"type\":\"hm\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SupportManager manager =
-            SupportManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SupportManager manager = SupportManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<CommunicationDetails> response =
-            manager.communications().list("nnprn", 112324206, "peilpjzuaejxdu", com.azure.core.util.Context.NONE);
+        PagedIterable<CommunicationDetails> response
+            = manager.communications().list("pipifh", 248464194, "e", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tdzumveekgpw", response.iterator().next().sender());
-        Assertions.assertEquals("zuhkfpbsjyof", response.iterator().next().subject());
-        Assertions.assertEquals("xl", response.iterator().next().body());
+        Assertions.assertEquals("txjcsheafidlt", response.iterator().next().sender());
+        Assertions.assertEquals("gsresmkssj", response.iterator().next().subject());
+        Assertions.assertEquals("oiftxfkfwegprh", response.iterator().next().body());
     }
 }

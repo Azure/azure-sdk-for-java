@@ -56,6 +56,6 @@ public final class ServiceFabricsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.serviceFabrics().delete("ievw", "fcvvy", "zslp", "xgcbdsvalpnpt", com.azure.core.util.Context.NONE);
+        manager.serviceFabrics().delete("xi", "mlnfyz", "vfrbypic", "bkpdjtaqhsmq", com.azure.core.util.Context.NONE);
     }
 }

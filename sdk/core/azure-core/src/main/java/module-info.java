@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 
 module com.azure.core {
-    requires com.azure.json;
+    requires transitive com.azure.json;
+    requires transitive com.azure.xml;
+
     requires transitive reactor.core;
     requires transitive org.reactivestreams;
     requires transitive org.slf4j;
@@ -11,7 +13,6 @@ module com.azure.core {
     requires transitive com.fasterxml.jackson.core;
     requires transitive com.fasterxml.jackson.databind;
 
-    requires java.xml;
     requires transitive com.fasterxml.jackson.datatype.jsr310;
 
     // public API surface area
@@ -34,8 +35,8 @@ module com.azure.core {
     exports com.azure.core.util.tracing;
     exports com.azure.core.util.metrics;
 
-    exports com.azure.core.implementation to com.azure.core.serializer.json.jackson,
-        com.azure.core.serializer.json.gson,
+    exports com.azure.core.implementation
+        to com.azure.core.serializer.json.jackson, com.azure.core.serializer.json.gson,
         // export core implementation.ImplUtils to other core packages.
         com.azure.core.experimental;
 
@@ -44,7 +45,7 @@ module com.azure.core {
 
     // export core utilities to other core packages.
     exports com.azure.core.implementation.util to com.azure.http.netty, com.azure.core.http.okhttp,
-        com.azure.core.http.jdk.httpclient, com.azure.core.serializer.json.jackson;
+        com.azure.core.http.jdk.httpclient, com.azure.core.http.vertx, com.azure.core.serializer.json.jackson;
     exports com.azure.core.util.polling.implementation to com.azure.core.experimental;
 
     // exporting some packages specifically for Jackson

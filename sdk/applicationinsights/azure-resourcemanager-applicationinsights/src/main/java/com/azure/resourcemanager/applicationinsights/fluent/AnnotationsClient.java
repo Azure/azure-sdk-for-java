@@ -57,22 +57,6 @@ public interface AnnotationsClient {
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationProperties Properties that need to be specified to create an annotation of a Application
      *     Insights component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.applicationinsights.models.AnnotationErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Annotation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<AnnotationInner> create(String resourceGroupName, String resourceName, AnnotationInner annotationProperties);
-
-    /**
-     * Create an Annotation of an Application Insights component.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param annotationProperties Properties that need to be specified to create an annotation of a Application
-     *     Insights component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.applicationinsights.models.AnnotationErrorException thrown if the request is
@@ -85,17 +69,20 @@ public interface AnnotationsClient {
         String resourceGroupName, String resourceName, AnnotationInner annotationProperties, Context context);
 
     /**
-     * Delete an Annotation of an Application Insights component.
+     * Create an Annotation of an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
-     * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
+     * @param annotationProperties Properties that need to be specified to create an annotation of a Application
+     *     Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.applicationinsights.models.AnnotationErrorException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of Annotation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String resourceName, String annotationId);
+    List<AnnotationInner> create(String resourceGroupName, String resourceName, AnnotationInner annotationProperties);
 
     /**
      * Delete an Annotation of an Application Insights component.
@@ -114,19 +101,17 @@ public interface AnnotationsClient {
         String resourceGroupName, String resourceName, String annotationId, Context context);
 
     /**
-     * Get the annotation for given id.
+     * Delete an Annotation of an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.applicationinsights.models.AnnotationErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the annotation for given id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    List<AnnotationInner> get(String resourceGroupName, String resourceName, String annotationId);
+    void delete(String resourceGroupName, String resourceName, String annotationId);
 
     /**
      * Get the annotation for given id.
@@ -144,4 +129,19 @@ public interface AnnotationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<List<AnnotationInner>> getWithResponse(
         String resourceGroupName, String resourceName, String annotationId, Context context);
+
+    /**
+     * Get the annotation for given id.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.applicationinsights.models.AnnotationErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the annotation for given id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<AnnotationInner> get(String resourceGroupName, String resourceName, String annotationId);
 }

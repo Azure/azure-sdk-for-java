@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,35 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2023-09-25)
+
+- Azure Resource Manager SourceControlConfiguration client library for Java. This package contains Microsoft Azure SDK for SourceControlConfiguration Management SDK. KubernetesConfiguration Client. Package tag package-2023-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.SubstituteFromDefinition` was added
+
+* `models.PostBuildDefinition` was added
+
+#### `models.FluxConfiguration` was modified
+
+* `reconciliationWaitDuration()` was added
+* `waitForReconciliation()` was added
+
+#### `models.KustomizationPatchDefinition` was modified
+
+* `withPostBuild(models.PostBuildDefinition)` was added
+* `postBuild()` was added
+* `withEnableWait(java.lang.Boolean)` was added
+* `enableWait()` was added
+
+#### `models.KustomizationDefinition` was modified
+
+* `withEnableWait(java.lang.Boolean)` was added
+* `enableWait()` was added
+* `withPostBuild(models.PostBuildDefinition)` was added
+* `postBuild()` was added
 
 ## 1.0.0-beta.4 (2023-05-17)
 

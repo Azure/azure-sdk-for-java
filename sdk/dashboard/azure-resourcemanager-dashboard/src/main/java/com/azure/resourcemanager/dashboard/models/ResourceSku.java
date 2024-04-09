@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ResourceSku model. */
+/**
+ * The ResourceSku model.
+ */
 @Fluent
 public final class ResourceSku {
     /*
@@ -18,8 +20,14 @@ public final class ResourceSku {
     private String name;
 
     /**
+     * Creates an instance of ResourceSku class.
+     */
+    public ResourceSku() {
+    }
+
+    /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -28,7 +36,7 @@ public final class ResourceSku {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourceSku object itself.
      */
@@ -39,14 +47,13 @@ public final class ResourceSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ResourceSku"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model ResourceSku"));
         }
     }
 

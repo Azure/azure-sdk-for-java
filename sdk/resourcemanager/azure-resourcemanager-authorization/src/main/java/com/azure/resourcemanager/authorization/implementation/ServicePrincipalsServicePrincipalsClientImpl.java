@@ -182,15 +182,24 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
         String orderbyConverted =
             (orderby == null)
                 ? null
-                : orderby.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                : orderby
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         String selectConverted =
             (select == null)
                 ? null
-                : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                : select
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         String expandConverted =
             (expand == null)
                 ? null
-                : expand.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                : expand
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(
                 context ->
@@ -261,15 +270,24 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
         String orderbyConverted =
             (orderby == null)
                 ? null
-                : orderby.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                : orderby
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         String selectConverted =
             (select == null)
                 ? null
-                : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                : select
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         String expandConverted =
             (expand == null)
                 ? null
-                : expand.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                : expand
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
         return service
             .listServicePrincipal(
@@ -586,11 +604,17 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
         String selectConverted =
             (select == null)
                 ? null
-                : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                : select
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         String expandConverted =
             (expand == null)
                 ? null
-                : expand.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                : expand
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(
                 context ->
@@ -641,11 +665,17 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
         String selectConverted =
             (select == null)
                 ? null
-                : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                : select
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         String expandConverted =
             (expand == null)
                 ? null
-                : expand.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                : expand
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
         return service
             .getServicePrincipal(

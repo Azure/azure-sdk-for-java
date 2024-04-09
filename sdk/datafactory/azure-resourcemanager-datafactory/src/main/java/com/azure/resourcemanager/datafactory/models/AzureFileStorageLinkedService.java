@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Azure File Storage linked service. */
+/**
+ * Azure File Storage linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureFileStorage")
 @Fluent
@@ -22,44 +24,54 @@ public final class AzureFileStorageLinkedService extends LinkedService {
      * Azure File Storage linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
-    private AzureFileStorageLinkedServiceTypeProperties innerTypeProperties =
-        new AzureFileStorageLinkedServiceTypeProperties();
+    private AzureFileStorageLinkedServiceTypeProperties innerTypeProperties
+        = new AzureFileStorageLinkedServiceTypeProperties();
 
-    /** Creates an instance of AzureFileStorageLinkedService class. */
+    /**
+     * Creates an instance of AzureFileStorageLinkedService class.
+     */
     public AzureFileStorageLinkedService() {
     }
 
     /**
      * Get the innerTypeProperties property: Azure File Storage linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private AzureFileStorageLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileStorageLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileStorageLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileStorageLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileStorageLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -68,7 +80,7 @@ public final class AzureFileStorageLinkedService extends LinkedService {
 
     /**
      * Get the host property: Host name of the server. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the host value.
      */
     public Object host() {
@@ -77,7 +89,7 @@ public final class AzureFileStorageLinkedService extends LinkedService {
 
     /**
      * Set the host property: Host name of the server. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param host the host value to set.
      * @return the AzureFileStorageLinkedService object itself.
      */
@@ -91,7 +103,7 @@ public final class AzureFileStorageLinkedService extends LinkedService {
 
     /**
      * Get the userId property: User ID to logon the server. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the userId value.
      */
     public Object userId() {
@@ -100,7 +112,7 @@ public final class AzureFileStorageLinkedService extends LinkedService {
 
     /**
      * Set the userId property: User ID to logon the server. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param userId the userId value to set.
      * @return the AzureFileStorageLinkedService object itself.
      */
@@ -114,7 +126,7 @@ public final class AzureFileStorageLinkedService extends LinkedService {
 
     /**
      * Get the password property: Password to logon the server.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -123,7 +135,7 @@ public final class AzureFileStorageLinkedService extends LinkedService {
 
     /**
      * Set the password property: Password to logon the server.
-     *
+     * 
      * @param password the password value to set.
      * @return the AzureFileStorageLinkedService object itself.
      */
@@ -138,7 +150,7 @@ public final class AzureFileStorageLinkedService extends LinkedService {
     /**
      * Get the connectionString property: The connection string. It is mutually exclusive with sasUri property. Type:
      * string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -148,7 +160,7 @@ public final class AzureFileStorageLinkedService extends LinkedService {
     /**
      * Set the connectionString property: The connection string. It is mutually exclusive with sasUri property. Type:
      * string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the AzureFileStorageLinkedService object itself.
      */
@@ -162,7 +174,7 @@ public final class AzureFileStorageLinkedService extends LinkedService {
 
     /**
      * Get the accountKey property: The Azure key vault secret reference of accountKey in connection string.
-     *
+     * 
      * @return the accountKey value.
      */
     public AzureKeyVaultSecretReference accountKey() {
@@ -171,7 +183,7 @@ public final class AzureFileStorageLinkedService extends LinkedService {
 
     /**
      * Set the accountKey property: The Azure key vault secret reference of accountKey in connection string.
-     *
+     * 
      * @param accountKey the accountKey value to set.
      * @return the AzureFileStorageLinkedService object itself.
      */
@@ -186,7 +198,7 @@ public final class AzureFileStorageLinkedService extends LinkedService {
     /**
      * Get the sasUri property: SAS URI of the Azure File resource. It is mutually exclusive with connectionString
      * property. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the sasUri value.
      */
     public Object sasUri() {
@@ -196,7 +208,7 @@ public final class AzureFileStorageLinkedService extends LinkedService {
     /**
      * Set the sasUri property: SAS URI of the Azure File resource. It is mutually exclusive with connectionString
      * property. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @param sasUri the sasUri value to set.
      * @return the AzureFileStorageLinkedService object itself.
      */
@@ -210,7 +222,7 @@ public final class AzureFileStorageLinkedService extends LinkedService {
 
     /**
      * Get the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
-     *
+     * 
      * @return the sasToken value.
      */
     public AzureKeyVaultSecretReference sasToken() {
@@ -219,7 +231,7 @@ public final class AzureFileStorageLinkedService extends LinkedService {
 
     /**
      * Set the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
-     *
+     * 
      * @param sasToken the sasToken value to set.
      * @return the AzureFileStorageLinkedService object itself.
      */
@@ -234,7 +246,7 @@ public final class AzureFileStorageLinkedService extends LinkedService {
     /**
      * Get the fileShare property: The azure file share name. It is required when auth with accountKey/sasToken. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @return the fileShare value.
      */
     public Object fileShare() {
@@ -244,7 +256,7 @@ public final class AzureFileStorageLinkedService extends LinkedService {
     /**
      * Set the fileShare property: The azure file share name. It is required when auth with accountKey/sasToken. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @param fileShare the fileShare value to set.
      * @return the AzureFileStorageLinkedService object itself.
      */
@@ -259,7 +271,7 @@ public final class AzureFileStorageLinkedService extends LinkedService {
     /**
      * Get the snapshot property: The azure file share snapshot version. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the snapshot value.
      */
     public Object snapshot() {
@@ -269,7 +281,7 @@ public final class AzureFileStorageLinkedService extends LinkedService {
     /**
      * Set the snapshot property: The azure file share snapshot version. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param snapshot the snapshot value to set.
      * @return the AzureFileStorageLinkedService object itself.
      */
@@ -282,23 +294,23 @@ public final class AzureFileStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureFileStorageLinkedService object itself.
      */
-    public AzureFileStorageLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public AzureFileStorageLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AzureFileStorageLinkedServiceTypeProperties();
         }
@@ -308,17 +320,15 @@ public final class AzureFileStorageLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model AzureFileStorageLinkedService"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model AzureFileStorageLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

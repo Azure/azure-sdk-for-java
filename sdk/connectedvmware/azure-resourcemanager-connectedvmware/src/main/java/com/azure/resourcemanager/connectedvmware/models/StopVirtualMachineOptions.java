@@ -17,6 +17,10 @@ public final class StopVirtualMachineOptions {
     @JsonProperty(value = "skipShutdown")
     private Boolean skipShutdown;
 
+    /** Creates an instance of StopVirtualMachineOptions class. */
+    public StopVirtualMachineOptions() {
+    }
+
     /**
      * Get the skipShutdown property: Gets or sets a value indicating whether to request non-graceful VM shutdown. True
      * value for this flag indicates non-graceful shutdown whereas false indicates otherwise. Defaults to false.

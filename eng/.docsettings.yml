@@ -12,10 +12,12 @@ omitted_paths:
   - sdk/spring-experimental/*
   - "sdk/spring-experimental/*/*"
   - sdk/loganalytics/microsoft-azure-loganalytics/samples/*
+  - sdk/vision/azure-ai-vision-imageanalysis/src/test/*
   - "*/resource-manager/*"
   - "sdk/*/mgmt-*/*"
   - "sdk/*/swagger/*"
   - "sdk/*/codegen/*"
+  - sdk/*/*-stress/*
   - doc/*
   - eng/*
   - common/smoke-tests/*
@@ -61,7 +63,6 @@ known_presence_issues:
   - ['sdk/mediaservices/microsoft-azure-media', '#2847']
   - ['sdk/servicebus/microsoft-azure-servicebus', '#2847']
   # Changelog List
-  - ['sdk/applicationinsights/microsoft-azure-applicationinsights-query/CHANGELOG.md', '#2847']
   - ['sdk/authorization/microsoft-azure-authentication-msi-token-provider/CHANGELOG.md', '#2847']
   - ['sdk/cognitiveservices/ms-azure-cs-autosuggest/CHANGELOG.md', '#2847']
   - ['sdk/cognitiveservices/ms-azure-cs-computervision/CHANGELOG.md', '#2847']
@@ -83,6 +84,7 @@ known_presence_issues:
   - ['sdk/cognitiveservices/ms-azure-cs-visualsearch/CHANGELOG.md', '#2847']
   - ['sdk/cognitiveservices/ms-azure-cs-websearch/CHANGELOG.md', '#2847']
   - ['sdk/cosmos/azure-cosmos-examples/CHANGELOG.md', '#2847']
+  - ['sdk/cosmos/azure-cosmos-kafka-connect/CHANGELOG.md', '#2847']
   - ['sdk/cosmos/CHANGELOG.md', '#2847']
   - ['sdk/eventgrid/azure-messaging-eventgrid/CHANGELOG.md', '#2847']
   - ['sdk/eventgrid/microsoft-azure-eventgrid/CHANGELOG.md', '#2847']
@@ -103,7 +105,6 @@ known_presence_issues:
 
 known_content_issues:
   - ['README.md', '#3113']
-  - ['sdk/applicationinsights/microsoft-azure-applicationinsights-query/README.md', '#3113']
   - ['sdk/authorization/microsoft-azure-authentication-msi-token-provider/README.md', '#3113']
   - ['sdk/batch/microsoft-azure-batch/README.md', '#3113']
   - ['sdk/boms/azure-sdk-bom/README.md', '#3113']
@@ -114,13 +115,15 @@ known_content_issues:
   - ['sdk/cosmos/faq/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-benchmark/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-examples/README.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-kafka-connect/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-encryption/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3-1_2-12/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3-2_2-12/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3-3_2-12/README.md', '#3113']
-  - ['sdk/cosmos/azure-cosmos-spark_3-4_2-12/README.md', '#3113']  
+  - ['sdk/cosmos/azure-cosmos-spark_3-4_2-12/README.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-spark_3-5_2-12/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/dev/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/docs/catalog-api.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/docs/configuration-reference.md', '#3113']

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.managedapplications.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managedapplications.fluent.models.OperationInner;
 import com.azure.resourcemanager.managedapplications.models.OperationDisplay;
-import org.junit.jupiter.api.Assertions;
 
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
@@ -15,25 +14,13 @@ public final class OperationInnerTests {
         OperationInner model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"esaagdfm\",\"display\":{\"provider\":\"lhjxr\",\"resource\":\"kwm\",\"operation\":\"ktsizntocipaou\"}}")
+                    "{\"name\":\"usarhmofc\",\"isDataAction\":false,\"display\":{\"provider\":\"urkdtmlx\",\"resource\":\"kuksjtxukcdm\",\"operation\":\"rcryuanzwuxzdxta\",\"description\":\"lhmwhfpmrqobm\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}")
                 .toObject(OperationInner.class);
-        Assertions.assertEquals("esaagdfm", model.name());
-        Assertions.assertEquals("lhjxr", model.display().provider());
-        Assertions.assertEquals("kwm", model.display().resource());
-        Assertions.assertEquals("ktsizntocipaou", model.display().operation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationInner model =
-            new OperationInner()
-                .withName("esaagdfm")
-                .withDisplay(
-                    new OperationDisplay().withProvider("lhjxr").withResource("kwm").withOperation("ktsizntocipaou"));
+        OperationInner model = new OperationInner().withDisplay(new OperationDisplay());
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
-        Assertions.assertEquals("esaagdfm", model.name());
-        Assertions.assertEquals("lhjxr", model.display().provider());
-        Assertions.assertEquals("kwm", model.display().resource());
-        Assertions.assertEquals("ktsizntocipaou", model.display().operation());
     }
 }

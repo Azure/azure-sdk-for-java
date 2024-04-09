@@ -6,83 +6,114 @@ package com.azure.resourcemanager.nginx.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.nginx.fluent.models.NginxConfigurationInner;
+import com.azure.resourcemanager.nginx.models.NginxConfigurationFile;
 import com.azure.resourcemanager.nginx.models.NginxConfigurationListResponse;
+import com.azure.resourcemanager.nginx.models.NginxConfigurationPackage;
 import com.azure.resourcemanager.nginx.models.NginxConfigurationProperties;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NginxConfigurationListResponseTests {
-    @Test
-    public void testDeserialize() {
-        NginxConfigurationListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\",\"files\":[],\"protectedFiles\":[],\"rootFile\":\"mtqio\"},\"location\":\"zehtbmu\",\"tags\":{\"hwlrx\":\"wnoi\",\"dmbpazlobcufpdz\":\"bqsoqijg\"},\"id\":\"rbt\",\"name\":\"qqjnqgl\",\"type\":\"qgn\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"files\":[],\"protectedFiles\":[],\"rootFile\":\"ifsqesaagdfmg\"},\"location\":\"lhjxr\",\"tags\":{\"uajpsquc\":\"wmrvktsizntocipa\"},\"id\":\"poyfdkfogkn\",\"name\":\"gjofjd\",\"type\":\"eqsrdeupewnwreit\"},{\"properties\":{\"provisioningState\":\"Updating\",\"files\":[],\"protectedFiles\":[],\"rootFile\":\"rh\"},\"location\":\"fcqhsmyurkd\",\"tags\":{\"arcryuanzwuxzdxt\":\"xhekuksjtxukcdm\"},\"id\":\"yrlhmwhfpmrqobm\",\"name\":\"u\",\"type\":\"knryrtihfxtij\"},{\"properties\":{\"provisioningState\":\"Failed\",\"files\":[],\"protectedFiles\":[],\"rootFile\":\"symglzufcyz\"},\"location\":\"hdbihan\",\"tags\":{\"ifpikxwczby\":\"fcbjysagithxqha\",\"rkxvdum\":\"cnpqxuhivyqniwby\"},\"id\":\"grtfwvu\",\"name\":\"xgaudccs\",\"type\":\"h\"}],\"nextLink\":\"cnyejhkryhtnapcz\"}")
-                .toObject(NginxConfigurationListResponse.class);
-        Assertions.assertEquals("zehtbmu", model.value().get(0).location());
-        Assertions.assertEquals("wnoi", model.value().get(0).tags().get("hwlrx"));
-        Assertions.assertEquals("mtqio", model.value().get(0).properties().rootFile());
-        Assertions.assertEquals("cnyejhkryhtnapcz", model.nextLink());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        NginxConfigurationListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\",\"files\":[{\"content\":\"bmtqioq\",\"virtualPath\":\"ehtbm\"},{\"content\":\"p\",\"virtualPath\":\"noi\"},{\"content\":\"wlrxyb\",\"virtualPath\":\"oqijgkdmbpaz\"}],\"protectedFiles\":[{\"content\":\"ufpdznrbtcqq\",\"virtualPath\":\"qglhq\"}],\"package\":{\"data\":\"foooj\",\"protectedFiles\":[\"fsqesaagdfmglzlh\",\"xrifkwmrvkts\",\"zntocipaouajps\",\"ucmpoyfd\"]},\"rootFile\":\"ogknygjofjdd\"},\"location\":\"s\",\"id\":\"eupewnwreitjz\",\"name\":\"flusarhmof\",\"type\":\"qhsmyurkdtml\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"files\":[{\"content\":\"jtxukcdm\",\"virtualPath\":\"rcryuanzwuxzdxta\"}],\"protectedFiles\":[{\"content\":\"m\",\"virtualPath\":\"fp\"},{\"content\":\"qobmtukk\",\"virtualPath\":\"yrtih\"},{\"content\":\"tijbpzvgnwzsymgl\",\"virtualPath\":\"fcyzkohdbihanufh\"},{\"content\":\"bj\",\"virtualPath\":\"a\"}],\"package\":{\"data\":\"hxqh\",\"protectedFiles\":[\"fpikxwczb\",\"scnpqxuhivy\",\"n\"]},\"rootFile\":\"b\"},\"location\":\"rkxvdum\",\"id\":\"rtfw\",\"name\":\"ukxgaud\",\"type\":\"cs\"},{\"properties\":{\"provisioningState\":\"Failed\",\"files\":[{\"content\":\"ejhkry\",\"virtualPath\":\"napczwlokjy\"},{\"content\":\"kkvnipjox\",\"virtualPath\":\"nchgej\"},{\"content\":\"odmailzyd\",\"virtualPath\":\"o\"},{\"content\":\"yahux\",\"virtualPath\":\"pmqnja\"}],\"protectedFiles\":[{\"content\":\"jsprozvcpute\",\"virtualPath\":\"vwmf\"},{\"content\":\"t\",\"virtualPath\":\"mdvpjhulsu\"},{\"content\":\"mkjozkrwf\",\"virtualPath\":\"iodjp\"},{\"content\":\"w\",\"virtualPath\":\"dpvwryoqpsoaccta\"}],\"package\":{\"data\":\"ljlahbcryf\",\"protectedFiles\":[\"dosyg\",\"xpaojakhmsbz\"]},\"rootFile\":\"crzevdphlx\"},\"location\":\"lthqtrgqjbp\",\"id\":\"fsinzgvfcjrwzoxx\",\"name\":\"tfell\",\"type\":\"wfzitonpeqfpjk\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"files\":[{\"content\":\"vhpfxxypininmay\",\"virtualPath\":\"ybb\"},{\"content\":\"odepoogin\",\"virtualPath\":\"amiheognarxz\"},{\"content\":\"heotusiv\",\"virtualPath\":\"v\"}],\"protectedFiles\":[{\"content\":\"ihnhun\",\"virtualPath\":\"wjzrnfygxgisp\"},{\"content\":\"vtz\",\"virtualPath\":\"ufubl\"}],\"package\":{\"data\":\"xqeofjaeqjhqjba\",\"protectedFiles\":[\"smjqulngsntnbyb\",\"zgcwrw\",\"lxxwrljdouskc\",\"vkocrcjdkwtn\"]},\"rootFile\":\"bnjbiksqrglssain\"},\"location\":\"jwnzlljfmp\",\"id\":\"ebvmgxsabkyqd\",\"name\":\"ujitcjcz\",\"type\":\"zevndhkrwpdappds\"}],\"nextLink\":\"kvwrwjfeu\"}")
+            .toObject(NginxConfigurationListResponse.class);
+        Assertions.assertEquals("bmtqioq", model.value().get(0).properties().files().get(0).content());
+        Assertions.assertEquals("ehtbm", model.value().get(0).properties().files().get(0).virtualPath());
+        Assertions.assertEquals("ufpdznrbtcqq", model.value().get(0).properties().protectedFiles().get(0).content());
+        Assertions.assertEquals("qglhq", model.value().get(0).properties().protectedFiles().get(0).virtualPath());
+        Assertions.assertEquals("foooj", model.value().get(0).properties().packageProperty().data());
+        Assertions.assertEquals("fsqesaagdfmglzlh",
+            model.value().get(0).properties().packageProperty().protectedFiles().get(0));
+        Assertions.assertEquals("ogknygjofjdd", model.value().get(0).properties().rootFile());
+        Assertions.assertEquals("s", model.value().get(0).location());
+        Assertions.assertEquals("kvwrwjfeu", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
-        NginxConfigurationListResponse model =
-            new NginxConfigurationListResponse()
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        NginxConfigurationListResponse model
+            = new NginxConfigurationListResponse()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new NginxConfigurationInner()
-                                .withLocation("zehtbmu")
-                                .withTags(mapOf("hwlrx", "wnoi", "dmbpazlobcufpdz", "bqsoqijg"))
-                                .withProperties(
-                                    new NginxConfigurationProperties()
-                                        .withFiles(Arrays.asList())
-                                        .withProtectedFiles(Arrays.asList())
-                                        .withRootFile("mtqio")),
-                            new NginxConfigurationInner()
-                                .withLocation("lhjxr")
-                                .withTags(mapOf("uajpsquc", "wmrvktsizntocipa"))
-                                .withProperties(
-                                    new NginxConfigurationProperties()
-                                        .withFiles(Arrays.asList())
-                                        .withProtectedFiles(Arrays.asList())
-                                        .withRootFile("ifsqesaagdfmg")),
-                            new NginxConfigurationInner()
-                                .withLocation("fcqhsmyurkd")
-                                .withTags(mapOf("arcryuanzwuxzdxt", "xhekuksjtxukcdm"))
-                                .withProperties(
-                                    new NginxConfigurationProperties()
-                                        .withFiles(Arrays.asList())
-                                        .withProtectedFiles(Arrays.asList())
-                                        .withRootFile("rh")),
-                            new NginxConfigurationInner()
-                                .withLocation("hdbihan")
-                                .withTags(mapOf("ifpikxwczby", "fcbjysagithxqha", "rkxvdum", "cnpqxuhivyqniwby"))
-                                .withProperties(
-                                    new NginxConfigurationProperties()
-                                        .withFiles(Arrays.asList())
-                                        .withProtectedFiles(Arrays.asList())
-                                        .withRootFile("symglzufcyz"))))
-                .withNextLink("cnyejhkryhtnapcz");
+                    Arrays.asList(
+                        new NginxConfigurationInner()
+                            .withProperties(
+                                new NginxConfigurationProperties()
+                                    .withFiles(Arrays.asList(
+                                        new NginxConfigurationFile().withContent("bmtqioq").withVirtualPath("ehtbm"),
+                                        new NginxConfigurationFile().withContent("p").withVirtualPath("noi"),
+                                        new NginxConfigurationFile().withContent("wlrxyb")
+                                            .withVirtualPath("oqijgkdmbpaz")))
+                                    .withProtectedFiles(Arrays.asList(new NginxConfigurationFile()
+                                        .withContent("ufpdznrbtcqq").withVirtualPath("qglhq")))
+                                    .withPackageProperty(new NginxConfigurationPackage()
+                                        .withData(
+                                            "foooj")
+                                        .withProtectedFiles(Arrays.asList("fsqesaagdfmglzlh", "xrifkwmrvkts",
+                                            "zntocipaouajps", "ucmpoyfd")))
+                                    .withRootFile("ogknygjofjdd"))
+                            .withLocation("s"),
+                        new NginxConfigurationInner()
+                            .withProperties(new NginxConfigurationProperties()
+                                .withFiles(Arrays.asList(new NginxConfigurationFile().withContent("jtxukcdm")
+                                    .withVirtualPath("rcryuanzwuxzdxta")))
+                                .withProtectedFiles(
+                                    Arrays.asList(new NginxConfigurationFile().withContent("m").withVirtualPath("fp"),
+                                        new NginxConfigurationFile().withContent("qobmtukk").withVirtualPath("yrtih"),
+                                        new NginxConfigurationFile().withContent("tijbpzvgnwzsymgl")
+                                            .withVirtualPath("fcyzkohdbihanufh"),
+                                        new NginxConfigurationFile().withContent("bj").withVirtualPath("a")))
+                                .withPackageProperty(new NginxConfigurationPackage().withData("hxqh")
+                                    .withProtectedFiles(Arrays.asList("fpikxwczb", "scnpqxuhivy", "n")))
+                                .withRootFile("b"))
+                            .withLocation("rkxvdum"),
+                        new NginxConfigurationInner()
+                            .withProperties(
+                                new NginxConfigurationProperties()
+                                    .withFiles(Arrays.asList(
+                                        new NginxConfigurationFile().withContent("ejhkry")
+                                            .withVirtualPath("napczwlokjy"),
+                                        new NginxConfigurationFile().withContent("kkvnipjox").withVirtualPath("nchgej"),
+                                        new NginxConfigurationFile().withContent("odmailzyd").withVirtualPath("o"),
+                                        new NginxConfigurationFile().withContent("yahux").withVirtualPath("pmqnja")))
+                                    .withProtectedFiles(Arrays.asList(
+                                        new NginxConfigurationFile().withContent("jsprozvcpute").withVirtualPath(
+                                            "vwmf"),
+                                        new NginxConfigurationFile().withContent("t").withVirtualPath("mdvpjhulsu"),
+                                        new NginxConfigurationFile().withContent("mkjozkrwf").withVirtualPath("iodjp"),
+                                        new NginxConfigurationFile().withContent("w")
+                                            .withVirtualPath("dpvwryoqpsoaccta")))
+                                    .withPackageProperty(new NginxConfigurationPackage().withData("ljlahbcryf")
+                                        .withProtectedFiles(Arrays.asList("dosyg", "xpaojakhmsbz")))
+                                    .withRootFile("crzevdphlx"))
+                            .withLocation("lthqtrgqjbp"),
+                        new NginxConfigurationInner()
+                            .withProperties(new NginxConfigurationProperties()
+                                .withFiles(Arrays.asList(
+                                    new NginxConfigurationFile().withContent("vhpfxxypininmay").withVirtualPath("ybb"),
+                                    new NginxConfigurationFile().withContent("odepoogin")
+                                        .withVirtualPath("amiheognarxz"),
+                                    new NginxConfigurationFile().withContent("heotusiv").withVirtualPath("v")))
+                                .withProtectedFiles(Arrays.asList(
+                                    new NginxConfigurationFile().withContent("ihnhun").withVirtualPath("wjzrnfygxgisp"),
+                                    new NginxConfigurationFile().withContent("vtz").withVirtualPath("ufubl")))
+                                .withPackageProperty(
+                                    new NginxConfigurationPackage().withData("xqeofjaeqjhqjba").withProtectedFiles(
+                                        Arrays.asList("smjqulngsntnbyb", "zgcwrw", "lxxwrljdouskc", "vkocrcjdkwtn")))
+                                .withRootFile("bnjbiksqrglssain"))
+                            .withLocation("jwnzlljfmp")))
+                .withNextLink("kvwrwjfeu");
         model = BinaryData.fromObject(model).toObject(NginxConfigurationListResponse.class);
-        Assertions.assertEquals("zehtbmu", model.value().get(0).location());
-        Assertions.assertEquals("wnoi", model.value().get(0).tags().get("hwlrx"));
-        Assertions.assertEquals("mtqio", model.value().get(0).properties().rootFile());
-        Assertions.assertEquals("cnyejhkryhtnapcz", model.nextLink());
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        Assertions.assertEquals("bmtqioq", model.value().get(0).properties().files().get(0).content());
+        Assertions.assertEquals("ehtbm", model.value().get(0).properties().files().get(0).virtualPath());
+        Assertions.assertEquals("ufpdznrbtcqq", model.value().get(0).properties().protectedFiles().get(0).content());
+        Assertions.assertEquals("qglhq", model.value().get(0).properties().protectedFiles().get(0).virtualPath());
+        Assertions.assertEquals("foooj", model.value().get(0).properties().packageProperty().data());
+        Assertions.assertEquals("fsqesaagdfmglzlh",
+            model.value().get(0).properties().packageProperty().protectedFiles().get(0));
+        Assertions.assertEquals("ogknygjofjdd", model.value().get(0).properties().rootFile());
+        Assertions.assertEquals("s", model.value().get(0).location());
+        Assertions.assertEquals("kvwrwjfeu", model.nextLink());
     }
 }

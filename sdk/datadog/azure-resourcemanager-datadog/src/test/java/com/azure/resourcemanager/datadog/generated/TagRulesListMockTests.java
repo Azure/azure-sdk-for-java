@@ -14,6 +14,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.datadog.MicrosoftDatadogManager;
 import com.azure.resourcemanager.datadog.models.MonitoringTagRules;
+import com.azure.resourcemanager.datadog.models.TagAction;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -32,7 +33,7 @@ public final class TagRulesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\",\"logRules\":{\"sendAadLogs\":true,\"sendSubscriptionLogs\":true,\"sendResourceLogs\":true,\"filteringTags\":[]},\"metricRules\":{\"filteringTags\":[]}},\"id\":\"kgpwoz\",\"name\":\"hkfpbs\",\"type\":\"yofd\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":true,\"sendResourceLogs\":false,\"filteringTags\":[{\"name\":\"loayqcgw\",\"value\":\"zjuzgwyz\",\"action\":\"Include\"},{\"name\":\"ongmtsa\",\"value\":\"cbpwxqpsrknft\",\"action\":\"Exclude\"},{\"name\":\"iuhprwmdyvxqta\",\"value\":\"iwwroyqbexrmc\",\"action\":\"Exclude\"}]},\"metricRules\":{\"filteringTags\":[{\"name\":\"jvkn\",\"value\":\"fqsgzvahapjy\",\"action\":\"Exclude\"},{\"name\":\"gqzcjr\",\"value\":\"djzlmwlx\",\"action\":\"Include\"},{\"name\":\"fhzovawjvzunluth\",\"value\":\"prnxipeil\",\"action\":\"Include\"}]},\"automuting\":false},\"id\":\"jxdultskzbbtdzu\",\"name\":\"veekgpwozuhkfp\",\"type\":\"sjyofdx\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,10 +62,28 @@ public final class TagRulesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<MonitoringTagRules> response =
-            manager.tagRules().list("i", "eilpjzuaejxdu", com.azure.core.util.Context.NONE);
+            manager.tagRules().list("c", "wxzvlvqhjkb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(true, response.iterator().next().properties().logRules().sendAadLogs());
+        Assertions.assertEquals(false, response.iterator().next().properties().logRules().sendAadLogs());
         Assertions.assertEquals(true, response.iterator().next().properties().logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(true, response.iterator().next().properties().logRules().sendResourceLogs());
+        Assertions.assertEquals(false, response.iterator().next().properties().logRules().sendResourceLogs());
+        Assertions
+            .assertEquals("loayqcgw", response.iterator().next().properties().logRules().filteringTags().get(0).name());
+        Assertions
+            .assertEquals(
+                "zjuzgwyz", response.iterator().next().properties().logRules().filteringTags().get(0).value());
+        Assertions
+            .assertEquals(
+                TagAction.INCLUDE, response.iterator().next().properties().logRules().filteringTags().get(0).action());
+        Assertions
+            .assertEquals("jvkn", response.iterator().next().properties().metricRules().filteringTags().get(0).name());
+        Assertions
+            .assertEquals(
+                "fqsgzvahapjy", response.iterator().next().properties().metricRules().filteringTags().get(0).value());
+        Assertions
+            .assertEquals(
+                TagAction.EXCLUDE,
+                response.iterator().next().properties().metricRules().filteringTags().get(0).action());
+        Assertions.assertEquals(false, response.iterator().next().properties().automuting());
     }
 }

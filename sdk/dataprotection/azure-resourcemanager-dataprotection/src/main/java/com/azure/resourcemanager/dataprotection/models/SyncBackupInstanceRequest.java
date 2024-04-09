@@ -7,7 +7,9 @@ package com.azure.resourcemanager.dataprotection.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Sync BackupInstance Request. */
+/**
+ * Sync BackupInstance Request.
+ */
 @Fluent
 public final class SyncBackupInstanceRequest {
     /*
@@ -16,13 +18,15 @@ public final class SyncBackupInstanceRequest {
     @JsonProperty(value = "syncType")
     private SyncType syncType;
 
-    /** Creates an instance of SyncBackupInstanceRequest class. */
+    /**
+     * Creates an instance of SyncBackupInstanceRequest class.
+     */
     public SyncBackupInstanceRequest() {
     }
 
     /**
      * Get the syncType property: Field indicating sync type e.g. to sync only in case of failure or in all cases.
-     *
+     * 
      * @return the syncType value.
      */
     public SyncType syncType() {
@@ -31,7 +35,7 @@ public final class SyncBackupInstanceRequest {
 
     /**
      * Set the syncType property: Field indicating sync type e.g. to sync only in case of failure or in all cases.
-     *
+     * 
      * @param syncType the syncType value to set.
      * @return the SyncBackupInstanceRequest object itself.
      */
@@ -42,7 +46,7 @@ public final class SyncBackupInstanceRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

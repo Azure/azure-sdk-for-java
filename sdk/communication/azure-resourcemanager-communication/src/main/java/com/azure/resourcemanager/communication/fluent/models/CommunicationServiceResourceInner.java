@@ -8,11 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.communication.models.CommunicationServicesProvisioningState;
+import com.azure.resourcemanager.communication.models.ManagedServiceIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** A class representing a CommunicationService resource. */
+/**
+ * A class representing a CommunicationService resource.
+ */
 @Fluent
 public final class CommunicationServiceResourceInner extends Resource {
     /*
@@ -22,18 +25,26 @@ public final class CommunicationServiceResourceInner extends Resource {
     private CommunicationServiceProperties innerProperties;
 
     /*
+     * Managed service identity (system assigned and/or user assigned identities)
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of CommunicationServiceResourceInner class. */
+    /**
+     * Creates an instance of CommunicationServiceResourceInner class.
+     */
     public CommunicationServiceResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the service.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CommunicationServiceProperties innerProperties() {
@@ -41,22 +52,46 @@ public final class CommunicationServiceResourceInner extends Resource {
     }
 
     /**
+     * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
+     * 
+     * @param identity the identity value to set.
+     * @return the CommunicationServiceResourceInner object itself.
+     */
+    public CommunicationServiceResourceInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommunicationServiceResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommunicationServiceResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -65,7 +100,7 @@ public final class CommunicationServiceResourceInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CommunicationServicesProvisioningState provisioningState() {
@@ -74,7 +109,7 @@ public final class CommunicationServiceResourceInner extends Resource {
 
     /**
      * Get the hostname property: FQDN of the CommunicationService instance.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -83,7 +118,7 @@ public final class CommunicationServiceResourceInner extends Resource {
 
     /**
      * Get the dataLocation property: The location where the communication service stores its data at rest.
-     *
+     * 
      * @return the dataLocation value.
      */
     public String dataLocation() {
@@ -92,7 +127,7 @@ public final class CommunicationServiceResourceInner extends Resource {
 
     /**
      * Set the dataLocation property: The location where the communication service stores its data at rest.
-     *
+     * 
      * @param dataLocation the dataLocation value to set.
      * @return the CommunicationServiceResourceInner object itself.
      */
@@ -106,7 +141,7 @@ public final class CommunicationServiceResourceInner extends Resource {
 
     /**
      * Get the notificationHubId property: Resource ID of an Azure Notification Hub linked to this resource.
-     *
+     * 
      * @return the notificationHubId value.
      */
     public String notificationHubId() {
@@ -116,7 +151,7 @@ public final class CommunicationServiceResourceInner extends Resource {
     /**
      * Get the version property: Version of the CommunicationService resource. Probably you need the same or higher
      * version of client SDKs.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -125,7 +160,7 @@ public final class CommunicationServiceResourceInner extends Resource {
 
     /**
      * Get the immutableResourceId property: The immutable resource Id of the communication service.
-     *
+     * 
      * @return the immutableResourceId value.
      */
     public String immutableResourceId() {
@@ -134,7 +169,7 @@ public final class CommunicationServiceResourceInner extends Resource {
 
     /**
      * Get the linkedDomains property: List of email Domain resource Ids.
-     *
+     * 
      * @return the linkedDomains value.
      */
     public List<String> linkedDomains() {
@@ -143,7 +178,7 @@ public final class CommunicationServiceResourceInner extends Resource {
 
     /**
      * Set the linkedDomains property: List of email Domain resource Ids.
-     *
+     * 
      * @param linkedDomains the linkedDomains value to set.
      * @return the CommunicationServiceResourceInner object itself.
      */
@@ -157,12 +192,15 @@ public final class CommunicationServiceResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

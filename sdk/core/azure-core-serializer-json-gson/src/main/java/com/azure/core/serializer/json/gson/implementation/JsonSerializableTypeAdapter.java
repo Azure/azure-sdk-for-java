@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.json.gson.implementation;
 
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonSerializable;
@@ -11,8 +12,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
 
 /**
  * Implementation of GSON's {@link TypeAdapter} that is capable of handling {@link JsonSerializable} types.
@@ -21,7 +20,7 @@ public class JsonSerializableTypeAdapter extends TypeAdapter<JsonSerializable<?>
     private static final ClientLogger LOGGER = new ClientLogger(JsonSerializableTypeAdapter.class);
 
     private final Class<? extends JsonSerializable<?>> jsonSerializableType;
-    private final MethodHandle readJson;
+    private final ReflectiveInvoker readJson;
 
     /**
      * Creates an instance of {@link JsonSerializableTypeAdapter}.
@@ -32,9 +31,8 @@ public class JsonSerializableTypeAdapter extends TypeAdapter<JsonSerializable<?>
     public JsonSerializableTypeAdapter(Class<? extends JsonSerializable<?>> jsonSerializableType) {
         this.jsonSerializableType = jsonSerializableType;
         try {
-            MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(jsonSerializableType);
-            this.readJson = lookup.unreflect(jsonSerializableType.getDeclaredMethod("fromJson",
-                com.azure.json.JsonReader.class));
+            this.readJson = ReflectionUtils.getMethodInvoker(jsonSerializableType,
+                jsonSerializableType.getDeclaredMethod("fromJson", com.azure.json.JsonReader.class));
         } catch (Exception e) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(e));
         }
@@ -49,13 +47,11 @@ public class JsonSerializableTypeAdapter extends TypeAdapter<JsonSerializable<?>
     public JsonSerializable<?> read(JsonReader in) throws IOException {
         try {
             return jsonSerializableType.cast(readJson.invokeWithArguments(new GsonJsonReader(in, null, true)));
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e;
-            } else if (e instanceof Exception) {
-                throw new IOException(e);
+        } catch (Exception exception) {
+            if (exception instanceof IOException) {
+                throw (IOException) exception;
             } else {
-                throw (Error) e;
+                throw new IOException(exception);
             }
         }
     }

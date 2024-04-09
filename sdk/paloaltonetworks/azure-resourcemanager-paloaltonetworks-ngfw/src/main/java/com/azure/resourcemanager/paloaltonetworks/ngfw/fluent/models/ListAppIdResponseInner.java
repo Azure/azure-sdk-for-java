@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ListAppIdResponse model. */
+/**
+ * The ListAppIdResponse model.
+ */
 @Fluent
 public final class ListAppIdResponseInner {
     /*
@@ -24,13 +26,15 @@ public final class ListAppIdResponseInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ListAppIdResponseInner class. */
+    /**
+     * Creates an instance of ListAppIdResponseInner class.
+     */
     public ListAppIdResponseInner() {
     }
 
     /**
      * Get the value property: List of AppIds.
-     *
+     * 
      * @return the value value.
      */
     public List<String> value() {
@@ -39,7 +43,7 @@ public final class ListAppIdResponseInner {
 
     /**
      * Set the value property: List of AppIds.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListAppIdResponseInner object itself.
      */
@@ -50,7 +54,7 @@ public final class ListAppIdResponseInner {
 
     /**
      * Get the nextLink property: next Link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ListAppIdResponseInner {
 
     /**
      * Set the nextLink property: next Link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListAppIdResponseInner object itself.
      */
@@ -70,14 +74,13 @@ public final class ListAppIdResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ListAppIdResponseInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model ListAppIdResponseInner"));
         }
     }
 

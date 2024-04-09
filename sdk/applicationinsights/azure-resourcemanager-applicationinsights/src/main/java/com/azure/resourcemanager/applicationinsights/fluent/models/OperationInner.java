@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.applicationinsights.models.OperationDisplay;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** CDN REST API operation. */
+/** Azure Workbooks REST API operation. */
 @Fluent
 public final class OperationInner {
     /*
@@ -22,6 +22,10 @@ public final class OperationInner {
      */
     @JsonProperty(value = "display")
     private OperationDisplay display;
+
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
 
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.

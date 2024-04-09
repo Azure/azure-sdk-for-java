@@ -8,15 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RestorePointCollectionExpandOptions. */
+/**
+ * Defines values for RestorePointCollectionExpandOptions.
+ */
 public final class RestorePointCollectionExpandOptions
     extends ExpandableStringEnum<RestorePointCollectionExpandOptions> {
-    /** Static value restorePoints for RestorePointCollectionExpandOptions. */
+    /**
+     * Static value restorePoints for RestorePointCollectionExpandOptions.
+     */
     public static final RestorePointCollectionExpandOptions RESTORE_POINTS = fromString("restorePoints");
 
     /**
      * Creates a new instance of RestorePointCollectionExpandOptions value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -25,7 +29,7 @@ public final class RestorePointCollectionExpandOptions
 
     /**
      * Creates or finds a RestorePointCollectionExpandOptions from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RestorePointCollectionExpandOptions.
      */
@@ -36,7 +40,7 @@ public final class RestorePointCollectionExpandOptions
 
     /**
      * Gets known RestorePointCollectionExpandOptions values.
-     *
+     * 
      * @return known RestorePointCollectionExpandOptions values.
      */
     public static Collection<RestorePointCollectionExpandOptions> values() {

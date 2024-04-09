@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ComponentAvailableFeatures Get. */
 public final class ComponentAvailableFeaturesGetSamples {
     /*
@@ -18,6 +16,8 @@ public final class ComponentAvailableFeaturesGetSamples {
      */
     public static void componentCurrentBillingFeaturesGet(
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.componentAvailableFeatures().getWithResponse("my-resource-group", "my-component", Context.NONE);
+        manager
+            .componentAvailableFeatures()
+            .getWithResponse("my-resource-group", "my-component", com.azure.core.util.Context.NONE);
     }
 }

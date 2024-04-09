@@ -10,7 +10,9 @@ import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.ServiceNowAuthenticationType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ServiceNow server linked service properties. */
+/**
+ * ServiceNow server linked service properties.
+ */
 @Fluent
 public final class ServiceNowLinkedServiceTypeProperties {
     /*
@@ -70,18 +72,20 @@ public final class ServiceNowLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of ServiceNowLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of ServiceNowLinkedServiceTypeProperties class.
+     */
     public ServiceNowLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the endpoint property: The endpoint of the ServiceNow server. (i.e. &lt;instance&gt;.service-now.com).
-     *
+     * 
      * @return the endpoint value.
      */
     public Object endpoint() {
@@ -90,7 +94,7 @@ public final class ServiceNowLinkedServiceTypeProperties {
 
     /**
      * Set the endpoint property: The endpoint of the ServiceNow server. (i.e. &lt;instance&gt;.service-now.com).
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the ServiceNowLinkedServiceTypeProperties object itself.
      */
@@ -101,7 +105,7 @@ public final class ServiceNowLinkedServiceTypeProperties {
 
     /**
      * Get the authenticationType property: The authentication type to use.
-     *
+     * 
      * @return the authenticationType value.
      */
     public ServiceNowAuthenticationType authenticationType() {
@@ -110,12 +114,12 @@ public final class ServiceNowLinkedServiceTypeProperties {
 
     /**
      * Set the authenticationType property: The authentication type to use.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the ServiceNowLinkedServiceTypeProperties object itself.
      */
-    public ServiceNowLinkedServiceTypeProperties withAuthenticationType(
-        ServiceNowAuthenticationType authenticationType) {
+    public ServiceNowLinkedServiceTypeProperties
+        withAuthenticationType(ServiceNowAuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
     }
@@ -123,7 +127,7 @@ public final class ServiceNowLinkedServiceTypeProperties {
     /**
      * Get the username property: The user name used to connect to the ServiceNow server for Basic and OAuth2
      * authentication.
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -133,7 +137,7 @@ public final class ServiceNowLinkedServiceTypeProperties {
     /**
      * Set the username property: The user name used to connect to the ServiceNow server for Basic and OAuth2
      * authentication.
-     *
+     * 
      * @param username the username value to set.
      * @return the ServiceNowLinkedServiceTypeProperties object itself.
      */
@@ -144,7 +148,7 @@ public final class ServiceNowLinkedServiceTypeProperties {
 
     /**
      * Get the password property: The password corresponding to the user name for Basic and OAuth2 authentication.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -153,7 +157,7 @@ public final class ServiceNowLinkedServiceTypeProperties {
 
     /**
      * Set the password property: The password corresponding to the user name for Basic and OAuth2 authentication.
-     *
+     * 
      * @param password the password value to set.
      * @return the ServiceNowLinkedServiceTypeProperties object itself.
      */
@@ -164,7 +168,7 @@ public final class ServiceNowLinkedServiceTypeProperties {
 
     /**
      * Get the clientId property: The client id for OAuth2 authentication.
-     *
+     * 
      * @return the clientId value.
      */
     public Object clientId() {
@@ -173,7 +177,7 @@ public final class ServiceNowLinkedServiceTypeProperties {
 
     /**
      * Set the clientId property: The client id for OAuth2 authentication.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the ServiceNowLinkedServiceTypeProperties object itself.
      */
@@ -184,7 +188,7 @@ public final class ServiceNowLinkedServiceTypeProperties {
 
     /**
      * Get the clientSecret property: The client secret for OAuth2 authentication.
-     *
+     * 
      * @return the clientSecret value.
      */
     public SecretBase clientSecret() {
@@ -193,7 +197,7 @@ public final class ServiceNowLinkedServiceTypeProperties {
 
     /**
      * Set the clientSecret property: The client secret for OAuth2 authentication.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the ServiceNowLinkedServiceTypeProperties object itself.
      */
@@ -205,7 +209,7 @@ public final class ServiceNowLinkedServiceTypeProperties {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object useEncryptedEndpoints() {
@@ -215,7 +219,7 @@ public final class ServiceNowLinkedServiceTypeProperties {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the ServiceNowLinkedServiceTypeProperties object itself.
      */
@@ -227,7 +231,7 @@ public final class ServiceNowLinkedServiceTypeProperties {
     /**
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @return the useHostVerification value.
      */
     public Object useHostVerification() {
@@ -237,7 +241,7 @@ public final class ServiceNowLinkedServiceTypeProperties {
     /**
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @param useHostVerification the useHostVerification value to set.
      * @return the ServiceNowLinkedServiceTypeProperties object itself.
      */
@@ -247,9 +251,9 @@ public final class ServiceNowLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true.
+     * 
      * @return the usePeerVerification value.
      */
     public Object usePeerVerification() {
@@ -257,9 +261,9 @@ public final class ServiceNowLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true.
+     * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the ServiceNowLinkedServiceTypeProperties object itself.
      */
@@ -269,44 +273,40 @@ public final class ServiceNowLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the ServiceNowLinkedServiceTypeProperties object itself.
      */
-    public ServiceNowLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public ServiceNowLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (endpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endpoint in model ServiceNowLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property endpoint in model ServiceNowLinkedServiceTypeProperties"));
         }
         if (authenticationType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property authenticationType in model ServiceNowLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property authenticationType in model ServiceNowLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

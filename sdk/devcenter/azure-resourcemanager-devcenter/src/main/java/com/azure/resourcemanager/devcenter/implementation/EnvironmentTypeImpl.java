@@ -47,6 +47,10 @@ public final class EnvironmentTypeImpl implements EnvironmentType, EnvironmentTy
         return this.innerModel().provisioningState();
     }
 
+    public String displayName() {
+        return this.innerModel().displayName();
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -161,6 +165,16 @@ public final class EnvironmentTypeImpl implements EnvironmentType, EnvironmentTy
             return this;
         } else {
             this.updateBody.withTags(tags);
+            return this;
+        }
+    }
+
+    public EnvironmentTypeImpl withDisplayName(String displayName) {
+        if (isInCreateMode()) {
+            this.innerModel().withDisplayName(displayName);
+            return this;
+        } else {
+            this.updateBody.withDisplayName(displayName);
             return this;
         }
     }

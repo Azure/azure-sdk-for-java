@@ -20,6 +20,15 @@ public final class EnablementRules extends ExpandableStringEnum<EnablementRules>
     public static final EnablementRules TICKETING = fromString("Ticketing");
 
     /**
+     * Creates a new instance of EnablementRules value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EnablementRules() {
+    }
+
+    /**
      * Creates or finds a EnablementRules from its string representation.
      *
      * @param name a name to look for.

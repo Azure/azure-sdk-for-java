@@ -27,13 +27,15 @@ public final class ServiceEndpointPolicyDefinitionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ServiceEndpointPolicyDefinitionListResult class. */
+    /**
+     * Creates an instance of ServiceEndpointPolicyDefinitionListResult class.
+     */
     public ServiceEndpointPolicyDefinitionListResult() {
     }
 
     /**
      * Get the value property: The service endpoint policy definition in a service endpoint policy.
-     *
+     * 
      * @return the value value.
      */
     public List<ServiceEndpointPolicyDefinitionInner> value() {
@@ -42,7 +44,7 @@ public final class ServiceEndpointPolicyDefinitionListResult {
 
     /**
      * Set the value property: The service endpoint policy definition in a service endpoint policy.
-     *
+     * 
      * @param value the value value to set.
      * @return the ServiceEndpointPolicyDefinitionListResult object itself.
      */
@@ -53,7 +55,7 @@ public final class ServiceEndpointPolicyDefinitionListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +64,7 @@ public final class ServiceEndpointPolicyDefinitionListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ServiceEndpointPolicyDefinitionListResult object itself.
      */
@@ -73,7 +75,7 @@ public final class ServiceEndpointPolicyDefinitionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,77 +8,123 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The workflow provisioning state. */
+/**
+ * The workflow provisioning state.
+ */
 public final class WorkflowProvisioningState extends ExpandableStringEnum<WorkflowProvisioningState> {
-    /** Static value NotSpecified for WorkflowProvisioningState. */
+    /**
+     * Static value NotSpecified for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Accepted for WorkflowProvisioningState. */
+    /**
+     * Static value Accepted for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState ACCEPTED = fromString("Accepted");
 
-    /** Static value Running for WorkflowProvisioningState. */
+    /**
+     * Static value Running for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState RUNNING = fromString("Running");
 
-    /** Static value Ready for WorkflowProvisioningState. */
+    /**
+     * Static value Ready for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState READY = fromString("Ready");
 
-    /** Static value Creating for WorkflowProvisioningState. */
+    /**
+     * Static value Creating for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Created for WorkflowProvisioningState. */
+    /**
+     * Static value Created for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState CREATED = fromString("Created");
 
-    /** Static value Deleting for WorkflowProvisioningState. */
+    /**
+     * Static value Deleting for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Deleted for WorkflowProvisioningState. */
+    /**
+     * Static value Deleted for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState DELETED = fromString("Deleted");
 
-    /** Static value Canceled for WorkflowProvisioningState. */
+    /**
+     * Static value Canceled for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Failed for WorkflowProvisioningState. */
+    /**
+     * Static value Failed for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Succeeded for WorkflowProvisioningState. */
+    /**
+     * Static value Succeeded for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Moving for WorkflowProvisioningState. */
+    /**
+     * Static value Moving for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState MOVING = fromString("Moving");
 
-    /** Static value Updating for WorkflowProvisioningState. */
+    /**
+     * Static value Updating for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Registering for WorkflowProvisioningState. */
+    /**
+     * Static value Registering for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState REGISTERING = fromString("Registering");
 
-    /** Static value Registered for WorkflowProvisioningState. */
+    /**
+     * Static value Registered for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState REGISTERED = fromString("Registered");
 
-    /** Static value Unregistering for WorkflowProvisioningState. */
+    /**
+     * Static value Unregistering for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState UNREGISTERING = fromString("Unregistering");
 
-    /** Static value Unregistered for WorkflowProvisioningState. */
+    /**
+     * Static value Unregistered for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState UNREGISTERED = fromString("Unregistered");
 
-    /** Static value Completed for WorkflowProvisioningState. */
+    /**
+     * Static value Completed for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState COMPLETED = fromString("Completed");
 
-    /** Static value Renewing for WorkflowProvisioningState. */
+    /**
+     * Static value Renewing for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState RENEWING = fromString("Renewing");
 
-    /** Static value Pending for WorkflowProvisioningState. */
+    /**
+     * Static value Pending for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState PENDING = fromString("Pending");
 
-    /** Static value Waiting for WorkflowProvisioningState. */
+    /**
+     * Static value Waiting for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState WAITING = fromString("Waiting");
 
-    /** Static value InProgress for WorkflowProvisioningState. */
+    /**
+     * Static value InProgress for WorkflowProvisioningState.
+     */
     public static final WorkflowProvisioningState IN_PROGRESS = fromString("InProgress");
 
     /**
      * Creates a new instance of WorkflowProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -87,7 +133,7 @@ public final class WorkflowProvisioningState extends ExpandableStringEnum<Workfl
 
     /**
      * Creates or finds a WorkflowProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WorkflowProvisioningState.
      */
@@ -98,7 +144,7 @@ public final class WorkflowProvisioningState extends ExpandableStringEnum<Workfl
 
     /**
      * Gets known WorkflowProvisioningState values.
-     *
+     * 
      * @return known WorkflowProvisioningState values.
      */
     public static Collection<WorkflowProvisioningState> values() {

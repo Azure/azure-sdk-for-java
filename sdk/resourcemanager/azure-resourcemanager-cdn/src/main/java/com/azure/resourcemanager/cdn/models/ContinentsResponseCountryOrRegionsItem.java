@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContinentsResponseCountryOrRegionsItem model. */
+/**
+ * The ContinentsResponseCountryOrRegionsItem model.
+ */
 @Fluent
 public final class ContinentsResponseCountryOrRegionsItem {
     /*
@@ -23,8 +25,14 @@ public final class ContinentsResponseCountryOrRegionsItem {
     private String continentId;
 
     /**
+     * Creates an instance of ContinentsResponseCountryOrRegionsItem class.
+     */
+    public ContinentsResponseCountryOrRegionsItem() {
+    }
+
+    /**
      * Get the id property: The id property.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -33,7 +41,7 @@ public final class ContinentsResponseCountryOrRegionsItem {
 
     /**
      * Set the id property: The id property.
-     *
+     * 
      * @param id the id value to set.
      * @return the ContinentsResponseCountryOrRegionsItem object itself.
      */
@@ -44,7 +52,7 @@ public final class ContinentsResponseCountryOrRegionsItem {
 
     /**
      * Get the continentId property: The continentId property.
-     *
+     * 
      * @return the continentId value.
      */
     public String continentId() {
@@ -53,7 +61,7 @@ public final class ContinentsResponseCountryOrRegionsItem {
 
     /**
      * Set the continentId property: The continentId property.
-     *
+     * 
      * @param continentId the continentId value to set.
      * @return the ContinentsResponseCountryOrRegionsItem object itself.
      */
@@ -64,7 +72,7 @@ public final class ContinentsResponseCountryOrRegionsItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

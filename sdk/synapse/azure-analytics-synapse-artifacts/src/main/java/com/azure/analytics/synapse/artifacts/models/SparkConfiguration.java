@@ -12,8 +12,8 @@ import java.util.Map;
 
 /**
  * Information about a SparkConfiguration created at the workspace level.
- *
- * <p>SparkConfiguration Artifact information.
+ * 
+ * SparkConfiguration Artifact information.
  */
 @Fluent
 public final class SparkConfiguration {
@@ -59,12 +59,15 @@ public final class SparkConfiguration {
     @JsonProperty(value = "configMergeRule")
     private Map<String, String> configMergeRule;
 
-    /** Creates an instance of SparkConfiguration class. */
-    public SparkConfiguration() {}
+    /**
+     * Creates an instance of SparkConfiguration class.
+     */
+    public SparkConfiguration() {
+    }
 
     /**
      * Get the description property: Description about the SparkConfiguration.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -73,7 +76,7 @@ public final class SparkConfiguration {
 
     /**
      * Set the description property: Description about the SparkConfiguration.
-     *
+     * 
      * @param description the description value to set.
      * @return the SparkConfiguration object itself.
      */
@@ -84,7 +87,7 @@ public final class SparkConfiguration {
 
     /**
      * Get the configs property: SparkConfiguration configs.
-     *
+     * 
      * @return the configs value.
      */
     public Map<String, String> getConfigs() {
@@ -93,7 +96,7 @@ public final class SparkConfiguration {
 
     /**
      * Set the configs property: SparkConfiguration configs.
-     *
+     * 
      * @param configs the configs value to set.
      * @return the SparkConfiguration object itself.
      */
@@ -104,7 +107,7 @@ public final class SparkConfiguration {
 
     /**
      * Get the annotations property: Annotations for SparkConfiguration.
-     *
+     * 
      * @return the annotations value.
      */
     public List<String> getAnnotations() {
@@ -113,7 +116,7 @@ public final class SparkConfiguration {
 
     /**
      * Set the annotations property: Annotations for SparkConfiguration.
-     *
+     * 
      * @param annotations the annotations value to set.
      * @return the SparkConfiguration object itself.
      */
@@ -124,7 +127,7 @@ public final class SparkConfiguration {
 
     /**
      * Get the notes property: additional Notes.
-     *
+     * 
      * @return the notes value.
      */
     public String getNotes() {
@@ -133,7 +136,7 @@ public final class SparkConfiguration {
 
     /**
      * Set the notes property: additional Notes.
-     *
+     * 
      * @param notes the notes value to set.
      * @return the SparkConfiguration object itself.
      */
@@ -144,7 +147,7 @@ public final class SparkConfiguration {
 
     /**
      * Get the createdBy property: The identity that created the resource.
-     *
+     * 
      * @return the createdBy value.
      */
     public String getCreatedBy() {
@@ -153,7 +156,7 @@ public final class SparkConfiguration {
 
     /**
      * Set the createdBy property: The identity that created the resource.
-     *
+     * 
      * @param createdBy the createdBy value to set.
      * @return the SparkConfiguration object itself.
      */
@@ -164,7 +167,7 @@ public final class SparkConfiguration {
 
     /**
      * Get the created property: The timestamp of resource creation.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime getCreated() {
@@ -173,7 +176,7 @@ public final class SparkConfiguration {
 
     /**
      * Set the created property: The timestamp of resource creation.
-     *
+     * 
      * @param created the created value to set.
      * @return the SparkConfiguration object itself.
      */
@@ -184,7 +187,7 @@ public final class SparkConfiguration {
 
     /**
      * Get the configMergeRule property: SparkConfiguration configMergeRule.
-     *
+     * 
      * @return the configMergeRule value.
      */
     public Map<String, String> getConfigMergeRule() {
@@ -193,7 +196,7 @@ public final class SparkConfiguration {
 
     /**
      * Set the configMergeRule property: SparkConfiguration configMergeRule.
-     *
+     * 
      * @param configMergeRule the configMergeRule value to set.
      * @return the SparkConfiguration object itself.
      */

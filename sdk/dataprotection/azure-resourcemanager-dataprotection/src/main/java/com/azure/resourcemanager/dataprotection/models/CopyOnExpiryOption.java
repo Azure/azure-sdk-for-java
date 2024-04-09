@@ -10,20 +10,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * CopyOnExpiryOption
- *
- * <p>Copy on Expiry Option.
+ * 
+ * Copy on Expiry Option.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("CopyOnExpiryOption")
 @Immutable
 public final class CopyOnExpiryOption extends CopyOption {
-    /** Creates an instance of CopyOnExpiryOption class. */
+    /**
+     * Creates an instance of CopyOnExpiryOption class.
+     */
     public CopyOnExpiryOption() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

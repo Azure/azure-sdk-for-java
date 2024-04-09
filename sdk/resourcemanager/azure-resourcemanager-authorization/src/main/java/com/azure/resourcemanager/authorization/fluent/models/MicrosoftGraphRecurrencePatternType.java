@@ -30,6 +30,15 @@ public final class MicrosoftGraphRecurrencePatternType
     public static final MicrosoftGraphRecurrencePatternType RELATIVE_YEARLY = fromString("relativeYearly");
 
     /**
+     * Creates a new instance of MicrosoftGraphRecurrencePatternType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphRecurrencePatternType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphRecurrencePatternType from its string representation.
      *
      * @param name a name to look for.

@@ -10,18 +10,19 @@ import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
 
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.InvalidPathException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
 
 /**
  * This class is an internal implementation of slf4j logger.
  */
 public final class DefaultLogger extends MarkerIgnoringBase {
     private static final long serialVersionUID = -144261058636441630L;
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
     // The template for the log message:
     // YYYY-MM-DD HH:MM:ss.SSS [thread] [level] classpath - message
@@ -42,6 +43,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     private final boolean isInfoEnabled;
     private final boolean isWarnEnabled;
     private final boolean isErrorEnabled;
+    private final PrintStream logLocation;
 
     /**
      * Construct DefaultLogger for the given class.
@@ -49,7 +51,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      * @param clazz Class creating the logger.
      */
     public DefaultLogger(Class<?> clazz) {
-        this(clazz.getName());
+        this(clazz.getCanonicalName(), System.out, fromEnvironment());
     }
 
     /**
@@ -59,23 +61,37 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      * name passes in.
      */
     public DefaultLogger(String className) {
-        String classPath;
-        try {
-            classPath = Class.forName(className).getCanonicalName();
-        } catch (ClassNotFoundException | InvalidPathException e) {
-            // Swallow ClassNotFoundException as the passed class name may not correlate to an actual class.
-            // Swallow InvalidPathException as the className may contain characters that aren't legal file characters.
-            classPath = className;
-        }
-        this.classPath = classPath;
-        int configuredLogLevel = fromEnvironment().getLogLevel();
+        this(getClassPathFromClassName(className), System.out, fromEnvironment());
+    }
+
+    /**
+     * Construct DefaultLogger for the given class name.
+     *
+     * @param className Class name creating the logger. Will use class canonical name if exists, otherwise use the class
+     * name passes in.
+     * @param logLocation The location to log the messages.
+     * @param logLevel The log level supported by the logger.
+     */
+    public DefaultLogger(String className, PrintStream logLocation, LogLevel logLevel) {
+        this.classPath = getClassPathFromClassName(className);
+        int configuredLogLevel = logLevel.getLogLevel();
 
         isTraceEnabled = LogLevel.VERBOSE.getLogLevel() > configuredLogLevel;
         isDebugEnabled = LogLevel.VERBOSE.getLogLevel() >= configuredLogLevel;
         isInfoEnabled = LogLevel.INFORMATIONAL.getLogLevel() >= configuredLogLevel;
         isWarnEnabled = LogLevel.WARNING.getLogLevel() >= configuredLogLevel;
         isErrorEnabled = LogLevel.ERROR.getLogLevel() >= configuredLogLevel;
+        this.logLocation = logLocation;
+    }
 
+    private static String getClassPathFromClassName(String className) {
+        try {
+            return Class.forName(className).getCanonicalName();
+        } catch (ClassNotFoundException | InvalidPathException e) {
+            // Swallow ClassNotFoundException as the passed class name may not correlate to an actual class.
+            // Swallow InvalidPathException as the className may contain characters that aren't legal file characters.
+            return className;
+        }
     }
 
     private static LogLevel fromEnvironment() {
@@ -192,7 +208,6 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     public boolean isInfoEnabled() {
         return isInfoEnabled;
     }
-
 
     /**
      * {@inheritDoc}
@@ -355,8 +370,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         // Use a larger initial buffer for the StringBuilder as it defaults to 16 and non-empty information is expected
         // to be much larger than that. This will reduce the amount of resizing and copying needed to be done.
         StringBuilder stringBuilder = new StringBuilder(256);
-        stringBuilder
-            .append(dateTime)
+        stringBuilder.append(dateTime)
             .append(OPEN_BRACKET)
             .append(threadName)
             .append(CLOSE_BRACKET)
@@ -377,9 +391,57 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      *
      * @return The current time in {@code DATE_FORMAT}
      */
-    private String getFormattedDate() {
+    private static String getFormattedDate() {
         LocalDateTime now = LocalDateTime.now();
-        return DATE_FORMAT.format(now);
+
+        // yyyy-MM-dd HH:mm:ss.SSS
+        // 23 characters that will be ASCII
+        byte[] bytes = new byte[23];
+
+        // yyyy-
+        int year = now.getYear();
+        int round = year / 1000;
+        bytes[0] = (byte) ('0' + round);
+        year = year - (1000 * round);
+        round = year / 100;
+        bytes[1] = (byte) ('0' + round);
+        year = year - (100 * round);
+        round = year / 10;
+        bytes[2] = (byte) ('0' + round);
+        bytes[3] = (byte) ('0' + (year - (10 * round)));
+        bytes[4] = '-';
+
+        // MM-
+        zeroPad(now.getMonthValue(), bytes, 5);
+        bytes[7] = '-';
+
+        // dd
+        zeroPad(now.getDayOfMonth(), bytes, 8);
+        bytes[10] = ' ';
+
+        // HH:
+        zeroPad(now.getHour(), bytes, 11);
+        bytes[13] = ':';
+
+        // mm:
+        zeroPad(now.getMinute(), bytes, 14);
+        bytes[16] = ':';
+
+        // ss.
+        zeroPad(now.getSecond(), bytes, 17);
+        bytes[19] = '.';
+
+        // SSS
+        int millis = now.get(ChronoField.MILLI_OF_SECOND);
+        round = millis / 100;
+        bytes[20] = (byte) ('0' + round);
+        millis = millis - (100 * round);
+        round = millis / 10;
+        bytes[21] = (byte) ('0' + round);
+        bytes[22] = (byte) ('0' + (millis - (10 * round)));
+
+        // Use UTF-8 as it's more performant than ASCII in Java 8
+        return new String(bytes, StandardCharsets.UTF_8);
     }
 
     /**
@@ -396,6 +458,17 @@ public final class DefaultLogger extends MarkerIgnoringBase {
                 stringBuilder.append(sw);
             }
         }
-        System.out.print(stringBuilder.toString());
+        logLocation.print(stringBuilder.toString());
+    }
+
+    private static void zeroPad(int value, byte[] bytes, int index) {
+        if (value < 10) {
+            bytes[index++] = '0';
+            bytes[index] = (byte) ('0' + value);
+        } else {
+            int high = value / 10;
+            bytes[index++] = (byte) ('0' + high);
+            bytes[index] = (byte) ('0' + (value - (10 * high)));
+        }
     }
 }

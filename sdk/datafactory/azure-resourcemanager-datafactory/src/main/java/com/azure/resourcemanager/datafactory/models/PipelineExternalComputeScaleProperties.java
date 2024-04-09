@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** PipelineExternalComputeScale properties for managed integration runtime. */
+/**
+ * PipelineExternalComputeScale properties for managed integration runtime.
+ */
 @Fluent
 public final class PipelineExternalComputeScaleProperties {
     /*
@@ -22,18 +24,33 @@ public final class PipelineExternalComputeScaleProperties {
     private Integer timeToLive;
 
     /*
+     * Number of the pipeline nodes, which should be greater than 0 and less than 11.
+     */
+    @JsonProperty(value = "numberOfPipelineNodes")
+    private Integer numberOfPipelineNodes;
+
+    /*
+     * Number of the the external nodes, which should be greater than 0 and less than 11.
+     */
+    @JsonProperty(value = "numberOfExternalNodes")
+    private Integer numberOfExternalNodes;
+
+    /*
      * PipelineExternalComputeScale properties for managed integration runtime.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of PipelineExternalComputeScaleProperties class. */
+    /**
+     * Creates an instance of PipelineExternalComputeScaleProperties class.
+     */
     public PipelineExternalComputeScaleProperties() {
     }
 
     /**
-     * Get the timeToLive property: Time to live (in minutes) setting of integration runtime which will execute pipeline
-     * and external activity.
-     *
+     * Get the timeToLive property: Time to live (in minutes) setting of integration runtime which will execute
+     * pipeline and external activity.
+     * 
      * @return the timeToLive value.
      */
     public Integer timeToLive() {
@@ -41,9 +58,9 @@ public final class PipelineExternalComputeScaleProperties {
     }
 
     /**
-     * Set the timeToLive property: Time to live (in minutes) setting of integration runtime which will execute pipeline
-     * and external activity.
-     *
+     * Set the timeToLive property: Time to live (in minutes) setting of integration runtime which will execute
+     * pipeline and external activity.
+     * 
      * @param timeToLive the timeToLive value to set.
      * @return the PipelineExternalComputeScaleProperties object itself.
      */
@@ -53,8 +70,52 @@ public final class PipelineExternalComputeScaleProperties {
     }
 
     /**
+     * Get the numberOfPipelineNodes property: Number of the pipeline nodes, which should be greater than 0 and less
+     * than 11.
+     * 
+     * @return the numberOfPipelineNodes value.
+     */
+    public Integer numberOfPipelineNodes() {
+        return this.numberOfPipelineNodes;
+    }
+
+    /**
+     * Set the numberOfPipelineNodes property: Number of the pipeline nodes, which should be greater than 0 and less
+     * than 11.
+     * 
+     * @param numberOfPipelineNodes the numberOfPipelineNodes value to set.
+     * @return the PipelineExternalComputeScaleProperties object itself.
+     */
+    public PipelineExternalComputeScaleProperties withNumberOfPipelineNodes(Integer numberOfPipelineNodes) {
+        this.numberOfPipelineNodes = numberOfPipelineNodes;
+        return this;
+    }
+
+    /**
+     * Get the numberOfExternalNodes property: Number of the the external nodes, which should be greater than 0 and
+     * less than 11.
+     * 
+     * @return the numberOfExternalNodes value.
+     */
+    public Integer numberOfExternalNodes() {
+        return this.numberOfExternalNodes;
+    }
+
+    /**
+     * Set the numberOfExternalNodes property: Number of the the external nodes, which should be greater than 0 and
+     * less than 11.
+     * 
+     * @param numberOfExternalNodes the numberOfExternalNodes value to set.
+     * @return the PipelineExternalComputeScaleProperties object itself.
+     */
+    public PipelineExternalComputeScaleProperties withNumberOfExternalNodes(Integer numberOfExternalNodes) {
+        this.numberOfExternalNodes = numberOfExternalNodes;
+        return this;
+    }
+
+    /**
      * Get the additionalProperties property: PipelineExternalComputeScale properties for managed integration runtime.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -64,7 +125,7 @@ public final class PipelineExternalComputeScaleProperties {
 
     /**
      * Set the additionalProperties property: PipelineExternalComputeScale properties for managed integration runtime.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the PipelineExternalComputeScaleProperties object itself.
      */
@@ -83,7 +144,7 @@ public final class PipelineExternalComputeScaleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -29,13 +29,18 @@ import com.azure.resourcemanager.containerservice.models.Format;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
+import com.azure.resourcemanager.containerservice.models.KubernetesSupportPlan;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterSku;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterSkuName;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterSkuTier;
 import com.azure.resourcemanager.containerservice.models.PowerState;
+import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerservice.models.ResourceIdentityType;
 import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
@@ -247,6 +252,11 @@ public class KubernetesClusterImpl
     }
 
     @Override
+    public ManagedClusterSku sku() {
+        return this.innerModel().sku();
+    }
+
+    @Override
     public String systemAssignedManagedServiceIdentityPrincipalId() {
         String objectId = null;
         if (this.innerModel().identityProfile() != null) {
@@ -283,6 +293,16 @@ public class KubernetesClusterImpl
     @Override
     public String diskEncryptionSetId() {
         return innerModel().diskEncryptionSetId();
+    }
+
+    @Override
+    public String agentPoolResourceGroup() {
+        return innerModel().nodeResourceGroup();
+    }
+
+    @Override
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
     }
 
     @Override
@@ -429,6 +449,27 @@ public class KubernetesClusterImpl
         this.adminKubeConfigs = null;
         this.userKubeConfigs = null;
         this.formatUserKubeConfigsMap.clear();
+    }
+
+    @Override
+    public KubernetesClusterImpl withFreeSku() {
+        this.innerModel().withSku(new ManagedClusterSku().withTier(ManagedClusterSkuTier.FREE).withName(ManagedClusterSkuName.BASE));
+        this.innerModel().withSupportPlan(KubernetesSupportPlan.KUBERNETES_OFFICIAL);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl withStandardSku() {
+        this.innerModel().withSku(new ManagedClusterSku().withTier(ManagedClusterSkuTier.STANDARD).withName(ManagedClusterSkuName.BASE));
+        this.innerModel().withSupportPlan(KubernetesSupportPlan.KUBERNETES_OFFICIAL);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl withPremiumSku() {
+        this.innerModel().withSku(new ManagedClusterSku().withTier(ManagedClusterSkuTier.PREMIUM).withName(ManagedClusterSkuName.BASE));
+        this.innerModel().withSupportPlan(KubernetesSupportPlan.AKSLONG_TERM_SUPPORT);
+        return this;
     }
 
     @Override
@@ -653,14 +694,32 @@ public class KubernetesClusterImpl
     }
 
     @Override
-    public KubernetesCluster.DefinitionStages.WithCreate disableKubernetesRbac() {
+    public KubernetesClusterImpl disableKubernetesRbac() {
         this.innerModel().withEnableRbac(false);
         return this;
     }
 
     @Override
-    public KubernetesCluster.DefinitionStages.WithCreate withDiskEncryptionSet(String diskEncryptionSetId) {
+    public KubernetesClusterImpl withDiskEncryptionSet(String diskEncryptionSetId) {
         this.innerModel().withDiskEncryptionSetId(diskEncryptionSetId);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl withAgentPoolResourceGroup(String resourceGroupName) {
+        this.innerModel().withNodeResourceGroup(resourceGroupName);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl enablePublicNetworkAccess() {
+        this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl disablePublicNetworkAccess() {
+        this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         return this;
     }
 

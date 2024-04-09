@@ -5,63 +5,64 @@
 package com.azure.resourcemanager.support.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.support.models.Consent;
 import com.azure.resourcemanager.support.models.PreferredContactMethod;
+import com.azure.resourcemanager.support.models.SecondaryConsent;
 import com.azure.resourcemanager.support.models.SeverityLevel;
 import com.azure.resourcemanager.support.models.Status;
 import com.azure.resourcemanager.support.models.UpdateContactProfile;
 import com.azure.resourcemanager.support.models.UpdateSupportTicket;
+import com.azure.resourcemanager.support.models.UserConsent;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class UpdateSupportTicketTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateSupportTicket model =
-            BinaryData
-                .fromString(
-                    "{\"severity\":\"minimal\",\"status\":\"open\",\"contactDetails\":{\"firstName\":\"b\",\"lastName\":\"hejjz\",\"preferredContactMethod\":\"phone\",\"primaryEmailAddress\":\"dgwdslfhot\",\"additionalEmailAddresses\":[\"ynpwlbj\",\"pgacftadehxnlty\",\"sop\"],\"phoneNumber\":\"suesnzw\",\"preferredTimeZone\":\"jbavorxzdm\",\"country\":\"ctbqvudwx\",\"preferredSupportLanguage\":\"dnvowg\"}}")
-                .toObject(UpdateSupportTicket.class);
-        Assertions.assertEquals(SeverityLevel.MINIMAL, model.severity());
-        Assertions.assertEquals(Status.OPEN, model.status());
-        Assertions.assertEquals("b", model.contactDetails().firstName());
-        Assertions.assertEquals("hejjz", model.contactDetails().lastName());
+        UpdateSupportTicket model = BinaryData.fromString(
+            "{\"severity\":\"critical\",\"status\":\"closed\",\"contactDetails\":{\"firstName\":\"lqlfm\",\"lastName\":\"n\",\"preferredContactMethod\":\"phone\",\"primaryEmailAddress\":\"zpswiydmc\",\"additionalEmailAddresses\":[\"zdxss\",\"dbzm\",\"vdfznudaodvxzb\"],\"phoneNumber\":\"blylpstdbh\",\"preferredTimeZone\":\"srzdzucerscdn\",\"country\":\"evfiwjmygt\",\"preferredSupportLanguage\":\"slswtm\"},\"advancedDiagnosticConsent\":\"No\",\"secondaryConsent\":[{\"userConsent\":\"No\",\"type\":\"yqsemwa\"}]}")
+            .toObject(UpdateSupportTicket.class);
+        Assertions.assertEquals(SeverityLevel.CRITICAL, model.severity());
+        Assertions.assertEquals(Status.CLOSED, model.status());
+        Assertions.assertEquals("lqlfm", model.contactDetails().firstName());
+        Assertions.assertEquals("n", model.contactDetails().lastName());
         Assertions.assertEquals(PreferredContactMethod.PHONE, model.contactDetails().preferredContactMethod());
-        Assertions.assertEquals("dgwdslfhot", model.contactDetails().primaryEmailAddress());
-        Assertions.assertEquals("ynpwlbj", model.contactDetails().additionalEmailAddresses().get(0));
-        Assertions.assertEquals("suesnzw", model.contactDetails().phoneNumber());
-        Assertions.assertEquals("jbavorxzdm", model.contactDetails().preferredTimeZone());
-        Assertions.assertEquals("ctbqvudwx", model.contactDetails().country());
-        Assertions.assertEquals("dnvowg", model.contactDetails().preferredSupportLanguage());
+        Assertions.assertEquals("zpswiydmc", model.contactDetails().primaryEmailAddress());
+        Assertions.assertEquals("zdxss", model.contactDetails().additionalEmailAddresses().get(0));
+        Assertions.assertEquals("blylpstdbh", model.contactDetails().phoneNumber());
+        Assertions.assertEquals("srzdzucerscdn", model.contactDetails().preferredTimeZone());
+        Assertions.assertEquals("evfiwjmygt", model.contactDetails().country());
+        Assertions.assertEquals("slswtm", model.contactDetails().preferredSupportLanguage());
+        Assertions.assertEquals(Consent.NO, model.advancedDiagnosticConsent());
+        Assertions.assertEquals(UserConsent.NO, model.secondaryConsent().get(0).userConsent());
+        Assertions.assertEquals("yqsemwa", model.secondaryConsent().get(0).type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateSupportTicket model =
-            new UpdateSupportTicket()
-                .withSeverity(SeverityLevel.MINIMAL)
-                .withStatus(Status.OPEN)
-                .withContactDetails(
-                    new UpdateContactProfile()
-                        .withFirstName("b")
-                        .withLastName("hejjz")
-                        .withPreferredContactMethod(PreferredContactMethod.PHONE)
-                        .withPrimaryEmailAddress("dgwdslfhot")
-                        .withAdditionalEmailAddresses(Arrays.asList("ynpwlbj", "pgacftadehxnlty", "sop"))
-                        .withPhoneNumber("suesnzw")
-                        .withPreferredTimeZone("jbavorxzdm")
-                        .withCountry("ctbqvudwx")
-                        .withPreferredSupportLanguage("dnvowg"));
+        UpdateSupportTicket model = new UpdateSupportTicket().withSeverity(SeverityLevel.CRITICAL)
+            .withStatus(Status.CLOSED)
+            .withContactDetails(new UpdateContactProfile().withFirstName("lqlfm").withLastName("n")
+                .withPreferredContactMethod(PreferredContactMethod.PHONE).withPrimaryEmailAddress("zpswiydmc")
+                .withAdditionalEmailAddresses(Arrays.asList("zdxss", "dbzm", "vdfznudaodvxzb"))
+                .withPhoneNumber("blylpstdbh").withPreferredTimeZone("srzdzucerscdn").withCountry("evfiwjmygt")
+                .withPreferredSupportLanguage("slswtm"))
+            .withAdvancedDiagnosticConsent(Consent.NO).withSecondaryConsent(
+                Arrays.asList(new SecondaryConsent().withUserConsent(UserConsent.NO).withType("yqsemwa")));
         model = BinaryData.fromObject(model).toObject(UpdateSupportTicket.class);
-        Assertions.assertEquals(SeverityLevel.MINIMAL, model.severity());
-        Assertions.assertEquals(Status.OPEN, model.status());
-        Assertions.assertEquals("b", model.contactDetails().firstName());
-        Assertions.assertEquals("hejjz", model.contactDetails().lastName());
+        Assertions.assertEquals(SeverityLevel.CRITICAL, model.severity());
+        Assertions.assertEquals(Status.CLOSED, model.status());
+        Assertions.assertEquals("lqlfm", model.contactDetails().firstName());
+        Assertions.assertEquals("n", model.contactDetails().lastName());
         Assertions.assertEquals(PreferredContactMethod.PHONE, model.contactDetails().preferredContactMethod());
-        Assertions.assertEquals("dgwdslfhot", model.contactDetails().primaryEmailAddress());
-        Assertions.assertEquals("ynpwlbj", model.contactDetails().additionalEmailAddresses().get(0));
-        Assertions.assertEquals("suesnzw", model.contactDetails().phoneNumber());
-        Assertions.assertEquals("jbavorxzdm", model.contactDetails().preferredTimeZone());
-        Assertions.assertEquals("ctbqvudwx", model.contactDetails().country());
-        Assertions.assertEquals("dnvowg", model.contactDetails().preferredSupportLanguage());
+        Assertions.assertEquals("zpswiydmc", model.contactDetails().primaryEmailAddress());
+        Assertions.assertEquals("zdxss", model.contactDetails().additionalEmailAddresses().get(0));
+        Assertions.assertEquals("blylpstdbh", model.contactDetails().phoneNumber());
+        Assertions.assertEquals("srzdzucerscdn", model.contactDetails().preferredTimeZone());
+        Assertions.assertEquals("evfiwjmygt", model.contactDetails().country());
+        Assertions.assertEquals("slswtm", model.contactDetails().preferredSupportLanguage());
+        Assertions.assertEquals(Consent.NO, model.advancedDiagnosticConsent());
+        Assertions.assertEquals(UserConsent.NO, model.secondaryConsent().get(0).userConsent());
+        Assertions.assertEquals("yqsemwa", model.secondaryConsent().get(0).type());
     }
 }

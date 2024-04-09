@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkspacePurge GetPurgeStatus. */
 public final class WorkspacePurgeGetPurgeStatusSamples {
     /*
@@ -20,6 +18,9 @@ public final class WorkspacePurgeGetPurgeStatusSamples {
         manager
             .workspacePurges()
             .getPurgeStatusWithResponse(
-                "OIAutoRest5123", "aztest5048", "purge-970318e7-b859-4edb-8903-83b1b54d0b74", Context.NONE);
+                "OIAutoRest5123",
+                "aztest5048",
+                "purge-970318e7-b859-4edb-8903-83b1b54d0b74",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -25,6 +25,10 @@ public final class GuestAgentList {
     @JsonProperty(value = "value", required = true)
     private List<GuestAgentInner> value;
 
+    /** Creates an instance of GuestAgentList class. */
+    public GuestAgentList() {
+    }
+
     /**
      * Get the nextLink property: Url to follow for getting next page of GuestAgent.
      *

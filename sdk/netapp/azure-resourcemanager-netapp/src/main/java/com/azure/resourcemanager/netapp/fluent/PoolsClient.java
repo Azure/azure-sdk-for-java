@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.models.CapacityPoolInner;
 import com.azure.resourcemanager.netapp.models.CapacityPoolPatch;
 
-/** An instance of this class provides access to all the operations defined in PoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PoolsClient.
+ */
 public interface PoolsClient {
     /**
      * Describe all Capacity Pools
-     *
-     * <p>List all capacity pools in the NetApp Account.
-     *
+     * 
+     * List all capacity pools in the NetApp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,9 +35,9 @@ public interface PoolsClient {
 
     /**
      * Describe all Capacity Pools
-     *
-     * <p>List all capacity pools in the NetApp Account.
-     *
+     * 
+     * List all capacity pools in the NetApp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
@@ -49,9 +51,9 @@ public interface PoolsClient {
 
     /**
      * Describe a Capacity Pool
-     *
-     * <p>Get details of the specified capacity pool.
-     *
+     * 
+     * Get details of the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -62,14 +64,14 @@ public interface PoolsClient {
      * @return details of the specified capacity pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CapacityPoolInner> getWithResponse(
-        String resourceGroupName, String accountName, String poolName, Context context);
+    Response<CapacityPoolInner> getWithResponse(String resourceGroupName, String accountName, String poolName,
+        Context context);
 
     /**
      * Describe a Capacity Pool
-     *
-     * <p>Get details of the specified capacity pool.
-     *
+     * 
+     * Get details of the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -83,9 +85,9 @@ public interface PoolsClient {
 
     /**
      * Create or Update the specified capacity pool within the resource group
-     *
-     * <p>Create or Update a capacity pool.
-     *
+     * 
+     * Create or Update a capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -96,14 +98,14 @@ public interface PoolsClient {
      * @return the {@link SyncPoller} for polling of capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdate(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolInner body);
+    SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, String poolName, CapacityPoolInner body);
 
     /**
      * Create or Update the specified capacity pool within the resource group
-     *
-     * <p>Create or Update a capacity pool.
-     *
+     * 
+     * Create or Update a capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -115,14 +117,14 @@ public interface PoolsClient {
      * @return the {@link SyncPoller} for polling of capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdate(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolInner body, Context context);
+    SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, String poolName, CapacityPoolInner body, Context context);
 
     /**
      * Create or Update the specified capacity pool within the resource group
-     *
-     * <p>Create or Update a capacity pool.
-     *
+     * 
+     * Create or Update a capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -133,14 +135,14 @@ public interface PoolsClient {
      * @return capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CapacityPoolInner createOrUpdate(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolInner body);
+    CapacityPoolInner createOrUpdate(String resourceGroupName, String accountName, String poolName,
+        CapacityPoolInner body);
 
     /**
      * Create or Update the specified capacity pool within the resource group
-     *
-     * <p>Create or Update a capacity pool.
-     *
+     * 
+     * Create or Update a capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -152,14 +154,14 @@ public interface PoolsClient {
      * @return capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CapacityPoolInner createOrUpdate(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolInner body, Context context);
+    CapacityPoolInner createOrUpdate(String resourceGroupName, String accountName, String poolName,
+        CapacityPoolInner body, Context context);
 
     /**
      * Update a capacity pool
-     *
-     * <p>Patch the specified capacity pool.
-     *
+     * 
+     * Patch the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -170,14 +172,14 @@ public interface PoolsClient {
      * @return the {@link SyncPoller} for polling of capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdate(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body);
+    SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdate(String resourceGroupName,
+        String accountName, String poolName, CapacityPoolPatch body);
 
     /**
      * Update a capacity pool
-     *
-     * <p>Patch the specified capacity pool.
-     *
+     * 
+     * Patch the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -189,14 +191,14 @@ public interface PoolsClient {
      * @return the {@link SyncPoller} for polling of capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdate(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body, Context context);
+    SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdate(String resourceGroupName,
+        String accountName, String poolName, CapacityPoolPatch body, Context context);
 
     /**
      * Update a capacity pool
-     *
-     * <p>Patch the specified capacity pool.
-     *
+     * 
+     * Patch the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -211,9 +213,9 @@ public interface PoolsClient {
 
     /**
      * Update a capacity pool
-     *
-     * <p>Patch the specified capacity pool.
-     *
+     * 
+     * Patch the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -225,14 +227,14 @@ public interface PoolsClient {
      * @return capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CapacityPoolInner update(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body, Context context);
+    CapacityPoolInner update(String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body,
+        Context context);
 
     /**
      * Delete a capacity pool
-     *
-     * <p>Delete the specified capacity pool.
-     *
+     * 
+     * Delete the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -246,9 +248,9 @@ public interface PoolsClient {
 
     /**
      * Delete a capacity pool
-     *
-     * <p>Delete the specified capacity pool.
-     *
+     * 
+     * Delete the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -259,14 +261,14 @@ public interface PoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String poolName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
+        Context context);
 
     /**
      * Delete a capacity pool
-     *
-     * <p>Delete the specified capacity pool.
-     *
+     * 
+     * Delete the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -279,9 +281,9 @@ public interface PoolsClient {
 
     /**
      * Delete a capacity pool
-     *
-     * <p>Delete the specified capacity pool.
-     *
+     * 
+     * Delete the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.

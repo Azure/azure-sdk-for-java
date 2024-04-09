@@ -5,13 +5,15 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.cdn.models.WafMetricsResponseGranularity;
+import com.azure.resourcemanager.cdn.models.WafMetricsGranularity;
 import com.azure.resourcemanager.cdn.models.WafMetricsResponseSeriesItem;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Waf Metrics Response. */
+/**
+ * Waf Metrics Response.
+ */
 @Fluent
 public final class WafMetricsResponseInner {
     /*
@@ -30,7 +32,7 @@ public final class WafMetricsResponseInner {
      * The granularity property.
      */
     @JsonProperty(value = "granularity")
-    private WafMetricsResponseGranularity granularity;
+    private WafMetricsGranularity granularity;
 
     /*
      * The series property.
@@ -39,8 +41,14 @@ public final class WafMetricsResponseInner {
     private List<WafMetricsResponseSeriesItem> series;
 
     /**
+     * Creates an instance of WafMetricsResponseInner class.
+     */
+    public WafMetricsResponseInner() {
+    }
+
+    /**
      * Get the dateTimeBegin property: The dateTimeBegin property.
-     *
+     * 
      * @return the dateTimeBegin value.
      */
     public OffsetDateTime dateTimeBegin() {
@@ -49,7 +57,7 @@ public final class WafMetricsResponseInner {
 
     /**
      * Set the dateTimeBegin property: The dateTimeBegin property.
-     *
+     * 
      * @param dateTimeBegin the dateTimeBegin value to set.
      * @return the WafMetricsResponseInner object itself.
      */
@@ -60,7 +68,7 @@ public final class WafMetricsResponseInner {
 
     /**
      * Get the dateTimeEnd property: The dateTimeEnd property.
-     *
+     * 
      * @return the dateTimeEnd value.
      */
     public OffsetDateTime dateTimeEnd() {
@@ -69,7 +77,7 @@ public final class WafMetricsResponseInner {
 
     /**
      * Set the dateTimeEnd property: The dateTimeEnd property.
-     *
+     * 
      * @param dateTimeEnd the dateTimeEnd value to set.
      * @return the WafMetricsResponseInner object itself.
      */
@@ -80,27 +88,27 @@ public final class WafMetricsResponseInner {
 
     /**
      * Get the granularity property: The granularity property.
-     *
+     * 
      * @return the granularity value.
      */
-    public WafMetricsResponseGranularity granularity() {
+    public WafMetricsGranularity granularity() {
         return this.granularity;
     }
 
     /**
      * Set the granularity property: The granularity property.
-     *
+     * 
      * @param granularity the granularity value to set.
      * @return the WafMetricsResponseInner object itself.
      */
-    public WafMetricsResponseInner withGranularity(WafMetricsResponseGranularity granularity) {
+    public WafMetricsResponseInner withGranularity(WafMetricsGranularity granularity) {
         this.granularity = granularity;
         return this;
     }
 
     /**
      * Get the series property: The series property.
-     *
+     * 
      * @return the series value.
      */
     public List<WafMetricsResponseSeriesItem> series() {
@@ -109,7 +117,7 @@ public final class WafMetricsResponseInner {
 
     /**
      * Set the series property: The series property.
-     *
+     * 
      * @param series the series value to set.
      * @return the WafMetricsResponseInner object itself.
      */
@@ -120,7 +128,7 @@ public final class WafMetricsResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -13,7 +13,7 @@ public final class AttachedNetworkListResultTests {
         AttachedNetworkListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"networkConnectionId\":\"dcuf\",\"networkConnectionLocation\":\"srp\",\"healthCheckStatus\":\"Running\",\"domainJoinType\":\"AzureADJoin\"},\"id\":\"sezcxtb\",\"name\":\"sgfyccsnew\",\"type\":\"dwzjeiach\"}],\"nextLink\":\"osfln\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"networkConnectionId\":\"acphejkoty\",\"networkConnectionLocation\":\"gou\",\"healthCheckStatus\":\"Failed\",\"domainJoinType\":\"AzureADJoin\"},\"id\":\"kwy\",\"name\":\"kgfg\",\"type\":\"bmadgak\"},{\"properties\":{\"provisioningState\":\"Created\",\"networkConnectionId\":\"xybz\",\"networkConnectionLocation\":\"e\",\"healthCheckStatus\":\"Warning\",\"domainJoinType\":\"AzureADJoin\"},\"id\":\"iqfouflmmnkz\",\"name\":\"modmglougpb\",\"type\":\"wtmutduq\"}],\"nextLink\":\"ap\"}")
                 .toObject(AttachedNetworkListResult.class);
     }
 

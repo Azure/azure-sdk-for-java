@@ -30,42 +30,28 @@ public final class FrontendsInterfacesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"fqdn\":\"wbavxbniwdj\",\"provisioningState\":\"Accepted\"},\"location\":\"s\",\"tags\":{\"fzab\":\"gnxytxhpzxbz\"},\"id\":\"lcuhxwtctyqiklb\",\"name\":\"ovplw\",\"type\":\"bhvgy\"}";
+        String responseStr
+            = "{\"properties\":{\"fqdn\":\"plwzbhvgyugu\",\"provisioningState\":\"Canceled\"},\"location\":\"kfssxqukkf\",\"tags\":{\"xnkjzkdesl\":\"mg\",\"kdwzbaiuebbaumny\":\"vlopwiyighx\",\"txp\":\"upedeojnabckhs\"},\"id\":\"ie\",\"name\":\"tfhvpesapskrdqmh\",\"type\":\"jdhtldwkyzxu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        TrafficControllerManager manager =
-            TrafficControllerManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        TrafficControllerManager manager = TrafficControllerManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Frontend response =
-            manager
-                .frontendsInterfaces()
-                .getWithResponse("xibxujwbhqwalm", "zyoxaepdkzjan", "ux", com.azure.core.util.Context.NONE)
-                .getValue();
+        Frontend response = manager.frontendsInterfaces()
+            .getWithResponse("dbpgnxytxhp", "xbzpfzab", "lcuhxwtctyqiklb", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("s", response.location());
-        Assertions.assertEquals("gnxytxhpzxbz", response.tags().get("fzab"));
+        Assertions.assertEquals("kfssxqukkf", response.location());
+        Assertions.assertEquals("mg", response.tags().get("xnkjzkdesl"));
     }
 }

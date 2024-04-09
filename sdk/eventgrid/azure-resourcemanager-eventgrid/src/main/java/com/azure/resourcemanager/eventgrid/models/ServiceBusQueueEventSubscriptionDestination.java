@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Information about the service bus destination for an event subscription. */
+/**
+ * Information about the service bus destination for an event subscription.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
 @JsonTypeName("ServiceBusQueue")
 @Fluent
@@ -22,13 +24,15 @@ public final class ServiceBusQueueEventSubscriptionDestination extends EventSubs
     @JsonProperty(value = "properties")
     private ServiceBusQueueEventSubscriptionDestinationProperties innerProperties;
 
-    /** Creates an instance of ServiceBusQueueEventSubscriptionDestination class. */
+    /**
+     * Creates an instance of ServiceBusQueueEventSubscriptionDestination class.
+     */
     public ServiceBusQueueEventSubscriptionDestination() {
     }
 
     /**
      * Get the innerProperties property: Service Bus Properties of the event subscription destination.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServiceBusQueueEventSubscriptionDestinationProperties innerProperties() {
@@ -36,9 +40,9 @@ public final class ServiceBusQueueEventSubscriptionDestination extends EventSubs
     }
 
     /**
-     * Get the resourceId property: The Azure Resource Id that represents the endpoint of the Service Bus destination of
-     * an event subscription.
-     *
+     * Get the resourceId property: The Azure Resource Id that represents the endpoint of the Service Bus destination
+     * of an event subscription.
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -46,9 +50,9 @@ public final class ServiceBusQueueEventSubscriptionDestination extends EventSubs
     }
 
     /**
-     * Set the resourceId property: The Azure Resource Id that represents the endpoint of the Service Bus destination of
-     * an event subscription.
-     *
+     * Set the resourceId property: The Azure Resource Id that represents the endpoint of the Service Bus destination
+     * of an event subscription.
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ServiceBusQueueEventSubscriptionDestination object itself.
      */
@@ -62,7 +66,7 @@ public final class ServiceBusQueueEventSubscriptionDestination extends EventSubs
 
     /**
      * Get the deliveryAttributeMappings property: Delivery attribute details.
-     *
+     * 
      * @return the deliveryAttributeMappings value.
      */
     public List<DeliveryAttributeMapping> deliveryAttributeMappings() {
@@ -71,12 +75,12 @@ public final class ServiceBusQueueEventSubscriptionDestination extends EventSubs
 
     /**
      * Set the deliveryAttributeMappings property: Delivery attribute details.
-     *
+     * 
      * @param deliveryAttributeMappings the deliveryAttributeMappings value to set.
      * @return the ServiceBusQueueEventSubscriptionDestination object itself.
      */
-    public ServiceBusQueueEventSubscriptionDestination withDeliveryAttributeMappings(
-        List<DeliveryAttributeMapping> deliveryAttributeMappings) {
+    public ServiceBusQueueEventSubscriptionDestination
+        withDeliveryAttributeMappings(List<DeliveryAttributeMapping> deliveryAttributeMappings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServiceBusQueueEventSubscriptionDestinationProperties();
         }
@@ -86,7 +90,7 @@ public final class ServiceBusQueueEventSubscriptionDestination extends EventSubs
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

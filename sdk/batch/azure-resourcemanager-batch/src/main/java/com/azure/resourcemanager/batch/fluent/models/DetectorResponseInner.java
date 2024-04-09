@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the information for a detector. */
+/**
+ * Contains the information for a detector.
+ */
 @Fluent
 public final class DetectorResponseInner extends ProxyResource {
     /*
@@ -23,13 +25,15 @@ public final class DetectorResponseInner extends ProxyResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of DetectorResponseInner class. */
+    /**
+     * Creates an instance of DetectorResponseInner class.
+     */
     public DetectorResponseInner() {
     }
 
     /**
      * Get the innerProperties property: The properties associated with the detector.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DetectorResponseProperties innerProperties() {
@@ -38,7 +42,7 @@ public final class DetectorResponseInner extends ProxyResource {
 
     /**
      * Get the etag property: The ETag of the resource, used for concurrency statements.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -47,7 +51,7 @@ public final class DetectorResponseInner extends ProxyResource {
 
     /**
      * Get the value property: A base64 encoded string that represents the content of a detector.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -56,7 +60,7 @@ public final class DetectorResponseInner extends ProxyResource {
 
     /**
      * Set the value property: A base64 encoded string that represents the content of a detector.
-     *
+     * 
      * @param value the value value to set.
      * @return the DetectorResponseInner object itself.
      */
@@ -70,7 +74,7 @@ public final class DetectorResponseInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

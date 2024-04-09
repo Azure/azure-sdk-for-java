@@ -152,6 +152,29 @@ public final class ProjectInner extends Resource {
     }
 
     /**
+     * Get the displayName property: The display name of the project.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Set the displayName property: The display name of the project.
+     *
+     * @param displayName the displayName value to set.
+     * @return the ProjectInner object itself.
+     */
+    public ProjectInner withDisplayName(String displayName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProjectProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

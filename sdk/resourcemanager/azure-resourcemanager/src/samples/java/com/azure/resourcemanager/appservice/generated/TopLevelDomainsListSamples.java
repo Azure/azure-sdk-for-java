@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-/** Samples for TopLevelDomains List. */
+/**
+ * Samples for TopLevelDomains List.
+ */
 public final class TopLevelDomainsListSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-09-01/examples/ListTopLevelDomains.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-01-01/examples/ListTopLevelDomains.
+     * json
      */
     /**
      * Sample code: List Top Level Domains.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listTopLevelDomains(com.azure.resourcemanager.AzureResourceManager azure) {

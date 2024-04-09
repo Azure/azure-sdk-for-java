@@ -30,6 +30,7 @@ public final class WorkbookErrorDefinitionException extends ManagementException 
         super(message, response, value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public WorkbookErrorDefinition getValue() {
         return (WorkbookErrorDefinition) super.getValue();

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input of the validate probe API. */
+/**
+ * Input of the validate probe API.
+ */
 @Fluent
 public final class ValidateProbeInput {
     /*
@@ -18,8 +20,14 @@ public final class ValidateProbeInput {
     private String probeUrl;
 
     /**
+     * Creates an instance of ValidateProbeInput class.
+     */
+    public ValidateProbeInput() {
+    }
+
+    /**
      * Get the probeUrl property: The probe URL to validate.
-     *
+     * 
      * @return the probeUrl value.
      */
     public String probeUrl() {
@@ -28,7 +36,7 @@ public final class ValidateProbeInput {
 
     /**
      * Set the probeUrl property: The probe URL to validate.
-     *
+     * 
      * @param probeUrl the probeUrl value to set.
      * @return the ValidateProbeInput object itself.
      */
@@ -39,14 +47,13 @@ public final class ValidateProbeInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (probeUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property probeUrl in model ValidateProbeInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property probeUrl in model ValidateProbeInput"));
         }
     }
 

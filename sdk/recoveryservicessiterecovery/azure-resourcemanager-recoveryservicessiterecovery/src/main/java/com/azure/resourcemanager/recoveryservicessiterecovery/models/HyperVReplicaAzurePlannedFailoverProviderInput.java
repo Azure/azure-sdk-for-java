@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** HyperVReplicaAzure specific planned failover input. */
+/**
+ * HyperVReplicaAzure specific planned failover input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("HyperVReplicaAzure")
 @Fluent
@@ -33,13 +35,21 @@ public final class HyperVReplicaAzurePlannedFailoverProviderInput extends Planne
     @JsonProperty(value = "recoveryPointId")
     private String recoveryPointId;
 
-    /** Creates an instance of HyperVReplicaAzurePlannedFailoverProviderInput class. */
+    /*
+     * A value indicating the inplace OS Upgrade version.
+     */
+    @JsonProperty(value = "osUpgradeVersion")
+    private String osUpgradeVersion;
+
+    /**
+     * Creates an instance of HyperVReplicaAzurePlannedFailoverProviderInput class.
+     */
     public HyperVReplicaAzurePlannedFailoverProviderInput() {
     }
 
     /**
      * Get the primaryKekCertificatePfx property: Primary kek certificate pfx.
-     *
+     * 
      * @return the primaryKekCertificatePfx value.
      */
     public String primaryKekCertificatePfx() {
@@ -48,19 +58,19 @@ public final class HyperVReplicaAzurePlannedFailoverProviderInput extends Planne
 
     /**
      * Set the primaryKekCertificatePfx property: Primary kek certificate pfx.
-     *
+     * 
      * @param primaryKekCertificatePfx the primaryKekCertificatePfx value to set.
      * @return the HyperVReplicaAzurePlannedFailoverProviderInput object itself.
      */
-    public HyperVReplicaAzurePlannedFailoverProviderInput withPrimaryKekCertificatePfx(
-        String primaryKekCertificatePfx) {
+    public HyperVReplicaAzurePlannedFailoverProviderInput
+        withPrimaryKekCertificatePfx(String primaryKekCertificatePfx) {
         this.primaryKekCertificatePfx = primaryKekCertificatePfx;
         return this;
     }
 
     /**
      * Get the secondaryKekCertificatePfx property: Secondary kek certificate pfx.
-     *
+     * 
      * @return the secondaryKekCertificatePfx value.
      */
     public String secondaryKekCertificatePfx() {
@@ -69,12 +79,12 @@ public final class HyperVReplicaAzurePlannedFailoverProviderInput extends Planne
 
     /**
      * Set the secondaryKekCertificatePfx property: Secondary kek certificate pfx.
-     *
+     * 
      * @param secondaryKekCertificatePfx the secondaryKekCertificatePfx value to set.
      * @return the HyperVReplicaAzurePlannedFailoverProviderInput object itself.
      */
-    public HyperVReplicaAzurePlannedFailoverProviderInput withSecondaryKekCertificatePfx(
-        String secondaryKekCertificatePfx) {
+    public HyperVReplicaAzurePlannedFailoverProviderInput
+        withSecondaryKekCertificatePfx(String secondaryKekCertificatePfx) {
         this.secondaryKekCertificatePfx = secondaryKekCertificatePfx;
         return this;
     }
@@ -82,7 +92,7 @@ public final class HyperVReplicaAzurePlannedFailoverProviderInput extends Planne
     /**
      * Get the recoveryPointId property: The recovery point id to be passed to failover to a particular recovery point.
      * In case of latest recovery point, null should be passed.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -92,7 +102,7 @@ public final class HyperVReplicaAzurePlannedFailoverProviderInput extends Planne
     /**
      * Set the recoveryPointId property: The recovery point id to be passed to failover to a particular recovery point.
      * In case of latest recovery point, null should be passed.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the HyperVReplicaAzurePlannedFailoverProviderInput object itself.
      */
@@ -102,8 +112,28 @@ public final class HyperVReplicaAzurePlannedFailoverProviderInput extends Planne
     }
 
     /**
+     * Get the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     * 
+     * @return the osUpgradeVersion value.
+     */
+    public String osUpgradeVersion() {
+        return this.osUpgradeVersion;
+    }
+
+    /**
+     * Set the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     * 
+     * @param osUpgradeVersion the osUpgradeVersion value to set.
+     * @return the HyperVReplicaAzurePlannedFailoverProviderInput object itself.
+     */
+    public HyperVReplicaAzurePlannedFailoverProviderInput withOsUpgradeVersion(String osUpgradeVersion) {
+        this.osUpgradeVersion = osUpgradeVersion;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

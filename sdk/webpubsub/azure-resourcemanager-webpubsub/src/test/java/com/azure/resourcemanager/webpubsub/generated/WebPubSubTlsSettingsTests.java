@@ -12,14 +12,14 @@ public final class WebPubSubTlsSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WebPubSubTlsSettings model =
-            BinaryData.fromString("{\"clientCertEnabled\":false}").toObject(WebPubSubTlsSettings.class);
-        Assertions.assertEquals(false, model.clientCertEnabled());
+            BinaryData.fromString("{\"clientCertEnabled\":true}").toObject(WebPubSubTlsSettings.class);
+        Assertions.assertEquals(true, model.clientCertEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebPubSubTlsSettings model = new WebPubSubTlsSettings().withClientCertEnabled(false);
+        WebPubSubTlsSettings model = new WebPubSubTlsSettings().withClientCertEnabled(true);
         model = BinaryData.fromObject(model).toObject(WebPubSubTlsSettings.class);
-        Assertions.assertEquals(false, model.clientCertEnabled());
+        Assertions.assertEquals(true, model.clientCertEnabled());
     }
 }

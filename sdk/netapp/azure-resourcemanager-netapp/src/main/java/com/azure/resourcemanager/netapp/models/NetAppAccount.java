@@ -11,81 +11,83 @@ import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of NetAppAccount. */
+/**
+ * An immutable client-side representation of NetAppAccount.
+ */
 public interface NetAppAccount {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the identity property: The identity used for the resource.
-     *
+     * 
      * @return the identity value.
      */
     ManagedServiceIdentity identity();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     String provisioningState();
 
     /**
      * Gets the activeDirectories property: Active Directories.
-     *
+     * 
      * @return the activeDirectories value.
      */
     List<ActiveDirectory> activeDirectories();
 
     /**
      * Gets the encryption property: Encryption settings.
-     *
+     * 
      * @return the encryption value.
      */
     AccountEncryption encryption();
@@ -93,58 +95,63 @@ public interface NetAppAccount {
     /**
      * Gets the disableShowmount property: Shows the status of disableShowmount for all volumes under the subscription,
      * null equals false.
-     *
+     * 
      * @return the disableShowmount value.
      */
     Boolean disableShowmount();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner object.
-     *
+     * 
      * @return the inner object.
      */
     NetAppAccountInner innerModel();
 
-    /** The entirety of the NetAppAccount definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the NetAppAccount definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
-    /** The NetAppAccount definition stages. */
+    /**
+     * The NetAppAccount definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the NetAppAccount definition. */
+        /**
+         * The first stage of the NetAppAccount definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the NetAppAccount definition allowing to specify location. */
+        /**
+         * The stage of the NetAppAccount definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -152,18 +159,20 @@ public interface NetAppAccount {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
 
-        /** The stage of the NetAppAccount definition allowing to specify parent resource. */
+        /**
+         * The stage of the NetAppAccount definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
@@ -174,65 +183,70 @@ public interface NetAppAccount {
          * The stage of the NetAppAccount definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithActiveDirectories,
-                DefinitionStages.WithEncryption {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithActiveDirectories, DefinitionStages.WithEncryption {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             NetAppAccount create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             NetAppAccount create(Context context);
         }
 
-        /** The stage of the NetAppAccount definition allowing to specify tags. */
+        /**
+         * The stage of the NetAppAccount definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the NetAppAccount definition allowing to specify identity. */
+        /**
+         * The stage of the NetAppAccount definition allowing to specify identity.
+         */
         interface WithIdentity {
             /**
              * Specifies the identity property: The identity used for the resource..
-             *
+             * 
              * @param identity The identity used for the resource.
              * @return the next definition stage.
              */
             WithCreate withIdentity(ManagedServiceIdentity identity);
         }
 
-        /** The stage of the NetAppAccount definition allowing to specify activeDirectories. */
+        /**
+         * The stage of the NetAppAccount definition allowing to specify activeDirectories.
+         */
         interface WithActiveDirectories {
             /**
              * Specifies the activeDirectories property: Active Directories.
-             *
+             * 
              * @param activeDirectories Active Directories.
              * @return the next definition stage.
              */
             WithCreate withActiveDirectories(List<ActiveDirectory> activeDirectories);
         }
 
-        /** The stage of the NetAppAccount definition allowing to specify encryption. */
+        /**
+         * The stage of the NetAppAccount definition allowing to specify encryption.
+         */
         interface WithEncryption {
             /**
              * Specifies the encryption property: Encryption settings.
-             *
+             * 
              * @param encryption Encryption settings.
              * @return the next definition stage.
              */
@@ -242,73 +256,82 @@ public interface NetAppAccount {
 
     /**
      * Begins update for the NetAppAccount resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     NetAppAccount.Update update();
 
-    /** The template for NetAppAccount update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithActiveDirectories,
-            UpdateStages.WithEncryption {
+    /**
+     * The template for NetAppAccount update.
+     */
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithActiveDirectories,
+        UpdateStages.WithEncryption {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         NetAppAccount apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         NetAppAccount apply(Context context);
     }
 
-    /** The NetAppAccount update stages. */
+    /**
+     * The NetAppAccount update stages.
+     */
     interface UpdateStages {
-        /** The stage of the NetAppAccount update allowing to specify tags. */
+        /**
+         * The stage of the NetAppAccount update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
 
-        /** The stage of the NetAppAccount update allowing to specify identity. */
+        /**
+         * The stage of the NetAppAccount update allowing to specify identity.
+         */
         interface WithIdentity {
             /**
              * Specifies the identity property: The identity used for the resource..
-             *
+             * 
              * @param identity The identity used for the resource.
              * @return the next definition stage.
              */
             Update withIdentity(ManagedServiceIdentity identity);
         }
 
-        /** The stage of the NetAppAccount update allowing to specify activeDirectories. */
+        /**
+         * The stage of the NetAppAccount update allowing to specify activeDirectories.
+         */
         interface WithActiveDirectories {
             /**
              * Specifies the activeDirectories property: Active Directories.
-             *
+             * 
              * @param activeDirectories Active Directories.
              * @return the next definition stage.
              */
             Update withActiveDirectories(List<ActiveDirectory> activeDirectories);
         }
 
-        /** The stage of the NetAppAccount update allowing to specify encryption. */
+        /**
+         * The stage of the NetAppAccount update allowing to specify encryption.
+         */
         interface WithEncryption {
             /**
              * Specifies the encryption property: Encryption settings.
-             *
+             * 
              * @param encryption Encryption settings.
              * @return the next definition stage.
              */
@@ -318,14 +341,14 @@ public interface NetAppAccount {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     NetAppAccount refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -333,10 +356,10 @@ public interface NetAppAccount {
 
     /**
      * Renew identity credentials
-     *
-     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * 
+     * Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -344,10 +367,10 @@ public interface NetAppAccount {
 
     /**
      * Renew identity credentials
-     *
-     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * 
+     * Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

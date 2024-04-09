@@ -17,7 +17,7 @@ public final class EventHubConsumerGroupsListResultTests {
         EventHubConsumerGroupsListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"aex\":\"datamdua\",\"vxpvgomz\":\"datapvfadmwsrcr\"},\"etag\":\"misgwbnb\",\"id\":\"e\",\"name\":\"dawkzbali\",\"type\":\"urqhaka\"}],\"nextLink\":\"ashsfwxos\"}")
+                    "{\"value\":[{\"properties\":{\"aofmxagkvtme\":\"datalhspkdee\"},\"etag\":\"qkrhahvljua\",\"id\":\"aquhcdhm\",\"name\":\"ualaexqpvfadmw\",\"type\":\"rcrgvx\"}],\"nextLink\":\"gomz\"}")
                 .toObject(EventHubConsumerGroupsListResult.class);
     }
 
@@ -29,10 +29,11 @@ public final class EventHubConsumerGroupsListResultTests {
                     Arrays
                         .asList(
                             new EventHubConsumerGroupInfoInner()
-                                .withProperties(mapOf("aex", "datamdua", "vxpvgomz", "datapvfadmwsrcr"))));
+                                .withProperties(mapOf("aofmxagkvtme", "datalhspkdee"))));
         model = BinaryData.fromObject(model).toObject(EventHubConsumerGroupsListResult.class);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

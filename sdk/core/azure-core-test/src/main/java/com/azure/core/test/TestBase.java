@@ -8,6 +8,7 @@ import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.PlaybackClient;
 import com.azure.core.test.implementation.TestIterationContext;
 import com.azure.core.test.implementation.TestingHelpers;
+import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -25,14 +26,16 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
-import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.ServiceLoader;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static com.azure.core.test.utils.TestUtils.toURI;
@@ -41,6 +44,8 @@ import static com.azure.core.test.utils.TestUtils.toURI;
  * Base class for running live and playback tests using {@link InterceptorManager}.
  */
 public abstract class TestBase implements BeforeEachCallback {
+    private static final String AZURE_TEST_DEBUG = "AZURE_TEST_DEBUG";
+
     // Environment variable name used to determine the TestMode.
     private static final String AZURE_TEST_HTTP_CLIENTS = "AZURE_TEST_HTTP_CLIENTS";
 
@@ -65,10 +70,12 @@ public abstract class TestBase implements BeforeEachCallback {
     private static boolean enableTestProxy;
 
     private static final Duration PLAYBACK_POLL_INTERVAL = Duration.ofMillis(1);
-    private static final String CONFIGURED_HTTP_CLIENTS_TO_TEST = Configuration.getGlobalConfiguration()
-        .get(AZURE_TEST_HTTP_CLIENTS);
+    private static final String CONFIGURED_HTTP_CLIENTS_TO_TEST
+        = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS);
     private static final boolean DEFAULT_TO_NETTY = CoreUtils.isNullOrEmpty(CONFIGURED_HTTP_CLIENTS_TO_TEST);
     private static final List<String> CONFIGURED_HTTP_CLIENTS;
+
+    private static final AtomicReference<HttpClient> TEST_PROXY_HTTP_CLIENT = new AtomicReference<>();
 
     static {
         CONFIGURED_HTTP_CLIENTS = new ArrayList<>();
@@ -113,7 +120,7 @@ public abstract class TestBase implements BeforeEachCallback {
     @RegisterExtension
     final TestIterationContext testIterationContext = new TestIterationContext();
 
-    private URL proxyUrl;
+    private long testStartTimeMillis;
 
     /**
      * Creates a new instance of {@link TestBase}.
@@ -152,15 +159,21 @@ public abstract class TestBase implements BeforeEachCallback {
         } else if (testInfo.getTags().contains("Live")) {
             localTestMode = TestMode.LIVE;
         }
-        Path testClassPath = Paths.get(toURI(testInfo.getTestClass().get().getResource(testInfo.getTestClass().get().getSimpleName() + ".class")));
-        this.testContextManager =
-            new TestContextManager(testInfo.getTestMethod().get(),
-                localTestMode,
-                isTestProxyEnabled(),
-                testInfo.getTestClass().get().getAnnotation(RecordWithoutRequestBody.class) != null,
-                testClassPath);
+
+        String testName = getTestName(testInfo.getTestMethod(), testInfo.getDisplayName(), testInfo.getTestClass());
+        Path testClassPath = Paths.get(
+            toURI(testInfo.getTestClass().get().getResource(testInfo.getTestClass().get().getSimpleName() + ".class")));
+        this.testContextManager
+            = new TestContextManager(testInfo.getTestMethod().get(), localTestMode, isTestProxyEnabled(),
+                testInfo.getTestClass().get().getAnnotation(RecordWithoutRequestBody.class) != null, testClassPath);
         testContextManager.setTestIteration(testIterationContext.getTestIteration());
-        logger.info("Test Mode: {}, Name: {}", localTestMode, testContextManager.getTestName());
+        ThreadDumper.addRunningTest(testName);
+        logger.info("Test Mode: {}, Name: {}", localTestMode, testName);
+
+        if (shouldLogExecutionStatus()) {
+            System.out.println("Starting test " + testName + ".");
+            testStartTimeMillis = System.currentTimeMillis();
+        }
 
         try {
             interceptorManager = new InterceptorManager(testContextManager);
@@ -170,10 +183,9 @@ public abstract class TestBase implements BeforeEachCallback {
         }
 
         if (isTestProxyEnabled()) {
-            interceptorManager.setHttpClient(getHttpClients().findFirst().orElse(null));
+            interceptorManager.setHttpClient(getTestProxyHttpClient());
             // The supplier/consumer are used to retrieve/store variables over the wire.
-            testResourceNamer = new TestResourceNamer(testContextManager,
-                interceptorManager.getProxyVariableConsumer(),
+            testResourceNamer = new TestResourceNamer(testContextManager, interceptorManager.getProxyVariableConsumer(),
                 interceptorManager.getProxyVariableSupplier());
             if (localTestMode == TestMode.PLAYBACK && !testContextManager.doNotRecordTest()) {
                 // We create the playback client here, so that it is available for returning recorded variables
@@ -196,9 +208,23 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
-        if (testContextManager != null && testContextManager.didTestRun()) {
-            afterTest();
-            interceptorManager.close();
+        String testName = getTestName(testInfo.getTestMethod(), testInfo.getDisplayName(), testInfo.getTestClass());
+        if (shouldLogExecutionStatus()) {
+            if (testStartTimeMillis > 0) {
+                long duration = System.currentTimeMillis() - testStartTimeMillis;
+                System.out.println("Finished test " + testName + " in " + duration + " ms.");
+            } else {
+                System.out.println("Finished test " + testName + ", duration unknown.");
+            }
+        }
+
+        if (testContextManager != null) {
+            ThreadDumper.removeRunningTest(testName);
+
+            if (testContextManager.didTestRun()) {
+                afterTest();
+                interceptorManager.close();
+            }
         }
     }
 
@@ -259,8 +285,8 @@ public abstract class TestBase implements BeforeEachCallback {
 
         List<HttpClient> httpClientsToTest = new ArrayList<>();
         for (HttpClientProvider httpClientProvider : ServiceLoader.load(HttpClientProvider.class)) {
-            if (includeHttpClientOrHttpClientProvider(httpClientProvider.getClass().getSimpleName()
-                .toLowerCase(Locale.ROOT))) {
+            if (includeHttpClientOrHttpClientProvider(
+                httpClientProvider.getClass().getSimpleName().toLowerCase(Locale.ROOT))) {
                 httpClientsToTest.add(httpClientProvider.createInstance());
             }
         }
@@ -320,10 +346,6 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     protected static void setTestProxyEnabled() {
         enableTestProxy = true;
-    }
-
-    void setProxyUrl(URL proxyUrl) {
-        this.proxyUrl = proxyUrl;
     }
 
     /**
@@ -395,5 +417,30 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     protected HttpClient getHttpClientOrUsePlayback(HttpClient httpClient) {
         return (testMode == TestMode.PLAYBACK) ? interceptorManager.getPlaybackClient() : httpClient;
+    }
+
+    private static HttpClient getTestProxyHttpClient() {
+        return TEST_PROXY_HTTP_CLIENT.updateAndGet(httpClient -> httpClient == null
+            ? getHttpClients().findFirst().orElse(new HttpURLConnectionHttpClient())
+            : httpClient);
+    }
+
+    static String getTestName(Optional<Method> testMethod, String displayName, Optional<Class<?>> testClass) {
+        String testName = "";
+        String fullyQualifiedTestName = "";
+        if (testMethod.isPresent()) {
+            Method method = testMethod.get();
+            String className = testClass.map(Class::getName).orElse(method.getDeclaringClass().getName());
+            testName = method.getName();
+            fullyQualifiedTestName = className + "." + testName;
+        }
+
+        return Objects.equals(displayName, testName)
+            ? fullyQualifiedTestName
+            : fullyQualifiedTestName + "(" + displayName + ")";
+    }
+
+    static boolean shouldLogExecutionStatus() {
+        return Configuration.getGlobalConfiguration().get(AZURE_TEST_DEBUG, false);
     }
 }

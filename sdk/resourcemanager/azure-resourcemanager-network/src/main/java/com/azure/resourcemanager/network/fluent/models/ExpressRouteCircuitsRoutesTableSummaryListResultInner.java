@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.ExpressRouteCircuitRoutesTableSu
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListRoutesTable associated with the Express Route Circuits API. */
+/**
+ * Response for ListRoutesTable associated with the Express Route Circuits API.
+ */
 @Fluent
 public final class ExpressRouteCircuitsRoutesTableSummaryListResultInner {
     /*
@@ -24,13 +26,15 @@ public final class ExpressRouteCircuitsRoutesTableSummaryListResultInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ExpressRouteCircuitsRoutesTableSummaryListResultInner class. */
+    /**
+     * Creates an instance of ExpressRouteCircuitsRoutesTableSummaryListResultInner class.
+     */
     public ExpressRouteCircuitsRoutesTableSummaryListResultInner() {
     }
 
     /**
      * Get the value property: A list of the routes table.
-     *
+     * 
      * @return the value value.
      */
     public List<ExpressRouteCircuitRoutesTableSummary> value() {
@@ -39,19 +43,19 @@ public final class ExpressRouteCircuitsRoutesTableSummaryListResultInner {
 
     /**
      * Set the value property: A list of the routes table.
-     *
+     * 
      * @param value the value value to set.
      * @return the ExpressRouteCircuitsRoutesTableSummaryListResultInner object itself.
      */
-    public ExpressRouteCircuitsRoutesTableSummaryListResultInner withValue(
-        List<ExpressRouteCircuitRoutesTableSummary> value) {
+    public ExpressRouteCircuitsRoutesTableSummaryListResultInner
+        withValue(List<ExpressRouteCircuitRoutesTableSummary> value) {
         this.value = value;
         return this;
     }
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class ExpressRouteCircuitsRoutesTableSummaryListResultInner {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ExpressRouteCircuitsRoutesTableSummaryListResultInner object itself.
      */
@@ -71,7 +75,7 @@ public final class ExpressRouteCircuitsRoutesTableSummaryListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

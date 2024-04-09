@@ -23,15 +23,13 @@ public interface HostsClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
-     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of define the host.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<HostModelInner>, HostModelInner> beginCreate(
-        String resourceGroupName, String hostname, HostModelInner body);
+    SyncPoller<PollResult<HostModelInner>, HostModelInner> beginCreate(String resourceGroupName, String hostname);
 
     /**
      * Implements host PUT method.
@@ -50,22 +48,6 @@ public interface HostsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<HostModelInner>, HostModelInner> beginCreate(
         String resourceGroupName, String hostname, HostModelInner body, Context context);
-
-    /**
-     * Implements host PUT method.
-     *
-     * <p>Create Or Update host.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param hostname Name of the host.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the host.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    HostModelInner create(String resourceGroupName, String hostname, HostModelInner body);
 
     /**
      * Implements host PUT method.
@@ -106,21 +88,6 @@ public interface HostsClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the host.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    HostModelInner getByResourceGroup(String resourceGroupName, String hostname);
-
-    /**
-     * Gets a host.
-     *
-     * <p>Implements host GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param hostname Name of the host.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -131,9 +98,9 @@ public interface HostsClient {
     Response<HostModelInner> getByResourceGroupWithResponse(String resourceGroupName, String hostname, Context context);
 
     /**
-     * Updates a host.
+     * Gets a host.
      *
-     * <p>API to update certain properties of the host resource.
+     * <p>Implements host GET method.
      *
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
@@ -143,7 +110,7 @@ public interface HostsClient {
      * @return define the host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    HostModelInner update(String resourceGroupName, String hostname);
+    HostModelInner getByResourceGroup(String resourceGroupName, String hostname);
 
     /**
      * Updates a host.
@@ -164,20 +131,34 @@ public interface HostsClient {
         String resourceGroupName, String hostname, ResourcePatch body, Context context);
 
     /**
+     * Updates a host.
+     *
+     * <p>API to update certain properties of the host resource.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param hostname Name of the host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the host.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    HostModelInner update(String resourceGroupName, String hostname);
+
+    /**
      * Deletes an host.
      *
      * <p>Implements host DELETE method.
      *
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hostname, Boolean force);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hostname);
 
     /**
      * Deletes an host.
@@ -196,21 +177,6 @@ public interface HostsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String hostname, Boolean force, Context context);
-
-    /**
-     * Deletes an host.
-     *
-     * <p>Implements host DELETE method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param hostname Name of the host.
-     * @param force Whether force delete was specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String hostname, Boolean force);
 
     /**
      * Deletes an host.

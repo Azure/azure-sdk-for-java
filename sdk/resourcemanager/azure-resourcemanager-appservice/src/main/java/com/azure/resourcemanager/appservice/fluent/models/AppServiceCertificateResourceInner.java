@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.models.KeyVaultSecretStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Key Vault container ARM resource for a certificate that is purchased through Azure. */
+/**
+ * Key Vault container ARM resource for a certificate that is purchased through Azure.
+ */
 @Fluent
 public final class AppServiceCertificateResourceInner extends Resource {
     /*
@@ -25,13 +27,15 @@ public final class AppServiceCertificateResourceInner extends Resource {
     @JsonProperty(value = "kind")
     private String kind;
 
-    /** Creates an instance of AppServiceCertificateResourceInner class. */
+    /**
+     * Creates an instance of AppServiceCertificateResourceInner class.
+     */
     public AppServiceCertificateResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Core resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AppServiceCertificateInner innerProperties() {
@@ -40,7 +44,7 @@ public final class AppServiceCertificateResourceInner extends Resource {
 
     /**
      * Get the kind property: Kind of resource.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -49,7 +53,7 @@ public final class AppServiceCertificateResourceInner extends Resource {
 
     /**
      * Set the kind property: Kind of resource.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the AppServiceCertificateResourceInner object itself.
      */
@@ -58,14 +62,18 @@ public final class AppServiceCertificateResourceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AppServiceCertificateResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AppServiceCertificateResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -74,7 +82,7 @@ public final class AppServiceCertificateResourceInner extends Resource {
 
     /**
      * Get the keyVaultId property: Key Vault resource Id.
-     *
+     * 
      * @return the keyVaultId value.
      */
     public String keyVaultId() {
@@ -83,7 +91,7 @@ public final class AppServiceCertificateResourceInner extends Resource {
 
     /**
      * Set the keyVaultId property: Key Vault resource Id.
-     *
+     * 
      * @param keyVaultId the keyVaultId value to set.
      * @return the AppServiceCertificateResourceInner object itself.
      */
@@ -97,7 +105,7 @@ public final class AppServiceCertificateResourceInner extends Resource {
 
     /**
      * Get the keyVaultSecretName property: Key Vault secret name.
-     *
+     * 
      * @return the keyVaultSecretName value.
      */
     public String keyVaultSecretName() {
@@ -106,7 +114,7 @@ public final class AppServiceCertificateResourceInner extends Resource {
 
     /**
      * Set the keyVaultSecretName property: Key Vault secret name.
-     *
+     * 
      * @param keyVaultSecretName the keyVaultSecretName value to set.
      * @return the AppServiceCertificateResourceInner object itself.
      */
@@ -120,7 +128,7 @@ public final class AppServiceCertificateResourceInner extends Resource {
 
     /**
      * Get the provisioningState property: Status of the Key Vault secret.
-     *
+     * 
      * @return the provisioningState value.
      */
     public KeyVaultSecretStatus provisioningState() {
@@ -129,7 +137,7 @@ public final class AppServiceCertificateResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

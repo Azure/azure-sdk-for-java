@@ -308,7 +308,12 @@ public class IntelliJCacheAccessor {
             return null;
         }
 
-        IntelliJAuthMethodDetails authMethodDetails = parseAuthMethodDetails(authFile);
+        IntelliJAuthMethodDetails authMethodDetails;
+        try {
+            authMethodDetails = parseAuthMethodDetails(authFile);
+        } catch (IOException exception) {
+            throw new CredentialUnavailableException("Error Parsing Authentication Method details.", exception);
+        }
 
         String authType = authMethodDetails.getAuthMethod();
         if (CoreUtils.isNullOrEmpty(authType)) {

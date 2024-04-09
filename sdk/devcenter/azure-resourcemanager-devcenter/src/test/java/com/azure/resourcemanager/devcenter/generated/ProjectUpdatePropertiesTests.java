@@ -14,23 +14,26 @@ public final class ProjectUpdatePropertiesTests {
         ProjectUpdateProperties model =
             BinaryData
                 .fromString(
-                    "{\"devCenterId\":\"kujysvlejuvfq\",\"description\":\"rlyxwjkcprbnw\",\"maxDevBoxesPerUser\":1500151010}")
+                    "{\"devCenterId\":\"bdkvwrwjf\",\"description\":\"snhu\",\"maxDevBoxesPerUser\":1936335434,\"displayName\":\"tmrldhugjzzdatq\"}")
                 .toObject(ProjectUpdateProperties.class);
-        Assertions.assertEquals("kujysvlejuvfq", model.devCenterId());
-        Assertions.assertEquals("rlyxwjkcprbnw", model.description());
-        Assertions.assertEquals(1500151010, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("bdkvwrwjf", model.devCenterId());
+        Assertions.assertEquals("snhu", model.description());
+        Assertions.assertEquals(1936335434, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("tmrldhugjzzdatq", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProjectUpdateProperties model =
             new ProjectUpdateProperties()
-                .withDevCenterId("kujysvlejuvfq")
-                .withDescription("rlyxwjkcprbnw")
-                .withMaxDevBoxesPerUser(1500151010);
+                .withDevCenterId("bdkvwrwjf")
+                .withDescription("snhu")
+                .withMaxDevBoxesPerUser(1936335434)
+                .withDisplayName("tmrldhugjzzdatq");
         model = BinaryData.fromObject(model).toObject(ProjectUpdateProperties.class);
-        Assertions.assertEquals("kujysvlejuvfq", model.devCenterId());
-        Assertions.assertEquals("rlyxwjkcprbnw", model.description());
-        Assertions.assertEquals(1500151010, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("bdkvwrwjf", model.devCenterId());
+        Assertions.assertEquals("snhu", model.description());
+        Assertions.assertEquals(1936335434, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("tmrldhugjzzdatq", model.displayName());
     }
 }

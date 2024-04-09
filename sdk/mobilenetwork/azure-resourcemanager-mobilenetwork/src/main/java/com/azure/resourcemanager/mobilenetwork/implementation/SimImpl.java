@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mobilenetwork.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SimInner;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
@@ -31,6 +32,10 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String authenticationKey() {
@@ -116,20 +121,14 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
     }
 
     public Sim create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSims()
-                .createOrUpdate(resourceGroupName, simGroupName, simName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getSims().createOrUpdate(resourceGroupName, simGroupName,
+            simName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Sim create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSims()
-                .createOrUpdate(resourceGroupName, simGroupName, simName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getSims().createOrUpdate(resourceGroupName, simGroupName,
+            simName, this.innerModel(), context);
         return this;
     }
 
@@ -144,48 +143,34 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
     }
 
     public Sim apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSims()
-                .createOrUpdate(resourceGroupName, simGroupName, simName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getSims().createOrUpdate(resourceGroupName, simGroupName,
+            simName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Sim apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSims()
-                .createOrUpdate(resourceGroupName, simGroupName, simName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getSims().createOrUpdate(resourceGroupName, simGroupName,
+            simName, this.innerModel(), context);
         return this;
     }
 
     SimImpl(SimInner innerObject, com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.simGroupName = Utils.getValueFromIdByName(innerObject.id(), "simGroups");
-        this.simName = Utils.getValueFromIdByName(innerObject.id(), "sims");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.simGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "simGroups");
+        this.simName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sims");
     }
 
     public Sim refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSims()
-                .getWithResponse(resourceGroupName, simGroupName, simName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getSims()
+            .getWithResponse(resourceGroupName, simGroupName, simName, Context.NONE).getValue();
         return this;
     }
 
     public Sim refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSims()
-                .getWithResponse(resourceGroupName, simGroupName, simName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getSims()
+            .getWithResponse(resourceGroupName, simGroupName, simName, context).getValue();
         return this;
     }
 

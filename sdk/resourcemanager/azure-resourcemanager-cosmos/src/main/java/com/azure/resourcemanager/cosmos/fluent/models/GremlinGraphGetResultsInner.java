@@ -11,7 +11,9 @@ import com.azure.resourcemanager.cosmos.models.GremlinGraphGetPropertiesResource
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An Azure Cosmos DB Gremlin graph. */
+/**
+ * An Azure Cosmos DB Gremlin graph.
+ */
 @Fluent
 public final class GremlinGraphGetResultsInner extends ArmResourceProperties {
     /*
@@ -20,27 +22,33 @@ public final class GremlinGraphGetResultsInner extends ArmResourceProperties {
     @JsonProperty(value = "properties")
     private GremlinGraphGetProperties innerProperties;
 
-    /** Creates an instance of GremlinGraphGetResultsInner class. */
+    /**
+     * Creates an instance of GremlinGraphGetResultsInner class.
+     */
     public GremlinGraphGetResultsInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GremlinGraphGetProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GremlinGraphGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GremlinGraphGetResultsInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -49,7 +57,7 @@ public final class GremlinGraphGetResultsInner extends ArmResourceProperties {
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public GremlinGraphGetPropertiesResource resource() {
@@ -58,7 +66,7 @@ public final class GremlinGraphGetResultsInner extends ArmResourceProperties {
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the GremlinGraphGetResultsInner object itself.
      */
@@ -72,7 +80,7 @@ public final class GremlinGraphGetResultsInner extends ArmResourceProperties {
 
     /**
      * Get the options property: The options property.
-     *
+     * 
      * @return the options value.
      */
     public GremlinGraphGetPropertiesOptions options() {
@@ -81,7 +89,7 @@ public final class GremlinGraphGetResultsInner extends ArmResourceProperties {
 
     /**
      * Set the options property: The options property.
-     *
+     * 
      * @param options the options value to set.
      * @return the GremlinGraphGetResultsInner object itself.
      */
@@ -95,7 +103,7 @@ public final class GremlinGraphGetResultsInner extends ArmResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

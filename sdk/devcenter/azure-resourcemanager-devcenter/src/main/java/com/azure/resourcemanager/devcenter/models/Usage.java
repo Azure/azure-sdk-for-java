@@ -37,6 +37,13 @@ public interface Usage {
     UsageName name();
 
     /**
+     * Gets the id property: The fully qualified arm resource id.
+     *
+     * @return the id value.
+     */
+    String id();
+
+    /**
      * Gets the inner com.azure.resourcemanager.devcenter.fluent.models.UsageInner object.
      *
      * @return the inner object.

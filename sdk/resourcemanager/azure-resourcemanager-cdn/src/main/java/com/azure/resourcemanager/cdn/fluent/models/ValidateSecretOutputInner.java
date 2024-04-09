@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cdn.models.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Output of the validated secret. */
+/**
+ * Output of the validated secret.
+ */
 @Fluent
 public final class ValidateSecretOutputInner {
     /*
@@ -24,8 +26,14 @@ public final class ValidateSecretOutputInner {
     private String message;
 
     /**
+     * Creates an instance of ValidateSecretOutputInner class.
+     */
+    public ValidateSecretOutputInner() {
+    }
+
+    /**
      * Get the status property: The validation status.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -34,7 +42,7 @@ public final class ValidateSecretOutputInner {
 
     /**
      * Set the status property: The validation status.
-     *
+     * 
      * @param status the status value to set.
      * @return the ValidateSecretOutputInner object itself.
      */
@@ -45,7 +53,7 @@ public final class ValidateSecretOutputInner {
 
     /**
      * Get the message property: Detailed error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -54,7 +62,7 @@ public final class ValidateSecretOutputInner {
 
     /**
      * Set the message property: Detailed error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the ValidateSecretOutputInner object itself.
      */
@@ -65,7 +73,7 @@ public final class ValidateSecretOutputInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

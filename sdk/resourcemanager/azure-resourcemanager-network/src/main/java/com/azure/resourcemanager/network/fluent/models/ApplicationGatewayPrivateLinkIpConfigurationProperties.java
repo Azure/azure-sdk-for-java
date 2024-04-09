@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of an application gateway private link IP configuration. */
+/**
+ * Properties of an application gateway private link IP configuration.
+ */
 @Fluent
 public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
     /*
@@ -43,13 +45,15 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ApplicationGatewayPrivateLinkIpConfigurationProperties class. */
+    /**
+     * Creates an instance of ApplicationGatewayPrivateLinkIpConfigurationProperties class.
+     */
     public ApplicationGatewayPrivateLinkIpConfigurationProperties() {
     }
 
     /**
      * Get the privateIpAddress property: The private IP address of the IP configuration.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -58,7 +62,7 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
 
     /**
      * Set the privateIpAddress property: The private IP address of the IP configuration.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the ApplicationGatewayPrivateLinkIpConfigurationProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
 
     /**
      * Get the privateIpAllocationMethod property: The private IP address allocation method.
-     *
+     * 
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
@@ -78,19 +82,19 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
 
     /**
      * Set the privateIpAllocationMethod property: The private IP address allocation method.
-     *
+     * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the ApplicationGatewayPrivateLinkIpConfigurationProperties object itself.
      */
-    public ApplicationGatewayPrivateLinkIpConfigurationProperties withPrivateIpAllocationMethod(
-        IpAllocationMethod privateIpAllocationMethod) {
+    public ApplicationGatewayPrivateLinkIpConfigurationProperties
+        withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
     }
 
     /**
      * Get the subnet property: Reference to the subnet resource.
-     *
+     * 
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -99,7 +103,7 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
 
     /**
      * Set the subnet property: Reference to the subnet resource.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the ApplicationGatewayPrivateLinkIpConfigurationProperties object itself.
      */
@@ -110,7 +114,7 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
 
     /**
      * Get the primary property: Whether the ip configuration is primary or not.
-     *
+     * 
      * @return the primary value.
      */
     public Boolean primary() {
@@ -119,7 +123,7 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
 
     /**
      * Set the primary property: Whether the ip configuration is primary or not.
-     *
+     * 
      * @param primary the primary value to set.
      * @return the ApplicationGatewayPrivateLinkIpConfigurationProperties object itself.
      */
@@ -131,7 +135,7 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
     /**
      * Get the provisioningState property: The provisioning state of the application gateway private link IP
      * configuration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -140,7 +144,7 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Site seal request. */
+/**
+ * Site seal request.
+ */
 @Fluent
 public final class SiteSealRequest {
     /*
@@ -22,14 +24,16 @@ public final class SiteSealRequest {
     @JsonProperty(value = "locale")
     private String locale;
 
-    /** Creates an instance of SiteSealRequest class. */
+    /**
+     * Creates an instance of SiteSealRequest class.
+     */
     public SiteSealRequest() {
     }
 
     /**
-     * Get the lightTheme property: If &lt;code&gt;true&lt;/code&gt; use the light color theme for site seal; otherwise,
-     * use the default color theme.
-     *
+     * Get the lightTheme property: If &lt;code&gt;true&lt;/code&gt; use the light color theme for site seal;
+     * otherwise, use the default color theme.
+     * 
      * @return the lightTheme value.
      */
     public Boolean lightTheme() {
@@ -37,9 +41,9 @@ public final class SiteSealRequest {
     }
 
     /**
-     * Set the lightTheme property: If &lt;code&gt;true&lt;/code&gt; use the light color theme for site seal; otherwise,
-     * use the default color theme.
-     *
+     * Set the lightTheme property: If &lt;code&gt;true&lt;/code&gt; use the light color theme for site seal;
+     * otherwise, use the default color theme.
+     * 
      * @param lightTheme the lightTheme value to set.
      * @return the SiteSealRequest object itself.
      */
@@ -50,7 +54,7 @@ public final class SiteSealRequest {
 
     /**
      * Get the locale property: Locale of site seal.
-     *
+     * 
      * @return the locale value.
      */
     public String locale() {
@@ -59,7 +63,7 @@ public final class SiteSealRequest {
 
     /**
      * Set the locale property: Locale of site seal.
-     *
+     * 
      * @param locale the locale value to set.
      * @return the SiteSealRequest object itself.
      */
@@ -70,7 +74,7 @@ public final class SiteSealRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

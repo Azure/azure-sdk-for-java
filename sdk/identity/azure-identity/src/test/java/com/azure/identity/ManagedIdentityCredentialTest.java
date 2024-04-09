@@ -9,8 +9,8 @@ import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import reactor.test.StepVerifier;
 
@@ -30,7 +30,7 @@ public class ManagedIdentityCredentialTest {
     @Test
     public void testVirtualMachineMSICredentialConfigurations() {
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId("foo").build();
-        Assert.assertEquals("foo", credential.getClientId());
+        Assertions.assertEquals("foo", credential.getClientId());
     }
 
     @Test
@@ -57,7 +57,7 @@ public class ManagedIdentityCredentialTest {
                 .expectNextMatches(token -> token1.equals(token.getToken())
                     && expiresAt.getSecond() == token.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
@@ -79,7 +79,7 @@ public class ManagedIdentityCredentialTest {
                 .expectNextMatches(token -> token1.equals(token.getToken())
                     && expiresOn.getSecond() == token.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
@@ -101,13 +101,15 @@ public class ManagedIdentityCredentialTest {
             .verify();
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testInvalidIdCombination() {
         // setup
         String resourceId = "/subscriptions/" + UUID.randomUUID() + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
 
         // test
-        new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).resourceId(resourceId).build();
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> new ManagedIdentityCredentialBuilder()
+                .clientId(CLIENT_ID).resourceId(resourceId).build());
     }
 
     @Test

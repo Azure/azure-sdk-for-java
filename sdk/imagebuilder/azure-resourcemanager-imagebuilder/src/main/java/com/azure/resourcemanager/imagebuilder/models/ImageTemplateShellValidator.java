@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Runs the specified shell script during the validation phase (Linux). Corresponds to Packer shell provisioner. Exactly
- * one of 'scriptUri' or 'inline' can be specified.
+ * Runs the specified shell script during the validation phase (Linux). Corresponds to Packer shell provisioner.
+ * Exactly one of 'scriptUri' or 'inline' can be specified.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Shell")
@@ -36,14 +36,16 @@ public final class ImageTemplateShellValidator extends ImageTemplateInVMValidato
     @JsonProperty(value = "inline")
     private List<String> inline;
 
-    /** Creates an instance of ImageTemplateShellValidator class. */
+    /**
+     * Creates an instance of ImageTemplateShellValidator class.
+     */
     public ImageTemplateShellValidator() {
     }
 
     /**
      * Get the scriptUri property: URI of the shell script to be run for validation. It can be a github link, Azure
      * Storage URI, etc.
-     *
+     * 
      * @return the scriptUri value.
      */
     public String scriptUri() {
@@ -53,7 +55,7 @@ public final class ImageTemplateShellValidator extends ImageTemplateInVMValidato
     /**
      * Set the scriptUri property: URI of the shell script to be run for validation. It can be a github link, Azure
      * Storage URI, etc.
-     *
+     * 
      * @param scriptUri the scriptUri value to set.
      * @return the ImageTemplateShellValidator object itself.
      */
@@ -64,7 +66,7 @@ public final class ImageTemplateShellValidator extends ImageTemplateInVMValidato
 
     /**
      * Get the sha256Checksum property: SHA256 checksum of the shell script provided in the scriptUri field.
-     *
+     * 
      * @return the sha256Checksum value.
      */
     public String sha256Checksum() {
@@ -73,7 +75,7 @@ public final class ImageTemplateShellValidator extends ImageTemplateInVMValidato
 
     /**
      * Set the sha256Checksum property: SHA256 checksum of the shell script provided in the scriptUri field.
-     *
+     * 
      * @param sha256Checksum the sha256Checksum value to set.
      * @return the ImageTemplateShellValidator object itself.
      */
@@ -84,7 +86,7 @@ public final class ImageTemplateShellValidator extends ImageTemplateInVMValidato
 
     /**
      * Get the inline property: Array of shell commands to execute.
-     *
+     * 
      * @return the inline value.
      */
     public List<String> inline() {
@@ -93,7 +95,7 @@ public final class ImageTemplateShellValidator extends ImageTemplateInVMValidato
 
     /**
      * Set the inline property: Array of shell commands to execute.
-     *
+     * 
      * @param inline the inline value to set.
      * @return the ImageTemplateShellValidator object itself.
      */
@@ -102,7 +104,9 @@ public final class ImageTemplateShellValidator extends ImageTemplateInVMValidato
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageTemplateShellValidator withName(String name) {
         super.withName(name);
@@ -111,7 +115,7 @@ public final class ImageTemplateShellValidator extends ImageTemplateInVMValidato
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

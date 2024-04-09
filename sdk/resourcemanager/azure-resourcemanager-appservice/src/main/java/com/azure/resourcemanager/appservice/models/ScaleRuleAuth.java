@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Auth Secrets for Container App Scale Rule. */
+/**
+ * Auth Secrets for Container App Scale Rule.
+ */
 @Fluent
 public final class ScaleRuleAuth {
     /*
@@ -22,13 +24,15 @@ public final class ScaleRuleAuth {
     @JsonProperty(value = "triggerParameter")
     private String triggerParameter;
 
-    /** Creates an instance of ScaleRuleAuth class. */
+    /**
+     * Creates an instance of ScaleRuleAuth class.
+     */
     public ScaleRuleAuth() {
     }
 
     /**
      * Get the secretRef property: Name of the Container App secret from which to pull the auth params.
-     *
+     * 
      * @return the secretRef value.
      */
     public String secretRef() {
@@ -37,7 +41,7 @@ public final class ScaleRuleAuth {
 
     /**
      * Set the secretRef property: Name of the Container App secret from which to pull the auth params.
-     *
+     * 
      * @param secretRef the secretRef value to set.
      * @return the ScaleRuleAuth object itself.
      */
@@ -48,7 +52,7 @@ public final class ScaleRuleAuth {
 
     /**
      * Get the triggerParameter property: Trigger Parameter that uses the secret.
-     *
+     * 
      * @return the triggerParameter value.
      */
     public String triggerParameter() {
@@ -57,7 +61,7 @@ public final class ScaleRuleAuth {
 
     /**
      * Set the triggerParameter property: Trigger Parameter that uses the secret.
-     *
+     * 
      * @param triggerParameter the triggerParameter value to set.
      * @return the ScaleRuleAuth object itself.
      */
@@ -68,7 +72,7 @@ public final class ScaleRuleAuth {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

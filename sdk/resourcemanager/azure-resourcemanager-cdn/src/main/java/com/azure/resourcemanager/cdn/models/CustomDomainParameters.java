@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cdn.fluent.models.CustomDomainPropertiesParameters;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The customDomain JSON object required for custom domain creation or update. */
+/**
+ * The customDomain JSON object required for custom domain creation or update.
+ */
 @Fluent
 public final class CustomDomainParameters {
     /*
@@ -18,8 +20,14 @@ public final class CustomDomainParameters {
     private CustomDomainPropertiesParameters innerProperties;
 
     /**
+     * Creates an instance of CustomDomainParameters class.
+     */
+    public CustomDomainParameters() {
+    }
+
+    /**
      * Get the innerProperties property: The JSON object that contains the properties of the custom domain to create.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CustomDomainPropertiesParameters innerProperties() {
@@ -28,7 +36,7 @@ public final class CustomDomainParameters {
 
     /**
      * Get the hostname property: The host name of the custom domain. Must be a domain name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -37,7 +45,7 @@ public final class CustomDomainParameters {
 
     /**
      * Set the hostname property: The host name of the custom domain. Must be a domain name.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the CustomDomainParameters object itself.
      */
@@ -51,7 +59,7 @@ public final class CustomDomainParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

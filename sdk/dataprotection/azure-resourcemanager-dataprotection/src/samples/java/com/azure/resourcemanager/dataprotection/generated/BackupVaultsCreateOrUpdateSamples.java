@@ -22,91 +22,66 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for BackupVaults CreateOrUpdate. */
+/**
+ * Samples for BackupVaults CreateOrUpdate.
+ */
 public final class BackupVaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/VaultCRUD/PutBackupVault.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/
+     * PutBackupVault.json
      */
     /**
      * Sample code: Create BackupVault.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void createBackupVault(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupVaults()
-            .define("swaggerExample")
-            .withRegion("WestUS")
+        manager.backupVaults().define("swaggerExample").withRegion("WestUS")
             .withExistingResourceGroup("SampleResourceGroup")
-            .withProperties(
-                new BackupVault()
-                    .withMonitoringSettings(
-                        new MonitoringSettings()
-                            .withAzureMonitorAlertSettings(
-                                new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)))
-                    .withSecuritySettings(
-                        new SecuritySettings()
-                            .withSoftDeleteSettings(
-                                new SoftDeleteSettings()
-                                    .withState(SoftDeleteState.fromString("Enabled"))
-                                    .withRetentionDurationInDays(14.0D)))
-                    .withStorageSettings(
-                        Arrays
-                            .asList(
-                                new StorageSetting()
-                                    .withDatastoreType(StorageSettingStoreTypes.VAULT_STORE)
-                                    .withType(StorageSettingTypes.LOCALLY_REDUNDANT)))
-                    .withFeatureSettings(
-                        new FeatureSettings()
-                            .withCrossRegionRestoreSettings(
-                                new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED))))
-            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
-            .withIdentity(new DppIdentityDetails().withType("None"))
+            .withProperties(new BackupVault()
+                .withMonitoringSettings(new MonitoringSettings().withAzureMonitorAlertSettings(
+                    new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)))
+                .withSecuritySettings(new SecuritySettings().withSoftDeleteSettings(new SoftDeleteSettings()
+                    .withState(SoftDeleteState.fromString("Enabled")).withRetentionDurationInDays(14.0D)))
+                .withStorageSettings(
+                    Arrays.asList(new StorageSetting().withDatastoreType(StorageSettingStoreTypes.VAULT_STORE)
+                        .withType(StorageSettingTypes.LOCALLY_REDUNDANT)))
+                .withFeatureSettings(new FeatureSettings().withCrossRegionRestoreSettings(
+                    new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED))))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder")).withIdentity(new DppIdentityDetails().withType("None"))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/VaultCRUD/PutBackupVaultWithMSI.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/
+     * PutBackupVaultWithMSI.json
      */
     /**
      * Sample code: Create BackupVault With MSI.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void createBackupVaultWithMSI(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupVaults()
-            .define("swaggerExample")
-            .withRegion("WestUS")
+    public static void
+        createBackupVaultWithMSI(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupVaults().define("swaggerExample").withRegion("WestUS")
             .withExistingResourceGroup("SampleResourceGroup")
-            .withProperties(
-                new BackupVault()
-                    .withMonitoringSettings(
-                        new MonitoringSettings()
-                            .withAzureMonitorAlertSettings(
-                                new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)))
-                    .withSecuritySettings(
-                        new SecuritySettings()
-                            .withSoftDeleteSettings(
-                                new SoftDeleteSettings()
-                                    .withState(SoftDeleteState.fromString("Enabled"))
-                                    .withRetentionDurationInDays(14.0D)))
-                    .withStorageSettings(
-                        Arrays
-                            .asList(
-                                new StorageSetting()
-                                    .withDatastoreType(StorageSettingStoreTypes.VAULT_STORE)
-                                    .withType(StorageSettingTypes.LOCALLY_REDUNDANT)))
-                    .withFeatureSettings(
-                        new FeatureSettings()
-                            .withCrossRegionRestoreSettings(
-                                new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED))))
+            .withProperties(new BackupVault()
+                .withMonitoringSettings(new MonitoringSettings().withAzureMonitorAlertSettings(
+                    new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)))
+                .withSecuritySettings(new SecuritySettings().withSoftDeleteSettings(new SoftDeleteSettings()
+                    .withState(SoftDeleteState.fromString("Enabled")).withRetentionDurationInDays(14.0D)))
+                .withStorageSettings(
+                    Arrays.asList(new StorageSetting().withDatastoreType(StorageSettingStoreTypes.VAULT_STORE)
+                        .withType(StorageSettingTypes.LOCALLY_REDUNDANT)))
+                .withFeatureSettings(new FeatureSettings().withCrossRegionRestoreSettings(
+                    new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED))))
             .withTags(mapOf("key1", "fakeTokenPlaceholder"))
-            .withIdentity(new DppIdentityDetails().withType("systemAssigned"))
-            .create();
+            .withIdentity(new DppIdentityDetails().withType("systemAssigned")).create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -13,32 +13,26 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureRecoveryServiceVaultProtectionIntentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureRecoveryServiceVaultProtectionIntent model =
-            BinaryData
-                .fromString(
-                    "{\"protectionIntentItemType\":\"RecoveryServiceVaultItem\",\"backupManagementType\":\"DPM\",\"sourceResourceId\":\"rebwggahtt\",\"itemId\":\"swvajqfu\",\"policyId\":\"x\",\"protectionState\":\"Protected\"}")
-                .toObject(AzureRecoveryServiceVaultProtectionIntent.class);
-        Assertions.assertEquals(BackupManagementType.DPM, model.backupManagementType());
-        Assertions.assertEquals("rebwggahtt", model.sourceResourceId());
-        Assertions.assertEquals("swvajqfu", model.itemId());
-        Assertions.assertEquals("x", model.policyId());
+        AzureRecoveryServiceVaultProtectionIntent model = BinaryData.fromString(
+            "{\"protectionIntentItemType\":\"RecoveryServiceVaultItem\",\"backupManagementType\":\"AzureWorkload\",\"sourceResourceId\":\"lfpya\",\"itemId\":\"cygvoavyunssx\",\"policyId\":\"hi\",\"protectionState\":\"Protected\"}")
+            .toObject(AzureRecoveryServiceVaultProtectionIntent.class);
+        Assertions.assertEquals(BackupManagementType.AZURE_WORKLOAD, model.backupManagementType());
+        Assertions.assertEquals("lfpya", model.sourceResourceId());
+        Assertions.assertEquals("cygvoavyunssx", model.itemId());
+        Assertions.assertEquals("hi", model.policyId());
         Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureRecoveryServiceVaultProtectionIntent model =
-            new AzureRecoveryServiceVaultProtectionIntent()
-                .withBackupManagementType(BackupManagementType.DPM)
-                .withSourceResourceId("rebwggahtt")
-                .withItemId("swvajqfu")
-                .withPolicyId("x")
-                .withProtectionState(ProtectionStatus.PROTECTED);
+        AzureRecoveryServiceVaultProtectionIntent model = new AzureRecoveryServiceVaultProtectionIntent()
+            .withBackupManagementType(BackupManagementType.AZURE_WORKLOAD).withSourceResourceId("lfpya")
+            .withItemId("cygvoavyunssx").withPolicyId("hi").withProtectionState(ProtectionStatus.PROTECTED);
         model = BinaryData.fromObject(model).toObject(AzureRecoveryServiceVaultProtectionIntent.class);
-        Assertions.assertEquals(BackupManagementType.DPM, model.backupManagementType());
-        Assertions.assertEquals("rebwggahtt", model.sourceResourceId());
-        Assertions.assertEquals("swvajqfu", model.itemId());
-        Assertions.assertEquals("x", model.policyId());
+        Assertions.assertEquals(BackupManagementType.AZURE_WORKLOAD, model.backupManagementType());
+        Assertions.assertEquals("lfpya", model.sourceResourceId());
+        Assertions.assertEquals("cygvoavyunssx", model.itemId());
+        Assertions.assertEquals("hi", model.policyId());
         Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
     }
 }

@@ -23,6 +23,15 @@ public final class MicrosoftGraphScheduleChangeState extends ExpandableStringEnu
     public static final MicrosoftGraphScheduleChangeState UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphScheduleChangeState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphScheduleChangeState() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphScheduleChangeState from its string representation.
      *
      * @param name a name to look for.

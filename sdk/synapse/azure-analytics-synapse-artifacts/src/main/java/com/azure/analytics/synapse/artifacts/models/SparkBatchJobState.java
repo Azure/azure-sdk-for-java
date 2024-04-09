@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The SparkBatchJobState model. */
+/**
+ * The SparkBatchJobState model.
+ */
 @Fluent
 public final class SparkBatchJobState {
     /*
@@ -65,12 +67,15 @@ public final class SparkBatchJobState {
     @JsonProperty(value = "jobCreationRequest")
     private SparkRequest jobCreationRequest;
 
-    /** Creates an instance of SparkBatchJobState class. */
-    public SparkBatchJobState() {}
+    /**
+     * Creates an instance of SparkBatchJobState class.
+     */
+    public SparkBatchJobState() {
+    }
 
     /**
      * Get the notStartedAt property: the time that at which "not_started" livy state was first seen.
-     *
+     * 
      * @return the notStartedAt value.
      */
     public OffsetDateTime getNotStartedAt() {
@@ -79,7 +84,7 @@ public final class SparkBatchJobState {
 
     /**
      * Set the notStartedAt property: the time that at which "not_started" livy state was first seen.
-     *
+     * 
      * @param notStartedAt the notStartedAt value to set.
      * @return the SparkBatchJobState object itself.
      */
@@ -90,7 +95,7 @@ public final class SparkBatchJobState {
 
     /**
      * Get the startingAt property: the time that at which "starting" livy state was first seen.
-     *
+     * 
      * @return the startingAt value.
      */
     public OffsetDateTime getStartingAt() {
@@ -99,7 +104,7 @@ public final class SparkBatchJobState {
 
     /**
      * Set the startingAt property: the time that at which "starting" livy state was first seen.
-     *
+     * 
      * @param startingAt the startingAt value to set.
      * @return the SparkBatchJobState object itself.
      */
@@ -110,7 +115,7 @@ public final class SparkBatchJobState {
 
     /**
      * Get the runningAt property: the time that at which "running" livy state was first seen.
-     *
+     * 
      * @return the runningAt value.
      */
     public OffsetDateTime getRunningAt() {
@@ -119,7 +124,7 @@ public final class SparkBatchJobState {
 
     /**
      * Set the runningAt property: the time that at which "running" livy state was first seen.
-     *
+     * 
      * @param runningAt the runningAt value to set.
      * @return the SparkBatchJobState object itself.
      */
@@ -130,7 +135,7 @@ public final class SparkBatchJobState {
 
     /**
      * Get the deadAt property: time that at which "dead" livy state was first seen.
-     *
+     * 
      * @return the deadAt value.
      */
     public OffsetDateTime getDeadAt() {
@@ -139,7 +144,7 @@ public final class SparkBatchJobState {
 
     /**
      * Set the deadAt property: time that at which "dead" livy state was first seen.
-     *
+     * 
      * @param deadAt the deadAt value to set.
      * @return the SparkBatchJobState object itself.
      */
@@ -150,7 +155,7 @@ public final class SparkBatchJobState {
 
     /**
      * Get the successAt property: the time that at which "success" livy state was first seen.
-     *
+     * 
      * @return the successAt value.
      */
     public OffsetDateTime getSuccessAt() {
@@ -159,7 +164,7 @@ public final class SparkBatchJobState {
 
     /**
      * Set the successAt property: the time that at which "success" livy state was first seen.
-     *
+     * 
      * @param successAt the successAt value to set.
      * @return the SparkBatchJobState object itself.
      */
@@ -170,7 +175,7 @@ public final class SparkBatchJobState {
 
     /**
      * Get the terminatedAt property: the time that at which "killed" livy state was first seen.
-     *
+     * 
      * @return the terminatedAt value.
      */
     public OffsetDateTime getTerminatedAt() {
@@ -179,7 +184,7 @@ public final class SparkBatchJobState {
 
     /**
      * Set the terminatedAt property: the time that at which "killed" livy state was first seen.
-     *
+     * 
      * @param terminatedAt the terminatedAt value to set.
      * @return the SparkBatchJobState object itself.
      */
@@ -190,7 +195,7 @@ public final class SparkBatchJobState {
 
     /**
      * Get the recoveringAt property: the time that at which "recovering" livy state was first seen.
-     *
+     * 
      * @return the recoveringAt value.
      */
     public OffsetDateTime getRecoveringAt() {
@@ -199,7 +204,7 @@ public final class SparkBatchJobState {
 
     /**
      * Set the recoveringAt property: the time that at which "recovering" livy state was first seen.
-     *
+     * 
      * @param recoveringAt the recoveringAt value to set.
      * @return the SparkBatchJobState object itself.
      */
@@ -210,7 +215,7 @@ public final class SparkBatchJobState {
 
     /**
      * Get the currentState property: the Spark job state.
-     *
+     * 
      * @return the currentState value.
      */
     public String getCurrentState() {
@@ -219,7 +224,7 @@ public final class SparkBatchJobState {
 
     /**
      * Set the currentState property: the Spark job state.
-     *
+     * 
      * @param currentState the currentState value to set.
      * @return the SparkBatchJobState object itself.
      */
@@ -230,7 +235,7 @@ public final class SparkBatchJobState {
 
     /**
      * Get the jobCreationRequest property: The jobCreationRequest property.
-     *
+     * 
      * @return the jobCreationRequest value.
      */
     public SparkRequest getJobCreationRequest() {
@@ -239,7 +244,7 @@ public final class SparkBatchJobState {
 
     /**
      * Set the jobCreationRequest property: The jobCreationRequest property.
-     *
+     * 
      * @param jobCreationRequest the jobCreationRequest value to set.
      * @return the SparkBatchJobState object itself.
      */

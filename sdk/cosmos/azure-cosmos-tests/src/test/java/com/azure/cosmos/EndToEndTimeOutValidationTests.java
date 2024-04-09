@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationCancelledException;
 import com.azure.cosmos.implementation.TestConfigurations;
@@ -54,24 +55,31 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             .build();
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT * 100)
+    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT * 100)
     public void beforeClass() throws Exception {
-        CosmosAsyncClient client = this.getClientBuilder().buildAsyncClient();
-        CosmosAsyncDatabase createdDatabase = getSharedCosmosDatabase(client);
+        initializeClient(null);
+    }
+
+    public void initializeClient(CosmosEndToEndOperationLatencyPolicyConfig e2eDefaultConfig) {
+        CosmosAsyncClient client = this
+            .getClientBuilder()
+            .endToEndOperationLatencyPolicyConfig(e2eDefaultConfig)
+            .buildAsyncClient();
         createdContainer = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdContainer);
 
         createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer));
     }
 
-    @Test(groups = {"simple"}, timeOut = 10000L)
-    public void readItemWithEndToEndTimeoutPolicyInOptionsShouldTimeout() {
+    @Test(groups = {"fast"}, timeOut = 10000L)
+    public void readItemWithEndToEndTimeoutPolicyInOptionsShouldTimeoutWithClientConfig() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
         }
 
+        initializeClient(endToEndOperationLatencyPolicyConfig);
+
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
         TestObject itemToRead = createdDocuments.get(random.nextInt(createdDocuments.size()));
         FaultInjectionRule rule = injectFailure(createdContainer, FaultInjectionOperationType.READ_ITEM, null);
 
@@ -82,7 +90,39 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         rule.disable();
     }
 
-    @Test(groups = {"simple"}, timeOut = 10000L)
+    @Test(groups = {"fast"}, timeOut = 10000L)
+    public void readItemWithEndToEndTimeoutPolicyInOptionsShouldTimeoutEvenWhenDisabledForNonPointOperations() {
+        if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Failure injection only supported for DIRECT mode");
+        }
+
+        System.setProperty(
+            Configs.DEFAULT_E2E_FOR_NON_POINT_DISABLED,
+            "true");
+
+        initializeClient(endToEndOperationLatencyPolicyConfig);
+
+        FaultInjectionRule rule = null;
+        try {
+
+            CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+            TestObject itemToRead = createdDocuments.get(random.nextInt(createdDocuments.size()));
+            rule = injectFailure(createdContainer, FaultInjectionOperationType.READ_ITEM, null);
+
+            Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
+                createdContainer.readItem(itemToRead.id, new PartitionKey(itemToRead.mypk), options, TestObject.class);
+
+            verifyExpectError(cosmosItemResponseMono);
+        } finally {
+            if (rule != null) {
+                rule.disable();
+            }
+
+            System.clearProperty(Configs.DEFAULT_E2E_FOR_NON_POINT_DISABLED);
+        }
+    }
+
+    @Test(groups = {"fast"}, timeOut = 10000L)
     public void createItemWithEndToEndTimeoutPolicyInOptionsShouldTimeout() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
@@ -100,7 +140,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         faultInjectionRule.disable();
     }
 
-    @Test(groups = {"simple"}, timeOut = 10000L)
+    @Test(groups = {"fast"}, timeOut = 10000L)
     public void replaceItemWithEndToEndTimeoutPolicyInOptionsShouldTimeout() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
@@ -120,7 +160,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         rule.disable();
     }
 
-    @Test(groups = {"simple"}, timeOut = 10000L)
+    @Test(groups = {"fast"}, timeOut = 10000L)
     public void upsertItemWithEndToEndTimeoutPolicyInOptionsShouldTimeout() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
@@ -144,11 +184,12 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             .verify();
     }
 
-    @Test(groups = {"simple"}, timeOut = 10000L)
+    @Test(groups = {"fast"}, timeOut = 10000L)
     public void queryItemWithEndToEndTimeoutPolicyInOptionsShouldTimeout() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
         }
+
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig =
             new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
                 .build();
@@ -156,7 +197,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
 
-        TestObject itemToQuery = createdDocuments.get(random.nextInt(createdDocuments.size()));
+        createdDocuments.get(random.nextInt(createdDocuments.size()));
 
         String queryText = "select top 1 * from c";
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(queryText);
@@ -172,7 +213,80 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         faultInjectionRule.disable();
     }
 
-    @Test(groups = {"simple"}, timeOut = 10000L)
+    @Test(groups = {"fast"}, timeOut = 10000L)
+    public void queryItemWithEndToEndTimeoutPolicyInOptionsShouldTimeoutWithClientConfig() {
+        if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Failure injection only supported for DIRECT mode");
+        }
+
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig =
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
+                .build();
+
+        initializeClient(endToEndOperationLatencyPolicyConfig);
+
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
+        createdDocuments.get(random.nextInt(createdDocuments.size()));
+
+        String queryText = "select top 1 * from c";
+        SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(queryText);
+
+        FaultInjectionRule faultInjectionRule = injectFailure(createdContainer, FaultInjectionOperationType.QUERY_ITEM, null);
+        CosmosPagedFlux<TestObject> queryPagedFlux = createdContainer.queryItems(sqlQuerySpec, options, TestObject.class);
+
+        StepVerifier.create(queryPagedFlux)
+                    .expectErrorMatches(throwable -> throwable instanceof OperationCancelledException
+                        && ((OperationCancelledException) throwable).getSubStatusCode()
+                        == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT)
+                    .verify();
+        faultInjectionRule.disable();
+    }
+
+    @Test(groups = {"fast"}, timeOut = 10000L)
+    public void queryItemWithEndToEndTimeoutPolicyInOptionsShouldNotTimeoutWhenSuppressed() {
+        if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Failure injection only supported for DIRECT mode");
+        }
+
+        System.setProperty(
+            Configs.DEFAULT_E2E_FOR_NON_POINT_DISABLED,
+            "true");
+
+        logger.info(
+            "isDefaultE2ETimeoutDisabledForNonPointOperations() after setting system property {}",
+            Configs.isDefaultE2ETimeoutDisabledForNonPointOperations());
+
+        initializeClient(
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
+                .build()
+        );
+
+        FaultInjectionRule faultInjectionRule = null;
+        try {
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
+            createdDocuments.get(random.nextInt(createdDocuments.size()));
+
+            String queryText = "select top 1 * from c";
+            SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(queryText);
+
+            faultInjectionRule = injectFailure(createdContainer, FaultInjectionOperationType.QUERY_ITEM, null);
+            CosmosPagedFlux<TestObject> queryPagedFlux = createdContainer.queryItems(sqlQuerySpec, options, TestObject.class);
+
+            StepVerifier.create(queryPagedFlux)
+                .expectNextCount(1L)
+                .verifyComplete();
+        } finally {
+            if (faultInjectionRule != null) {
+                faultInjectionRule.disable();
+            }
+
+            System.clearProperty(Configs.DEFAULT_E2E_FOR_NON_POINT_DISABLED);
+        }
+    }
+
+    @Test(groups = {"fast"}, timeOut = 10000L)
     public void clientLevelEndToEndTimeoutPolicyInOptionsShouldTimeout() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
@@ -196,7 +310,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                 "name123",
                 2,
                 UUID.randomUUID().toString());
-            CosmosItemResponse response = container.createItem(obj).block();
+            container.createItem(obj).block();
 
             Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
                 container.readItem(obj.id, new PartitionKey(obj.mypk), TestObject.class);

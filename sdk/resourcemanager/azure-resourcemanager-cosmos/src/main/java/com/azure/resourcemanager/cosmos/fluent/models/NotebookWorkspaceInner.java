@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A notebook workspace resource. */
+/**
+ * A notebook workspace resource.
+ */
 @Immutable
 public final class NotebookWorkspaceInner extends ArmProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class NotebookWorkspaceInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private NotebookWorkspaceProperties innerProperties;
 
-    /** Creates an instance of NotebookWorkspaceInner class. */
+    /**
+     * Creates an instance of NotebookWorkspaceInner class.
+     */
     public NotebookWorkspaceInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NotebookWorkspaceProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class NotebookWorkspaceInner extends ArmProxyResource {
 
     /**
      * Get the notebookServerEndpoint property: Specifies the endpoint of Notebook server.
-     *
+     * 
      * @return the notebookServerEndpoint value.
      */
     public String notebookServerEndpoint() {
@@ -42,7 +46,7 @@ public final class NotebookWorkspaceInner extends ArmProxyResource {
     /**
      * Get the status property: Status of the notebook workspace. Possible values are: Creating, Online, Deleting,
      * Failed, Updating.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -51,7 +55,7 @@ public final class NotebookWorkspaceInner extends ArmProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

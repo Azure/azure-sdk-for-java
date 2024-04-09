@@ -7,39 +7,63 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Provisioning state of the Kubernetes Environment. */
+/**
+ * Provisioning state of the Kubernetes Environment.
+ */
 public enum KubeEnvironmentProvisioningState {
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed"),
 
-    /** Enum value Canceled. */
+    /**
+     * Enum value Canceled.
+     */
     CANCELED("Canceled"),
 
-    /** Enum value Waiting. */
+    /**
+     * Enum value Waiting.
+     */
     WAITING("Waiting"),
 
-    /** Enum value InitializationInProgress. */
+    /**
+     * Enum value InitializationInProgress.
+     */
     INITIALIZATION_IN_PROGRESS("InitializationInProgress"),
 
-    /** Enum value InfrastructureSetupInProgress. */
+    /**
+     * Enum value InfrastructureSetupInProgress.
+     */
     INFRASTRUCTURE_SETUP_IN_PROGRESS("InfrastructureSetupInProgress"),
 
-    /** Enum value InfrastructureSetupComplete. */
+    /**
+     * Enum value InfrastructureSetupComplete.
+     */
     INFRASTRUCTURE_SETUP_COMPLETE("InfrastructureSetupComplete"),
 
-    /** Enum value ScheduledForDelete. */
+    /**
+     * Enum value ScheduledForDelete.
+     */
     SCHEDULED_FOR_DELETE("ScheduledForDelete"),
 
-    /** Enum value UpgradeRequested. */
+    /**
+     * Enum value UpgradeRequested.
+     */
     UPGRADE_REQUESTED("UpgradeRequested"),
 
-    /** Enum value UpgradeFailed. */
+    /**
+     * Enum value UpgradeFailed.
+     */
     UPGRADE_FAILED("UpgradeFailed");
 
-    /** The actual serialized value for a KubeEnvironmentProvisioningState instance. */
+    /**
+     * The actual serialized value for a KubeEnvironmentProvisioningState instance.
+     */
     private final String value;
 
     KubeEnvironmentProvisioningState(String value) {
@@ -48,7 +72,7 @@ public enum KubeEnvironmentProvisioningState {
 
     /**
      * Parses a serialized value to a KubeEnvironmentProvisioningState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed KubeEnvironmentProvisioningState object, or null if unable to parse.
      */
@@ -66,7 +90,9 @@ public enum KubeEnvironmentProvisioningState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

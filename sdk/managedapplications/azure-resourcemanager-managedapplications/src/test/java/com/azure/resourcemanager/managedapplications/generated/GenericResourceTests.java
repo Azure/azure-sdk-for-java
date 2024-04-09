@@ -6,8 +6,6 @@ package com.azure.resourcemanager.managedapplications.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managedapplications.models.GenericResource;
-import com.azure.resourcemanager.managedapplications.models.Identity;
-import com.azure.resourcemanager.managedapplications.models.ResourceIdentityType;
 import com.azure.resourcemanager.managedapplications.models.Sku;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,50 +17,56 @@ public final class GenericResourceTests {
         GenericResource model =
             BinaryData
                 .fromString(
-                    "{\"managedBy\":\"fwvuk\",\"sku\":{\"name\":\"audccsnhs\",\"tier\":\"nyejhkryhtnap\",\"size\":\"wlokjyem\",\"family\":\"vnipjox\",\"model\":\"nchgej\",\"capacity\":178199431},\"identity\":{\"principalId\":\"ailzydehojwyahu\",\"tenantId\":\"npmqnjaqwixjspro\",\"type\":\"SystemAssigned\"},\"location\":\"putegjvwmfd\",\"tags\":{\"jhulsuuvmkjo\":\"cmdv\",\"wfndiodjpsl\":\"k\",\"pvwryoqpsoacc\":\"ej\",\"lahbcryff\":\"azakl\"},\"id\":\"fdosyg\",\"name\":\"xpaojakhmsbz\",\"type\":\"hcrzevd\"}")
+                    "{\"managedBy\":\"kwy\",\"sku\":{\"name\":\"gfgibm\",\"tier\":\"gakeqsr\",\"size\":\"bzqqedqytbciq\",\"family\":\"uflmm\",\"model\":\"zsm\",\"capacity\":269319267},\"location\":\"lougpbkw\",\"tags\":{\"umkdosvqwhbmd\":\"tduqktapspwgcuer\",\"bhtqqrolfpfpsa\":\"bbjfddgmbmbexp\",\"jgzjaoyfhrtx\":\"gbquxigj\",\"fqawrlyxw\":\"lnerkujysvleju\"},\"id\":\"kcprbnw\",\"name\":\"xgjvtbv\",\"type\":\"ysszdnrujqguh\"}")
                 .toObject(GenericResource.class);
-        Assertions.assertEquals("putegjvwmfd", model.location());
-        Assertions.assertEquals("cmdv", model.tags().get("jhulsuuvmkjo"));
-        Assertions.assertEquals("fwvuk", model.managedBy());
-        Assertions.assertEquals("audccsnhs", model.sku().name());
-        Assertions.assertEquals("nyejhkryhtnap", model.sku().tier());
-        Assertions.assertEquals("wlokjyem", model.sku().size());
-        Assertions.assertEquals("vnipjox", model.sku().family());
-        Assertions.assertEquals("nchgej", model.sku().model());
-        Assertions.assertEquals(178199431, model.sku().capacity());
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("lougpbkw", model.location());
+        Assertions.assertEquals("tduqktapspwgcuer", model.tags().get("umkdosvqwhbmd"));
+        Assertions.assertEquals("kwy", model.managedBy());
+        Assertions.assertEquals("gfgibm", model.sku().name());
+        Assertions.assertEquals("gakeqsr", model.sku().tier());
+        Assertions.assertEquals("bzqqedqytbciq", model.sku().size());
+        Assertions.assertEquals("uflmm", model.sku().family());
+        Assertions.assertEquals("zsm", model.sku().model());
+        Assertions.assertEquals(269319267, model.sku().capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GenericResource model =
             new GenericResource()
-                .withLocation("putegjvwmfd")
+                .withLocation("lougpbkw")
                 .withTags(
-                    mapOf("jhulsuuvmkjo", "cmdv", "wfndiodjpsl", "k", "pvwryoqpsoacc", "ej", "lahbcryff", "azakl"))
-                .withManagedBy("fwvuk")
+                    mapOf(
+                        "umkdosvqwhbmd",
+                        "tduqktapspwgcuer",
+                        "bhtqqrolfpfpsa",
+                        "bbjfddgmbmbexp",
+                        "jgzjaoyfhrtx",
+                        "gbquxigj",
+                        "fqawrlyxw",
+                        "lnerkujysvleju"))
+                .withManagedBy("kwy")
                 .withSku(
                     new Sku()
-                        .withName("audccsnhs")
-                        .withTier("nyejhkryhtnap")
-                        .withSize("wlokjyem")
-                        .withFamily("vnipjox")
-                        .withModel("nchgej")
-                        .withCapacity(178199431))
-                .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED));
+                        .withName("gfgibm")
+                        .withTier("gakeqsr")
+                        .withSize("bzqqedqytbciq")
+                        .withFamily("uflmm")
+                        .withModel("zsm")
+                        .withCapacity(269319267));
         model = BinaryData.fromObject(model).toObject(GenericResource.class);
-        Assertions.assertEquals("putegjvwmfd", model.location());
-        Assertions.assertEquals("cmdv", model.tags().get("jhulsuuvmkjo"));
-        Assertions.assertEquals("fwvuk", model.managedBy());
-        Assertions.assertEquals("audccsnhs", model.sku().name());
-        Assertions.assertEquals("nyejhkryhtnap", model.sku().tier());
-        Assertions.assertEquals("wlokjyem", model.sku().size());
-        Assertions.assertEquals("vnipjox", model.sku().family());
-        Assertions.assertEquals("nchgej", model.sku().model());
-        Assertions.assertEquals(178199431, model.sku().capacity());
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("lougpbkw", model.location());
+        Assertions.assertEquals("tduqktapspwgcuer", model.tags().get("umkdosvqwhbmd"));
+        Assertions.assertEquals("kwy", model.managedBy());
+        Assertions.assertEquals("gfgibm", model.sku().name());
+        Assertions.assertEquals("gakeqsr", model.sku().tier());
+        Assertions.assertEquals("bzqqedqytbciq", model.sku().size());
+        Assertions.assertEquals("uflmm", model.sku().family());
+        Assertions.assertEquals("zsm", model.sku().model());
+        Assertions.assertEquals(269319267, model.sku().capacity());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

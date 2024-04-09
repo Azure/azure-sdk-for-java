@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** DatabricksSparkPython activity. */
+/**
+ * DatabricksSparkPython activity.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DatabricksSparkPython")
 @Fluent
@@ -22,58 +24,90 @@ public final class DatabricksSparkPythonActivity extends ExecutionActivity {
      * Databricks SparkPython activity properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
-    private DatabricksSparkPythonActivityTypeProperties innerTypeProperties =
-        new DatabricksSparkPythonActivityTypeProperties();
+    private DatabricksSparkPythonActivityTypeProperties innerTypeProperties
+        = new DatabricksSparkPythonActivityTypeProperties();
 
-    /** Creates an instance of DatabricksSparkPythonActivity class. */
+    /**
+     * Creates an instance of DatabricksSparkPythonActivity class.
+     */
     public DatabricksSparkPythonActivity() {
     }
 
     /**
      * Get the innerTypeProperties property: Databricks SparkPython activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private DatabricksSparkPythonActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity withPolicy(ActivityPolicy policy) {
         super.withPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DatabricksSparkPythonActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DatabricksSparkPythonActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -83,7 +117,7 @@ public final class DatabricksSparkPythonActivity extends ExecutionActivity {
     /**
      * Get the pythonFile property: The URI of the Python file to be executed. DBFS paths are supported. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the pythonFile value.
      */
     public Object pythonFile() {
@@ -93,7 +127,7 @@ public final class DatabricksSparkPythonActivity extends ExecutionActivity {
     /**
      * Set the pythonFile property: The URI of the Python file to be executed. DBFS paths are supported. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param pythonFile the pythonFile value to set.
      * @return the DatabricksSparkPythonActivity object itself.
      */
@@ -107,7 +141,7 @@ public final class DatabricksSparkPythonActivity extends ExecutionActivity {
 
     /**
      * Get the parameters property: Command line parameters that will be passed to the Python file.
-     *
+     * 
      * @return the parameters value.
      */
     public List<Object> parameters() {
@@ -116,7 +150,7 @@ public final class DatabricksSparkPythonActivity extends ExecutionActivity {
 
     /**
      * Set the parameters property: Command line parameters that will be passed to the Python file.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DatabricksSparkPythonActivity object itself.
      */
@@ -130,7 +164,7 @@ public final class DatabricksSparkPythonActivity extends ExecutionActivity {
 
     /**
      * Get the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
+     * 
      * @return the libraries value.
      */
     public List<Map<String, Object>> libraries() {
@@ -139,7 +173,7 @@ public final class DatabricksSparkPythonActivity extends ExecutionActivity {
 
     /**
      * Set the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
+     * 
      * @param libraries the libraries value to set.
      * @return the DatabricksSparkPythonActivity object itself.
      */
@@ -153,17 +187,15 @@ public final class DatabricksSparkPythonActivity extends ExecutionActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model DatabricksSparkPythonActivity"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model DatabricksSparkPythonActivity"));
         } else {
             innerTypeProperties().validate();
         }

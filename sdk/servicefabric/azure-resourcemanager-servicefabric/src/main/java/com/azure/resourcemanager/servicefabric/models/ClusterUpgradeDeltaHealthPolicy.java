@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Describes the delta health policies for the cluster upgrade. */
+/**
+ * Describes the delta health policies for the cluster upgrade.
+ */
 @Fluent
 public final class ClusterUpgradeDeltaHealthPolicy {
     /*
@@ -18,7 +20,7 @@ public final class ClusterUpgradeDeltaHealthPolicy {
      * the time of the health evaluation.
      * The check is performed after every upgrade domain upgrade completion to make sure the global state of the
      * cluster is within tolerated limits.
-     *
+     * 
      */
     @JsonProperty(value = "maxPercentDeltaUnhealthyNodes", required = true)
     private int maxPercentDeltaUnhealthyNodes;
@@ -29,7 +31,7 @@ public final class ClusterUpgradeDeltaHealthPolicy {
      * the upgrade domain nodes at the time of the health evaluation.
      * The check is performed after every upgrade domain upgrade completion for all completed upgrade domains to make
      * sure the state of the upgrade domains is within tolerated limits.
-     *
+     * 
      */
     @JsonProperty(value = "maxPercentUpgradeDomainDeltaUnhealthyNodes", required = true)
     private int maxPercentUpgradeDomainDeltaUnhealthyNodes;
@@ -40,7 +42,7 @@ public final class ClusterUpgradeDeltaHealthPolicy {
      * applications at the time of the health evaluation.
      * The check is performed after every upgrade domain upgrade completion to make sure the global state of the
      * cluster is within tolerated limits. System services are not included in this.
-     *
+     * 
      */
     @JsonProperty(value = "maxPercentDeltaUnhealthyApplications", required = true)
     private int maxPercentDeltaUnhealthyApplications;
@@ -53,16 +55,20 @@ public final class ClusterUpgradeDeltaHealthPolicy {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ApplicationDeltaHealthPolicy> applicationDeltaHealthPolicies;
 
-    /** Creates an instance of ClusterUpgradeDeltaHealthPolicy class. */
+    /**
+     * Creates an instance of ClusterUpgradeDeltaHealthPolicy class.
+     */
     public ClusterUpgradeDeltaHealthPolicy() {
     }
 
     /**
      * Get the maxPercentDeltaUnhealthyNodes property: The maximum allowed percentage of nodes health degradation
-     * allowed during cluster upgrades. The delta is measured between the state of the nodes at the beginning of upgrade
-     * and the state of the nodes at the time of the health evaluation. The check is performed after every upgrade
-     * domain upgrade completion to make sure the global state of the cluster is within tolerated limits.
-     *
+     * allowed during cluster upgrades.
+     * The delta is measured between the state of the nodes at the beginning of upgrade and the state of the nodes at
+     * the time of the health evaluation.
+     * The check is performed after every upgrade domain upgrade completion to make sure the global state of the
+     * cluster is within tolerated limits.
+     * 
      * @return the maxPercentDeltaUnhealthyNodes value.
      */
     public int maxPercentDeltaUnhealthyNodes() {
@@ -71,10 +77,12 @@ public final class ClusterUpgradeDeltaHealthPolicy {
 
     /**
      * Set the maxPercentDeltaUnhealthyNodes property: The maximum allowed percentage of nodes health degradation
-     * allowed during cluster upgrades. The delta is measured between the state of the nodes at the beginning of upgrade
-     * and the state of the nodes at the time of the health evaluation. The check is performed after every upgrade
-     * domain upgrade completion to make sure the global state of the cluster is within tolerated limits.
-     *
+     * allowed during cluster upgrades.
+     * The delta is measured between the state of the nodes at the beginning of upgrade and the state of the nodes at
+     * the time of the health evaluation.
+     * The check is performed after every upgrade domain upgrade completion to make sure the global state of the
+     * cluster is within tolerated limits.
+     * 
      * @param maxPercentDeltaUnhealthyNodes the maxPercentDeltaUnhealthyNodes value to set.
      * @return the ClusterUpgradeDeltaHealthPolicy object itself.
      */
@@ -85,11 +93,12 @@ public final class ClusterUpgradeDeltaHealthPolicy {
 
     /**
      * Get the maxPercentUpgradeDomainDeltaUnhealthyNodes property: The maximum allowed percentage of upgrade domain
-     * nodes health degradation allowed during cluster upgrades. The delta is measured between the state of the upgrade
-     * domain nodes at the beginning of upgrade and the state of the upgrade domain nodes at the time of the health
-     * evaluation. The check is performed after every upgrade domain upgrade completion for all completed upgrade
-     * domains to make sure the state of the upgrade domains is within tolerated limits.
-     *
+     * nodes health degradation allowed during cluster upgrades.
+     * The delta is measured between the state of the upgrade domain nodes at the beginning of upgrade and the state of
+     * the upgrade domain nodes at the time of the health evaluation.
+     * The check is performed after every upgrade domain upgrade completion for all completed upgrade domains to make
+     * sure the state of the upgrade domains is within tolerated limits.
+     * 
      * @return the maxPercentUpgradeDomainDeltaUnhealthyNodes value.
      */
     public int maxPercentUpgradeDomainDeltaUnhealthyNodes() {
@@ -98,27 +107,29 @@ public final class ClusterUpgradeDeltaHealthPolicy {
 
     /**
      * Set the maxPercentUpgradeDomainDeltaUnhealthyNodes property: The maximum allowed percentage of upgrade domain
-     * nodes health degradation allowed during cluster upgrades. The delta is measured between the state of the upgrade
-     * domain nodes at the beginning of upgrade and the state of the upgrade domain nodes at the time of the health
-     * evaluation. The check is performed after every upgrade domain upgrade completion for all completed upgrade
-     * domains to make sure the state of the upgrade domains is within tolerated limits.
-     *
+     * nodes health degradation allowed during cluster upgrades.
+     * The delta is measured between the state of the upgrade domain nodes at the beginning of upgrade and the state of
+     * the upgrade domain nodes at the time of the health evaluation.
+     * The check is performed after every upgrade domain upgrade completion for all completed upgrade domains to make
+     * sure the state of the upgrade domains is within tolerated limits.
+     * 
      * @param maxPercentUpgradeDomainDeltaUnhealthyNodes the maxPercentUpgradeDomainDeltaUnhealthyNodes value to set.
      * @return the ClusterUpgradeDeltaHealthPolicy object itself.
      */
-    public ClusterUpgradeDeltaHealthPolicy withMaxPercentUpgradeDomainDeltaUnhealthyNodes(
-        int maxPercentUpgradeDomainDeltaUnhealthyNodes) {
+    public ClusterUpgradeDeltaHealthPolicy
+        withMaxPercentUpgradeDomainDeltaUnhealthyNodes(int maxPercentUpgradeDomainDeltaUnhealthyNodes) {
         this.maxPercentUpgradeDomainDeltaUnhealthyNodes = maxPercentUpgradeDomainDeltaUnhealthyNodes;
         return this;
     }
 
     /**
      * Get the maxPercentDeltaUnhealthyApplications property: The maximum allowed percentage of applications health
-     * degradation allowed during cluster upgrades. The delta is measured between the state of the applications at the
-     * beginning of upgrade and the state of the applications at the time of the health evaluation. The check is
-     * performed after every upgrade domain upgrade completion to make sure the global state of the cluster is within
-     * tolerated limits. System services are not included in this.
-     *
+     * degradation allowed during cluster upgrades.
+     * The delta is measured between the state of the applications at the beginning of upgrade and the state of the
+     * applications at the time of the health evaluation.
+     * The check is performed after every upgrade domain upgrade completion to make sure the global state of the
+     * cluster is within tolerated limits. System services are not included in this.
+     * 
      * @return the maxPercentDeltaUnhealthyApplications value.
      */
     public int maxPercentDeltaUnhealthyApplications() {
@@ -127,24 +138,25 @@ public final class ClusterUpgradeDeltaHealthPolicy {
 
     /**
      * Set the maxPercentDeltaUnhealthyApplications property: The maximum allowed percentage of applications health
-     * degradation allowed during cluster upgrades. The delta is measured between the state of the applications at the
-     * beginning of upgrade and the state of the applications at the time of the health evaluation. The check is
-     * performed after every upgrade domain upgrade completion to make sure the global state of the cluster is within
-     * tolerated limits. System services are not included in this.
-     *
+     * degradation allowed during cluster upgrades.
+     * The delta is measured between the state of the applications at the beginning of upgrade and the state of the
+     * applications at the time of the health evaluation.
+     * The check is performed after every upgrade domain upgrade completion to make sure the global state of the
+     * cluster is within tolerated limits. System services are not included in this.
+     * 
      * @param maxPercentDeltaUnhealthyApplications the maxPercentDeltaUnhealthyApplications value to set.
      * @return the ClusterUpgradeDeltaHealthPolicy object itself.
      */
-    public ClusterUpgradeDeltaHealthPolicy withMaxPercentDeltaUnhealthyApplications(
-        int maxPercentDeltaUnhealthyApplications) {
+    public ClusterUpgradeDeltaHealthPolicy
+        withMaxPercentDeltaUnhealthyApplications(int maxPercentDeltaUnhealthyApplications) {
         this.maxPercentDeltaUnhealthyApplications = maxPercentDeltaUnhealthyApplications;
         return this;
     }
 
     /**
-     * Get the applicationDeltaHealthPolicies property: Defines the application delta health policy map used to evaluate
-     * the health of an application or one of its child entities when upgrading the cluster.
-     *
+     * Get the applicationDeltaHealthPolicies property: Defines the application delta health policy map used to
+     * evaluate the health of an application or one of its child entities when upgrading the cluster.
+     * 
      * @return the applicationDeltaHealthPolicies value.
      */
     public Map<String, ApplicationDeltaHealthPolicy> applicationDeltaHealthPolicies() {
@@ -152,33 +164,30 @@ public final class ClusterUpgradeDeltaHealthPolicy {
     }
 
     /**
-     * Set the applicationDeltaHealthPolicies property: Defines the application delta health policy map used to evaluate
-     * the health of an application or one of its child entities when upgrading the cluster.
-     *
+     * Set the applicationDeltaHealthPolicies property: Defines the application delta health policy map used to
+     * evaluate the health of an application or one of its child entities when upgrading the cluster.
+     * 
      * @param applicationDeltaHealthPolicies the applicationDeltaHealthPolicies value to set.
      * @return the ClusterUpgradeDeltaHealthPolicy object itself.
      */
-    public ClusterUpgradeDeltaHealthPolicy withApplicationDeltaHealthPolicies(
-        Map<String, ApplicationDeltaHealthPolicy> applicationDeltaHealthPolicies) {
+    public ClusterUpgradeDeltaHealthPolicy
+        withApplicationDeltaHealthPolicies(Map<String, ApplicationDeltaHealthPolicy> applicationDeltaHealthPolicies) {
         this.applicationDeltaHealthPolicies = applicationDeltaHealthPolicies;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (applicationDeltaHealthPolicies() != null) {
-            applicationDeltaHealthPolicies()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            applicationDeltaHealthPolicies().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

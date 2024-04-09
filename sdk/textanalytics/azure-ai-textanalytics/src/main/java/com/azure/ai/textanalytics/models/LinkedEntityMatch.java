@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.implementation.LinkedEntityMatchPropertiesHelp
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link LinkedEntityMatch} model.
+ * The {@code LinkedEntityMatch} model.
  */
 @Immutable
 public final class LinkedEntityMatch {
@@ -17,7 +17,7 @@ public final class LinkedEntityMatch {
     private int length;
 
     /**
-     * Creates a {@link LinkedEntityMatch} model that describes linked entity match.
+     * Creates a {@code LinkedEntityMatch} model that describes linked entity match.
      *
      * @param text The linked entity match text as appears in the request.
      * @param confidenceScore If a well-known item is recognized, a decimal number denoting the

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link AbstractiveSummaryResult} model.
+ * The {@code AbstractiveSummaryResult} model.
  */
 @Immutable
 public final class AbstractiveSummaryResult extends TextAnalyticsResult {
@@ -33,7 +33,7 @@ public final class AbstractiveSummaryResult extends TextAnalyticsResult {
     }
 
     /**
-     * Creates a {@link AbstractiveSummaryResult} model that describes the abstractive summarization result.
+     * Creates a {@code AbstractiveSummaryResult} model that describes the abstractive summarization result.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.

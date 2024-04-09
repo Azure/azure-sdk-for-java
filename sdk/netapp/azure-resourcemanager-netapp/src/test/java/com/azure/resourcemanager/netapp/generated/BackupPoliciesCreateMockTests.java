@@ -32,56 +32,39 @@ public final class BackupPoliciesCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"etag\":\"tob\",\"properties\":{\"backupPolicyId\":\"kjeytunl\",\"provisioningState\":\"Succeeded\",\"dailyBackupsToKeep\":1038031294,\"weeklyBackupsToKeep\":1412807913,\"monthlyBackupsToKeep\":1284658212,\"volumesAssigned\":1414461023,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"xaulkpakdkifmjnn\",\"backupsCount\":827393653,\"policyEnabled\":false}]},\"location\":\"pxuckpggq\",\"tags\":{\"pizruwnpqxpxiw\":\"yirdhlisngwflqq\",\"saasiixtmkzj\":\"cng\",\"irhgfgrwsdp\":\"kv\"},\"id\":\"ra\",\"name\":\"zvzbglbyv\",\"type\":\"ctctbrxkjz\"}";
+        String responseStr
+            = "{\"etag\":\"zinkfkbgbzbowxeq\",\"properties\":{\"backupPolicyId\":\"ljmygvkzqkjjeokb\",\"provisioningState\":\"Succeeded\",\"dailyBackupsToKeep\":1829804009,\"weeklyBackupsToKeep\":1049990644,\"monthlyBackupsToKeep\":1442604370,\"volumesAssigned\":1208921361,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"wvz\",\"backupsCount\":765217570,\"policyEnabled\":true},{\"volumeName\":\"bzdixzmq\",\"backupsCount\":1928163279,\"policyEnabled\":false}]},\"location\":\"opqhewjptmc\",\"tags\":{\"mzlbiojlvfhrb\":\"ostzelndlatu\",\"qvcww\":\"pn\"},\"id\":\"yurmochpprprs\",\"name\":\"mo\",\"type\":\"ayzejnhlbkpbz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetAppFilesManager manager =
-            NetAppFilesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetAppFilesManager manager = NetAppFilesManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        BackupPolicy response =
-            manager
-                .backupPolicies()
-                .define("g")
-                .withRegion("xqdlyrtltlapr")
-                .withExistingNetAppAccount("npbs", "vefloccsrmozihmi")
-                .withTags(mapOf("nnbsoqeqa", "katbhjm", "febwlnbmhyreeudz", "arvlagunbt"))
-                .withDailyBackupsToKeep(1979879685)
-                .withWeeklyBackupsToKeep(1106517654)
-                .withMonthlyBackupsToKeep(153546880)
-                .withEnabled(true)
-                .create();
+        BackupPolicy response = manager.backupPolicies().define("asiibmiybnnust").withRegion("nzcyjtotp")
+            .withExistingNetAppAccount("ciqdsme", "iitdfuxt")
+            .withTags(mapOf("ihed", "vpbdbzqgq", "mkyi", "vqwt", "qcwdhoh", "cysihs", "sufco", "dtmcd"))
+            .withDailyBackupsToKeep(677853893).withWeeklyBackupsToKeep(915134983).withMonthlyBackupsToKeep(1400929714)
+            .withEnabled(true).create();
 
-        Assertions.assertEquals("pxuckpggq", response.location());
-        Assertions.assertEquals("yirdhlisngwflqq", response.tags().get("pizruwnpqxpxiw"));
-        Assertions.assertEquals(1038031294, response.dailyBackupsToKeep());
-        Assertions.assertEquals(1412807913, response.weeklyBackupsToKeep());
-        Assertions.assertEquals(1284658212, response.monthlyBackupsToKeep());
-        Assertions.assertEquals(true, response.enabled());
+        Assertions.assertEquals("opqhewjptmc", response.location());
+        Assertions.assertEquals("ostzelndlatu", response.tags().get("mzlbiojlvfhrb"));
+        Assertions.assertEquals(1829804009, response.dailyBackupsToKeep());
+        Assertions.assertEquals(1049990644, response.weeklyBackupsToKeep());
+        Assertions.assertEquals(1442604370, response.monthlyBackupsToKeep());
+        Assertions.assertEquals(false, response.enabled());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

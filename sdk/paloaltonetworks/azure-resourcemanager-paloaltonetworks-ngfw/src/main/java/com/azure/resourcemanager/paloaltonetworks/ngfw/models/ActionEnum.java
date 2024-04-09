@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ActionEnum. */
+/**
+ * Defines values for ActionEnum.
+ */
 public final class ActionEnum extends ExpandableStringEnum<ActionEnum> {
-    /** Static value Allow for ActionEnum. */
+    /**
+     * Static value Allow for ActionEnum.
+     */
     public static final ActionEnum ALLOW = fromString("Allow");
 
-    /** Static value DenySilent for ActionEnum. */
+    /**
+     * Static value DenySilent for ActionEnum.
+     */
     public static final ActionEnum DENY_SILENT = fromString("DenySilent");
 
-    /** Static value DenyResetServer for ActionEnum. */
+    /**
+     * Static value DenyResetServer for ActionEnum.
+     */
     public static final ActionEnum DENY_RESET_SERVER = fromString("DenyResetServer");
 
-    /** Static value DenyResetBoth for ActionEnum. */
+    /**
+     * Static value DenyResetBoth for ActionEnum.
+     */
     public static final ActionEnum DENY_RESET_BOTH = fromString("DenyResetBoth");
 
     /**
      * Creates a new instance of ActionEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class ActionEnum extends ExpandableStringEnum<ActionEnum> {
 
     /**
      * Creates or finds a ActionEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ActionEnum.
      */
@@ -44,7 +54,7 @@ public final class ActionEnum extends ExpandableStringEnum<ActionEnum> {
 
     /**
      * Gets known ActionEnum values.
-     *
+     * 
      * @return known ActionEnum values.
      */
     public static Collection<ActionEnum> values() {

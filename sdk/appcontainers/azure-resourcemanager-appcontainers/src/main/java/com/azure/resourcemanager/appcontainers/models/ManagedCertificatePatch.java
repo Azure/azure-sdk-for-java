@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** A managed certificate to update. */
+/**
+ * A managed certificate to update.
+ */
 @Fluent
 public final class ManagedCertificatePatch {
     /*
@@ -19,13 +21,15 @@ public final class ManagedCertificatePatch {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ManagedCertificatePatch class. */
+    /**
+     * Creates an instance of ManagedCertificatePatch class.
+     */
     public ManagedCertificatePatch() {
     }
 
     /**
      * Get the tags property: Application-specific metadata in the form of key-value pairs.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -34,7 +38,7 @@ public final class ManagedCertificatePatch {
 
     /**
      * Set the tags property: Application-specific metadata in the form of key-value pairs.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ManagedCertificatePatch object itself.
      */
@@ -45,7 +49,7 @@ public final class ManagedCertificatePatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

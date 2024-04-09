@@ -8,16 +8,22 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** IsNotNull Filter. */
+/**
+ * IsNotNull Filter.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
 @JsonTypeName("IsNotNull")
 @Fluent
 public final class IsNotNullFilter extends Filter {
-    /** Creates an instance of IsNotNullFilter class. */
+    /**
+     * Creates an instance of IsNotNullFilter class.
+     */
     public IsNotNullFilter() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IsNotNullFilter withKey(String key) {
         super.withKey(key);
@@ -26,7 +32,7 @@ public final class IsNotNullFilter extends Filter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

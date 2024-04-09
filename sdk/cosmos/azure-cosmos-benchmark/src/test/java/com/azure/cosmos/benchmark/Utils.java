@@ -3,17 +3,24 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.publisher.Flux;
@@ -92,7 +99,14 @@ public class Utils {
 
         @Override
         public Flux<FeedResponse<Database>> queryDatabases(SqlQuerySpec query) {
-            return client.queryDatabases(query, null);
+            QueryFeedOperationState state = DocDBUtils.createDummyQueryFeedOperationState(
+                ResourceType.Database,
+                OperationType.Query,
+                new CosmosQueryRequestOptions(),
+                client
+            );
+
+            return client.queryDatabases(query, state);
         }
 
         @Override

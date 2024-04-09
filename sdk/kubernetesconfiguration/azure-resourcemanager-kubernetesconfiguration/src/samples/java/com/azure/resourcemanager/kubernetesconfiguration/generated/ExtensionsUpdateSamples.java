@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for Extensions Update. */
 public final class ExtensionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/PatchExtension.json
+     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/examples/PatchExtension.json
      */
     /**
      * Sample code: Update Extension.
@@ -33,14 +33,12 @@ public final class ExtensionsUpdateSamples {
                     .withReleaseTrain("Preview")
                     .withConfigurationSettings(
                         mapOf(
-                            "omsagent.env.clusterName",
-                            "clusterName1",
-                            "omsagent.secret.wsid",
-                            "a38cef99-5a89-52ed-b6db-22095c23664b"))
-                    .withConfigurationProtectedSettings(mapOf("omsagent.secret.key", "secretKeyValue01")),
+                            "omsagent.env.clusterName", "clusterName1", "omsagent.secret.wsid", "fakeTokenPlaceholder"))
+                    .withConfigurationProtectedSettings(mapOf("omsagent.secret.key", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

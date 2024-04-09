@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.communication.models.EmailServicesProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A class that describes the properties of the EmailService. */
+/**
+ * A class that describes the properties of the EmailService.
+ */
 @Fluent
 public final class EmailServiceProperties {
     /*
@@ -24,13 +26,15 @@ public final class EmailServiceProperties {
     @JsonProperty(value = "dataLocation", required = true)
     private String dataLocation;
 
-    /** Creates an instance of EmailServiceProperties class. */
+    /**
+     * Creates an instance of EmailServiceProperties class.
+     */
     public EmailServiceProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public EmailServicesProvisioningState provisioningState() {
@@ -39,7 +43,7 @@ public final class EmailServiceProperties {
 
     /**
      * Get the dataLocation property: The location where the email service stores its data at rest.
-     *
+     * 
      * @return the dataLocation value.
      */
     public String dataLocation() {
@@ -48,7 +52,7 @@ public final class EmailServiceProperties {
 
     /**
      * Set the dataLocation property: The location where the email service stores its data at rest.
-     *
+     * 
      * @param dataLocation the dataLocation value to set.
      * @return the EmailServiceProperties object itself.
      */
@@ -59,15 +63,13 @@ public final class EmailServiceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataLocation in model EmailServiceProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property dataLocation in model EmailServiceProperties"));
         }
     }
 

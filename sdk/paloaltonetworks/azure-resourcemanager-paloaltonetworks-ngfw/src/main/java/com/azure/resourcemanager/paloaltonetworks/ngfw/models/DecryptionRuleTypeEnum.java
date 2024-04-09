@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DecryptionRuleTypeEnum. */
+/**
+ * Defines values for DecryptionRuleTypeEnum.
+ */
 public final class DecryptionRuleTypeEnum extends ExpandableStringEnum<DecryptionRuleTypeEnum> {
-    /** Static value SSLOutboundInspection for DecryptionRuleTypeEnum. */
+    /**
+     * Static value SSLOutboundInspection for DecryptionRuleTypeEnum.
+     */
     public static final DecryptionRuleTypeEnum SSLOUTBOUND_INSPECTION = fromString("SSLOutboundInspection");
 
-    /** Static value SSLInboundInspection for DecryptionRuleTypeEnum. */
+    /**
+     * Static value SSLInboundInspection for DecryptionRuleTypeEnum.
+     */
     public static final DecryptionRuleTypeEnum SSLINBOUND_INSPECTION = fromString("SSLInboundInspection");
 
-    /** Static value None for DecryptionRuleTypeEnum. */
+    /**
+     * Static value None for DecryptionRuleTypeEnum.
+     */
     public static final DecryptionRuleTypeEnum NONE = fromString("None");
 
     /**
      * Creates a new instance of DecryptionRuleTypeEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class DecryptionRuleTypeEnum extends ExpandableStringEnum<Decryptio
 
     /**
      * Creates or finds a DecryptionRuleTypeEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DecryptionRuleTypeEnum.
      */
@@ -41,7 +49,7 @@ public final class DecryptionRuleTypeEnum extends ExpandableStringEnum<Decryptio
 
     /**
      * Gets known DecryptionRuleTypeEnum values.
-     *
+     * 
      * @return known DecryptionRuleTypeEnum values.
      */
     public static Collection<DecryptionRuleTypeEnum> values() {

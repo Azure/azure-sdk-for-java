@@ -15,25 +15,22 @@ import org.junit.jupiter.api.Assertions;
 public final class BatchPoolIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BatchPoolIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"vkg\":{\"principalId\":\"tvcof\",\"clientId\":\"f\"},\"sgsahmkycgr\":{\"principalId\":\"bgdknnqv\",\"clientId\":\"znqntoru\"}}}")
-                .toObject(BatchPoolIdentity.class);
-        Assertions.assertEquals(PoolIdentityType.USER_ASSIGNED, model.type());
+        BatchPoolIdentity model = BinaryData.fromString(
+            "{\"type\":\"None\",\"userAssignedIdentities\":{\"ppriol\":{\"principalId\":\"whxxbuyqax\",\"clientId\":\"eqz\"},\"ucqdpfuvglsb\":{\"principalId\":\"rjaltolmncw\",\"clientId\":\"bqwcsdbnwdcf\"},\"ncormrlxqtvcof\":{\"principalId\":\"ca\",\"clientId\":\"xbvtvudu\"},\"n\":{\"principalId\":\"f\",\"clientId\":\"kgjubgdknnqvsazn\"}}}")
+            .toObject(BatchPoolIdentity.class);
+        Assertions.assertEquals(PoolIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BatchPoolIdentity model =
-            new BatchPoolIdentity()
-                .withType(PoolIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf("vkg", new UserAssignedIdentities(), "sgsahmkycgr", new UserAssignedIdentities()));
+        BatchPoolIdentity model = new BatchPoolIdentity().withType(PoolIdentityType.NONE).withUserAssignedIdentities(
+            mapOf("ppriol", new UserAssignedIdentities(), "ucqdpfuvglsb", new UserAssignedIdentities(),
+                "ncormrlxqtvcof", new UserAssignedIdentities(), "n", new UserAssignedIdentities()));
         model = BinaryData.fromObject(model).toObject(BatchPoolIdentity.class);
-        Assertions.assertEquals(PoolIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(PoolIdentityType.NONE, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

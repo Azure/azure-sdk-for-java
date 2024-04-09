@@ -31,7 +31,7 @@ public final class IotHubResourcesCreateEventHubConsumerGroupWithResponseMockTes
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"dhtmdvypgikd\":\"datangwfqatm\"},\"etag\":\"zywkb\",\"id\":\"rryuzhlhkjo\",\"name\":\"rvqqaatj\",\"type\":\"nrvgoupmfiibfgg\"}";
+            "{\"properties\":{\"yjsvfyc\":\"dataqahqkghtpwijn\",\"fvoow\":\"dataz\",\"pyostronzmyhgfi\":\"datarvmtgjq\"},\"etag\":\"sxkm\",\"id\":\"waekrrjreafxtsgu\",\"name\":\"hjglikk\",\"type\":\"wslolbqp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class IotHubResourcesCreateEventHubConsumerGroupWithResponseMockTes
         EventHubConsumerGroupInfo response =
             manager
                 .iotHubResources()
-                .defineEventHubConsumerGroup("csnjvcdwxlpqekft")
-                .withExistingEventHubEndpoint("opgxedkowepb", "pc", "fkbw")
-                .withProperties(new EventHubConsumerGroupName().withName("khtj"))
+                .defineEventHubConsumerGroup("pna")
+                .withExistingEventHubEndpoint("gitvg", "mhrixkwmyijejve", "rh")
+                .withProperties(new EventHubConsumerGroupName().withName("xexccbdreaxhcexd"))
                 .create();
     }
 }

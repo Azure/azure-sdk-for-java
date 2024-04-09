@@ -18,6 +18,12 @@ public final class ExtractiveSummaryAction {
     private boolean disableServiceLogs;
 
     /**
+     * Constructs a {@code ExtractiveSummaryAction} model.
+     */
+    public ExtractiveSummaryAction() {
+    }
+
+    /**
      * Get the name of action.
      *
      * @return the name of action.
@@ -31,7 +37,7 @@ public final class ExtractiveSummaryAction {
      *
      * @param actionName the custom name for the action.
      *
-     * @return The {@link ExtractiveSummaryAction} object itself.
+     * @return The {@code ExtractiveSummaryAction} object itself.
      */
     public ExtractiveSummaryAction setActionName(String actionName) {
         this.actionName = actionName;
@@ -53,7 +59,7 @@ public final class ExtractiveSummaryAction {
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link ExtractiveSummaryAction} object itself.
+     * @return The {@code ExtractiveSummaryAction} object itself.
      */
     public ExtractiveSummaryAction setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
@@ -78,7 +84,7 @@ public final class ExtractiveSummaryAction {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link ExtractiveSummaryAction} object itself.
+     * @return The {@code ExtractiveSummaryAction} object itself.
      */
     public ExtractiveSummaryAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
@@ -103,7 +109,7 @@ public final class ExtractiveSummaryAction {
      *
      * @param maxSentenceCount The maximum extractive summarization sentences number to be returned in the response.
      *
-     * @return The {@link ExtractiveSummaryAction} object itself.
+     * @return The {@code ExtractiveSummaryAction} object itself.
      */
     public ExtractiveSummaryAction setMaxSentenceCount(Integer maxSentenceCount) {
         this.maxSentenceCount = maxSentenceCount;
@@ -126,7 +132,7 @@ public final class ExtractiveSummaryAction {
      * @param orderBy The type of summary sentences order. Defaults to {@link ExtractiveSummarySentencesOrder#OFFSET}
      * if not specified.
      *
-     * @return The {@link ExtractiveSummaryAction} object itself.
+     * @return The {@code ExtractiveSummaryAction} object itself.
      */
     public ExtractiveSummaryAction setOrderBy(ExtractiveSummarySentencesOrder orderBy) {
         this.orderBy = orderBy;

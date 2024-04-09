@@ -7,10 +7,13 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.implementation.CreditFlowMode;
+import com.azure.core.amqp.implementation.MessageFlux;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannelClosedException;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
+import com.azure.core.amqp.implementation.handler.DeliveryNotOnLinkException;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
@@ -19,7 +22,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionR
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
+import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
@@ -29,6 +32,8 @@ import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import reactor.core.Disposable;
+import reactor.core.Disposables;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -43,6 +48,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
@@ -56,141 +62,243 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
 
 /**
- * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage messages} from a specific
- * queue or topic subscription.
+ * <p>An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage messages} from an
+ * Azure Service Bus queue or topic/subscription.</p>
  *
- * <p><strong>Create an instance of receiver</strong></p>
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments. You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Creating a {@link ServiceBusReceiverAsyncClient}</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the asynchronous client
+ * {@link ServiceBusReceiverAsyncClient}.  The {@code fullyQualifiedNamespace} is the Service Bus namespace's host name.
+ * It is listed under the "Essentials" panel after navigating to the Event Hubs Namespace via Azure Portal.
+ * The credential used is {@code DefaultAzureCredential} because it combines commonly used credentials in deployment
+ * and development and chooses the credential to used based on its running environment.
+ * {@link ServiceBusReceiveMode#PEEK_LOCK} (the default receive mode) and
+ * {@link ServiceBusClientBuilder.ServiceBusReceiverClientBuilder#disableAutoComplete() disableAutoComplete()} are
+ * <strong>strongly</strong> recommended so users have control over message settlement.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
  * <pre>
- * &#47;&#47; The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
- * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
- * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  *
- * ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; 'disableAutoComplete' indicates that users will explicitly settle their message.
+ * ServiceBusReceiverAsyncClient asyncReceiver = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .receiver&#40;&#41;
+ *     .disableAutoComplete&#40;&#41;
  *     .queueName&#40;queueName&#41;
  *     .buildAsyncClient&#40;&#41;;
+ *
+ * &#47;&#47; When users are done with the receiver, dispose of the receiver.
+ * &#47;&#47; Clients should be long-lived objects as they require resources
+ * &#47;&#47; and time to establish a connection to the service.
+ * asyncReceiver.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
  *
- * <p><strong>Create an instance of receiver using default credential</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiateWithDefaultCredential -->
- * <pre>
- * &#47;&#47; The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
- * ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder&#40;&#41;
- *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;,
- *         new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .receiver&#40;&#41;
- *     .queueName&#40;&quot;&lt;&lt; QUEUE NAME &gt;&gt;&quot;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiateWithDefaultCredential -->
+ * <p><strong>Sample: Receive all messages from Service Bus resource</strong></p>
  *
- * <p><strong>Receive all messages from Service Bus resource</strong></p>
  * <p>This returns an infinite stream of messages from Service Bus. The stream ends when the subscription is disposed
  * or other terminal scenarios. See {@link #receiveMessages()} for more information.</p>
- * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#all -->
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveMessages -->
  * <pre>
- * Disposable subscription = receiver.receiveMessages&#40;&#41;
+ * &#47;&#47; Keep a reference to `subscription`. When the program is finished receiving messages, call
+ * &#47;&#47; subscription.dispose&#40;&#41;. This will stop fetching messages from the Service Bus.
+ * &#47;&#47; Consider using Flux.usingWhen to scope the creation, usage, and cleanup of the receiver.
+ * Disposable subscription = asyncReceiver.receiveMessages&#40;&#41;
+ *     .flatMap&#40;message -&gt; &#123;
+ *         System.out.printf&#40;&quot;Received Seq #: %s%n&quot;, message.getSequenceNumber&#40;&#41;&#41;;
+ *         System.out.printf&#40;&quot;Contents of message as string: %s%n&quot;, message.getBody&#40;&#41;&#41;;
+ *
+ *         &#47;&#47; Explicitly settle the message using complete, abandon, defer, dead-letter, etc.
+ *         if &#40;isMessageProcessed&#41; &#123;
+ *             return asyncReceiver.complete&#40;message&#41;;
+ *         &#125; else &#123;
+ *             return asyncReceiver.abandon&#40;message&#41;;
+ *         &#125;
+ *     &#125;&#41;
+ *     .subscribe&#40;unused -&gt; &#123;
+ *     &#125;, error -&gt; System.out.println&#40;&quot;Error occurred: &quot; + error&#41;,
+ *         &#40;&#41; -&gt; System.out.println&#40;&quot;Receiving complete.&quot;&#41;&#41;;
+ *
+ * &#47;&#47; When program ends, or you're done receiving all messages, dispose of the receiver.
+ * &#47;&#47; Clients should be long-lived objects as they
+ * &#47;&#47; require resources and time to establish a connection to the service.
+ * asyncReceiver.close&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveMessages -->
+ *
+ * <p><strong>Sample: Receive messages in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode from a Service Bus
+ * entity</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the asynchronous client
+ * {@link ServiceBusReceiverAsyncClient} using {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}.  The
+ * {@code fullyQualifiedNamespace} is the Service Bus namespace's host name.  It is listed under the "Essentials" panel
+ * after navigating to the Event Hubs Namespace via Azure Portal.  The credential used is {@code DefaultAzureCredential}
+ * because it combines commonly used credentials in deployment  and development and chooses the credential to used based
+ * on its running environment.  See {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} docs for more information about
+ * receiving messages using this mode.</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveWithReceiveAndDeleteMode -->
+ * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; Keep a reference to `subscription`. When the program is finished receiving messages, call
+ * &#47;&#47; subscription.dispose&#40;&#41;. This will stop fetching messages from the Service Bus.
+ * Disposable subscription = Flux.usingWhen&#40;
+ *         Mono.fromCallable&#40;&#40;&#41; -&gt; &#123;
+ *             &#47;&#47; Setting the receiveMode when creating the receiver enables receive and delete mode. By default,
+ *             &#47;&#47; peek lock mode is used. In peek lock mode, users are responsible for settling messages.
+ *             return new ServiceBusClientBuilder&#40;&#41;
+ *                 .credential&#40;fullyQualifiedNamespace, credential&#41;
+ *                 .receiver&#40;&#41;
+ *                 .receiveMode&#40;ServiceBusReceiveMode.RECEIVE_AND_DELETE&#41;
+ *                 .queueName&#40;queueName&#41;
+ *                 .buildAsyncClient&#40;&#41;;
+ *         &#125;&#41;, receiver -&gt; &#123;
+ *             return receiver.receiveMessages&#40;&#41;;
+ *         &#125;, receiver -&gt; &#123;
+ *             return Mono.fromRunnable&#40;&#40;&#41; -&gt; receiver.close&#40;&#41;&#41;;
+ *         &#125;&#41;
  *     .subscribe&#40;message -&gt; &#123;
+ *             &#47;&#47; Messages received in RECEIVE_AND_DELETE mode do not have to be settled because they are automatically
+ *             &#47;&#47; removed from the queue.
  *         System.out.printf&#40;&quot;Received Seq #: %s%n&quot;, message.getSequenceNumber&#40;&#41;&#41;;
  *         System.out.printf&#40;&quot;Contents of message as string: %s%n&quot;, message.getBody&#40;&#41;&#41;;
  *     &#125;,
  *         error -&gt; System.out.println&#40;&quot;Error occurred: &quot; + error&#41;,
  *         &#40;&#41; -&gt; System.out.println&#40;&quot;Receiving complete.&quot;&#41;&#41;;
  *
- * &#47;&#47; When program ends, or you're done receiving all messages.
- * subscription.dispose&#40;&#41;;
- * receiver.close&#40;&#41;;
- * </pre>
- * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#all -->
- *
- * <p><strong>Receive messages in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode from a Service Bus
- * entity</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveWithReceiveAndDeleteMode -->
- * <pre>
- * &#47;&#47; Keep a reference to `subscription`. When the program is finished receiving messages, call
- * &#47;&#47; subscription.dispose&#40;&#41;. This will stop fetching messages from the Service Bus.
- * Disposable subscription = receiver.receiveMessages&#40;&#41;
- *     .subscribe&#40;message -&gt; &#123;
- *         System.out.printf&#40;&quot;Received Seq #: %s%n&quot;, message.getSequenceNumber&#40;&#41;&#41;;
- *         System.out.printf&#40;&quot;Contents of message as string: %s%n&quot;, message.getBody&#40;&#41;.toString&#40;&#41;&#41;;
- *     &#125;, error -&gt; System.err.print&#40;error&#41;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveWithReceiveAndDeleteMode -->
  *
- * <p><strong>Receive messages from a specific session</strong></p>
+ * <p><strong>Sample: Receive messages from a specific session</strong></p>
+ *
  * <p>To fetch messages from a specific session, switch to {@link ServiceBusSessionReceiverClientBuilder} and
  * build the session receiver client. Use {@link ServiceBusSessionReceiverAsyncClient#acceptSession(String)} to create
- * a session-bound {@link ServiceBusReceiverAsyncClient}.
- * </p>
+ * a session-bound {@link ServiceBusReceiverAsyncClient}.  The sample assumes that Service Bus sessions were
+ * <a href="https://learn.microsoft.com/azure/service-bus-messaging/enable-message-sessions">enabled at the time of
+ * the queue creation</a>.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId -->
  * <pre>
- * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
- * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; 'disableAutoComplete' indicates that users will explicitly settle their message.
  * ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .sessionReceiver&#40;&#41;
- *     .queueName&#40;queueName&#41;
+ *     .disableAutoComplete&#40;&#41;
+ *     .queueName&#40;sessionEnabledQueueName&#41;
  *     .buildAsyncClient&#40;&#41;;
  *
- * &#47;&#47; acceptSession&#40;String&#41; completes successfully with a receiver when &quot;&lt;&lt; my-session-id &gt;&gt;&quot; session is
+ * &#47;&#47; acceptSession&#40;String&#41; completes successfully with a receiver when &quot;&lt;&lt;my-session-id&gt;&gt;&quot; session is
  * &#47;&#47; successfully locked.
- * &#47;&#47; `Flux.usingWhen` is used so we dispose of the receiver resource after `receiveMessages&#40;&#41;` completes.
- * &#47;&#47; `Mono.usingWhen` can also be used if the resource closure only returns a single item.
- * Flux&lt;ServiceBusReceivedMessage&gt; sessionMessages = Flux.usingWhen&#40;
- *     sessionReceiver.acceptSession&#40;&quot;&lt;&lt; my-session-id &gt;&gt;&quot;&#41;,
- *     receiver -&gt; receiver.receiveMessages&#40;&#41;,
- *     receiver -&gt; Mono.fromRunnable&#40;&#40;&#41; -&gt; receiver.close&#40;&#41;&#41;&#41;;
+ * &#47;&#47; `Flux.usingWhen` is used, so we dispose of the receiver resource after `receiveMessages&#40;&#41;` and the settlement
+ * &#47;&#47; operations complete.
+ * &#47;&#47; `Mono.usingWhen` can also be used if the resource closure returns a single item.
+ * Flux&lt;Void&gt; sessionMessages = Flux.usingWhen&#40;
+ *     sessionReceiver.acceptSession&#40;&quot;&lt;&lt;my-session-id&gt;&gt;&quot;&#41;,
+ *     receiver -&gt; &#123;
+ *         &#47;&#47; Receive messages from &lt;&lt;my-session-id&gt;&gt; session.
+ *         return receiver.receiveMessages&#40;&#41;.flatMap&#40;message -&gt; &#123;
+ *             System.out.printf&#40;&quot;Received Sequence #: %s. Contents: %s%n&quot;, message.getSequenceNumber&#40;&#41;,
+ *                 message.getBody&#40;&#41;&#41;;
+ *
+ *             &#47;&#47; Explicitly settle the message using complete, abandon, defer, dead-letter, etc.
+ *             if &#40;isMessageProcessed&#41; &#123;
+ *                 return receiver.complete&#40;message&#41;;
+ *             &#125; else &#123;
+ *                 return receiver.abandon&#40;message&#41;;
+ *             &#125;
+ *         &#125;&#41;;
+ *     &#125;,
+ *     receiver -&gt; Mono.fromRunnable&#40;&#40;&#41; -&gt; &#123;
+ *         &#47;&#47; Dispose of resources.
+ *         receiver.close&#40;&#41;;
+ *         sessionReceiver.close&#40;&#41;;
+ *     &#125;&#41;&#41;;
  *
  * &#47;&#47; When program ends, or you're done receiving all messages, the `subscription` can be disposed of. This code
  * &#47;&#47; is non-blocking and kicks off the operation.
  * Disposable subscription = sessionMessages.subscribe&#40;
- *     message -&gt; System.out.printf&#40;&quot;Received Sequence #: %s. Contents: %s%n&quot;,
- *         message.getSequenceNumber&#40;&#41;, message.getBody&#40;&#41;&#41;,
- *     error -&gt; System.err.print&#40;error&#41;&#41;;
+ *     unused -&gt; &#123;
+ *     &#125;, error -&gt; System.err.print&#40;&quot;Error receiving message from session: &quot; + error&#41;,
+ *     &#40;&#41; -&gt; System.out.println&#40;&quot;Completed receiving from session.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId -->
  *
- * <p><strong>Receive messages from the first available session</strong></p>
+ * <p><strong>Sample:  Receive messages from the first available session</strong></p>
+ *
  * <p>To process messages from the first available session, switch to {@link ServiceBusSessionReceiverClientBuilder}
  * and build the session receiver client. Use
  * {@link ServiceBusSessionReceiverAsyncClient#acceptNextSession() acceptNextSession()} to find the first available
  * session to process messages from.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession -->
  * <pre>
- * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
- * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; 'disableAutoComplete' indicates that users will explicitly settle their message.
  * ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .sessionReceiver&#40;&#41;
- *     .queueName&#40;queueName&#41;
+ *     .disableAutoComplete&#40;&#41;
+ *     .queueName&#40;sessionEnabledQueueName&#41;
  *     .buildAsyncClient&#40;&#41;;
  *
- * &#47;&#47; acceptNextSession&#40;&#41; completes successfully with a receiver when it acquires the next available session.
- * &#47;&#47; `Flux.usingWhen` is used so we dispose of the receiver resource after `receiveMessages&#40;&#41;` completes.
- * &#47;&#47; `Mono.usingWhen` can also be used if the resource closure only returns a single item.
- * Flux&lt;ServiceBusReceivedMessage&gt; sessionMessages = Flux.usingWhen&#40;
- *     sessionReceiver.acceptNextSession&#40;&#41;,
- *     receiver -&gt; receiver.receiveMessages&#40;&#41;,
- *     receiver -&gt; Mono.fromRunnable&#40;&#40;&#41; -&gt; receiver.close&#40;&#41;&#41;&#41;;
+ * &#47;&#47; Creates a client to receive messages from the first available session. It waits until
+ * &#47;&#47; AmqpRetryOptions.getTryTimeout&#40;&#41; elapses. If no session is available within that operation timeout, it
+ * &#47;&#47; completes with a retriable error. Otherwise, a receiver is returned when a lock on the session is acquired.
+ * Mono&lt;ServiceBusReceiverAsyncClient&gt; receiverMono = sessionReceiver.acceptNextSession&#40;&#41;;
  *
- * &#47;&#47; When program ends, or you're done receiving all messages, the `subscription` can be disposed of. This code
- * &#47;&#47; is non-blocking and kicks off the operation.
- * Disposable subscription = sessionMessages.subscribe&#40;
- *     message -&gt; System.out.printf&#40;&quot;Received Sequence #: %s. Contents: %s%n&quot;,
- *         message.getSequenceNumber&#40;&#41;, message.getBody&#40;&#41;&#41;,
- *     error -&gt; System.err.print&#40;error&#41;&#41;;
+ * Flux&lt;Void&gt; receiveMessagesFlux = Flux.usingWhen&#40;receiverMono,
+ *     receiver -&gt; receiver.receiveMessages&#40;&#41;.flatMap&#40;message -&gt; &#123;
+ *         System.out.println&#40;&quot;Received message: &quot; + message.getBody&#40;&#41;&#41;;
+ *
+ *         &#47;&#47; Explicitly settle the message via complete, abandon, defer, dead-letter, etc.
+ *         if &#40;isMessageProcessed&#41; &#123;
+ *             return receiver.complete&#40;message&#41;;
+ *         &#125; else &#123;
+ *             return receiver.abandon&#40;message&#41;;
+ *         &#125;
+ *     &#125;&#41;,
+ *     receiver -&gt; Mono.fromRunnable&#40;&#40;&#41; -&gt; &#123;
+ *         &#47;&#47; Dispose of the receiver and sessionReceiver when done receiving messages.
+ *         receiver.close&#40;&#41;;
+ *         sessionReceiver.close&#40;&#41;;
+ *     &#125;&#41;&#41;;
+ *
+ * &#47;&#47; This is a non-blocking call that moves onto the next line of code after setting up and starting the receive
+ * &#47;&#47; operation. Customers can keep a reference to `subscription` and dispose of it when they want to stop
+ * &#47;&#47; receiving messages.
+ * Disposable subscription = receiveMessagesFlux.subscribe&#40;unused -&gt; &#123;
+ * &#125;, error -&gt; System.out.println&#40;&quot;Error occurred: &quot; + error&#41;,
+ *     &#40;&#41; -&gt; System.out.println&#40;&quot;Receiving complete.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession -->
  *
- * <p><strong>Rate limiting consumption of messages from a Service Bus entity</strong></p>
+ * <p><strong>Sample:  Rate limiting consumption of messages from a Service Bus entity</strong></p>
+ *
  * <p>For message receivers that need to limit the number of messages they receive at a given time, they can use
  * {@link BaseSubscriber#request(long)}.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#basesubscriber -->
  * <pre>
- * receiver.receiveMessages&#40;&#41;.subscribe&#40;new BaseSubscriber&lt;ServiceBusReceivedMessage&gt;&#40;&#41; &#123;
+ * &#47;&#47; This is a non-blocking call. The program will move to the next line of code after setting up the operation.
+ * asyncReceiver.receiveMessages&#40;&#41;.subscribe&#40;new BaseSubscriber&lt;ServiceBusReceivedMessage&gt;&#40;&#41; &#123;
  *     private static final int NUMBER_OF_MESSAGES = 5;
  *     private final AtomicInteger currentNumberOfMessages = new AtomicInteger&#40;&#41;;
  *
@@ -219,6 +327,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
+    private static final Duration EXPIRED_RENEWAL_CLEANUP_INTERVAL = Duration.ofMinutes(2);
     private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS = new DeadLetterOptions();
     private static final String TRANSACTION_LINK_NAME = "coordinator";
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClient.class);
@@ -230,12 +339,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final String entityPath;
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
-    private final ServiceBusConnectionProcessor connectionProcessor;
+    private final ConnectionCacheWrapper connectionCacheWrapper;
+    private final boolean isOnV2;
+    private final Mono<ServiceBusAmqpConnection> connectionProcessor;
     private final ServiceBusReceiverInstrumentation instrumentation;
     private final ServiceBusTracer tracer;
     private final MessageSerializer messageSerializer;
     private final Runnable onClientClose;
-    private final ServiceBusSessionManager sessionManager;
+    private final IServiceBusSessionManager sessionManager;
     private final boolean isSessionEnabled;
     private final Semaphore completionLock = new Semaphore(1);
     private final String identifier;
@@ -252,20 +363,22 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param entityPath The name of the topic or queue.
      * @param entityType The type of the Service Bus resource.
      * @param receiverOptions Options when receiving messages.
-     * @param connectionProcessor The AMQP connection to the Service Bus resource.
+     * @param connectionCacheWrapper The AMQP connection to the Service Bus resource.
      * @param instrumentation ServiceBus tracing and metrics helper
      * @param messageSerializer Serializes and deserializes Service Bus messages.
      * @param onClientClose Operation to run when the client completes.
      */
+    // Client to work with a non-session entity.
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
-        ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
+        ReceiverOptions receiverOptions, ConnectionCacheWrapper connectionCacheWrapper, Duration cleanupInterval,
         ServiceBusReceiverInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose, String identifier) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
         this.receiverOptions = Objects.requireNonNull(receiverOptions, "'receiveOptions cannot be null.'");
-        this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
+        this.connectionCacheWrapper = Objects.requireNonNull(connectionCacheWrapper, "'connectionCacheWrapper' cannot be null.");
+        this.connectionProcessor = this.connectionCacheWrapper.getConnection();
         this.instrumentation = Objects.requireNonNull(instrumentation, "'tracer' cannot be null");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
@@ -275,45 +388,60 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             throw new IllegalStateException("Session-specific options are not expected to be present on a client for session unaware entity.");
         }
         this.isSessionEnabled = false;
+        this.isOnV2 = this.connectionCacheWrapper.isV2();
 
-        this.managementNodeLocks = new LockContainer<>(cleanupInterval);
-        this.renewalContainer = new LockContainer<>(Duration.ofMinutes(2), renewal -> {
+        this.managementNodeLocks = new LockContainer<OffsetDateTime>(cleanupInterval);
+        final Consumer<LockRenewalOperation> onExpired = renewal -> {
             LOGGER.atVerbose()
                 .addKeyValue(LOCK_TOKEN_KEY, renewal.getLockToken())
                 .addKeyValue("status", renewal.getStatus())
                 .log("Closing expired renewal operation.", renewal.getThrowable());
             renewal.close();
-        });
+        };
+        this.renewalContainer = new LockContainer<LockRenewalOperation>(EXPIRED_RENEWAL_CLEANUP_INTERVAL, onExpired);
 
         this.identifier = identifier;
         this.tracer = instrumentation.getTracer();
         this.trackSettlementSequenceNumber = instrumentation.startTrackingSettlementSequenceNumber();
     }
 
+    // Client to work with a session-enabled entity (client to receive from one-session (V1, V2) or receive from multiple-sessions (V1)).
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
-                                  ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
+                                  ReceiverOptions receiverOptions, ConnectionCacheWrapper connectionCacheWrapper, Duration cleanupInterval,
                                   ServiceBusReceiverInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose,
-                                  ServiceBusSessionManager sessionManager) {
+                                  IServiceBusSessionManager sessionManager) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
         this.receiverOptions = Objects.requireNonNull(receiverOptions, "'receiveOptions cannot be null.'");
-        this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
+        this.connectionCacheWrapper = Objects.requireNonNull(connectionCacheWrapper, "'connectionCacheWrapper' cannot be null.");
+        this.connectionProcessor = this.connectionCacheWrapper.getConnection();
         this.instrumentation = Objects.requireNonNull(instrumentation, "'tracer' cannot be null");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
         this.sessionManager = Objects.requireNonNull(sessionManager, "'sessionManager' cannot be null.");
         this.isSessionEnabled = true;
+        this.isOnV2 = this.connectionCacheWrapper.isV2();
+        final boolean isV2SessionManager = this.sessionManager instanceof ServiceBusSingleSessionManager;
+        // Once side-by-side support for V1 is no longer needed, we'll directly use the "ServiceBusSingleSessionManager" type
+        // in the constructor and IServiceBusSessionManager interface will be deleted (so excuse the temporary 'I' prefix
+        // used to avoid type conflict with V1 ServiceBusSessionManager. The V1 ServiceBusSessionManager will also be deleted
+        // once side-by-side support is no longer needed).
+        if (isOnV2 ^ isV2SessionManager) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("For V2 Session, the manager should be ServiceBusSingleSessionManager, and ConnectionCache should be on V2."));
+        }
 
-        this.managementNodeLocks = new LockContainer<>(cleanupInterval);
-        this.renewalContainer = new LockContainer<>(Duration.ofMinutes(2), renewal -> {
+        this.managementNodeLocks = new LockContainer<OffsetDateTime>(cleanupInterval);
+        final Consumer<LockRenewalOperation> onExpired = renewal -> {
             LOGGER.atInfo()
                 .addKeyValue(SESSION_ID_KEY, renewal.getSessionId())
                 .addKeyValue("status", renewal.getStatus())
                 .log("Closing expired renewal operation.", renewal.getThrowable());
             renewal.close();
-        });
+        };
+        this.renewalContainer = new LockContainer<LockRenewalOperation>(EXPIRED_RENEWAL_CLEANUP_INTERVAL, onExpired);
 
         this.identifier = sessionManager.getIdentifier();
         this.tracer = instrumentation.getTracer();
@@ -821,6 +949,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return fluxError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveMessages")));
         }
+        if (isOnV2) {
+            if (isSessionEnabled) {
+                return sessionReactiveReceiveV2();
+            } else {
+                return nonSessionReactiveReceiveV2();
+            }
+        }
         // Without limitRate(), if the user calls receiveMessages().subscribe(), it will call
         // ServiceBusReceiveLinkProcessor.request(long request) where request = Long.MAX_VALUE.
         // We turn this one-time non-backpressure request to continuous requests with backpressure.
@@ -861,7 +996,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return receiveMessagesWithContext(1);
     }
 
-    Flux<ServiceBusMessageContext> receiveMessagesWithContext(int highTide) {
+    private Flux<ServiceBusMessageContext> receiveMessagesWithContext(int highTide) {
         final Flux<ServiceBusMessageContext> messageFlux = sessionManager != null
             ? sessionManager.receive()
             : getOrCreateConsumer().receive().map(ServiceBusMessageContext::new);
@@ -1069,7 +1204,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(serviceBusManagementNode ->
                 serviceBusManagementNode.renewMessageLock(lockToken, getLinkName(null)))
-            .map(offsetDateTime -> managementNodeLocks.addOrUpdate(lockToken, offsetDateTime,
+            .map(offsetDateTime -> isOnV2 ? offsetDateTime : managementNodeLocks.addOrUpdate(lockToken, offsetDateTime,
                 offsetDateTime));
     }
 
@@ -1166,20 +1301,26 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * &#47;&#47; This mono creates a transaction and caches the output value, so we can associate operations with the
      * &#47;&#47; transaction. It does not cache the value if it is an error or completes with no items, effectively retrying
      * &#47;&#47; the operation.
-     * Mono&lt;ServiceBusTransactionContext&gt; transactionContext = receiver.createTransaction&#40;&#41;
+     * Mono&lt;ServiceBusTransactionContext&gt; transactionContext = asyncReceiver.createTransaction&#40;&#41;
      *     .cache&#40;value -&gt; Duration.ofMillis&#40;Long.MAX_VALUE&#41;,
      *         error -&gt; Duration.ZERO,
      *         &#40;&#41; -&gt; Duration.ZERO&#41;;
      *
-     * transactionContext.flatMap&#40;transaction -&gt; &#123;
+     * &#47;&#47; Dispose of the disposable to cancel the operation.
+     * Disposable disposable = transactionContext.flatMap&#40;transaction -&gt; &#123;
      *     &#47;&#47; Process messages and associate operations with the transaction.
      *     Mono&lt;Void&gt; operations = Mono.when&#40;
-     *         receiver.receiveDeferredMessage&#40;sequenceNumber&#41;.flatMap&#40;message -&gt;
-     *             receiver.complete&#40;message, new CompleteOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;,
-     *         receiver.abandon&#40;receivedMessage, new AbandonOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;;
+     *         asyncReceiver.receiveDeferredMessage&#40;sequenceNumber&#41;.flatMap&#40;message -&gt;
+     *             asyncReceiver.complete&#40;message, new CompleteOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;,
+     *         asyncReceiver.abandon&#40;receivedMessage, new AbandonOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;;
      *
      *     &#47;&#47; Finally, either commit or rollback the transaction once all the operations are associated with it.
-     *     return operations.flatMap&#40;transactionOperations -&gt; receiver.commitTransaction&#40;transaction&#41;&#41;;
+     *     return operations.then&#40;asyncReceiver.commitTransaction&#40;transaction&#41;&#41;;
+     * &#125;&#41;.subscribe&#40;unused -&gt; &#123;
+     * &#125;, error -&gt; &#123;
+     *     System.err.println&#40;&quot;Error occurred processing transaction: &quot; + error&#41;;
+     * &#125;, &#40;&#41; -&gt; &#123;
+     *     System.out.println&#40;&quot;Completed transaction&quot;&#41;;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext -->
@@ -1210,20 +1351,26 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * &#47;&#47; This mono creates a transaction and caches the output value, so we can associate operations with the
      * &#47;&#47; transaction. It does not cache the value if it is an error or completes with no items, effectively retrying
      * &#47;&#47; the operation.
-     * Mono&lt;ServiceBusTransactionContext&gt; transactionContext = receiver.createTransaction&#40;&#41;
+     * Mono&lt;ServiceBusTransactionContext&gt; transactionContext = asyncReceiver.createTransaction&#40;&#41;
      *     .cache&#40;value -&gt; Duration.ofMillis&#40;Long.MAX_VALUE&#41;,
      *         error -&gt; Duration.ZERO,
      *         &#40;&#41; -&gt; Duration.ZERO&#41;;
      *
-     * transactionContext.flatMap&#40;transaction -&gt; &#123;
+     * &#47;&#47; Dispose of the disposable to cancel the operation.
+     * Disposable disposable = transactionContext.flatMap&#40;transaction -&gt; &#123;
      *     &#47;&#47; Process messages and associate operations with the transaction.
      *     Mono&lt;Void&gt; operations = Mono.when&#40;
-     *         receiver.receiveDeferredMessage&#40;sequenceNumber&#41;.flatMap&#40;message -&gt;
-     *             receiver.complete&#40;message, new CompleteOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;,
-     *         receiver.abandon&#40;receivedMessage, new AbandonOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;;
+     *         asyncReceiver.receiveDeferredMessage&#40;sequenceNumber&#41;.flatMap&#40;message -&gt;
+     *             asyncReceiver.complete&#40;message, new CompleteOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;,
+     *         asyncReceiver.abandon&#40;receivedMessage, new AbandonOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;;
      *
      *     &#47;&#47; Finally, either commit or rollback the transaction once all the operations are associated with it.
-     *     return operations.flatMap&#40;transactionOperations -&gt; receiver.commitTransaction&#40;transaction&#41;&#41;;
+     *     return operations.then&#40;asyncReceiver.commitTransaction&#40;transaction&#41;&#41;;
+     * &#125;&#41;.subscribe&#40;unused -&gt; &#123;
+     * &#125;, error -&gt; &#123;
+     *     System.err.println&#40;&quot;Error occurred processing transaction: &quot; + error&#41;;
+     * &#125;, &#40;&#41; -&gt; &#123;
+     *     System.out.println&#40;&quot;Completed transaction&quot;&#41;;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext -->
@@ -1263,20 +1410,26 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * &#47;&#47; This mono creates a transaction and caches the output value, so we can associate operations with the
      * &#47;&#47; transaction. It does not cache the value if it is an error or completes with no items, effectively retrying
      * &#47;&#47; the operation.
-     * Mono&lt;ServiceBusTransactionContext&gt; transactionContext = receiver.createTransaction&#40;&#41;
+     * Mono&lt;ServiceBusTransactionContext&gt; transactionContext = asyncReceiver.createTransaction&#40;&#41;
      *     .cache&#40;value -&gt; Duration.ofMillis&#40;Long.MAX_VALUE&#41;,
      *         error -&gt; Duration.ZERO,
      *         &#40;&#41; -&gt; Duration.ZERO&#41;;
      *
-     * transactionContext.flatMap&#40;transaction -&gt; &#123;
+     * &#47;&#47; Dispose of the disposable to cancel the operation.
+     * Disposable disposable = transactionContext.flatMap&#40;transaction -&gt; &#123;
      *     &#47;&#47; Process messages and associate operations with the transaction.
      *     Mono&lt;Void&gt; operations = Mono.when&#40;
-     *         receiver.receiveDeferredMessage&#40;sequenceNumber&#41;.flatMap&#40;message -&gt;
-     *             receiver.complete&#40;message, new CompleteOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;,
-     *         receiver.abandon&#40;receivedMessage, new AbandonOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;;
+     *         asyncReceiver.receiveDeferredMessage&#40;sequenceNumber&#41;.flatMap&#40;message -&gt;
+     *             asyncReceiver.complete&#40;message, new CompleteOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;,
+     *         asyncReceiver.abandon&#40;receivedMessage, new AbandonOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;;
      *
      *     &#47;&#47; Finally, either commit or rollback the transaction once all the operations are associated with it.
-     *     return operations.flatMap&#40;transactionOperations -&gt; receiver.commitTransaction&#40;transaction&#41;&#41;;
+     *     return operations.then&#40;asyncReceiver.commitTransaction&#40;transaction&#41;&#41;;
+     * &#125;&#41;.subscribe&#40;unused -&gt; &#123;
+     * &#125;, error -&gt; &#123;
+     *     System.err.println&#40;&quot;Error occurred processing transaction: &quot; + error&#41;;
+     * &#125;, &#40;&#41; -&gt; &#123;
+     *     System.out.println&#40;&quot;Completed transaction&quot;&#41;;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext -->
@@ -1417,57 +1570,81 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .addKeyValue(SESSION_ID_KEY, sessionIdToUse)
             .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
-            .log("Update started.");
+            .log("Disposition started.");
 
-        // This operation is not kicked off until it is subscribed to.
-        final Mono<Void> performOnManagement = connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(node -> node.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
-                deadLetterErrorDescription, propertiesToModify, sessionId, getLinkName(sessionId), transactionContext))
-            .then(Mono.fromRunnable(() -> {
-                LOGGER.atInfo()
-                    .addKeyValue(LOCK_TOKEN_KEY, lockToken)
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
-                    .log("Management node Update completed.");
-
-                message.setIsSettled();
-                managementNodeLocks.remove(lockToken);
-                renewalContainer.remove(lockToken);
-            }));
-
-        Mono<Void> updateDispositionOperation;
-        if (sessionManager != null) {
-            updateDispositionOperation = sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus,
-                propertiesToModify, deadLetterReason, deadLetterErrorDescription, transactionContext)
-                .flatMap(isSuccess -> {
-                    if (isSuccess) {
-                        message.setIsSettled();
-                        renewalContainer.remove(lockToken);
-                        return Mono.empty();
-                    }
-
-                    LOGGER.info("Could not perform on session manger. Performing on management node.");
-                    return performOnManagement;
-                });
-        } else {
-            final ServiceBusAsyncConsumer existingConsumer = consumer.get();
-            if (isManagementToken(lockToken) || existingConsumer == null) {
-                updateDispositionOperation = performOnManagement;
-            } else {
-
-                updateDispositionOperation = existingConsumer.updateDisposition(lockToken, dispositionStatus,
-                    deadLetterReason, deadLetterErrorDescription, propertiesToModify, transactionContext)
+        final Mono<Void> updateDispositionOperation;
+        if (isSessionEnabled) {
+            // The final this.sessionManager is guaranteed to be set when final isSessionEnabled is true.
+            if (isOnV2) {
+                // V2: The final this.sessionManager is guaranteed to be 'ServiceBusSingleSessionManager'.
+                updateDispositionOperation = sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus,
+                        propertiesToModify, deadLetterReason, deadLetterErrorDescription, transactionContext)
+                    // Unlike V1, if the lock token cannot be found on the session link (because it is closed), V2 won't
+                    // fall back to 'dispositionViaManagementNode'. Once the session link is closed, the session is lost,
+                    // and disposition cannot be performed on the management node (Same approach in .NET, JS, Go).
                     .then(Mono.fromRunnable(() -> {
-                        LOGGER.atVerbose()
+                        LOGGER.atInfo()
                             .addKeyValue(LOCK_TOKEN_KEY, lockToken)
                             .addKeyValue(ENTITY_PATH_KEY, entityPath)
                             .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
-                            .log("Update completed.");
-
+                            .log("Disposition completed.");
                         message.setIsSettled();
-                        renewalContainer.remove(lockToken);
+                        // The session-lock-renew logic in V2 is localized to ServiceBusReactorReceiver instance that
+                        // ServiceBusSingleSessionManager composes. The logic does not use 'renewalContainer', hence
+                        // unlike V1, no call to renewalContainer.remove(lockToken).
                     }));
+            } else {
+                // V1: The final this.sessionManager is guaranteed to be 'ServiceBusSessionManager'.
+                updateDispositionOperation = sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus,
+                        propertiesToModify, deadLetterReason, deadLetterErrorDescription, transactionContext)
+                    .flatMap(isSuccess -> {
+                        if (isSuccess) {
+                            message.setIsSettled();
+                            renewalContainer.remove(lockToken);
+                            return Mono.empty();
+                        }
+                        LOGGER.info("Could not perform on session manger. Performing on management node.");
+                        return dispositionViaManagementNode(message, dispositionStatus, deadLetterReason,
+                            deadLetterErrorDescription, propertiesToModify, transactionContext);
+                    });
+            }
+        } else {
+            final ServiceBusAsyncConsumer existingConsumer = consumer.get();
+            if (isManagementToken(lockToken) || existingConsumer == null) {
+                updateDispositionOperation = dispositionViaManagementNode(message, dispositionStatus, deadLetterReason,
+                    deadLetterErrorDescription, propertiesToModify, transactionContext);
+            } else {
+                if (isOnV2) {
+                    updateDispositionOperation = existingConsumer.updateDisposition(lockToken, dispositionStatus,
+                            deadLetterReason, deadLetterErrorDescription, propertiesToModify, transactionContext)
+                        .<Void>then(Mono.fromRunnable(() -> {
+                            LOGGER.atVerbose()
+                                .addKeyValue(LOCK_TOKEN_KEY, lockToken)
+                                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                                .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
+                                .log("Disposition completed.");
+
+                            message.setIsSettled();
+                            renewalContainer.remove(lockToken);
+                        })).onErrorResume(DeliveryNotOnLinkException.class, __ -> {
+                            // V2: fallback to Disposition via Management Channel on DeliveryNotOnLinkException.
+                            return dispositionViaManagementNode(message, dispositionStatus, deadLetterReason,
+                                deadLetterErrorDescription, propertiesToModify, transactionContext);
+                        });
+                } else {
+                    updateDispositionOperation = existingConsumer.updateDisposition(lockToken, dispositionStatus,
+                            deadLetterReason, deadLetterErrorDescription, propertiesToModify, transactionContext)
+                        .then(Mono.fromRunnable(() -> {
+                            LOGGER.atVerbose()
+                                .addKeyValue(LOCK_TOKEN_KEY, lockToken)
+                                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                                .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
+                                .log("Disposition completed.");
+
+                            message.setIsSettled();
+                            renewalContainer.remove(lockToken);
+                        }));
+                }
             }
         }
 
@@ -1486,6 +1663,28 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                         return new ServiceBusException(throwable, ServiceBusErrorSource.UNKNOWN);
                 }
             });
+    }
+
+    private Mono<Void> dispositionViaManagementNode(ServiceBusReceivedMessage message, DispositionStatus dispositionStatus,
+        String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
+        ServiceBusTransactionContext transactionContext) {
+        final String lockToken = message.getLockToken();
+        final String sessionId = message.getSessionId();
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(node -> node.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
+                deadLetterErrorDescription, propertiesToModify, sessionId, getLinkName(sessionId), transactionContext))
+            .then(Mono.fromRunnable(() -> {
+                LOGGER.atInfo()
+                    .addKeyValue(LOCK_TOKEN_KEY, lockToken)
+                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
+                    .log("Disposition (via management node) completed.");
+
+                message.setIsSettled();
+                managementNodeLocks.remove(lockToken);
+                renewalContainer.remove(lockToken);
+            }));
     }
 
     private ServiceBusAsyncConsumer getOrCreateConsumer() {
@@ -1535,7 +1734,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     // to the current connection being disposed as retry-able so that retry can obtain new connection.
                     return new AmqpException(true, e.getMessage(), e, null);
                 }),
-            connectionProcessor.getRetryOptions(),
+            connectionCacheWrapper.getRetryOptions(),
             "Failed to create receive link " + linkName,
             true);
 
@@ -1554,12 +1753,18 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             // See the PR description (https://github.com/Azure/azure-sdk-for-java/pull/33204) for more details.
             .filter(link -> !link.isDisposed());
 
-        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
-        final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLinkFlux.subscribeWith(
-            new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy));
+        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionCacheWrapper.getRetryOptions());
+        final ServiceBusAsyncConsumer newConsumer;
+        if (isOnV2) {
+            final MessageFlux messageFlux = new MessageFlux(receiveLinkFlux, receiverOptions.getPrefetchCount(),
+                CreditFlowMode.RequestDriven, retryPolicy);
 
-        final ServiceBusAsyncConsumer newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor,
-            messageSerializer, receiverOptions);
+            newConsumer = new ServiceBusAsyncConsumer(linkName, messageFlux, messageSerializer, receiverOptions, instrumentation);
+        } else {
+            final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLinkFlux.subscribeWith(
+                new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy));
+            newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor, messageSerializer, receiverOptions);
+        }
 
         // There could have been multiple threads trying to create this async consumer when the result was null.
         // If another one had set the value while we were creating this resource, dispose of newConsumer.
@@ -1673,7 +1878,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     boolean isConnectionClosed() {
-        return this.connectionProcessor.isChannelClosed();
+        return this.connectionCacheWrapper.isChannelClosed();
     }
 
     boolean isManagementNodeLocksClosed() {
@@ -1682,5 +1887,130 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     boolean isRenewalContainerClosed() {
         return this.renewalContainer.isClosed();
+    }
+
+    boolean isSessionEnabled() {
+        return isSessionEnabled;
+    }
+
+    boolean isAutoLockRenewRequested() {
+        return receiverOptions.isAutoLockRenewEnabled();
+    }
+
+    boolean isV2() {
+        return isOnV2;
+    }
+
+    Flux<ServiceBusReceivedMessage> nonSessionProcessorReceiveV2() {
+        assert isOnV2 && !isSessionEnabled;
+        return getOrCreateConsumer().receive();
+    }
+
+    private Flux<ServiceBusReceivedMessage> nonSessionReactiveReceiveV2() {
+        assert isOnV2 && !isSessionEnabled;
+
+        final boolean enableAutoDisposition = receiverOptions.isEnableAutoComplete();
+        final boolean enableAutoLockRenew = receiverOptions.isAutoLockRenewEnabled();
+        final Flux<ServiceBusReceivedMessage> messages = getOrCreateConsumer().receive()
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
+
+        if (enableAutoDisposition | enableAutoLockRenew) {
+            // AutoDisposition(Complete|Abandon) and AutoLockRenew features in Low-Level Reactor Receiver Client are
+            // slated for deprecation.
+            return new AutoDispositionLockRenew(messages, this, enableAutoDisposition, enableAutoLockRenew, completionLock);
+        } else {
+            return messages;
+        }
+    }
+
+    Flux<ServiceBusReceivedMessage> nonSessionSyncReceiveV2() {
+        assert isOnV2 && !isSessionEnabled;
+        return getOrCreateConsumer().receive();
+    }
+
+    private Flux<ServiceBusReceivedMessage> sessionReactiveReceiveV2() {
+        assert isOnV2 && isSessionEnabled && sessionManager instanceof ServiceBusSingleSessionManager;
+        final ServiceBusSingleSessionManager singleSessionManager = (ServiceBusSingleSessionManager) sessionManager;
+        // Note: Once side-by-side support for V1 is no longer needed, we'll update the ServiceBusSingleSessionManager::receive()
+        // to return Flux<ServiceBusReceivedMessage> and delete ServiceBusSingleSessionManager.receiveMessages(), which removes
+        // the above casting and type check assertion.
+        final Flux<ServiceBusReceivedMessage> messages = singleSessionManager.receiveMessages();
+        final boolean enableAutoDisposition = receiverOptions.isEnableAutoComplete();
+        if (enableAutoDisposition) {
+            // AutoDisposition(Complete|Abandon) and AutoLockRenew features in Low-Level Reactor Receiver Client are
+            // slated for deprecation.
+            return new AutoDispositionLockRenew(messages, this, true, false, completionLock);
+        } else {
+            return messages;
+        }
+    }
+
+    Flux<ServiceBusReceivedMessage> sessionSyncReceiveV2() {
+        assert isOnV2 && isSessionEnabled && sessionManager instanceof ServiceBusSingleSessionManager;
+        final ServiceBusSingleSessionManager singleSessionManager = (ServiceBusSingleSessionManager) sessionManager;
+        // Note: See the note in sessionReactiveReceiveV2().
+        return singleSessionManager.receiveMessages();
+    }
+
+    /**
+     * Begin the recurring lock renewal of the given message.
+     *
+     * @param message the message to keep renewing.
+     * @return {@link Disposable} that when disposed of, results in stopping the recurring renewal.
+     */
+    Disposable beginLockRenewal(ServiceBusReceivedMessage message) {
+        if (isSessionEnabled) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Renewing message lock is an invalid operation when working with sessions."));
+        }
+        final Duration maxRenewalDuration = receiverOptions.getMaxLockRenewDuration();
+        Objects.requireNonNull(maxRenewalDuration, "'receivingOptions.maxAutoLockRenewDuration' is required for recurring lock renewal.");
+
+        if (message == null) {
+            return Disposables.disposed();
+        }
+
+        final String lockToken = message.getLockToken();
+        if (Objects.isNull(lockToken)) {
+            LOGGER.atWarning()
+                .addKeyValue(SEQUENCE_NUMBER_KEY, message.getSequenceNumber())
+                .log("Unexpected, LockToken is required for recurring lock renewal.");
+            return Disposables.disposed();
+        }
+
+        final OffsetDateTime initialExpireAt = message.getLockedUntil();
+        if (Objects.isNull(initialExpireAt)) {
+            LOGGER.atWarning()
+                .addKeyValue(SEQUENCE_NUMBER_KEY, message.getSequenceNumber())
+                .log("Unexpected, LockedUntil is required for recurring lock renewal.");
+            return Disposables.disposed();
+        }
+
+        // A Mono, when subscribed, requests the broker to renew the message once and updates the message's lockedUntil
+        // field to reflect the new expiration time.
+        final Mono<OffsetDateTime> renewalMono = tracer.traceRenewMessageLock(this.renewMessageLock(lockToken)
+            .map(nextExpireAt -> {
+                message.setLockedUntil(nextExpireAt);
+                return nextExpireAt;
+            }), message);
+
+        // The operation performing recurring renewal by subscribing to 'renewalMono' before the message expires each time.
+        // The periodic renewal stops when the object is disposed of, or when the 'maxRenewalDuration' elapses.
+        final LockRenewalOperation recurringRenewal = new LockRenewalOperation(lockToken, maxRenewalDuration, false, __ -> renewalMono, initialExpireAt);
+        // TODO: anu ^ - (allocation improvement)
+        //  Update LockRenewalOperation::Ctr to take Mono<OffsetDateTime> instead of a Func<String, Mono<OffsetDateTime>>,
+        //  the Func code never uses first lockToken 'String' param.
+        try {
+            // Track the recurring renewal operation in client scope so that it can be disposed of (to prevent memory leak)
+            // 1. when the client closes, or
+            // 2. when the lock is identified as expired i.e., no renewal happened, so lock lifetime past the current time.
+            renewalContainer.addOrUpdate(lockToken, OffsetDateTime.now().plus(maxRenewalDuration), recurringRenewal);
+        } catch (Exception e) {
+            LOGGER.atInfo()
+                .addKeyValue(LOCK_TOKEN_KEY, lockToken)
+                .log("Exception occurred while updating lockContainer.", e);
+        }
+
+        // TODO: anu, maybe have LockRenewalOperation implement Disposable so the following inline interface impl can be removed.
+        return Disposables.composite(() -> recurringRenewal.close(), () -> renewalContainer.remove(lockToken));
     }
 }

@@ -22,26 +22,6 @@ public interface LinkedStorageAccountsClient {
      * @param workspaceName The name of the workspace.
      * @param dataSourceType Linked storage accounts type.
      * @param parameters The parameters required to create or update linked storage accounts.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return linked storage accounts top level resource container.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LinkedStorageAccountsResourceInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        DataSourceType dataSourceType,
-        LinkedStorageAccountsResourceInner parameters);
-
-    /**
-     * Create or Update a link relation between current workspace and a group of storage accounts of a specific data
-     * source type.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataSourceType Linked storage accounts type.
-     * @param parameters The parameters required to create or update linked storage accounts.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -57,17 +37,24 @@ public interface LinkedStorageAccountsClient {
         Context context);
 
     /**
-     * Deletes all linked storage accounts of a specific data source type associated with the specified workspace.
+     * Create or Update a link relation between current workspace and a group of storage accounts of a specific data
+     * source type.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceType Linked storage accounts type.
+     * @param parameters The parameters required to create or update linked storage accounts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return linked storage accounts top level resource container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String workspaceName, DataSourceType dataSourceType);
+    LinkedStorageAccountsResourceInner createOrUpdate(
+        String resourceGroupName,
+        String workspaceName,
+        DataSourceType dataSourceType,
+        LinkedStorageAccountsResourceInner parameters);
 
     /**
      * Deletes all linked storage accounts of a specific data source type associated with the specified workspace.
@@ -86,7 +73,7 @@ public interface LinkedStorageAccountsClient {
         String resourceGroupName, String workspaceName, DataSourceType dataSourceType, Context context);
 
     /**
-     * Gets all linked storage account of a specific data source type associated with the specified workspace.
+     * Deletes all linked storage accounts of a specific data source type associated with the specified workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -94,11 +81,9 @@ public interface LinkedStorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all linked storage account of a specific data source type associated with the specified workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LinkedStorageAccountsResourceInner get(
-        String resourceGroupName, String workspaceName, DataSourceType dataSourceType);
+    void delete(String resourceGroupName, String workspaceName, DataSourceType dataSourceType);
 
     /**
      * Gets all linked storage account of a specific data source type associated with the specified workspace.
@@ -116,6 +101,21 @@ public interface LinkedStorageAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LinkedStorageAccountsResourceInner> getWithResponse(
         String resourceGroupName, String workspaceName, DataSourceType dataSourceType, Context context);
+
+    /**
+     * Gets all linked storage account of a specific data source type associated with the specified workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param dataSourceType Linked storage accounts type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all linked storage account of a specific data source type associated with the specified workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LinkedStorageAccountsResourceInner get(
+        String resourceGroupName, String workspaceName, DataSourceType dataSourceType);
 
     /**
      * Gets all linked storage accounts associated with the specified workspace, storage accounts will be sorted by

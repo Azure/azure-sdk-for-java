@@ -12,7 +12,8 @@ import java.util.Objects;
 /**
  * Resolves and provides {@link Meter} implementation.
  * <p>
- * This class is intended to be used by Azure client libraries and provides abstraction over different metrics implementations.
+ * This class is intended to be used by Azure client libraries and provides abstraction over different metrics
+ * implementations.
  * Application developers should use metrics implementations such as OpenTelemetry or Micrometer directly.
  */
 public final class OpenTelemetryMeterProvider implements MeterProvider {
@@ -68,7 +69,7 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
      *     .registerMetricReader&#40;PeriodicMetricReader.builder&#40;OtlpGrpcMetricExporter.builder&#40;&#41;.build&#40;&#41;&#41;.build&#40;&#41;&#41;
      *     .build&#40;&#41;;
      *
-     * OpenTelemetry openTelemetry = OpenTelemetrySdk.builder&#40;&#41;
+     * OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder&#40;&#41;
      *     .setTracerProvider&#40;tracerProvider&#41;
      *     .setMeterProvider&#40;meterProvider&#41;
      *     .setPropagators&#40;ContextPropagators.create&#40;W3CTraceContextPropagator.getInstance&#40;&#41;&#41;&#41;

@@ -8,41 +8,39 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NamespaceTopicEventSubscriptions. */
+/**
+ * Resource collection API of NamespaceTopicEventSubscriptions.
+ */
 public interface NamespaceTopicEventSubscriptions {
     /**
      * Get an event subscription of a namespace topic.
-     *
-     * <p>Get properties of an event subscription of a namespace topic.
-     *
+     * 
+     * Get properties of an event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of an event subscription of a namespace topic along with {@link Response}.
      */
-    Response<Subscription> getWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
-        Context context);
+    Response<Subscription> getWithResponse(String resourceGroupName, String namespaceName, String topicName,
+        String eventSubscriptionName, Context context);
 
     /**
      * Get an event subscription of a namespace topic.
-     *
-     * <p>Get properties of an event subscription of a namespace topic.
-     *
+     * 
+     * Get properties of an event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -52,14 +50,14 @@ public interface NamespaceTopicEventSubscriptions {
 
     /**
      * Delete an event subscription of a namespace topic.
-     *
-     * <p>Delete an existing event subscription of a namespace topic.
-     *
+     * 
+     * Delete an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -68,31 +66,27 @@ public interface NamespaceTopicEventSubscriptions {
 
     /**
      * Delete an event subscription of a namespace topic.
-     *
-     * <p>Delete an existing event subscription of a namespace topic.
-     *
+     * 
+     * Delete an existing event subscription of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 100 characters in length and use alphanumeric letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        String eventSubscriptionName,
+    void delete(String resourceGroupName, String namespaceName, String topicName, String eventSubscriptionName,
         Context context);
 
     /**
      * List event subscriptions of a namespace topic.
-     *
-     * <p>List event subscriptions that belong to a specific namespace topic.
-     *
+     * 
+     * List event subscriptions that belong to a specific namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
@@ -105,34 +99,70 @@ public interface NamespaceTopicEventSubscriptions {
 
     /**
      * List event subscriptions of a namespace topic.
-     *
-     * <p>List event subscriptions that belong to a specific namespace topic.
-     *
+     * 
+     * List event subscriptions that belong to a specific namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List event subscriptions operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Subscription> listByNamespaceTopic(
-        String resourceGroupName, String namespaceName, String topicName, String filter, Integer top, Context context);
+    PagedIterable<Subscription> listByNamespaceTopic(String resourceGroupName, String namespaceName, String topicName,
+        String filter, Integer top, Context context);
+
+    /**
+     * Get delivery attributes for an event subscription of a namespace topic.
+     * 
+     * Get all delivery attributes for an event subscription of a namespace topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the namespace.
+     * @param topicName Name of the namespace topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription of a namespace topic along with {@link Response}.
+     */
+    Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(String resourceGroupName,
+        String namespaceName, String topicName, String eventSubscriptionName, Context context);
+
+    /**
+     * Get delivery attributes for an event subscription of a namespace topic.
+     * 
+     * Get all delivery attributes for an event subscription of a namespace topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the namespace.
+     * @param topicName Name of the namespace topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription of a namespace topic.
+     */
+    DeliveryAttributeListResult getDeliveryAttributes(String resourceGroupName, String namespaceName, String topicName,
+        String eventSubscriptionName);
 
     /**
      * Get an event subscription of a namespace topic.
-     *
-     * <p>Get properties of an event subscription of a namespace topic.
-     *
+     * 
+     * Get properties of an event subscription of a namespace topic.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -143,9 +173,9 @@ public interface NamespaceTopicEventSubscriptions {
 
     /**
      * Get an event subscription of a namespace topic.
-     *
-     * <p>Get properties of an event subscription of a namespace topic.
-     *
+     * 
+     * Get properties of an event subscription of a namespace topic.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -157,9 +187,9 @@ public interface NamespaceTopicEventSubscriptions {
 
     /**
      * Delete an event subscription of a namespace topic.
-     *
-     * <p>Delete an existing event subscription of a namespace topic.
-     *
+     * 
+     * Delete an existing event subscription of a namespace topic.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -169,9 +199,9 @@ public interface NamespaceTopicEventSubscriptions {
 
     /**
      * Delete an event subscription of a namespace topic.
-     *
-     * <p>Delete an existing event subscription of a namespace topic.
-     *
+     * 
+     * Delete an existing event subscription of a namespace topic.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -182,7 +212,7 @@ public interface NamespaceTopicEventSubscriptions {
 
     /**
      * Begins definition for a new Subscription resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Subscription definition.
      */

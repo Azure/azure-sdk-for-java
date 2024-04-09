@@ -5,60 +5,64 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.BlobInventoryPolicyCompleted event. */
+/**
+ * Schema of the Data property of an EventGridEvent for an Microsoft.Storage.BlobInventoryPolicyCompleted event.
+ */
 @Fluent
-public final class StorageBlobInventoryPolicyCompletedEventData {
+public final class StorageBlobInventoryPolicyCompletedEventData
+    implements JsonSerializable<StorageBlobInventoryPolicyCompletedEventData> {
     /*
      * The time at which inventory policy was scheduled.
      */
-    @JsonProperty(value = "scheduleDateTime")
     private OffsetDateTime scheduleDateTime;
 
     /*
      * The account name for which inventory policy is registered.
      */
-    @JsonProperty(value = "accountName")
     private String accountName;
 
     /*
      * The rule name for inventory policy.
      */
-    @JsonProperty(value = "ruleName")
     private String ruleName;
 
     /*
      * The status of inventory run, it can be Succeeded/PartiallySucceeded/Failed.
      */
-    @JsonProperty(value = "policyRunStatus")
     private String policyRunStatus;
 
     /*
      * The status message for inventory run.
      */
-    @JsonProperty(value = "policyRunStatusMessage")
     private String policyRunStatusMessage;
 
     /*
      * The policy run id for inventory run.
      */
-    @JsonProperty(value = "policyRunId")
     private String policyRunId;
 
     /*
      * The blob URL for manifest file for inventory run.
      */
-    @JsonProperty(value = "manifestBlobUrl")
     private String manifestBlobUrl;
 
-    /** Creates an instance of StorageBlobInventoryPolicyCompletedEventData class. */
-    public StorageBlobInventoryPolicyCompletedEventData() {}
+    /**
+     * Creates an instance of StorageBlobInventoryPolicyCompletedEventData class.
+     */
+    public StorageBlobInventoryPolicyCompletedEventData() {
+    }
 
     /**
      * Get the scheduleDateTime property: The time at which inventory policy was scheduled.
-     *
+     * 
      * @return the scheduleDateTime value.
      */
     public OffsetDateTime getScheduleDateTime() {
@@ -67,7 +71,7 @@ public final class StorageBlobInventoryPolicyCompletedEventData {
 
     /**
      * Set the scheduleDateTime property: The time at which inventory policy was scheduled.
-     *
+     * 
      * @param scheduleDateTime the scheduleDateTime value to set.
      * @return the StorageBlobInventoryPolicyCompletedEventData object itself.
      */
@@ -78,7 +82,7 @@ public final class StorageBlobInventoryPolicyCompletedEventData {
 
     /**
      * Get the accountName property: The account name for which inventory policy is registered.
-     *
+     * 
      * @return the accountName value.
      */
     public String getAccountName() {
@@ -87,7 +91,7 @@ public final class StorageBlobInventoryPolicyCompletedEventData {
 
     /**
      * Set the accountName property: The account name for which inventory policy is registered.
-     *
+     * 
      * @param accountName the accountName value to set.
      * @return the StorageBlobInventoryPolicyCompletedEventData object itself.
      */
@@ -98,7 +102,7 @@ public final class StorageBlobInventoryPolicyCompletedEventData {
 
     /**
      * Get the ruleName property: The rule name for inventory policy.
-     *
+     * 
      * @return the ruleName value.
      */
     public String getRuleName() {
@@ -107,7 +111,7 @@ public final class StorageBlobInventoryPolicyCompletedEventData {
 
     /**
      * Set the ruleName property: The rule name for inventory policy.
-     *
+     * 
      * @param ruleName the ruleName value to set.
      * @return the StorageBlobInventoryPolicyCompletedEventData object itself.
      */
@@ -118,7 +122,7 @@ public final class StorageBlobInventoryPolicyCompletedEventData {
 
     /**
      * Get the policyRunStatus property: The status of inventory run, it can be Succeeded/PartiallySucceeded/Failed.
-     *
+     * 
      * @return the policyRunStatus value.
      */
     public String getPolicyRunStatus() {
@@ -127,7 +131,7 @@ public final class StorageBlobInventoryPolicyCompletedEventData {
 
     /**
      * Set the policyRunStatus property: The status of inventory run, it can be Succeeded/PartiallySucceeded/Failed.
-     *
+     * 
      * @param policyRunStatus the policyRunStatus value to set.
      * @return the StorageBlobInventoryPolicyCompletedEventData object itself.
      */
@@ -138,7 +142,7 @@ public final class StorageBlobInventoryPolicyCompletedEventData {
 
     /**
      * Get the policyRunStatusMessage property: The status message for inventory run.
-     *
+     * 
      * @return the policyRunStatusMessage value.
      */
     public String getPolicyRunStatusMessage() {
@@ -147,7 +151,7 @@ public final class StorageBlobInventoryPolicyCompletedEventData {
 
     /**
      * Set the policyRunStatusMessage property: The status message for inventory run.
-     *
+     * 
      * @param policyRunStatusMessage the policyRunStatusMessage value to set.
      * @return the StorageBlobInventoryPolicyCompletedEventData object itself.
      */
@@ -158,7 +162,7 @@ public final class StorageBlobInventoryPolicyCompletedEventData {
 
     /**
      * Get the policyRunId property: The policy run id for inventory run.
-     *
+     * 
      * @return the policyRunId value.
      */
     public String getPolicyRunId() {
@@ -167,7 +171,7 @@ public final class StorageBlobInventoryPolicyCompletedEventData {
 
     /**
      * Set the policyRunId property: The policy run id for inventory run.
-     *
+     * 
      * @param policyRunId the policyRunId value to set.
      * @return the StorageBlobInventoryPolicyCompletedEventData object itself.
      */
@@ -178,7 +182,7 @@ public final class StorageBlobInventoryPolicyCompletedEventData {
 
     /**
      * Get the manifestBlobUrl property: The blob URL for manifest file for inventory run.
-     *
+     * 
      * @return the manifestBlobUrl value.
      */
     public String getManifestBlobUrl() {
@@ -187,12 +191,67 @@ public final class StorageBlobInventoryPolicyCompletedEventData {
 
     /**
      * Set the manifestBlobUrl property: The blob URL for manifest file for inventory run.
-     *
+     * 
      * @param manifestBlobUrl the manifestBlobUrl value to set.
      * @return the StorageBlobInventoryPolicyCompletedEventData object itself.
      */
     public StorageBlobInventoryPolicyCompletedEventData setManifestBlobUrl(String manifestBlobUrl) {
         this.manifestBlobUrl = manifestBlobUrl;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scheduleDateTime", this.scheduleDateTime == null ? null
+            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.scheduleDateTime));
+        jsonWriter.writeStringField("accountName", this.accountName);
+        jsonWriter.writeStringField("ruleName", this.ruleName);
+        jsonWriter.writeStringField("policyRunStatus", this.policyRunStatus);
+        jsonWriter.writeStringField("policyRunStatusMessage", this.policyRunStatusMessage);
+        jsonWriter.writeStringField("policyRunId", this.policyRunId);
+        jsonWriter.writeStringField("manifestBlobUrl", this.manifestBlobUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageBlobInventoryPolicyCompletedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageBlobInventoryPolicyCompletedEventData if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageBlobInventoryPolicyCompletedEventData.
+     */
+    public static StorageBlobInventoryPolicyCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageBlobInventoryPolicyCompletedEventData deserializedStorageBlobInventoryPolicyCompletedEventData
+                = new StorageBlobInventoryPolicyCompletedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scheduleDateTime".equals(fieldName)) {
+                    deserializedStorageBlobInventoryPolicyCompletedEventData.scheduleDateTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("accountName".equals(fieldName)) {
+                    deserializedStorageBlobInventoryPolicyCompletedEventData.accountName = reader.getString();
+                } else if ("ruleName".equals(fieldName)) {
+                    deserializedStorageBlobInventoryPolicyCompletedEventData.ruleName = reader.getString();
+                } else if ("policyRunStatus".equals(fieldName)) {
+                    deserializedStorageBlobInventoryPolicyCompletedEventData.policyRunStatus = reader.getString();
+                } else if ("policyRunStatusMessage".equals(fieldName)) {
+                    deserializedStorageBlobInventoryPolicyCompletedEventData.policyRunStatusMessage
+                        = reader.getString();
+                } else if ("policyRunId".equals(fieldName)) {
+                    deserializedStorageBlobInventoryPolicyCompletedEventData.policyRunId = reader.getString();
+                } else if ("manifestBlobUrl".equals(fieldName)) {
+                    deserializedStorageBlobInventoryPolicyCompletedEventData.manifestBlobUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageBlobInventoryPolicyCompletedEventData;
+        });
     }
 }

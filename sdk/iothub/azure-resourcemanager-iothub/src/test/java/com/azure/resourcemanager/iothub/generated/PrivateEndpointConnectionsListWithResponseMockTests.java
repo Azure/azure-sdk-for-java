@@ -13,10 +13,12 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.iothub.models.PrivateLinkServiceConnectionStatus;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -31,7 +33,7 @@ public final class PrivateEndpointConnectionsListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "[{\"properties\":{},\"id\":\"qgaifmviklbydv\",\"name\":\"hbejdznxcvdsrhnj\",\"type\":\"volvtn\"},{\"properties\":{},\"id\":\"qfzgemjdftul\",\"name\":\"ltducea\",\"type\":\"tmczuomejwcwwqi\"},{\"properties\":{},\"id\":\"nssxmojmsvpk\",\"name\":\"prvkwcfzqljyxgtc\",\"type\":\"heyd\"}]";
+            "[{\"properties\":{\"privateEndpoint\":{\"id\":\"slesjcbhernnt\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"w\",\"actionsRequired\":\"cv\"}},\"id\":\"quwrbehwag\",\"name\":\"hbuffkmrq\",\"type\":\"mvvhmxtdrjfuta\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"bj\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"wzcjznmwcpmgua\",\"actionsRequired\":\"raufactkahzova\"}},\"id\":\"j\",\"name\":\"iuxxpshneekulfg\",\"type\":\"lqubkwdlen\"}]";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +64,15 @@ public final class PrivateEndpointConnectionsListWithResponseMockTests {
         List<PrivateEndpointConnection> response =
             manager
                 .privateEndpointConnections()
-                .listWithResponse("fmznba", "qphchqnrnrpxehuw", com.azure.core.util.Context.NONE)
+                .listWithResponse("yeua", "jkqa", com.azure.core.util.Context.NONE)
                 .getValue();
+
+        Assertions
+            .assertEquals(
+                PrivateLinkServiceConnectionStatus.REJECTED,
+                response.get(0).properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("w", response.get(0).properties().privateLinkServiceConnectionState().description());
+        Assertions
+            .assertEquals("cv", response.get(0).properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

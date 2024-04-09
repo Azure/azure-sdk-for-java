@@ -10,9 +10,8 @@ import com.azure.resourcemanager.dataprotection.fluent.models.FeatureValidationR
 public final class FeatureValidationResponseBaseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FeatureValidationResponseBaseInner model =
-            BinaryData
-                .fromString("{\"objectType\":\"FeatureValidationResponseBase\"}")
+        FeatureValidationResponseBaseInner model
+            = BinaryData.fromString("{\"objectType\":\"FeatureValidationResponseBase\"}")
                 .toObject(FeatureValidationResponseBaseInner.class);
     }
 

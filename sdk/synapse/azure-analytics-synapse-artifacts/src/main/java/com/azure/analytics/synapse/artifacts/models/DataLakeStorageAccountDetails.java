@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of the data lake storage account associated with the workspace. */
+/**
+ * Details of the data lake storage account associated with the workspace.
+ */
 @Fluent
 public final class DataLakeStorageAccountDetails {
     /*
@@ -22,12 +24,15 @@ public final class DataLakeStorageAccountDetails {
     @JsonProperty(value = "filesystem")
     private String filesystem;
 
-    /** Creates an instance of DataLakeStorageAccountDetails class. */
-    public DataLakeStorageAccountDetails() {}
+    /**
+     * Creates an instance of DataLakeStorageAccountDetails class.
+     */
+    public DataLakeStorageAccountDetails() {
+    }
 
     /**
      * Get the accountUrl property: Account URL.
-     *
+     * 
      * @return the accountUrl value.
      */
     public String getAccountUrl() {
@@ -36,7 +41,7 @@ public final class DataLakeStorageAccountDetails {
 
     /**
      * Set the accountUrl property: Account URL.
-     *
+     * 
      * @param accountUrl the accountUrl value to set.
      * @return the DataLakeStorageAccountDetails object itself.
      */
@@ -47,7 +52,7 @@ public final class DataLakeStorageAccountDetails {
 
     /**
      * Get the filesystem property: Filesystem name.
-     *
+     * 
      * @return the filesystem value.
      */
     public String getFilesystem() {
@@ -56,7 +61,7 @@ public final class DataLakeStorageAccountDetails {
 
     /**
      * Set the filesystem property: Filesystem name.
-     *
+     * 
      * @param filesystem the filesystem value to set.
      * @return the DataLakeStorageAccountDetails object itself.
      */

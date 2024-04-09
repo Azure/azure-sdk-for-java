@@ -6,52 +6,43 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.eventgrid.models.ClientAuthentication;
-import com.azure.resourcemanager.eventgrid.models.ClientCertificateSubjectDistinguishedName;
+import com.azure.resourcemanager.eventgrid.models.ClientCertificateAuthentication;
+import com.azure.resourcemanager.eventgrid.models.ClientCertificateValidationScheme;
 import com.azure.resourcemanager.eventgrid.models.ClientState;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Clients CreateOrUpdate. */
+/**
+ * Samples for Clients CreateOrUpdate.
+ */
 public final class ClientsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Clients_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * Clients_CreateOrUpdate.json
      */
     /**
      * Sample code: Clients_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void clientsCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager)
         throws IOException {
-        manager
-            .clients()
-            .define("exampleClientName1")
-            .withExistingNamespace("examplerg", "exampleNamespaceName1")
+        manager.clients().define("exampleClientName1").withExistingNamespace("examplerg", "exampleNamespaceName1")
             .withDescription("This is a test client")
-            .withAuthentication(
-                new ClientAuthentication()
-                    .withCertificateSubject(
-                        new ClientCertificateSubjectDistinguishedName()
-                            .withCommonName("CertificateCommonName")
-                            .withOrganization("Microsoft")
-                            .withOrganizationUnit("Azure")
-                            .withCountryCode("fakeTokenPlaceholder")))
+            .withClientCertificateAuthentication(new ClientCertificateAuthentication()
+                .withValidationScheme(ClientCertificateValidationScheme.SUBJECT_MATCHES_AUTHENTICATION_NAME))
             .withState(ClientState.ENABLED)
             .withAttributes(
-                mapOf(
-                    "deviceTypes",
-                    SerializerFactory
-                        .createDefaultManagementSerializerAdapter()
+                mapOf("deviceTypes",
+                    SerializerFactory.createDefaultManagementSerializerAdapter()
                         .deserialize("[\"Fan\",\"Light\",\"AC\"]", Object.class, SerializerEncoding.JSON),
-                    "floor",
-                    3,
-                    "room",
-                    "345"))
+                    "floor", 3, "room", "345"))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

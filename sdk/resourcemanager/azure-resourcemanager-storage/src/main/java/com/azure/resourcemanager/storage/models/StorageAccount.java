@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateEndpointConnection;
@@ -18,6 +19,8 @@ import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure storage account. */
@@ -67,7 +70,13 @@ public interface StorageAccount
      */
     PublicEndpoints endPoints();
 
-    /** @return the source of the key used for encryption. */
+    /**
+     * The source of the key used for encryption.
+     * <p>{@link StorageAccountEncryptionKeySource#MICROSOFT_STORAGE} means that the Storage Account is encrypted using Microsoft-managed Key.</p>
+     * <p>{@link StorageAccountEncryptionKeySource#MICROSOFT_KEYVAULT} means that the Storage Account is encrypted using Customer-managed Key.</p>
+     *
+     * @return the source of the key used for encryption.
+     */
     StorageAccountEncryptionKeySource encryptionKeySource();
 
     /** @return the encryption statuses indexed by storage service type. */
@@ -91,6 +100,9 @@ public interface StorageAccount
      *     account.
      */
     String systemAssignedManagedServiceIdentityPrincipalId();
+
+    /** @return the resource ids of User Assigned Managed Service Identities associated with the storage account. */
+    Set<String> userAssignedManagedServiceIdentityIds();
 
     /**
      * @return true if authenticated application from any network is allowed to access the storage account, false if
@@ -205,6 +217,47 @@ public interface StorageAccount
      * @return a representation of the deferred computation of this call, returning the regenerated access key
      */
     Mono<List<StorageAccountKey>> regenerateKeyAsync(String keyName);
+
+    /**
+     * Checks whether cross tenant replication is allowed.
+     *
+     * @return true if cross tenant replication is enabled, false otherwise
+     */
+    boolean isAllowCrossTenantReplication();
+
+    /**
+     * Checks whether default to oauth authentication is allowed.
+     *
+     * @return true if default to oauth authentication is enabled, false otherwise
+     */
+    boolean isDefaultToOAuthAuthentication();
+
+    /**
+     * Type of the Managed Service Identity used to access KeyVault for encryption.
+     * <p>This property only makes sense when the storage account is encrypted using Customer-managed keys, meaning
+     * {@link StorageAccount#encryptionKeySource()} is {@link StorageAccountEncryptionKeySource#MICROSOFT_KEYVAULT}.</p>
+     *
+     * @return type of the Managed Service Identity used to access KeyVault for encryption,
+     *         {@code null} if {@link StorageAccount#encryptionKeySource()} is {@link StorageAccountEncryptionKeySource#MICROSOFT_STORAGE}
+     */
+    IdentityType identityTypeForCustomerEncryptionKey();
+
+    /**
+     * User-assigned Managed Service Identity ID to access the KeyVault for encryption.
+     * <p>This property only makes sense when the storage account is encrypted using Customer-managed keys, meaning
+     * {@link StorageAccount#encryptionKeySource()} is {@link StorageAccountEncryptionKeySource#MICROSOFT_KEYVAULT} and
+     * {@link StorageAccount#identityTypeForCustomerEncryptionKey()} is {@link IdentityType#USER_ASSIGNED}. </p>
+     * @return user-assigned identity ID used to access KeyVault for encryption,
+     *         null if {@link StorageAccount#encryptionKeySource()} is {@link StorageAccountEncryptionKeySource#MICROSOFT_STORAGE} or
+     *         {@link StorageAccount#identityTypeForCustomerEncryptionKey()} is not {@link IdentityType#USER_ASSIGNED}
+     */
+    String userAssignedIdentityIdForCustomerEncryptionKey();
+    /**
+     * Whether the storage account can be accessed from public network.
+     *
+     * @return whether the storage account can be accessed from public network.
+     */
+    PublicNetworkAccess publicNetworkAccess();
 
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
@@ -350,8 +403,8 @@ public interface StorageAccount
             WithCreate withQueueAccountScopedEncryptionKey();
 
             /**
-             * Specifies the KeyVault key to be used as encryption key.
-             *
+             * Specifies the KeyVault key to be used as key for encryption and the system-assigned identity to access the KeyVault,
+             * meaning this Storage Account will be encrypted with Customer-managed keys.
              * This requires managed service identity on storage account
              * and GET, WRAP_KEY, UNWRAP_KEY access policy on key vault for the managed service identity.
              *
@@ -361,6 +414,40 @@ public interface StorageAccount
              * @return the next stage of storage account definition
              */
             WithCreate withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion);
+
+            /**
+             * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault,
+             * meaning this Storage Account will be encrypted with Customer-managed keys.
+             *
+             * This requires managed service identity on storage account
+             * (via {@link UpdateStages.WithManagedServiceIdentity#withSystemAssignedManagedServiceIdentity()} or
+             * {@link DefinitionStages.WithUserAssignedManagedServiceIdentity#withExistingUserAssignedManagedServiceIdentity(Identity)}),
+             * and GET, WRAP_KEY, UNWRAP_KEY access policy on key vault for the managed service identity.
+             *
+             * @param keyVaultUri the uri to KeyVault
+             * @param keyName the KeyVault key name
+             * @param keyVersion the KeyVault key version
+             * @param userAssignedIdentity user-assigned identity to access the KeyVault
+             * @return the next stage of storage account update
+             */
+            WithCreate withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, Identity userAssignedIdentity);
+
+            /**
+             * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault,
+             * meaning this Storage Account will be encrypted with Customer-managed keys.
+             *
+             * This requires managed service identity on storage account
+             * (via {@link UpdateStages.WithManagedServiceIdentity#withSystemAssignedManagedServiceIdentity()} or
+             * {@link DefinitionStages.WithUserAssignedManagedServiceIdentity#withExistingUserAssignedManagedServiceIdentity(Identity)}),
+             * and GET, WRAP_KEY, UNWRAP_KEY access policy on key vault for the managed service identity.
+             *
+             * @param keyVaultUri the uri to KeyVault
+             * @param keyName the KeyVault key name
+             * @param keyVersion the KeyVault key version
+             * @param userAssignedIdentityId ID of the user-assigned identity to access the KeyVault
+             * @return the next stage of storage account update
+             */
+            WithCreate withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, String userAssignedIdentityId);
         }
 
         /** The stage of a storage account definition allowing to associate custom domain with the account. */
@@ -399,6 +486,37 @@ public interface StorageAccount
              * @return the next stage of storage account definition
              */
             WithCreate withSystemAssignedManagedServiceIdentity();
+        }
+
+        /**
+         * The stage of the storage account definition allowing to specify User Assigned (External) Managed Service
+         * Identities.
+         */
+        interface WithUserAssignedManagedServiceIdentity {
+            /**
+             * Specifies the definition of a not-yet-created user assigned identity to be associated with the Storage
+             * Account.
+             *
+             * @param creatableIdentity a creatable identity definition
+             * @return the next stage of the storage account definition
+             */
+            WithCreate withNewUserAssignedManagedServiceIdentity(Creatable<Identity> creatableIdentity);
+
+            /**
+             * Specifies an existing user assigned identity to be associated with the storage account.
+             *
+             * @param identity the identity
+             * @return the next stage of the storage account definition
+             */
+            WithCreate withExistingUserAssignedManagedServiceIdentity(Identity identity);
+
+            /**
+             * Specifies an existing user assigned identity to be associated with the storage account.
+             *
+             * @param identityId the resource ID of the user-assigned Managed Service Identity
+             * @return the next stage of the storage account definition
+             */
+            WithCreate withExistingUserAssignedManagedServiceIdentity(String identityId);
         }
 
         /** The stage of storage account definition allowing to restrict access protocol. */
@@ -447,6 +565,12 @@ public interface StorageAccount
 
         /** The stage of storage account definition allowing to configure network access settings. */
         interface WithNetworkAccess {
+            /**
+             * Disables public network access for the storage account.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
             /**
              * Specifies that by default access to storage account should be allowed from all networks.
              *
@@ -547,6 +671,29 @@ public interface StorageAccount
             WithCreate withHnsEnabled(boolean enabled);
         }
 
+        /** The stage of storage account definition allowing to configure allow cross tenant replication. */
+        interface WithAllowCrossTenantReplication {
+            /**
+             * Disables allow cross tenant replication.
+             *
+             * Disabling in storage account overrides the allow cross tenant replication settings for individual containers.
+             *
+             * @return the next stage of storage account definition
+             */
+            WithCreate disallowCrossTenantReplication();
+
+        }
+
+        /** The stage of storage account definition allowing to configure default to oauth authentication. */
+        interface  WithDefaultToOAuthAuthentication {
+            /**
+             * Allows default to oauth authentication, configured by individual containers.
+             *
+             * @return the next stage of storage account definition
+             */
+            WithCreate enableDefaultToOAuthAuthentication();
+        }
+
         /**
          * A storage account definition with sufficient inputs to create a new storage account in the cloud, but
          * exposing additional optional inputs to specify.
@@ -561,12 +708,15 @@ public interface StorageAccount
                 DefinitionStages.WithEncryption,
                 DefinitionStages.WithCustomDomain,
                 DefinitionStages.WithManagedServiceIdentity,
+                DefinitionStages.WithUserAssignedManagedServiceIdentity,
                 DefinitionStages.WithAccessTraffic,
                 DefinitionStages.WithNetworkAccess,
                 DefinitionStages.WithAzureFilesAadIntegration,
                 DefinitionStages.WithLargeFileShares,
                 DefinitionStages.WithHns,
                 DefinitionStages.WithBlobAccess,
+                DefinitionStages.WithAllowCrossTenantReplication,
+                DefinitionStages.WithDefaultToOAuthAuthentication,
                 Resource.DefinitionWithTags<WithCreate> {
         }
 
@@ -665,7 +815,8 @@ public interface StorageAccount
             Update withoutFileEncryption();
 
             /**
-             * Specifies the KeyVault key to be used as key for encryption.
+             * Specifies the KeyVault key to be used as key for encryption and the system-assigned identity to access the KeyVault,
+             * meaning this Storage Account will be encrypted with Customer-managed keys.
              *
              * This requires managed service identity on storage account
              * (via {@link WithManagedServiceIdentity#withSystemAssignedManagedServiceIdentity()}),
@@ -677,6 +828,47 @@ public interface StorageAccount
              * @return the next stage of storage account update
              */
             Update withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion);
+
+            /**
+             * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault,
+             * meaning this Storage Account will be encrypted with Customer-managed keys.
+             *
+             * This requires managed service identity on storage account
+             * (via {@link WithManagedServiceIdentity#withSystemAssignedManagedServiceIdentity()} or
+             * {@link DefinitionStages.WithUserAssignedManagedServiceIdentity#withExistingUserAssignedManagedServiceIdentity(Identity)}),
+             * and GET, WRAP_KEY, UNWRAP_KEY access policy on key vault for the managed service identity.
+             *
+             * @param keyVaultUri the uri to KeyVault
+             * @param keyName the KeyVault key name
+             * @param keyVersion the KeyVault key version
+             * @param userAssignedIdentity user-assigned identity to access the KeyVault
+             * @return the next stage of storage account update
+             */
+            Update withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, Identity userAssignedIdentity);
+
+            /**
+             * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault,
+             * meaning this Storage Account will be encrypted with Customer-managed keys.
+             *
+             * This requires managed service identity on storage account
+             * (via {@link WithManagedServiceIdentity#withSystemAssignedManagedServiceIdentity()} or
+             * {@link DefinitionStages.WithUserAssignedManagedServiceIdentity#withExistingUserAssignedManagedServiceIdentity(Identity)}),
+             * and GET, WRAP_KEY, UNWRAP_KEY access policy on key vault for the managed service identity.
+             *
+             * @param keyVaultUri the uri to KeyVault
+             * @param keyName the KeyVault key name
+             * @param keyVersion the KeyVault key version
+             * @param userAssignedIdentityId ID of the user-assigned identity to access the KeyVault
+             * @return the next stage of storage account update
+             */
+            Update withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, String userAssignedIdentityId);
+
+            /**
+             * Specifies the Microsoft-managed key to be used as key for encryption. This is the default encryption type.
+             *
+             * @return the next stage of storage account update
+             */
+            Update withMicrosoftManagedEncryptionKey();
         }
 
         /** A blob storage account update stage allowing access tier to be specified. */
@@ -701,6 +893,52 @@ public interface StorageAccount
              * @return the next stage of storage account update
              */
             Update withSystemAssignedManagedServiceIdentity();
+
+            /**
+             * Specifies that a system assigned identity associated with the storage account should be removed.
+             *
+             * @return the next stage of the storage account update
+             */
+            Update withoutSystemAssignedManagedServiceIdentity();
+        }
+
+        /**
+         * The stage of the storage account update allowing to add or remove User Assigned (External) Managed Service
+         * Identities.
+         */
+        interface WithUserAssignedManagedServiceIdentity {
+            /**
+             * Specifies the definition of a not-yet-created user assigned identity to be associated with the storage
+             * account.
+             *
+             * @param creatableIdentity a creatable identity definition
+             * @return the next stage of the storage account update
+             */
+            Update withNewUserAssignedManagedServiceIdentity(Creatable<Identity> creatableIdentity);
+
+            /**
+             * Specifies an existing user assigned identity to be associated with the storage account.
+             *
+             * @param identity the identity
+             * @return the next stage of the storage account update
+             */
+            Update withExistingUserAssignedManagedServiceIdentity(Identity identity);
+
+            /**
+             * Specifies an existing user assigned identity to be associated with the storage account.
+             *
+             * @param identityId ID of the identity
+             * @return the next stage of the storage account update
+             */
+            Update withExistingUserAssignedManagedServiceIdentity(String identityId);
+
+            /**
+             * Specifies that an user assigned identity associated with the storage account should be removed.
+             *
+             * @param identityId ARM resource id of the identity
+             * @return the next stage of the storage account update
+             */
+            Update withoutUserAssignedManagedServiceIdentity(String identityId);
         }
 
         /** The stage of the storage account update allowing to specify the protocol to be used to access account. */
@@ -763,6 +1001,20 @@ public interface StorageAccount
 
         /** The stage of storage account update allowing to configure network access. */
         interface WithNetworkAccess {
+            /**
+             * Enables public network access for the storage account.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+
+            /**
+             * Disables public network access for the storage account.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
+
             /**
              * Specifies that by default access to storage account should be allowed from all networks.
              *
@@ -892,6 +1144,45 @@ public interface StorageAccount
              */
             Update upgradeToGeneralPurposeAccountKindV2();
         }
+
+        /** The stage of storage account update allowing to allow cross tenant replication. */
+        interface WithAllowCrossTenantReplication {
+            /**
+             * Allows to allow cross tenant replication, configured by individual containers.
+             *
+             * @return the next stage of storage account update
+             */
+            Update allowCrossTenantReplication();
+
+            /**
+             * Disables cross tenant replication.
+             *
+             * Disabling in storage account overrides the cross tenant replication settings for individual containers.
+             *
+             * @return the next stage of storage account update
+             */
+            Update disallowCrossTenantReplication();
+        }
+
+        /** The stage of storage account update allowing to configure default to oauth authentication. */
+        interface  WithDefaultToOAuthAuthentication {
+            /**
+             * Allows default to oauth authentication, configured by individual containers.
+             *
+             * @return the next stage of storage account update
+             */
+            Update enableDefaultToOAuthAuthentication();
+
+            /**
+             * Disables default to oauth authentication.
+             *
+             * Disabling in storage account overrides the default to oauth authentication settings for individual containers.
+             *
+             * @return the next stage of storage account update
+             */
+            Update disableDefaultToOAuthAuthentication();
+        }
+
     }
 
     /** The template for a storage account update operation, containing all the settings that can be modified. */
@@ -902,10 +1193,13 @@ public interface StorageAccount
             UpdateStages.WithEncryption,
             UpdateStages.WithAccessTier,
             UpdateStages.WithManagedServiceIdentity,
+            UpdateStages.WithUserAssignedManagedServiceIdentity,
             UpdateStages.WithAccessTraffic,
             UpdateStages.WithNetworkAccess,
             UpdateStages.WithUpgrade,
             UpdateStages.WithBlobAccess,
+            UpdateStages.WithAllowCrossTenantReplication,
+            UpdateStages.WithDefaultToOAuthAuthentication,
             Resource.UpdateWithTags<Update> {
     }
 }

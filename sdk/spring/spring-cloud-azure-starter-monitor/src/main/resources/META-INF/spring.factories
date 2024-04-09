@@ -1,2 +1,2 @@
 org.springframework.boot.env.EnvironmentPostProcessor=\
-  com.azure.monitor.applicationinsights.spring.OtelPropertiesOverridePostProcessor
+  com.azure.monitor.applicationinsights.spring.PropertiesPostProcessor

@@ -30,7 +30,7 @@ public final class ClustersDiagnoseVirtualNetworkMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"findings\":[\"yklxubyjaffmmfbl\",\"qcuubgqibrta\"]}";
+        String responseStr = "{\"findings\":[\"pwbralllibphbqz\"]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,8 +59,8 @@ public final class ClustersDiagnoseVirtualNetworkMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DiagnoseVirtualNetworkResult response =
-            manager.clusters().diagnoseVirtualNetwork("xcvhrfs", "huagrttikteusqc", com.azure.core.util.Context.NONE);
+            manager.clusters().diagnoseVirtualNetwork("gdqoh", "cwsldri", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yklxubyjaffmmfbl", response.findings().get(0));
+        Assertions.assertEquals("pwbralllibphbqz", response.findings().get(0));
     }
 }

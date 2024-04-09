@@ -4,15 +4,30 @@
 package com.azure.core.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a heterogeneous collection of {@link GeoObject GeoObjects}.
+ * <p>Represents a heterogeneous collection of {@link GeoObject GeoObjects}.</p>
+ *
+ * <p>This class encapsulates a list of geometry objects and provides methods to access these objects.
+ * The objects can be of any type that extends {@link GeoObject}.</p>
+ *
+ * <p>This class is useful when you want to work with a collection of geometry objects in a read-only manner. For
+ * example, you can use it to represent a complex geographic feature that is composed of multiple simple geographic
+ * features.</p>
+ *
+ * @see GeoObject
+ * @see GeoBoundingBox
  */
 @Immutable
 public final class GeoCollection extends GeoObject {
@@ -36,8 +51,7 @@ public final class GeoCollection extends GeoObject {
      * @param customProperties Additional properties of the {@link GeoCollection}.
      * @throws NullPointerException If {@code geometries} is {@code null}.
      */
-    public GeoCollection(List<GeoObject> geometries, GeoBoundingBox boundingBox,
-        Map<String, Object> customProperties) {
+    public GeoCollection(List<GeoObject> geometries, GeoBoundingBox boundingBox, Map<String, Object> customProperties) {
         super(boundingBox, customProperties);
 
         Objects.requireNonNull(geometries, "'geometries' cannot be null.");
@@ -75,5 +89,56 @@ public final class GeoCollection extends GeoObject {
 
         GeoCollection other = (GeoCollection) obj;
         return super.equals(other) && Objects.equals(geometries, other.geometries);
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject()
+            .writeStringField("type", GeoObjectType.GEOMETRY_COLLECTION.toString())
+            .writeArrayField("geometries", geometries, JsonWriter::writeJson)
+            .writeJsonField("bbox", getBoundingBox());
+
+        return writeCustomProperties(jsonWriter).writeEndObject();
+    }
+
+    /**
+     * Reads a JSON stream into a {@link GeoCollection}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return The {@link GeoCollection} that the JSON stream represented, or null if it pointed to JSON null.
+     * @throws IllegalStateException If the {@code type} node exists and isn't equal to {@code GeometryCollection}.
+     * @throws IOException If a {@link GeoCollection} fails to be read from the {@code jsonReader}.
+     */
+    public static GeoCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<GeoObject> geometries = null;
+            GeoBoundingBox boundingBox = null;
+            Map<String, Object> customProperties = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    String type = reader.getString();
+                    if (!GeoObjectType.GEOMETRY_COLLECTION.toString().equals(type)) {
+                        throw new IllegalStateException("'type' was expected to be non-null and equal to "
+                            + "'GeometryCollection'. The found 'type' was '" + type + "'.");
+                    }
+                } else if ("geometries".equals(fieldName)) {
+                    geometries = reader.readArray(GeoObject::fromJson);
+                } else if ("bbox".equals(fieldName)) {
+                    boundingBox = GeoBoundingBox.fromJson(reader);
+                } else {
+                    if (customProperties == null) {
+                        customProperties = new LinkedHashMap<>();
+                    }
+
+                    customProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+
+            return new GeoCollection(geometries, boundingBox, customProperties);
+        });
     }
 }

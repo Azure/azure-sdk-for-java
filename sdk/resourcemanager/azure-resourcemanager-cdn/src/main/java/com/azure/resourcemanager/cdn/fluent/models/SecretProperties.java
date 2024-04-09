@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cdn.models.AfdStateProperties;
 import com.azure.resourcemanager.cdn.models.SecretParameters;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JSON object that contains the properties of the Secret to create. */
+/**
+ * The JSON object that contains the properties of the Secret to create.
+ */
 @Fluent
 public final class SecretProperties extends AfdStateProperties {
     /*
@@ -25,8 +27,14 @@ public final class SecretProperties extends AfdStateProperties {
     private SecretParameters parameters;
 
     /**
+     * Creates an instance of SecretProperties class.
+     */
+    public SecretProperties() {
+    }
+
+    /**
      * Get the profileName property: The name of the profile which holds the secret.
-     *
+     * 
      * @return the profileName value.
      */
     public String profileName() {
@@ -35,7 +43,7 @@ public final class SecretProperties extends AfdStateProperties {
 
     /**
      * Get the parameters property: object which contains secret parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public SecretParameters parameters() {
@@ -44,7 +52,7 @@ public final class SecretProperties extends AfdStateProperties {
 
     /**
      * Set the parameters property: object which contains secret parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the SecretProperties object itself.
      */
@@ -55,7 +63,7 @@ public final class SecretProperties extends AfdStateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

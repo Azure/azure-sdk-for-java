@@ -31,38 +31,27 @@ public final class ServicesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"id\":\"o\",\"name\":\"ukgjnpiucgygevq\",\"type\":\"typmrbpizcdrqjsd\",\"properties\":{\"displayName\":\"nfyhx\",\"resourceTypes\":[\"ejzicwifsjtt\",\"zfbishcbkhaj\"]}}]}";
+        String responseStr
+            = "{\"value\":[{\"id\":\"rkvcikhnvpa\",\"name\":\"gxqquezik\",\"type\":\"ggxkallatmelwuip\",\"properties\":{\"displayName\":\"jzkzi\",\"resourceTypes\":[\"vc\",\"ayrhyrnx\"],\"metadata\":{\"ealmfmtdaaygdvwv\":\"eedndrdvstkwqqtc\",\"xepxgyqagvrvmn\":\"piohgwxrtfu\",\"kghimdblxgwimfnj\":\"k\"}}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SupportManager manager =
-            SupportManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SupportManager manager = SupportManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Service> response = manager.services().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nfyhx", response.iterator().next().displayName());
-        Assertions.assertEquals("ejzicwifsjtt", response.iterator().next().resourceTypes().get(0));
+        Assertions.assertEquals("jzkzi", response.iterator().next().displayName());
+        Assertions.assertEquals("vc", response.iterator().next().resourceTypes().get(0));
     }
 }

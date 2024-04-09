@@ -56,8 +56,6 @@ public final class HostPoolsDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .hostPools()
-            .deleteWithResponse("belawumuaslzkwr", "woycqucwyha", true, com.azure.core.util.Context.NONE);
+        manager.hostPools().deleteWithResponse("houcqpqojxc", "zrzdcgd", true, com.azure.core.util.Context.NONE);
     }
 }

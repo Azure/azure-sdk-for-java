@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** HDInsight Hive activity type. */
+/**
+ * HDInsight Hive activity type.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("HDInsightHive")
 @Fluent
@@ -24,55 +26,87 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private HDInsightHiveActivityTypeProperties innerTypeProperties = new HDInsightHiveActivityTypeProperties();
 
-    /** Creates an instance of HDInsightHiveActivity class. */
+    /**
+     * Creates an instance of HDInsightHiveActivity class.
+     */
     public HDInsightHiveActivity() {
     }
 
     /**
      * Get the innerTypeProperties property: HDInsight Hive activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private HDInsightHiveActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightHiveActivity withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightHiveActivity withPolicy(ActivityPolicy policy) {
         super.withPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightHiveActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightHiveActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public HDInsightHiveActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public HDInsightHiveActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightHiveActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightHiveActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -81,7 +115,7 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
 
     /**
      * Get the storageLinkedServices property: Storage linked service references.
-     *
+     * 
      * @return the storageLinkedServices value.
      */
     public List<LinkedServiceReference> storageLinkedServices() {
@@ -90,7 +124,7 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
 
     /**
      * Set the storageLinkedServices property: Storage linked service references.
-     *
+     * 
      * @param storageLinkedServices the storageLinkedServices value to set.
      * @return the HDInsightHiveActivity object itself.
      */
@@ -104,7 +138,7 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
 
     /**
      * Get the arguments property: User specified arguments to HDInsightActivity.
-     *
+     * 
      * @return the arguments value.
      */
     public List<Object> arguments() {
@@ -113,7 +147,7 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
 
     /**
      * Set the arguments property: User specified arguments to HDInsightActivity.
-     *
+     * 
      * @param arguments the arguments value to set.
      * @return the HDInsightHiveActivity object itself.
      */
@@ -127,7 +161,7 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
 
     /**
      * Get the getDebugInfo property: Debug info option.
-     *
+     * 
      * @return the getDebugInfo value.
      */
     public HDInsightActivityDebugInfoOption getDebugInfo() {
@@ -136,7 +170,7 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
 
     /**
      * Set the getDebugInfo property: Debug info option.
-     *
+     * 
      * @param getDebugInfo the getDebugInfo value to set.
      * @return the HDInsightHiveActivity object itself.
      */
@@ -150,7 +184,7 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
 
     /**
      * Get the scriptPath property: Script path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the scriptPath value.
      */
     public Object scriptPath() {
@@ -159,7 +193,7 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
 
     /**
      * Set the scriptPath property: Script path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param scriptPath the scriptPath value to set.
      * @return the HDInsightHiveActivity object itself.
      */
@@ -173,7 +207,7 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
 
     /**
      * Get the scriptLinkedService property: Script linked service reference.
-     *
+     * 
      * @return the scriptLinkedService value.
      */
     public LinkedServiceReference scriptLinkedService() {
@@ -182,7 +216,7 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
 
     /**
      * Set the scriptLinkedService property: Script linked service reference.
-     *
+     * 
      * @param scriptLinkedService the scriptLinkedService value to set.
      * @return the HDInsightHiveActivity object itself.
      */
@@ -196,7 +230,7 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
 
     /**
      * Get the defines property: Allows user to specify defines for Hive job request.
-     *
+     * 
      * @return the defines value.
      */
     public Map<String, Object> defines() {
@@ -205,7 +239,7 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
 
     /**
      * Set the defines property: Allows user to specify defines for Hive job request.
-     *
+     * 
      * @param defines the defines value to set.
      * @return the HDInsightHiveActivity object itself.
      */
@@ -219,20 +253,20 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
 
     /**
      * Get the variables property: User specified arguments under hivevar namespace.
-     *
+     * 
      * @return the variables value.
      */
-    public List<Object> variables() {
+    public Map<String, Object> variables() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().variables();
     }
 
     /**
      * Set the variables property: User specified arguments under hivevar namespace.
-     *
+     * 
      * @param variables the variables value to set.
      * @return the HDInsightHiveActivity object itself.
      */
-    public HDInsightHiveActivity withVariables(List<Object> variables) {
+    public HDInsightHiveActivity withVariables(Map<String, Object> variables) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new HDInsightHiveActivityTypeProperties();
         }
@@ -241,9 +275,9 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with ESP
-     * (Enterprise Security Package).
-     *
+     * Get the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with
+     * ESP (Enterprise Security Package).
+     * 
      * @return the queryTimeout value.
      */
     public Integer queryTimeout() {
@@ -251,9 +285,9 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with ESP
-     * (Enterprise Security Package).
-     *
+     * Set the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with
+     * ESP (Enterprise Security Package).
+     * 
      * @param queryTimeout the queryTimeout value to set.
      * @return the HDInsightHiveActivity object itself.
      */
@@ -267,17 +301,15 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model HDInsightHiveActivity"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model HDInsightHiveActivity"));
         } else {
             innerTypeProperties().validate();
         }

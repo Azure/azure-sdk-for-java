@@ -9,7 +9,7 @@ import java.util.Optional;
 
 final class ConnectionStringRetriever {
     private static final String APPLICATIONINSIGHTS_CONNECTION_STRING_ENV =
-            "APPLICATIONINSIGHTS_CONNECTION_STRING";
+        "APPLICATIONINSIGHTS_CONNECTION_STRING";
 
     private ConnectionStringRetriever() {
     }

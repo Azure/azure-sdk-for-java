@@ -15,30 +15,23 @@ public final class PrivateEndpointAclTests {
     public void testDeserialize() throws Exception {
         PrivateEndpointAcl model =
             BinaryData
-                .fromString(
-                    "{\"name\":\"evzhfsto\",\"allow\":[\"ServerConnection\",\"Trace\",\"Trace\",\"ServerConnection\"],\"deny\":[\"Trace\",\"Trace\"]}")
+                .fromString("{\"name\":\"uzvx\",\"allow\":[\"ServerConnection\"],\"deny\":[\"ClientConnection\"]}")
                 .toObject(PrivateEndpointAcl.class);
         Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.allow().get(0));
-        Assertions.assertEquals(SignalRRequestType.TRACE, model.deny().get(0));
-        Assertions.assertEquals("evzhfsto", model.name());
+        Assertions.assertEquals(SignalRRequestType.CLIENT_CONNECTION, model.deny().get(0));
+        Assertions.assertEquals("uzvx", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateEndpointAcl model =
             new PrivateEndpointAcl()
-                .withAllow(
-                    Arrays
-                        .asList(
-                            SignalRRequestType.SERVER_CONNECTION,
-                            SignalRRequestType.TRACE,
-                            SignalRRequestType.TRACE,
-                            SignalRRequestType.SERVER_CONNECTION))
-                .withDeny(Arrays.asList(SignalRRequestType.TRACE, SignalRRequestType.TRACE))
-                .withName("evzhfsto");
+                .withAllow(Arrays.asList(SignalRRequestType.SERVER_CONNECTION))
+                .withDeny(Arrays.asList(SignalRRequestType.CLIENT_CONNECTION))
+                .withName("uzvx");
         model = BinaryData.fromObject(model).toObject(PrivateEndpointAcl.class);
         Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.allow().get(0));
-        Assertions.assertEquals(SignalRRequestType.TRACE, model.deny().get(0));
-        Assertions.assertEquals("evzhfsto", model.name());
+        Assertions.assertEquals(SignalRRequestType.CLIENT_CONNECTION, model.deny().get(0));
+        Assertions.assertEquals("uzvx", model.name());
     }
 }

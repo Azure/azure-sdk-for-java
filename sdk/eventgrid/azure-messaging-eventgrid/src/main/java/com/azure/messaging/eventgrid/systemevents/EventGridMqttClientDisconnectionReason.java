@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,20 +12,20 @@ import java.util.Collection;
  * reasons table.
  */
 public final class EventGridMqttClientDisconnectionReason
-        extends ExpandableStringEnum<EventGridMqttClientDisconnectionReason> {
+    extends ExpandableStringEnum<EventGridMqttClientDisconnectionReason> {
     /**
      * The client got disconnected for any authentication reasons (for example, certificate expired, client got
      * disabled, or client configuration changed).
      */
-    public static final EventGridMqttClientDisconnectionReason CLIENT_AUTHENTICATION_ERROR =
-            fromString("ClientAuthenticationError");
+    public static final EventGridMqttClientDisconnectionReason CLIENT_AUTHENTICATION_ERROR
+        = fromString("ClientAuthenticationError");
 
     /**
      * The client got disconnected for any authorization reasons (for example, because of a change in the configuration
      * of topic spaces, permission bindings, or client groups).
      */
-    public static final EventGridMqttClientDisconnectionReason CLIENT_AUTHORIZATION_ERROR =
-            fromString("ClientAuthorizationError");
+    public static final EventGridMqttClientDisconnectionReason CLIENT_AUTHORIZATION_ERROR
+        = fromString("ClientAuthorizationError");
 
     /**
      * The client sent a bad request or used one of the unsupported features that resulted in a connection termination
@@ -38,13 +37,17 @@ public final class EventGridMqttClientDisconnectionReason
      * The client initiates a graceful disconnect through a DISCONNECT packet for MQTT or a close frame for MQTT over
      * WebSocket.
      */
-    public static final EventGridMqttClientDisconnectionReason CLIENT_INITIATED_DISCONNECT =
-            fromString("ClientInitiatedDisconnect");
+    public static final EventGridMqttClientDisconnectionReason CLIENT_INITIATED_DISCONNECT
+        = fromString("ClientInitiatedDisconnect");
 
-    /** The client-server connection is lost. (EXCHANGE ONLINE PROTECTION). */
+    /**
+     * The client-server connection is lost. (EXCHANGE ONLINE PROTECTION).
+     */
     public static final EventGridMqttClientDisconnectionReason CONNECTION_LOST = fromString("ConnectionLost");
 
-    /** The client's IP address is blocked by IP filter or Private links configuration. */
+    /**
+     * The client's IP address is blocked by IP filter or Private links configuration.
+     */
     public static final EventGridMqttClientDisconnectionReason IP_FORBIDDEN = fromString("IpForbidden");
 
     /**
@@ -53,12 +56,16 @@ public final class EventGridMqttClientDisconnectionReason
      */
     public static final EventGridMqttClientDisconnectionReason QUOTA_EXCEEDED = fromString("QuotaExceeded");
 
-    /** The connection got terminated due to an unexpected server error. */
+    /**
+     * The connection got terminated due to an unexpected server error.
+     */
     public static final EventGridMqttClientDisconnectionReason SERVER_ERROR = fromString("ServerError");
 
-    /** The server initiates a graceful disconnect for any operational reason. */
-    public static final EventGridMqttClientDisconnectionReason SERVER_INITIATED_DISCONNECT =
-            fromString("ServerInitiatedDisconnect");
+    /**
+     * The server initiates a graceful disconnect for any operational reason.
+     */
+    public static final EventGridMqttClientDisconnectionReason SERVER_INITIATED_DISCONNECT
+        = fromString("ServerInitiatedDisconnect");
 
     /**
      * The client's queue for unacknowledged QoS1 messages reached its limit, which resulted in a connection termination
@@ -74,26 +81,26 @@ public final class EventGridMqttClientDisconnectionReason
 
     /**
      * Creates a new instance of EventGridMqttClientDisconnectionReason value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public EventGridMqttClientDisconnectionReason() {}
+    public EventGridMqttClientDisconnectionReason() {
+    }
 
     /**
      * Creates or finds a EventGridMqttClientDisconnectionReason from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EventGridMqttClientDisconnectionReason.
      */
-    @JsonCreator
     public static EventGridMqttClientDisconnectionReason fromString(String name) {
         return fromString(name, EventGridMqttClientDisconnectionReason.class);
     }
 
     /**
      * Gets known EventGridMqttClientDisconnectionReason values.
-     *
+     * 
      * @return known EventGridMqttClientDisconnectionReason values.
      */
     public static Collection<EventGridMqttClientDisconnectionReason> values() {

@@ -9,29 +9,37 @@ import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.PublicCertificateLocation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Public certificate object. */
+/**
+ * Public certificate object.
+ */
 @Fluent
 public final class PublicCertificateInner extends ProxyOnlyResource {
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
     /*
      * PublicCertificate resource specific properties
      */
     @JsonProperty(value = "properties")
     private PublicCertificateProperties innerProperties;
 
-    /** Creates an instance of PublicCertificateInner class. */
+    /**
+     * Creates an instance of PublicCertificateInner class.
+     */
     public PublicCertificateInner() {
     }
 
     /**
      * Get the innerProperties property: PublicCertificate resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PublicCertificateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PublicCertificateInner withKind(String kind) {
         super.withKind(kind);
@@ -40,16 +48,16 @@ public final class PublicCertificateInner extends ProxyOnlyResource {
 
     /**
      * Get the blob property: Public Certificate byte array.
-     *
+     * 
      * @return the blob value.
      */
     public byte[] blob() {
-        return this.innerProperties() == null ? new byte[0] : this.innerProperties().blob();
+        return this.innerProperties() == null ? EMPTY_BYTE_ARRAY : this.innerProperties().blob();
     }
 
     /**
      * Set the blob property: Public Certificate byte array.
-     *
+     * 
      * @param blob the blob value to set.
      * @return the PublicCertificateInner object itself.
      */
@@ -63,7 +71,7 @@ public final class PublicCertificateInner extends ProxyOnlyResource {
 
     /**
      * Get the publicCertificateLocation property: Public Certificate Location.
-     *
+     * 
      * @return the publicCertificateLocation value.
      */
     public PublicCertificateLocation publicCertificateLocation() {
@@ -72,7 +80,7 @@ public final class PublicCertificateInner extends ProxyOnlyResource {
 
     /**
      * Set the publicCertificateLocation property: Public Certificate Location.
-     *
+     * 
      * @param publicCertificateLocation the publicCertificateLocation value to set.
      * @return the PublicCertificateInner object itself.
      */
@@ -86,7 +94,7 @@ public final class PublicCertificateInner extends ProxyOnlyResource {
 
     /**
      * Get the thumbprint property: Certificate Thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -95,7 +103,7 @@ public final class PublicCertificateInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

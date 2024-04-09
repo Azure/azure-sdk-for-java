@@ -8,28 +8,24 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.PrivateLinkResourceListResult;
 import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class PrivateLinkResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkResourceListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"groupId\":\"vxieduugidyj\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"y\",\"name\":\"osvexcsonpclhoc\",\"type\":\"hslkevleggzf\"},{\"properties\":{\"groupId\":\"fmvfaxkffeiit\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"ez\",\"name\":\"v\",\"type\":\"hxmzsbbzoggig\"},{\"properties\":{\"groupId\":\"burvjxxjnspy\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"oenkouknvudwti\",\"name\":\"kbldngkpocipa\",\"type\":\"yxoegukgjnp\"},{\"properties\":{\"groupId\":\"gygev\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"yp\",\"name\":\"rbpizc\",\"type\":\"r\"}]}")
-                .toObject(PrivateLinkResourceListResult.class);
+        PrivateLinkResourceListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"groupId\":\"ovplw\",\"requiredMembers\":[\"vgyuguos\",\"mkfssxqukkfplgm\",\"sxnkjzkdeslpvlo\"],\"requiredZoneNames\":[\"yighxpk\"]},\"id\":\"zb\",\"name\":\"iuebbaumny\",\"type\":\"upedeojnabckhs\"},{\"properties\":{\"groupId\":\"psiebtfhvpes\",\"requiredMembers\":[\"krdqmh\",\"jdhtldwkyzxu\",\"tkncwsc\"],\"requiredZoneNames\":[\"lxotogtwrupq\",\"xvnmicykvceov\",\"ilovnot\",\"fj\"]},\"id\":\"njbkcnxdhbttkph\",\"name\":\"wpn\",\"type\":\"jtoqne\"}]}")
+            .toObject(PrivateLinkResourceListResult.class);
+        Assertions.assertEquals("yighxpk", model.value().get(0).requiredZoneNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkResourceListResult model =
-            new PrivateLinkResourceListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PrivateLinkResourceInner().withRequiredZoneNames(Arrays.asList()),
-                            new PrivateLinkResourceInner().withRequiredZoneNames(Arrays.asList()),
-                            new PrivateLinkResourceInner().withRequiredZoneNames(Arrays.asList()),
-                            new PrivateLinkResourceInner().withRequiredZoneNames(Arrays.asList())));
+        PrivateLinkResourceListResult model = new PrivateLinkResourceListResult()
+            .withValue(Arrays.asList(new PrivateLinkResourceInner().withRequiredZoneNames(Arrays.asList("yighxpk")),
+                new PrivateLinkResourceInner()
+                    .withRequiredZoneNames(Arrays.asList("lxotogtwrupq", "xvnmicykvceov", "ilovnot", "fj"))));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceListResult.class);
+        Assertions.assertEquals("yighxpk", model.value().get(0).requiredZoneNames().get(0));
     }
 }

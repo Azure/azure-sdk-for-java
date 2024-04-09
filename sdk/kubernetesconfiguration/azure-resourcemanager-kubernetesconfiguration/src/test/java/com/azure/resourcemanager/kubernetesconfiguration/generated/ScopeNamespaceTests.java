@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ScopeNamespaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScopeNamespace model =
-            BinaryData.fromString("{\"targetNamespace\":\"kdtmlxhekuk\"}").toObject(ScopeNamespace.class);
-        Assertions.assertEquals("kdtmlxhekuk", model.targetNamespace());
+        ScopeNamespace model = BinaryData.fromString("{\"targetNamespace\":\"rtfw\"}").toObject(ScopeNamespace.class);
+        Assertions.assertEquals("rtfw", model.targetNamespace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScopeNamespace model = new ScopeNamespace().withTargetNamespace("kdtmlxhekuk");
+        ScopeNamespace model = new ScopeNamespace().withTargetNamespace("rtfw");
         model = BinaryData.fromObject(model).toObject(ScopeNamespace.class);
-        Assertions.assertEquals("kdtmlxhekuk", model.targetNamespace());
+        Assertions.assertEquals("rtfw", model.targetNamespace());
     }
 }

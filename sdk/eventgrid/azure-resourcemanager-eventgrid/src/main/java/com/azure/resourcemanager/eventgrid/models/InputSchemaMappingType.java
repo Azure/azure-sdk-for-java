@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of the custom mapping. */
+/**
+ * Type of the custom mapping.
+ */
 public final class InputSchemaMappingType extends ExpandableStringEnum<InputSchemaMappingType> {
-    /** Static value Json for InputSchemaMappingType. */
+    /**
+     * Static value Json for InputSchemaMappingType.
+     */
     public static final InputSchemaMappingType JSON = fromString("Json");
 
     /**
      * Creates a new instance of InputSchemaMappingType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class InputSchemaMappingType extends ExpandableStringEnum<InputSche
 
     /**
      * Creates or finds a InputSchemaMappingType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding InputSchemaMappingType.
      */
@@ -35,7 +39,7 @@ public final class InputSchemaMappingType extends ExpandableStringEnum<InputSche
 
     /**
      * Gets known InputSchemaMappingType values.
-     *
+     * 
      * @return known InputSchemaMappingType values.
      */
     public static Collection<InputSchemaMappingType> values() {

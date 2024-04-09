@@ -65,11 +65,10 @@ public final class DatastoresClientImpl implements DatastoresClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ConnectedVMwareClien")
-    private interface DatastoresService {
+    public interface DatastoresService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/datastores/{datastoreName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/datastores/{datastoreName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -84,8 +83,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/datastores/{datastoreName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/datastores/{datastoreName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatastoreInner>> getByResourceGroup(
@@ -99,8 +97,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/datastores/{datastoreName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/datastores/{datastoreName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatastoreInner>> update(
@@ -115,8 +112,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/datastores/{datastoreName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/datastores/{datastoreName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -142,8 +138,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/datastores")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/datastores")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatastoresList>> listByResourceGroup(
@@ -317,6 +312,33 @@ public final class DatastoresClientImpl implements DatastoresClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of define the datastore.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<DatastoreInner>, DatastoreInner> beginCreateAsync(
+        String resourceGroupName, String datastoreName) {
+        final DatastoreInner body = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, datastoreName, body);
+        return this
+            .client
+            .<DatastoreInner, DatastoreInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DatastoreInner.class,
+                DatastoreInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Implements datastore PUT method.
+     *
+     * <p>Create Or Update datastore.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param datastoreName Name of the datastore.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -343,7 +365,6 @@ public final class DatastoresClientImpl implements DatastoresClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
-     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -351,8 +372,9 @@ public final class DatastoresClientImpl implements DatastoresClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatastoreInner>, DatastoreInner> beginCreate(
-        String resourceGroupName, String datastoreName, DatastoreInner body) {
-        return beginCreateAsync(resourceGroupName, datastoreName, body).getSyncPoller();
+        String resourceGroupName, String datastoreName) {
+        final DatastoreInner body = null;
+        return this.beginCreateAsync(resourceGroupName, datastoreName, body).getSyncPoller();
     }
 
     /**
@@ -372,7 +394,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatastoreInner>, DatastoreInner> beginCreate(
         String resourceGroupName, String datastoreName, DatastoreInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, datastoreName, body, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, datastoreName, body, context).getSyncPoller();
     }
 
     /**
@@ -435,24 +457,6 @@ public final class DatastoresClientImpl implements DatastoresClient {
         return beginCreateAsync(resourceGroupName, datastoreName, body, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements datastore PUT method.
-     *
-     * <p>Create Or Update datastore.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param datastoreName Name of the datastore.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the datastore.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatastoreInner create(String resourceGroupName, String datastoreName, DatastoreInner body) {
-        return createAsync(resourceGroupName, datastoreName, body).block();
     }
 
     /**
@@ -615,23 +619,6 @@ public final class DatastoresClientImpl implements DatastoresClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the datastore.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatastoreInner getByResourceGroup(String resourceGroupName, String datastoreName) {
-        return getByResourceGroupAsync(resourceGroupName, datastoreName).block();
-    }
-
-    /**
-     * Gets a datastore.
-     *
-     * <p>Implements datastore GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param datastoreName Name of the datastore.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -642,6 +629,23 @@ public final class DatastoresClientImpl implements DatastoresClient {
     public Response<DatastoreInner> getByResourceGroupWithResponse(
         String resourceGroupName, String datastoreName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, datastoreName, context).block();
+    }
+
+    /**
+     * Gets a datastore.
+     *
+     * <p>Implements datastore GET method.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param datastoreName Name of the datastore.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the datastore.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatastoreInner getByResourceGroup(String resourceGroupName, String datastoreName) {
+        return getByResourceGroupWithResponse(resourceGroupName, datastoreName, Context.NONE).getValue();
     }
 
     /**
@@ -759,25 +763,6 @@ public final class DatastoresClientImpl implements DatastoresClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
-     * @param body Resource properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the datastore on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatastoreInner> updateAsync(String resourceGroupName, String datastoreName, ResourcePatch body) {
-        return updateWithResponseAsync(resourceGroupName, datastoreName, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Updates a datastore.
-     *
-     * <p>API to update certain properties of the datastore resource.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param datastoreName Name of the datastore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -788,24 +773,6 @@ public final class DatastoresClientImpl implements DatastoresClient {
         final ResourcePatch body = null;
         return updateWithResponseAsync(resourceGroupName, datastoreName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Updates a datastore.
-     *
-     * <p>API to update certain properties of the datastore resource.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param datastoreName Name of the datastore.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the datastore.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatastoreInner update(String resourceGroupName, String datastoreName) {
-        final ResourcePatch body = null;
-        return updateAsync(resourceGroupName, datastoreName, body).block();
     }
 
     /**
@@ -826,6 +793,24 @@ public final class DatastoresClientImpl implements DatastoresClient {
     public Response<DatastoreInner> updateWithResponse(
         String resourceGroupName, String datastoreName, ResourcePatch body, Context context) {
         return updateWithResponseAsync(resourceGroupName, datastoreName, body, context).block();
+    }
+
+    /**
+     * Updates a datastore.
+     *
+     * <p>API to update certain properties of the datastore resource.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param datastoreName Name of the datastore.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the datastore.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatastoreInner update(String resourceGroupName, String datastoreName) {
+        final ResourcePatch body = null;
+        return updateWithResponse(resourceGroupName, datastoreName, body, Context.NONE).getValue();
     }
 
     /**
@@ -960,6 +945,28 @@ public final class DatastoresClientImpl implements DatastoresClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String datastoreName) {
+        final Boolean force = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, datastoreName, force);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Deletes an datastore.
+     *
+     * <p>Implements datastore DELETE method.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param datastoreName Name of the datastore.
      * @param force Whether force delete was specified.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -985,16 +992,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String datastoreName, Boolean force) {
-        return beginDeleteAsync(resourceGroupName, datastoreName, force).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String datastoreName) {
+        final Boolean force = null;
+        return this.beginDeleteAsync(resourceGroupName, datastoreName, force).getSyncPoller();
     }
 
     /**
@@ -1014,7 +1020,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String datastoreName, Boolean force, Context context) {
-        return beginDeleteAsync(resourceGroupName, datastoreName, force, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, datastoreName, force, context).getSyncPoller();
     }
 
     /**
@@ -1076,23 +1082,6 @@ public final class DatastoresClientImpl implements DatastoresClient {
         return beginDeleteAsync(resourceGroupName, datastoreName, force, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes an datastore.
-     *
-     * <p>Implements datastore DELETE method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param datastoreName Name of the datastore.
-     * @param force Whether force delete was specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String datastoreName, Boolean force) {
-        deleteAsync(resourceGroupName, datastoreName, force).block();
     }
 
     /**
@@ -1460,7 +1449,8 @@ public final class DatastoresClientImpl implements DatastoresClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1495,7 +1485,8 @@ public final class DatastoresClientImpl implements DatastoresClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1531,7 +1522,8 @@ public final class DatastoresClientImpl implements DatastoresClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1567,7 +1559,8 @@ public final class DatastoresClientImpl implements DatastoresClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

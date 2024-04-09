@@ -26,6 +26,7 @@ import org.springframework.util.Assert;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Optional;
 
 import static com.azure.spring.data.cosmos.Constants.ISO_8601_COMPATIBLE_DATE_PATTERN;
 
@@ -231,6 +232,8 @@ public class MappingCosmosConverter
                 .format(DateTimeFormatter.ofPattern(ISO_8601_COMPATIBLE_DATE_PATTERN));
         } else if (fromPropertyValue instanceof Enum) {
             fromPropertyValue = fromPropertyValue.toString();
+        } else if (fromPropertyValue instanceof Optional<?>) {
+            fromPropertyValue = ((Optional<?>) fromPropertyValue).get();
         }
 
         return fromPropertyValue;

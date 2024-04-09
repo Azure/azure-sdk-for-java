@@ -30,39 +30,26 @@ public final class LocationsListSupportedVirtualMachineSkusMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"wx\",\"familyName\":\"pevzhfst\",\"capabilities\":[{\"name\":\"ojujbyp\",\"value\":\"mc\"},{\"name\":\"hixbjxyfwnyl\",\"value\":\"ool\"}]}]}";
+        String responseStr
+            = "{\"value\":[{\"name\":\"fdlwg\",\"familyName\":\"tsbwtovvtgse\",\"capabilities\":[{\"name\":\"iufxqknpir\",\"value\":\"epttwqmsniff\"}],\"batchSupportEndOfLife\":\"2021-10-31T18:45:45Z\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        BatchManager manager =
-            BatchManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        BatchManager manager = BatchManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SupportedSku> response =
-            manager
-                .locations()
-                .listSupportedVirtualMachineSkus(
-                    "mjihyeozphv", 1018976472, "uyqncygupkvipmd", com.azure.core.util.Context.NONE);
+        PagedIterable<SupportedSku> response = manager.locations().listSupportedVirtualMachineSkus("ihwqknfdntwjchr",
+            1139414595, "oihxumwctondzjlu", com.azure.core.util.Context.NONE);
+
     }
 }

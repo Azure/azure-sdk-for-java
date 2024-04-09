@@ -72,7 +72,7 @@ public final class ValidationUtil {
                     throw logger.logExceptionAsError(
                         new IllegalArgumentException(
                             "Invalid tenant id provided. You can locate your tenant id by following the instructions"
-                                + " listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names"));
+                                + " listed here: https://learn.microsoft.com/partner-center/find-ids-and-domain-names"));
                 }
             }
         }

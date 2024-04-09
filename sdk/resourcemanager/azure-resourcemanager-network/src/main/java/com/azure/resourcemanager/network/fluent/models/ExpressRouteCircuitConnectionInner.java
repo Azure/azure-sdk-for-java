@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.Ipv6CircuitConnectionConfig;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Express Route Circuit Connection in an ExpressRouteCircuitPeering resource. */
+/**
+ * Express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
+ */
 @Fluent
 public final class ExpressRouteCircuitConnectionInner extends SubResource {
     /*
@@ -38,13 +40,15 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ExpressRouteCircuitConnectionInner class. */
+    /**
+     * Creates an instance of ExpressRouteCircuitConnectionInner class.
+     */
     public ExpressRouteCircuitConnectionInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the express route circuit connection.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ExpressRouteCircuitConnectionPropertiesFormat innerProperties() {
@@ -54,7 +58,7 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -64,7 +68,7 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the ExpressRouteCircuitConnectionInner object itself.
      */
@@ -75,7 +79,7 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -84,14 +88,16 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExpressRouteCircuitConnectionInner withId(String id) {
         super.withId(id);
@@ -101,7 +107,7 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     /**
      * Get the expressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of the
      * circuit initiating connection.
-     *
+     * 
      * @return the expressRouteCircuitPeering value.
      */
     public SubResource expressRouteCircuitPeering() {
@@ -111,7 +117,7 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     /**
      * Set the expressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of the
      * circuit initiating connection.
-     *
+     * 
      * @param expressRouteCircuitPeering the expressRouteCircuitPeering value to set.
      * @return the ExpressRouteCircuitConnectionInner object itself.
      */
@@ -126,7 +132,7 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     /**
      * Get the peerExpressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of
      * the peered circuit.
-     *
+     * 
      * @return the peerExpressRouteCircuitPeering value.
      */
     public SubResource peerExpressRouteCircuitPeering() {
@@ -136,12 +142,12 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     /**
      * Set the peerExpressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of
      * the peered circuit.
-     *
+     * 
      * @param peerExpressRouteCircuitPeering the peerExpressRouteCircuitPeering value to set.
      * @return the ExpressRouteCircuitConnectionInner object itself.
      */
-    public ExpressRouteCircuitConnectionInner withPeerExpressRouteCircuitPeering(
-        SubResource peerExpressRouteCircuitPeering) {
+    public ExpressRouteCircuitConnectionInner
+        withPeerExpressRouteCircuitPeering(SubResource peerExpressRouteCircuitPeering) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ExpressRouteCircuitConnectionPropertiesFormat();
         }
@@ -151,7 +157,7 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
 
     /**
      * Get the addressPrefix property: /29 IP address space to carve out Customer addresses for tunnels.
-     *
+     * 
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -160,7 +166,7 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
 
     /**
      * Set the addressPrefix property: /29 IP address space to carve out Customer addresses for tunnels.
-     *
+     * 
      * @param addressPrefix the addressPrefix value to set.
      * @return the ExpressRouteCircuitConnectionInner object itself.
      */
@@ -174,7 +180,7 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
 
     /**
      * Get the authorizationKey property: The authorization key.
-     *
+     * 
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -183,7 +189,7 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
 
     /**
      * Set the authorizationKey property: The authorization key.
-     *
+     * 
      * @param authorizationKey the authorizationKey value to set.
      * @return the ExpressRouteCircuitConnectionInner object itself.
      */
@@ -198,7 +204,7 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     /**
      * Get the ipv6CircuitConnectionConfig property: IPv6 Address PrefixProperties of the express route circuit
      * connection.
-     *
+     * 
      * @return the ipv6CircuitConnectionConfig value.
      */
     public Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig() {
@@ -208,12 +214,12 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     /**
      * Set the ipv6CircuitConnectionConfig property: IPv6 Address PrefixProperties of the express route circuit
      * connection.
-     *
+     * 
      * @param ipv6CircuitConnectionConfig the ipv6CircuitConnectionConfig value to set.
      * @return the ExpressRouteCircuitConnectionInner object itself.
      */
-    public ExpressRouteCircuitConnectionInner withIpv6CircuitConnectionConfig(
-        Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig) {
+    public ExpressRouteCircuitConnectionInner
+        withIpv6CircuitConnectionConfig(Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ExpressRouteCircuitConnectionPropertiesFormat();
         }
@@ -223,7 +229,7 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
 
     /**
      * Get the circuitConnectionStatus property: Express Route Circuit connection state.
-     *
+     * 
      * @return the circuitConnectionStatus value.
      */
     public CircuitConnectionStatus circuitConnectionStatus() {
@@ -232,7 +238,7 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the express route circuit connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -241,7 +247,7 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -13,15 +13,19 @@ import java.util.Collection;
  * the volume.
  */
 public final class FileAccessLogs extends ExpandableStringEnum<FileAccessLogs> {
-    /** Static value Enabled for FileAccessLogs. */
+    /**
+     * Static value Enabled for FileAccessLogs.
+     */
     public static final FileAccessLogs ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for FileAccessLogs. */
+    /**
+     * Static value Disabled for FileAccessLogs.
+     */
     public static final FileAccessLogs DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of FileAccessLogs value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class FileAccessLogs extends ExpandableStringEnum<FileAccessLogs> {
 
     /**
      * Creates or finds a FileAccessLogs from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FileAccessLogs.
      */
@@ -41,7 +45,7 @@ public final class FileAccessLogs extends ExpandableStringEnum<FileAccessLogs> {
 
     /**
      * Gets known FileAccessLogs values.
-     *
+     * 
      * @return known FileAccessLogs values.
      */
     public static Collection<FileAccessLogs> values() {

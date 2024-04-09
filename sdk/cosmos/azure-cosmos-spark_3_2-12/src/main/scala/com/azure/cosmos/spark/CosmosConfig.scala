@@ -6,8 +6,8 @@ package com.azure.cosmos.spark
 import com.azure.core.management.AzureEnvironment
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants
 import com.azure.cosmos.implementation.routing.LocationHelper
-import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
-import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosParameterizedQuery, DedicatedGatewayRequestOptions, FeedRange}
+import com.azure.cosmos.implementation.{Configs, SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosContainerIdentity, CosmosParameterizedQuery, DedicatedGatewayRequestOptions, FeedRange, PartitionKeyDefinition}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
 import com.azure.cosmos.spark.CosmosAuthType.CosmosAuthType
@@ -59,6 +59,9 @@ private[spark] object CosmosConfigNames {
   val DisableTcpConnectionEndpointRediscovery = "spark.cosmos.disableTcpConnectionEndpointRediscovery"
   val ApplicationName = "spark.cosmos.applicationName"
   val UseGatewayMode = "spark.cosmos.useGatewayMode"
+  val ProactiveConnectionInitialization = "spark.cosmos.proactiveConnectionInitialization"
+  val ProactiveConnectionInitializationDurationInSeconds = "spark.cosmos.proactiveConnectionInitializationDurationInSeconds"
+  val GatewayConnectionPoolSize = "spark.cosmos.http.connectionPoolSize"
   val AllowInvalidJsonWithDuplicateJsonProperties = "spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties"
   val ReadCustomQuery = "spark.cosmos.read.customQuery"
   val ReadMaxItemCount = "spark.cosmos.read.maxItemCount"
@@ -74,12 +77,15 @@ private[spark] object CosmosConfigNames {
   val ReadPartitioningStrategy = "spark.cosmos.read.partitioning.strategy"
   val ReadPartitioningTargetedCount = "spark.cosmos.partitioning.targetedCount"
   val ReadPartitioningFeedRangeFilter = "spark.cosmos.partitioning.feedRangeFilter"
+  val ReadRuntimeFilteringEnabled = "spark.cosmos.read.runtimeFiltering.enabled"
+  val ReadManyFilteringEnabled = "spark.cosmos.read.readManyFiltering.enabled"
   val ViewsRepositoryPath = "spark.cosmos.views.repositoryPath"
   val DiagnosticsMode = "spark.cosmos.diagnostics"
   val ClientTelemetryEnabled = "spark.cosmos.clientTelemetry.enabled"
   val ClientTelemetryEndpoint = "spark.cosmos.clientTelemetry.endpoint"
   val WriteBulkEnabled = "spark.cosmos.write.bulk.enabled"
   val WriteBulkMaxPendingOperations = "spark.cosmos.write.bulk.maxPendingOperations"
+  val WriteBulkMaxBatchSize = "spark.cosmos.write.bulk.maxBatchSize"
   val WriteBulkMaxConcurrentPartitions = "spark.cosmos.write.bulk.maxConcurrentCosmosPartitions"
   val WriteBulkPayloadSizeInBytes = "spark.cosmos.write.bulk.targetedPayloadSizeInBytes"
   val WriteBulkInitialBatchSize = "spark.cosmos.write.bulk.initialBatchSize"
@@ -145,6 +151,9 @@ private[spark] object CosmosConfigNames {
     DisableTcpConnectionEndpointRediscovery,
     ApplicationName,
     UseGatewayMode,
+    ProactiveConnectionInitialization,
+    ProactiveConnectionInitializationDurationInSeconds,
+    GatewayConnectionPoolSize,
     AllowInvalidJsonWithDuplicateJsonProperties,
     ReadCustomQuery,
     ReadForceEventualConsistency,
@@ -160,6 +169,8 @@ private[spark] object CosmosConfigNames {
     ReadPartitioningStrategy,
     ReadPartitioningTargetedCount,
     ReadPartitioningFeedRangeFilter,
+    ReadRuntimeFilteringEnabled,
+    ReadManyFilteringEnabled,
     ViewsRepositoryPath,
     DiagnosticsMode,
     ClientTelemetryEnabled,
@@ -169,6 +180,7 @@ private[spark] object CosmosConfigNames {
     WriteBulkMaxConcurrentPartitions,
     WriteBulkPayloadSizeInBytes,
     WriteBulkInitialBatchSize,
+    WriteBulkMaxBatchSize,
     WritePointMaxConcurrency,
     WritePatchDefaultOperationType,
     WritePatchColumnConfigs,
@@ -316,15 +328,18 @@ private case class CosmosAccountConfig(endpoint: String,
                                        accountName: String,
                                        applicationName: Option[String],
                                        useGatewayMode: Boolean,
+                                       proactiveConnectionInitialization: Option[String],
+                                       proactiveConnectionInitializationDurationInSeconds: Int,
+                                       httpConnectionPoolSize: Int,
                                        disableTcpConnectionEndpointRediscovery: Boolean,
                                        preferredRegionsList: Option[Array[String]],
                                        subscriptionId: Option[String],
                                        tenantId: Option[String],
                                        resourceGroupName: Option[String],
-                                       azureEnvironment: AzureEnvironment)
+                                       azureEnvironmentEndpoints: java.util.Map[String, String])
 
 private object CosmosAccountConfig {
-  private val DefaultAzureEnvironmentType = AzureEnvironmentType.Azure
+  private val DefaultAzureEnvironmentEndpoints = AzureEnvironmentType.Azure
 
   private val CosmosAccountEndpointUri = CosmosConfigEntry[String](key = CosmosConfigNames.AccountEndpoint,
     mandatory = true,
@@ -393,6 +408,33 @@ private object CosmosAccountConfig {
     parseFromStringFunction = useGatewayMode => useGatewayMode.toBoolean,
     helpMessage = "Use gateway mode for the client operations")
 
+  private val ProactiveConnectionInitialization = CosmosConfigEntry[String](key = CosmosConfigNames.ProactiveConnectionInitialization,
+    mandatory = false,
+    defaultValue = None,
+    parseFromStringFunction = proactiveConnectionInitializationText => {
+      // force parsing and validation of config string. CosmosContainerIdentity is not serializable
+      // so delaying the actual conversion
+      parseProactiveConnectionInitConfigs(proactiveConnectionInitializationText)
+      proactiveConnectionInitializationText
+    },
+    helpMessage = "Enable proactive connection initialization. This will result in keeping warmed-up connections "
+      + "to each replica. Config should be formatted like "
+      + "`DBName1/ContainerName1;DBName2/ContainerName2;DBName1/ContainerName3`")
+
+  private val ProactiveConnectionInitializationDurationInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.ProactiveConnectionInitializationDurationInSeconds,
+    mandatory = false,
+    defaultValue = Some(120),
+    parseFromStringFunction = secondsText => secondsText.toInt,
+    helpMessage = "The duration in seconds that Cosmos client initialization should wait and allow connections "
+      + "being warmed-up aggressively. After this duration the remaining connections will be slowly opened "
+      + "on a single thread in the background.")
+
+  private val HttpConnectionPoolSize = CosmosConfigEntry[Integer](key = CosmosConfigNames.GatewayConnectionPoolSize,
+    mandatory = false,
+    defaultValue = Some(Configs.getDefaultHttpPoolSize),
+    parseFromStringFunction = httpPoolSizeValue => httpPoolSizeValue.toInt,
+    helpMessage = "Gateway HTTP connection pool size")
+
   private val DisableTcpConnectionEndpointRediscovery =
     CosmosConfigEntry[Boolean](
       key = CosmosConfigNames.DisableTcpConnectionEndpointRediscovery,
@@ -407,34 +449,52 @@ private object CosmosAccountConfig {
       defaultValue = None,
       mandatory = false,
       parseFromStringFunction = subscriptionId => subscriptionId,
-      helpMessage = "The subscriptionId of the CosmosDB account. Required for `ServicePrinciple` authentication.")
+      helpMessage = "The subscriptionId of the CosmosDB account. Required for `ServicePrincipal` authentication.")
 
   private val TenantId = CosmosConfigEntry[String](key = CosmosConfigNames.TenantId,
       defaultValue = None,
       mandatory = false,
       parseFromStringFunction = tenantId => tenantId,
-      helpMessage = "The tenantId of the CosmosDB account. Required for `ServicePrinciple` authentication.")
+      helpMessage = "The tenantId of the CosmosDB account. Required for `ServicePrincipal` authentication.")
 
   private val ResourceGroupName = CosmosConfigEntry[String](key = CosmosConfigNames.ResourceGroupName,
       defaultValue = None,
       mandatory = false,
       parseFromStringFunction = resourceGroupName => resourceGroupName,
-      helpMessage = "The resource group of the CosmosDB account. Required for `ServicePrinciple` authentication.")
+      helpMessage = "The resource group of the CosmosDB account. Required for `ServicePrincipal` authentication.")
 
-  private val AzureEnvironmentTypeEnum = CosmosConfigEntry[AzureEnvironment](key = CosmosConfigNames.AzureEnvironment,
-      defaultValue = Option.apply(AzureEnvironment.AZURE),
+  private val AzureEnvironmentTypeEnum = CosmosConfigEntry[java.util.Map[String, String]](key = CosmosConfigNames.AzureEnvironment,
+      defaultValue = Option.apply(AzureEnvironment.AZURE.getEndpoints),
       mandatory = false,
       parseFromStringFunction = azureEnvironmentTypeAsString => {
           val azureEnvironmentType = CosmosConfigEntry.parseEnumeration(azureEnvironmentTypeAsString, AzureEnvironmentType)
           azureEnvironmentType match {
-              case AzureEnvironmentType.Azure => AzureEnvironment.AZURE
-              case AzureEnvironmentType.AzureChina => AzureEnvironment.AZURE_CHINA
-              case AzureEnvironmentType.AzureGermany => AzureEnvironment.AZURE_GERMANY
-              case AzureEnvironmentType.AzureUsGovernment => AzureEnvironment.AZURE_US_GOVERNMENT
+              case AzureEnvironmentType.Azure => AzureEnvironment.AZURE.getEndpoints
+              case AzureEnvironmentType.AzureChina => AzureEnvironment.AZURE_CHINA.getEndpoints
+              case AzureEnvironmentType.AzureGermany => AzureEnvironment.AZURE_GERMANY.getEndpoints
+              case AzureEnvironmentType.AzureUsGovernment => AzureEnvironment.AZURE_US_GOVERNMENT.getEndpoints
               case _ => throw new IllegalArgumentException(s"Azure environment type ${azureEnvironmentType} is not supported")
           }
       },
       helpMessage = "The azure environment of the CosmosDB account: `Azure`, `AzureChina`, `AzureUsGovernment`, `AzureGermany`.")
+
+  private[spark] def parseProactiveConnectionInitConfigs(config: String): java.util.List[CosmosContainerIdentity] = {
+    val result = new java.util.ArrayList[CosmosContainerIdentity]
+    try {
+      val identities = config.split(";")
+      for (identity: String <- identities) {
+        val parts = identity.split("/")
+        result.add(new CosmosContainerIdentity(parts.apply(0).trim, parts.apply(1).trim))
+      }
+
+      result
+    }
+    catch {
+      case e: Exception => throw new IllegalArgumentException(
+        s"Invalid proactive connection initialization config $config. The string must be a list of containers to "
+          + "be warmed-up in the format of `DBName1/ContainerName1;DBName2/ContainerName2;DBName1/ContainerName3`")
+    }
+  }
 
   def parseCosmosAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
     val endpointOpt = CosmosConfigEntry.parse(cfg, CosmosAccountEndpointUri)
@@ -442,6 +502,9 @@ private object CosmosAccountConfig {
     val accountName = CosmosConfigEntry.parse(cfg, CosmosAccountName)
     val applicationName = CosmosConfigEntry.parse(cfg, ApplicationName)
     val useGatewayMode = CosmosConfigEntry.parse(cfg, UseGatewayMode)
+    val proactiveConnectionInitialization = CosmosConfigEntry.parse(cfg, ProactiveConnectionInitialization)
+    val proactiveConnectionInitializationDurationInSeconds = CosmosConfigEntry.parse(cfg, ProactiveConnectionInitializationDurationInSeconds)
+    val httpConnectionPoolSize = CosmosConfigEntry.parse(cfg, HttpConnectionPoolSize)
     val subscriptionIdOpt = CosmosConfigEntry.parse(cfg, SubscriptionId)
     val resourceGroupNameOpt = CosmosConfigEntry.parse(cfg, ResourceGroupName)
     val tenantIdOpt = CosmosConfigEntry.parse(cfg, TenantId)
@@ -495,6 +558,9 @@ private object CosmosAccountConfig {
       accountName.get,
       applicationName,
       useGatewayMode.get,
+      proactiveConnectionInitialization,
+      proactiveConnectionInitializationDurationInSeconds.get,
+      httpConnectionPoolSize.get,
       disableTcpConnectionEndpointRediscovery.get,
       preferredRegionsListOpt,
       subscriptionIdOpt,
@@ -506,7 +572,7 @@ private object CosmosAccountConfig {
 
 object CosmosAuthType extends Enumeration {
     type CosmosAuthType = Value
-    val MasterKey, ServicePrinciple = Value
+    val MasterKey, ServicePrinciple, ServicePrincipal = Value
 }
 
 private object AzureEnvironmentType extends Enumeration {
@@ -537,25 +603,25 @@ private object CosmosAuthConfig {
         parseFromStringFunction = authTypeAsString =>
             CosmosConfigEntry.parseEnumeration(authTypeAsString, CosmosAuthType),
         helpMessage = "There are two auth types are supported currently: " +
-            "`MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), `ServicePrinciple`")
+            "`MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), `ServicePrincipal`")
 
     private val TenantId = CosmosConfigEntry[String](key = CosmosConfigNames.TenantId,
         defaultValue = None,
         mandatory = false,
         parseFromStringFunction = tenantId => tenantId,
-        helpMessage = "The tenantId of the CosmosDB account. Required for `ServicePrinciple` authentication.")
+        helpMessage = "The tenantId of the CosmosDB account. Required for `ServicePrincipal` authentication.")
 
     private val ClientId = CosmosConfigEntry[String](key = CosmosConfigNames.ClientId,
         defaultValue = None,
         mandatory = false,
         parseFromStringFunction = clientId => clientId,
-        helpMessage = "The clientId/ApplicationId of the service principle. Required for `ServicePrinciple` authentication. ")
+        helpMessage = "The clientId/ApplicationId of the service principal. Required for `ServicePrincipal` authentication. ")
 
     private val ClientSecret = CosmosConfigEntry[String](key = CosmosConfigNames.ClientSecret,
         defaultValue = None,
         mandatory = false,
         parseFromStringFunction = clientSecret => clientSecret,
-        helpMessage = "The client secret/password of the service principle. Required for `ServicePrinciple` authentication. ")
+        helpMessage = "The client secret/password of the service principal. Required for `ServicePrincipal` authentication. ")
 
     def parseCosmosAuthConfig(cfg: Map[String, String]): CosmosAuthConfig = {
         val authType = CosmosConfigEntry.parse(cfg, AuthenticationType)
@@ -588,7 +654,9 @@ private case class CosmosReadConfig(forceEventualConsistency: Boolean,
                                     prefetchBufferSize: Int,
                                     dedicatedGatewayRequestOptions: DedicatedGatewayRequestOptions,
                                     customQuery: Option[CosmosParameterizedQuery],
-                                    throughputControlConfig: Option[CosmosThroughputControlConfig] = None)
+                                    throughputControlConfig: Option[CosmosThroughputControlConfig] = None,
+                                    runtimeFilteringEnabled: Boolean,
+                                    readManyFilteringConfig: CosmosReadManyFilteringConfig)
 
 private object SchemaConversionModes extends Enumeration {
   type SchemaConversionMode = Value
@@ -659,6 +727,14 @@ private object CosmosReadConfig {
       "entry."
   )
 
+  private val ReadRuntimeFilteringEnabled = CosmosConfigEntry[Boolean](
+    key = CosmosConfigNames.ReadRuntimeFilteringEnabled,
+    mandatory = false,
+    defaultValue = Some(true),
+    parseFromStringFunction = readRuntimeFilteringEnabled => readRuntimeFilteringEnabled.toBoolean,
+    helpMessage = " Indicates whether dynamic partition pruning filters will be pushed down when applicable."
+  )
+
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
     val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
     val jsonSchemaConversionMode = CosmosConfigEntry.parse(cfg, JsonSchemaConversion)
@@ -677,6 +753,8 @@ private object CosmosReadConfig {
     }
 
     val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(cfg)
+    val runtimeFilteringEnabled = CosmosConfigEntry.parse(cfg, ReadRuntimeFilteringEnabled)
+    val readManyFilteringConfig = CosmosReadManyFilteringConfig.parseCosmosReadManyFilterConfig(cfg)
 
     CosmosReadConfig(
       forceEventualConsistency.get,
@@ -695,7 +773,9 @@ private object CosmosReadConfig {
       ),
       dedicatedGatewayRequestOptions,
       customQuery,
-      throughputControlConfigOpt)
+      throughputControlConfigOpt,
+      runtimeFilteringEnabled.get,
+      readManyFilteringConfig)
   }
 }
 
@@ -823,7 +903,8 @@ private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
                                      patchConfigs: Option[CosmosPatchConfigs] = None,
                                      throughputControlConfig: Option[CosmosThroughputControlConfig] = None,
                                      maxMicroBatchPayloadSizeInBytes: Option[Int] = None,
-                                     initialMicroBatchSize: Option[Int] = None)
+                                     initialMicroBatchSize: Option[Int] = None,
+                                     maxMicroBatchSize: Option[Int] = None)
 
 private object CosmosWriteConfig {
   private val DefaultMaxRetryCount = 10
@@ -853,6 +934,17 @@ private object CosmosWriteConfig {
       "size is getting automatically tuned based on the throttling rate. By default the " +
       "initial micro batch size is 100. Reduce this when you want to avoid that the first few requests consume " +
       "too many RUs.")
+
+  private val maxMicroBatchSize = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteBulkMaxBatchSize,
+    defaultValue = Option.apply(BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST),
+    mandatory = false,
+    parseFromStringFunction = maxBatchSizeString => Math.min(maxBatchSizeString.toInt, BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST),
+    helpMessage = "Cosmos DB max bulk micro batch size - a micro batch will be flushed to the backend " +
+      "when the number of documents enqueued exceeds this size - or the target payload size is met. The micro batch " +
+      "size is getting automatically tuned based on the throttling rate. By default the " +
+      "max micro batch size is 100. Reduce this when you want to avoid that requests consume " +
+      "too many RUs and you cannot enable thoughput control. NOTE: using throuhgput control is preferred and will." +
+      "result in better throughput while still limiting the RU/s used.")
 
   private val bulkMaxPendingOperations = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteBulkMaxPendingOperations,
     mandatory = false,
@@ -1066,6 +1158,7 @@ private object CosmosWriteConfig {
     val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(cfg)
     val microBatchPayloadSizeInBytesOpt = CosmosConfigEntry.parse(cfg, microBatchPayloadSizeInBytes)
     val initialBatchSizeOpt = CosmosConfigEntry.parse(cfg, initialMicroBatchSize)
+    val maxBatchSizeOpt = CosmosConfigEntry.parse(cfg, maxMicroBatchSize)
 
     assert(bulkEnabledOpt.isDefined)
 
@@ -1095,7 +1188,8 @@ private object CosmosWriteConfig {
       patchConfigs = patchConfigsOpt,
       throughputControlConfig = throughputControlConfigOpt,
       maxMicroBatchPayloadSizeInBytes = microBatchPayloadSizeInBytesOpt,
-      initialMicroBatchSize = initialBatchSizeOpt)
+      initialMicroBatchSize = initialBatchSizeOpt,
+      maxMicroBatchSize = maxBatchSizeOpt)
   }
 
   def parsePatchColumnConfigs(cfg: Map[String, String], inputSchema: StructType): TrieMap[String, CosmosPatchColumnConfig] = {
@@ -1244,6 +1338,43 @@ private object CosmosContainerConfig {
     val containerOpt = containerName.getOrElse(CosmosConfigEntry.parse(cfg, containerNameSupplier).get)
 
     CosmosContainerConfig(databaseOpt, containerOpt)
+  }
+}
+
+protected case class CosmosReadManyFilteringConfig(readManyFilteringEnabled: Boolean,
+                                                   readManyFilterProperty: String)
+
+private object CosmosReadManyFilteringConfig {
+  // For now,we use a hardcoded name, if there are requirements to make it more dynamic, can open it to be configurable
+  private val defaultReadManyFilterProperty = CosmosConstants.Properties.ItemIdentity
+
+  private val readManyFilteringEnabled = CosmosConfigEntry[Boolean](
+    key = CosmosConfigNames.ReadManyFilteringEnabled,
+    mandatory = false,
+    defaultValue = Some(false),
+    parseFromStringFunction = readManyFilteringEnabled => readManyFilteringEnabled.toBoolean,
+    helpMessage = "Indicates whether use readMany instead of query when applicable. " +
+      "When enabled, if there is a filter based on the readMany filtering property, readMany will be used internally. " +
+      "For containers with `id` being the partitionKey, the readManyFiltering property will be `id`, else it will be `_itemIdentity`. " +
+      "And can use udf `GetCosmosItemIdentityValue` to compute the `_itemIdentity` column. " +
+      "GetCosmosItemIdentityValue(id, pk) or GetCosmosItemIdentityValue(id, array(pk1, pk2, pk3)) for containers with subpartitions. ")
+
+  def parseCosmosReadManyFilterConfig(cfg: Map[String, String]): CosmosReadManyFilteringConfig = {
+    val cosmosReadManyFilteringEnabled = CosmosConfigEntry.parse(cfg, readManyFilteringEnabled)
+    CosmosReadManyFilteringConfig(cosmosReadManyFilteringEnabled.get, defaultReadManyFilterProperty)
+  }
+
+  def getEffectiveReadManyFilteringConfig(
+                                           readManyFilteringConfig: CosmosReadManyFilteringConfig,
+                                           partitionKeyDefinition: PartitionKeyDefinition): CosmosReadManyFilteringConfig = {
+
+    if (partitionKeyDefinition.getPaths.size() == 1
+      && partitionKeyDefinition.getPaths.get(0).equals(s"/${CosmosConstants.Properties.Id}")) {
+      // id is the partition key as well, switch to use id as the readMany filtering property
+      CosmosReadManyFilteringConfig(readManyFilteringConfig.readManyFilteringEnabled, CosmosConstants.Properties.Id)
+    } else {
+      readManyFilteringConfig
+    }
   }
 }
 
@@ -1655,12 +1786,27 @@ private object CosmosThroughputControlConfig {
             val globalControlItemExpireInterval = CosmosConfigEntry.parse(cfg, globalControlItemExpireIntervalSupplier)
             val globalControlUseDedicatedContainer = CosmosConfigEntry.parse(cfg, globalControlUseDedicatedContainerSupplier)
 
+            if (groupName.isEmpty) {
+              throw new IllegalArgumentException(
+                s"Configuration option '${CosmosConfigNames.ThroughputControlName}' must not be empty.")
+            }
             assert(groupName.isDefined)
+
+            if (globalControlUseDedicatedContainer.isEmpty) {
+              throw new IllegalArgumentException(
+                s"Configuration option '${CosmosConfigNames.ThroughputControlGlobalControlUseDedicatedContainer}' must not be empty.")
+            }
             assert(globalControlUseDedicatedContainer.isDefined)
 
             if (globalControlUseDedicatedContainer.get) {
-                assert(globalControlDatabase.isDefined)
-                assert(globalControlContainer.isDefined)
+              if (globalControlDatabase.isEmpty || globalControlContainer.isEmpty) {
+                throw new IllegalArgumentException(
+                  s"Configuration options '${CosmosConfigNames.ThroughputControlGlobalControlDatabase}' and " +
+                    s"'${CosmosConfigNames.ThroughputControlGlobalControlContainer}' must not be empty if " +
+                    s" option '${CosmosConfigNames.ThroughputControlGlobalControlUseDedicatedContainer}' is true.")
+              }
+              assert(globalControlDatabase.isDefined)
+              assert(globalControlContainer.isDefined)
             }
 
             Some(CosmosThroughputControlConfig(

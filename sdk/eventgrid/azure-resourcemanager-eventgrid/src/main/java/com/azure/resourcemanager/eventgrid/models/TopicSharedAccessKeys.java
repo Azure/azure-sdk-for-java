@@ -6,25 +6,27 @@ package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.resourcemanager.eventgrid.fluent.models.TopicSharedAccessKeysInner;
 
-/** An immutable client-side representation of TopicSharedAccessKeys. */
+/**
+ * An immutable client-side representation of TopicSharedAccessKeys.
+ */
 public interface TopicSharedAccessKeys {
     /**
      * Gets the key1 property: Shared access key1 for the topic.
-     *
+     * 
      * @return the key1 value.
      */
     String key1();
 
     /**
      * Gets the key2 property: Shared access key2 for the topic.
-     *
+     * 
      * @return the key2 value.
      */
     String key2();
 
     /**
      * Gets the inner com.azure.resourcemanager.eventgrid.fluent.models.TopicSharedAccessKeysInner object.
-     *
+     * 
      * @return the inner object.
      */
     TopicSharedAccessKeysInner innerModel();

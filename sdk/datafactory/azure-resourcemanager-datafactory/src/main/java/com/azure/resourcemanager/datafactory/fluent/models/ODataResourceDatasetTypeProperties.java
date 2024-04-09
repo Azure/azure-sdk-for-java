@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** OData dataset properties. */
+/**
+ * OData dataset properties.
+ */
 @Fluent
 public final class ODataResourceDatasetTypeProperties {
     /*
@@ -16,13 +18,15 @@ public final class ODataResourceDatasetTypeProperties {
     @JsonProperty(value = "path")
     private Object path;
 
-    /** Creates an instance of ODataResourceDatasetTypeProperties class. */
+    /**
+     * Creates an instance of ODataResourceDatasetTypeProperties class.
+     */
     public ODataResourceDatasetTypeProperties() {
     }
 
     /**
      * Get the path property: The OData resource path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the path value.
      */
     public Object path() {
@@ -31,7 +35,7 @@ public final class ODataResourceDatasetTypeProperties {
 
     /**
      * Set the path property: The OData resource path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param path the path value to set.
      * @return the ODataResourceDatasetTypeProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class ODataResourceDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

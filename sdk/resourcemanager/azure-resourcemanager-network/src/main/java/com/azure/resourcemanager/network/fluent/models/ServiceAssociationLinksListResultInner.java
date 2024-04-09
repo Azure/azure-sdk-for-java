@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.ServiceAssociationLink;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ServiceAssociationLinks_List operation. */
+/**
+ * Response for ServiceAssociationLinks_List operation.
+ */
 @Fluent
 public final class ServiceAssociationLinksListResultInner {
     /*
@@ -24,13 +26,15 @@ public final class ServiceAssociationLinksListResultInner {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ServiceAssociationLinksListResultInner class. */
+    /**
+     * Creates an instance of ServiceAssociationLinksListResultInner class.
+     */
     public ServiceAssociationLinksListResultInner() {
     }
 
     /**
      * Get the value property: The service association links in a subnet.
-     *
+     * 
      * @return the value value.
      */
     public List<ServiceAssociationLink> value() {
@@ -39,7 +43,7 @@ public final class ServiceAssociationLinksListResultInner {
 
     /**
      * Set the value property: The service association links in a subnet.
-     *
+     * 
      * @param value the value value to set.
      * @return the ServiceAssociationLinksListResultInner object itself.
      */
@@ -50,7 +54,7 @@ public final class ServiceAssociationLinksListResultInner {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ServiceAssociationLinksListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

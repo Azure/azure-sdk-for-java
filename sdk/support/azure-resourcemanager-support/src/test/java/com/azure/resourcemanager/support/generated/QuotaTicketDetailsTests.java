@@ -13,33 +13,27 @@ import org.junit.jupiter.api.Assertions;
 public final class QuotaTicketDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaTicketDetails model =
-            BinaryData
-                .fromString(
-                    "{\"quotaChangeRequestSubType\":\"qgtz\",\"quotaChangeRequestVersion\":\"pnqbqqwxrjfe\",\"quotaChangeRequests\":[{\"region\":\"wsubisnja\",\"payload\":\"mngnzscxaqw\"},{\"region\":\"chcbonqvpkvlrxnj\",\"payload\":\"seiphe\"},{\"region\":\"lokeyy\",\"payload\":\"nj\"}]}")
-                .toObject(QuotaTicketDetails.class);
-        Assertions.assertEquals("qgtz", model.quotaChangeRequestSubType());
-        Assertions.assertEquals("pnqbqqwxrjfe", model.quotaChangeRequestVersion());
-        Assertions.assertEquals("wsubisnja", model.quotaChangeRequests().get(0).region());
-        Assertions.assertEquals("mngnzscxaqw", model.quotaChangeRequests().get(0).payload());
+        QuotaTicketDetails model = BinaryData.fromString(
+            "{\"quotaChangeRequestSubType\":\"vasrruvwb\",\"quotaChangeRequestVersion\":\"qfsubcgjbirx\",\"quotaChangeRequests\":[{\"region\":\"srfbjfdtwss\",\"payload\":\"ftpvjzbexil\"},{\"region\":\"nfqqnvwp\",\"payload\":\"taruoujmkcj\"},{\"region\":\"qytjrybnwjewgd\",\"payload\":\"ervnaenqpehi\"},{\"region\":\"oygmift\",\"payload\":\"zdnds\"}]}")
+            .toObject(QuotaTicketDetails.class);
+        Assertions.assertEquals("vasrruvwb", model.quotaChangeRequestSubType());
+        Assertions.assertEquals("qfsubcgjbirx", model.quotaChangeRequestVersion());
+        Assertions.assertEquals("srfbjfdtwss", model.quotaChangeRequests().get(0).region());
+        Assertions.assertEquals("ftpvjzbexil", model.quotaChangeRequests().get(0).payload());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaTicketDetails model =
-            new QuotaTicketDetails()
-                .withQuotaChangeRequestSubType("qgtz")
-                .withQuotaChangeRequestVersion("pnqbqqwxrjfe")
-                .withQuotaChangeRequests(
-                    Arrays
-                        .asList(
-                            new QuotaChangeRequest().withRegion("wsubisnja").withPayload("mngnzscxaqw"),
-                            new QuotaChangeRequest().withRegion("chcbonqvpkvlrxnj").withPayload("seiphe"),
-                            new QuotaChangeRequest().withRegion("lokeyy").withPayload("nj")));
+        QuotaTicketDetails model = new QuotaTicketDetails().withQuotaChangeRequestSubType("vasrruvwb")
+            .withQuotaChangeRequestVersion("qfsubcgjbirx").withQuotaChangeRequests(
+                Arrays.asList(new QuotaChangeRequest().withRegion("srfbjfdtwss").withPayload("ftpvjzbexil"),
+                    new QuotaChangeRequest().withRegion("nfqqnvwp").withPayload("taruoujmkcj"),
+                    new QuotaChangeRequest().withRegion("qytjrybnwjewgd").withPayload("ervnaenqpehi"),
+                    new QuotaChangeRequest().withRegion("oygmift").withPayload("zdnds")));
         model = BinaryData.fromObject(model).toObject(QuotaTicketDetails.class);
-        Assertions.assertEquals("qgtz", model.quotaChangeRequestSubType());
-        Assertions.assertEquals("pnqbqqwxrjfe", model.quotaChangeRequestVersion());
-        Assertions.assertEquals("wsubisnja", model.quotaChangeRequests().get(0).region());
-        Assertions.assertEquals("mngnzscxaqw", model.quotaChangeRequests().get(0).payload());
+        Assertions.assertEquals("vasrruvwb", model.quotaChangeRequestSubType());
+        Assertions.assertEquals("qfsubcgjbirx", model.quotaChangeRequestVersion());
+        Assertions.assertEquals("srfbjfdtwss", model.quotaChangeRequests().get(0).region());
+        Assertions.assertEquals("ftpvjzbexil", model.quotaChangeRequests().get(0).payload());
     }
 }

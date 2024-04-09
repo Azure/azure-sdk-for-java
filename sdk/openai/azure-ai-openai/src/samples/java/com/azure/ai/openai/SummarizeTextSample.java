@@ -49,5 +49,4 @@ public class SummarizeTextSample {
         // .subscribe() will turn this into a synchronous call.
         TimeUnit.SECONDS.sleep(10);
     }
-
 }

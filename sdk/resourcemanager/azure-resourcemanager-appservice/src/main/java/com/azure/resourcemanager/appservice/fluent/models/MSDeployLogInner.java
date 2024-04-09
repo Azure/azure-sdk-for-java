@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** MSDeploy log. */
+/**
+ * MSDeploy log.
+ */
 @Fluent
 public final class MSDeployLogInner extends ProxyOnlyResource {
     /*
@@ -19,20 +21,24 @@ public final class MSDeployLogInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private MSDeployLogProperties innerProperties;
 
-    /** Creates an instance of MSDeployLogInner class. */
+    /**
+     * Creates an instance of MSDeployLogInner class.
+     */
     public MSDeployLogInner() {
     }
 
     /**
      * Get the innerProperties property: MSDeployLog resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MSDeployLogProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MSDeployLogInner withKind(String kind) {
         super.withKind(kind);
@@ -41,7 +47,7 @@ public final class MSDeployLogInner extends ProxyOnlyResource {
 
     /**
      * Get the entries property: List of log entry messages.
-     *
+     * 
      * @return the entries value.
      */
     public List<MSDeployLogEntry> entries() {
@@ -50,7 +56,7 @@ public final class MSDeployLogInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

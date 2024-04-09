@@ -59,11 +59,10 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      */
     @Host("{$host}")
     @ServiceInterface(name = "OperationalInsightsM")
-    private interface StorageInsightConfigsService {
+    public interface StorageInsightConfigsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StorageInsightInner>> createOrUpdate(
@@ -79,8 +78,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StorageInsightInner>> get(
@@ -95,8 +93,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -110,8 +107,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/storageInsightConfigs")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StorageInsightListResult>> listByWorkspace(
@@ -288,24 +284,6 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
      * @param parameters The parameters required to create or update a storage insight.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level storage insight resource container.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StorageInsightInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String storageInsightName, StorageInsightInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, workspaceName, storageInsightName, parameters).block();
-    }
-
-    /**
-     * Create or update a storage insight.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param storageInsightName Name of the storageInsightsConfigs resource.
-     * @param parameters The parameters required to create or update a storage insight.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -322,6 +300,26 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, workspaceName, storageInsightName, parameters, context)
             .block();
+    }
+
+    /**
+     * Create or update a storage insight.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param storageInsightName Name of the storageInsightsConfigs resource.
+     * @param parameters The parameters required to create or update a storage insight.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the top level storage insight resource container.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StorageInsightInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String storageInsightName, StorageInsightInner parameters) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, workspaceName, storageInsightName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -456,22 +454,6 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a storage insight instance.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StorageInsightInner get(String resourceGroupName, String workspaceName, String storageInsightName) {
-        return getAsync(resourceGroupName, workspaceName, storageInsightName).block();
-    }
-
-    /**
-     * Gets a storage insight instance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param storageInsightName Name of the storageInsightsConfigs resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -482,6 +464,22 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
     public Response<StorageInsightInner> getWithResponse(
         String resourceGroupName, String workspaceName, String storageInsightName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, storageInsightName, context).block();
+    }
+
+    /**
+     * Gets a storage insight instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param storageInsightName Name of the storageInsightsConfigs resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a storage insight instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StorageInsightInner get(String resourceGroupName, String workspaceName, String storageInsightName) {
+        return getWithResponse(resourceGroupName, workspaceName, storageInsightName, Context.NONE).getValue();
     }
 
     /**
@@ -611,21 +609,6 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String workspaceName, String storageInsightName) {
-        deleteAsync(resourceGroupName, workspaceName, storageInsightName).block();
-    }
-
-    /**
-     * Deletes a storageInsightsConfigs resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param storageInsightName Name of the storageInsightsConfigs resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -636,6 +619,21 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String workspaceName, String storageInsightName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, storageInsightName, context).block();
+    }
+
+    /**
+     * Deletes a storageInsightsConfigs resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param storageInsightName Name of the storageInsightsConfigs resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String workspaceName, String storageInsightName) {
+        deleteWithResponse(resourceGroupName, workspaceName, storageInsightName, Context.NONE);
     }
 
     /**
@@ -825,7 +823,8 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -861,7 +860,8 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -11,17 +11,15 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateRestoreOp
 public final class ValidateRestoreOperationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidateRestoreOperationRequest model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"ValidateRestoreOperationRequest\",\"restoreRequest\":{\"objectType\":\"RestoreRequest\"}}")
-                .toObject(ValidateRestoreOperationRequest.class);
+        ValidateRestoreOperationRequest model = BinaryData.fromString(
+            "{\"objectType\":\"ValidateRestoreOperationRequest\",\"restoreRequest\":{\"objectType\":\"RestoreRequest\"}}")
+            .toObject(ValidateRestoreOperationRequest.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidateRestoreOperationRequest model =
-            new ValidateRestoreOperationRequest().withRestoreRequest(new RestoreRequest());
+        ValidateRestoreOperationRequest model
+            = new ValidateRestoreOperationRequest().withRestoreRequest(new RestoreRequest());
         model = BinaryData.fromObject(model).toObject(ValidateRestoreOperationRequest.class);
     }
 }

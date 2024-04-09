@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The parameters specifying the resource whose effective routes are being requested. */
+/**
+ * The parameters specifying the resource whose effective routes are being requested.
+ */
 @Fluent
 public final class EffectiveRoutesParameters {
     /*
@@ -23,13 +25,15 @@ public final class EffectiveRoutesParameters {
     @JsonProperty(value = "virtualWanResourceType")
     private String virtualWanResourceType;
 
-    /** Creates an instance of EffectiveRoutesParameters class. */
+    /**
+     * Creates an instance of EffectiveRoutesParameters class.
+     */
     public EffectiveRoutesParameters() {
     }
 
     /**
      * Get the resourceId property: The resource whose effective routes are being requested.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -38,7 +42,7 @@ public final class EffectiveRoutesParameters {
 
     /**
      * Set the resourceId property: The resource whose effective routes are being requested.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the EffectiveRoutesParameters object itself.
      */
@@ -50,7 +54,7 @@ public final class EffectiveRoutesParameters {
     /**
      * Get the virtualWanResourceType property: The type of the specified resource like RouteTable,
      * ExpressRouteConnection, HubVirtualNetworkConnection, VpnConnection and P2SConnection.
-     *
+     * 
      * @return the virtualWanResourceType value.
      */
     public String virtualWanResourceType() {
@@ -60,7 +64,7 @@ public final class EffectiveRoutesParameters {
     /**
      * Set the virtualWanResourceType property: The type of the specified resource like RouteTable,
      * ExpressRouteConnection, HubVirtualNetworkConnection, VpnConnection and P2SConnection.
-     *
+     * 
      * @param virtualWanResourceType the virtualWanResourceType value to set.
      * @return the EffectiveRoutesParameters object itself.
      */
@@ -71,7 +75,7 @@ public final class EffectiveRoutesParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

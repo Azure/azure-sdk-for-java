@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Triggered Web Job Run Information. */
+/**
+ * Triggered Web Job Run Information.
+ */
 @Fluent
 public final class TriggeredJobRun {
     /*
@@ -77,13 +79,15 @@ public final class TriggeredJobRun {
     @JsonProperty(value = "trigger")
     private String trigger;
 
-    /** Creates an instance of TriggeredJobRun class. */
+    /**
+     * Creates an instance of TriggeredJobRun class.
+     */
     public TriggeredJobRun() {
     }
 
     /**
      * Get the webJobId property: Job ID.
-     *
+     * 
      * @return the webJobId value.
      */
     public String webJobId() {
@@ -92,7 +96,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the webJobId property: Job ID.
-     *
+     * 
      * @param webJobId the webJobId value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -103,7 +107,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the webJobName property: Job name.
-     *
+     * 
      * @return the webJobName value.
      */
     public String webJobName() {
@@ -112,7 +116,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the webJobName property: Job name.
-     *
+     * 
      * @param webJobName the webJobName value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -123,7 +127,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the status property: Job status.
-     *
+     * 
      * @return the status value.
      */
     public TriggeredWebJobStatus status() {
@@ -132,7 +136,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the status property: Job status.
-     *
+     * 
      * @param status the status value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -143,7 +147,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the startTime property: Start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -152,7 +156,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the startTime property: Start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -163,7 +167,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the endTime property: End time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -172,7 +176,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the endTime property: End time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -183,7 +187,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the duration property: Job duration.
-     *
+     * 
      * @return the duration value.
      */
     public String duration() {
@@ -192,7 +196,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the duration property: Job duration.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -203,7 +207,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the outputUrl property: Output URL.
-     *
+     * 
      * @return the outputUrl value.
      */
     public String outputUrl() {
@@ -212,7 +216,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the outputUrl property: Output URL.
-     *
+     * 
      * @param outputUrl the outputUrl value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -223,7 +227,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the errorUrl property: Error URL.
-     *
+     * 
      * @return the errorUrl value.
      */
     public String errorUrl() {
@@ -232,7 +236,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the errorUrl property: Error URL.
-     *
+     * 
      * @param errorUrl the errorUrl value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -243,7 +247,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the url property: Job URL.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -252,7 +256,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the url property: Job URL.
-     *
+     * 
      * @param url the url value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -263,7 +267,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the jobName property: Job name.
-     *
+     * 
      * @return the jobName value.
      */
     public String jobName() {
@@ -272,7 +276,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the jobName property: Job name.
-     *
+     * 
      * @param jobName the jobName value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -283,7 +287,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the trigger property: Job trigger.
-     *
+     * 
      * @return the trigger value.
      */
     public String trigger() {
@@ -292,7 +296,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the trigger property: Job trigger.
-     *
+     * 
      * @param trigger the trigger value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -303,7 +307,7 @@ public final class TriggeredJobRun {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

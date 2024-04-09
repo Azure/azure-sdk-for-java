@@ -76,6 +76,51 @@ public final class EventImpactedResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the resourceName property: Resource name of the impacted resource.
+     *
+     * @return the resourceName value.
+     */
+    public String resourceName() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceName();
+    }
+
+    /**
+     * Get the resourceGroup property: Resource group name of the impacted resource.
+     *
+     * @return the resourceGroup value.
+     */
+    public String resourceGroup() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceGroup();
+    }
+
+    /**
+     * Get the status property: Status of the impacted resource.
+     *
+     * @return the status value.
+     */
+    public String status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Get the maintenanceStartTime property: Start time of maintenance for the impacted resource.
+     *
+     * @return the maintenanceStartTime value.
+     */
+    public String maintenanceStartTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().maintenanceStartTime();
+    }
+
+    /**
+     * Get the maintenanceEndTime property: End time of maintenance for the impacted resource.
+     *
+     * @return the maintenanceEndTime value.
+     */
+    public String maintenanceEndTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().maintenanceEndTime();
+    }
+
+    /**
      * Get the info property: Additional information.
      *
      * @return the info value.

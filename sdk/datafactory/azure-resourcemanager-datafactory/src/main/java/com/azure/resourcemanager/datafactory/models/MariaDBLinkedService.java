@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** MariaDB server linked service. */
+/**
+ * MariaDB server linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("MariaDB")
 @Fluent
@@ -24,41 +26,51 @@ public final class MariaDBLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private MariaDBLinkedServiceTypeProperties innerTypeProperties = new MariaDBLinkedServiceTypeProperties();
 
-    /** Creates an instance of MariaDBLinkedService class. */
+    /**
+     * Creates an instance of MariaDBLinkedService class.
+     */
     public MariaDBLinkedService() {
     }
 
     /**
      * Get the innerTypeProperties property: MariaDB server linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private MariaDBLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MariaDBLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MariaDBLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MariaDBLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MariaDBLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -66,9 +78,34 @@ public final class MariaDBLinkedService extends LinkedService {
     }
 
     /**
+     * Get the driverVersion property: The version of the MariaDB driver. Type: string. V1 or empty for legacy driver,
+     * V2 for new driver. V1 can support connection string and property bag, V2 can only support connection string.
+     * 
+     * @return the driverVersion value.
+     */
+    public Object driverVersion() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().driverVersion();
+    }
+
+    /**
+     * Set the driverVersion property: The version of the MariaDB driver. Type: string. V1 or empty for legacy driver,
+     * V2 for new driver. V1 can support connection string and property bag, V2 can only support connection string.
+     * 
+     * @param driverVersion the driverVersion value to set.
+     * @return the MariaDBLinkedService object itself.
+     */
+    public MariaDBLinkedService withDriverVersion(Object driverVersion) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MariaDBLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDriverVersion(driverVersion);
+        return this;
+    }
+
+    /**
      * Get the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -78,7 +115,7 @@ public final class MariaDBLinkedService extends LinkedService {
     /**
      * Set the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the MariaDBLinkedService object itself.
      */
@@ -91,46 +128,138 @@ public final class MariaDBLinkedService extends LinkedService {
     }
 
     /**
-     * Get the pwd property: The Azure key vault secret reference of password in connection string.
-     *
-     * @return the pwd value.
+     * Get the server property: Server name for connection. Type: string.
+     * 
+     * @return the server value.
      */
-    public AzureKeyVaultSecretReference pwd() {
-        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().pwd();
+    public Object server() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().server();
     }
 
     /**
-     * Set the pwd property: The Azure key vault secret reference of password in connection string.
-     *
-     * @param pwd the pwd value to set.
+     * Set the server property: Server name for connection. Type: string.
+     * 
+     * @param server the server value to set.
      * @return the MariaDBLinkedService object itself.
      */
-    public MariaDBLinkedService withPwd(AzureKeyVaultSecretReference pwd) {
+    public MariaDBLinkedService withServer(Object server) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new MariaDBLinkedServiceTypeProperties();
         }
-        this.innerTypeProperties().withPwd(pwd);
+        this.innerTypeProperties().withServer(server);
         return this;
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the port property: The port for the connection. Type: integer.
+     * 
+     * @return the port value.
+     */
+    public Object port() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().port();
+    }
+
+    /**
+     * Set the port property: The port for the connection. Type: integer.
+     * 
+     * @param port the port value to set.
+     * @return the MariaDBLinkedService object itself.
+     */
+    public MariaDBLinkedService withPort(Object port) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MariaDBLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPort(port);
+        return this;
+    }
+
+    /**
+     * Get the username property: Username for authentication. Type: string.
+     * 
+     * @return the username value.
+     */
+    public Object username() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().username();
+    }
+
+    /**
+     * Set the username property: Username for authentication. Type: string.
+     * 
+     * @param username the username value to set.
+     * @return the MariaDBLinkedService object itself.
+     */
+    public MariaDBLinkedService withUsername(Object username) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MariaDBLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsername(username);
+        return this;
+    }
+
+    /**
+     * Get the database property: Database name for connection. Type: string.
+     * 
+     * @return the database value.
+     */
+    public Object database() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().database();
+    }
+
+    /**
+     * Set the database property: Database name for connection. Type: string.
+     * 
+     * @param database the database value to set.
+     * @return the MariaDBLinkedService object itself.
+     */
+    public MariaDBLinkedService withDatabase(Object database) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MariaDBLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDatabase(database);
+        return this;
+    }
+
+    /**
+     * Get the password property: The Azure key vault secret reference of password in connection string.
+     * 
+     * @return the password value.
+     */
+    public AzureKeyVaultSecretReference password() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().password();
+    }
+
+    /**
+     * Set the password property: The Azure key vault secret reference of password in connection string.
+     * 
+     * @param password the password value to set.
+     * @return the MariaDBLinkedService object itself.
+     */
+    public MariaDBLinkedService withPassword(AzureKeyVaultSecretReference password) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MariaDBLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the MariaDBLinkedService object itself.
      */
-    public MariaDBLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public MariaDBLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new MariaDBLinkedServiceTypeProperties();
         }
@@ -140,17 +269,15 @@ public final class MariaDBLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model MariaDBLinkedService"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model MariaDBLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

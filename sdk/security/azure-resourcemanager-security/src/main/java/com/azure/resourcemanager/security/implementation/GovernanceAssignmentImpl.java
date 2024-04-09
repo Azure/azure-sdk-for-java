@@ -75,22 +75,15 @@ public final class GovernanceAssignmentImpl
     }
 
     public GovernanceAssignment create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGovernanceAssignments()
-                .createOrUpdateWithResponse(scope, assessmentName, assignmentKey, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getGovernanceAssignments()
+            .createOrUpdateWithResponse(scope, assessmentName, assignmentKey, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public GovernanceAssignment create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGovernanceAssignments()
-                .createOrUpdateWithResponse(scope, assessmentName, assignmentKey, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getGovernanceAssignments()
+            .createOrUpdateWithResponse(scope, assessmentName, assignmentKey, this.innerModel(), context).getValue();
         return this;
     }
 
@@ -105,66 +98,42 @@ public final class GovernanceAssignmentImpl
     }
 
     public GovernanceAssignment apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGovernanceAssignments()
-                .createOrUpdateWithResponse(scope, assessmentName, assignmentKey, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getGovernanceAssignments()
+            .createOrUpdateWithResponse(scope, assessmentName, assignmentKey, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public GovernanceAssignment apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGovernanceAssignments()
-                .createOrUpdateWithResponse(scope, assessmentName, assignmentKey, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getGovernanceAssignments()
+            .createOrUpdateWithResponse(scope, assessmentName, assignmentKey, this.innerModel(), context).getValue();
         return this;
     }
 
-    GovernanceAssignmentImpl(
-        GovernanceAssignmentInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    GovernanceAssignmentImpl(GovernanceAssignmentInner innerObject,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.scope =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(),
-                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
-                    "scope");
-        this.assessmentName =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(),
-                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
-                    "assessmentName");
-        this.assignmentKey =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(),
-                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
-                    "assignmentKey");
+        this.scope = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
+            "scope");
+        this.assessmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
+            "assessmentName");
+        this.assignmentKey = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
+            "assignmentKey");
     }
 
     public GovernanceAssignment refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGovernanceAssignments()
-                .getWithResponse(scope, assessmentName, assignmentKey, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getGovernanceAssignments()
+            .getWithResponse(scope, assessmentName, assignmentKey, Context.NONE).getValue();
         return this;
     }
 
     public GovernanceAssignment refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGovernanceAssignments()
-                .getWithResponse(scope, assessmentName, assignmentKey, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getGovernanceAssignments()
+            .getWithResponse(scope, assessmentName, assignmentKey, context).getValue();
         return this;
     }
 
@@ -188,8 +157,8 @@ public final class GovernanceAssignmentImpl
         return this;
     }
 
-    public GovernanceAssignmentImpl withGovernanceEmailNotification(
-        GovernanceEmailNotification governanceEmailNotification) {
+    public GovernanceAssignmentImpl
+        withGovernanceEmailNotification(GovernanceEmailNotification governanceEmailNotification) {
         this.innerModel().withGovernanceEmailNotification(governanceEmailNotification);
         return this;
     }

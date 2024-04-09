@@ -16,7 +16,7 @@ import java.util.List;
 @Fluent
 public final class AfdOriginListResult {
     /*
-     * List of CDN origins within an endpoint
+     * List of Azure Front Door origins within an Azure Front Door endpoint
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<AfdOriginInner> value;
@@ -28,8 +28,14 @@ public final class AfdOriginListResult {
     private String nextLink;
 
     /**
-     * Get the value property: List of CDN origins within an endpoint.
-     *
+     * Creates an instance of AfdOriginListResult class.
+     */
+    public AfdOriginListResult() {
+    }
+
+    /**
+     * Get the value property: List of Azure Front Door origins within an Azure Front Door endpoint.
+     * 
      * @return the value value.
      */
     public List<AfdOriginInner> value() {
@@ -38,7 +44,7 @@ public final class AfdOriginListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of origin objects if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -47,7 +53,7 @@ public final class AfdOriginListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of origin objects if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AfdOriginListResult object itself.
      */
@@ -58,7 +64,7 @@ public final class AfdOriginListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -16,7 +16,7 @@ public final class MediaStreamingOptions {
     private final String transportUrl;
 
     /*
-     * The type of tranport to be used for media streaming, eg. Websocket
+     * The type of transport to be used for media streaming, eg. Websocket
      */
     @JsonProperty(value = "transportType")
     private final MediaStreamingTransport transportType;

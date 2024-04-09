@@ -16,21 +16,27 @@ public final class SkuLocationInfoItemTests {
         SkuLocationInfoItem model =
             BinaryData
                 .fromString(
-                    "{\"location\":\"udxytlmoyrx\",\"zones\":[\"u\",\"wpzntxhdzh\"],\"zoneDetails\":[{\"name\":[\"hckfrlhrx\"],\"capabilities\":[{\"name\":\"vpycanuzbp\",\"value\":\"afkuwb\"}]}]}")
+                    "{\"location\":\"iwwroyqbexrmc\",\"zones\":[\"ycnojvknmefqsg\",\"vah\",\"pjyzhpv\"],\"zoneDetails\":[{\"name\":[\"rvxdjzlmw\"],\"capabilities\":[{\"name\":\"ug\",\"value\":\"zovawjvz\"},{\"name\":\"luthn\",\"value\":\"rnxipei\"},{\"name\":\"jzuaejxdultskzbb\",\"value\":\"zumveekgpwo\"},{\"name\":\"hkfpbs\",\"value\":\"ofd\"}]},{\"name\":[\"us\",\"ttouwaboekqvkel\",\"smv\"],\"capabilities\":[{\"name\":\"jsflhhcaalnjix\",\"value\":\"xyawj\"},{\"name\":\"aq\",\"value\":\"lyjpk\"},{\"name\":\"dzyexznelixh\",\"value\":\"ztfolhbnxk\"},{\"name\":\"laulppg\",\"value\":\"tpnapnyiropuhpig\"}]},{\"name\":[\"ylgqgitxmedjvcsl\",\"n\",\"wwncwzzhxgk\",\"rmgucnap\"],\"capabilities\":[{\"name\":\"ellwptfdy\",\"value\":\"fqbuaceopzf\"},{\"name\":\"hhuao\",\"value\":\"pcqeqx\"},{\"name\":\"z\",\"value\":\"hzxct\"},{\"name\":\"gbkdmoizpos\",\"value\":\"grcfb\"}]},{\"name\":[\"mfqjhhkxbp\",\"jy\",\"jhxxjyn\",\"u\"],\"capabilities\":[{\"name\":\"r\",\"value\":\"wbxqzvszjfau\"}]}]}")
                 .toObject(SkuLocationInfoItem.class);
-        Assertions.assertEquals("udxytlmoyrx", model.location());
-        Assertions.assertEquals("u", model.zones().get(0));
+        Assertions.assertEquals("iwwroyqbexrmc", model.location());
+        Assertions.assertEquals("ycnojvknmefqsg", model.zones().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SkuLocationInfoItem model =
             new SkuLocationInfoItem()
-                .withLocation("udxytlmoyrx")
-                .withZones(Arrays.asList("u", "wpzntxhdzh"))
-                .withZoneDetails(Arrays.asList(new ResourceSkuZoneDetails()));
+                .withLocation("iwwroyqbexrmc")
+                .withZones(Arrays.asList("ycnojvknmefqsg", "vah", "pjyzhpv"))
+                .withZoneDetails(
+                    Arrays
+                        .asList(
+                            new ResourceSkuZoneDetails(),
+                            new ResourceSkuZoneDetails(),
+                            new ResourceSkuZoneDetails(),
+                            new ResourceSkuZoneDetails()));
         model = BinaryData.fromObject(model).toObject(SkuLocationInfoItem.class);
-        Assertions.assertEquals("udxytlmoyrx", model.location());
-        Assertions.assertEquals("u", model.zones().get(0));
+        Assertions.assertEquals("iwwroyqbexrmc", model.location());
+        Assertions.assertEquals("ycnojvknmefqsg", model.zones().get(0));
     }
 }

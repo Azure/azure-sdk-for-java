@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** WebSiteInstanceStatus resource specific properties. */
+/**
+ * WebSiteInstanceStatus resource specific properties.
+ */
 @Fluent
 public final class WebSiteInstanceStatusProperties {
     /*
@@ -51,13 +53,15 @@ public final class WebSiteInstanceStatusProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ContainerInfo> containers;
 
-    /** Creates an instance of WebSiteInstanceStatusProperties class. */
+    /**
+     * Creates an instance of WebSiteInstanceStatusProperties class.
+     */
     public WebSiteInstanceStatusProperties() {
     }
 
     /**
      * Get the state property: The state property.
-     *
+     * 
      * @return the state value.
      */
     public SiteRuntimeState state() {
@@ -66,7 +70,7 @@ public final class WebSiteInstanceStatusProperties {
 
     /**
      * Set the state property: The state property.
-     *
+     * 
      * @param state the state value to set.
      * @return the WebSiteInstanceStatusProperties object itself.
      */
@@ -77,7 +81,7 @@ public final class WebSiteInstanceStatusProperties {
 
     /**
      * Get the statusUrl property: Link to the GetStatusApi in Kudu.
-     *
+     * 
      * @return the statusUrl value.
      */
     public String statusUrl() {
@@ -86,7 +90,7 @@ public final class WebSiteInstanceStatusProperties {
 
     /**
      * Set the statusUrl property: Link to the GetStatusApi in Kudu.
-     *
+     * 
      * @param statusUrl the statusUrl value to set.
      * @return the WebSiteInstanceStatusProperties object itself.
      */
@@ -97,7 +101,7 @@ public final class WebSiteInstanceStatusProperties {
 
     /**
      * Get the detectorUrl property: Link to the Diagnose and Solve Portal.
-     *
+     * 
      * @return the detectorUrl value.
      */
     public String detectorUrl() {
@@ -106,7 +110,7 @@ public final class WebSiteInstanceStatusProperties {
 
     /**
      * Set the detectorUrl property: Link to the Diagnose and Solve Portal.
-     *
+     * 
      * @param detectorUrl the detectorUrl value to set.
      * @return the WebSiteInstanceStatusProperties object itself.
      */
@@ -117,7 +121,7 @@ public final class WebSiteInstanceStatusProperties {
 
     /**
      * Get the consoleUrl property: Link to the console to web app instance.
-     *
+     * 
      * @return the consoleUrl value.
      */
     public String consoleUrl() {
@@ -126,7 +130,7 @@ public final class WebSiteInstanceStatusProperties {
 
     /**
      * Set the consoleUrl property: Link to the console to web app instance.
-     *
+     * 
      * @param consoleUrl the consoleUrl value to set.
      * @return the WebSiteInstanceStatusProperties object itself.
      */
@@ -137,7 +141,7 @@ public final class WebSiteInstanceStatusProperties {
 
     /**
      * Get the healthCheckUrl property: Link to the console to web app instance.
-     *
+     * 
      * @return the healthCheckUrl value.
      */
     public String healthCheckUrl() {
@@ -146,7 +150,7 @@ public final class WebSiteInstanceStatusProperties {
 
     /**
      * Set the healthCheckUrl property: Link to the console to web app instance.
-     *
+     * 
      * @param healthCheckUrl the healthCheckUrl value to set.
      * @return the WebSiteInstanceStatusProperties object itself.
      */
@@ -157,7 +161,7 @@ public final class WebSiteInstanceStatusProperties {
 
     /**
      * Get the containers property: Dictionary of &lt;ContainerInfo&gt;.
-     *
+     * 
      * @return the containers value.
      */
     public Map<String, ContainerInfo> containers() {
@@ -166,7 +170,7 @@ public final class WebSiteInstanceStatusProperties {
 
     /**
      * Set the containers property: Dictionary of &lt;ContainerInfo&gt;.
-     *
+     * 
      * @param containers the containers value to set.
      * @return the WebSiteInstanceStatusProperties object itself.
      */
@@ -177,19 +181,16 @@ public final class WebSiteInstanceStatusProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (containers() != null) {
-            containers()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            containers().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

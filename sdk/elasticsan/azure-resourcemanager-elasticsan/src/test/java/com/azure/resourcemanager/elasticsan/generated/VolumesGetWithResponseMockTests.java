@@ -31,43 +31,30 @@ public final class VolumesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"volumeId\":\"sj\",\"creationData\":{\"createSource\":\"None\",\"sourceUri\":\"fjvfbgofeljagr\"},\"sizeGiB\":550277468451673444,\"storageTarget\":{\"targetIqn\":\"dvriiiojnal\",\"targetPortalHostname\":\"fk\",\"targetPortalPort\":762010823,\"provisioningState\":\"Invalid\",\"status\":\"Stopped\"}},\"id\":\"owueluqh\",\"name\":\"ahhxvrh\",\"type\":\"zkw\"}";
+        String responseStr
+            = "{\"properties\":{\"volumeId\":\"dknnqvsazn\",\"creationData\":{\"createSource\":\"DiskRestorePoint\",\"sourceId\":\"udsgs\"},\"sizeGiB\":3267053393250008871,\"storageTarget\":{\"targetIqn\":\"c\",\"targetPortalHostname\":\"auwjuetaebu\",\"targetPortalPort\":1406520561,\"provisioningState\":\"Deleting\",\"status\":\"Updating\"},\"managedBy\":{\"resourceId\":\"zlxwabmqoefkifr\"},\"provisioningState\":\"Updating\"},\"id\":\"qujmqlgkf\",\"name\":\"tndoaongbjc\",\"type\":\"tujitcjedft\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ElasticSanManager manager =
-            ElasticSanManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ElasticSanManager manager = ElasticSanManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Volume response =
-            manager
-                .volumes()
-                .getWithResponse("rlazszrnw", "iin", "fpwpjylwbt", "h", com.azure.core.util.Context.NONE)
-                .getValue();
+        Volume response = manager.volumes()
+            .getWithResponse("xqtvcofu", "f", "vkg", "u", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(VolumeCreateOption.NONE, response.creationData().createSource());
-        Assertions.assertEquals("fjvfbgofeljagr", response.creationData().sourceUri());
-        Assertions.assertEquals(550277468451673444L, response.sizeGiB());
+        Assertions.assertEquals(VolumeCreateOption.DISK_RESTORE_POINT, response.creationData().createSource());
+        Assertions.assertEquals("udsgs", response.creationData().sourceId());
+        Assertions.assertEquals(3267053393250008871L, response.sizeGiB());
+        Assertions.assertEquals("zlxwabmqoefkifr", response.managedBy().resourceId());
     }
 }

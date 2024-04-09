@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class AssociationSubnetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssociationSubnet model = BinaryData.fromString("{\"id\":\"dfvzwdzuhty\"}").toObject(AssociationSubnet.class);
-        Assertions.assertEquals("dfvzwdzuhty", model.id());
+        AssociationSubnet model = BinaryData.fromString("{\"id\":\"zga\"}").toObject(AssociationSubnet.class);
+        Assertions.assertEquals("zga", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssociationSubnet model = new AssociationSubnet().withId("dfvzwdzuhty");
+        AssociationSubnet model = new AssociationSubnet().withId("zga");
         model = BinaryData.fromObject(model).toObject(AssociationSubnet.class);
-        Assertions.assertEquals("dfvzwdzuhty", model.id());
+        Assertions.assertEquals("zga", model.id());
     }
 }

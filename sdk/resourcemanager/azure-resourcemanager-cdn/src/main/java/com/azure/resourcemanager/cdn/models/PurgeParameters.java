@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters required for content purge. */
+/**
+ * Parameters required for content purge.
+ */
 @Fluent
 public final class PurgeParameters {
     /*
@@ -19,9 +21,15 @@ public final class PurgeParameters {
     private List<String> contentPaths;
 
     /**
+     * Creates an instance of PurgeParameters class.
+     */
+    public PurgeParameters() {
+    }
+
+    /**
      * Get the contentPaths property: The path to the content to be purged. Can describe a file path or a wild card
      * directory.
-     *
+     * 
      * @return the contentPaths value.
      */
     public List<String> contentPaths() {
@@ -31,7 +39,7 @@ public final class PurgeParameters {
     /**
      * Set the contentPaths property: The path to the content to be purged. Can describe a file path or a wild card
      * directory.
-     *
+     * 
      * @param contentPaths the contentPaths value to set.
      * @return the PurgeParameters object itself.
      */
@@ -42,14 +50,13 @@ public final class PurgeParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (contentPaths() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property contentPaths in model PurgeParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property contentPaths in model PurgeParameters"));
         }
     }
 

@@ -28,8 +28,14 @@ public final class SecretListResult {
     private String nextLink;
 
     /**
+     * Creates an instance of SecretListResult class.
+     */
+    public SecretListResult() {
+    }
+
+    /**
      * Get the value property: List of AzureFrontDoor secrets within a profile.
-     *
+     * 
      * @return the value value.
      */
     public List<SecretInner> value() {
@@ -38,7 +44,7 @@ public final class SecretListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of Secret objects if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -47,7 +53,7 @@ public final class SecretListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of Secret objects if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SecretListResult object itself.
      */
@@ -58,7 +64,7 @@ public final class SecretListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

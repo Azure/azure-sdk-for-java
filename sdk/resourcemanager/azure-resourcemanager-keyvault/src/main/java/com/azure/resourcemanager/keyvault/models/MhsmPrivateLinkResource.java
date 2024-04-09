@@ -41,6 +41,13 @@ public final class MhsmPrivateLinkResource extends ManagedHsmResource {
 
     /** {@inheritDoc} */
     @Override
+    public MhsmPrivateLinkResource withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public MhsmPrivateLinkResource withLocation(String location) {
         super.withLocation(location);
         return this;

@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a reference to Key Vault Secret. */
+/**
+ * Describes a reference to Key Vault Secret.
+ */
 @Fluent
 public final class KeyVaultSecretReference {
     /*
@@ -24,13 +26,15 @@ public final class KeyVaultSecretReference {
     @JsonProperty(value = "sourceVault", required = true)
     private SubResource sourceVault;
 
-    /** Creates an instance of KeyVaultSecretReference class. */
+    /**
+     * Creates an instance of KeyVaultSecretReference class.
+     */
     public KeyVaultSecretReference() {
     }
 
     /**
      * Get the secretUrl property: The URL referencing a secret in a Key Vault.
-     *
+     * 
      * @return the secretUrl value.
      */
     public String secretUrl() {
@@ -39,7 +43,7 @@ public final class KeyVaultSecretReference {
 
     /**
      * Set the secretUrl property: The URL referencing a secret in a Key Vault.
-     *
+     * 
      * @param secretUrl the secretUrl value to set.
      * @return the KeyVaultSecretReference object itself.
      */
@@ -50,7 +54,7 @@ public final class KeyVaultSecretReference {
 
     /**
      * Get the sourceVault property: The relative URL of the Key Vault containing the secret.
-     *
+     * 
      * @return the sourceVault value.
      */
     public SubResource sourceVault() {
@@ -59,7 +63,7 @@ public final class KeyVaultSecretReference {
 
     /**
      * Set the sourceVault property: The relative URL of the Key Vault containing the secret.
-     *
+     * 
      * @param sourceVault the sourceVault value to set.
      * @return the KeyVaultSecretReference object itself.
      */
@@ -70,21 +74,17 @@ public final class KeyVaultSecretReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (secretUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property secretUrl in model KeyVaultSecretReference"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property secretUrl in model KeyVaultSecretReference"));
         }
         if (sourceVault() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceVault in model KeyVaultSecretReference"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sourceVault in model KeyVaultSecretReference"));
         }
     }
 

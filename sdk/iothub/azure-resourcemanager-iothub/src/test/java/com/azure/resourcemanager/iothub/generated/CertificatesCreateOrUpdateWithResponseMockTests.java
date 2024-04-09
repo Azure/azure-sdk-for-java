@@ -32,10 +32,10 @@ public final class CertificatesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"subject\":\"rpdsof\",\"expiry\":\"Mon, 03 May 2021 16:15:22"
-                + " GMT\",\"thumbprint\":\"nsvbuswdv\",\"isVerified\":true,\"created\":\"Mon, 22 Feb 2021 05:56:13"
-                + " GMT\",\"updated\":\"Tue, 06 Apr 2021 20:50:40"
-                + " GMT\",\"certificate\":\"nvjsrtkfa\"},\"etag\":\"opqgikyzirtxdyux\",\"id\":\"ejnt\",\"name\":\"sewgioilqukr\",\"type\":\"dxtqmieoxo\"}";
+            "{\"properties\":{\"subject\":\"sjnhn\",\"expiry\":\"Thu, 15 Apr 2021 22:34:41"
+                + " GMT\",\"thumbprint\":\"fq\",\"isVerified\":true,\"created\":\"Mon, 01 Mar 2021 20:41:09"
+                + " GMT\",\"updated\":\"Sat, 17 Jul 2021 07:30:37"
+                + " GMT\",\"certificate\":\"blwpcesutrgj\"},\"etag\":\"auutpwoqhihe\",\"id\":\"qg\",\"name\":\"zpnfqntcypsxj\",\"type\":\"foimwkslircizjxv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,13 +66,13 @@ public final class CertificatesCreateOrUpdateWithResponseMockTests {
         CertificateDescription response =
             manager
                 .certificates()
-                .define("mqnrojlpijnkr")
-                .withExistingIotHub("knpirgnepttwq", "sniffc")
-                .withProperties(new CertificateProperties().withIsVerified(false).withCertificate("f"))
-                .withIfMatch("jbdhqxvc")
+                .define("bgye")
+                .withExistingIotHub("ujviylwdshfs", "n")
+                .withProperties(new CertificateProperties().withIsVerified(true).withCertificate("oxoftpipiwycz"))
+                .withIfMatch("euzvx")
                 .create();
 
         Assertions.assertEquals(true, response.properties().isVerified());
-        Assertions.assertEquals("nvjsrtkfa", response.properties().certificate());
+        Assertions.assertEquals("blwpcesutrgj", response.properties().certificate());
     }
 }

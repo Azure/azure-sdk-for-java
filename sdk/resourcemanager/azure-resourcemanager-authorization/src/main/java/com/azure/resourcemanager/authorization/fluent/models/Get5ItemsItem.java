@@ -98,6 +98,15 @@ public final class Get5ItemsItem extends ExpandableStringEnum<Get5ItemsItem> {
     public static final Get5ItemsItem SUPPORTED_SERVICES_DESC = fromString("supportedServices desc");
 
     /**
+     * Creates a new instance of Get5ItemsItem value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Get5ItemsItem() {
+    }
+
+    /**
      * Creates or finds a Get5ItemsItem from its string representation.
      *
      * @param name a name to look for.

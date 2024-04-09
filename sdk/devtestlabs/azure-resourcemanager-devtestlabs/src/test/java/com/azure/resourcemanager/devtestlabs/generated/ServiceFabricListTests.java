@@ -18,13 +18,13 @@ public final class ServiceFabricListTests {
         ServiceFabricList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"externalServiceFabricId\":\"dxmeb\",\"environmentId\":\"scjpahlxv\",\"provisioningState\":\"f\",\"uniqueIdentifier\":\"nmwmqtibx\"},\"location\":\"ijddtvqc\",\"tags\":{\"ukm\":\"dija\",\"dqmeqwigpibudq\":\"sieekpndzaapm\",\"ybpmzznrtffyaq\":\"yxeb\",\"hvseufuqyrx\":\"tmhheioqa\"},\"id\":\"dlcgqlsismjqfr\",\"name\":\"dgamquhiosrsj\",\"type\":\"ivfcdisyirnx\"}],\"nextLink\":\"czexrxzbujrtrhqv\"}")
+                    "{\"value\":[{\"properties\":{\"externalServiceFabricId\":\"ysi\",\"environmentId\":\"gqcwdhohsdtmc\",\"applicableSchedule\":{\"properties\":{\"labVmsShutdown\":{\"properties\":{},\"location\":\"ufcohdxbz\",\"id\":\"mcmuapc\",\"name\":\"hdbevwqqxeyskon\",\"type\":\"zinkfkbgbzbowxeq\"},\"labVmsStartup\":{\"properties\":{},\"location\":\"ljmygvkzqkjjeokb\",\"id\":\"efezrxcczurtlei\",\"name\":\"q\",\"type\":\"bkwvzg\"}},\"location\":\"zvd\",\"tags\":{\"xzmqpnodawop\":\"d\"},\"id\":\"hewjptmcgsbost\",\"name\":\"eln\",\"type\":\"la\"},\"provisioningState\":\"tmzlbiojlv\",\"uniqueIdentifier\":\"rbbpneqvcwwyy\"},\"location\":\"r\",\"tags\":{\"rsnm\":\"hppr\"},\"id\":\"k\",\"name\":\"yzejnhlbk\",\"type\":\"bzpcpiljhahzvec\"},{\"properties\":{\"externalServiceFabricId\":\"dbn\",\"environmentId\":\"ehol\",\"applicableSchedule\":{\"properties\":{\"labVmsShutdown\":{\"properties\":{},\"location\":\"wiuub\",\"id\":\"efqsfapaqtferrqw\",\"name\":\"x\",\"type\":\"kmfx\"},\"labVmsStartup\":{\"properties\":{},\"location\":\"jwogqqnobpudc\",\"id\":\"abtqwpwyawbzasqb\",\"name\":\"clj\",\"type\":\"kyexaoguyaipi\"}},\"location\":\"sdaultxij\",\"tags\":{\"zqdqxt\":\"fqwazlnqnmcjn\",\"nyfusfzsvtuikzh\":\"jw\"},\"id\":\"jqg\",\"name\":\"cfhmlrqryxyn\",\"type\":\"nzrdpsovwxz\"},\"provisioningState\":\"tgoe\",\"uniqueIdentifier\":\"bbabp\"},\"location\":\"hv\",\"tags\":{\"ovzidsx\":\"kvntjlrigjkskyri\"},\"id\":\"aabzmif\",\"name\":\"ygznmmaxrizk\",\"type\":\"obgop\"}],\"nextLink\":\"hsln\"}")
                 .toObject(ServiceFabricList.class);
-        Assertions.assertEquals("ijddtvqc", model.value().get(0).location());
-        Assertions.assertEquals("dija", model.value().get(0).tags().get("ukm"));
-        Assertions.assertEquals("dxmeb", model.value().get(0).externalServiceFabricId());
-        Assertions.assertEquals("scjpahlxv", model.value().get(0).environmentId());
-        Assertions.assertEquals("czexrxzbujrtrhqv", model.nextLink());
+        Assertions.assertEquals("r", model.value().get(0).location());
+        Assertions.assertEquals("hppr", model.value().get(0).tags().get("rsnm"));
+        Assertions.assertEquals("ysi", model.value().get(0).externalServiceFabricId());
+        Assertions.assertEquals("gqcwdhohsdtmc", model.value().get(0).environmentId());
+        Assertions.assertEquals("hsln", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -35,28 +35,25 @@ public final class ServiceFabricListTests {
                     Arrays
                         .asList(
                             new ServiceFabricInner()
-                                .withLocation("ijddtvqc")
-                                .withTags(
-                                    mapOf(
-                                        "ukm",
-                                        "dija",
-                                        "dqmeqwigpibudq",
-                                        "sieekpndzaapm",
-                                        "ybpmzznrtffyaq",
-                                        "yxeb",
-                                        "hvseufuqyrx",
-                                        "tmhheioqa"))
-                                .withExternalServiceFabricId("dxmeb")
-                                .withEnvironmentId("scjpahlxv")))
-                .withNextLink("czexrxzbujrtrhqv");
+                                .withLocation("r")
+                                .withTags(mapOf("rsnm", "hppr"))
+                                .withExternalServiceFabricId("ysi")
+                                .withEnvironmentId("gqcwdhohsdtmc"),
+                            new ServiceFabricInner()
+                                .withLocation("hv")
+                                .withTags(mapOf("ovzidsx", "kvntjlrigjkskyri"))
+                                .withExternalServiceFabricId("dbn")
+                                .withEnvironmentId("ehol")))
+                .withNextLink("hsln");
         model = BinaryData.fromObject(model).toObject(ServiceFabricList.class);
-        Assertions.assertEquals("ijddtvqc", model.value().get(0).location());
-        Assertions.assertEquals("dija", model.value().get(0).tags().get("ukm"));
-        Assertions.assertEquals("dxmeb", model.value().get(0).externalServiceFabricId());
-        Assertions.assertEquals("scjpahlxv", model.value().get(0).environmentId());
-        Assertions.assertEquals("czexrxzbujrtrhqv", model.nextLink());
+        Assertions.assertEquals("r", model.value().get(0).location());
+        Assertions.assertEquals("hppr", model.value().get(0).tags().get("rsnm"));
+        Assertions.assertEquals("ysi", model.value().get(0).externalServiceFabricId());
+        Assertions.assertEquals("gqcwdhohsdtmc", model.value().get(0).environmentId());
+        Assertions.assertEquals("hsln", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

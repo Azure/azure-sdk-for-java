@@ -15,25 +15,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"None\",\"userAssignedIdentities\":{\"mkfssxqukkfplgm\":{\"principalId\":\"6999b89d-259f-44cf-ad3c-6d5076e3df83\",\"clientId\":\"326a00cb-dd9f-43b5-9b3f-416045e6fc59\"},\"nkjzkdeslpvlop\":{\"principalId\":\"3e8374dc-0257-4d89-a7ff-a9bd17a713d7\",\"clientId\":\"a9819cbc-ee4b-42dc-b115-cf907ae81f14\"}},\"principalId\":\"yighxpk\",\"tenantId\":\"zb\"}")
-                .toObject(ResourceIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
+        ResourceIdentity model = BinaryData.fromString(
+            "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"zabglcuhxwt\":{\"principalId\":\"b6530509-94c7-4e0d-95ac-1e4e78448f71\",\"clientId\":\"c48be21d-ce83-40e4-a49c-ae0060c973e9\"},\"qik\":{\"principalId\":\"64799503-0174-4da8-9b23-9124b8c6506d\",\"clientId\":\"23a7338f-5f5b-4819-9023-acec91c1bd3f\"},\"ovplw\":{\"principalId\":\"6826292f-a310-47eb-8590-89dd0506f502\",\"clientId\":\"3146ab84-69f6-46e1-af4c-2125972011a4\"}},\"principalId\":\"hvgyuguosvmk\",\"tenantId\":\"sxqu\"}")
+            .toObject(ResourceIdentity.class);
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceIdentity model =
-            new ResourceIdentity()
-                .withType(ResourceIdentityType.NONE)
-                .withUserAssignedIdentities(
-                    mapOf("mkfssxqukkfplgm", new UserAssignedIdentity(), "nkjzkdeslpvlop", new UserAssignedIdentity()));
+        ResourceIdentity model = new ResourceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("zabglcuhxwt", new UserAssignedIdentity(), "qik",
+                new UserAssignedIdentity(), "ovplw", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ResourceIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

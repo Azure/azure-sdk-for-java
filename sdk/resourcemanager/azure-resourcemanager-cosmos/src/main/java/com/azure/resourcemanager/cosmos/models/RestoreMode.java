@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes the mode of the restore. */
+/**
+ * Describes the mode of the restore.
+ */
 public final class RestoreMode extends ExpandableStringEnum<RestoreMode> {
-    /** Static value PointInTime for RestoreMode. */
+    /**
+     * Static value PointInTime for RestoreMode.
+     */
     public static final RestoreMode POINT_IN_TIME = fromString("PointInTime");
 
     /**
      * Creates a new instance of RestoreMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class RestoreMode extends ExpandableStringEnum<RestoreMode> {
 
     /**
      * Creates or finds a RestoreMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RestoreMode.
      */
@@ -35,7 +39,7 @@ public final class RestoreMode extends ExpandableStringEnum<RestoreMode> {
 
     /**
      * Gets known RestoreMode values.
-     *
+     * 
      * @return known RestoreMode values.
      */
     public static Collection<RestoreMode> values() {

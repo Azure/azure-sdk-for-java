@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Amazon Marketplace Web Service linked service. */
+/**
+ * Amazon Marketplace Web Service linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AmazonMWS")
 @Fluent
@@ -24,41 +26,51 @@ public final class AmazonMwsLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AmazonMwsLinkedServiceTypeProperties innerTypeProperties = new AmazonMwsLinkedServiceTypeProperties();
 
-    /** Creates an instance of AmazonMwsLinkedService class. */
+    /**
+     * Creates an instance of AmazonMwsLinkedService class.
+     */
     public AmazonMwsLinkedService() {
     }
 
     /**
      * Get the innerTypeProperties property: Amazon Marketplace Web Service linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private AmazonMwsLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonMwsLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonMwsLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonMwsLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonMwsLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -67,7 +79,7 @@ public final class AmazonMwsLinkedService extends LinkedService {
 
     /**
      * Get the endpoint property: The endpoint of the Amazon MWS server, (i.e. mws.amazonservices.com).
-     *
+     * 
      * @return the endpoint value.
      */
     public Object endpoint() {
@@ -76,7 +88,7 @@ public final class AmazonMwsLinkedService extends LinkedService {
 
     /**
      * Set the endpoint property: The endpoint of the Amazon MWS server, (i.e. mws.amazonservices.com).
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the AmazonMwsLinkedService object itself.
      */
@@ -91,7 +103,7 @@ public final class AmazonMwsLinkedService extends LinkedService {
     /**
      * Get the marketplaceId property: The Amazon Marketplace ID you want to retrieve data from. To retrieve data from
      * multiple Marketplace IDs, separate them with a comma (,). (i.e. A2EUQ1WTGCTBG2).
-     *
+     * 
      * @return the marketplaceId value.
      */
     public Object marketplaceId() {
@@ -101,7 +113,7 @@ public final class AmazonMwsLinkedService extends LinkedService {
     /**
      * Set the marketplaceId property: The Amazon Marketplace ID you want to retrieve data from. To retrieve data from
      * multiple Marketplace IDs, separate them with a comma (,). (i.e. A2EUQ1WTGCTBG2).
-     *
+     * 
      * @param marketplaceId the marketplaceId value to set.
      * @return the AmazonMwsLinkedService object itself.
      */
@@ -115,7 +127,7 @@ public final class AmazonMwsLinkedService extends LinkedService {
 
     /**
      * Get the sellerId property: The Amazon seller ID.
-     *
+     * 
      * @return the sellerId value.
      */
     public Object sellerId() {
@@ -124,7 +136,7 @@ public final class AmazonMwsLinkedService extends LinkedService {
 
     /**
      * Set the sellerId property: The Amazon seller ID.
-     *
+     * 
      * @param sellerId the sellerId value to set.
      * @return the AmazonMwsLinkedService object itself.
      */
@@ -138,7 +150,7 @@ public final class AmazonMwsLinkedService extends LinkedService {
 
     /**
      * Get the mwsAuthToken property: The Amazon MWS authentication token.
-     *
+     * 
      * @return the mwsAuthToken value.
      */
     public SecretBase mwsAuthToken() {
@@ -147,7 +159,7 @@ public final class AmazonMwsLinkedService extends LinkedService {
 
     /**
      * Set the mwsAuthToken property: The Amazon MWS authentication token.
-     *
+     * 
      * @param mwsAuthToken the mwsAuthToken value to set.
      * @return the AmazonMwsLinkedService object itself.
      */
@@ -161,7 +173,7 @@ public final class AmazonMwsLinkedService extends LinkedService {
 
     /**
      * Get the accessKeyId property: The access key id used to access data.
-     *
+     * 
      * @return the accessKeyId value.
      */
     public Object accessKeyId() {
@@ -170,7 +182,7 @@ public final class AmazonMwsLinkedService extends LinkedService {
 
     /**
      * Set the accessKeyId property: The access key id used to access data.
-     *
+     * 
      * @param accessKeyId the accessKeyId value to set.
      * @return the AmazonMwsLinkedService object itself.
      */
@@ -184,7 +196,7 @@ public final class AmazonMwsLinkedService extends LinkedService {
 
     /**
      * Get the secretKey property: The secret key used to access data.
-     *
+     * 
      * @return the secretKey value.
      */
     public SecretBase secretKey() {
@@ -193,7 +205,7 @@ public final class AmazonMwsLinkedService extends LinkedService {
 
     /**
      * Set the secretKey property: The secret key used to access data.
-     *
+     * 
      * @param secretKey the secretKey value to set.
      * @return the AmazonMwsLinkedService object itself.
      */
@@ -208,7 +220,7 @@ public final class AmazonMwsLinkedService extends LinkedService {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object useEncryptedEndpoints() {
@@ -218,7 +230,7 @@ public final class AmazonMwsLinkedService extends LinkedService {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the AmazonMwsLinkedService object itself.
      */
@@ -233,7 +245,7 @@ public final class AmazonMwsLinkedService extends LinkedService {
     /**
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @return the useHostVerification value.
      */
     public Object useHostVerification() {
@@ -243,7 +255,7 @@ public final class AmazonMwsLinkedService extends LinkedService {
     /**
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @param useHostVerification the useHostVerification value to set.
      * @return the AmazonMwsLinkedService object itself.
      */
@@ -256,9 +268,9 @@ public final class AmazonMwsLinkedService extends LinkedService {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true.
+     * 
      * @return the usePeerVerification value.
      */
     public Object usePeerVerification() {
@@ -266,9 +278,9 @@ public final class AmazonMwsLinkedService extends LinkedService {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true.
+     * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the AmazonMwsLinkedService object itself.
      */
@@ -281,23 +293,23 @@ public final class AmazonMwsLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AmazonMwsLinkedService object itself.
      */
-    public AmazonMwsLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public AmazonMwsLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AmazonMwsLinkedServiceTypeProperties();
         }
@@ -307,17 +319,15 @@ public final class AmazonMwsLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model AmazonMwsLinkedService"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model AmazonMwsLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

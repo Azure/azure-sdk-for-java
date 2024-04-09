@@ -74,8 +74,7 @@ public final class RoleAssignmentScheduleInstancesClientImpl implements RoleAssi
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleInstances"
-                + "/{roleAssignmentScheduleInstanceName}")
+            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleInstances/{roleAssignmentScheduleInstanceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentScheduleInstanceInner>> get(

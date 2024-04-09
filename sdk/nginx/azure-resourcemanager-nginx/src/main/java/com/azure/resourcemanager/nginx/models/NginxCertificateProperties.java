@@ -7,7 +7,9 @@ package com.azure.resourcemanager.nginx.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The NginxCertificateProperties model. */
+/**
+ * The NginxCertificateProperties model.
+ */
 @Fluent
 public final class NginxCertificateProperties {
     /*
@@ -34,13 +36,15 @@ public final class NginxCertificateProperties {
     @JsonProperty(value = "keyVaultSecretId")
     private String keyVaultSecretId;
 
-    /** Creates an instance of NginxCertificateProperties class. */
+    /**
+     * Creates an instance of NginxCertificateProperties class.
+     */
     public NginxCertificateProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -49,7 +53,7 @@ public final class NginxCertificateProperties {
 
     /**
      * Get the keyVirtualPath property: The keyVirtualPath property.
-     *
+     * 
      * @return the keyVirtualPath value.
      */
     public String keyVirtualPath() {
@@ -58,7 +62,7 @@ public final class NginxCertificateProperties {
 
     /**
      * Set the keyVirtualPath property: The keyVirtualPath property.
-     *
+     * 
      * @param keyVirtualPath the keyVirtualPath value to set.
      * @return the NginxCertificateProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class NginxCertificateProperties {
 
     /**
      * Get the certificateVirtualPath property: The certificateVirtualPath property.
-     *
+     * 
      * @return the certificateVirtualPath value.
      */
     public String certificateVirtualPath() {
@@ -78,7 +82,7 @@ public final class NginxCertificateProperties {
 
     /**
      * Set the certificateVirtualPath property: The certificateVirtualPath property.
-     *
+     * 
      * @param certificateVirtualPath the certificateVirtualPath value to set.
      * @return the NginxCertificateProperties object itself.
      */
@@ -89,7 +93,7 @@ public final class NginxCertificateProperties {
 
     /**
      * Get the keyVaultSecretId property: The keyVaultSecretId property.
-     *
+     * 
      * @return the keyVaultSecretId value.
      */
     public String keyVaultSecretId() {
@@ -98,7 +102,7 @@ public final class NginxCertificateProperties {
 
     /**
      * Set the keyVaultSecretId property: The keyVaultSecretId property.
-     *
+     * 
      * @param keyVaultSecretId the keyVaultSecretId value to set.
      * @return the NginxCertificateProperties object itself.
      */
@@ -109,7 +113,7 @@ public final class NginxCertificateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

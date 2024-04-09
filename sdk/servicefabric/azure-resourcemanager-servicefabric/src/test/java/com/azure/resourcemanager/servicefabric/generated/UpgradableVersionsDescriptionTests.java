@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class UpgradableVersionsDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpgradableVersionsDescription model =
-            BinaryData.fromString("{\"targetVersion\":\"rfidfvzwdz\"}").toObject(UpgradableVersionsDescription.class);
-        Assertions.assertEquals("rfidfvzwdz", model.targetVersion());
+        UpgradableVersionsDescription model
+            = BinaryData.fromString("{\"targetVersion\":\"zafb\"}").toObject(UpgradableVersionsDescription.class);
+        Assertions.assertEquals("zafb", model.targetVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpgradableVersionsDescription model = new UpgradableVersionsDescription().withTargetVersion("rfidfvzwdz");
+        UpgradableVersionsDescription model = new UpgradableVersionsDescription().withTargetVersion("zafb");
         model = BinaryData.fromObject(model).toObject(UpgradableVersionsDescription.class);
-        Assertions.assertEquals("rfidfvzwdz", model.targetVersion());
+        Assertions.assertEquals("zafb", model.targetVersion());
     }
 }

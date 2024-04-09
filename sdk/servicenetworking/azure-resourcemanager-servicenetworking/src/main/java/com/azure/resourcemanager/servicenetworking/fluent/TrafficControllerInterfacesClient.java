@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicenetworking.fluent.models.TrafficControllerInner;
 import com.azure.resourcemanager.servicenetworking.models.TrafficControllerUpdate;
 
-/** An instance of this class provides access to all the operations defined in TrafficControllerInterfacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TrafficControllerInterfacesClient.
+ */
 public interface TrafficControllerInterfacesClient {
     /**
      * List TrafficController resources by subscription ID.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a TrafficController list operation as paginated response with {@link PagedIterable}.
@@ -28,7 +30,7 @@ public interface TrafficControllerInterfacesClient {
 
     /**
      * List TrafficController resources by subscription ID.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,7 +42,7 @@ public interface TrafficControllerInterfacesClient {
 
     /**
      * List TrafficController resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,7 +54,7 @@ public interface TrafficControllerInterfacesClient {
 
     /**
      * List TrafficController resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,7 +67,7 @@ public interface TrafficControllerInterfacesClient {
 
     /**
      * Get a TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param context The context to associate with this operation.
@@ -75,12 +77,12 @@ public interface TrafficControllerInterfacesClient {
      * @return a TrafficController along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TrafficControllerInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String trafficControllerName, Context context);
+    Response<TrafficControllerInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String trafficControllerName, Context context);
 
     /**
      * Get a TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -93,7 +95,7 @@ public interface TrafficControllerInterfacesClient {
 
     /**
      * Create a TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param resource Resource create parameters.
@@ -101,15 +103,15 @@ public interface TrafficControllerInterfacesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     *     type using a specific property type.
+     * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TrafficControllerInner>, TrafficControllerInner> beginCreateOrUpdate(
-        String resourceGroupName, String trafficControllerName, TrafficControllerInner resource);
+    SyncPoller<PollResult<TrafficControllerInner>, TrafficControllerInner> beginCreateOrUpdate(String resourceGroupName,
+        String trafficControllerName, TrafficControllerInner resource);
 
     /**
      * Create a TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param resource Resource create parameters.
@@ -118,15 +120,15 @@ public interface TrafficControllerInterfacesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     *     type using a specific property type.
+     * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TrafficControllerInner>, TrafficControllerInner> beginCreateOrUpdate(
-        String resourceGroupName, String trafficControllerName, TrafficControllerInner resource, Context context);
+    SyncPoller<PollResult<TrafficControllerInner>, TrafficControllerInner> beginCreateOrUpdate(String resourceGroupName,
+        String trafficControllerName, TrafficControllerInner resource, Context context);
 
     /**
      * Create a TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param resource Resource create parameters.
@@ -136,12 +138,12 @@ public interface TrafficControllerInterfacesClient {
      * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TrafficControllerInner createOrUpdate(
-        String resourceGroupName, String trafficControllerName, TrafficControllerInner resource);
+    TrafficControllerInner createOrUpdate(String resourceGroupName, String trafficControllerName,
+        TrafficControllerInner resource);
 
     /**
      * Create a TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param resource Resource create parameters.
@@ -152,12 +154,12 @@ public interface TrafficControllerInterfacesClient {
      * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TrafficControllerInner createOrUpdate(
-        String resourceGroupName, String trafficControllerName, TrafficControllerInner resource, Context context);
+    TrafficControllerInner createOrUpdate(String resourceGroupName, String trafficControllerName,
+        TrafficControllerInner resource, Context context);
 
     /**
      * Update a TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param properties The resource properties to be updated.
@@ -166,15 +168,15 @@ public interface TrafficControllerInterfacesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TrafficControllerInner> updateWithResponse(
-        String resourceGroupName, String trafficControllerName, TrafficControllerUpdate properties, Context context);
+    Response<TrafficControllerInner> updateWithResponse(String resourceGroupName, String trafficControllerName,
+        TrafficControllerUpdate properties, Context context);
 
     /**
      * Update a TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param properties The resource properties to be updated.
@@ -184,12 +186,12 @@ public interface TrafficControllerInterfacesClient {
      * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TrafficControllerInner update(
-        String resourceGroupName, String trafficControllerName, TrafficControllerUpdate properties);
+    TrafficControllerInner update(String resourceGroupName, String trafficControllerName,
+        TrafficControllerUpdate properties);
 
     /**
      * Delete a TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -202,7 +204,7 @@ public interface TrafficControllerInterfacesClient {
 
     /**
      * Delete a TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param context The context to associate with this operation.
@@ -212,12 +214,12 @@ public interface TrafficControllerInterfacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String trafficControllerName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
+        Context context);
 
     /**
      * Delete a TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -229,7 +231,7 @@ public interface TrafficControllerInterfacesClient {
 
     /**
      * Delete a TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param context The context to associate with this operation.

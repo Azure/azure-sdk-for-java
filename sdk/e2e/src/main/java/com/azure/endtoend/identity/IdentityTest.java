@@ -14,6 +14,7 @@ import java.util.Locale;
 public class IdentityTest {
     private static final String AZURE_IDENTITY_TEST_PLATFORM = "AZURE_IDENTITY_TEST_PLATFORM";
     private static final Configuration CONFIGURATION = Configuration.getGlobalConfiguration().clone();
+    private static final String errorString = "Identity Test platform is not set. Set environment variable AZURE_IDENTITY_TEST_PLATFORM to one of:\nwebjobs\nmultitenant\nclitools";
 
     /**
      * Runs the Web jobs identity tests
@@ -22,8 +23,7 @@ public class IdentityTest {
      */
     public static void main(String[] args) throws IllegalStateException {
         if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(AZURE_IDENTITY_TEST_PLATFORM))) {
-            throw new IllegalStateException("Identity Test platform is not set. Set environment "
-                                                               + "variable AZURE_IDENTITY_TEST_PLATFORM to webjobs");
+            throw new IllegalStateException(errorString);
         }
 
         String platform = CONFIGURATION.get(AZURE_IDENTITY_TEST_PLATFORM).toLowerCase(Locale.ENGLISH);
@@ -36,9 +36,12 @@ public class IdentityTest {
                 MultiTenantTest multiTenantTest  = new MultiTenantTest();
                 multiTenantTest.run();
                 break;
+            case "clitools":
+                CliToolsTest cliToolsTest = new CliToolsTest();
+                cliToolsTest.run();
+                break;
             default:
-                throw (new IllegalStateException("Invalid Test Platform is configured for AZURE_IDENTITY_TEST_PLATFORM."
-                                                                               + "Possible value is webjobs."));
+                throw new IllegalStateException(errorString);
         }
     }
 }

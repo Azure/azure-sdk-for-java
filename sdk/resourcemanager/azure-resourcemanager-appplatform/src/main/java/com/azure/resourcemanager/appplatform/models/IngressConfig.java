@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Ingress configuration payload for Azure Spring Apps resource. */
+/**
+ * Ingress configuration payload for Azure Spring Apps resource.
+ */
 @Fluent
 public final class IngressConfig {
     /*
@@ -17,8 +19,14 @@ public final class IngressConfig {
     private Integer readTimeoutInSeconds;
 
     /**
+     * Creates an instance of IngressConfig class.
+     */
+    public IngressConfig() {
+    }
+
+    /**
      * Get the readTimeoutInSeconds property: Ingress read time out in seconds.
-     *
+     * 
      * @return the readTimeoutInSeconds value.
      */
     public Integer readTimeoutInSeconds() {
@@ -27,7 +35,7 @@ public final class IngressConfig {
 
     /**
      * Set the readTimeoutInSeconds property: Ingress read time out in seconds.
-     *
+     * 
      * @param readTimeoutInSeconds the readTimeoutInSeconds value to set.
      * @return the IngressConfig object itself.
      */
@@ -38,7 +46,7 @@ public final class IngressConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

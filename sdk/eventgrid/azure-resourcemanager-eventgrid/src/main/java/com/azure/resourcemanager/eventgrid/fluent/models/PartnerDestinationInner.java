@@ -14,7 +14,9 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
-/** Event Grid Partner Destination. */
+/**
+ * Event Grid Partner Destination.
+ */
 @Fluent
 public final class PartnerDestinationInner extends Resource {
     /*
@@ -29,13 +31,15 @@ public final class PartnerDestinationInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of PartnerDestinationInner class. */
+    /**
+     * Creates an instance of PartnerDestinationInner class.
+     */
     public PartnerDestinationInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Partner Destination.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PartnerDestinationProperties innerProperties() {
@@ -44,21 +48,25 @@ public final class PartnerDestinationInner extends Resource {
 
     /**
      * Get the systemData property: The system metadata relating to Partner Destination resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PartnerDestinationInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PartnerDestinationInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -67,7 +75,7 @@ public final class PartnerDestinationInner extends Resource {
 
     /**
      * Get the partnerRegistrationImmutableId property: The immutable Id of the corresponding partner registration.
-     *
+     * 
      * @return the partnerRegistrationImmutableId value.
      */
     public UUID partnerRegistrationImmutableId() {
@@ -76,7 +84,7 @@ public final class PartnerDestinationInner extends Resource {
 
     /**
      * Set the partnerRegistrationImmutableId property: The immutable Id of the corresponding partner registration.
-     *
+     * 
      * @param partnerRegistrationImmutableId the partnerRegistrationImmutableId value to set.
      * @return the PartnerDestinationInner object itself.
      */
@@ -90,7 +98,7 @@ public final class PartnerDestinationInner extends Resource {
 
     /**
      * Get the endpointServiceContext property: Endpoint context associated with this partner destination.
-     *
+     * 
      * @return the endpointServiceContext value.
      */
     public String endpointServiceContext() {
@@ -99,7 +107,7 @@ public final class PartnerDestinationInner extends Resource {
 
     /**
      * Set the endpointServiceContext property: Endpoint context associated with this partner destination.
-     *
+     * 
      * @param endpointServiceContext the endpointServiceContext value to set.
      * @return the PartnerDestinationInner object itself.
      */
@@ -113,9 +121,9 @@ public final class PartnerDestinationInner extends Resource {
 
     /**
      * Get the expirationTimeIfNotActivatedUtc property: Expiration time of the partner destination. If this timer
-     * expires and the partner destination was never activated, the partner destination and corresponding channel are
-     * deleted.
-     *
+     * expires and the partner destination was never activated,
+     * the partner destination and corresponding channel are deleted.
+     * 
      * @return the expirationTimeIfNotActivatedUtc value.
      */
     public OffsetDateTime expirationTimeIfNotActivatedUtc() {
@@ -124,9 +132,9 @@ public final class PartnerDestinationInner extends Resource {
 
     /**
      * Set the expirationTimeIfNotActivatedUtc property: Expiration time of the partner destination. If this timer
-     * expires and the partner destination was never activated, the partner destination and corresponding channel are
-     * deleted.
-     *
+     * expires and the partner destination was never activated,
+     * the partner destination and corresponding channel are deleted.
+     * 
      * @param expirationTimeIfNotActivatedUtc the expirationTimeIfNotActivatedUtc value to set.
      * @return the PartnerDestinationInner object itself.
      */
@@ -140,7 +148,7 @@ public final class PartnerDestinationInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the partner destination.
-     *
+     * 
      * @return the provisioningState value.
      */
     public PartnerDestinationProvisioningState provisioningState() {
@@ -149,7 +157,7 @@ public final class PartnerDestinationInner extends Resource {
 
     /**
      * Get the activationState property: Activation state of the partner destination.
-     *
+     * 
      * @return the activationState value.
      */
     public PartnerDestinationActivationState activationState() {
@@ -158,7 +166,7 @@ public final class PartnerDestinationInner extends Resource {
 
     /**
      * Set the activationState property: Activation state of the partner destination.
-     *
+     * 
      * @param activationState the activationState value to set.
      * @return the PartnerDestinationInner object itself.
      */
@@ -172,7 +180,7 @@ public final class PartnerDestinationInner extends Resource {
 
     /**
      * Get the endpointBaseUrl property: Endpoint Base URL of the partner destination.
-     *
+     * 
      * @return the endpointBaseUrl value.
      */
     public String endpointBaseUrl() {
@@ -181,7 +189,7 @@ public final class PartnerDestinationInner extends Resource {
 
     /**
      * Set the endpointBaseUrl property: Endpoint Base URL of the partner destination.
-     *
+     * 
      * @param endpointBaseUrl the endpointBaseUrl value to set.
      * @return the PartnerDestinationInner object itself.
      */
@@ -195,7 +203,7 @@ public final class PartnerDestinationInner extends Resource {
 
     /**
      * Get the messageForActivation property: Context or helpful message that can be used during the approval process.
-     *
+     * 
      * @return the messageForActivation value.
      */
     public String messageForActivation() {
@@ -204,7 +212,7 @@ public final class PartnerDestinationInner extends Resource {
 
     /**
      * Set the messageForActivation property: Context or helpful message that can be used during the approval process.
-     *
+     * 
      * @param messageForActivation the messageForActivation value to set.
      * @return the PartnerDestinationInner object itself.
      */
@@ -218,7 +226,7 @@ public final class PartnerDestinationInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

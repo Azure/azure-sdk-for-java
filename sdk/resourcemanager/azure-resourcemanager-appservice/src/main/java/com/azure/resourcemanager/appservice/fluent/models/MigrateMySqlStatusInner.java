@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.OperationStatus;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** MySQL migration status. */
+/**
+ * MySQL migration status.
+ */
 @Fluent
 public final class MigrateMySqlStatusInner extends ProxyOnlyResource {
     /*
@@ -18,20 +20,24 @@ public final class MigrateMySqlStatusInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private MigrateMySqlStatusProperties innerProperties;
 
-    /** Creates an instance of MigrateMySqlStatusInner class. */
+    /**
+     * Creates an instance of MigrateMySqlStatusInner class.
+     */
     public MigrateMySqlStatusInner() {
     }
 
     /**
      * Get the innerProperties property: MigrateMySqlStatus resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MigrateMySqlStatusProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MigrateMySqlStatusInner withKind(String kind) {
         super.withKind(kind);
@@ -40,7 +46,7 @@ public final class MigrateMySqlStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the migrationOperationStatus property: Status of the migration task.
-     *
+     * 
      * @return the migrationOperationStatus value.
      */
     public OperationStatus migrationOperationStatus() {
@@ -49,7 +55,7 @@ public final class MigrateMySqlStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the operationId property: Operation ID for the migration task.
-     *
+     * 
      * @return the operationId value.
      */
     public String operationId() {
@@ -58,7 +64,7 @@ public final class MigrateMySqlStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the localMySqlEnabled property: True if the web app has in app MySql enabled.
-     *
+     * 
      * @return the localMySqlEnabled value.
      */
     public Boolean localMySqlEnabled() {
@@ -67,7 +73,7 @@ public final class MigrateMySqlStatusInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

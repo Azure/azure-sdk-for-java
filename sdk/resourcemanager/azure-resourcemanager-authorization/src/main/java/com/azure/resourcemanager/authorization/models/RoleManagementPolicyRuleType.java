@@ -31,6 +31,15 @@ public final class RoleManagementPolicyRuleType extends ExpandableStringEnum<Rol
         fromString("RoleManagementPolicyNotificationRule");
 
     /**
+     * Creates a new instance of RoleManagementPolicyRuleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RoleManagementPolicyRuleType() {
+    }
+
+    /**
      * Creates or finds a RoleManagementPolicyRuleType from its string representation.
      *
      * @param name a name to look for.

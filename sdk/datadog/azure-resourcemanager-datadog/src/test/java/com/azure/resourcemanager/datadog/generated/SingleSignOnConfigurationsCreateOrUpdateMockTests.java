@@ -33,7 +33,7 @@ public final class SingleSignOnConfigurationsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"nqpeh\",\"singleSignOnUrl\":\"doy\"},\"id\":\"ifthnz\",\"name\":\"ndslgnayqigynduh\",\"type\":\"vhqlkthumaqo\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"singleSignOnState\":\"Existing\",\"enterpriseAppId\":\"hjpglkf\",\"singleSignOnUrl\":\"hdneuelfph\"},\"id\":\"yhtozfikdowwqu\",\"name\":\"v\",\"type\":\"zx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,15 +64,15 @@ public final class SingleSignOnConfigurationsCreateOrUpdateMockTests {
         DatadogSingleSignOnResource response =
             manager
                 .singleSignOnConfigurations()
-                .define("gjb")
-                .withExistingMonitor("rruvwbhsq", "sub")
+                .define("oievseotgqrlltm")
+                .withExistingMonitor("iplbpodxunkbebxm", "byyntwlrbqt")
                 .withProperties(
                     new DatadogSingleSignOnProperties()
                         .withSingleSignOnState(SingleSignOnStates.EXISTING)
-                        .withEnterpriseAppId("srfbjfdtwss"))
+                        .withEnterpriseAppId("izxbmpgcjef"))
                 .create();
 
-        Assertions.assertEquals(SingleSignOnStates.INITIAL, response.properties().singleSignOnState());
-        Assertions.assertEquals("nqpeh", response.properties().enterpriseAppId());
+        Assertions.assertEquals(SingleSignOnStates.EXISTING, response.properties().singleSignOnState());
+        Assertions.assertEquals("hjpglkf", response.properties().enterpriseAppId());
     }
 }

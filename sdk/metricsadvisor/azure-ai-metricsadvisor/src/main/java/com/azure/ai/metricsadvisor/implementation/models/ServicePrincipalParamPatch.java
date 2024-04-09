@@ -5,35 +5,41 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ServicePrincipalParamPatch model. */
+/**
+ * The ServicePrincipalParamPatch model.
+ */
 @Fluent
-public final class ServicePrincipalParamPatch {
+public final class ServicePrincipalParamPatch implements JsonSerializable<ServicePrincipalParamPatch> {
     /*
      * The client id of the service principal.
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
      * The client secret of the service principal.
      */
-    @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
     /*
      * The tenant id of the service principal.
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
-    /** Creates an instance of ServicePrincipalParamPatch class. */
-    public ServicePrincipalParamPatch() {}
+    /**
+     * Creates an instance of ServicePrincipalParamPatch class.
+     */
+    public ServicePrincipalParamPatch() {
+    }
 
     /**
      * Get the clientId property: The client id of the service principal.
-     *
+     * 
      * @return the clientId value.
      */
     public String getClientId() {
@@ -42,7 +48,7 @@ public final class ServicePrincipalParamPatch {
 
     /**
      * Set the clientId property: The client id of the service principal.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the ServicePrincipalParamPatch object itself.
      */
@@ -53,7 +59,7 @@ public final class ServicePrincipalParamPatch {
 
     /**
      * Get the clientSecret property: The client secret of the service principal.
-     *
+     * 
      * @return the clientSecret value.
      */
     public String getClientSecret() {
@@ -62,7 +68,7 @@ public final class ServicePrincipalParamPatch {
 
     /**
      * Set the clientSecret property: The client secret of the service principal.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the ServicePrincipalParamPatch object itself.
      */
@@ -73,7 +79,7 @@ public final class ServicePrincipalParamPatch {
 
     /**
      * Get the tenantId property: The tenant id of the service principal.
-     *
+     * 
      * @return the tenantId value.
      */
     public String getTenantId() {
@@ -82,12 +88,51 @@ public final class ServicePrincipalParamPatch {
 
     /**
      * Set the tenantId property: The tenant id of the service principal.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the ServicePrincipalParamPatch object itself.
      */
     public ServicePrincipalParamPatch setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("clientSecret", this.clientSecret);
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServicePrincipalParamPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServicePrincipalParamPatch if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServicePrincipalParamPatch.
+     */
+    public static ServicePrincipalParamPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServicePrincipalParamPatch deserializedServicePrincipalParamPatch = new ServicePrincipalParamPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clientId".equals(fieldName)) {
+                    deserializedServicePrincipalParamPatch.clientId = reader.getString();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedServicePrincipalParamPatch.clientSecret = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedServicePrincipalParamPatch.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServicePrincipalParamPatch;
+        });
     }
 }

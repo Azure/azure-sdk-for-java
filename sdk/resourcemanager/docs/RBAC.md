@@ -2,12 +2,12 @@
 
 [Managed identity][managed_identity] and [role-based access control][rbac] are commonly used together for identity and access management.
 
-Managed identity provides an identity for the Azure resource in Azure Active Directory, and uses it to obtain Azure AD token.
+Managed identity provides an identity for the Azure resource in Microsoft Entra ID, and uses it to obtain Microsoft Entra ID token.
 RBAC enforces the role, scope, and access control of that managed identity. 
 
 They are useful in scenarios of enabling Azure virtual machine or web app to either manage Azure resource, or access data in Azure resource.
 
-The role of Owner is required for assigning role to managed identity. It can be configured from Azure Active Directory blade in Portal, or by Azure CLI.
+The role of Owner is required for assigning role to managed identity. It can be configured from Microsoft Entra ID blade in Portal, or by Azure CLI.
 
 ## Managing Azure resource
 
@@ -57,18 +57,18 @@ For system-assigned managed identity, use e.g. `virtualMachine.systemAssignedMan
 
 Since 2.5.0, SDK supports role-based access control. Please check `BuiltInRole.KEY_VAULT_CRYPTO_USER`, `BuiltInRole.KEY_VAULT_SECRETS_USER`, etc. for related roles.
 
-## Accessing Azure Active Directory
+## Accessing Microsoft Entra ID
 
-SDK provides limited support for accessing Azure Active Directory, generally only for querying applications, users, groups, and service principals.
+SDK provides limited support for accessing Microsoft Entra ID, generally only for querying applications, users, groups, and service principals.
 
-This requires additional permission from Azure Active Directory, which can be configured from Azure Active Directory blade in Portal, or by Azure CLI.
+This requires additional permission from Microsoft Entra ID, which can be configured from Microsoft Entra ID blade in Portal, or by Azure CLI.
 
 Since 2.2.0, SDK switched from [Azure Active Directory Grpah API][aad_graph] to [Microsoft Graph API][microsoft_graph].
 
 Permission required (since 2.2.0):
-- Access application and service principal: Microsoft Graph, Application permission, [Application.Read.All](https://docs.microsoft.com/graph/api/application-list?view=graph-rest-1.0&tabs=http#permissions)
-- Access user: Microsoft Graph, Application permission, [User.Read.All](https://docs.microsoft.com/graph/api/user-list?view=graph-rest-1.0&tabs=http#permissions)
-- Access group: Microsoft Graph, Application permission, [Group.Read.All](https://docs.microsoft.com/graph/api/group-list?view=graph-rest-1.0&tabs=http#permissions)
+- Access application and service principal: Microsoft Graph, Application permission, [Application.Read.All](https://learn.microsoft.com/graph/api/application-list?view=graph-rest-1.0&tabs=http#permissions)
+- Access user: Microsoft Graph, Application permission, [User.Read.All](https://learn.microsoft.com/graph/api/user-list?view=graph-rest-1.0&tabs=http#permissions)
+- Access group: Microsoft Graph, Application permission, [Group.Read.All](https://learn.microsoft.com/graph/api/group-list?view=graph-rest-1.0&tabs=http#permissions)
 
 Sample code to assign role of contributor to another service principal.
 ```java
@@ -114,9 +114,9 @@ TokenCredential credential = new ChainedTokenCredentialBuilder()
 
 For more details on authentication methods, please refer to [Azure Identity][azure_identity].
 
-[managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
-[rbac]: https://docs.microsoft.com/azure/role-based-access-control/overview
-[microsoft_graph]: https://docs.microsoft.com/graph/overview
-[aad_graph]: https://docs.microsoft.com/azure/active-directory/develop/active-directory-graph-api
-[service_principal]: https://docs.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals
+[managed_identity]: https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
+[rbac]: https://learn.microsoft.com/azure/role-based-access-control/overview
+[microsoft_graph]: https://learn.microsoft.com/graph/overview
+[aad_graph]: https://learn.microsoft.com/azure/active-directory/develop/active-directory-graph-api
+[service_principal]: https://learn.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity

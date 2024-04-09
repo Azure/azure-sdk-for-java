@@ -7,11 +7,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of JobDetails. */
+/**
+ * Resource collection API of JobDetails.
+ */
 public interface JobDetails {
     /**
      * Gets extended information associated with the job.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Name of the job whose details are to be fetched.
@@ -25,7 +27,7 @@ public interface JobDetails {
 
     /**
      * Gets extended information associated with the job.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Name of the job whose details are to be fetched.

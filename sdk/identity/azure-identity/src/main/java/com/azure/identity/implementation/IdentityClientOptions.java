@@ -36,7 +36,7 @@ import java.util.function.Function;
  */
 public final class IdentityClientOptions implements Cloneable {
     private static final ClientLogger LOGGER = new ClientLogger(IdentityClientOptions.class);
-    private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
+    private static final int MAX_RETRY_DEFAULT_LIMIT = 6;
     public static final String AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH = "AZURE_IDENTITY_DISABLE_MULTITENANTAUTH";
     public static final String AZURE_POD_IDENTITY_AUTHORITY_HOST = "AZURE_POD_IDENTITY_AUTHORITY_HOST";
 
@@ -76,6 +76,10 @@ public final class IdentityClientOptions implements Cloneable {
 
     private boolean isChained;
     private boolean enableUnsafeSupportLogging;
+    private long brokerWindowHandle;
+    private boolean brokerEnabled;
+    private boolean enableMsaPassthrough;
+    private boolean useDefaultBrokerAccount;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -86,7 +90,7 @@ public final class IdentityClientOptions implements Cloneable {
         identityLogOptionsImpl = new IdentityLogOptionsImpl();
         browserCustomizationOptions = new BrowserCustomizationOptions();
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
-        retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
+        retryTimeout = getIMDSretryTimeoutFunction();
         perCallPolicies = new ArrayList<>();
         perRetryPolicies = new ArrayList<>();
         additionallyAllowedTenants = new HashSet<>();
@@ -95,16 +99,25 @@ public final class IdentityClientOptions implements Cloneable {
         instanceDiscovery = true;
     }
 
+    private static Function<Duration, Duration> getIMDSretryTimeoutFunction() {
+        return inputDuration -> {
+            long retries = inputDuration.getSeconds();
+            // Calculate the delay as 800ms * (2 ^ (retries - 1)), ensuring retries start at 1 for the first attempt
+            long delay = (long) (800 * Math.pow(2, retries - 1));
+            return Duration.ofMillis(delay);
+        };
+    }
+
     /**
-     * @return the Azure Active Directory endpoint to acquire tokens.
+     * @return the Microsoft Entra endpoint to acquire tokens.
      */
     public String getAuthorityHost() {
         return authorityHost;
     }
 
     /**
-     * Specifies the Azure Active Directory endpoint to acquire tokens.
-     * @param authorityHost the Azure Active Directory endpoint
+     * Specifies the Microsoft Entra endpoint to acquire tokens.
+     * @param authorityHost the Microsoft Entra endpoint
      * @return IdentityClientOptions
      */
     public IdentityClientOptions setAuthorityHost(String authorityHost) {
@@ -743,6 +756,67 @@ public final class IdentityClientOptions implements Cloneable {
         return this;
     }
 
+    /**
+     * Gets the window handle for use with the interactive broker.
+     * @return the window handle for use with the interactive broker.
+     */
+    public IdentityClientOptions setBrokerWindowHandle(long windowHandle) {
+        this.brokerEnabled = true;
+        this.brokerWindowHandle = windowHandle;
+        return this;
+    }
+
+    /**
+     * Gets the window handle for use with the interactive broker.
+     * @return the window handle for use with the interactive broker.
+     */
+    public long getBrokerWindowHandle() {
+        return this.brokerWindowHandle;
+    }
+
+    /**
+     * Gets the status whether broker is enabled or not.
+     * @return the flag indicating if broker is enabled or not.
+     */
+    public boolean isBrokerEnabled() {
+        return this.brokerEnabled;
+    }
+
+    /**
+     * Enables MSA passthrough.
+     */
+    public IdentityClientOptions setEnableLegacyMsaPassthrough(boolean enableMsaPassthrough) {
+        this.brokerEnabled = true;
+        this.enableMsaPassthrough = enableMsaPassthrough;
+        return this;
+    }
+
+    /**
+     * Sets whether to use the logged-in user's account for broker authentication.
+     * @param useDefaultBrokerAccount
+     * @return the updated client options
+     */
+    public IdentityClientOptions setUseDefaultBrokerAccount(boolean useDefaultBrokerAccount) {
+        this.useDefaultBrokerAccount = useDefaultBrokerAccount;
+        return this;
+    }
+
+    /**
+     * Gets the status whether MSA passthrough is enabled or not.
+     * @return the flag indicating if MSA passthrough is enabled or not.
+     */
+    public boolean isMsaPassthroughEnabled() {
+        return this.enableMsaPassthrough;
+    }
+
+    /**
+     * Gets the status whether to use the logged-in user's account for broker authentication.
+     * @return the flag indicating if the logged-in user's account should be used for broker authentication.
+     */
+    public boolean useDefaultBrokerAccount() {
+        return this.useDefaultBrokerAccount;
+    }
+
     public IdentityClientOptions clone() {
         IdentityClientOptions clone =  new IdentityClientOptions()
             .setAdditionallyAllowedTenants(this.additionallyAllowedTenants)
@@ -773,6 +847,11 @@ public final class IdentityClientOptions implements Cloneable {
             .setPerRetryPolicies(this.perRetryPolicies)
             .setBrowserCustomizationOptions(this.browserCustomizationOptions)
             .setChained(this.isChained);
+
+        if (isBrokerEnabled()) {
+            clone.setBrokerWindowHandle(this.brokerWindowHandle);
+            clone.setEnableLegacyMsaPassthrough(this.enableMsaPassthrough);
+        }
         if (!isInstanceDiscoveryEnabled()) {
             clone.disableInstanceDiscovery();
         }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Storage Account configurations. */
+/**
+ * Storage Account configurations.
+ */
 @Fluent
 public final class StorageAccount {
     /*
@@ -28,13 +30,15 @@ public final class StorageAccount {
     @JsonProperty(value = "accountName")
     private String accountName;
 
-    /** Creates an instance of StorageAccount class. */
+    /**
+     * Creates an instance of StorageAccount class.
+     */
     public StorageAccount() {
     }
 
     /**
      * Get the id property: Resource ID of storage account.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -43,7 +47,7 @@ public final class StorageAccount {
 
     /**
      * Set the id property: Resource ID of storage account.
-     *
+     * 
      * @param id the id value to set.
      * @return the StorageAccount object itself.
      */
@@ -54,7 +58,7 @@ public final class StorageAccount {
 
     /**
      * Get the subscriptionId property: Subscription Id.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -63,7 +67,7 @@ public final class StorageAccount {
 
     /**
      * Set the subscriptionId property: Subscription Id.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the StorageAccount object itself.
      */
@@ -74,7 +78,7 @@ public final class StorageAccount {
 
     /**
      * Get the accountName property: Storage account name.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -83,7 +87,7 @@ public final class StorageAccount {
 
     /**
      * Set the accountName property: Storage account name.
-     *
+     * 
      * @param accountName the accountName value to set.
      * @return the StorageAccount object itself.
      */
@@ -94,7 +98,7 @@ public final class StorageAccount {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

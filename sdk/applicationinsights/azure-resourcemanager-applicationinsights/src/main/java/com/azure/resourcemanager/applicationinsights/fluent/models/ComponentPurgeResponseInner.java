@@ -17,6 +17,10 @@ public final class ComponentPurgeResponseInner {
     @JsonProperty(value = "operationId", required = true)
     private String operationId;
 
+    /** Creates an instance of ComponentPurgeResponseInner class. */
+    public ComponentPurgeResponseInner() {
+    }
+
     /**
      * Get the operationId property: Id to use when querying for status for a particular purge operation.
      *

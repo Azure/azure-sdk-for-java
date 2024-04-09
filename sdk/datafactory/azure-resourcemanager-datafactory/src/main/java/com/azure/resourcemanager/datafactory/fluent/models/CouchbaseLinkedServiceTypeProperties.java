@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Couchbase server linked service properties. */
+/**
+ * Couchbase server linked service properties.
+ */
 @Fluent
 public final class CouchbaseLinkedServiceTypeProperties {
     /*
@@ -25,19 +27,21 @@ public final class CouchbaseLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of CouchbaseLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of CouchbaseLinkedServiceTypeProperties class.
+     */
     public CouchbaseLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -47,7 +51,7 @@ public final class CouchbaseLinkedServiceTypeProperties {
     /**
      * Set the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the CouchbaseLinkedServiceTypeProperties object itself.
      */
@@ -58,7 +62,7 @@ public final class CouchbaseLinkedServiceTypeProperties {
 
     /**
      * Get the credString property: The Azure key vault secret reference of credString in connection string.
-     *
+     * 
      * @return the credString value.
      */
     public AzureKeyVaultSecretReference credString() {
@@ -67,7 +71,7 @@ public final class CouchbaseLinkedServiceTypeProperties {
 
     /**
      * Set the credString property: The Azure key vault secret reference of credString in connection string.
-     *
+     * 
      * @param credString the credString value to set.
      * @return the CouchbaseLinkedServiceTypeProperties object itself.
      */
@@ -77,30 +81,30 @@ public final class CouchbaseLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the CouchbaseLinkedServiceTypeProperties object itself.
      */
-    public CouchbaseLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public CouchbaseLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The properties of a certificate used for authenticating a token. */
+/**
+ * The properties of a certificate used for authenticating a token.
+ */
 @Fluent
 public final class TokenCertificate {
     /*
@@ -35,13 +37,15 @@ public final class TokenCertificate {
     @JsonProperty(value = "encodedPemCertificate")
     private String encodedPemCertificate;
 
-    /** Creates an instance of TokenCertificate class. */
+    /**
+     * Creates an instance of TokenCertificate class.
+     */
     public TokenCertificate() {
     }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public TokenCertificateName name() {
@@ -50,7 +54,7 @@ public final class TokenCertificate {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the TokenCertificate object itself.
      */
@@ -61,7 +65,7 @@ public final class TokenCertificate {
 
     /**
      * Get the expiry property: The expiry datetime of the certificate.
-     *
+     * 
      * @return the expiry value.
      */
     public OffsetDateTime expiry() {
@@ -70,7 +74,7 @@ public final class TokenCertificate {
 
     /**
      * Set the expiry property: The expiry datetime of the certificate.
-     *
+     * 
      * @param expiry the expiry value to set.
      * @return the TokenCertificate object itself.
      */
@@ -81,7 +85,7 @@ public final class TokenCertificate {
 
     /**
      * Get the thumbprint property: The thumbprint of the certificate.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -90,7 +94,7 @@ public final class TokenCertificate {
 
     /**
      * Set the thumbprint property: The thumbprint of the certificate.
-     *
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the TokenCertificate object itself.
      */
@@ -100,9 +104,9 @@ public final class TokenCertificate {
     }
 
     /**
-     * Get the encodedPemCertificate property: Base 64 encoded string of the public certificate1 in PEM format that will
-     * be used for authenticating the token.
-     *
+     * Get the encodedPemCertificate property: Base 64 encoded string of the public certificate1 in PEM format that
+     * will be used for authenticating the token.
+     * 
      * @return the encodedPemCertificate value.
      */
     public String encodedPemCertificate() {
@@ -110,9 +114,9 @@ public final class TokenCertificate {
     }
 
     /**
-     * Set the encodedPemCertificate property: Base 64 encoded string of the public certificate1 in PEM format that will
-     * be used for authenticating the token.
-     *
+     * Set the encodedPemCertificate property: Base 64 encoded string of the public certificate1 in PEM format that
+     * will be used for authenticating the token.
+     * 
      * @param encodedPemCertificate the encodedPemCertificate value to set.
      * @return the TokenCertificate object itself.
      */
@@ -123,7 +127,7 @@ public final class TokenCertificate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

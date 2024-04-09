@@ -13,8 +13,8 @@ public final class OperationResultImpl implements OperationResult {
 
     private final com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager;
 
-    OperationResultImpl(
-        OperationResultInner innerObject, com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
+    OperationResultImpl(OperationResultInner innerObject,
+        com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

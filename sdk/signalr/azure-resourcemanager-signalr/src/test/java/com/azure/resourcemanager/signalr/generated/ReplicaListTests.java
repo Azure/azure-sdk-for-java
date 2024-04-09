@@ -20,14 +20,16 @@ public final class ReplicaListTests {
         ReplicaList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"sku\":{\"name\":\"zdwlvwlyoupfgfb\",\"tier\":\"Basic\",\"size\":\"dyhgkfminsg\",\"family\":\"zfttsttktlahb\",\"capacity\":520028629},\"properties\":{\"provisioningState\":\"Failed\"},\"location\":\"zukxitmmqtgqq\",\"tags\":{\"isavok\":\"rnxrxcpj\",\"azivjlfrqttbajl\":\"dzf\"},\"id\":\"atnwxyiopi\",\"name\":\"kqqfk\",\"type\":\"vscx\"},{\"sku\":{\"name\":\"mligov\",\"tier\":\"Premium\",\"size\":\"kpmloa\",\"family\":\"ruocbgo\",\"capacity\":1644940787},\"properties\":{\"provisioningState\":\"Canceled\"},\"location\":\"bfhjxakvvjgsl\",\"tags\":{\"yw\":\"il\",\"gkxnyedabg\":\"t\"},\"id\":\"vudtjuewbcihx\",\"name\":\"uwhcjyxccybv\",\"type\":\"ayakkudzpx\"}],\"nextLink\":\"jplmagstcy\"}")
+                    "{\"value\":[{\"sku\":{\"name\":\"zhezwwvaiq\",\"tier\":\"Free\",\"size\":\"fonkphhqyikvyla\",\"family\":\"avluwmncs\",\"capacity\":736005906},\"properties\":{\"provisioningState\":\"Succeeded\",\"regionEndpointEnabled\":\"vpo\",\"resourceStopped\":\"rsg\"},\"location\":\"b\",\"tags\":{\"njdgkynscliq\":\"zq\",\"mtk\":\"zvhxnk\",\"ppnvdxz\":\"bo\",\"hlfkqojpy\":\"hihfrbbcevqagtlt\"},\"id\":\"vgtrdcnifmzzs\",\"name\":\"ymbrnysuxmpraf\",\"type\":\"g\"},{\"sku\":{\"name\":\"hocxvdfffwafqrou\",\"tier\":\"Basic\",\"size\":\"avehhrvkbunzo\",\"family\":\"dhcxgkmoy\",\"capacity\":1284986304},\"properties\":{\"provisioningState\":\"Updating\",\"regionEndpointEnabled\":\"hmfdnbzydvfvfcj\",\"resourceStopped\":\"eoisrvhmgor\"},\"location\":\"ukiscvwmzhw\",\"tags\":{\"btgn\":\"faxvxil\",\"zqlqhyc\":\"nzeyqxtjj\",\"mieknlraria\":\"vodggxdbee\"},\"id\":\"wiuagydwqf\",\"name\":\"ylyrfgiagtco\",\"type\":\"ocqwogfnzjvus\"}],\"nextLink\":\"ld\"}")
                 .toObject(ReplicaList.class);
-        Assertions.assertEquals("zukxitmmqtgqq", model.value().get(0).location());
-        Assertions.assertEquals("rnxrxcpj", model.value().get(0).tags().get("isavok"));
-        Assertions.assertEquals("zdwlvwlyoupfgfb", model.value().get(0).sku().name());
-        Assertions.assertEquals(SignalRSkuTier.BASIC, model.value().get(0).sku().tier());
-        Assertions.assertEquals(520028629, model.value().get(0).sku().capacity());
-        Assertions.assertEquals("jplmagstcy", model.nextLink());
+        Assertions.assertEquals("b", model.value().get(0).location());
+        Assertions.assertEquals("zq", model.value().get(0).tags().get("njdgkynscliq"));
+        Assertions.assertEquals("zhezwwvaiq", model.value().get(0).sku().name());
+        Assertions.assertEquals(SignalRSkuTier.FREE, model.value().get(0).sku().tier());
+        Assertions.assertEquals(736005906, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("vpo", model.value().get(0).regionEndpointEnabled());
+        Assertions.assertEquals("rsg", model.value().get(0).resourceStopped());
+        Assertions.assertEquals("ld", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -38,29 +40,44 @@ public final class ReplicaListTests {
                     Arrays
                         .asList(
                             new ReplicaInner()
-                                .withLocation("zukxitmmqtgqq")
-                                .withTags(mapOf("isavok", "rnxrxcpj", "azivjlfrqttbajl", "dzf"))
+                                .withLocation("b")
+                                .withTags(
+                                    mapOf(
+                                        "njdgkynscliq",
+                                        "zq",
+                                        "mtk",
+                                        "zvhxnk",
+                                        "ppnvdxz",
+                                        "bo",
+                                        "hlfkqojpy",
+                                        "hihfrbbcevqagtlt"))
                                 .withSku(
                                     new ResourceSku()
-                                        .withName("zdwlvwlyoupfgfb")
-                                        .withTier(SignalRSkuTier.BASIC)
-                                        .withCapacity(520028629)),
+                                        .withName("zhezwwvaiq")
+                                        .withTier(SignalRSkuTier.FREE)
+                                        .withCapacity(736005906))
+                                .withRegionEndpointEnabled("vpo")
+                                .withResourceStopped("rsg"),
                             new ReplicaInner()
-                                .withLocation("bfhjxakvvjgsl")
-                                .withTags(mapOf("yw", "il", "gkxnyedabg", "t"))
+                                .withLocation("ukiscvwmzhw")
+                                .withTags(mapOf("btgn", "faxvxil", "zqlqhyc", "nzeyqxtjj", "mieknlraria", "vodggxdbee"))
                                 .withSku(
                                     new ResourceSku()
-                                        .withName("mligov")
-                                        .withTier(SignalRSkuTier.PREMIUM)
-                                        .withCapacity(1644940787))))
-                .withNextLink("jplmagstcy");
+                                        .withName("hocxvdfffwafqrou")
+                                        .withTier(SignalRSkuTier.BASIC)
+                                        .withCapacity(1284986304))
+                                .withRegionEndpointEnabled("hmfdnbzydvfvfcj")
+                                .withResourceStopped("eoisrvhmgor")))
+                .withNextLink("ld");
         model = BinaryData.fromObject(model).toObject(ReplicaList.class);
-        Assertions.assertEquals("zukxitmmqtgqq", model.value().get(0).location());
-        Assertions.assertEquals("rnxrxcpj", model.value().get(0).tags().get("isavok"));
-        Assertions.assertEquals("zdwlvwlyoupfgfb", model.value().get(0).sku().name());
-        Assertions.assertEquals(SignalRSkuTier.BASIC, model.value().get(0).sku().tier());
-        Assertions.assertEquals(520028629, model.value().get(0).sku().capacity());
-        Assertions.assertEquals("jplmagstcy", model.nextLink());
+        Assertions.assertEquals("b", model.value().get(0).location());
+        Assertions.assertEquals("zq", model.value().get(0).tags().get("njdgkynscliq"));
+        Assertions.assertEquals("zhezwwvaiq", model.value().get(0).sku().name());
+        Assertions.assertEquals(SignalRSkuTier.FREE, model.value().get(0).sku().tier());
+        Assertions.assertEquals(736005906, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("vpo", model.value().get(0).regionEndpointEnabled());
+        Assertions.assertEquals("rsg", model.value().get(0).resourceStopped());
+        Assertions.assertEquals("ld", model.nextLink());
     }
 
     // Use "Map.of" if available

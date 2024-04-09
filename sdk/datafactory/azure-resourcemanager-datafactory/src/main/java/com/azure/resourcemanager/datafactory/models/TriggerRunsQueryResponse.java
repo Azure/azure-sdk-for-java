@@ -7,11 +7,13 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.resourcemanager.datafactory.fluent.models.TriggerRunsQueryResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of TriggerRunsQueryResponse. */
+/**
+ * An immutable client-side representation of TriggerRunsQueryResponse.
+ */
 public interface TriggerRunsQueryResponse {
     /**
      * Gets the value property: List of trigger runs.
-     *
+     * 
      * @return the value value.
      */
     List<TriggerRun> value();
@@ -19,14 +21,14 @@ public interface TriggerRunsQueryResponse {
     /**
      * Gets the continuationToken property: The continuation token for getting the next page of results, if any
      * remaining results exist, null otherwise.
-     *
+     * 
      * @return the continuationToken value.
      */
     String continuationToken();
 
     /**
      * Gets the inner com.azure.resourcemanager.datafactory.fluent.models.TriggerRunsQueryResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     TriggerRunsQueryResponseInner innerModel();

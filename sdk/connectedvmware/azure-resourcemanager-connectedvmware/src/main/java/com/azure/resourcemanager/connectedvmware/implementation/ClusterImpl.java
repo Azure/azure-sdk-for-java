@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.connectedvmware.fluent.models.ClusterInner;
 import com.azure.resourcemanager.connectedvmware.models.Cluster;
 import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
+import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourcePatch;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 import java.util.Collections;
@@ -91,6 +92,22 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().customResourceName();
     }
 
+    public Long usedMemoryGB() {
+        return this.innerModel().usedMemoryGB();
+    }
+
+    public Long totalMemoryGB() {
+        return this.innerModel().totalMemoryGB();
+    }
+
+    public Long usedCpuMHz() {
+        return this.innerModel().usedCpuMHz();
+    }
+
+    public Long totalCpuMHz() {
+        return this.innerModel().totalCpuMHz();
+    }
+
     public List<String> datastoreIds() {
         List<String> inner = this.innerModel().datastoreIds();
         if (inner != null) {
@@ -109,7 +126,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 

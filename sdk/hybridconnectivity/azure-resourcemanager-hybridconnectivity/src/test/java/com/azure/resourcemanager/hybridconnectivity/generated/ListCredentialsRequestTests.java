@@ -13,14 +13,14 @@ public final class ListCredentialsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListCredentialsRequest model =
-            BinaryData.fromString("{\"serviceName\":\"SSH\"}").toObject(ListCredentialsRequest.class);
-        Assertions.assertEquals(ServiceName.SSH, model.serviceName());
+            BinaryData.fromString("{\"serviceName\":\"WAC\"}").toObject(ListCredentialsRequest.class);
+        Assertions.assertEquals(ServiceName.WAC, model.serviceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListCredentialsRequest model = new ListCredentialsRequest().withServiceName(ServiceName.SSH);
+        ListCredentialsRequest model = new ListCredentialsRequest().withServiceName(ServiceName.WAC);
         model = BinaryData.fromObject(model).toObject(ListCredentialsRequest.class);
-        Assertions.assertEquals(ServiceName.SSH, model.serviceName());
+        Assertions.assertEquals(ServiceName.WAC, model.serviceName());
     }
 }

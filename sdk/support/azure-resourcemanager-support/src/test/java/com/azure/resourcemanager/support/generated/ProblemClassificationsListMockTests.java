@@ -31,38 +31,31 @@ public final class ProblemClassificationsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"id\":\"oklyaxuconuq\",\"name\":\"fkbey\",\"type\":\"wrmjmwvvjektc\",\"properties\":{\"displayName\":\"nhwlrsffrzpwvl\"}}]}";
+        String responseStr
+            = "{\"value\":[{\"id\":\"vfbgofeljagrqmqh\",\"name\":\"vriiio\",\"type\":\"al\",\"properties\":{\"displayName\":\"kvtvsexso\",\"secondaryConsentEnabled\":[{\"description\":\"uqhhahhxvrh\",\"type\":\"kwpjgwwspughftqs\"}],\"metadata\":{\"digrjguufzdmsyqt\":\"xujxuknd\",\"o\":\"ihwhbotzingamvpp\",\"amvdkfwynwcvtbv\":\"zqzudph\"},\"parentProblemClassification\":{\"id\":\"hmtnvy\",\"name\":\"atkzwpcnpw\",\"type\":\"jaesgvvsccya\",\"properties\":{\"displayName\":\"qfhwyg\",\"secondaryConsentEnabled\":[{},{},{}],\"metadata\":{\"emdwzrmuhapfc\":\"kfxu\"},\"parentProblemClassification\":{\"id\":\"sqxqvp\",\"name\":\"uoymgccelvezry\",\"type\":\"lmfeokerq\",\"properties\":{}}}}}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SupportManager manager =
-            SupportManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SupportManager manager = SupportManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ProblemClassification> response =
-            manager.problemClassifications().list("hgyxzkonoc", com.azure.core.util.Context.NONE);
+        PagedIterable<ProblemClassification> response
+            = manager.problemClassifications().list("ylwbtlhflsjcdhsz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nhwlrsffrzpwvl", response.iterator().next().displayName());
+        Assertions.assertEquals("kvtvsexso", response.iterator().next().displayName());
+        Assertions.assertEquals("uqhhahhxvrh",
+            response.iterator().next().secondaryConsentEnabled().get(0).description());
+        Assertions.assertEquals("kwpjgwwspughftqs", response.iterator().next().secondaryConsentEnabled().get(0).type());
+        Assertions.assertEquals("qfhwyg", response.iterator().next().parentProblemClassification().displayName());
     }
 }

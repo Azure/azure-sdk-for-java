@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** SAP HANA Table properties. */
+/**
+ * SAP HANA Table properties.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapHanaTable")
 @Fluent
@@ -23,62 +25,78 @@ public final class SapHanaTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private SapHanaTableDatasetTypeProperties innerTypeProperties;
 
-    /** Creates an instance of SapHanaTableDataset class. */
+    /**
+     * Creates an instance of SapHanaTableDataset class.
+     */
     public SapHanaTableDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: SAP HANA Table properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private SapHanaTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaTableDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaTableDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaTableDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaTableDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaTableDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaTableDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaTableDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -87,7 +105,7 @@ public final class SapHanaTableDataset extends Dataset {
 
     /**
      * Get the schema property: The schema name of SAP HANA. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the schema value.
      */
     public Object schemaTypePropertiesSchema() {
@@ -96,7 +114,7 @@ public final class SapHanaTableDataset extends Dataset {
 
     /**
      * Set the schema property: The schema name of SAP HANA. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param schema the schema value to set.
      * @return the SapHanaTableDataset object itself.
      */
@@ -110,7 +128,7 @@ public final class SapHanaTableDataset extends Dataset {
 
     /**
      * Get the table property: The table name of SAP HANA. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object table() {
@@ -119,7 +137,7 @@ public final class SapHanaTableDataset extends Dataset {
 
     /**
      * Set the table property: The table name of SAP HANA. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the SapHanaTableDataset object itself.
      */
@@ -133,7 +151,7 @@ public final class SapHanaTableDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -70,6 +70,10 @@ public final class VirtualDisk {
     @JsonProperty(value = "diskType")
     private DiskType diskType;
 
+    /** Creates an instance of VirtualDisk class. */
+    public VirtualDisk() {
+    }
+
     /**
      * Get the name property: Gets or sets the name of the virtual disk.
      *

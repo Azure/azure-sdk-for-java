@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SQL stored procedure activity properties. */
+/**
+ * SQL stored procedure activity properties.
+ */
 @Fluent
 public final class SqlServerStoredProcedureActivityTypeProperties {
     /*
@@ -23,13 +25,16 @@ public final class SqlServerStoredProcedureActivityTypeProperties {
     @JsonProperty(value = "storedProcedureParameters")
     private Object storedProcedureParameters;
 
-    /** Creates an instance of SqlServerStoredProcedureActivityTypeProperties class. */
+    /**
+     * Creates an instance of SqlServerStoredProcedureActivityTypeProperties class.
+     */
     public SqlServerStoredProcedureActivityTypeProperties() {
     }
 
     /**
-     * Get the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
-     *
+     * Get the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the storedProcedureName value.
      */
     public Object storedProcedureName() {
@@ -37,8 +42,9 @@ public final class SqlServerStoredProcedureActivityTypeProperties {
     }
 
     /**
-     * Set the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
-     *
+     * Set the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param storedProcedureName the storedProcedureName value to set.
      * @return the SqlServerStoredProcedureActivityTypeProperties object itself.
      */
@@ -50,7 +56,7 @@ public final class SqlServerStoredProcedureActivityTypeProperties {
     /**
      * Get the storedProcedureParameters property: Value and type setting for stored procedure parameters. Example:
      * "{Parameter1: {value: "1", type: "int"}}".
-     *
+     * 
      * @return the storedProcedureParameters value.
      */
     public Object storedProcedureParameters() {
@@ -60,28 +66,25 @@ public final class SqlServerStoredProcedureActivityTypeProperties {
     /**
      * Set the storedProcedureParameters property: Value and type setting for stored procedure parameters. Example:
      * "{Parameter1: {value: "1", type: "int"}}".
-     *
+     * 
      * @param storedProcedureParameters the storedProcedureParameters value to set.
      * @return the SqlServerStoredProcedureActivityTypeProperties object itself.
      */
-    public SqlServerStoredProcedureActivityTypeProperties withStoredProcedureParameters(
-        Object storedProcedureParameters) {
+    public SqlServerStoredProcedureActivityTypeProperties
+        withStoredProcedureParameters(Object storedProcedureParameters) {
         this.storedProcedureParameters = storedProcedureParameters;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storedProcedureName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storedProcedureName in model"
-                            + " SqlServerStoredProcedureActivityTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storedProcedureName in model SqlServerStoredProcedureActivityTypeProperties"));
         }
     }
 

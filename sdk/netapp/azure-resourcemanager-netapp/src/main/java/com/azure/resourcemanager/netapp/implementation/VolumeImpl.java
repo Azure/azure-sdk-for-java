@@ -14,6 +14,7 @@ import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
+import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
@@ -230,6 +231,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().coolnessPeriod();
     }
 
+    public CoolAccessRetrievalPolicy coolAccessRetrievalPolicy() {
+        return this.innerModel().coolAccessRetrievalPolicy();
+    }
+
     public String unixPermissions() {
         return this.innerModel().unixPermissions();
     }
@@ -358,20 +363,14 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public Volume create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumes()
-                .createOrUpdate(resourceGroupName, accountName, poolName, volumeName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getVolumes().createOrUpdate(resourceGroupName, accountName,
+            poolName, volumeName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Volume create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumes()
-                .createOrUpdate(resourceGroupName, accountName, poolName, volumeName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getVolumes().createOrUpdate(resourceGroupName, accountName,
+            poolName, volumeName, this.innerModel(), context);
         return this;
     }
 
@@ -387,50 +386,45 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public Volume apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumes()
-                .update(resourceGroupName, accountName, poolName, volumeName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getVolumes().update(resourceGroupName, accountName, poolName,
+            volumeName, updateBody, Context.NONE);
         return this;
     }
 
     public Volume apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumes()
-                .update(resourceGroupName, accountName, poolName, volumeName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient().getVolumes().update(resourceGroupName, accountName, poolName,
+            volumeName, updateBody, context);
         return this;
     }
 
     VolumeImpl(VolumeInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
-        this.poolName = Utils.getValueFromIdByName(innerObject.id(), "capacityPools");
-        this.volumeName = Utils.getValueFromIdByName(innerObject.id(), "volumes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
+        this.poolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "capacityPools");
+        this.volumeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "volumes");
     }
 
     public Volume refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumes()
-                .getWithResponse(resourceGroupName, accountName, poolName, volumeName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getVolumes()
+            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, Context.NONE).getValue();
         return this;
     }
 
     public Volume refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumes()
-                .getWithResponse(resourceGroupName, accountName, poolName, volumeName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getVolumes()
+            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, context).getValue();
         return this;
+    }
+
+    public Volume populateAvailabilityZone() {
+        return serviceManager.volumes().populateAvailabilityZone(resourceGroupName, accountName, poolName, volumeName);
+    }
+
+    public Volume populateAvailabilityZone(Context context) {
+        return serviceManager.volumes().populateAvailabilityZone(resourceGroupName, accountName, poolName, volumeName,
+            context);
     }
 
     public void revert(VolumeRevert body) {
@@ -458,16 +452,14 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(GetGroupIdListForLdapUserRequest body) {
-        return serviceManager
-            .volumes()
-            .listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body);
+        return serviceManager.volumes().listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName,
+            volumeName, body);
     }
 
-    public GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(
-        GetGroupIdListForLdapUserRequest body, Context context) {
-        return serviceManager
-            .volumes()
-            .listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body, context);
+    public GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(GetGroupIdListForLdapUserRequest body,
+        Context context) {
+        return serviceManager.volumes().listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName,
+            volumeName, body, context);
     }
 
     public void breakReplication() {
@@ -483,9 +475,8 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public void reestablishReplication(ReestablishReplicationRequest body, Context context) {
-        serviceManager
-            .volumes()
-            .reestablishReplication(resourceGroupName, accountName, poolName, volumeName, body, context);
+        serviceManager.volumes().reestablishReplication(resourceGroupName, accountName, poolName, volumeName, body,
+            context);
     }
 
     public PagedIterable<Replication> listReplications() {
@@ -517,9 +508,8 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public void authorizeReplication(AuthorizeRequest body, Context context) {
-        serviceManager
-            .volumes()
-            .authorizeReplication(resourceGroupName, accountName, poolName, volumeName, body, context);
+        serviceManager.volumes().authorizeReplication(resourceGroupName, accountName, poolName, volumeName, body,
+            context);
     }
 
     public void reInitializeReplication() {
@@ -683,13 +673,23 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public VolumeImpl withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration smbAccessBasedEnumeration) {
-        this.innerModel().withSmbAccessBasedEnumeration(smbAccessBasedEnumeration);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withSmbAccessBasedEnumeration(smbAccessBasedEnumeration);
+            return this;
+        } else {
+            this.updateBody.withSmbAccessBasedEnumeration(smbAccessBasedEnumeration);
+            return this;
+        }
     }
 
     public VolumeImpl withSmbNonBrowsable(SmbNonBrowsable smbNonBrowsable) {
-        this.innerModel().withSmbNonBrowsable(smbNonBrowsable);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withSmbNonBrowsable(smbNonBrowsable);
+            return this;
+        } else {
+            this.updateBody.withSmbNonBrowsable(smbNonBrowsable);
+            return this;
+        }
     }
 
     public VolumeImpl withSmbContinuouslyAvailable(Boolean smbContinuouslyAvailable) {
@@ -738,6 +738,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
             return this;
         } else {
             this.updateBody.withCoolnessPeriod(coolnessPeriod);
+            return this;
+        }
+    }
+
+    public VolumeImpl withCoolAccessRetrievalPolicy(CoolAccessRetrievalPolicy coolAccessRetrievalPolicy) {
+        if (isInCreateMode()) {
+            this.innerModel().withCoolAccessRetrievalPolicy(coolAccessRetrievalPolicy);
+            return this;
+        } else {
+            this.updateBody.withCoolAccessRetrievalPolicy(coolAccessRetrievalPolicy);
             return this;
         }
     }

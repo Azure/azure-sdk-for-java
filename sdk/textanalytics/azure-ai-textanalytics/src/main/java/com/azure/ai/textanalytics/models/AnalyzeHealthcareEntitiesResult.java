@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link AnalyzeHealthcareEntitiesResult} model.
+ * The {@code AnalyzeHealthcareEntitiesResult} model.
  */
 @Immutable
 public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
@@ -40,7 +40,7 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
     }
 
     /**
-     * Creates a {@link AnalyzeHealthcareEntitiesResult} model that describes recognized healthcare entities result.
+     * Creates a {@code AnalyzeHealthcareEntitiesResult} model that describes recognized healthcare entities result.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.

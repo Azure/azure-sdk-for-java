@@ -5,50 +5,53 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Encoder disconnected event data. Schema of the Data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventEncoderDisconnected event.
  */
 @Immutable
-public final class MediaLiveEventEncoderDisconnectedEventData {
+public final class MediaLiveEventEncoderDisconnectedEventData
+    implements JsonSerializable<MediaLiveEventEncoderDisconnectedEventData> {
     /*
      * Gets the ingest URL provided by the live event.
      */
-    @JsonProperty(value = "ingestUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String ingestUrl;
 
     /*
      * Gets the stream Id.
      */
-    @JsonProperty(value = "streamId", access = JsonProperty.Access.WRITE_ONLY)
     private String streamId;
 
     /*
      * Gets the remote IP.
      */
-    @JsonProperty(value = "encoderIp", access = JsonProperty.Access.WRITE_ONLY)
     private String encoderIp;
 
     /*
      * Gets the remote port.
      */
-    @JsonProperty(value = "encoderPort", access = JsonProperty.Access.WRITE_ONLY)
     private String encoderPort;
 
     /*
      * Gets the result code.
      */
-    @JsonProperty(value = "resultCode", access = JsonProperty.Access.WRITE_ONLY)
     private String resultCode;
 
-    /** Creates an instance of MediaLiveEventEncoderDisconnectedEventData class. */
-    public MediaLiveEventEncoderDisconnectedEventData() {}
+    /**
+     * Creates an instance of MediaLiveEventEncoderDisconnectedEventData class.
+     */
+    public MediaLiveEventEncoderDisconnectedEventData() {
+    }
 
     /**
      * Get the ingestUrl property: Gets the ingest URL provided by the live event.
-     *
+     * 
      * @return the ingestUrl value.
      */
     public String getIngestUrl() {
@@ -57,7 +60,7 @@ public final class MediaLiveEventEncoderDisconnectedEventData {
 
     /**
      * Get the streamId property: Gets the stream Id.
-     *
+     * 
      * @return the streamId value.
      */
     public String getStreamId() {
@@ -66,7 +69,7 @@ public final class MediaLiveEventEncoderDisconnectedEventData {
 
     /**
      * Get the encoderIp property: Gets the remote IP.
-     *
+     * 
      * @return the encoderIp value.
      */
     public String getEncoderIp() {
@@ -75,7 +78,7 @@ public final class MediaLiveEventEncoderDisconnectedEventData {
 
     /**
      * Get the encoderPort property: Gets the remote port.
-     *
+     * 
      * @return the encoderPort value.
      */
     public String getEncoderPort() {
@@ -84,10 +87,51 @@ public final class MediaLiveEventEncoderDisconnectedEventData {
 
     /**
      * Get the resultCode property: Gets the result code.
-     *
+     * 
      * @return the resultCode value.
      */
     public String getResultCode() {
         return this.resultCode;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MediaLiveEventEncoderDisconnectedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaLiveEventEncoderDisconnectedEventData if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaLiveEventEncoderDisconnectedEventData.
+     */
+    public static MediaLiveEventEncoderDisconnectedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaLiveEventEncoderDisconnectedEventData deserializedMediaLiveEventEncoderDisconnectedEventData
+                = new MediaLiveEventEncoderDisconnectedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ingestUrl".equals(fieldName)) {
+                    deserializedMediaLiveEventEncoderDisconnectedEventData.ingestUrl = reader.getString();
+                } else if ("streamId".equals(fieldName)) {
+                    deserializedMediaLiveEventEncoderDisconnectedEventData.streamId = reader.getString();
+                } else if ("encoderIp".equals(fieldName)) {
+                    deserializedMediaLiveEventEncoderDisconnectedEventData.encoderIp = reader.getString();
+                } else if ("encoderPort".equals(fieldName)) {
+                    deserializedMediaLiveEventEncoderDisconnectedEventData.encoderPort = reader.getString();
+                } else if ("resultCode".equals(fieldName)) {
+                    deserializedMediaLiveEventEncoderDisconnectedEventData.resultCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMediaLiveEventEncoderDisconnectedEventData;
+        });
     }
 }

@@ -13,7 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Properties of a managed private endpoint. */
+/**
+ * Properties of a managed private endpoint.
+ */
 @Fluent
 public final class ManagedPrivateEndpoint {
     /*
@@ -55,15 +57,18 @@ public final class ManagedPrivateEndpoint {
     /*
      * Properties of a managed private endpoint
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ManagedPrivateEndpoint class. */
+    /**
+     * Creates an instance of ManagedPrivateEndpoint class.
+     */
     public ManagedPrivateEndpoint() {
     }
 
     /**
      * Get the connectionState property: The managed private endpoint connection state.
-     *
+     * 
      * @return the connectionState value.
      */
     public ConnectionStateProperties connectionState() {
@@ -72,7 +77,7 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Set the connectionState property: The managed private endpoint connection state.
-     *
+     * 
      * @param connectionState the connectionState value to set.
      * @return the ManagedPrivateEndpoint object itself.
      */
@@ -83,7 +88,7 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Get the fqdns property: Fully qualified domain names.
-     *
+     * 
      * @return the fqdns value.
      */
     public List<String> fqdns() {
@@ -92,7 +97,7 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Set the fqdns property: Fully qualified domain names.
-     *
+     * 
      * @param fqdns the fqdns value to set.
      * @return the ManagedPrivateEndpoint object itself.
      */
@@ -103,7 +108,7 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Get the groupId property: The groupId to which the managed private endpoint is created.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -112,7 +117,7 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Set the groupId property: The groupId to which the managed private endpoint is created.
-     *
+     * 
      * @param groupId the groupId value to set.
      * @return the ManagedPrivateEndpoint object itself.
      */
@@ -123,7 +128,7 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Get the isReserved property: Denotes whether the managed private endpoint is reserved.
-     *
+     * 
      * @return the isReserved value.
      */
     public Boolean isReserved() {
@@ -131,9 +136,9 @@ public final class ManagedPrivateEndpoint {
     }
 
     /**
-     * Get the privateLinkResourceId property: The ARM resource ID of the resource to which the managed private endpoint
-     * is created.
-     *
+     * Get the privateLinkResourceId property: The ARM resource ID of the resource to which the managed private
+     * endpoint is created.
+     * 
      * @return the privateLinkResourceId value.
      */
     public String privateLinkResourceId() {
@@ -141,9 +146,9 @@ public final class ManagedPrivateEndpoint {
     }
 
     /**
-     * Set the privateLinkResourceId property: The ARM resource ID of the resource to which the managed private endpoint
-     * is created.
-     *
+     * Set the privateLinkResourceId property: The ARM resource ID of the resource to which the managed private
+     * endpoint is created.
+     * 
      * @param privateLinkResourceId the privateLinkResourceId value to set.
      * @return the ManagedPrivateEndpoint object itself.
      */
@@ -154,7 +159,7 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Get the provisioningState property: The managed private endpoint provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -163,7 +168,7 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Get the additionalProperties property: Properties of a managed private endpoint.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -173,7 +178,7 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Set the additionalProperties property: Properties of a managed private endpoint.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ManagedPrivateEndpoint object itself.
      */
@@ -192,7 +197,7 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

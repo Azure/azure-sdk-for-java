@@ -25,6 +25,7 @@ if ("" -eq $JdkPath) {
     $registryBase = "HKLM:\SOFTWARE"
     $azulJdks = "$registryBase\Azul Systems\Zulu"
     $eclipseJdks = "$registryBase\Eclipse Adoptium\JDK"
+    $eclipseFoundationJdks = "$registryBase\Eclipse Foundation\JDK"
     $microsoftJdks = "$registryBase\Microsoft\JDK"
 
     # Collect all available JDK installations in the following format
@@ -85,6 +86,16 @@ if ("" -eq $JdkPath) {
     # Eclipse | <First number segment in Current Version> | <Current Version> | <Path>
     if (Test-Path -Path $eclipseJdks) {
         foreach ($jdk in Get-ChildItem -Path $eclipseJdks) {
+            $jdkHKeyPath = $jdk.Name
+            $jdkFullVersion = $jdk.PSChildName
+            $jdkChoicePath = (Get-ItemProperty -Path "Registry::$jdkHKeyPath\hotspot\MSI").Path
+
+            [void]$jdkOptions.Rows.Add($choiceNumber, "Eclipse", $jdkFullVersion.split(".")[0], $jdkFullVersion, $jdkChoicePath)
+            $choiceNumber++
+        }
+    }
+    if (Test-Path -Path $eclipseFoundationJdks) {
+        foreach ($jdk in Get-ChildItem -Path $eclipseFoundationJdks) {
             $jdkHKeyPath = $jdk.Name
             $jdkFullVersion = $jdk.PSChildName
             $jdkChoicePath = (Get-ItemProperty -Path "Registry::$jdkHKeyPath\hotspot\MSI").Path

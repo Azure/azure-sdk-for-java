@@ -24,13 +24,17 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datadog.fluent.MicrosoftDatadogClient;
+import com.azure.resourcemanager.datadog.implementation.CreationSupportedsImpl;
 import com.azure.resourcemanager.datadog.implementation.MarketplaceAgreementsImpl;
 import com.azure.resourcemanager.datadog.implementation.MicrosoftDatadogClientBuilder;
+import com.azure.resourcemanager.datadog.implementation.MonitoredSubscriptionsImpl;
 import com.azure.resourcemanager.datadog.implementation.MonitorsImpl;
 import com.azure.resourcemanager.datadog.implementation.OperationsImpl;
 import com.azure.resourcemanager.datadog.implementation.SingleSignOnConfigurationsImpl;
 import com.azure.resourcemanager.datadog.implementation.TagRulesImpl;
+import com.azure.resourcemanager.datadog.models.CreationSupporteds;
 import com.azure.resourcemanager.datadog.models.MarketplaceAgreements;
+import com.azure.resourcemanager.datadog.models.MonitoredSubscriptions;
 import com.azure.resourcemanager.datadog.models.Monitors;
 import com.azure.resourcemanager.datadog.models.Operations;
 import com.azure.resourcemanager.datadog.models.SingleSignOnConfigurations;
@@ -46,6 +50,8 @@ import java.util.stream.Collectors;
 public final class MicrosoftDatadogManager {
     private MarketplaceAgreements marketplaceAgreements;
 
+    private CreationSupporteds creationSupporteds;
+
     private Monitors monitors;
 
     private Operations operations;
@@ -53,6 +59,8 @@ public final class MicrosoftDatadogManager {
     private TagRules tagRules;
 
     private SingleSignOnConfigurations singleSignOnConfigurations;
+
+    private MonitoredSubscriptions monitoredSubscriptions;
 
     private final MicrosoftDatadogClient clientObject;
 
@@ -219,7 +227,7 @@ public final class MicrosoftDatadogManager {
                 .append("-")
                 .append("com.azure.resourcemanager.datadog")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -289,6 +297,18 @@ public final class MicrosoftDatadogManager {
     }
 
     /**
+     * Gets the resource collection API of CreationSupporteds.
+     *
+     * @return Resource collection API of CreationSupporteds.
+     */
+    public CreationSupporteds creationSupporteds() {
+        if (this.creationSupporteds == null) {
+            this.creationSupporteds = new CreationSupportedsImpl(clientObject.getCreationSupporteds(), this);
+        }
+        return creationSupporteds;
+    }
+
+    /**
      * Gets the resource collection API of Monitors. It manages DatadogMonitorResource.
      *
      * @return Resource collection API of Monitors.
@@ -338,8 +358,23 @@ public final class MicrosoftDatadogManager {
     }
 
     /**
-     * @return Wrapped service client MicrosoftDatadogClient providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets the resource collection API of MonitoredSubscriptions. It manages MonitoredSubscriptionProperties.
+     *
+     * @return Resource collection API of MonitoredSubscriptions.
+     */
+    public MonitoredSubscriptions monitoredSubscriptions() {
+        if (this.monitoredSubscriptions == null) {
+            this.monitoredSubscriptions =
+                new MonitoredSubscriptionsImpl(clientObject.getMonitoredSubscriptions(), this);
+        }
+        return monitoredSubscriptions;
+    }
+
+    /**
+     * Gets wrapped service client MicrosoftDatadogClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client MicrosoftDatadogClient.
      */
     public MicrosoftDatadogClient serviceClient() {
         return this.clientObject;

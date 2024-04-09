@@ -7,15 +7,17 @@ package com.azure.resourcemanager.managedapplications.generated;
 /** Samples for ApplicationDefinitions DeleteById. */
 public final class ApplicationDefinitionsDeleteByIdSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/deleteApplicationDefinition.json
+     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/deleteApplicationDefinition.json
      */
     /**
-     * Sample code: Delete application definition.
+     * Sample code: Deletes managed application definition.
      *
      * @param manager Entry point to ApplicationManager.
      */
-    public static void deleteApplicationDefinition(
+    public static void deletesManagedApplicationDefinition(
         com.azure.resourcemanager.managedapplications.ApplicationManager manager) {
-        manager.applicationDefinitions().deleteById("rg", "myManagedApplicationDef", com.azure.core.util.Context.NONE);
+        manager
+            .applicationDefinitions()
+            .deleteByIdWithResponse("rg", "myManagedApplicationDef", com.azure.core.util.Context.NONE);
     }
 }

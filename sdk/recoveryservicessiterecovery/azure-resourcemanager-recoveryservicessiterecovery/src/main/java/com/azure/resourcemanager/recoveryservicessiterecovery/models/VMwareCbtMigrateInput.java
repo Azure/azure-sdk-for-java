@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** VMwareCbt specific migrate input. */
+/**
+ * VMwareCbt specific migrate input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VMwareCbt")
 @Fluent
@@ -21,13 +23,21 @@ public final class VMwareCbtMigrateInput extends MigrateProviderSpecificInput {
     @JsonProperty(value = "performShutdown", required = true)
     private String performShutdown;
 
-    /** Creates an instance of VMwareCbtMigrateInput class. */
+    /*
+     * A value indicating the inplace OS Upgrade version.
+     */
+    @JsonProperty(value = "osUpgradeVersion")
+    private String osUpgradeVersion;
+
+    /**
+     * Creates an instance of VMwareCbtMigrateInput class.
+     */
     public VMwareCbtMigrateInput() {
     }
 
     /**
      * Get the performShutdown property: A value indicating whether VM is to be shutdown.
-     *
+     * 
      * @return the performShutdown value.
      */
     public String performShutdown() {
@@ -36,7 +46,7 @@ public final class VMwareCbtMigrateInput extends MigrateProviderSpecificInput {
 
     /**
      * Set the performShutdown property: A value indicating whether VM is to be shutdown.
-     *
+     * 
      * @param performShutdown the performShutdown value to set.
      * @return the VMwareCbtMigrateInput object itself.
      */
@@ -46,18 +56,36 @@ public final class VMwareCbtMigrateInput extends MigrateProviderSpecificInput {
     }
 
     /**
+     * Get the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     * 
+     * @return the osUpgradeVersion value.
+     */
+    public String osUpgradeVersion() {
+        return this.osUpgradeVersion;
+    }
+
+    /**
+     * Set the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     * 
+     * @param osUpgradeVersion the osUpgradeVersion value to set.
+     * @return the VMwareCbtMigrateInput object itself.
+     */
+    public VMwareCbtMigrateInput withOsUpgradeVersion(String osUpgradeVersion) {
+        this.osUpgradeVersion = osUpgradeVersion;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (performShutdown() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property performShutdown in model VMwareCbtMigrateInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property performShutdown in model VMwareCbtMigrateInput"));
         }
     }
 

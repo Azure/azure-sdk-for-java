@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.CustomDnsSuffixProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** CustomDnsSuffixConfiguration resource specific properties. */
+/**
+ * CustomDnsSuffixConfiguration resource specific properties.
+ */
 @Fluent
 public final class CustomDnsSuffixConfigurationProperties {
     /*
@@ -43,13 +45,15 @@ public final class CustomDnsSuffixConfigurationProperties {
     @JsonProperty(value = "keyVaultReferenceIdentity")
     private String keyVaultReferenceIdentity;
 
-    /** Creates an instance of CustomDnsSuffixConfigurationProperties class. */
+    /**
+     * Creates an instance of CustomDnsSuffixConfigurationProperties class.
+     */
     public CustomDnsSuffixConfigurationProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CustomDnsSuffixProvisioningState provisioningState() {
@@ -58,7 +62,7 @@ public final class CustomDnsSuffixConfigurationProperties {
 
     /**
      * Get the provisioningDetails property: The provisioningDetails property.
-     *
+     * 
      * @return the provisioningDetails value.
      */
     public String provisioningDetails() {
@@ -67,7 +71,7 @@ public final class CustomDnsSuffixConfigurationProperties {
 
     /**
      * Get the dnsSuffix property: The default custom domain suffix to use for all sites deployed on the ASE.
-     *
+     * 
      * @return the dnsSuffix value.
      */
     public String dnsSuffix() {
@@ -76,7 +80,7 @@ public final class CustomDnsSuffixConfigurationProperties {
 
     /**
      * Set the dnsSuffix property: The default custom domain suffix to use for all sites deployed on the ASE.
-     *
+     * 
      * @param dnsSuffix the dnsSuffix value to set.
      * @return the CustomDnsSuffixConfigurationProperties object itself.
      */
@@ -88,7 +92,7 @@ public final class CustomDnsSuffixConfigurationProperties {
     /**
      * Get the certificateUrl property: The URL referencing the Azure Key Vault certificate secret that should be used
      * as the default SSL/TLS certificate for sites with the custom domain suffix.
-     *
+     * 
      * @return the certificateUrl value.
      */
     public String certificateUrl() {
@@ -98,7 +102,7 @@ public final class CustomDnsSuffixConfigurationProperties {
     /**
      * Set the certificateUrl property: The URL referencing the Azure Key Vault certificate secret that should be used
      * as the default SSL/TLS certificate for sites with the custom domain suffix.
-     *
+     * 
      * @param certificateUrl the certificateUrl value to set.
      * @return the CustomDnsSuffixConfigurationProperties object itself.
      */
@@ -110,7 +114,7 @@ public final class CustomDnsSuffixConfigurationProperties {
     /**
      * Get the keyVaultReferenceIdentity property: The user-assigned identity to use for resolving the key vault
      * certificate reference. If not specified, the system-assigned ASE identity will be used if available.
-     *
+     * 
      * @return the keyVaultReferenceIdentity value.
      */
     public String keyVaultReferenceIdentity() {
@@ -120,7 +124,7 @@ public final class CustomDnsSuffixConfigurationProperties {
     /**
      * Set the keyVaultReferenceIdentity property: The user-assigned identity to use for resolving the key vault
      * certificate reference. If not specified, the system-assigned ASE identity will be used if available.
-     *
+     * 
      * @param keyVaultReferenceIdentity the keyVaultReferenceIdentity value to set.
      * @return the CustomDnsSuffixConfigurationProperties object itself.
      */
@@ -131,7 +135,7 @@ public final class CustomDnsSuffixConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

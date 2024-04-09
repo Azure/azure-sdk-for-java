@@ -31,7 +31,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         RenameCollectionAwareClientRetryPolicy renameCollectionAwareClientRetryPolicy = new RenameCollectionAwareClientRetryPolicy(sessionContainer
                 , rxClientCollectionCache
-                , retryPolicyFactory.getRequestPolicy());
+                , retryPolicyFactory.getRequestPolicy(null));
 
         Exception exception = ReadTimeoutException.INSTANCE;
 
@@ -59,7 +59,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         RenameCollectionAwareClientRetryPolicy renameCollectionAwareClientRetryPolicy = new RenameCollectionAwareClientRetryPolicy(sessionContainer
                 , rxClientCollectionCache
-                , retryPolicyFactory.getRequestPolicy());
+                , retryPolicyFactory.getRequestPolicy(null));
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         request.requestContext = new DocumentServiceRequestContext();
@@ -85,7 +85,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         RenameCollectionAwareClientRetryPolicy renameCollectionAwareClientRetryPolicy = new RenameCollectionAwareClientRetryPolicy(sessionContainer
                 , rxClientCollectionCache
-                , retryPolicyFactory.getRequestPolicy());
+                , retryPolicyFactory.getRequestPolicy(null));
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         request.requestContext = new DocumentServiceRequestContext();
@@ -122,7 +122,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         RenameCollectionAwareClientRetryPolicy renameCollectionAwareClientRetryPolicy = new RenameCollectionAwareClientRetryPolicy(sessionContainer
                 , rxClientCollectionCache
-                , retryPolicyFactory.getRequestPolicy());
+                , retryPolicyFactory.getRequestPolicy(null));
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         request.requestContext = new DocumentServiceRequestContext();

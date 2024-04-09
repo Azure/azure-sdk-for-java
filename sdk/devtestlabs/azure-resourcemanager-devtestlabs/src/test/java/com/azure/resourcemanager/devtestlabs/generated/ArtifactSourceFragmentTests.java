@@ -14,17 +14,21 @@ public final class ArtifactSourceFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArtifactSourceFragment model =
-            BinaryData.fromString("{\"tags\":{\"e\":\"jfauvjfdxxi\"}}").toObject(ArtifactSourceFragment.class);
-        Assertions.assertEquals("jfauvjfdxxi", model.tags().get("e"));
+            BinaryData
+                .fromString("{\"tags\":{\"lvithhqzonosgg\":\"zx\",\"ljuti\":\"hcohfwdsjnk\"}}")
+                .toObject(ArtifactSourceFragment.class);
+        Assertions.assertEquals("zx", model.tags().get("lvithhqzonosgg"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArtifactSourceFragment model = new ArtifactSourceFragment().withTags(mapOf("e", "jfauvjfdxxi"));
+        ArtifactSourceFragment model =
+            new ArtifactSourceFragment().withTags(mapOf("lvithhqzonosgg", "zx", "ljuti", "hcohfwdsjnk"));
         model = BinaryData.fromObject(model).toObject(ArtifactSourceFragment.class);
-        Assertions.assertEquals("jfauvjfdxxi", model.tags().get("e"));
+        Assertions.assertEquals("zx", model.tags().get("lvithhqzonosgg"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

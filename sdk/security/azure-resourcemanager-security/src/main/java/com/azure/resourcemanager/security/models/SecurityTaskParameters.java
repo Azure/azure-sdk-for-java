@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Changing set of properties, depending on the task type that is derived from the name field. */
+/**
+ * Changing set of properties, depending on the task type that is derived from the name field.
+ */
 @Fluent
 public final class SecurityTaskParameters {
     /*
@@ -24,15 +26,18 @@ public final class SecurityTaskParameters {
     /*
      * Changing set of properties, depending on the task type that is derived from the name field
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of SecurityTaskParameters class. */
+    /**
+     * Creates an instance of SecurityTaskParameters class.
+     */
     public SecurityTaskParameters() {
     }
 
     /**
      * Get the name property: Name of the task type.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -42,7 +47,7 @@ public final class SecurityTaskParameters {
     /**
      * Get the additionalProperties property: Changing set of properties, depending on the task type that is derived
      * from the name field.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -53,7 +58,7 @@ public final class SecurityTaskParameters {
     /**
      * Set the additionalProperties property: Changing set of properties, depending on the task type that is derived
      * from the name field.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the SecurityTaskParameters object itself.
      */
@@ -72,7 +77,7 @@ public final class SecurityTaskParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

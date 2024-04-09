@@ -56,6 +56,6 @@ public final class VirtualMachinesRestartMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.virtualMachines().restart("gleofjsbgbw", "zvdajfwnncf", "aciq", com.azure.core.util.Context.NONE);
+        manager.virtualMachines().restart("vppkeqsi", "jmcl", "gygnhrkombc", com.azure.core.util.Context.NONE);
     }
 }

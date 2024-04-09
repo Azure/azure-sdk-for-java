@@ -37,7 +37,8 @@ public class UploadImageAsync {
             .buildAsyncClient();
 
         // BEGIN: readme-sample-uploadImageAsync
-        BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
+        BinaryData configContent = BinaryData
+            .fromObject(Collections.singletonMap("hello", "world"));
 
         Mono<OciDescriptor> uploadConfig = contentClient
             .uploadBlob(configContent)
@@ -47,7 +48,8 @@ public class UploadImageAsync {
                 .setSizeInBytes(result.getSizeInBytes()));
 
         long dataLength = 1024 * 1024 * 1024;
-        Mono<BinaryData> layerContent = BinaryData.fromFlux(getData(dataLength), dataLength, false); // 1 GB
+        Mono<BinaryData> layerContent = BinaryData
+            .fromFlux(getData(dataLength), dataLength, false); // 1 GB
         Mono<OciDescriptor> uploadLayer =
             layerContent.flatMap(content -> contentClient.uploadBlob(content))
             .map(result -> new OciDescriptor()
@@ -61,7 +63,8 @@ public class UploadImageAsync {
                 .setSchemaVersion(2)
                 .setLayers(Collections.singletonList(tuple.getT2())))
             .flatMap(manifest -> contentClient.setManifest(manifest, "latest"))
-            .doOnSuccess(manifestResult -> System.out.printf("Uploaded manifest: digest - %s\n", manifestResult.getDigest()))
+            .doOnSuccess(manifestResult ->
+                System.out.printf("Uploaded manifest: digest - %s\n", manifestResult.getDigest()))
             .block();
         // END: readme-sample-uploadImageAsync
 

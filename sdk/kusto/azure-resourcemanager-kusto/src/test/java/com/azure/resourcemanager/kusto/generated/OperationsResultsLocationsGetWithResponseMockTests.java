@@ -56,8 +56,6 @@ public final class OperationsResultsLocationsGetWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .operationsResultsLocations()
-            .getWithResponse("hxiidlopedb", "dpyqyybxubmd", com.azure.core.util.Context.NONE);
+        manager.operationsResultsLocations().getWithResponse("hvyeldotj", "dkwisw", com.azure.core.util.Context.NONE);
     }
 }

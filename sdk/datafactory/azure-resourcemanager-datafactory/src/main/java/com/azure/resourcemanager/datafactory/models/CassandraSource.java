@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity source for a Cassandra database. */
+/**
+ * A copy activity source for a Cassandra database.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CassandraSource")
 @Fluent
@@ -30,14 +32,16 @@ public final class CassandraSource extends TabularSource {
     @JsonProperty(value = "consistencyLevel")
     private CassandraSourceReadConsistencyLevels consistencyLevel;
 
-    /** Creates an instance of CassandraSource class. */
+    /**
+     * Creates an instance of CassandraSource class.
+     */
     public CassandraSource() {
     }
 
     /**
      * Get the query property: Database query. Should be a SQL-92 query expression or Cassandra Query Language (CQL)
      * command. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the query value.
      */
     public Object query() {
@@ -47,7 +51,7 @@ public final class CassandraSource extends TabularSource {
     /**
      * Set the query property: Database query. Should be a SQL-92 query expression or Cassandra Query Language (CQL)
      * command. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param query the query value to set.
      * @return the CassandraSource object itself.
      */
@@ -61,7 +65,7 @@ public final class CassandraSource extends TabularSource {
      * read request before returning data to the client application. Cassandra checks the specified number of Cassandra
      * servers for data to satisfy the read request. Must be one of cassandraSourceReadConsistencyLevels. The default
      * value is 'ONE'. It is case-insensitive.
-     *
+     * 
      * @return the consistencyLevel value.
      */
     public CassandraSourceReadConsistencyLevels consistencyLevel() {
@@ -73,7 +77,7 @@ public final class CassandraSource extends TabularSource {
      * read request before returning data to the client application. Cassandra checks the specified number of Cassandra
      * servers for data to satisfy the read request. Must be one of cassandraSourceReadConsistencyLevels. The default
      * value is 'ONE'. It is case-insensitive.
-     *
+     * 
      * @param consistencyLevel the consistencyLevel value to set.
      * @return the CassandraSource object itself.
      */
@@ -82,42 +86,54 @@ public final class CassandraSource extends TabularSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraSource withQueryTimeout(Object queryTimeout) {
         super.withQueryTimeout(queryTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraSource withAdditionalColumns(Object additionalColumns) {
         super.withAdditionalColumns(additionalColumns);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraSource withSourceRetryCount(Object sourceRetryCount) {
         super.withSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraSource withSourceRetryWait(Object sourceRetryWait) {
         super.withSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraSource withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraSource withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -126,7 +142,7 @@ public final class CassandraSource extends TabularSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

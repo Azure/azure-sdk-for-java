@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a buildpack binding. */
+/**
+ * Properties of a buildpack binding.
+ */
 @Fluent
 public final class BuildpackBindingProperties {
     /*
@@ -29,8 +31,14 @@ public final class BuildpackBindingProperties {
     private BuildpackBindingLaunchProperties launchProperties;
 
     /**
+     * Creates an instance of BuildpackBindingProperties class.
+     */
+    public BuildpackBindingProperties() {
+    }
+
+    /**
      * Get the bindingType property: Buildpack Binding Type.
-     *
+     * 
      * @return the bindingType value.
      */
     public BindingType bindingType() {
@@ -39,7 +47,7 @@ public final class BuildpackBindingProperties {
 
     /**
      * Set the bindingType property: Buildpack Binding Type.
-     *
+     * 
      * @param bindingType the bindingType value to set.
      * @return the BuildpackBindingProperties object itself.
      */
@@ -50,7 +58,7 @@ public final class BuildpackBindingProperties {
 
     /**
      * Get the provisioningState property: State of the Buildpack Binding.
-     *
+     * 
      * @return the provisioningState value.
      */
     public BuildpackBindingProvisioningState provisioningState() {
@@ -59,7 +67,7 @@ public final class BuildpackBindingProperties {
 
     /**
      * Get the launchProperties property: The object describes the buildpack binding launch properties.
-     *
+     * 
      * @return the launchProperties value.
      */
     public BuildpackBindingLaunchProperties launchProperties() {
@@ -68,7 +76,7 @@ public final class BuildpackBindingProperties {
 
     /**
      * Set the launchProperties property: The object describes the buildpack binding launch properties.
-     *
+     * 
      * @param launchProperties the launchProperties value to set.
      * @return the BuildpackBindingProperties object itself.
      */
@@ -79,7 +87,7 @@ public final class BuildpackBindingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

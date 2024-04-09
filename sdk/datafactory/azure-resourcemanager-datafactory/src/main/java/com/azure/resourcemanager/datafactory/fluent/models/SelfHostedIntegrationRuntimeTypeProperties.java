@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.models.LinkedIntegrationRuntimeType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The self-hosted integration runtime properties. */
+/**
+ * The self-hosted integration runtime properties.
+ */
 @Fluent
 public final class SelfHostedIntegrationRuntimeTypeProperties {
     /*
@@ -17,13 +19,22 @@ public final class SelfHostedIntegrationRuntimeTypeProperties {
     @JsonProperty(value = "linkedInfo")
     private LinkedIntegrationRuntimeType linkedInfo;
 
-    /** Creates an instance of SelfHostedIntegrationRuntimeTypeProperties class. */
+    /*
+     * An alternative option to ensure interactive authoring function when your self-hosted integration runtime is
+     * unable to establish a connection with Azure Relay.
+     */
+    @JsonProperty(value = "selfContainedInteractiveAuthoringEnabled")
+    private Boolean selfContainedInteractiveAuthoringEnabled;
+
+    /**
+     * Creates an instance of SelfHostedIntegrationRuntimeTypeProperties class.
+     */
     public SelfHostedIntegrationRuntimeTypeProperties() {
     }
 
     /**
      * Get the linkedInfo property: The base definition of a linked integration runtime.
-     *
+     * 
      * @return the linkedInfo value.
      */
     public LinkedIntegrationRuntimeType linkedInfo() {
@@ -32,7 +43,7 @@ public final class SelfHostedIntegrationRuntimeTypeProperties {
 
     /**
      * Set the linkedInfo property: The base definition of a linked integration runtime.
-     *
+     * 
      * @param linkedInfo the linkedInfo value to set.
      * @return the SelfHostedIntegrationRuntimeTypeProperties object itself.
      */
@@ -42,8 +53,31 @@ public final class SelfHostedIntegrationRuntimeTypeProperties {
     }
 
     /**
+     * Get the selfContainedInteractiveAuthoringEnabled property: An alternative option to ensure interactive authoring
+     * function when your self-hosted integration runtime is unable to establish a connection with Azure Relay.
+     * 
+     * @return the selfContainedInteractiveAuthoringEnabled value.
+     */
+    public Boolean selfContainedInteractiveAuthoringEnabled() {
+        return this.selfContainedInteractiveAuthoringEnabled;
+    }
+
+    /**
+     * Set the selfContainedInteractiveAuthoringEnabled property: An alternative option to ensure interactive authoring
+     * function when your self-hosted integration runtime is unable to establish a connection with Azure Relay.
+     * 
+     * @param selfContainedInteractiveAuthoringEnabled the selfContainedInteractiveAuthoringEnabled value to set.
+     * @return the SelfHostedIntegrationRuntimeTypeProperties object itself.
+     */
+    public SelfHostedIntegrationRuntimeTypeProperties
+        withSelfContainedInteractiveAuthoringEnabled(Boolean selfContainedInteractiveAuthoringEnabled) {
+        this.selfContainedInteractiveAuthoringEnabled = selfContainedInteractiveAuthoringEnabled;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

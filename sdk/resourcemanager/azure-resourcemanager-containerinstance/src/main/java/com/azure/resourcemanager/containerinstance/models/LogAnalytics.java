@@ -22,7 +22,7 @@ public final class LogAnalytics {
     /*
      * The workspace key for log analytics
      */
-    @JsonProperty(value = "workspaceKey", required = true)
+    @JsonProperty(value = "workspaceKey")
     private String workspaceKey;
 
     /*

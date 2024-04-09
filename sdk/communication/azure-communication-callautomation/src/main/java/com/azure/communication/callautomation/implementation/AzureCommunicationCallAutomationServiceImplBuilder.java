@@ -190,7 +190,7 @@ public final class AzureCommunicationCallAutomationServiceImplBuilder {
      */
     public AzureCommunicationCallAutomationServiceImpl buildClient() {
         if (apiVersion == null) {
-            this.apiVersion = "2023-01-15-preview";
+            this.apiVersion = "2023-10-03-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();

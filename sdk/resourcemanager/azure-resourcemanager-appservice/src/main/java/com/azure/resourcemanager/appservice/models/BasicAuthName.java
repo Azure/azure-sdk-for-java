@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BasicAuthName. */
+/**
+ * Defines values for BasicAuthName.
+ */
 public final class BasicAuthName extends ExpandableStringEnum<BasicAuthName> {
-    /** Static value default for BasicAuthName. */
+    /**
+     * Static value default for BasicAuthName.
+     */
     public static final BasicAuthName DEFAULT = fromString("default");
 
     /**
      * Creates a new instance of BasicAuthName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class BasicAuthName extends ExpandableStringEnum<BasicAuthName> {
 
     /**
      * Creates or finds a BasicAuthName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BasicAuthName.
      */
@@ -35,7 +39,7 @@ public final class BasicAuthName extends ExpandableStringEnum<BasicAuthName> {
 
     /**
      * Gets known BasicAuthName values.
-     *
+     * 
      * @return known BasicAuthName values.
      */
     public static Collection<BasicAuthName> values() {

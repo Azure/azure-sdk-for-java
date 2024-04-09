@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** The parameters for enabling predictive autoscale. */
+/**
+ * The parameters for enabling predictive autoscale.
+ */
 @Fluent
 public final class PredictiveAutoscalePolicy {
     /*
@@ -25,13 +27,15 @@ public final class PredictiveAutoscalePolicy {
     @JsonProperty(value = "scaleLookAheadTime")
     private Duration scaleLookAheadTime;
 
-    /** Creates an instance of PredictiveAutoscalePolicy class. */
+    /**
+     * Creates an instance of PredictiveAutoscalePolicy class.
+     */
     public PredictiveAutoscalePolicy() {
     }
 
     /**
      * Get the scaleMode property: the predictive autoscale mode.
-     *
+     * 
      * @return the scaleMode value.
      */
     public PredictiveAutoscalePolicyScaleMode scaleMode() {
@@ -40,7 +44,7 @@ public final class PredictiveAutoscalePolicy {
 
     /**
      * Set the scaleMode property: the predictive autoscale mode.
-     *
+     * 
      * @param scaleMode the scaleMode value to set.
      * @return the PredictiveAutoscalePolicy object itself.
      */
@@ -50,9 +54,9 @@ public final class PredictiveAutoscalePolicy {
     }
 
     /**
-     * Get the scaleLookAheadTime property: the amount of time to specify by which instances are launched in advance. It
-     * must be between 1 minute and 60 minutes in ISO 8601 format.
-     *
+     * Get the scaleLookAheadTime property: the amount of time to specify by which instances are launched in advance.
+     * It must be between 1 minute and 60 minutes in ISO 8601 format.
+     * 
      * @return the scaleLookAheadTime value.
      */
     public Duration scaleLookAheadTime() {
@@ -60,9 +64,9 @@ public final class PredictiveAutoscalePolicy {
     }
 
     /**
-     * Set the scaleLookAheadTime property: the amount of time to specify by which instances are launched in advance. It
-     * must be between 1 minute and 60 minutes in ISO 8601 format.
-     *
+     * Set the scaleLookAheadTime property: the amount of time to specify by which instances are launched in advance.
+     * It must be between 1 minute and 60 minutes in ISO 8601 format.
+     * 
      * @param scaleLookAheadTime the scaleLookAheadTime value to set.
      * @return the PredictiveAutoscalePolicy object itself.
      */
@@ -73,15 +77,13 @@ public final class PredictiveAutoscalePolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (scaleMode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property scaleMode in model PredictiveAutoscalePolicy"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property scaleMode in model PredictiveAutoscalePolicy"));
         }
     }
 

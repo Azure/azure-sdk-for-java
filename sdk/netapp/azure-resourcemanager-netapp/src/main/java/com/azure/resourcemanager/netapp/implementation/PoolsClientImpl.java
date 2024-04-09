@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PoolsClient.
+ */
 public final class PoolsClientImpl implements PoolsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PoolsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetAppManagementClientImpl client;
 
     /**
      * Initializes an instance of PoolsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PoolsClientImpl(NetAppManagementClientImpl client) {
@@ -65,118 +71,87 @@ public final class PoolsClientImpl implements PoolsClient {
     @Host("{$host}")
     @ServiceInterface(name = "NetAppManagementClie")
     public interface PoolsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CapacityPoolList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CapacityPoolList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CapacityPoolInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CapacityPoolInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CapacityPoolInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CapacityPoolPatch body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CapacityPoolInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CapacityPoolPatch body,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CapacityPoolList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CapacityPoolList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Describe all Capacity Pools
-     *
-     * <p>List all capacity pools in the NetApp Account.
-     *
+     * 
+     * List all capacity pools in the NetApp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of capacity pool resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of capacity pool resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CapacityPoolInner>> listSinglePageAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -187,57 +162,37 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<CapacityPoolInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<CapacityPoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Describe all Capacity Pools
-     *
-     * <p>List all capacity pools in the NetApp Account.
-     *
+     * 
+     * List all capacity pools in the NetApp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of capacity pool resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of capacity pool resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CapacityPoolInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<PagedResponse<CapacityPoolInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -249,30 +204,17 @@ public final class PoolsClientImpl implements PoolsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Describe all Capacity Pools
-     *
-     * <p>List all capacity pools in the NetApp Account.
-     *
+     * 
+     * List all capacity pools in the NetApp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -282,15 +224,15 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CapacityPoolInner> listAsync(String resourceGroupName, String accountName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Describe all Capacity Pools
-     *
-     * <p>List all capacity pools in the NetApp Account.
-     *
+     * 
+     * List all capacity pools in the NetApp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
@@ -301,16 +243,15 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CapacityPoolInner> listAsync(String resourceGroupName, String accountName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Describe all Capacity Pools
-     *
-     * <p>List all capacity pools in the NetApp Account.
-     *
+     * 
+     * List all capacity pools in the NetApp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -325,9 +266,9 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Describe all Capacity Pools
-     *
-     * <p>List all capacity pools in the NetApp Account.
-     *
+     * 
+     * List all capacity pools in the NetApp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
@@ -343,32 +284,28 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Describe a Capacity Pool
-     *
-     * <p>Get details of the specified capacity pool.
-     *
+     * 
+     * Get details of the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified capacity pool along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return details of the specified capacity pool along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CapacityPoolInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName) {
+    private Mono<Response<CapacityPoolInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -382,26 +319,16 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, poolName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Describe a Capacity Pool
-     *
-     * <p>Get details of the specified capacity pool.
-     *
+     * 
+     * Get details of the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -409,23 +336,19 @@ public final class PoolsClientImpl implements PoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified capacity pool along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return details of the specified capacity pool along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CapacityPoolInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, Context context) {
+    private Mono<Response<CapacityPoolInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -439,23 +362,15 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            poolName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Describe a Capacity Pool
-     *
-     * <p>Get details of the specified capacity pool.
-     *
+     * 
+     * Get details of the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -472,9 +387,9 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Describe a Capacity Pool
-     *
-     * <p>Get details of the specified capacity pool.
-     *
+     * 
+     * Get details of the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -485,16 +400,16 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return details of the specified capacity pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CapacityPoolInner> getWithResponse(
-        String resourceGroupName, String accountName, String poolName, Context context) {
+    public Response<CapacityPoolInner> getWithResponse(String resourceGroupName, String accountName, String poolName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, poolName, context).block();
     }
 
     /**
      * Describe a Capacity Pool
-     *
-     * <p>Get details of the specified capacity pool.
-     *
+     * 
+     * Get details of the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -510,9 +425,9 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Create or Update the specified capacity pool within the resource group
-     *
-     * <p>Create or Update a capacity pool.
-     *
+     * 
+     * Create or Update a capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -523,19 +438,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return capacity pool resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, String poolName, CapacityPoolInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -554,27 +465,16 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, poolName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or Update the specified capacity pool within the resource group
-     *
-     * <p>Create or Update a capacity pool.
-     *
+     * 
+     * Create or Update a capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -586,19 +486,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return capacity pool resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolInner body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, String poolName, CapacityPoolInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -617,24 +513,15 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Create or Update the specified capacity pool within the resource group
-     *
-     * <p>Create or Update a capacity pool.
-     *
+     * 
+     * Create or Update a capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -647,23 +534,17 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String accountName, String poolName, CapacityPoolInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, accountName, poolName, body);
-        return this
-            .client
-            .<CapacityPoolInner, CapacityPoolInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CapacityPoolInner.class,
-                CapacityPoolInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, accountName, poolName, body);
+        return this.client.<CapacityPoolInner, CapacityPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            CapacityPoolInner.class, CapacityPoolInner.class, this.client.getContext());
     }
 
     /**
      * Create or Update the specified capacity pool within the resource group
-     *
-     * <p>Create or Update a capacity pool.
-     *
+     * 
+     * Create or Update a capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -678,19 +559,17 @@ public final class PoolsClientImpl implements PoolsClient {
     private PollerFlux<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String accountName, String poolName, CapacityPoolInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, accountName, poolName, body, context);
-        return this
-            .client
-            .<CapacityPoolInner, CapacityPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), CapacityPoolInner.class, CapacityPoolInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, accountName, poolName, body, context);
+        return this.client.<CapacityPoolInner, CapacityPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            CapacityPoolInner.class, CapacityPoolInner.class, context);
     }
 
     /**
      * Create or Update the specified capacity pool within the resource group
-     *
-     * <p>Create or Update a capacity pool.
-     *
+     * 
+     * Create or Update a capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -701,16 +580,16 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link SyncPoller} for polling of capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdate(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolInner body) {
+    public SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, String poolName, CapacityPoolInner body) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, poolName, body).getSyncPoller();
     }
 
     /**
      * Create or Update the specified capacity pool within the resource group
-     *
-     * <p>Create or Update a capacity pool.
-     *
+     * 
+     * Create or Update a capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -722,16 +601,16 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link SyncPoller} for polling of capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdate(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolInner body, Context context) {
+    public SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, String poolName, CapacityPoolInner body, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, poolName, body, context).getSyncPoller();
     }
 
     /**
      * Create or Update the specified capacity pool within the resource group
-     *
-     * <p>Create or Update a capacity pool.
-     *
+     * 
+     * Create or Update a capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -742,18 +621,17 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return capacity pool resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CapacityPoolInner> createOrUpdateAsync(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, poolName, body)
-            .last()
+    private Mono<CapacityPoolInner> createOrUpdateAsync(String resourceGroupName, String accountName, String poolName,
+        CapacityPoolInner body) {
+        return beginCreateOrUpdateAsync(resourceGroupName, accountName, poolName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or Update the specified capacity pool within the resource group
-     *
-     * <p>Create or Update a capacity pool.
-     *
+     * 
+     * Create or Update a capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -765,18 +643,17 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return capacity pool resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CapacityPoolInner> createOrUpdateAsync(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolInner body, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, poolName, body, context)
-            .last()
+    private Mono<CapacityPoolInner> createOrUpdateAsync(String resourceGroupName, String accountName, String poolName,
+        CapacityPoolInner body, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, accountName, poolName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or Update the specified capacity pool within the resource group
-     *
-     * <p>Create or Update a capacity pool.
-     *
+     * 
+     * Create or Update a capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -787,16 +664,16 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CapacityPoolInner createOrUpdate(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolInner body) {
+    public CapacityPoolInner createOrUpdate(String resourceGroupName, String accountName, String poolName,
+        CapacityPoolInner body) {
         return createOrUpdateAsync(resourceGroupName, accountName, poolName, body).block();
     }
 
     /**
      * Create or Update the specified capacity pool within the resource group
-     *
-     * <p>Create or Update a capacity pool.
-     *
+     * 
+     * Create or Update a capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -808,16 +685,16 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CapacityPoolInner createOrUpdate(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolInner body, Context context) {
+    public CapacityPoolInner createOrUpdate(String resourceGroupName, String accountName, String poolName,
+        CapacityPoolInner body, Context context) {
         return createOrUpdateAsync(resourceGroupName, accountName, poolName, body, context).block();
     }
 
     /**
      * Update a capacity pool
-     *
-     * <p>Patch the specified capacity pool.
-     *
+     * 
+     * Patch the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -828,19 +705,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return capacity pool resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, CapacityPoolPatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -859,27 +732,16 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, poolName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a capacity pool
-     *
-     * <p>Patch the specified capacity pool.
-     *
+     * 
+     * Patch the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -891,19 +753,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return capacity pool resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, CapacityPoolPatch body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -922,24 +780,15 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Update a capacity pool
-     *
-     * <p>Patch the specified capacity pool.
-     *
+     * 
+     * Patch the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -950,24 +799,18 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link PollerFlux} for polling of capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdateAsync(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body) {
+    private PollerFlux<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, String poolName, CapacityPoolPatch body) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, accountName, poolName, body);
-        return this
-            .client
-            .<CapacityPoolInner, CapacityPoolInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CapacityPoolInner.class,
-                CapacityPoolInner.class,
-                this.client.getContext());
+        return this.client.<CapacityPoolInner, CapacityPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            CapacityPoolInner.class, CapacityPoolInner.class, this.client.getContext());
     }
 
     /**
      * Update a capacity pool
-     *
-     * <p>Patch the specified capacity pool.
-     *
+     * 
+     * Patch the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -979,22 +822,20 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link PollerFlux} for polling of capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdateAsync(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body, Context context) {
+    private PollerFlux<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, String poolName, CapacityPoolPatch body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, accountName, poolName, body, context);
-        return this
-            .client
-            .<CapacityPoolInner, CapacityPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), CapacityPoolInner.class, CapacityPoolInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, accountName, poolName, body, context);
+        return this.client.<CapacityPoolInner, CapacityPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            CapacityPoolInner.class, CapacityPoolInner.class, context);
     }
 
     /**
      * Update a capacity pool
-     *
-     * <p>Patch the specified capacity pool.
-     *
+     * 
+     * Patch the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1005,16 +846,16 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link SyncPoller} for polling of capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdate(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body) {
+    public SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdate(String resourceGroupName,
+        String accountName, String poolName, CapacityPoolPatch body) {
         return this.beginUpdateAsync(resourceGroupName, accountName, poolName, body).getSyncPoller();
     }
 
     /**
      * Update a capacity pool
-     *
-     * <p>Patch the specified capacity pool.
-     *
+     * 
+     * Patch the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1026,16 +867,16 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link SyncPoller} for polling of capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdate(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body, Context context) {
+    public SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdate(String resourceGroupName,
+        String accountName, String poolName, CapacityPoolPatch body, Context context) {
         return this.beginUpdateAsync(resourceGroupName, accountName, poolName, body, context).getSyncPoller();
     }
 
     /**
      * Update a capacity pool
-     *
-     * <p>Patch the specified capacity pool.
-     *
+     * 
+     * Patch the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1046,18 +887,17 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return capacity pool resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CapacityPoolInner> updateAsync(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body) {
-        return beginUpdateAsync(resourceGroupName, accountName, poolName, body)
-            .last()
+    private Mono<CapacityPoolInner> updateAsync(String resourceGroupName, String accountName, String poolName,
+        CapacityPoolPatch body) {
+        return beginUpdateAsync(resourceGroupName, accountName, poolName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a capacity pool
-     *
-     * <p>Patch the specified capacity pool.
-     *
+     * 
+     * Patch the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1069,18 +909,17 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return capacity pool resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CapacityPoolInner> updateAsync(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body, Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, poolName, body, context)
-            .last()
+    private Mono<CapacityPoolInner> updateAsync(String resourceGroupName, String accountName, String poolName,
+        CapacityPoolPatch body, Context context) {
+        return beginUpdateAsync(resourceGroupName, accountName, poolName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a capacity pool
-     *
-     * <p>Patch the specified capacity pool.
-     *
+     * 
+     * Patch the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1091,16 +930,16 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CapacityPoolInner update(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body) {
+    public CapacityPoolInner update(String resourceGroupName, String accountName, String poolName,
+        CapacityPoolPatch body) {
         return updateAsync(resourceGroupName, accountName, poolName, body).block();
     }
 
     /**
      * Update a capacity pool
-     *
-     * <p>Patch the specified capacity pool.
-     *
+     * 
+     * Patch the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1112,16 +951,16 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CapacityPoolInner update(
-        String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body, Context context) {
+    public CapacityPoolInner update(String resourceGroupName, String accountName, String poolName,
+        CapacityPoolPatch body, Context context) {
         return updateAsync(resourceGroupName, accountName, poolName, body, context).block();
     }
 
     /**
      * Delete a capacity pool
-     *
-     * <p>Delete the specified capacity pool.
-     *
+     * 
+     * Delete the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1131,19 +970,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1155,26 +990,18 @@ public final class PoolsClientImpl implements PoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            this.client.getApiVersion(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, poolName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a capacity pool
-     *
-     * <p>Delete the specified capacity pool.
-     *
+     * 
+     * Delete the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1185,19 +1012,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1209,23 +1032,17 @@ public final class PoolsClientImpl implements PoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                this.client.getApiVersion(),
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete a capacity pool
-     *
-     * <p>Delete the specified capacity pool.
-     *
+     * 
+     * Delete the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1235,20 +1052,18 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String poolName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String poolName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, accountName, poolName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a capacity pool
-     *
-     * <p>Delete the specified capacity pool.
-     *
+     * 
+     * Delete the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1259,21 +1074,20 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String poolName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String poolName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, poolName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, poolName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a capacity pool
-     *
-     * <p>Delete the specified capacity pool.
-     *
+     * 
+     * Delete the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1283,16 +1097,16 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String poolName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String poolName) {
         return this.beginDeleteAsync(resourceGroupName, accountName, poolName).getSyncPoller();
     }
 
     /**
      * Delete a capacity pool
-     *
-     * <p>Delete the specified capacity pool.
-     *
+     * 
+     * Delete the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1303,16 +1117,16 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String poolName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, accountName, poolName, context).getSyncPoller();
     }
 
     /**
      * Delete a capacity pool
-     *
-     * <p>Delete the specified capacity pool.
-     *
+     * 
+     * Delete the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1323,16 +1137,15 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String poolName) {
-        return beginDeleteAsync(resourceGroupName, accountName, poolName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, accountName, poolName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a capacity pool
-     *
-     * <p>Delete the specified capacity pool.
-     *
+     * 
+     * Delete the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1344,16 +1157,15 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String poolName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, poolName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, accountName, poolName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a capacity pool
-     *
-     * <p>Delete the specified capacity pool.
-     *
+     * 
+     * Delete the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1368,9 +1180,9 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Delete a capacity pool
-     *
-     * <p>Delete the specified capacity pool.
-     *
+     * 
+     * Delete the specified capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1386,14 +1198,15 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of capacity pool resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of capacity pool resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CapacityPoolInner>> listNextSinglePageAsync(String nextLink) {
@@ -1401,37 +1214,28 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CapacityPoolInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<CapacityPoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of capacity pool resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of capacity pool resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CapacityPoolInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1439,23 +1243,13 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

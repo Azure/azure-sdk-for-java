@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.RoutingIntentInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of the routing intent result and a URL nextLink to get the next set of results. */
+/**
+ * List of the routing intent result and a URL nextLink to get the next set of results.
+ */
 @Fluent
 public final class ListRoutingIntentResult {
     /*
@@ -24,13 +26,15 @@ public final class ListRoutingIntentResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ListRoutingIntentResult class. */
+    /**
+     * Creates an instance of ListRoutingIntentResult class.
+     */
     public ListRoutingIntentResult() {
     }
 
     /**
      * Get the value property: List of RoutingIntent resource.
-     *
+     * 
      * @return the value value.
      */
     public List<RoutingIntentInner> value() {
@@ -39,7 +43,7 @@ public final class ListRoutingIntentResult {
 
     /**
      * Set the value property: List of RoutingIntent resource.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListRoutingIntentResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ListRoutingIntentResult {
 
     /**
      * Get the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ListRoutingIntentResult {
 
     /**
      * Set the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListRoutingIntentResult object itself.
      */
@@ -70,7 +74,7 @@ public final class ListRoutingIntentResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

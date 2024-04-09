@@ -17,11 +17,13 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.LogSettings
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.SupportInfoInner;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.FirewallResourceUpdate;
 
-/** An instance of this class provides access to all the operations defined in FirewallsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FirewallsClient.
+ */
 public interface FirewallsClient {
     /**
      * List FirewallResource resources by subscription ID.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FirewallResource list operation as paginated response with {@link PagedIterable}.
@@ -31,7 +33,7 @@ public interface FirewallsClient {
 
     /**
      * List FirewallResource resources by subscription ID.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,7 +45,7 @@ public interface FirewallsClient {
 
     /**
      * List FirewallResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -55,7 +57,7 @@ public interface FirewallsClient {
 
     /**
      * List FirewallResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -68,7 +70,7 @@ public interface FirewallsClient {
 
     /**
      * Get a FirewallResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param context The context to associate with this operation.
@@ -78,12 +80,12 @@ public interface FirewallsClient {
      * @return a FirewallResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FirewallResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String firewallName, Context context);
+    Response<FirewallResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String firewallName,
+        Context context);
 
     /**
      * Get a FirewallResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,7 +98,7 @@ public interface FirewallsClient {
 
     /**
      * Create a FirewallResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param resource Resource create parameters.
@@ -106,12 +108,12 @@ public interface FirewallsClient {
      * @return the {@link SyncPoller} for polling of paloAltoNetworks Firewall.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FirewallResourceInner>, FirewallResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String firewallName, FirewallResourceInner resource);
+    SyncPoller<PollResult<FirewallResourceInner>, FirewallResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String firewallName, FirewallResourceInner resource);
 
     /**
      * Create a FirewallResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param resource Resource create parameters.
@@ -122,12 +124,12 @@ public interface FirewallsClient {
      * @return the {@link SyncPoller} for polling of paloAltoNetworks Firewall.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FirewallResourceInner>, FirewallResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String firewallName, FirewallResourceInner resource, Context context);
+    SyncPoller<PollResult<FirewallResourceInner>, FirewallResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String firewallName, FirewallResourceInner resource, Context context);
 
     /**
      * Create a FirewallResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param resource Resource create parameters.
@@ -141,7 +143,7 @@ public interface FirewallsClient {
 
     /**
      * Create a FirewallResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param resource Resource create parameters.
@@ -152,12 +154,12 @@ public interface FirewallsClient {
      * @return paloAltoNetworks Firewall.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FirewallResourceInner createOrUpdate(
-        String resourceGroupName, String firewallName, FirewallResourceInner resource, Context context);
+    FirewallResourceInner createOrUpdate(String resourceGroupName, String firewallName, FirewallResourceInner resource,
+        Context context);
 
     /**
      * Update a FirewallResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param properties The resource properties to be updated.
@@ -168,12 +170,12 @@ public interface FirewallsClient {
      * @return paloAltoNetworks Firewall along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FirewallResourceInner> updateWithResponse(
-        String resourceGroupName, String firewallName, FirewallResourceUpdate properties, Context context);
+    Response<FirewallResourceInner> updateWithResponse(String resourceGroupName, String firewallName,
+        FirewallResourceUpdate properties, Context context);
 
     /**
      * Update a FirewallResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param properties The resource properties to be updated.
@@ -187,7 +189,7 @@ public interface FirewallsClient {
 
     /**
      * Delete a FirewallResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -200,7 +202,7 @@ public interface FirewallsClient {
 
     /**
      * Delete a FirewallResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param context The context to associate with this operation.
@@ -214,7 +216,7 @@ public interface FirewallsClient {
 
     /**
      * Delete a FirewallResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -226,7 +228,7 @@ public interface FirewallsClient {
 
     /**
      * Delete a FirewallResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param context The context to associate with this operation.
@@ -239,7 +241,7 @@ public interface FirewallsClient {
 
     /**
      * Get Global Rulestack associated with the Firewall.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param context The context to associate with this operation.
@@ -249,12 +251,12 @@ public interface FirewallsClient {
      * @return global Rulestack associated with the Firewall along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GlobalRulestackInfoInner> getGlobalRulestackWithResponse(
-        String resourceGroupName, String firewallName, Context context);
+    Response<GlobalRulestackInfoInner> getGlobalRulestackWithResponse(String resourceGroupName, String firewallName,
+        Context context);
 
     /**
      * Get Global Rulestack associated with the Firewall.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -267,7 +269,7 @@ public interface FirewallsClient {
 
     /**
      * Log Profile for Firewall.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param context The context to associate with this operation.
@@ -277,12 +279,12 @@ public interface FirewallsClient {
      * @return log Settings for Firewall along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LogSettingsInner> getLogProfileWithResponse(
-        String resourceGroupName, String firewallName, Context context);
+    Response<LogSettingsInner> getLogProfileWithResponse(String resourceGroupName, String firewallName,
+        Context context);
 
     /**
      * Log Profile for Firewall.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -295,7 +297,7 @@ public interface FirewallsClient {
 
     /**
      * support info for firewall.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param email email address on behalf of which this API called.
@@ -306,12 +308,12 @@ public interface FirewallsClient {
      * @return support information for the resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SupportInfoInner> getSupportInfoWithResponse(
-        String resourceGroupName, String firewallName, String email, Context context);
+    Response<SupportInfoInner> getSupportInfoWithResponse(String resourceGroupName, String firewallName, String email,
+        Context context);
 
     /**
      * support info for firewall.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -324,7 +326,7 @@ public interface FirewallsClient {
 
     /**
      * Log Profile for Firewall.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param logSettings Log Settings for Firewall.
@@ -335,12 +337,12 @@ public interface FirewallsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> saveLogProfileWithResponse(
-        String resourceGroupName, String firewallName, LogSettingsInner logSettings, Context context);
+    Response<Void> saveLogProfileWithResponse(String resourceGroupName, String firewallName,
+        LogSettingsInner logSettings, Context context);
 
     /**
      * Log Profile for Firewall.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

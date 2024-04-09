@@ -23,6 +23,15 @@ public final class GroupsOrderby extends ExpandableStringEnum<GroupsOrderby> {
     public static final GroupsOrderby DELETED_DATE_TIME_DESC = fromString("deletedDateTime desc");
 
     /**
+     * Creates a new instance of GroupsOrderby value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GroupsOrderby() {
+    }
+
+    /**
      * Creates or finds a GroupsOrderby from its string representation.
      *
      * @param name a name to look for.

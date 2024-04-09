@@ -32,7 +32,7 @@ public final class WebPubSubPrivateEndpointConnectionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"nwvroevytlyokrr\"},\"groupIds\":[\"uxvnsasbcrymodi\",\"rxklobdxnazpmk\",\"lmv\"],\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"op\",\"actionsRequired\":\"bzxliohrdddtfgxq\"}},\"id\":\"wpcbbnzqcy\",\"name\":\"napqo\",\"type\":\"yuicdhzbdy\"}";
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{\"id\":\"ntsj\"},\"groupIds\":[\"sxypruuu\",\"bnchrsziz\",\"yuel\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"nb\",\"actionsRequired\":\"yggagflnlgmt\"}},\"id\":\"ahzjmucftb\",\"name\":\"r\",\"type\":\"lrohkpig\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,14 +63,14 @@ public final class WebPubSubPrivateEndpointConnectionsGetWithResponseMockTests {
         PrivateEndpointConnection response =
             manager
                 .webPubSubPrivateEndpointConnections()
-                .getWithResponse("tddmf", "huytxzvtzn", "pxbannovvoxc", com.azure.core.util.Context.NONE)
+                .getWithResponse("nlaxpunjqikcz", "vitac", "xmfcsserxhtv", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("nwvroevytlyokrr", response.privateEndpoint().id());
+        Assertions.assertEquals("ntsj", response.privateEndpoint().id());
         Assertions
             .assertEquals(
-                PrivateLinkServiceConnectionStatus.REJECTED, response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("op", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("bzxliohrdddtfgxq", response.privateLinkServiceConnectionState().actionsRequired());
+                PrivateLinkServiceConnectionStatus.APPROVED, response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("nb", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("yggagflnlgmt", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

@@ -20,7 +20,9 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Factory resource type. */
+/**
+ * Factory resource type.
+ */
 @Fluent
 public final class FactoryInner extends Resource {
     /*
@@ -44,15 +46,18 @@ public final class FactoryInner extends Resource {
     /*
      * Factory resource type.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of FactoryInner class. */
+    /**
+     * Creates an instance of FactoryInner class.
+     */
     public FactoryInner() {
     }
 
     /**
      * Get the identity property: Managed service identity of the factory.
-     *
+     * 
      * @return the identity value.
      */
     public FactoryIdentity identity() {
@@ -61,7 +66,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Set the identity property: Managed service identity of the factory.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the FactoryInner object itself.
      */
@@ -72,7 +77,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the factory.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FactoryProperties innerProperties() {
@@ -81,7 +86,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the etag property: Etag identifies change in the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -90,7 +95,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the additionalProperties property: Factory resource type.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -100,7 +105,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Set the additionalProperties property: Factory resource type.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the FactoryInner object itself.
      */
@@ -117,14 +122,18 @@ public final class FactoryInner extends Resource {
         additionalProperties.put(key, value);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FactoryInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FactoryInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -133,7 +142,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the provisioningState property: Factory provisioning state, example Succeeded.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -142,7 +151,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the createTime property: Time the factory was created in ISO8601 format.
-     *
+     * 
      * @return the createTime value.
      */
     public OffsetDateTime createTime() {
@@ -151,7 +160,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the version property: Version of the factory.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -160,7 +169,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the purviewConfiguration property: Purview information of the factory.
-     *
+     * 
      * @return the purviewConfiguration value.
      */
     public PurviewConfiguration purviewConfiguration() {
@@ -169,7 +178,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Set the purviewConfiguration property: Purview information of the factory.
-     *
+     * 
      * @param purviewConfiguration the purviewConfiguration value to set.
      * @return the FactoryInner object itself.
      */
@@ -183,7 +192,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the repoConfiguration property: Git repo information of the factory.
-     *
+     * 
      * @return the repoConfiguration value.
      */
     public FactoryRepoConfiguration repoConfiguration() {
@@ -192,7 +201,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Set the repoConfiguration property: Git repo information of the factory.
-     *
+     * 
      * @param repoConfiguration the repoConfiguration value to set.
      * @return the FactoryInner object itself.
      */
@@ -206,7 +215,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the globalParameters property: List of parameters for factory.
-     *
+     * 
      * @return the globalParameters value.
      */
     public Map<String, GlobalParameterSpecification> globalParameters() {
@@ -215,7 +224,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Set the globalParameters property: List of parameters for factory.
-     *
+     * 
      * @param globalParameters the globalParameters value to set.
      * @return the FactoryInner object itself.
      */
@@ -229,7 +238,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the encryption property: Properties to enable Customer Managed Key for the factory.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionConfiguration encryption() {
@@ -238,7 +247,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Set the encryption property: Properties to enable Customer Managed Key for the factory.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the FactoryInner object itself.
      */
@@ -252,7 +261,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the publicNetworkAccess property: Whether or not public network access is allowed for the data factory.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -261,7 +270,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Set the publicNetworkAccess property: Whether or not public network access is allowed for the data factory.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the FactoryInner object itself.
      */
@@ -275,7 +284,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

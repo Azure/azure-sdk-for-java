@@ -6,21 +6,29 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** Properties of underlying AKS cluster. */
+/**
+ * Properties of underlying AKS cluster.
+ */
 @Fluent
 public final class ClusterPoolResourcePropertiesAksClusterProfile extends AksClusterProfile {
-    /** Creates an instance of ClusterPoolResourcePropertiesAksClusterProfile class. */
+    /**
+     * Creates an instance of ClusterPoolResourcePropertiesAksClusterProfile class.
+     */
     public ClusterPoolResourcePropertiesAksClusterProfile() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterPoolResourcePropertiesAksClusterProfile withAksClusterResourceId(String aksClusterResourceId) {
         super.withAksClusterResourceId(aksClusterResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterPoolResourcePropertiesAksClusterProfile withAksClusterAgentPoolIdentityProfile(
         AksClusterProfileAksClusterAgentPoolIdentityProfile aksClusterAgentPoolIdentityProfile) {
@@ -30,7 +38,7 @@ public final class ClusterPoolResourcePropertiesAksClusterProfile extends AksClu
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

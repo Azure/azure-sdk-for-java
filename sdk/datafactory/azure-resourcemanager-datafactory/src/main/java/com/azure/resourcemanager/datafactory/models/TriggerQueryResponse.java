@@ -7,11 +7,13 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.resourcemanager.datafactory.fluent.models.TriggerQueryResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of TriggerQueryResponse. */
+/**
+ * An immutable client-side representation of TriggerQueryResponse.
+ */
 public interface TriggerQueryResponse {
     /**
      * Gets the value property: List of triggers.
-     *
+     * 
      * @return the value value.
      */
     List<TriggerResource> value();
@@ -19,14 +21,14 @@ public interface TriggerQueryResponse {
     /**
      * Gets the continuationToken property: The continuation token for getting the next page of results, if any
      * remaining results exist, null otherwise.
-     *
+     * 
      * @return the continuationToken value.
      */
     String continuationToken();
 
     /**
      * Gets the inner com.azure.resourcemanager.datafactory.fluent.models.TriggerQueryResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     TriggerQueryResponseInner innerModel();

@@ -47,11 +47,10 @@ public final class GatewaysClientImpl implements GatewaysClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "OperationalInsightsM")
-    private interface GatewaysService {
+    public interface GatewaysService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/gateways/{gatewayId}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/gateways/{gatewayId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -188,21 +187,6 @@ public final class GatewaysClientImpl implements GatewaysClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param gatewayId The Log Analytics gateway Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String workspaceName, String gatewayId) {
-        deleteAsync(resourceGroupName, workspaceName, gatewayId).block();
-    }
-
-    /**
-     * Delete a Log Analytics gateway.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param gatewayId The Log Analytics gateway Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -213,5 +197,20 @@ public final class GatewaysClientImpl implements GatewaysClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String workspaceName, String gatewayId, Context context) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, gatewayId, context).block();
+    }
+
+    /**
+     * Delete a Log Analytics gateway.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param gatewayId The Log Analytics gateway Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String workspaceName, String gatewayId) {
+        deleteWithResponse(resourceGroupName, workspaceName, gatewayId, Context.NONE);
     }
 }

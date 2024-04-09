@@ -32,7 +32,7 @@ public final class OperationStatusListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"pbttdum\",\"name\":\"p\",\"status\":\"xe\",\"properties\":{\"glkfg\":\"zbtbhj\",\"dyhtozfikdowwquu\":\"hdneuelfph\"}}]}";
+            "{\"value\":[{\"id\":\"ynt\",\"name\":\"zihleosjswsr\",\"status\":\"slyzrpzbchckqq\",\"properties\":{\"ysuiizynkedya\":\"ox\",\"pyy\":\"rwyhqmibzyhwitsm\",\"mwzn\":\"pcdpumnz\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,11 +63,11 @@ public final class OperationStatusListMockTests {
         PagedIterable<OperationStatusResult> response =
             manager
                 .operationStatus()
-                .list("xmubyyntwlrbq", "koievseo", "gqrlltmuwla", "wzizxbmpgcjefuzm", com.azure.core.util.Context.NONE);
+                .list("wwiftohqkvpuv", "sgplsakn", "n", "synljphuopxodl", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pbttdum", response.iterator().next().id());
-        Assertions.assertEquals("p", response.iterator().next().name());
-        Assertions.assertEquals("xe", response.iterator().next().status());
-        Assertions.assertEquals("zbtbhj", response.iterator().next().properties().get("glkfg"));
+        Assertions.assertEquals("ynt", response.iterator().next().id());
+        Assertions.assertEquals("zihleosjswsr", response.iterator().next().name());
+        Assertions.assertEquals("slyzrpzbchckqq", response.iterator().next().status());
+        Assertions.assertEquals("ox", response.iterator().next().properties().get("ysuiizynkedya"));
     }
 }

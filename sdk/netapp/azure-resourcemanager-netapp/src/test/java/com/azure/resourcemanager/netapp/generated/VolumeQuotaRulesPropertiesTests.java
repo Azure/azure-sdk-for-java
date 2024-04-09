@@ -12,26 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class VolumeQuotaRulesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VolumeQuotaRulesProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Accepted\",\"quotaSizeInKiBs\":5184068931876509479,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"hqxujxukndxdi\"}")
-                .toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(5184068931876509479L, model.quotaSizeInKiBs());
+        VolumeQuotaRulesProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Creating\",\"quotaSizeInKiBs\":7435265632351903503,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"kd\"}")
+            .toObject(VolumeQuotaRulesProperties.class);
+        Assertions.assertEquals(7435265632351903503L, model.quotaSizeInKiBs());
         Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, model.quotaType());
-        Assertions.assertEquals("hqxujxukndxdi", model.quotaTarget());
+        Assertions.assertEquals("kd", model.quotaTarget());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeQuotaRulesProperties model =
-            new VolumeQuotaRulesProperties()
-                .withQuotaSizeInKiBs(5184068931876509479L)
-                .withQuotaType(Type.DEFAULT_GROUP_QUOTA)
-                .withQuotaTarget("hqxujxukndxdi");
+        VolumeQuotaRulesProperties model = new VolumeQuotaRulesProperties().withQuotaSizeInKiBs(7435265632351903503L)
+            .withQuotaType(Type.DEFAULT_GROUP_QUOTA).withQuotaTarget("kd");
         model = BinaryData.fromObject(model).toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(5184068931876509479L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(7435265632351903503L, model.quotaSizeInKiBs());
         Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, model.quotaType());
-        Assertions.assertEquals("hqxujxukndxdi", model.quotaTarget());
+        Assertions.assertEquals("kd", model.quotaTarget());
     }
 }

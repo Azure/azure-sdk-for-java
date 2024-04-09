@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Marketplace Subscription Status. */
+/**
+ * Marketplace Subscription Status.
+ */
 public final class MarketplaceSubscriptionStatus extends ExpandableStringEnum<MarketplaceSubscriptionStatus> {
-    /** Static value PendingFulfillmentStart for MarketplaceSubscriptionStatus. */
+    /**
+     * Static value PendingFulfillmentStart for MarketplaceSubscriptionStatus.
+     */
     public static final MarketplaceSubscriptionStatus PENDING_FULFILLMENT_START = fromString("PendingFulfillmentStart");
 
-    /** Static value Subscribed for MarketplaceSubscriptionStatus. */
+    /**
+     * Static value Subscribed for MarketplaceSubscriptionStatus.
+     */
     public static final MarketplaceSubscriptionStatus SUBSCRIBED = fromString("Subscribed");
 
-    /** Static value Suspended for MarketplaceSubscriptionStatus. */
+    /**
+     * Static value Suspended for MarketplaceSubscriptionStatus.
+     */
     public static final MarketplaceSubscriptionStatus SUSPENDED = fromString("Suspended");
 
-    /** Static value Unsubscribed for MarketplaceSubscriptionStatus. */
+    /**
+     * Static value Unsubscribed for MarketplaceSubscriptionStatus.
+     */
     public static final MarketplaceSubscriptionStatus UNSUBSCRIBED = fromString("Unsubscribed");
 
-    /** Static value NotStarted for MarketplaceSubscriptionStatus. */
+    /**
+     * Static value NotStarted for MarketplaceSubscriptionStatus.
+     */
     public static final MarketplaceSubscriptionStatus NOT_STARTED = fromString("NotStarted");
 
-    /** Static value FulfillmentRequested for MarketplaceSubscriptionStatus. */
+    /**
+     * Static value FulfillmentRequested for MarketplaceSubscriptionStatus.
+     */
     public static final MarketplaceSubscriptionStatus FULFILLMENT_REQUESTED = fromString("FulfillmentRequested");
 
     /**
      * Creates a new instance of MarketplaceSubscriptionStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class MarketplaceSubscriptionStatus extends ExpandableStringEnum<Ma
 
     /**
      * Creates or finds a MarketplaceSubscriptionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MarketplaceSubscriptionStatus.
      */
@@ -50,7 +64,7 @@ public final class MarketplaceSubscriptionStatus extends ExpandableStringEnum<Ma
 
     /**
      * Gets known MarketplaceSubscriptionStatus values.
-     *
+     * 
      * @return known MarketplaceSubscriptionStatus values.
      */
     public static Collection<MarketplaceSubscriptionStatus> values() {

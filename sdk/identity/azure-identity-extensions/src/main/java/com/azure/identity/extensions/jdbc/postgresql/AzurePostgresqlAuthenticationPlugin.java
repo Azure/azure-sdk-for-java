@@ -13,7 +13,7 @@ import java.util.Properties;
 import static org.postgresql.util.PSQLState.INVALID_PASSWORD;
 
 /**
- * The authentication plugin that enables authentication with Azure AD.
+ * The authentication plugin that enables authentication with Microsoft Entra ID.
  */
 public class AzurePostgresqlAuthenticationPlugin implements AuthenticationPlugin {
 
@@ -39,11 +39,11 @@ public class AzurePostgresqlAuthenticationPlugin implements AuthenticationPlugin
      * @param type The authentication method that the server is requesting.
      *
      *             <p>AzurePostgresqlAuthenticationPlugin is used as an extension to
-     *             perform authentication with Azure AD,the value here is CLEARTEXT_PASSWORD.</p>
+     *             perform authentication with Microsoft Entra ID, the value here is CLEARTEXT_PASSWORD.</p>
      *
      *             When PostgreSQL client trying to connect with PostgreSQL server:
      *             1. Client will send startup packet to server, the server will return the AuthenticationRequestType it accepts,
-     *                If the username is used to perform Azure AD authentication, the server will return CLEARTEXT_PASSWORD.
+     *                If the username is used to perform Microsoft Entra authentication, the server will return CLEARTEXT_PASSWORD.
      *             2. Client will do authentication (until AuthenticationOk).
      *
      * @return The password to use.

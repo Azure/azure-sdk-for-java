@@ -25,6 +25,10 @@ public final class ClustersList {
     @JsonProperty(value = "value", required = true)
     private List<ClusterInner> value;
 
+    /** Creates an instance of ClustersList class. */
+    public ClustersList() {
+    }
+
     /**
      * Get the nextLink property: Url to follow for getting next page of Clusters.
      *

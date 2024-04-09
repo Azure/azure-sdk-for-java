@@ -20,7 +20,7 @@ import java.util.function.Supplier;
 public final class AnalyzeActionsResultPagedFlux extends
     ContinuablePagedFluxCore<String, AnalyzeActionsResult, PagedResponse<AnalyzeActionsResult>> {
     /**
-     * Creates an instance of {@link AnalyzeActionsResultPagedFlux}
+     * Creates an instance of {@code AnalyzeActionsResultPagedFlux}
      *
      * @param pageRetrieverProvider a provider that returns {@link PageRetriever}
      */

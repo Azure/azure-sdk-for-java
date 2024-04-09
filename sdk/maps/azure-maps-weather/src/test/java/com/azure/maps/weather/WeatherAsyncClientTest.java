@@ -13,9 +13,7 @@ import com.azure.maps.weather.models.HourlyDuration;
 import com.azure.maps.weather.models.TropicalStormForecastOptions;
 import com.azure.maps.weather.models.TropicalStormLocationOptions;
 import com.azure.maps.weather.models.Waypoint;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -30,16 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class WeatherAsyncClientTest extends WeatherTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-
-    @BeforeAll
-    public static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
     private WeatherAsyncClient getWeatherAsyncClient(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         return getWeatherAsyncClientBuilder(httpClient, serviceVersion).buildAsyncClient();
@@ -48,16 +37,18 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     // Test async get hourly forecast
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetHourlyForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetHourlyForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getHourlyForecast(new GeoPosition(-122.138874, 47.632346), null, 12, null))
-        .assertNext(actualResults -> {
-            try {
-                validateGetHourlyForecast(TestUtils.getExpectedHourlyForecast(), actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get hourly forecast");
-            }
-        }).verifyComplete();
+            .assertNext(actualResults -> {
+                try {
+                    validateGetHourlyForecast(TestUtils.getExpectedHourlyForecast(), actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get hourly forecast");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get hourly forecast with response
@@ -73,7 +64,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("unable to get hourly forecast");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -82,25 +75,28 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     public void testAsyncInvalidGetHourlyForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getHourlyForecastWithResponse(new GeoPosition(-100000, 47.632346), null, 12, null))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get minute forecast
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetMinuteForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetMinuteForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getMinuteForecast(new GeoPosition(-122.138874, 47.632346), 15, null))
-        .assertNext(actualResults -> {
-            try {
-                validateGetMinuteForecast(TestUtils.getExpectedMinuteForecast(), actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get minute forecast");
-            }
-        }).verifyComplete();
+            .assertNext(actualResults -> {
+                try {
+                    validateGetMinuteForecast(TestUtils.getExpectedMinuteForecast(), actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get minute forecast");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get minute forecast with response
@@ -116,7 +112,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("unable to get minute forecast");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -125,25 +123,28 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     public void testAsyncInvalidGetMinuteForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getMinuteForecastWithResponse(new GeoPosition(-1000000, 47.632346), 15, null, null))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get quarter day forecast
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetQuarterDayForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetQuarterDayForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getQuarterDayForecast(new GeoPosition(-122.138874, 47.632346), null, 1, null))
-        .assertNext(actualResults -> {
-            try {
-                validateGetQuarterDayForecast(TestUtils.getExpectedQuarterDayForecast(), actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get quarter day forecast");
-            }
-        }).verifyComplete();
+            .assertNext(actualResults -> {
+                try {
+                    validateGetQuarterDayForecast(TestUtils.getExpectedQuarterDayForecast(), actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get quarter day forecast");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get quarter day forecast with response
@@ -159,7 +160,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("unable to get quarter day forecast");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -168,25 +171,28 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     public void testAsyncInvalidGetQuarterDayForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getQuarterDayForecastWithResponse(new GeoPosition(-1000000, 47.632346), null, 1, null, null))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get current conditions
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetCurrentConditions(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetCurrentConditions(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getCurrentConditions(new GeoPosition(-122.125679, 47.641268), null, null, null, null))
-        .assertNext(actualResults -> {
-            try {
-                validateGetCurrentConditions(TestUtils.getExpectedCurrentConditions(), actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get current conditions");
-            }
-        }).verifyComplete();
+            .assertNext(actualResults -> {
+                try {
+                    validateGetCurrentConditions(TestUtils.getExpectedCurrentConditions(), actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get current conditions");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get minute forecast with response
@@ -202,7 +208,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("unable to get current condition");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -211,25 +219,28 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     public void testAsyncInvalidGetCurrentConditionsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getCurrentConditionsWithResponse(new GeoPosition(-100000, 47.641268), null, null, null, null, null))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get daily forecast
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetDailyForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetDailyForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getDailyForecast(new GeoPosition(30.0734812, 62.6490341), null, 5, null))
-        .assertNext(actualResults -> {
-            try {
-                validateGetDailyForecast(TestUtils.getExpectedDailyForecast(), actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get daily forecast");
-            }
-        }).verifyComplete();
+            .assertNext(actualResults -> {
+                try {
+                    validateGetDailyForecast(TestUtils.getExpectedDailyForecast(), actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get daily forecast");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get daily forecast with response
@@ -245,7 +256,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("unable to get daily forecast");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -254,16 +267,17 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     public void testAsyncInvalidGetDailyForecastWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getDailyForecastWithResponse(new GeoPosition(-1000000, 62.6490341), null, 5, null, null))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get weather along route
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetWeatherAlongRoute(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetWeatherAlongRoute(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         List<Waypoint> waypoints = Arrays.asList(
             new Waypoint(new GeoPosition(-77.037, 38.907), 0.0),
@@ -275,13 +289,15 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
             new Waypoint(new GeoPosition(-76.612, 39.287), 60.0)
         );
         StepVerifier.create(client.getWeatherAlongRoute(waypoints, "en"))
-        .assertNext(actualResults -> {
-            try {
-                validateGetExpectedWeatherAlongRoute(TestUtils.getExpectedWeatherAlongRoute(), actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get weather along route");
-            }
-        }).verifyComplete();
+            .assertNext(actualResults -> {
+                try {
+                    validateGetExpectedWeatherAlongRoute(TestUtils.getExpectedWeatherAlongRoute(), actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get weather along route");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get weather along route with response
@@ -306,7 +322,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("unable to get weather along route");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -324,25 +342,28 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
             new Waypoint(new GeoPosition(-76.612, 39.287), 60.0)
         );
         StepVerifier.create(client.getWeatherAlongRouteWithResponse(waypoints, "en", null))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get severe weather alerts
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetSevereWeatherAlerts(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetSevereWeatherAlerts(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getSevereWeatherAlerts(new GeoPosition(-85.06431274043842, 30.324604968788467), null, true))
-        .assertNext(actualResults -> {
-            try {
-                validateGetSevereWeatherAlerts(TestUtils.getExpectedSevereWeatherAlerts(), actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get severe weather alerts");
-            }
-        }).verifyComplete();
+            .assertNext(actualResults -> {
+                try {
+                    validateGetSevereWeatherAlerts(TestUtils.getExpectedSevereWeatherAlerts(), actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get severe weather alerts");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get severe weather alert with response
@@ -358,7 +379,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("unable to get severe weather alerts");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -367,25 +390,28 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     public void testAsyncInvalidGetSevereWeatherAlertsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getSevereWeatherAlertsWithResponse(new GeoPosition(-100000, 30.324604968788467), null, true, null))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get daily indices
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetDailyIndices(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetDailyIndices(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getDailyIndices(new GeoPosition(-79.37849, 43.84745), null, null, null, 11))
-        .assertNext(actualResults -> {
-            try {
-                validateGetDailyIndices(TestUtils.getExpectedDailyIndices(), actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get daily indices");
-            }
-        }).verifyComplete();
+            .assertNext(actualResults -> {
+                try {
+                    validateGetDailyIndices(TestUtils.getExpectedDailyIndices(), actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get daily indices");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get daily indices with response
@@ -401,7 +427,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("unable to get daily indices");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -410,25 +438,28 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     public void testAsyncInvalidGetDailyIndicesWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getDailyIndicesWithResponse(new GeoPosition(-100000, 43.84745), null, null, null, 11, null))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get tropical storm active
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetTropicalStormActive(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetTropicalStormActive(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getTropicalStormActive())
-        .assertNext(actualResults -> {
-            try {
-                validateGetExpectedTropicalStormActive(TestUtils.getExpectedTropicalStormActive(), actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get tropical storm active");
-            }
-        }).verifyComplete();
+            .assertNext(actualResults -> {
+                try {
+                    validateGetExpectedTropicalStormActive(TestUtils.getExpectedTropicalStormActive(), actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get tropical storm active");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get tropical storm active with response
@@ -444,25 +475,29 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("unable to get tropical storm active");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async search tropical storm
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncSearchTropicalStorm(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testAsyncSearchTropicalStorm(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         ActiveStormResult result = client.getTropicalStormActive().block();
         if (result.getActiveStorms().size() > 0) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             StepVerifier.create(client.searchTropicalStorm(storm.getYear(), storm.getBasinId(), storm.getGovId()))
-            .assertNext(actualResults -> {
-                try {
-                    validateGetSearchTropicalStorm(TestUtils.getExpectedSearchTropicalStorm(), actualResults);
-                } catch (IOException e) {
-                    Assertions.fail("Unable to get search tropical storm");
-                }
-            }).verifyComplete();
+                .assertNext(actualResults -> {
+                    try {
+                        validateGetSearchTropicalStorm(TestUtils.getExpectedSearchTropicalStorm(), actualResults);
+                    } catch (IOException e) {
+                        Assertions.fail("Unable to get search tropical storm");
+                    }
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
         }
     }
 
@@ -482,7 +517,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                     } catch (IOException e) {
                         Assertions.fail("unable to get search tropical storm");
                     }
-                }).verifyComplete();
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
         }
     }
 
@@ -495,17 +532,18 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         if (result.getActiveStorms().size() > 0) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             StepVerifier.create(client.searchTropicalStormWithResponse(-1, storm.getBasinId(), storm.getGovId()))
-                .verifyErrorSatisfies(ex -> {
+                .expectErrorSatisfies(ex -> {
                     final HttpResponseException httpResponseException = (HttpResponseException) ex;
                     assertEquals(400, httpResponseException.getResponse().getStatusCode());
-                });
+                })
+                .verify(DEFAULT_TIMEOUT);
         }
     }
 
     // Test async get tropical storm forecast
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetTropicalStormForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetTropicalStormForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         ActiveStormResult result = client.getTropicalStormActive().block();
         if (result.getActiveStorms().size() > 0) {
@@ -520,7 +558,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                     } catch (IOException e) {
                         Assertions.fail("Unable to get tropical storm forecast");
                     }
-                }).verifyComplete();
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
         }
     }
 
@@ -543,7 +583,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                     } catch (IOException e) {
                         Assertions.fail("unable to get tropical storm forecast");
                     }
-                }).verifyComplete();
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
         }
     }
 
@@ -559,17 +601,18 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 storm.getBasinId(), storm.getGovId())
                 .setIncludeWindowGeometry(true);
             StepVerifier.create(client.getTropicalStormForecastWithResponse(forecastOptions, null))
-                .verifyErrorSatisfies(ex -> {
+                .expectErrorSatisfies(ex -> {
                     final HttpResponseException httpResponseException = (HttpResponseException) ex;
                     assertEquals(400, httpResponseException.getResponse().getStatusCode());
-                });
+                })
+                .verify(DEFAULT_TIMEOUT);
         }
     }
 
     // Test async get tropical storm locations
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetTropicalStormLocations(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetTropicalStormLocations(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         ActiveStormResult result = client.getTropicalStormActive().block();
         if (result.getActiveStorms().size() > 0) {
@@ -583,7 +626,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                     } catch (IOException e) {
                         Assertions.fail("Unable to get tropical storm locations");
                     }
-                }).verifyComplete();
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
         }
     }
 
@@ -605,7 +650,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                     } catch (IOException e) {
                         Assertions.fail("unable to get tropical storm locations");
                     }
-                }).verifyComplete();
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
         }
     }
 
@@ -620,17 +667,18 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
             TropicalStormLocationOptions locationOptions = new TropicalStormLocationOptions(-1,
                 storm.getBasinId(), storm.getGovId());
             StepVerifier.create(client.getTropicalStormLocationsWithResponse(locationOptions, null))
-                .verifyErrorSatisfies(ex -> {
+                .expectErrorSatisfies(ex -> {
                     final HttpResponseException httpResponseException = (HttpResponseException) ex;
                     assertEquals(400, httpResponseException.getResponse().getStatusCode());
-                });
+                })
+                .verify(DEFAULT_TIMEOUT);
         }
     }
 
     // Test async get current air quality
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetCurrentAirQuality(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetCurrentAirQuality(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getCurrentAirQuality(new GeoPosition(-122.138874, 47.632346), "es", false))
             .assertNext(actualResults -> {
@@ -639,7 +687,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("Unable to get current air quality");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get current air quality with response
@@ -655,7 +705,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("unable to get current air quality");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -664,16 +716,17 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     public void testAsyncInvalidGetCurrentAirQualityWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getCurrentAirQualityWithResponse(new GeoPosition(-1000000, 47.632346), "es", false, null))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get air quality daily forecasts
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetAirQualityDailyForecasts(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetAirQualityDailyForecasts(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getAirQualityDailyForecasts(new GeoPosition(-122.138874, 47.632346), "en", DailyDuration.TWO_DAYS))
             .assertNext(actualResults -> {
@@ -682,7 +735,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("Unable to get air quality daily forecast");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get air quality daily forecast with response
@@ -699,7 +754,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("unable to get air quality daily forecast");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -709,16 +766,17 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getAirQualityDailyForecastsWithResponse(
             new GeoPosition(-100000, 47.632346), "en", DailyDuration.TWO_DAYS, null))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get air quality hourly forecasts
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetAirQualityHourlyForecasts(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetAirQualityHourlyForecasts(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getAirQualityHourlyForecasts(
             new GeoPosition(-122.138874, 47.632346), "fr", HourlyDuration.ONE_HOUR, false))
@@ -728,7 +786,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("Unable to get air quality hourly forecast");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get air quality hourly forecasts with response
@@ -745,7 +805,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("unable to get air quality hourly forecast");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -755,16 +817,17 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getAirQualityHourlyForecastsWithResponse(
             new GeoPosition(-100000, 47.632346), "fr", HourlyDuration.ONE_HOUR, false, null))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get daily historical actuals
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetDailyHistoricalActuals(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetDailyHistoricalActuals(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
         LocalDate today = testResourceNamer.now().toLocalDate();
@@ -775,7 +838,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("Unable to get daily historical actuals forecast");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get daily historical actuals with response
@@ -793,7 +858,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("unable to get daily historical actuals forecast");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -804,16 +871,17 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
         LocalDate today = testResourceNamer.now().toLocalDate();
         StepVerifier.create(client.getDailyHistoricalActualsWithResponse(new GeoPosition(-100000, 62.6490341), before, today, null, null))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get daily historical records
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetDailyHistoricalRecords(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetDailyHistoricalRecords(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         LocalDate beforeYears = testResourceNamer.now().toLocalDate().minusYears(10);
         LocalDate afterYears = beforeYears.plusDays(30);
@@ -824,7 +892,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("Unable to get daily historical records forecast");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get daily historical records with response
@@ -842,7 +912,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("unable to get daily historical records forecast");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -853,16 +925,17 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         LocalDate beforeYears = testResourceNamer.now().toLocalDate().minusYears(10);
         LocalDate afterYears = beforeYears.plusDays(30);
         StepVerifier.create(client.getDailyHistoricalRecordsWithResponse(new GeoPosition(-1000000, 39.952583), beforeYears, afterYears, null))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get daily historical normals
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetDailyHistoricalNormals(HttpClient httpClient, WeatherServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetDailyHistoricalNormals(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
         LocalDate today = testResourceNamer.now().toLocalDate();
@@ -873,7 +946,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("Unable to get daily historical normals result");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get daily historical normals with response
@@ -891,7 +966,9 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
                 } catch (IOException e) {
                     Assertions.fail("unable to get daily historical normals result");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -902,9 +979,10 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         LocalDate before = testResourceNamer.now().toLocalDate().minusDays(30);
         LocalDate today = testResourceNamer.now().toLocalDate();
         StepVerifier.create(client.getDailyHistoricalNormalsWithResponse(new GeoPosition(-100000, 62.6490341), before, today, null, null))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 }

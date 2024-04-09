@@ -19,6 +19,8 @@ import java.util.UUID;
 /** passwordCredential. */
 @Fluent
 public final class MicrosoftGraphPasswordCredentialInner {
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
     /*
      * Do not use.
      */
@@ -82,7 +84,7 @@ public final class MicrosoftGraphPasswordCredentialInner {
      */
     public byte[] customKeyIdentifier() {
         if (this.customKeyIdentifier == null) {
-            return new byte[0];
+            return EMPTY_BYTE_ARRAY;
         }
         return this.customKeyIdentifier.decodedBytes();
     }

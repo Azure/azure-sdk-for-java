@@ -30,45 +30,28 @@ public final class FirewallRulesCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"startIpAddress\":\"qxqvpsvuoymgc\",\"endIpAddress\":\"elvezrypq\"},\"id\":\"feo\",\"name\":\"erqwkyhkobopg\",\"type\":\"edkowepbqpcrfk\"}";
+        String responseStr
+            = "{\"properties\":{\"startIpAddress\":\"uqj\",\"endIpAddress\":\"tzenk\"},\"id\":\"fzzhmkdasv\",\"name\":\"lyhb\",\"type\":\"cu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PostgreSqlManager manager =
-            PostgreSqlManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PostgreSqlManager manager = PostgreSqlManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        FirewallRule response =
-            manager
-                .firewallRules()
-                .define("zcjaesgvvsccy")
-                .withExistingFlexibleServer("ayhmtnvyqiatkz", "pcnp")
-                .withStartIpAddress("jguq")
-                .withEndIpAddress("hwyg")
-                .create();
+        FirewallRule response = manager.firewallRules().define("reljeamur").withExistingFlexibleServer("zehtdhgb", "k")
+            .withStartIpAddress("zmlovuanash").withEndIpAddress("xlpm").create();
 
-        Assertions.assertEquals("qxqvpsvuoymgc", response.startIpAddress());
-        Assertions.assertEquals("elvezrypq", response.endIpAddress());
+        Assertions.assertEquals("uqj", response.startIpAddress());
+        Assertions.assertEquals("tzenk", response.endIpAddress());
     }
 }

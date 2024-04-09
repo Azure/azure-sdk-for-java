@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Oracle Service Cloud linked service properties. */
+/**
+ * Oracle Service Cloud linked service properties.
+ */
 @Fluent
 public final class OracleServiceCloudLinkedServiceTypeProperties {
     /*
@@ -53,18 +55,20 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of OracleServiceCloudLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of OracleServiceCloudLinkedServiceTypeProperties class.
+     */
     public OracleServiceCloudLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the host property: The URL of the Oracle Service Cloud instance.
-     *
+     * 
      * @return the host value.
      */
     public Object host() {
@@ -73,7 +77,7 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
 
     /**
      * Set the host property: The URL of the Oracle Service Cloud instance.
-     *
+     * 
      * @param host the host value to set.
      * @return the OracleServiceCloudLinkedServiceTypeProperties object itself.
      */
@@ -84,7 +88,7 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
 
     /**
      * Get the username property: The user name that you use to access Oracle Service Cloud server.
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -93,7 +97,7 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
 
     /**
      * Set the username property: The user name that you use to access Oracle Service Cloud server.
-     *
+     * 
      * @param username the username value to set.
      * @return the OracleServiceCloudLinkedServiceTypeProperties object itself.
      */
@@ -104,7 +108,7 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
 
     /**
      * Get the password property: The password corresponding to the user name that you provided in the username key.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -113,7 +117,7 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
 
     /**
      * Set the password property: The password corresponding to the user name that you provided in the username key.
-     *
+     * 
      * @param password the password value to set.
      * @return the OracleServiceCloudLinkedServiceTypeProperties object itself.
      */
@@ -125,7 +129,7 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object useEncryptedEndpoints() {
@@ -135,7 +139,7 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the OracleServiceCloudLinkedServiceTypeProperties object itself.
      */
@@ -148,7 +152,7 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @return the useHostVerification value.
      */
     public Object useHostVerification() {
@@ -159,7 +163,7 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @param useHostVerification the useHostVerification value to set.
      * @return the OracleServiceCloudLinkedServiceTypeProperties object itself.
      */
@@ -169,9 +173,9 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
+     * 
      * @return the usePeerVerification value.
      */
     public Object usePeerVerification() {
@@ -179,9 +183,9 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
+     * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the OracleServiceCloudLinkedServiceTypeProperties object itself.
      */
@@ -191,50 +195,44 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the OracleServiceCloudLinkedServiceTypeProperties object itself.
      */
-    public OracleServiceCloudLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public OracleServiceCloudLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (host() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property host in model OracleServiceCloudLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property host in model OracleServiceCloudLinkedServiceTypeProperties"));
         }
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property username in model OracleServiceCloudLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property username in model OracleServiceCloudLinkedServiceTypeProperties"));
         }
         if (password() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property password in model OracleServiceCloudLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property password in model OracleServiceCloudLinkedServiceTypeProperties"));
         } else {
             password().validate();
         }

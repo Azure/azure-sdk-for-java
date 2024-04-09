@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The WafMetricsResponseSeriesItem model. */
+/**
+ * The WafMetricsResponseSeriesItem model.
+ */
 @Fluent
 public final class WafMetricsResponseSeriesItem {
     /*
@@ -21,7 +23,7 @@ public final class WafMetricsResponseSeriesItem {
      * The unit property.
      */
     @JsonProperty(value = "unit")
-    private WafMetricsResponseSeriesItemUnit unit;
+    private WafMetricsSeriesUnit unit;
 
     /*
      * The groups property.
@@ -36,8 +38,14 @@ public final class WafMetricsResponseSeriesItem {
     private List<WafMetricsResponseSeriesItemData> data;
 
     /**
+     * Creates an instance of WafMetricsResponseSeriesItem class.
+     */
+    public WafMetricsResponseSeriesItem() {
+    }
+
+    /**
      * Get the metric property: The metric property.
-     *
+     * 
      * @return the metric value.
      */
     public String metric() {
@@ -46,7 +54,7 @@ public final class WafMetricsResponseSeriesItem {
 
     /**
      * Set the metric property: The metric property.
-     *
+     * 
      * @param metric the metric value to set.
      * @return the WafMetricsResponseSeriesItem object itself.
      */
@@ -57,27 +65,27 @@ public final class WafMetricsResponseSeriesItem {
 
     /**
      * Get the unit property: The unit property.
-     *
+     * 
      * @return the unit value.
      */
-    public WafMetricsResponseSeriesItemUnit unit() {
+    public WafMetricsSeriesUnit unit() {
         return this.unit;
     }
 
     /**
      * Set the unit property: The unit property.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the WafMetricsResponseSeriesItem object itself.
      */
-    public WafMetricsResponseSeriesItem withUnit(WafMetricsResponseSeriesItemUnit unit) {
+    public WafMetricsResponseSeriesItem withUnit(WafMetricsSeriesUnit unit) {
         this.unit = unit;
         return this;
     }
 
     /**
      * Get the groups property: The groups property.
-     *
+     * 
      * @return the groups value.
      */
     public List<WafMetricsResponseSeriesPropertiesItemsItem> groups() {
@@ -86,7 +94,7 @@ public final class WafMetricsResponseSeriesItem {
 
     /**
      * Set the groups property: The groups property.
-     *
+     * 
      * @param groups the groups value to set.
      * @return the WafMetricsResponseSeriesItem object itself.
      */
@@ -97,7 +105,7 @@ public final class WafMetricsResponseSeriesItem {
 
     /**
      * Get the data property: The data property.
-     *
+     * 
      * @return the data value.
      */
     public List<WafMetricsResponseSeriesItemData> data() {
@@ -106,7 +114,7 @@ public final class WafMetricsResponseSeriesItem {
 
     /**
      * Set the data property: The data property.
-     *
+     * 
      * @param data the data value to set.
      * @return the WafMetricsResponseSeriesItem object itself.
      */
@@ -117,7 +125,7 @@ public final class WafMetricsResponseSeriesItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

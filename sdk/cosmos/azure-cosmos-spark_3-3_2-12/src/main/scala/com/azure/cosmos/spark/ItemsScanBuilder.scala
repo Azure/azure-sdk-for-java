@@ -3,7 +3,8 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.models.CosmosParameterizedQuery
+import com.azure.cosmos.SparkBridgeInternal
+import com.azure.cosmos.models.PartitionKeyDefinition
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
@@ -20,17 +21,57 @@ private case class ItemsScanBuilder(session: SparkSession,
                                     config: CaseInsensitiveStringMap,
                                     inputSchema: StructType,
                                     cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
-                                    diagnosticsConfig: DiagnosticsConfig)
+                                    diagnosticsConfig: DiagnosticsConfig,
+                                    sparkEnvironmentInfo: String)
   extends ScanBuilder
     with SupportsPushDownFilters
     with SupportsPushDownRequiredColumns {
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
-  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
-  val configMap = config.asScala.toMap
-  val readConfig = CosmosReadConfig.parseCosmosReadConfig(configMap)
-  var processedPredicates : Option[AnalyzedFilters] = Option.empty
+  private val configMap = config.asScala.toMap
+  private val readConfig = CosmosReadConfig.parseCosmosReadConfig(configMap)
+  private var processedPredicates : Option[AnalyzedAggregatedFilters] = Option.empty
+  private val clientConfiguration = CosmosClientConfiguration.apply(
+    configMap,
+    readConfig.forceEventualConsistency,
+    CosmosClientConfiguration.getSparkEnvironmentInfo(Some(session))
+  )
+  private val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(configMap)
+  private val description = {
+    s"""Cosmos ItemsScanBuilder: ${containerConfig.database}.${containerConfig.container}""".stripMargin
+  }
+
+  private val partitionKeyDefinition: PartitionKeyDefinition = {
+    TransientErrorsRetryPolicy.executeWithRetry(() => {
+      val calledFrom = s"ItemsScan($description()).getPartitionKeyDefinition"
+      Loan(
+        List[Option[CosmosClientCacheItem]](
+          Some(CosmosClientCache.apply(
+            clientConfiguration,
+            Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
+            calledFrom
+          )),
+          ThroughputControlHelper.getThroughputControlClientCacheItem(
+            configMap, calledFrom, Some(cosmosClientStateHandles), sparkEnvironmentInfo)
+        ))
+        .to(clientCacheItems => {
+          val container =
+            ThroughputControlHelper.getContainer(
+              configMap,
+              containerConfig,
+              clientCacheItems(0).get,
+              clientCacheItems(1))
+
+          SparkBridgeInternal
+            .getContainerPropertiesFromCollectionCache(container)
+            .getPartitionKeyDefinition()
+        })
+    })
+  }
+
+  private val filterAnalyzer = FilterAnalyzer(readConfig, partitionKeyDefinition)
 
   /**
     * Pushes down filters, and returns filters that need to be evaluated after scanning.
@@ -38,7 +79,7 @@ private case class ItemsScanBuilder(session: SparkSession,
     * @return the filters that spark need to evaluate
     */
   override def pushFilters(filters: Array[Filter]): Array[Filter] = {
-    this.processedPredicates = Option.apply(FilterAnalyzer().analyze(filters, this.readConfig))
+    this.processedPredicates = Option.apply(filterAnalyzer.analyze(filters))
 
     // return the filters that spark need to evaluate
     this.processedPredicates.get.filtersNotSupportedByCosmos
@@ -57,20 +98,22 @@ private case class ItemsScanBuilder(session: SparkSession,
   }
 
   override def build(): Scan = {
-    val effectiveQuery:CosmosParameterizedQuery = this.processedPredicates match {
-      case Some(analyzedFilters) => analyzedFilters.cosmosParametrizedQuery
-      case None => FilterAnalyzer().analyze(Array.empty[Filter], this.readConfig).cosmosParametrizedQuery
+    val effectiveAnalyzedFilters = this.processedPredicates match {
+      case Some(analyzedFilters) => analyzedFilters
+      case None => filterAnalyzer.analyze(Array.empty[Filter])
     }
 
     // TODO when inferring schema we should consolidate the schema from pruneColumns
-    ItemsScan(
+    new ItemsScan(
       session,
       inputSchema,
       this.configMap,
       this.readConfig,
-      effectiveQuery,
+      effectiveAnalyzedFilters,
       cosmosClientStateHandles,
-      diagnosticsConfig)
+      diagnosticsConfig,
+      sparkEnvironmentInfo,
+      partitionKeyDefinition)
   }
 
   /**

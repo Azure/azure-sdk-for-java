@@ -136,11 +136,13 @@ public interface MsixPackage {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The MsixPackage definition stages. */
     interface DefinitionStages {
         /** The first stage of the MsixPackage definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the MsixPackage definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -152,6 +154,7 @@ public interface MsixPackage {
              */
             WithCreate withExistingHostPool(String resourceGroupName, String hostPoolName);
         }
+
         /**
          * The stage of the MsixPackage definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -183,6 +186,7 @@ public interface MsixPackage {
              */
             MsixPackage create(Context context);
         }
+
         /** The stage of the MsixPackage definition allowing to specify imagePath. */
         interface WithImagePath {
             /**
@@ -193,6 +197,7 @@ public interface MsixPackage {
              */
             WithCreate withImagePath(String imagePath);
         }
+
         /** The stage of the MsixPackage definition allowing to specify packageName. */
         interface WithPackageName {
             /**
@@ -203,6 +208,7 @@ public interface MsixPackage {
              */
             WithCreate withPackageName(String packageName);
         }
+
         /** The stage of the MsixPackage definition allowing to specify packageFamilyName. */
         interface WithPackageFamilyName {
             /**
@@ -215,6 +221,7 @@ public interface MsixPackage {
              */
             WithCreate withPackageFamilyName(String packageFamilyName);
         }
+
         /** The stage of the MsixPackage definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -225,6 +232,7 @@ public interface MsixPackage {
              */
             WithCreate withDisplayName(String displayName);
         }
+
         /** The stage of the MsixPackage definition allowing to specify packageRelativePath. */
         interface WithPackageRelativePath {
             /**
@@ -235,6 +243,7 @@ public interface MsixPackage {
              */
             WithCreate withPackageRelativePath(String packageRelativePath);
         }
+
         /** The stage of the MsixPackage definition allowing to specify isRegularRegistration. */
         interface WithIsRegularRegistration {
             /**
@@ -245,6 +254,7 @@ public interface MsixPackage {
              */
             WithCreate withIsRegularRegistration(Boolean isRegularRegistration);
         }
+
         /** The stage of the MsixPackage definition allowing to specify isActive. */
         interface WithIsActive {
             /**
@@ -255,6 +265,7 @@ public interface MsixPackage {
              */
             WithCreate withIsActive(Boolean isActive);
         }
+
         /** The stage of the MsixPackage definition allowing to specify packageDependencies. */
         interface WithPackageDependencies {
             /**
@@ -265,6 +276,7 @@ public interface MsixPackage {
              */
             WithCreate withPackageDependencies(List<MsixPackageDependencies> packageDependencies);
         }
+
         /** The stage of the MsixPackage definition allowing to specify version. */
         interface WithVersion {
             /**
@@ -275,6 +287,7 @@ public interface MsixPackage {
              */
             WithCreate withVersion(String version);
         }
+
         /** The stage of the MsixPackage definition allowing to specify lastUpdated. */
         interface WithLastUpdated {
             /**
@@ -285,6 +298,7 @@ public interface MsixPackage {
              */
             WithCreate withLastUpdated(OffsetDateTime lastUpdated);
         }
+
         /** The stage of the MsixPackage definition allowing to specify packageApplications. */
         interface WithPackageApplications {
             /**
@@ -296,6 +310,7 @@ public interface MsixPackage {
             WithCreate withPackageApplications(List<MsixPackageApplications> packageApplications);
         }
     }
+
     /**
      * Begins update for the MsixPackage resource.
      *
@@ -321,6 +336,7 @@ public interface MsixPackage {
          */
         MsixPackage apply(Context context);
     }
+
     /** The MsixPackage update stages. */
     interface UpdateStages {
         /** The stage of the MsixPackage update allowing to specify isActive. */
@@ -333,6 +349,7 @@ public interface MsixPackage {
              */
             Update withIsActive(Boolean isActive);
         }
+
         /** The stage of the MsixPackage update allowing to specify isRegularRegistration. */
         interface WithIsRegularRegistration {
             /**
@@ -343,6 +360,7 @@ public interface MsixPackage {
              */
             Update withIsRegularRegistration(Boolean isRegularRegistration);
         }
+
         /** The stage of the MsixPackage update allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -354,6 +372,7 @@ public interface MsixPackage {
             Update withDisplayName(String displayName);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

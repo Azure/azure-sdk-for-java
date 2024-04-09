@@ -21,6 +21,12 @@ public class PartitionOwnership {
     private String eTag;
 
     /**
+     * Creates a new instance.
+     */
+    public PartitionOwnership() {
+    }
+
+    /**
      * Returns the fully qualified namespace of the Event Hub.
      *
      * @return the fully qualified namespace of the Event Hub.

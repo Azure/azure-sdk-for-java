@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class NameAvailabilityParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NameAvailabilityParameters model =
-            BinaryData.fromString("{\"name\":\"a\",\"type\":\"th\"}").toObject(NameAvailabilityParameters.class);
+        NameAvailabilityParameters model
+            = BinaryData.fromString("{\"name\":\"a\",\"type\":\"th\"}").toObject(NameAvailabilityParameters.class);
         Assertions.assertEquals("a", model.name());
         Assertions.assertEquals("th", model.type());
     }

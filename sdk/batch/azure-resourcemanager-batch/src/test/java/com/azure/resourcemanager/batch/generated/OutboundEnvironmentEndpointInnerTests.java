@@ -10,11 +10,9 @@ import com.azure.resourcemanager.batch.fluent.models.OutboundEnvironmentEndpoint
 public final class OutboundEnvironmentEndpointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OutboundEnvironmentEndpointInner model =
-            BinaryData
-                .fromString(
-                    "{\"category\":\"df\",\"endpoints\":[{\"domainName\":\"ezkojvdcp\",\"description\":\"oqouicybxarzgszu\",\"endpointDetails\":[{\"port\":1319234884}]},{\"domainName\":\"opidoamciodh\",\"description\":\"azxkhnzbonlwnto\",\"endpointDetails\":[{\"port\":2078888236},{\"port\":542586349}]},{\"domainName\":\"hksz\",\"description\":\"mrv\",\"endpointDetails\":[{\"port\":1285484058},{\"port\":152154395},{\"port\":991988200}]}]}")
-                .toObject(OutboundEnvironmentEndpointInner.class);
+        OutboundEnvironmentEndpointInner model = BinaryData.fromString(
+            "{\"category\":\"gokdwbwhks\",\"endpoints\":[{\"domainName\":\"rvexztvb\",\"description\":\"gsfraoyzkoow\",\"endpointDetails\":[{\"port\":1663606623},{\"port\":1523878268},{\"port\":1953532777},{\"port\":1275486297}]},{\"domainName\":\"dsyuuximerqfob\",\"description\":\"znkbykutwpfhpagm\",\"endpointDetails\":[{\"port\":1595958724},{\"port\":803916344},{\"port\":1293750730},{\"port\":2086518628}]}]}")
+            .toObject(OutboundEnvironmentEndpointInner.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -12,29 +12,24 @@ import org.junit.jupiter.api.Assertions;
 public final class FqdnObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FqdnObject model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"dslfhotwmcy\",\"fqdnList\":[\"wlbjnpgacftade\",\"xnltyfsoppu\"],\"etag\":\"esnzwde\",\"auditComment\":\"avo\",\"provisioningState\":\"Deleting\"}")
-                .toObject(FqdnObject.class);
-        Assertions.assertEquals("dslfhotwmcy", model.description());
-        Assertions.assertEquals("wlbjnpgacftade", model.fqdnList().get(0));
-        Assertions.assertEquals("esnzwde", model.etag());
-        Assertions.assertEquals("avo", model.auditComment());
+        FqdnObject model = BinaryData.fromString(
+            "{\"description\":\"auu\",\"fqdnList\":[\"jmvxie\",\"uugidyjrrfby\",\"osvexcsonpclhoc\",\"hslkevleggzf\"],\"etag\":\"hfmvfaxkffe\",\"auditComment\":\"th\",\"provisioningState\":\"Creating\"}")
+            .toObject(FqdnObject.class);
+        Assertions.assertEquals("auu", model.description());
+        Assertions.assertEquals("jmvxie", model.fqdnList().get(0));
+        Assertions.assertEquals("hfmvfaxkffe", model.etag());
+        Assertions.assertEquals("th", model.auditComment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FqdnObject model =
-            new FqdnObject()
-                .withDescription("dslfhotwmcy")
-                .withFqdnList(Arrays.asList("wlbjnpgacftade", "xnltyfsoppu"))
-                .withEtag("esnzwde")
-                .withAuditComment("avo");
+        FqdnObject model = new FqdnObject().withDescription("auu")
+            .withFqdnList(Arrays.asList("jmvxie", "uugidyjrrfby", "osvexcsonpclhoc", "hslkevleggzf"))
+            .withEtag("hfmvfaxkffe").withAuditComment("th");
         model = BinaryData.fromObject(model).toObject(FqdnObject.class);
-        Assertions.assertEquals("dslfhotwmcy", model.description());
-        Assertions.assertEquals("wlbjnpgacftade", model.fqdnList().get(0));
-        Assertions.assertEquals("esnzwde", model.etag());
-        Assertions.assertEquals("avo", model.auditComment());
+        Assertions.assertEquals("auu", model.description());
+        Assertions.assertEquals("jmvxie", model.fqdnList().get(0));
+        Assertions.assertEquals("hfmvfaxkffe", model.etag());
+        Assertions.assertEquals("th", model.auditComment());
     }
 }

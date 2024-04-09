@@ -16,6 +16,12 @@ public final class ExtractKeyPhrasesAction {
     private boolean disableServiceLogs;
 
     /**
+     * Constructs a {@code ExtractKeyPhrasesAction} object.
+     */
+    public ExtractKeyPhrasesAction() {
+    }
+
+    /**
      * Get the name of action.
      *
      * @return the name of action.
@@ -29,7 +35,7 @@ public final class ExtractKeyPhrasesAction {
      *
      * @param actionName the custom name for the action.
      *
-     * @return The {@link ExtractKeyPhrasesAction} object itself.
+     * @return The {@code ExtractKeyPhrasesAction} object itself.
      */
     public ExtractKeyPhrasesAction setActionName(String actionName) {
         this.actionName = actionName;
@@ -51,7 +57,7 @@ public final class ExtractKeyPhrasesAction {
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link ExtractKeyPhrasesAction} object itself.
+     * @return The {@code ExtractKeyPhrasesAction} object itself.
      */
     public ExtractKeyPhrasesAction setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
@@ -76,7 +82,7 @@ public final class ExtractKeyPhrasesAction {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link ExtractKeyPhrasesAction} object itself.
+     * @return The {@code ExtractKeyPhrasesAction} object itself.
      */
     public ExtractKeyPhrasesAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;

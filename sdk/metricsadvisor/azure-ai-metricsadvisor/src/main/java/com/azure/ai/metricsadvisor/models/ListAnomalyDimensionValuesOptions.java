@@ -15,6 +15,12 @@ public final class ListAnomalyDimensionValuesOptions {
     private DimensionKey dimensionToFilter;
 
     /**
+     * Creates an instance of ListAnomalyDimensionValuesOptions.
+     */
+    public ListAnomalyDimensionValuesOptions() {
+    }
+
+    /**
      * Gets limit indicating the number of items that will be included in a service returned page.
      *
      * @return The max page size value.

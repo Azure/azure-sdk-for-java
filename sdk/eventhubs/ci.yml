@@ -62,11 +62,16 @@ parameters:
   displayName: 'azure-messaging-eventhubs-checkpointstore-jedis'
   type: boolean
   default: true
+- name: release_dependsonlivetests
+  displayName: 'Release depends on live tests'
+  type: boolean
+  default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: eventhubs
+    JavadocSafeJavaBuildVersion: '1.21'
     EnableBatchRelease: true
     Artifacts:
       - name: azure-messaging-eventhubs
@@ -82,8 +87,6 @@ extends:
         safeName: azuremessagingeventhubscheckpointstorejedis
         releaseInBatch: ${{ parameters.release_azuremessagingeventhubscheckpointstorejedis }}
     AdditionalModules:
-      - name: azure-messaging-eventhubs-track1-perf
-        groupId: com.azure
       - name: azure-messaging-eventhubs-track2-perf
         groupId: com.azure
         # required by the above perf libraries

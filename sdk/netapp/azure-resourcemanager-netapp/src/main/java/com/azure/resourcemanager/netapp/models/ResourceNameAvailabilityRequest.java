@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resource name availability request content. */
+/**
+ * Resource name availability request content.
+ */
 @Fluent
 public final class ResourceNameAvailabilityRequest {
     /*
@@ -29,13 +31,15 @@ public final class ResourceNameAvailabilityRequest {
     @JsonProperty(value = "resourceGroup", required = true)
     private String resourceGroup;
 
-    /** Creates an instance of ResourceNameAvailabilityRequest class. */
+    /**
+     * Creates an instance of ResourceNameAvailabilityRequest class.
+     */
     public ResourceNameAvailabilityRequest() {
     }
 
     /**
      * Get the name property: Resource name to verify.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +48,7 @@ public final class ResourceNameAvailabilityRequest {
 
     /**
      * Set the name property: Resource name to verify.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourceNameAvailabilityRequest object itself.
      */
@@ -55,7 +59,7 @@ public final class ResourceNameAvailabilityRequest {
 
     /**
      * Get the type property: Resource type used for verification.
-     *
+     * 
      * @return the type value.
      */
     public CheckNameResourceTypes type() {
@@ -64,7 +68,7 @@ public final class ResourceNameAvailabilityRequest {
 
     /**
      * Set the type property: Resource type used for verification.
-     *
+     * 
      * @param type the type value to set.
      * @return the ResourceNameAvailabilityRequest object itself.
      */
@@ -75,7 +79,7 @@ public final class ResourceNameAvailabilityRequest {
 
     /**
      * Get the resourceGroup property: Resource group name.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -84,7 +88,7 @@ public final class ResourceNameAvailabilityRequest {
 
     /**
      * Set the resourceGroup property: Resource group name.
-     *
+     * 
      * @param resourceGroup the resourceGroup value to set.
      * @return the ResourceNameAvailabilityRequest object itself.
      */
@@ -95,27 +99,21 @@ public final class ResourceNameAvailabilityRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ResourceNameAvailabilityRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model ResourceNameAvailabilityRequest"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property type in model ResourceNameAvailabilityRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property type in model ResourceNameAvailabilityRequest"));
         }
         if (resourceGroup() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceGroup in model ResourceNameAvailabilityRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property resourceGroup in model ResourceNameAvailabilityRequest"));
         }
     }
 

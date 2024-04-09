@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.authorization.fluent.models.RoleAssignmentScheduleRequestInner;
 import com.azure.resourcemanager.authorization.models.RequestType;
 import com.azure.resourcemanager.authorization.models.RoleAssignmentScheduleRequestPropertiesScheduleInfo;
@@ -49,6 +48,6 @@ public final class RoleAssignmentScheduleRequestsCreateSamples {
                         "@Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]"
                             + " StringEqualsIgnoreCase 'foo_storage_container'")
                     .withConditionVersion("1.0"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -63,17 +63,17 @@ public final class VirtualMachinesAddDataDiskMockTests {
         manager
             .virtualMachines()
             .addDataDisk(
-                "qgnnbz",
-                "tftedz",
-                "ubjtvgjsxmtyjjv",
+                "vkrbzkuastaxklpr",
+                "ulhgltoiz",
+                "xvsc",
                 new DataDiskProperties()
                     .withAttachNewDataDiskOptions(
                         new AttachNewDataDiskOptions()
-                            .withDiskSizeGiB(722798111)
-                            .withDiskName("wobtdphti")
+                            .withDiskSizeGiB(699693500)
+                            .withDiskName("yskye")
                             .withDiskType(StorageType.PREMIUM))
-                    .withExistingLabDiskId("ofw")
-                    .withHostCaching(HostCachingOptions.NONE),
+                    .withExistingLabDiskId("xczvfcckwrtwle")
+                    .withHostCaching(HostCachingOptions.READ_ONLY),
                 com.azure.core.util.Context.NONE);
     }
 }

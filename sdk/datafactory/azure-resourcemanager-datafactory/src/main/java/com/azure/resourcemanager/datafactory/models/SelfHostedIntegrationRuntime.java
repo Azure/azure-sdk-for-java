@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Self-hosted integration runtime. */
+/**
+ * Self-hosted integration runtime.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SelfHosted")
 @Fluent
@@ -22,21 +24,25 @@ public final class SelfHostedIntegrationRuntime extends IntegrationRuntime {
     @JsonProperty(value = "typeProperties")
     private SelfHostedIntegrationRuntimeTypeProperties innerTypeProperties;
 
-    /** Creates an instance of SelfHostedIntegrationRuntime class. */
+    /**
+     * Creates an instance of SelfHostedIntegrationRuntime class.
+     */
     public SelfHostedIntegrationRuntime() {
     }
 
     /**
-     * Get the innerTypeProperties property: When this property is not null, means this is a linked integration runtime.
-     * The property is used to access original integration runtime.
-     *
+     * Get the innerTypeProperties property: When this property is not null, means this is a linked integration
+     * runtime. The property is used to access original integration runtime.
+     * 
      * @return the innerTypeProperties value.
      */
     private SelfHostedIntegrationRuntimeTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SelfHostedIntegrationRuntime withDescription(String description) {
         super.withDescription(description);
@@ -45,7 +51,7 @@ public final class SelfHostedIntegrationRuntime extends IntegrationRuntime {
 
     /**
      * Get the linkedInfo property: The base definition of a linked integration runtime.
-     *
+     * 
      * @return the linkedInfo value.
      */
     public LinkedIntegrationRuntimeType linkedInfo() {
@@ -54,7 +60,7 @@ public final class SelfHostedIntegrationRuntime extends IntegrationRuntime {
 
     /**
      * Set the linkedInfo property: The base definition of a linked integration runtime.
-     *
+     * 
      * @param linkedInfo the linkedInfo value to set.
      * @return the SelfHostedIntegrationRuntime object itself.
      */
@@ -67,8 +73,36 @@ public final class SelfHostedIntegrationRuntime extends IntegrationRuntime {
     }
 
     /**
+     * Get the selfContainedInteractiveAuthoringEnabled property: An alternative option to ensure interactive authoring
+     * function when your self-hosted integration runtime is unable to establish a connection with Azure Relay.
+     * 
+     * @return the selfContainedInteractiveAuthoringEnabled value.
+     */
+    public Boolean selfContainedInteractiveAuthoringEnabled() {
+        return this.innerTypeProperties() == null ? null
+            : this.innerTypeProperties().selfContainedInteractiveAuthoringEnabled();
+    }
+
+    /**
+     * Set the selfContainedInteractiveAuthoringEnabled property: An alternative option to ensure interactive authoring
+     * function when your self-hosted integration runtime is unable to establish a connection with Azure Relay.
+     * 
+     * @param selfContainedInteractiveAuthoringEnabled the selfContainedInteractiveAuthoringEnabled value to set.
+     * @return the SelfHostedIntegrationRuntime object itself.
+     */
+    public SelfHostedIntegrationRuntime
+        withSelfContainedInteractiveAuthoringEnabled(Boolean selfContainedInteractiveAuthoringEnabled) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SelfHostedIntegrationRuntimeTypeProperties();
+        }
+        this.innerTypeProperties()
+            .withSelfContainedInteractiveAuthoringEnabled(selfContainedInteractiveAuthoringEnabled);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

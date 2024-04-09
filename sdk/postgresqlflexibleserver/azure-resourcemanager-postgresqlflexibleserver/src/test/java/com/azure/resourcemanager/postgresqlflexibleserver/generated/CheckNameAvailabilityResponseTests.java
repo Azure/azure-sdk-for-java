@@ -12,25 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckNameAvailabilityResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckNameAvailabilityResponse model =
-            BinaryData
-                .fromString("{\"nameAvailable\":false,\"reason\":\"Invalid\",\"message\":\"ysh\"}")
+        CheckNameAvailabilityResponse model
+            = BinaryData.fromString("{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"gf\"}")
                 .toObject(CheckNameAvailabilityResponse.class);
-        Assertions.assertEquals(false, model.nameAvailable());
-        Assertions.assertEquals(CheckNameAvailabilityReason.INVALID, model.reason());
-        Assertions.assertEquals("ysh", model.message());
+        Assertions.assertEquals(true, model.nameAvailable());
+        Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, model.reason());
+        Assertions.assertEquals("gf", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckNameAvailabilityResponse model =
-            new CheckNameAvailabilityResponse()
-                .withNameAvailable(false)
-                .withReason(CheckNameAvailabilityReason.INVALID)
-                .withMessage("ysh");
+        CheckNameAvailabilityResponse model = new CheckNameAvailabilityResponse().withNameAvailable(true)
+            .withReason(CheckNameAvailabilityReason.ALREADY_EXISTS).withMessage("gf");
         model = BinaryData.fromObject(model).toObject(CheckNameAvailabilityResponse.class);
-        Assertions.assertEquals(false, model.nameAvailable());
-        Assertions.assertEquals(CheckNameAvailabilityReason.INVALID, model.reason());
-        Assertions.assertEquals("ysh", model.message());
+        Assertions.assertEquals(true, model.nameAvailable());
+        Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, model.reason());
+        Assertions.assertEquals("gf", model.message());
     }
 }

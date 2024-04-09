@@ -14,23 +14,23 @@ public final class SharedPrivateLinkResourcePropertiesTests {
         SharedPrivateLinkResourceProperties model =
             BinaryData
                 .fromString(
-                    "{\"groupId\":\"udutnco\",\"privateLinkResourceId\":\"mr\",\"provisioningState\":\"Moving\",\"requestMessage\":\"vcofudfl\",\"status\":\"Disconnected\"}")
+                    "{\"groupId\":\"bqwcsdbnwdcf\",\"privateLinkResourceId\":\"ucqdpfuvglsb\",\"provisioningState\":\"Canceled\",\"requestMessage\":\"nvxbvt\",\"status\":\"Disconnected\"}")
                 .toObject(SharedPrivateLinkResourceProperties.class);
-        Assertions.assertEquals("udutnco", model.groupId());
-        Assertions.assertEquals("mr", model.privateLinkResourceId());
-        Assertions.assertEquals("vcofudfl", model.requestMessage());
+        Assertions.assertEquals("bqwcsdbnwdcf", model.groupId());
+        Assertions.assertEquals("ucqdpfuvglsb", model.privateLinkResourceId());
+        Assertions.assertEquals("nvxbvt", model.requestMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SharedPrivateLinkResourceProperties model =
             new SharedPrivateLinkResourceProperties()
-                .withGroupId("udutnco")
-                .withPrivateLinkResourceId("mr")
-                .withRequestMessage("vcofudfl");
+                .withGroupId("bqwcsdbnwdcf")
+                .withPrivateLinkResourceId("ucqdpfuvglsb")
+                .withRequestMessage("nvxbvt");
         model = BinaryData.fromObject(model).toObject(SharedPrivateLinkResourceProperties.class);
-        Assertions.assertEquals("udutnco", model.groupId());
-        Assertions.assertEquals("mr", model.privateLinkResourceId());
-        Assertions.assertEquals("vcofudfl", model.requestMessage());
+        Assertions.assertEquals("bqwcsdbnwdcf", model.groupId());
+        Assertions.assertEquals("ucqdpfuvglsb", model.privateLinkResourceId());
+        Assertions.assertEquals("nvxbvt", model.requestMessage());
     }
 }

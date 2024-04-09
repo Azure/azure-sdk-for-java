@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The definition and properties of virtual network to which Azure-SSIS integration runtime will join. */
+/**
+ * The definition and properties of virtual network to which Azure-SSIS integration runtime will join.
+ */
 @Fluent
 public final class IntegrationRuntimeCustomerVirtualNetwork {
     /*
@@ -16,13 +18,15 @@ public final class IntegrationRuntimeCustomerVirtualNetwork {
     @JsonProperty(value = "subnetId")
     private String subnetId;
 
-    /** Creates an instance of IntegrationRuntimeCustomerVirtualNetwork class. */
+    /**
+     * Creates an instance of IntegrationRuntimeCustomerVirtualNetwork class.
+     */
     public IntegrationRuntimeCustomerVirtualNetwork() {
     }
 
     /**
      * Get the subnetId property: The ID of subnet to which Azure-SSIS integration runtime will join.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -31,7 +35,7 @@ public final class IntegrationRuntimeCustomerVirtualNetwork {
 
     /**
      * Set the subnetId property: The ID of subnet to which Azure-SSIS integration runtime will join.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the IntegrationRuntimeCustomerVirtualNetwork object itself.
      */
@@ -42,7 +46,7 @@ public final class IntegrationRuntimeCustomerVirtualNetwork {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

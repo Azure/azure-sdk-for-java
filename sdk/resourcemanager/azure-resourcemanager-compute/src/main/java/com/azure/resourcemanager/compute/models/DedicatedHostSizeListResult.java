@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Dedicated Host sizes operation response. */
+/**
+ * The List Dedicated Host sizes operation response.
+ */
 @Fluent
 public final class DedicatedHostSizeListResult {
     /*
@@ -17,13 +19,15 @@ public final class DedicatedHostSizeListResult {
     @JsonProperty(value = "value")
     private List<String> value;
 
-    /** Creates an instance of DedicatedHostSizeListResult class. */
+    /**
+     * Creates an instance of DedicatedHostSizeListResult class.
+     */
     public DedicatedHostSizeListResult() {
     }
 
     /**
      * Get the value property: The list of dedicated host sizes.
-     *
+     * 
      * @return the value value.
      */
     public List<String> value() {
@@ -32,7 +36,7 @@ public final class DedicatedHostSizeListResult {
 
     /**
      * Set the value property: The list of dedicated host sizes.
-     *
+     * 
      * @param value the value value to set.
      * @return the DedicatedHostSizeListResult object itself.
      */
@@ -43,7 +47,7 @@ public final class DedicatedHostSizeListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

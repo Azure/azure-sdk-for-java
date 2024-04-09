@@ -34,43 +34,32 @@ public final class PoolsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"etag\":\"wvvb\",\"properties\":{\"poolId\":\"xlllchp\",\"size\":1186256809003482579,\"serviceLevel\":\"StandardZRS\",\"provisioningState\":\"vwrdnhfukuvsj\",\"totalThroughputMibps\":79.228424,\"utilizedThroughputMibps\":24.698103,\"qosType\":\"Auto\",\"coolAccess\":false,\"encryptionType\":\"Double\"},\"location\":\"ypfcvlerchpqbmf\",\"tags\":{\"oxyhkxgqddrihpf\":\"abwidfcxsspuun\",\"l\":\"oqcaaewdaomdj\",\"siykzkdncjdxonbz\":\"jxxkzbrmsgei\"},\"id\":\"ggcula\",\"name\":\"z\",\"type\":\"y\"}]}";
+        String responseStr
+            = "{\"value\":[{\"etag\":\"uisavokq\",\"properties\":{\"poolId\":\"fvazivjlfrqttba\",\"size\":8474916357734436058,\"serviceLevel\":\"Ultra\",\"provisioningState\":\"nwxyiop\",\"totalThroughputMibps\":28.38924,\"utilizedThroughputMibps\":76.790695,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Double\"},\"location\":\"kdmligovi\",\"tags\":{\"uruocbgo\":\"kpmloa\"},\"id\":\"rb\",\"name\":\"eoybfhjxakvvjgs\",\"type\":\"ordilmywwtkgkxny\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetAppFilesManager manager =
-            NetAppFilesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetAppFilesManager manager = NetAppFilesManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<CapacityPool> response =
-            manager.pools().list("n", "ntfpmvmemfnc", com.azure.core.util.Context.NONE);
+        PagedIterable<CapacityPool> response
+            = manager.pools().list("mmqtgqqqxhr", "xrxc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ypfcvlerchpqbmf", response.iterator().next().location());
-        Assertions.assertEquals("abwidfcxsspuun", response.iterator().next().tags().get("oxyhkxgqddrihpf"));
-        Assertions.assertEquals(1186256809003482579L, response.iterator().next().size());
-        Assertions.assertEquals(ServiceLevel.STANDARD_ZRS, response.iterator().next().serviceLevel());
-        Assertions.assertEquals(QosType.AUTO, response.iterator().next().qosType());
+        Assertions.assertEquals("kdmligovi", response.iterator().next().location());
+        Assertions.assertEquals("kpmloa", response.iterator().next().tags().get("uruocbgo"));
+        Assertions.assertEquals(8474916357734436058L, response.iterator().next().size());
+        Assertions.assertEquals(ServiceLevel.ULTRA, response.iterator().next().serviceLevel());
+        Assertions.assertEquals(QosType.MANUAL, response.iterator().next().qosType());
         Assertions.assertEquals(false, response.iterator().next().coolAccess());
         Assertions.assertEquals(EncryptionType.DOUBLE, response.iterator().next().encryptionType());
     }

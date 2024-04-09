@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Information about a hop between the source and the destination. */
+/**
+ * Information about a hop between the source and the destination.
+ */
 @Immutable
 public final class ConnectivityHop {
     /*
@@ -65,13 +67,15 @@ public final class ConnectivityHop {
     @JsonProperty(value = "issues", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectivityIssue> issues;
 
-    /** Creates an instance of ConnectivityHop class. */
+    /**
+     * Creates an instance of ConnectivityHop class.
+     */
     public ConnectivityHop() {
     }
 
     /**
      * Get the type property: The type of the hop.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -80,7 +84,7 @@ public final class ConnectivityHop {
 
     /**
      * Get the id property: The ID of the hop.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -89,7 +93,7 @@ public final class ConnectivityHop {
 
     /**
      * Get the address property: The IP address of the hop.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -98,7 +102,7 @@ public final class ConnectivityHop {
 
     /**
      * Get the resourceId property: The ID of the resource corresponding to this hop.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -107,7 +111,7 @@ public final class ConnectivityHop {
 
     /**
      * Get the nextHopIds property: List of next hop identifiers.
-     *
+     * 
      * @return the nextHopIds value.
      */
     public List<String> nextHopIds() {
@@ -116,7 +120,7 @@ public final class ConnectivityHop {
 
     /**
      * Get the previousHopIds property: List of previous hop identifiers.
-     *
+     * 
      * @return the previousHopIds value.
      */
     public List<String> previousHopIds() {
@@ -125,7 +129,7 @@ public final class ConnectivityHop {
 
     /**
      * Get the links property: List of hop links.
-     *
+     * 
      * @return the links value.
      */
     public List<HopLink> links() {
@@ -134,7 +138,7 @@ public final class ConnectivityHop {
 
     /**
      * Get the previousLinks property: List of previous hop links.
-     *
+     * 
      * @return the previousLinks value.
      */
     public List<HopLink> previousLinks() {
@@ -143,7 +147,7 @@ public final class ConnectivityHop {
 
     /**
      * Get the issues property: List of issues.
-     *
+     * 
      * @return the issues value.
      */
     public List<ConnectivityIssue> issues() {
@@ -152,7 +156,7 @@ public final class ConnectivityHop {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

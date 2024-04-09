@@ -7,6 +7,9 @@ package com.azure.resourcemanager.resourcemover.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resourcemover.models.TargetAvailabilityZone;
 import com.azure.resourcemanager.resourcemover.models.VirtualMachineResourceSettings;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class VirtualMachineResourceSettingsTests {
@@ -15,26 +18,47 @@ public final class VirtualMachineResourceSettingsTests {
         VirtualMachineResourceSettings model =
             BinaryData
                 .fromString(
-                    "{\"resourceType\":\"Microsoft.Compute/virtualMachines\",\"targetAvailabilityZone\":\"1\",\"targetVmSize\":\"sonpclhocohs\",\"targetAvailabilitySetId\":\"ev\",\"targetResourceName\":\"eggzfb\"}")
+                    "{\"resourceType\":\"Microsoft.Compute/virtualMachines\",\"tags\":{\"azyxoegukg\":\"ldngkpoci\",\"mrbpizcdrqj\":\"npiucgygevqznty\",\"yhxdeoejzicwi\":\"dpydn\"},\"userManagedIdentities\":[\"ttgzfbis\",\"cbkhajdeyeamdph\"],\"targetAvailabilityZone\":\"NA\",\"targetVmSize\":\"pbuxwgipwhon\",\"targetAvailabilitySetId\":\"kgshwa\",\"targetResourceName\":\"ixzbinjeputtmryw\",\"targetResourceGroupName\":\"zoqftiyqzrnkcqvy\"}")
                 .toObject(VirtualMachineResourceSettings.class);
-        Assertions.assertEquals("eggzfb", model.targetResourceName());
-        Assertions.assertEquals(TargetAvailabilityZone.ONE, model.targetAvailabilityZone());
-        Assertions.assertEquals("sonpclhocohs", model.targetVmSize());
-        Assertions.assertEquals("ev", model.targetAvailabilitySetId());
+        Assertions.assertEquals("ixzbinjeputtmryw", model.targetResourceName());
+        Assertions.assertEquals("zoqftiyqzrnkcqvy", model.targetResourceGroupName());
+        Assertions.assertEquals("ldngkpoci", model.tags().get("azyxoegukg"));
+        Assertions.assertEquals("ttgzfbis", model.userManagedIdentities().get(0));
+        Assertions.assertEquals(TargetAvailabilityZone.NA, model.targetAvailabilityZone());
+        Assertions.assertEquals("pbuxwgipwhon", model.targetVmSize());
+        Assertions.assertEquals("kgshwa", model.targetAvailabilitySetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachineResourceSettings model =
             new VirtualMachineResourceSettings()
-                .withTargetResourceName("eggzfb")
-                .withTargetAvailabilityZone(TargetAvailabilityZone.ONE)
-                .withTargetVmSize("sonpclhocohs")
-                .withTargetAvailabilitySetId("ev");
+                .withTargetResourceName("ixzbinjeputtmryw")
+                .withTargetResourceGroupName("zoqftiyqzrnkcqvy")
+                .withTags(mapOf("azyxoegukg", "ldngkpoci", "mrbpizcdrqj", "npiucgygevqznty", "yhxdeoejzicwi", "dpydn"))
+                .withUserManagedIdentities(Arrays.asList("ttgzfbis", "cbkhajdeyeamdph"))
+                .withTargetAvailabilityZone(TargetAvailabilityZone.NA)
+                .withTargetVmSize("pbuxwgipwhon")
+                .withTargetAvailabilitySetId("kgshwa");
         model = BinaryData.fromObject(model).toObject(VirtualMachineResourceSettings.class);
-        Assertions.assertEquals("eggzfb", model.targetResourceName());
-        Assertions.assertEquals(TargetAvailabilityZone.ONE, model.targetAvailabilityZone());
-        Assertions.assertEquals("sonpclhocohs", model.targetVmSize());
-        Assertions.assertEquals("ev", model.targetAvailabilitySetId());
+        Assertions.assertEquals("ixzbinjeputtmryw", model.targetResourceName());
+        Assertions.assertEquals("zoqftiyqzrnkcqvy", model.targetResourceGroupName());
+        Assertions.assertEquals("ldngkpoci", model.tags().get("azyxoegukg"));
+        Assertions.assertEquals("ttgzfbis", model.userManagedIdentities().get(0));
+        Assertions.assertEquals(TargetAvailabilityZone.NA, model.targetAvailabilityZone());
+        Assertions.assertEquals("pbuxwgipwhon", model.targetVmSize());
+        Assertions.assertEquals("kgshwa", model.targetAvailabilitySetId());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

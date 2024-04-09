@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Data Lake Analytics U-SQL activity. */
+/**
+ * Data Lake Analytics U-SQL activity.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DataLakeAnalyticsU-SQL")
 @Fluent
@@ -22,58 +24,90 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
      * Data Lake Analytics U-SQL activity properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
-    private DataLakeAnalyticsUsqlActivityTypeProperties innerTypeProperties =
-        new DataLakeAnalyticsUsqlActivityTypeProperties();
+    private DataLakeAnalyticsUsqlActivityTypeProperties innerTypeProperties
+        = new DataLakeAnalyticsUsqlActivityTypeProperties();
 
-    /** Creates an instance of DataLakeAnalyticsUsqlActivity class. */
+    /**
+     * Creates an instance of DataLakeAnalyticsUsqlActivity class.
+     */
     public DataLakeAnalyticsUsqlActivity() {
     }
 
     /**
      * Get the innerTypeProperties property: Data Lake Analytics U-SQL activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private DataLakeAnalyticsUsqlActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataLakeAnalyticsUsqlActivity withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataLakeAnalyticsUsqlActivity withPolicy(ActivityPolicy policy) {
         super.withPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataLakeAnalyticsUsqlActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataLakeAnalyticsUsqlActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataLakeAnalyticsUsqlActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataLakeAnalyticsUsqlActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataLakeAnalyticsUsqlActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataLakeAnalyticsUsqlActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -83,7 +117,7 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     /**
      * Get the scriptPath property: Case-sensitive path to folder that contains the U-SQL script. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the scriptPath value.
      */
     public Object scriptPath() {
@@ -93,7 +127,7 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     /**
      * Set the scriptPath property: Case-sensitive path to folder that contains the U-SQL script. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param scriptPath the scriptPath value to set.
      * @return the DataLakeAnalyticsUsqlActivity object itself.
      */
@@ -107,7 +141,7 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
 
     /**
      * Get the scriptLinkedService property: Script linked service reference.
-     *
+     * 
      * @return the scriptLinkedService value.
      */
     public LinkedServiceReference scriptLinkedService() {
@@ -116,7 +150,7 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
 
     /**
      * Set the scriptLinkedService property: Script linked service reference.
-     *
+     * 
      * @param scriptLinkedService the scriptLinkedService value to set.
      * @return the DataLakeAnalyticsUsqlActivity object itself.
      */
@@ -131,7 +165,7 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     /**
      * Get the degreeOfParallelism property: The maximum number of nodes simultaneously used to run the job. Default
      * value is 1. Type: integer (or Expression with resultType integer), minimum: 1.
-     *
+     * 
      * @return the degreeOfParallelism value.
      */
     public Object degreeOfParallelism() {
@@ -141,7 +175,7 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     /**
      * Set the degreeOfParallelism property: The maximum number of nodes simultaneously used to run the job. Default
      * value is 1. Type: integer (or Expression with resultType integer), minimum: 1.
-     *
+     * 
      * @param degreeOfParallelism the degreeOfParallelism value to set.
      * @return the DataLakeAnalyticsUsqlActivity object itself.
      */
@@ -157,7 +191,7 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
      * Get the priority property: Determines which jobs out of all that are queued should be selected to run first. The
      * lower the number, the higher the priority. Default value is 1000. Type: integer (or Expression with resultType
      * integer), minimum: 1.
-     *
+     * 
      * @return the priority value.
      */
     public Object priority() {
@@ -168,7 +202,7 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
      * Set the priority property: Determines which jobs out of all that are queued should be selected to run first. The
      * lower the number, the higher the priority. Default value is 1000. Type: integer (or Expression with resultType
      * integer), minimum: 1.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the DataLakeAnalyticsUsqlActivity object itself.
      */
@@ -182,7 +216,7 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
 
     /**
      * Get the parameters property: Parameters for U-SQL job request.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, Object> parameters() {
@@ -191,7 +225,7 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
 
     /**
      * Set the parameters property: Parameters for U-SQL job request.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DataLakeAnalyticsUsqlActivity object itself.
      */
@@ -206,7 +240,7 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     /**
      * Get the runtimeVersion property: Runtime version of the U-SQL engine to use. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the runtimeVersion value.
      */
     public Object runtimeVersion() {
@@ -216,7 +250,7 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     /**
      * Set the runtimeVersion property: Runtime version of the U-SQL engine to use. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param runtimeVersion the runtimeVersion value to set.
      * @return the DataLakeAnalyticsUsqlActivity object itself.
      */
@@ -231,7 +265,7 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     /**
      * Get the compilationMode property: Compilation mode of U-SQL. Must be one of these values : Semantic, Full and
      * SingleBox. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the compilationMode value.
      */
     public Object compilationMode() {
@@ -241,7 +275,7 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     /**
      * Set the compilationMode property: Compilation mode of U-SQL. Must be one of these values : Semantic, Full and
      * SingleBox. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param compilationMode the compilationMode value to set.
      * @return the DataLakeAnalyticsUsqlActivity object itself.
      */
@@ -255,17 +289,15 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model DataLakeAnalyticsUsqlActivity"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model DataLakeAnalyticsUsqlActivity"));
         } else {
             innerTypeProperties().validate();
         }

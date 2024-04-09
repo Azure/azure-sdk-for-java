@@ -8,34 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The validation scheme used to authenticate the client. Default value is SubjectMatchesAuthenticationName. */
+/**
+ * The validation scheme used to authenticate the client. Default value is SubjectMatchesAuthenticationName.
+ */
 public final class ClientCertificateValidationScheme extends ExpandableStringEnum<ClientCertificateValidationScheme> {
-    /** Static value SubjectMatchesAuthenticationName for ClientCertificateValidationScheme. */
-    public static final ClientCertificateValidationScheme SUBJECT_MATCHES_AUTHENTICATION_NAME =
-        fromString("SubjectMatchesAuthenticationName");
+    /**
+     * Static value SubjectMatchesAuthenticationName for ClientCertificateValidationScheme.
+     */
+    public static final ClientCertificateValidationScheme SUBJECT_MATCHES_AUTHENTICATION_NAME
+        = fromString("SubjectMatchesAuthenticationName");
 
-    /** Static value DnsMatchesAuthenticationName for ClientCertificateValidationScheme. */
-    public static final ClientCertificateValidationScheme DNS_MATCHES_AUTHENTICATION_NAME =
-        fromString("DnsMatchesAuthenticationName");
+    /**
+     * Static value DnsMatchesAuthenticationName for ClientCertificateValidationScheme.
+     */
+    public static final ClientCertificateValidationScheme DNS_MATCHES_AUTHENTICATION_NAME
+        = fromString("DnsMatchesAuthenticationName");
 
-    /** Static value UriMatchesAuthenticationName for ClientCertificateValidationScheme. */
-    public static final ClientCertificateValidationScheme URI_MATCHES_AUTHENTICATION_NAME =
-        fromString("UriMatchesAuthenticationName");
+    /**
+     * Static value UriMatchesAuthenticationName for ClientCertificateValidationScheme.
+     */
+    public static final ClientCertificateValidationScheme URI_MATCHES_AUTHENTICATION_NAME
+        = fromString("UriMatchesAuthenticationName");
 
-    /** Static value IpMatchesAuthenticationName for ClientCertificateValidationScheme. */
-    public static final ClientCertificateValidationScheme IP_MATCHES_AUTHENTICATION_NAME =
-        fromString("IpMatchesAuthenticationName");
+    /**
+     * Static value IpMatchesAuthenticationName for ClientCertificateValidationScheme.
+     */
+    public static final ClientCertificateValidationScheme IP_MATCHES_AUTHENTICATION_NAME
+        = fromString("IpMatchesAuthenticationName");
 
-    /** Static value EmailMatchesAuthenticationName for ClientCertificateValidationScheme. */
-    public static final ClientCertificateValidationScheme EMAIL_MATCHES_AUTHENTICATION_NAME =
-        fromString("EmailMatchesAuthenticationName");
+    /**
+     * Static value EmailMatchesAuthenticationName for ClientCertificateValidationScheme.
+     */
+    public static final ClientCertificateValidationScheme EMAIL_MATCHES_AUTHENTICATION_NAME
+        = fromString("EmailMatchesAuthenticationName");
 
-    /** Static value ThumbprintMatch for ClientCertificateValidationScheme. */
+    /**
+     * Static value ThumbprintMatch for ClientCertificateValidationScheme.
+     */
     public static final ClientCertificateValidationScheme THUMBPRINT_MATCH = fromString("ThumbprintMatch");
 
     /**
      * Creates a new instance of ClientCertificateValidationScheme value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -44,7 +58,7 @@ public final class ClientCertificateValidationScheme extends ExpandableStringEnu
 
     /**
      * Creates or finds a ClientCertificateValidationScheme from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ClientCertificateValidationScheme.
      */
@@ -55,7 +69,7 @@ public final class ClientCertificateValidationScheme extends ExpandableStringEnu
 
     /**
      * Gets known ClientCertificateValidationScheme values.
-     *
+     * 
      * @return known ClientCertificateValidationScheme values.
      */
     public static Collection<ClientCertificateValidationScheme> values() {

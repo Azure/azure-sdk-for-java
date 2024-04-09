@@ -58,6 +58,12 @@ public final class SourceControlConfigurationsDeleteMockTests {
 
         manager
             .sourceControlConfigurations()
-            .delete("duhpk", "kgymareqnajxqug", "hky", "ubeddg", "sofwqmzqalkrmnji", com.azure.core.util.Context.NONE);
+            .delete(
+                "mhairsbrgzdwmsw",
+                "ypqwdxggiccc",
+                "xqhuexm",
+                "ttlstvlzywemhz",
+                "ncsdtclusiyp",
+                com.azure.core.util.Context.NONE);
     }
 }

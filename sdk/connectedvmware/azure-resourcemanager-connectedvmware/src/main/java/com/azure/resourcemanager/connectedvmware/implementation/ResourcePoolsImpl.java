@@ -28,15 +28,6 @@ public final class ResourcePoolsImpl implements ResourcePools {
         this.serviceManager = serviceManager;
     }
 
-    public ResourcePool getByResourceGroup(String resourceGroupName, String resourcePoolName) {
-        ResourcePoolInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourcePoolName);
-        if (inner != null) {
-            return new ResourcePoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ResourcePool> getByResourceGroupWithResponse(
         String resourceGroupName, String resourcePoolName, Context context) {
         Response<ResourcePoolInner> inner =
@@ -52,8 +43,13 @@ public final class ResourcePoolsImpl implements ResourcePools {
         }
     }
 
-    public void delete(String resourceGroupName, String resourcePoolName, Boolean force) {
-        this.serviceClient().delete(resourceGroupName, resourcePoolName, force);
+    public ResourcePool getByResourceGroup(String resourceGroupName, String resourcePoolName) {
+        ResourcePoolInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourcePoolName);
+        if (inner != null) {
+            return new ResourcePoolImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public void delete(String resourceGroupName, String resourcePoolName) {

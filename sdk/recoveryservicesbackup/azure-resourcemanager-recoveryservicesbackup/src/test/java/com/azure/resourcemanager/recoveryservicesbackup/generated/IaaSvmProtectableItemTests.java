@@ -12,38 +12,30 @@ import org.junit.jupiter.api.Assertions;
 public final class IaaSvmProtectableItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IaaSvmProtectableItem model =
-            BinaryData
-                .fromString(
-                    "{\"protectableItemType\":\"IaaSVMProtectableItem\",\"virtualMachineId\":\"sxwef\",\"virtualMachineVersion\":\"ecb\",\"resourceGroup\":\"pwndyqlea\",\"backupManagementType\":\"klmtkhlowkx\",\"workloadType\":\"vbrdfjmzsyzfho\",\"friendlyName\":\"h\",\"protectionState\":\"ProtectionFailed\"}")
-                .toObject(IaaSvmProtectableItem.class);
-        Assertions.assertEquals("klmtkhlowkx", model.backupManagementType());
-        Assertions.assertEquals("vbrdfjmzsyzfho", model.workloadType());
-        Assertions.assertEquals("h", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
-        Assertions.assertEquals("sxwef", model.virtualMachineId());
-        Assertions.assertEquals("ecb", model.virtualMachineVersion());
-        Assertions.assertEquals("pwndyqlea", model.resourceGroup());
+        IaaSvmProtectableItem model = BinaryData.fromString(
+            "{\"protectableItemType\":\"IaaSVMProtectableItem\",\"virtualMachineId\":\"gv\",\"virtualMachineVersion\":\"pcrrk\",\"resourceGroup\":\"awjmjsmw\",\"backupManagementType\":\"kcdxfzzzw\",\"workloadType\":\"afitlhguynuchlg\",\"friendlyName\":\"txd\",\"protectionState\":\"Protected\"}")
+            .toObject(IaaSvmProtectableItem.class);
+        Assertions.assertEquals("kcdxfzzzw", model.backupManagementType());
+        Assertions.assertEquals("afitlhguynuchlg", model.workloadType());
+        Assertions.assertEquals("txd", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
+        Assertions.assertEquals("gv", model.virtualMachineId());
+        Assertions.assertEquals("pcrrk", model.virtualMachineVersion());
+        Assertions.assertEquals("awjmjsmw", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IaaSvmProtectableItem model =
-            new IaaSvmProtectableItem()
-                .withBackupManagementType("klmtkhlowkx")
-                .withWorkloadType("vbrdfjmzsyzfho")
-                .withFriendlyName("h")
-                .withProtectionState(ProtectionStatus.PROTECTION_FAILED)
-                .withVirtualMachineId("sxwef")
-                .withVirtualMachineVersion("ecb")
-                .withResourceGroup("pwndyqlea");
+        IaaSvmProtectableItem model = new IaaSvmProtectableItem().withBackupManagementType("kcdxfzzzw")
+            .withWorkloadType("afitlhguynuchlg").withFriendlyName("txd").withProtectionState(ProtectionStatus.PROTECTED)
+            .withVirtualMachineId("gv").withVirtualMachineVersion("pcrrk").withResourceGroup("awjmjsmw");
         model = BinaryData.fromObject(model).toObject(IaaSvmProtectableItem.class);
-        Assertions.assertEquals("klmtkhlowkx", model.backupManagementType());
-        Assertions.assertEquals("vbrdfjmzsyzfho", model.workloadType());
-        Assertions.assertEquals("h", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
-        Assertions.assertEquals("sxwef", model.virtualMachineId());
-        Assertions.assertEquals("ecb", model.virtualMachineVersion());
-        Assertions.assertEquals("pwndyqlea", model.resourceGroup());
+        Assertions.assertEquals("kcdxfzzzw", model.backupManagementType());
+        Assertions.assertEquals("afitlhguynuchlg", model.workloadType());
+        Assertions.assertEquals("txd", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
+        Assertions.assertEquals("gv", model.virtualMachineId());
+        Assertions.assertEquals("pcrrk", model.virtualMachineVersion());
+        Assertions.assertEquals("awjmjsmw", model.resourceGroup());
     }
 }

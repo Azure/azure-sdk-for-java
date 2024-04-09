@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Panorama Config. */
+/**
+ * Panorama Config.
+ */
 @Fluent
 public final class PanoramaConfig {
     /*
@@ -60,14 +62,16 @@ public final class PanoramaConfig {
     @JsonProperty(value = "hostName", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
-    /** Creates an instance of PanoramaConfig class. */
+    /**
+     * Creates an instance of PanoramaConfig class.
+     */
     public PanoramaConfig() {
     }
 
     /**
      * Get the configString property: Base64 encoded string representing Panorama parameters to be used by Firewall to
      * connect to Panorama. This string is generated via azure plugin in Panorama.
-     *
+     * 
      * @return the configString value.
      */
     public String configString() {
@@ -77,7 +81,7 @@ public final class PanoramaConfig {
     /**
      * Set the configString property: Base64 encoded string representing Panorama parameters to be used by Firewall to
      * connect to Panorama. This string is generated via azure plugin in Panorama.
-     *
+     * 
      * @param configString the configString value to set.
      * @return the PanoramaConfig object itself.
      */
@@ -88,7 +92,7 @@ public final class PanoramaConfig {
 
     /**
      * Get the vmAuthKey property: VM auth key for panorama connectivity.
-     *
+     * 
      * @return the vmAuthKey value.
      */
     public String vmAuthKey() {
@@ -97,7 +101,7 @@ public final class PanoramaConfig {
 
     /**
      * Get the panoramaServer property: Primary Panorama Server IP address value in dotted format for IPv4.
-     *
+     * 
      * @return the panoramaServer value.
      */
     public String panoramaServer() {
@@ -106,7 +110,7 @@ public final class PanoramaConfig {
 
     /**
      * Get the panoramaServer2 property: Secondary Panorama Server IP address value in dotted format for IPv4.
-     *
+     * 
      * @return the panoramaServer2 value.
      */
     public String panoramaServer2() {
@@ -115,7 +119,7 @@ public final class PanoramaConfig {
 
     /**
      * Get the dgName property: Panorama Device Group to join.
-     *
+     * 
      * @return the dgName value.
      */
     public String dgName() {
@@ -124,7 +128,7 @@ public final class PanoramaConfig {
 
     /**
      * Get the tplName property: Panorama Template Stack to join - (Once configured we can not edit the value).
-     *
+     * 
      * @return the tplName value.
      */
     public String tplName() {
@@ -133,7 +137,7 @@ public final class PanoramaConfig {
 
     /**
      * Get the cgName property: Panorama Collector Group to join - (Once configured we can not edit the value).
-     *
+     * 
      * @return the cgName value.
      */
     public String cgName() {
@@ -142,7 +146,7 @@ public final class PanoramaConfig {
 
     /**
      * Get the hostname property: Resource name(may be unique) for PN admin.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -151,14 +155,13 @@ public final class PanoramaConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (configString() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property configString in model PanoramaConfig"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property configString in model PanoramaConfig"));
         }
     }
 

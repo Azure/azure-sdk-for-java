@@ -29,7 +29,7 @@ public class TriggerCrudTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT * 10)
     public void createTrigger() throws Exception {
 
         // create a trigger
@@ -52,7 +52,7 @@ public class TriggerCrudTest extends TestSuiteBase {
         validateSuccess(createObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readTrigger() throws Exception {
         // create a trigger
         CosmosTriggerProperties trigger = new CosmosTriggerProperties(
@@ -79,7 +79,7 @@ public class TriggerCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void deleteTrigger() throws Exception {
         // create a trigger
         CosmosTriggerProperties trigger = new CosmosTriggerProperties(
@@ -102,13 +102,13 @@ public class TriggerCrudTest extends TestSuiteBase {
         validateSuccess(deleteObservable, validator);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_TriggerCrudTest() {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }

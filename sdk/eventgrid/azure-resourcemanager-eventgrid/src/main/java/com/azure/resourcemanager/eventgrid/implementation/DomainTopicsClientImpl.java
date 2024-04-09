@@ -37,108 +37,92 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DomainTopicsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DomainTopicsClient.
+ */
 public final class DomainTopicsClientImpl implements DomainTopicsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DomainTopicsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EventGridManagementClientImpl client;
 
     /**
      * Initializes an instance of DomainTopicsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DomainTopicsClientImpl(EventGridManagementClientImpl client) {
-        this.service =
-            RestProxy.create(DomainTopicsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DomainTopicsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for EventGridManagementClientDomainTopics to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for EventGridManagementClientDomainTopics to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
     public interface DomainTopicsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{domainTopicName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{domainTopicName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DomainTopicInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DomainTopicInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("domainName") String domainName,
-            @PathParam("domainTopicName") String domainTopicName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
+            @PathParam("domainTopicName") String domainTopicName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{domainTopicName}")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
+            @PathParam("domainTopicName") String domainTopicName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{domainTopicName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
+            @PathParam("domainTopicName") String domainTopicName, @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{domainTopicName}")
-        @ExpectedResponses({201})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DomainTopicsListResult>> listByDomain(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("domainName") String domainName,
-            @PathParam("domainTopicName") String domainTopicName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{domainTopicName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("domainName") String domainName,
-            @PathParam("domainTopicName") String domainTopicName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DomainTopicsListResult>> listByDomain(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("domainName") String domainName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DomainTopicsListResult>> listByDomainNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a domain topic.
-     *
-     * <p>Get properties of a domain topic.
-     *
+     * 
+     * Get properties of a domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the topic.
@@ -148,19 +132,15 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return properties of a domain topic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DomainTopicInner>> getWithResponseAsync(
-        String resourceGroupName, String domainName, String domainTopicName) {
+    private Mono<Response<DomainTopicInner>> getWithResponseAsync(String resourceGroupName, String domainName,
+        String domainTopicName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -175,26 +155,16 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            domainName,
-                            domainTopicName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, domainName, domainTopicName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a domain topic.
-     *
-     * <p>Get properties of a domain topic.
-     *
+     * 
+     * Get properties of a domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the topic.
@@ -205,19 +175,15 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return properties of a domain topic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DomainTopicInner>> getWithResponseAsync(
-        String resourceGroupName, String domainName, String domainTopicName, Context context) {
+    private Mono<Response<DomainTopicInner>> getWithResponseAsync(String resourceGroupName, String domainName,
+        String domainTopicName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -232,23 +198,15 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                domainName,
-                domainTopicName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, domainName,
+            domainTopicName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get a domain topic.
-     *
-     * <p>Get properties of a domain topic.
-     *
+     * 
+     * Get properties of a domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the topic.
@@ -265,9 +223,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
 
     /**
      * Get a domain topic.
-     *
-     * <p>Get properties of a domain topic.
-     *
+     * 
+     * Get properties of a domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the topic.
@@ -278,16 +236,16 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return properties of a domain topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DomainTopicInner> getWithResponse(
-        String resourceGroupName, String domainName, String domainTopicName, Context context) {
+    public Response<DomainTopicInner> getWithResponse(String resourceGroupName, String domainName,
+        String domainTopicName, Context context) {
         return getWithResponseAsync(resourceGroupName, domainName, domainTopicName, context).block();
     }
 
     /**
      * Get a domain topic.
-     *
-     * <p>Get properties of a domain topic.
-     *
+     * 
+     * Get properties of a domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the topic.
@@ -303,9 +261,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
 
     /**
      * Create or update a domain topic.
-     *
-     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -315,19 +273,15 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return domain Topic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String domainName, String domainTopicName) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String domainName, String domainTopicName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -342,26 +296,16 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            domainName,
-                            domainTopicName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, domainName, domainTopicName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a domain topic.
-     *
-     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -372,19 +316,15 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return domain Topic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String domainName, String domainTopicName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String domainName, String domainTopicName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -399,23 +339,15 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                domainName,
-                domainTopicName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            domainName, domainTopicName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Create or update a domain topic.
-     *
-     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -425,25 +357,19 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return the {@link PollerFlux} for polling of domain Topic.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DomainTopicInner>, DomainTopicInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String domainName, String domainTopicName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, domainName, domainTopicName);
-        return this
-            .client
-            .<DomainTopicInner, DomainTopicInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DomainTopicInner.class,
-                DomainTopicInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<DomainTopicInner>, DomainTopicInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String domainName, String domainTopicName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, domainName, domainTopicName);
+        return this.client.<DomainTopicInner, DomainTopicInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DomainTopicInner.class, DomainTopicInner.class, this.client.getContext());
     }
 
     /**
      * Create or update a domain topic.
-     *
-     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -454,22 +380,20 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return the {@link PollerFlux} for polling of domain Topic.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DomainTopicInner>, DomainTopicInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String domainName, String domainTopicName, Context context) {
+    private PollerFlux<PollResult<DomainTopicInner>, DomainTopicInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String domainName, String domainTopicName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, domainName, domainTopicName, context);
-        return this
-            .client
-            .<DomainTopicInner, DomainTopicInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DomainTopicInner.class, DomainTopicInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, domainName, domainTopicName, context);
+        return this.client.<DomainTopicInner, DomainTopicInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DomainTopicInner.class, DomainTopicInner.class, context);
     }
 
     /**
      * Create or update a domain topic.
-     *
-     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -479,16 +403,16 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return the {@link SyncPoller} for polling of domain Topic.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DomainTopicInner>, DomainTopicInner> beginCreateOrUpdate(
-        String resourceGroupName, String domainName, String domainTopicName) {
+    public SyncPoller<PollResult<DomainTopicInner>, DomainTopicInner> beginCreateOrUpdate(String resourceGroupName,
+        String domainName, String domainTopicName) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, domainName, domainTopicName).getSyncPoller();
     }
 
     /**
      * Create or update a domain topic.
-     *
-     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -499,16 +423,16 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return the {@link SyncPoller} for polling of domain Topic.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DomainTopicInner>, DomainTopicInner> beginCreateOrUpdate(
-        String resourceGroupName, String domainName, String domainTopicName, Context context) {
+    public SyncPoller<PollResult<DomainTopicInner>, DomainTopicInner> beginCreateOrUpdate(String resourceGroupName,
+        String domainName, String domainTopicName, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, domainName, domainTopicName, context).getSyncPoller();
     }
 
     /**
      * Create or update a domain topic.
-     *
-     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -518,18 +442,17 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return domain Topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DomainTopicInner> createOrUpdateAsync(
-        String resourceGroupName, String domainName, String domainTopicName) {
-        return beginCreateOrUpdateAsync(resourceGroupName, domainName, domainTopicName)
-            .last()
+    private Mono<DomainTopicInner> createOrUpdateAsync(String resourceGroupName, String domainName,
+        String domainTopicName) {
+        return beginCreateOrUpdateAsync(resourceGroupName, domainName, domainTopicName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a domain topic.
-     *
-     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -540,18 +463,17 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return domain Topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DomainTopicInner> createOrUpdateAsync(
-        String resourceGroupName, String domainName, String domainTopicName, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, domainName, domainTopicName, context)
-            .last()
+    private Mono<DomainTopicInner> createOrUpdateAsync(String resourceGroupName, String domainName,
+        String domainTopicName, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, domainName, domainTopicName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a domain topic.
-     *
-     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -567,9 +489,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
 
     /**
      * Create or update a domain topic.
-     *
-     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -580,16 +502,16 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return domain Topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainTopicInner createOrUpdate(
-        String resourceGroupName, String domainName, String domainTopicName, Context context) {
+    public DomainTopicInner createOrUpdate(String resourceGroupName, String domainName, String domainTopicName,
+        Context context) {
         return createOrUpdateAsync(resourceGroupName, domainName, domainTopicName, context).block();
     }
 
     /**
      * Delete a domain topic.
-     *
-     * <p>Delete existing domain topic.
-     *
+     * 
+     * Delete existing domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -599,19 +521,15 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String domainName, String domainTopicName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String domainName,
+        String domainTopicName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -625,25 +543,16 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
                 .error(new IllegalArgumentException("Parameter domainTopicName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            domainName,
-                            domainTopicName,
-                            this.client.getApiVersion(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, domainName, domainTopicName, this.client.getApiVersion(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a domain topic.
-     *
-     * <p>Delete existing domain topic.
-     *
+     * 
+     * Delete existing domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -654,19 +563,15 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String domainName, String domainTopicName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String domainName,
+        String domainTopicName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -680,22 +585,15 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
                 .error(new IllegalArgumentException("Parameter domainTopicName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                domainName,
-                domainTopicName,
-                this.client.getApiVersion(),
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, domainName,
+            domainTopicName, this.client.getApiVersion(), context);
     }
 
     /**
      * Delete a domain topic.
-     *
-     * <p>Delete existing domain topic.
-     *
+     * 
+     * Delete existing domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -705,20 +603,18 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String domainName, String domainTopicName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String domainName,
+        String domainTopicName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, domainName, domainTopicName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a domain topic.
-     *
-     * <p>Delete existing domain topic.
-     *
+     * 
+     * Delete existing domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -729,21 +625,20 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String domainName, String domainTopicName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String domainName,
+        String domainTopicName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, domainName, domainTopicName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, domainName, domainTopicName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a domain topic.
-     *
-     * <p>Delete existing domain topic.
-     *
+     * 
+     * Delete existing domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -753,16 +648,16 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String domainName, String domainTopicName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String domainName,
+        String domainTopicName) {
         return this.beginDeleteAsync(resourceGroupName, domainName, domainTopicName).getSyncPoller();
     }
 
     /**
      * Delete a domain topic.
-     *
-     * <p>Delete existing domain topic.
-     *
+     * 
+     * Delete existing domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -773,16 +668,16 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String domainName, String domainTopicName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String domainName,
+        String domainTopicName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, domainName, domainTopicName, context).getSyncPoller();
     }
 
     /**
      * Delete a domain topic.
-     *
-     * <p>Delete existing domain topic.
-     *
+     * 
+     * Delete existing domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -793,16 +688,15 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String domainName, String domainTopicName) {
-        return beginDeleteAsync(resourceGroupName, domainName, domainTopicName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, domainName, domainTopicName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a domain topic.
-     *
-     * <p>Delete existing domain topic.
-     *
+     * 
+     * Delete existing domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -813,18 +707,17 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String domainName, String domainTopicName, Context context) {
-        return beginDeleteAsync(resourceGroupName, domainName, domainTopicName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String domainName, String domainTopicName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, domainName, domainTopicName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a domain topic.
-     *
-     * <p>Delete existing domain topic.
-     *
+     * 
+     * Delete existing domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -839,9 +732,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
 
     /**
      * Delete a domain topic.
-     *
-     * <p>Delete existing domain topic.
-     *
+     * 
+     * Delete existing domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -857,39 +750,34 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
 
     /**
      * List domain topics.
-     *
-     * <p>List all the topics in a domain.
-     *
+     * 
+     * List all the topics in a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Domain Topics operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DomainTopicInner>> listByDomainSinglePageAsync(
-        String resourceGroupName, String domainName, String filter, Integer top) {
+    private Mono<PagedResponse<DomainTopicInner>> listByDomainSinglePageAsync(String resourceGroupName,
+        String domainName, String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -900,67 +788,44 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDomain(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            domainName,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<DomainTopicInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByDomain(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, domainName, this.client.getApiVersion(), filter, top, accept, context))
+            .<PagedResponse<DomainTopicInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List domain topics.
-     *
-     * <p>List all the topics in a domain.
-     *
+     * 
+     * List all the topics in a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Domain Topics operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DomainTopicInner>> listByDomainSinglePageAsync(
-        String resourceGroupName, String domainName, String filter, Integer top, Context context) {
+    private Mono<PagedResponse<DomainTopicInner>> listByDomainSinglePageAsync(String resourceGroupName,
+        String domainName, String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -972,60 +837,43 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDomain(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                domainName,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByDomain(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, domainName,
+                this.client.getApiVersion(), filter, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List domain topics.
-     *
-     * <p>List all the topics in a domain.
-     *
+     * 
+     * List all the topics in a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Domain Topics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DomainTopicInner> listByDomainAsync(
-        String resourceGroupName, String domainName, String filter, Integer top) {
-        return new PagedFlux<>(
-            () -> listByDomainSinglePageAsync(resourceGroupName, domainName, filter, top),
+    private PagedFlux<DomainTopicInner> listByDomainAsync(String resourceGroupName, String domainName, String filter,
+        Integer top) {
+        return new PagedFlux<>(() -> listByDomainSinglePageAsync(resourceGroupName, domainName, filter, top),
             nextLink -> listByDomainNextSinglePageAsync(nextLink));
     }
 
     /**
      * List domain topics.
-     *
-     * <p>List all the topics in a domain.
-     *
+     * 
+     * List all the topics in a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1037,26 +885,24 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     private PagedFlux<DomainTopicInner> listByDomainAsync(String resourceGroupName, String domainName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listByDomainSinglePageAsync(resourceGroupName, domainName, filter, top),
+        return new PagedFlux<>(() -> listByDomainSinglePageAsync(resourceGroupName, domainName, filter, top),
             nextLink -> listByDomainNextSinglePageAsync(nextLink));
     }
 
     /**
      * List domain topics.
-     *
-     * <p>List all the topics in a domain.
-     *
+     * 
+     * List all the topics in a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1064,18 +910,17 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return result of the List Domain Topics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DomainTopicInner> listByDomainAsync(
-        String resourceGroupName, String domainName, String filter, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByDomainSinglePageAsync(resourceGroupName, domainName, filter, top, context),
+    private PagedFlux<DomainTopicInner> listByDomainAsync(String resourceGroupName, String domainName, String filter,
+        Integer top, Context context) {
+        return new PagedFlux<>(() -> listByDomainSinglePageAsync(resourceGroupName, domainName, filter, top, context),
             nextLink -> listByDomainNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List domain topics.
-     *
-     * <p>List all the topics in a domain.
-     *
+     * 
+     * List all the topics in a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1092,19 +937,18 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
 
     /**
      * List domain topics.
-     *
-     * <p>List all the topics in a domain.
-     *
+     * 
+     * List all the topics in a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1112,21 +956,22 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @return result of the List Domain Topics operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DomainTopicInner> listByDomain(
-        String resourceGroupName, String domainName, String filter, Integer top, Context context) {
+    public PagedIterable<DomainTopicInner> listByDomain(String resourceGroupName, String domainName, String filter,
+        Integer top, Context context) {
         return new PagedIterable<>(listByDomainAsync(resourceGroupName, domainName, filter, top, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Domain Topics operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DomainTopicInner>> listByDomainNextSinglePageAsync(String nextLink) {
@@ -1134,37 +979,29 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDomainNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DomainTopicInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DomainTopicInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Domain Topics operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DomainTopicInner>> listByDomainNextSinglePageAsync(String nextLink, Context context) {
@@ -1172,23 +1009,13 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByDomainNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByDomainNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

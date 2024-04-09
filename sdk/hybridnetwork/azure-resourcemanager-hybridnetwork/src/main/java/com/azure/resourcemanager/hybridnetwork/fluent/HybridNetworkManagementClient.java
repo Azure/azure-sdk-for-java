@@ -7,110 +7,147 @@ package com.azure.resourcemanager.hybridnetwork.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for HybridNetworkManagementClient class. */
+/**
+ * The interface for HybridNetworkManagementClient class.
+ */
 public interface HybridNetworkManagementClient {
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the ConfigurationGroupSchemasClient object to access its operations.
+     * 
+     * @return the ConfigurationGroupSchemasClient object.
+     */
+    ConfigurationGroupSchemasClient getConfigurationGroupSchemas();
+
+    /**
+     * Gets the ConfigurationGroupValuesClient object to access its operations.
+     * 
+     * @return the ConfigurationGroupValuesClient object.
+     */
+    ConfigurationGroupValuesClient getConfigurationGroupValues();
+
+    /**
      * Gets the NetworkFunctionsClient object to access its operations.
-     *
+     * 
      * @return the NetworkFunctionsClient object.
      */
     NetworkFunctionsClient getNetworkFunctions();
 
     /**
-     * Gets the DevicesClient object to access its operations.
-     *
-     * @return the DevicesClient object.
+     * Gets the ComponentsClient object to access its operations.
+     * 
+     * @return the ComponentsClient object.
      */
-    DevicesClient getDevices();
+    ComponentsClient getComponents();
+
+    /**
+     * Gets the NetworkFunctionDefinitionGroupsClient object to access its operations.
+     * 
+     * @return the NetworkFunctionDefinitionGroupsClient object.
+     */
+    NetworkFunctionDefinitionGroupsClient getNetworkFunctionDefinitionGroups();
+
+    /**
+     * Gets the NetworkFunctionDefinitionVersionsClient object to access its operations.
+     * 
+     * @return the NetworkFunctionDefinitionVersionsClient object.
+     */
+    NetworkFunctionDefinitionVersionsClient getNetworkFunctionDefinitionVersions();
+
+    /**
+     * Gets the NetworkServiceDesignGroupsClient object to access its operations.
+     * 
+     * @return the NetworkServiceDesignGroupsClient object.
+     */
+    NetworkServiceDesignGroupsClient getNetworkServiceDesignGroups();
+
+    /**
+     * Gets the NetworkServiceDesignVersionsClient object to access its operations.
+     * 
+     * @return the NetworkServiceDesignVersionsClient object.
+     */
+    NetworkServiceDesignVersionsClient getNetworkServiceDesignVersions();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
 
     /**
-     * Gets the VendorsClient object to access its operations.
-     *
-     * @return the VendorsClient object.
+     * Gets the PublishersClient object to access its operations.
+     * 
+     * @return the PublishersClient object.
      */
-    VendorsClient getVendors();
+    PublishersClient getPublishers();
 
     /**
-     * Gets the VendorSkusClient object to access its operations.
-     *
-     * @return the VendorSkusClient object.
+     * Gets the ArtifactStoresClient object to access its operations.
+     * 
+     * @return the ArtifactStoresClient object.
      */
-    VendorSkusClient getVendorSkus();
+    ArtifactStoresClient getArtifactStores();
 
     /**
-     * Gets the VendorSkuPreviewsClient object to access its operations.
-     *
-     * @return the VendorSkuPreviewsClient object.
+     * Gets the ArtifactManifestsClient object to access its operations.
+     * 
+     * @return the ArtifactManifestsClient object.
      */
-    VendorSkuPreviewsClient getVendorSkuPreviews();
+    ArtifactManifestsClient getArtifactManifests();
 
     /**
-     * Gets the NetworkFunctionVendorsClient object to access its operations.
-     *
-     * @return the NetworkFunctionVendorsClient object.
+     * Gets the ProxyArtifactsClient object to access its operations.
+     * 
+     * @return the ProxyArtifactsClient object.
      */
-    NetworkFunctionVendorsClient getNetworkFunctionVendors();
+    ProxyArtifactsClient getProxyArtifacts();
 
     /**
-     * Gets the NetworkFunctionVendorSkusClient object to access its operations.
-     *
-     * @return the NetworkFunctionVendorSkusClient object.
+     * Gets the SitesClient object to access its operations.
+     * 
+     * @return the SitesClient object.
      */
-    NetworkFunctionVendorSkusClient getNetworkFunctionVendorSkus();
+    SitesClient getSites();
 
     /**
-     * Gets the VendorNetworkFunctionsClient object to access its operations.
-     *
-     * @return the VendorNetworkFunctionsClient object.
+     * Gets the SiteNetworkServicesClient object to access its operations.
+     * 
+     * @return the SiteNetworkServicesClient object.
      */
-    VendorNetworkFunctionsClient getVendorNetworkFunctions();
-
-    /**
-     * Gets the RoleInstancesClient object to access its operations.
-     *
-     * @return the RoleInstancesClient object.
-     */
-    RoleInstancesClient getRoleInstances();
+    SiteNetworkServicesClient getSiteNetworkServices();
 }

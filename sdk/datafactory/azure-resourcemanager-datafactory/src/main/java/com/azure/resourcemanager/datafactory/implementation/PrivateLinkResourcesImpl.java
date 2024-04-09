@@ -20,22 +20,18 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    public PrivateLinkResourcesImpl(
-        PrivateLinkResourcesClient innerClient,
+    public PrivateLinkResourcesImpl(PrivateLinkResourcesClient innerClient,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<PrivateLinkResourcesWrapper> getWithResponse(
-        String resourceGroupName, String factoryName, Context context) {
-        Response<PrivateLinkResourcesWrapperInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, factoryName, context);
+    public Response<PrivateLinkResourcesWrapper> getWithResponse(String resourceGroupName, String factoryName,
+        Context context) {
+        Response<PrivateLinkResourcesWrapperInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, factoryName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrivateLinkResourcesWrapperImpl(inner.getValue(), this.manager()));
         } else {
             return null;

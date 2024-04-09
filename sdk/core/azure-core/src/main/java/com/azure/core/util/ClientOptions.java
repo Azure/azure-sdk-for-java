@@ -15,8 +15,8 @@ import java.util.Collections;
 @Fluent
 public class ClientOptions {
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
-    private static final String INVALID_APPLICATION_ID_LENGTH = "'applicationId' length cannot be greater than "
-        + MAX_APPLICATION_ID_LENGTH;
+    private static final String INVALID_APPLICATION_ID_LENGTH
+        = "'applicationId' length cannot be greater than " + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
 
     // ClientOptions is a commonly used class, use a static logger.
@@ -135,7 +135,7 @@ public class ClientOptions {
 
     /**
      * Gets {@link MetricsOptions}
-     * @return The {@link MetricsOptions} instance, if metric options weren't set previously, {@code null} is returned.
+     * @return The {@link MetricsOptions} instance, if metrics options weren't set previously, {@code null} is returned.
      */
     public MetricsOptions getMetricsOptions() {
         return metricsOptions;
@@ -154,8 +154,8 @@ public class ClientOptions {
     }
 
     /**
-     * Gets {@link MetricsOptions}
-     * @return The {@link MetricsOptions} instance, if metric options weren't set previously, {@code null} is returned.
+     * Gets {@link TracingOptions}
+     * @return The {@link TracingOptions} instance, if tracing options weren't set previously, {@code null} is returned.
      */
     public TracingOptions getTracingOptions() {
         return tracingOptions;

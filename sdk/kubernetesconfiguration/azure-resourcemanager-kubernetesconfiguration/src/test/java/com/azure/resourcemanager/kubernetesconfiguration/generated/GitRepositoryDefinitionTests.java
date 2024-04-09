@@ -15,49 +15,49 @@ public final class GitRepositoryDefinitionTests {
         GitRepositoryDefinition model =
             BinaryData
                 .fromString(
-                    "{\"url\":\"utduqktapspwgcu\",\"timeoutInSeconds\":5235173509152670930,\"syncIntervalInSeconds\":7020809285560485144,\"repositoryRef\":{\"branch\":\"vqwhbmdgbbjfd\",\"tag\":\"mbmbexppbh\",\"semver\":\"qrolfpf\",\"commit\":\"algbquxigjyjg\"},\"sshKnownHosts\":\"aoyfhrtxilnerkuj\",\"httpsUser\":\"vlejuvfqa\",\"httpsCACert\":\"lyxwjkcprbnwbx\",\"localAuthRef\":\"vtb\"}")
+                    "{\"url\":\"cpc\",\"timeoutInSeconds\":207808974598598894,\"syncIntervalInSeconds\":3513543759245297355,\"repositoryRef\":{\"branch\":\"ljjgpbtoqcjmkl\",\"tag\":\"vbqid\",\"semver\":\"ajzyul\",\"commit\":\"u\"},\"sshKnownHosts\":\"krlkhbzhfepg\",\"httpsUser\":\"qex\",\"httpsCACert\":\"ocxscpaierhhbcs\",\"localAuthRef\":\"ummajtjaod\"}")
                 .toObject(GitRepositoryDefinition.class);
-        Assertions.assertEquals("utduqktapspwgcu", model.url());
-        Assertions.assertEquals(5235173509152670930L, model.timeoutInSeconds());
-        Assertions.assertEquals(7020809285560485144L, model.syncIntervalInSeconds());
-        Assertions.assertEquals("vqwhbmdgbbjfd", model.repositoryRef().branch());
-        Assertions.assertEquals("mbmbexppbh", model.repositoryRef().tag());
-        Assertions.assertEquals("qrolfpf", model.repositoryRef().semver());
-        Assertions.assertEquals("algbquxigjyjg", model.repositoryRef().commit());
-        Assertions.assertEquals("aoyfhrtxilnerkuj", model.sshKnownHosts());
-        Assertions.assertEquals("vlejuvfqa", model.httpsUser());
-        Assertions.assertEquals("lyxwjkcprbnwbx", model.httpsCACert());
-        Assertions.assertEquals("vtb", model.localAuthRef());
+        Assertions.assertEquals("cpc", model.url());
+        Assertions.assertEquals(207808974598598894L, model.timeoutInSeconds());
+        Assertions.assertEquals(3513543759245297355L, model.syncIntervalInSeconds());
+        Assertions.assertEquals("ljjgpbtoqcjmkl", model.repositoryRef().branch());
+        Assertions.assertEquals("vbqid", model.repositoryRef().tag());
+        Assertions.assertEquals("ajzyul", model.repositoryRef().semver());
+        Assertions.assertEquals("u", model.repositoryRef().commit());
+        Assertions.assertEquals("krlkhbzhfepg", model.sshKnownHosts());
+        Assertions.assertEquals("qex", model.httpsUser());
+        Assertions.assertEquals("ocxscpaierhhbcs", model.httpsCACert());
+        Assertions.assertEquals("ummajtjaod", model.localAuthRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GitRepositoryDefinition model =
             new GitRepositoryDefinition()
-                .withUrl("utduqktapspwgcu")
-                .withTimeoutInSeconds(5235173509152670930L)
-                .withSyncIntervalInSeconds(7020809285560485144L)
+                .withUrl("cpc")
+                .withTimeoutInSeconds(207808974598598894L)
+                .withSyncIntervalInSeconds(3513543759245297355L)
                 .withRepositoryRef(
                     new RepositoryRefDefinition()
-                        .withBranch("vqwhbmdgbbjfd")
-                        .withTag("mbmbexppbh")
-                        .withSemver("qrolfpf")
-                        .withCommit("algbquxigjyjg"))
-                .withSshKnownHosts("aoyfhrtxilnerkuj")
-                .withHttpsUser("vlejuvfqa")
-                .withHttpsCACert("lyxwjkcprbnwbx")
-                .withLocalAuthRef("vtb");
+                        .withBranch("ljjgpbtoqcjmkl")
+                        .withTag("vbqid")
+                        .withSemver("ajzyul")
+                        .withCommit("u"))
+                .withSshKnownHosts("krlkhbzhfepg")
+                .withHttpsUser("qex")
+                .withHttpsCACert("ocxscpaierhhbcs")
+                .withLocalAuthRef("ummajtjaod");
         model = BinaryData.fromObject(model).toObject(GitRepositoryDefinition.class);
-        Assertions.assertEquals("utduqktapspwgcu", model.url());
-        Assertions.assertEquals(5235173509152670930L, model.timeoutInSeconds());
-        Assertions.assertEquals(7020809285560485144L, model.syncIntervalInSeconds());
-        Assertions.assertEquals("vqwhbmdgbbjfd", model.repositoryRef().branch());
-        Assertions.assertEquals("mbmbexppbh", model.repositoryRef().tag());
-        Assertions.assertEquals("qrolfpf", model.repositoryRef().semver());
-        Assertions.assertEquals("algbquxigjyjg", model.repositoryRef().commit());
-        Assertions.assertEquals("aoyfhrtxilnerkuj", model.sshKnownHosts());
-        Assertions.assertEquals("vlejuvfqa", model.httpsUser());
-        Assertions.assertEquals("lyxwjkcprbnwbx", model.httpsCACert());
-        Assertions.assertEquals("vtb", model.localAuthRef());
+        Assertions.assertEquals("cpc", model.url());
+        Assertions.assertEquals(207808974598598894L, model.timeoutInSeconds());
+        Assertions.assertEquals(3513543759245297355L, model.syncIntervalInSeconds());
+        Assertions.assertEquals("ljjgpbtoqcjmkl", model.repositoryRef().branch());
+        Assertions.assertEquals("vbqid", model.repositoryRef().tag());
+        Assertions.assertEquals("ajzyul", model.repositoryRef().semver());
+        Assertions.assertEquals("u", model.repositoryRef().commit());
+        Assertions.assertEquals("krlkhbzhfepg", model.sshKnownHosts());
+        Assertions.assertEquals("qex", model.httpsUser());
+        Assertions.assertEquals("ocxscpaierhhbcs", model.httpsCACert());
+        Assertions.assertEquals("ummajtjaod", model.localAuthRef());
     }
 }

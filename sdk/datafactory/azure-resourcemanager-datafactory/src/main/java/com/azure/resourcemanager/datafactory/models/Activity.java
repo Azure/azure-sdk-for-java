@@ -17,7 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** A pipeline activity. */
+/**
+ * A pipeline activity.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -27,8 +29,7 @@ import java.util.Map;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Container", value = ControlActivity.class),
     @JsonSubTypes.Type(name = "Execution", value = ExecutionActivity.class),
-    @JsonSubTypes.Type(name = "ExecuteWranglingDataflow", value = ExecuteWranglingDataflowActivity.class)
-})
+    @JsonSubTypes.Type(name = "ExecuteWranglingDataflow", value = ExecuteWranglingDataflowActivity.class) })
 @Fluent
 public class Activity {
     /*
@@ -42,6 +43,19 @@ public class Activity {
      */
     @JsonProperty(value = "description")
     private String description;
+
+    /*
+     * Activity state. This is an optional property and if not provided, the state will be Active by default.
+     */
+    @JsonProperty(value = "state")
+    private ActivityState state;
+
+    /*
+     * Status result of the activity when the state is set to Inactive. This is an optional property and if not
+     * provided when the activity is inactive, the status will be Succeeded by default.
+     */
+    @JsonProperty(value = "onInactiveMarkAs")
+    private ActivityOnInactiveMarkAs onInactiveMarkAs;
 
     /*
      * Activity depends on condition.
@@ -58,15 +72,18 @@ public class Activity {
     /*
      * A pipeline activity.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of Activity class. */
+    /**
+     * Creates an instance of Activity class.
+     */
     public Activity() {
     }
 
     /**
      * Get the name property: Activity name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -75,7 +92,7 @@ public class Activity {
 
     /**
      * Set the name property: Activity name.
-     *
+     * 
      * @param name the name value to set.
      * @return the Activity object itself.
      */
@@ -86,7 +103,7 @@ public class Activity {
 
     /**
      * Get the description property: Activity description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -95,7 +112,7 @@ public class Activity {
 
     /**
      * Set the description property: Activity description.
-     *
+     * 
      * @param description the description value to set.
      * @return the Activity object itself.
      */
@@ -105,8 +122,52 @@ public class Activity {
     }
 
     /**
+     * Get the state property: Activity state. This is an optional property and if not provided, the state will be
+     * Active by default.
+     * 
+     * @return the state value.
+     */
+    public ActivityState state() {
+        return this.state;
+    }
+
+    /**
+     * Set the state property: Activity state. This is an optional property and if not provided, the state will be
+     * Active by default.
+     * 
+     * @param state the state value to set.
+     * @return the Activity object itself.
+     */
+    public Activity withState(ActivityState state) {
+        this.state = state;
+        return this;
+    }
+
+    /**
+     * Get the onInactiveMarkAs property: Status result of the activity when the state is set to Inactive. This is an
+     * optional property and if not provided when the activity is inactive, the status will be Succeeded by default.
+     * 
+     * @return the onInactiveMarkAs value.
+     */
+    public ActivityOnInactiveMarkAs onInactiveMarkAs() {
+        return this.onInactiveMarkAs;
+    }
+
+    /**
+     * Set the onInactiveMarkAs property: Status result of the activity when the state is set to Inactive. This is an
+     * optional property and if not provided when the activity is inactive, the status will be Succeeded by default.
+     * 
+     * @param onInactiveMarkAs the onInactiveMarkAs value to set.
+     * @return the Activity object itself.
+     */
+    public Activity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        this.onInactiveMarkAs = onInactiveMarkAs;
+        return this;
+    }
+
+    /**
      * Get the dependsOn property: Activity depends on condition.
-     *
+     * 
      * @return the dependsOn value.
      */
     public List<ActivityDependency> dependsOn() {
@@ -115,7 +176,7 @@ public class Activity {
 
     /**
      * Set the dependsOn property: Activity depends on condition.
-     *
+     * 
      * @param dependsOn the dependsOn value to set.
      * @return the Activity object itself.
      */
@@ -126,7 +187,7 @@ public class Activity {
 
     /**
      * Get the userProperties property: Activity user properties.
-     *
+     * 
      * @return the userProperties value.
      */
     public List<UserProperty> userProperties() {
@@ -135,7 +196,7 @@ public class Activity {
 
     /**
      * Set the userProperties property: Activity user properties.
-     *
+     * 
      * @param userProperties the userProperties value to set.
      * @return the Activity object itself.
      */
@@ -146,7 +207,7 @@ public class Activity {
 
     /**
      * Get the additionalProperties property: A pipeline activity.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -156,7 +217,7 @@ public class Activity {
 
     /**
      * Set the additionalProperties property: A pipeline activity.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the Activity object itself.
      */
@@ -175,7 +236,7 @@ public class Activity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

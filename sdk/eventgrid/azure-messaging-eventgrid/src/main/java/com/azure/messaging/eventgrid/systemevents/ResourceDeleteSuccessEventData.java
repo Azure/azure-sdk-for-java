@@ -8,7 +8,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Map;
@@ -18,76 +21,68 @@ import java.util.Map;
  * raised when a resource delete operation succeeds.
  */
 @Fluent
-public final class ResourceDeleteSuccessEventData {
+public final class ResourceDeleteSuccessEventData implements JsonSerializable<ResourceDeleteSuccessEventData> {
 
     /*
      * The tenant ID of the resource.
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
      * The subscription ID of the resource.
      */
-    @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
     /*
      * The resource group of the resource.
      */
-    @JsonProperty(value = "resourceGroup")
     private String resourceGroup;
 
     /*
      * The resource provider performing the operation.
      */
-    @JsonProperty(value = "resourceProvider")
     private String resourceProvider;
 
     /*
      * The URI of the resource in the operation.
      */
-    @JsonProperty(value = "resourceUri")
     private String resourceUri;
 
     /*
      * The operation that was performed.
      */
-    @JsonProperty(value = "operationName")
     private String operationName;
 
     /*
      * The status of the operation.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * The requested authorization for the operation.
      */
-    @JsonProperty(value = "authorization")
     private ResourceAuthorization authorization;
 
     /*
      * The properties of the claims.
      */
-    @JsonProperty(value = "claims")
     private Map<String, String> claims;
 
     /*
      * An operation ID used for troubleshooting.
      */
-    @JsonProperty(value = "correlationId")
     private String correlationId;
 
     /*
      * The details of the operation.
      */
-    @JsonProperty(value = "httpRequest")
     private ResourceHttpRequest httpRequest;
 
-    /** Creates an instance of ResourceDeleteSuccessEventData class. */
-    public ResourceDeleteSuccessEventData() {}
+    /**
+     * Creates an instance of ResourceDeleteSuccessEventData class.
+     */
+    public ResourceDeleteSuccessEventData() {
+    }
 
     /**
      * Get the tenantId property: The tenant ID of the resource.
@@ -309,6 +304,69 @@ public final class ResourceDeleteSuccessEventData {
         return this;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("resourceGroup", this.resourceGroup);
+        jsonWriter.writeStringField("resourceProvider", this.resourceProvider);
+        jsonWriter.writeStringField("resourceUri", this.resourceUri);
+        jsonWriter.writeStringField("operationName", this.operationName);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeJsonField("authorization", this.authorization);
+        jsonWriter.writeMapField("claims", this.claims, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("correlationId", this.correlationId);
+        jsonWriter.writeJsonField("httpRequest", this.httpRequest);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceDeleteSuccessEventData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceDeleteSuccessEventData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceDeleteSuccessEventData.
+     */
+    public static ResourceDeleteSuccessEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceDeleteSuccessEventData deserializedResourceDeleteSuccessEventData
+                = new ResourceDeleteSuccessEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("tenantId".equals(fieldName)) {
+                    deserializedResourceDeleteSuccessEventData.tenantId = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedResourceDeleteSuccessEventData.subscriptionId = reader.getString();
+                } else if ("resourceGroup".equals(fieldName)) {
+                    deserializedResourceDeleteSuccessEventData.resourceGroup = reader.getString();
+                } else if ("resourceProvider".equals(fieldName)) {
+                    deserializedResourceDeleteSuccessEventData.resourceProvider = reader.getString();
+                } else if ("resourceUri".equals(fieldName)) {
+                    deserializedResourceDeleteSuccessEventData.resourceUri = reader.getString();
+                } else if ("operationName".equals(fieldName)) {
+                    deserializedResourceDeleteSuccessEventData.operationName = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedResourceDeleteSuccessEventData.status = reader.getString();
+                } else if ("authorization".equals(fieldName)) {
+                    deserializedResourceDeleteSuccessEventData.authorization = ResourceAuthorization.fromJson(reader);
+                } else if ("claims".equals(fieldName)) {
+                    Map<String, String> claims = reader.readMap(reader1 -> reader1.getString());
+                    deserializedResourceDeleteSuccessEventData.claims = claims;
+                } else if ("correlationId".equals(fieldName)) {
+                    deserializedResourceDeleteSuccessEventData.correlationId = reader.getString();
+                } else if ("httpRequest".equals(fieldName)) {
+                    deserializedResourceDeleteSuccessEventData.httpRequest = ResourceHttpRequest.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedResourceDeleteSuccessEventData;
+        });
+    }
+
     private static final ClientLogger LOGGER = new ClientLogger(ResourceDeleteSuccessEventData.class);
 
     private static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
@@ -318,7 +376,8 @@ public final class ResourceDeleteSuccessEventData {
      *
      * @return the claims value.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceDeleteSuccessEventData#getResourceClaims()} instead.
+     * <p>
+     * Use {@link ResourceDeleteSuccessEventData#getResourceClaims()} instead.
      */
     @Deprecated
     public String getClaims() {
@@ -339,7 +398,8 @@ public final class ResourceDeleteSuccessEventData {
      * @param claims the claims value to set.
      * @return the ResourceDeleteSuccessEventData object itself.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceDeleteSuccessEventData#setResourceClaims(Map)} instead.
+     * <p>
+     * Use {@link ResourceDeleteSuccessEventData#setResourceClaims(Map)} instead.
      */
     @Deprecated
     public ResourceDeleteSuccessEventData setClaims(String claims) {
@@ -356,7 +416,8 @@ public final class ResourceDeleteSuccessEventData {
      *
      * @return the httpRequest value.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceDeleteSuccessEventData#getResourceHttpRequest()} instead.
+     * <p>
+     * Use {@link ResourceDeleteSuccessEventData#getResourceHttpRequest()} instead.
      */
     @Deprecated
     public String getHttpRequest() {
@@ -374,14 +435,14 @@ public final class ResourceDeleteSuccessEventData {
      * @param httpRequest the httpRequest value to set.
      * @return the ResourceDeleteSuccessEventData object itself.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceDeleteSuccessEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
+     * <p>
+     * Use {@link ResourceDeleteSuccessEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
      */
     @Deprecated
     public ResourceDeleteSuccessEventData setHttpRequest(String httpRequest) {
         try {
-            setResourceHttpRequest(
-                    DEFAULT_SERIALIZER_ADAPTER.deserialize(
-                            httpRequest, ResourceHttpRequest.class, SerializerEncoding.JSON));
+            setResourceHttpRequest(DEFAULT_SERIALIZER_ADAPTER.deserialize(httpRequest, ResourceHttpRequest.class,
+                SerializerEncoding.JSON));
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
@@ -393,7 +454,8 @@ public final class ResourceDeleteSuccessEventData {
      *
      * @return the authorization value.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceDeleteSuccessEventData#getResourceAuthorization()} instead.
+     * <p>
+     * Use {@link ResourceDeleteSuccessEventData#getResourceAuthorization()} instead.
      */
     @Deprecated
     public String getAuthorization() {
@@ -411,14 +473,14 @@ public final class ResourceDeleteSuccessEventData {
      * @param authorization the authorization value to set.
      * @return the ResourceDeleteSuccessEventData object itself.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceDeleteSuccessEventData#setResourceAuthorization(ResourceAuthorization)} instead.
+     * <p>
+     * Use {@link ResourceDeleteSuccessEventData#setResourceAuthorization(ResourceAuthorization)} instead.
      */
     @Deprecated
     public ResourceDeleteSuccessEventData setAuthorization(String authorization) {
         try {
-            setResourceAuthorization(
-                    DEFAULT_SERIALIZER_ADAPTER.deserialize(
-                            authorization, ResourceAuthorization.class, SerializerEncoding.JSON));
+            setResourceAuthorization(DEFAULT_SERIALIZER_ADAPTER.deserialize(authorization, ResourceAuthorization.class,
+                SerializerEncoding.JSON));
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }

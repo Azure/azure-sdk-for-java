@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** IP security restriction on an app. */
+/**
+ * IP security restriction on an app.
+ */
 @Fluent
 public final class IpSecurityRestriction {
     /*
@@ -86,13 +88,13 @@ public final class IpSecurityRestriction {
      * subdomain foo.contoso.com
      * but not the root domain contoso.com or multi-level foo.bar.contoso.com
      * - Unicode host names are allowed but are converted to Punycode for matching.
-     *
+     * 
      * X-Forwarded-For (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For#Examples).
      * The matching logic is ..
      * - If the property is null or empty (default), any forwarded-for chains (or lack of) are allowed.
      * - If any address (excluding port number) in the chain (comma separated) matches the CIDR defined by the
      * property.
-     *
+     * 
      * X-Azure-FDID and X-FD-HealthProbe.
      * The matching logic is exact match.
      */
@@ -100,15 +102,18 @@ public final class IpSecurityRestriction {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, List<String>> headers;
 
-    /** Creates an instance of IpSecurityRestriction class. */
+    /**
+     * Creates an instance of IpSecurityRestriction class.
+     */
     public IpSecurityRestriction() {
     }
 
     /**
-     * Get the ipAddress property: IP address the security restriction is valid for. It can be in form of pure ipv4
-     * address (required SubnetMask property) or CIDR notation such as ipv4/mask (leading bit match). For CIDR,
+     * Get the ipAddress property: IP address the security restriction is valid for.
+     * It can be in form of pure ipv4 address (required SubnetMask property) or
+     * CIDR notation such as ipv4/mask (leading bit match). For CIDR,
      * SubnetMask property must not be specified.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -116,10 +121,11 @@ public final class IpSecurityRestriction {
     }
 
     /**
-     * Set the ipAddress property: IP address the security restriction is valid for. It can be in form of pure ipv4
-     * address (required SubnetMask property) or CIDR notation such as ipv4/mask (leading bit match). For CIDR,
+     * Set the ipAddress property: IP address the security restriction is valid for.
+     * It can be in form of pure ipv4 address (required SubnetMask property) or
+     * CIDR notation such as ipv4/mask (leading bit match). For CIDR,
      * SubnetMask property must not be specified.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the IpSecurityRestriction object itself.
      */
@@ -130,7 +136,7 @@ public final class IpSecurityRestriction {
 
     /**
      * Get the subnetMask property: Subnet mask for the range of IP addresses the restriction is valid for.
-     *
+     * 
      * @return the subnetMask value.
      */
     public String subnetMask() {
@@ -139,7 +145,7 @@ public final class IpSecurityRestriction {
 
     /**
      * Set the subnetMask property: Subnet mask for the range of IP addresses the restriction is valid for.
-     *
+     * 
      * @param subnetMask the subnetMask value to set.
      * @return the IpSecurityRestriction object itself.
      */
@@ -150,7 +156,7 @@ public final class IpSecurityRestriction {
 
     /**
      * Get the vnetSubnetResourceId property: Virtual network resource id.
-     *
+     * 
      * @return the vnetSubnetResourceId value.
      */
     public String vnetSubnetResourceId() {
@@ -159,7 +165,7 @@ public final class IpSecurityRestriction {
 
     /**
      * Set the vnetSubnetResourceId property: Virtual network resource id.
-     *
+     * 
      * @param vnetSubnetResourceId the vnetSubnetResourceId value to set.
      * @return the IpSecurityRestriction object itself.
      */
@@ -170,7 +176,7 @@ public final class IpSecurityRestriction {
 
     /**
      * Get the vnetTrafficTag property: (internal) Vnet traffic tag.
-     *
+     * 
      * @return the vnetTrafficTag value.
      */
     public Integer vnetTrafficTag() {
@@ -179,7 +185,7 @@ public final class IpSecurityRestriction {
 
     /**
      * Set the vnetTrafficTag property: (internal) Vnet traffic tag.
-     *
+     * 
      * @param vnetTrafficTag the vnetTrafficTag value to set.
      * @return the IpSecurityRestriction object itself.
      */
@@ -190,7 +196,7 @@ public final class IpSecurityRestriction {
 
     /**
      * Get the subnetTrafficTag property: (internal) Subnet traffic tag.
-     *
+     * 
      * @return the subnetTrafficTag value.
      */
     public Integer subnetTrafficTag() {
@@ -199,7 +205,7 @@ public final class IpSecurityRestriction {
 
     /**
      * Set the subnetTrafficTag property: (internal) Subnet traffic tag.
-     *
+     * 
      * @param subnetTrafficTag the subnetTrafficTag value to set.
      * @return the IpSecurityRestriction object itself.
      */
@@ -210,7 +216,7 @@ public final class IpSecurityRestriction {
 
     /**
      * Get the action property: Allow or Deny access for this IP range.
-     *
+     * 
      * @return the action value.
      */
     public String action() {
@@ -219,7 +225,7 @@ public final class IpSecurityRestriction {
 
     /**
      * Set the action property: Allow or Deny access for this IP range.
-     *
+     * 
      * @param action the action value to set.
      * @return the IpSecurityRestriction object itself.
      */
@@ -230,7 +236,7 @@ public final class IpSecurityRestriction {
 
     /**
      * Get the tag property: Defines what this IP filter will be used for. This is to support IP filtering on proxies.
-     *
+     * 
      * @return the tag value.
      */
     public IpFilterTag tag() {
@@ -239,7 +245,7 @@ public final class IpSecurityRestriction {
 
     /**
      * Set the tag property: Defines what this IP filter will be used for. This is to support IP filtering on proxies.
-     *
+     * 
      * @param tag the tag value to set.
      * @return the IpSecurityRestriction object itself.
      */
@@ -250,7 +256,7 @@ public final class IpSecurityRestriction {
 
     /**
      * Get the priority property: Priority of IP restriction rule.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -259,7 +265,7 @@ public final class IpSecurityRestriction {
 
     /**
      * Set the priority property: Priority of IP restriction rule.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the IpSecurityRestriction object itself.
      */
@@ -270,7 +276,7 @@ public final class IpSecurityRestriction {
 
     /**
      * Get the name property: IP restriction rule name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -279,7 +285,7 @@ public final class IpSecurityRestriction {
 
     /**
      * Set the name property: IP restriction rule name.
-     *
+     * 
      * @param name the name value to set.
      * @return the IpSecurityRestriction object itself.
      */
@@ -290,7 +296,7 @@ public final class IpSecurityRestriction {
 
     /**
      * Get the description property: IP restriction rule description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -299,7 +305,7 @@ public final class IpSecurityRestriction {
 
     /**
      * Set the description property: IP restriction rule description.
-     *
+     * 
      * @param description the description value to set.
      * @return the IpSecurityRestriction object itself.
      */
@@ -309,20 +315,25 @@ public final class IpSecurityRestriction {
     }
 
     /**
-     * Get the headers property: IP restriction rule headers. X-Forwarded-Host
-     * (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-Host#Examples). The matching logic is .. -
-     * If the property is null or empty (default), all hosts(or lack of) are allowed. - A value is compared using
-     * ordinal-ignore-case (excluding port number). - Subdomain wildcards are permitted but don't match the root domain.
-     * For example, *.contoso.com matches the subdomain foo.contoso.com but not the root domain contoso.com or
-     * multi-level foo.bar.contoso.com - Unicode host names are allowed but are converted to Punycode for matching.
-     *
-     * <p>X-Forwarded-For (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For#Examples). The
-     * matching logic is .. - If the property is null or empty (default), any forwarded-for chains (or lack of) are
-     * allowed. - If any address (excluding port number) in the chain (comma separated) matches the CIDR defined by the
+     * Get the headers property: IP restriction rule headers.
+     * X-Forwarded-Host (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-Host#Examples).
+     * The matching logic is ..
+     * - If the property is null or empty (default), all hosts(or lack of) are allowed.
+     * - A value is compared using ordinal-ignore-case (excluding port number).
+     * - Subdomain wildcards are permitted but don't match the root domain. For example, *.contoso.com matches the
+     * subdomain foo.contoso.com
+     * but not the root domain contoso.com or multi-level foo.bar.contoso.com
+     * - Unicode host names are allowed but are converted to Punycode for matching.
+     * 
+     * X-Forwarded-For (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For#Examples).
+     * The matching logic is ..
+     * - If the property is null or empty (default), any forwarded-for chains (or lack of) are allowed.
+     * - If any address (excluding port number) in the chain (comma separated) matches the CIDR defined by the
      * property.
-     *
-     * <p>X-Azure-FDID and X-FD-HealthProbe. The matching logic is exact match.
-     *
+     * 
+     * X-Azure-FDID and X-FD-HealthProbe.
+     * The matching logic is exact match.
+     * 
      * @return the headers value.
      */
     public Map<String, List<String>> headers() {
@@ -330,20 +341,25 @@ public final class IpSecurityRestriction {
     }
 
     /**
-     * Set the headers property: IP restriction rule headers. X-Forwarded-Host
-     * (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-Host#Examples). The matching logic is .. -
-     * If the property is null or empty (default), all hosts(or lack of) are allowed. - A value is compared using
-     * ordinal-ignore-case (excluding port number). - Subdomain wildcards are permitted but don't match the root domain.
-     * For example, *.contoso.com matches the subdomain foo.contoso.com but not the root domain contoso.com or
-     * multi-level foo.bar.contoso.com - Unicode host names are allowed but are converted to Punycode for matching.
-     *
-     * <p>X-Forwarded-For (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For#Examples). The
-     * matching logic is .. - If the property is null or empty (default), any forwarded-for chains (or lack of) are
-     * allowed. - If any address (excluding port number) in the chain (comma separated) matches the CIDR defined by the
+     * Set the headers property: IP restriction rule headers.
+     * X-Forwarded-Host (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-Host#Examples).
+     * The matching logic is ..
+     * - If the property is null or empty (default), all hosts(or lack of) are allowed.
+     * - A value is compared using ordinal-ignore-case (excluding port number).
+     * - Subdomain wildcards are permitted but don't match the root domain. For example, *.contoso.com matches the
+     * subdomain foo.contoso.com
+     * but not the root domain contoso.com or multi-level foo.bar.contoso.com
+     * - Unicode host names are allowed but are converted to Punycode for matching.
+     * 
+     * X-Forwarded-For (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For#Examples).
+     * The matching logic is ..
+     * - If the property is null or empty (default), any forwarded-for chains (or lack of) are allowed.
+     * - If any address (excluding port number) in the chain (comma separated) matches the CIDR defined by the
      * property.
-     *
-     * <p>X-Azure-FDID and X-FD-HealthProbe. The matching logic is exact match.
-     *
+     * 
+     * X-Azure-FDID and X-FD-HealthProbe.
+     * The matching logic is exact match.
+     * 
      * @param headers the headers value to set.
      * @return the IpSecurityRestriction object itself.
      */
@@ -354,7 +370,7 @@ public final class IpSecurityRestriction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

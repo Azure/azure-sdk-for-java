@@ -15,6 +15,8 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
 
     private final AvailabilityStrategy availabilityStrategy;
 
+    private final String toStringValue;
+
     /**
      * Constructor
      *
@@ -31,6 +33,7 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
         this.isEnabled = isEnabled;
         this.endToEndOperationTimeout = endToEndOperationTimeout;
         this.availabilityStrategy = availabilityStrategy;
+        this.toStringValue = this.createStringRepresentation();
     }
 
     /**
@@ -58,6 +61,28 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
      */
     public AvailabilityStrategy getAvailabilityStrategy() {
         return availabilityStrategy;
+    }
+
+    @Override
+    public String toString() {
+        return this.toStringValue;
+    }
+
+    private String createStringRepresentation() {
+
+        if (this.endToEndOperationTimeout == null) {
+            return "";
+        }
+
+        String availabilityStrategyAsString = "";
+        if (this.availabilityStrategy != null) {
+            availabilityStrategyAsString = availabilityStrategy.toString();
+        }
+
+        return "{" +
+            "e2eto=" + this.endToEndOperationTimeout +
+            ", as=" + availabilityStrategyAsString +
+            "}";
     }
 
 }

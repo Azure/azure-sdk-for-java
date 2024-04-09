@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Class representing a secret store resource. */
+/**
+ * Class representing a secret store resource.
+ */
 @Fluent
 public final class SecretStoreResource {
     /*
@@ -29,13 +31,15 @@ public final class SecretStoreResource {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of SecretStoreResource class. */
+    /**
+     * Creates an instance of SecretStoreResource class.
+     */
     public SecretStoreResource() {
     }
 
     /**
      * Get the uri property: Uri to get to the resource.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -44,7 +48,7 @@ public final class SecretStoreResource {
 
     /**
      * Set the uri property: Uri to get to the resource.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the SecretStoreResource object itself.
      */
@@ -55,7 +59,7 @@ public final class SecretStoreResource {
 
     /**
      * Get the secretStoreType property: Gets or sets the type of secret store.
-     *
+     * 
      * @return the secretStoreType value.
      */
     public SecretStoreType secretStoreType() {
@@ -64,7 +68,7 @@ public final class SecretStoreResource {
 
     /**
      * Set the secretStoreType property: Gets or sets the type of secret store.
-     *
+     * 
      * @param secretStoreType the secretStoreType value to set.
      * @return the SecretStoreResource object itself.
      */
@@ -75,7 +79,7 @@ public final class SecretStoreResource {
 
     /**
      * Get the value property: Gets or sets value stored in secret store resource.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -84,7 +88,7 @@ public final class SecretStoreResource {
 
     /**
      * Set the value property: Gets or sets value stored in secret store resource.
-     *
+     * 
      * @param value the value value to set.
      * @return the SecretStoreResource object itself.
      */
@@ -95,15 +99,13 @@ public final class SecretStoreResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (secretStoreType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property secretStoreType in model SecretStoreResource"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property secretStoreType in model SecretStoreResource"));
         }
     }
 

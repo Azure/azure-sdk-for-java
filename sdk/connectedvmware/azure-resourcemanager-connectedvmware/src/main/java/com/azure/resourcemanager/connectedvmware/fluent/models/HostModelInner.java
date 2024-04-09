@@ -9,6 +9,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
+import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -42,6 +43,10 @@ public final class HostModelInner extends Resource {
      */
     @JsonProperty(value = "kind")
     private String kind;
+
+    /** Creates an instance of HostModelInner class. */
+    public HostModelInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.
@@ -225,11 +230,65 @@ public final class HostModelInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
+     * Get the overallMemoryUsageGB property: Gets the used physical memory on the host in GB.
+     *
+     * @return the overallMemoryUsageGB value.
+     */
+    public Long overallMemoryUsageGB() {
+        return this.innerProperties() == null ? null : this.innerProperties().overallMemoryUsageGB();
+    }
+
+    /**
+     * Get the memorySizeGB property: Gets the total amount of physical memory on the host in GB.
+     *
+     * @return the memorySizeGB value.
+     */
+    public Long memorySizeGB() {
+        return this.innerProperties() == null ? null : this.innerProperties().memorySizeGB();
+    }
+
+    /**
+     * Get the overallCpuUsageMHz property: Gets the used CPU usage across all cores in MHz.
+     *
+     * @return the overallCpuUsageMHz value.
+     */
+    public Long overallCpuUsageMHz() {
+        return this.innerProperties() == null ? null : this.innerProperties().overallCpuUsageMHz();
+    }
+
+    /**
+     * Get the cpuMhz property: Gets the max CPU usage across all cores in MHz.
+     *
+     * @return the cpuMhz value.
+     */
+    public Long cpuMhz() {
+        return this.innerProperties() == null ? null : this.innerProperties().cpuMhz();
+    }
+
+    /**
+     * Get the datastoreIds property: Gets the datastore ARM ids.
+     *
+     * @return the datastoreIds value.
+     */
+    public List<String> datastoreIds() {
+        return this.innerProperties() == null ? null : this.innerProperties().datastoreIds();
+    }
+
+    /**
+     * Get the networkIds property: Gets the network ARM ids.
+     *
+     * @return the networkIds value.
+     */
+    public List<String> networkIds() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkIds();
+    }
+
+    /**
+     * Get the provisioningState property: Gets the provisioning state.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

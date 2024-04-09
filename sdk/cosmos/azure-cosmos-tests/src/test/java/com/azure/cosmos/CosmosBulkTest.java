@@ -39,7 +39,7 @@ public class CosmosBulkTest  extends BatchTestBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosBulkTest() {
         assertThat(this.bulkClient).isNull();
         this.bulkClient = getClientBuilder().buildClient();
@@ -47,13 +47,13 @@ public class CosmosBulkTest  extends BatchTestBase {
         bulkContainer = bulkClient.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.bulkClient).isNotNull();
         this.bulkClient.close();
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void createItem_withBulk() {
         int totalRequest = getTotalRequest();
 
@@ -87,7 +87,7 @@ public class CosmosBulkTest  extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void upsertItem_withbulk() {
         int totalRequest = getTotalRequest();
 
@@ -130,7 +130,7 @@ public class CosmosBulkTest  extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void deleteItem_withBulk() {
         int totalRequest = getTotalRequest();
 
@@ -175,7 +175,7 @@ public class CosmosBulkTest  extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void readItem_withBulk() {
         int totalRequest = getTotalRequest();
 
@@ -225,7 +225,7 @@ public class CosmosBulkTest  extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void replaceItem_withBulk() {
         int totalRequest = getTotalRequest();
 
@@ -322,7 +322,7 @@ public class CosmosBulkTest  extends BatchTestBase {
     }
 
     // Error tests
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void bulkETagTest() {
         this.createJsonTestDocs(bulkContainer);
 
@@ -416,7 +416,7 @@ public class CosmosBulkTest  extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void bulkWithInvalidCreateTest() {
         // partition key mismatch between doc and and value passed in to the operation
         com.azure.cosmos.models.CosmosItemOperation operation =
@@ -429,7 +429,7 @@ public class CosmosBulkTest  extends BatchTestBase {
             HttpResponseStatus.BAD_REQUEST);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void bulkWithReadOfNonExistentEntityTest() {
         com.azure.cosmos.models.CosmosItemOperation operation = CosmosBulkOperations.getReadItemOperation(
             UUID.randomUUID().toString(),
@@ -441,7 +441,7 @@ public class CosmosBulkTest  extends BatchTestBase {
             HttpResponseStatus.NOT_FOUND);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void bulkWithReplaceOfStaleEntity() {
         this.createJsonTestDocs(bulkContainer);
 
@@ -466,7 +466,7 @@ public class CosmosBulkTest  extends BatchTestBase {
         this.verifyByRead(bulkContainer, this.TestDocPk1ExistingA);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void bulkWithDeleteOfNonExistentEntity() {
 
         com.azure.cosmos.models.CosmosItemOperation operation =
@@ -479,7 +479,7 @@ public class CosmosBulkTest  extends BatchTestBase {
             HttpResponseStatus.NOT_FOUND);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void bulkWithCreateConflict() {
         this.createJsonTestDocs(bulkContainer);
 
@@ -527,7 +527,7 @@ public class CosmosBulkTest  extends BatchTestBase {
         this.verifyByRead(container, anotherTestDocToCreate);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void bulkSessionTokenTest() {
         this.createJsonTestDocs(bulkContainer);
 
@@ -576,7 +576,7 @@ public class CosmosBulkTest  extends BatchTestBase {
             .isGreaterThan(sessionToken.getLSN());
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void bulkContentResponseOnWriteTest() {
         this.createJsonTestDocs(bulkContainer);
 
@@ -638,7 +638,7 @@ public class CosmosBulkTest  extends BatchTestBase {
         assertThat(bulkResponses.get(5).getResponse().getItem(TestDoc.class)).isEqualTo(this.TestDocPk1ExistingB);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void bulkContentResponseOnWriteTestWithoutReadEnforcingBulkContentResponse() {
         this.createJsonTestDocs(bulkContainer);
 

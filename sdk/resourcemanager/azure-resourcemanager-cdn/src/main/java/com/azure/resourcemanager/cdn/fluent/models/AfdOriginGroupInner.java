@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * AFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be served from
- * CDN.
+ * Azure Front Door.
  */
 @Fluent
 public final class AfdOriginGroupInner extends ProxyResource {
@@ -33,8 +33,14 @@ public final class AfdOriginGroupInner extends ProxyResource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of AfdOriginGroupInner class.
+     */
+    public AfdOriginGroupInner() {
+    }
+
+    /**
      * Get the innerProperties property: The JSON object that contains the properties of the origin group.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AfdOriginGroupProperties innerProperties() {
@@ -43,7 +49,7 @@ public final class AfdOriginGroupInner extends ProxyResource {
 
     /**
      * Get the systemData property: Read only system data.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -52,7 +58,7 @@ public final class AfdOriginGroupInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AfdProvisioningState provisioningState() {
@@ -61,7 +67,7 @@ public final class AfdOriginGroupInner extends ProxyResource {
 
     /**
      * Get the deploymentStatus property: The deploymentStatus property.
-     *
+     * 
      * @return the deploymentStatus value.
      */
     public DeploymentStatus deploymentStatus() {
@@ -70,7 +76,7 @@ public final class AfdOriginGroupInner extends ProxyResource {
 
     /**
      * Get the profileName property: The name of the profile which holds the origin group.
-     *
+     * 
      * @return the profileName value.
      */
     public String profileName() {
@@ -79,7 +85,7 @@ public final class AfdOriginGroupInner extends ProxyResource {
 
     /**
      * Get the loadBalancingSettings property: Load balancing settings for a backend pool.
-     *
+     * 
      * @return the loadBalancingSettings value.
      */
     public LoadBalancingSettingsParameters loadBalancingSettings() {
@@ -88,7 +94,7 @@ public final class AfdOriginGroupInner extends ProxyResource {
 
     /**
      * Set the loadBalancingSettings property: Load balancing settings for a backend pool.
-     *
+     * 
      * @param loadBalancingSettings the loadBalancingSettings value to set.
      * @return the AfdOriginGroupInner object itself.
      */
@@ -101,9 +107,9 @@ public final class AfdOriginGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
-     * the origin.
-     *
+     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
+     * of the origin.
+     * 
      * @return the healthProbeSettings value.
      */
     public HealthProbeParameters healthProbeSettings() {
@@ -111,9 +117,9 @@ public final class AfdOriginGroupInner extends ProxyResource {
     }
 
     /**
-     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
-     * the origin.
-     *
+     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
+     * of the origin.
+     * 
      * @param healthProbeSettings the healthProbeSettings value to set.
      * @return the AfdOriginGroupInner object itself.
      */
@@ -129,12 +135,11 @@ public final class AfdOriginGroupInner extends ProxyResource {
      * Get the trafficRestorationTimeToHealedOrNewEndpointsInMinutes property: Time in minutes to shift the traffic to
      * the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins.
      * This property is currently not supported.
-     *
+     * 
      * @return the trafficRestorationTimeToHealedOrNewEndpointsInMinutes value.
      */
     public Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes() {
-        return this.innerProperties() == null
-            ? null
+        return this.innerProperties() == null ? null
             : this.innerProperties().trafficRestorationTimeToHealedOrNewEndpointsInMinutes();
     }
 
@@ -142,9 +147,9 @@ public final class AfdOriginGroupInner extends ProxyResource {
      * Set the trafficRestorationTimeToHealedOrNewEndpointsInMinutes property: Time in minutes to shift the traffic to
      * the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins.
      * This property is currently not supported.
-     *
+     * 
      * @param trafficRestorationTimeToHealedOrNewEndpointsInMinutes the
-     *     trafficRestorationTimeToHealedOrNewEndpointsInMinutes value to set.
+     * trafficRestorationTimeToHealedOrNewEndpointsInMinutes value to set.
      * @return the AfdOriginGroupInner object itself.
      */
     public AfdOriginGroupInner withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
@@ -152,17 +157,15 @@ public final class AfdOriginGroupInner extends ProxyResource {
         if (this.innerProperties() == null) {
             this.innerProperties = new AfdOriginGroupProperties();
         }
-        this
-            .innerProperties()
-            .withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
-                trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
+        this.innerProperties().withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
+            trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
         return this;
     }
 
     /**
      * Get the sessionAffinityState property: Whether to allow session affinity on this host. Valid options are
      * 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the sessionAffinityState value.
      */
     public EnabledState sessionAffinityState() {
@@ -172,7 +175,7 @@ public final class AfdOriginGroupInner extends ProxyResource {
     /**
      * Set the sessionAffinityState property: Whether to allow session affinity on this host. Valid options are
      * 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param sessionAffinityState the sessionAffinityState value to set.
      * @return the AfdOriginGroupInner object itself.
      */
@@ -186,7 +189,7 @@ public final class AfdOriginGroupInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

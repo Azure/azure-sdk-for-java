@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.routing;
 
+import com.azure.cosmos.CosmosExcludedRegions;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.LifeCycleUtils;
@@ -16,6 +17,7 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.ModelBridgeUtils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava25.collect.Iterables;
@@ -27,20 +29,25 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * Tests for {@link LocationCache}
@@ -89,6 +96,88 @@ public class LocationCacheTest {
         return list.toArray(new Object[][]{});
     }
 
+    // The purpose of validateExcludedRegions is the following:
+    //  1. Test with various combinations of excludedRegions such as:
+    //      a) list with excludedRegions which is a sub-list of preferredRegions
+    //      b) list with excludedRegions which is a sub-list of preferredRegions and has duplicates
+    //      c) list with excludedRegions which is not a sub-list of preferredRegions and has no duplicates
+    //      d) list with excludedRegions which is not a sub-list of preferredRegions and has duplicates
+    //      e) list which is null
+    //      f) list which is empty
+    //  2. todo: the dataProvider hard codes the list of available read and available write regions - this can be avoided
+    //        a) according to the hardcoding - available read regions: location1, location2; available write regions: location1, location2, location3
+    @DataProvider(name = "excludedRegionsTestConfigs")
+    public Object[][] excludedRegionsTestConfigs() {
+        // Parameters passed:
+        //      1. List of regions to exclude on the client / ConnectionPolicy
+        //      2. List of regions to exclude on the request
+        //      3. The request itself
+        //      4. Expected applicable read regions
+        //      5. Expected applicable write regions
+        return new Object[][] {
+            {
+                new HashSet<>(Arrays.asList("location1", "location2")),
+                null,
+                RxDocumentServiceRequest.create(
+                    mockDiagnosticsClientContext(),
+                    OperationType.Read,
+                    ResourceType.Document),
+                new HashSet<>(Arrays.asList(Location1Endpoint)),
+                new HashSet<>(Arrays.asList(Location3Endpoint))
+            },
+            {
+                new HashSet<>(Arrays.asList("location1", "location2", "location7")),
+                null,
+                RxDocumentServiceRequest.create(
+                    mockDiagnosticsClientContext(),
+                    OperationType.Read,
+                    ResourceType.Document),
+                new HashSet<>(Arrays.asList(Location1Endpoint)),
+                new HashSet<>(Arrays.asList(Location3Endpoint))
+            },
+            {
+                null,
+                null,
+                RxDocumentServiceRequest.create(
+                    mockDiagnosticsClientContext(),
+                    OperationType.Read,
+                    ResourceType.Document),
+                new HashSet<>(Arrays.asList(Location1Endpoint, Location2Endpoint)),
+                new HashSet<>(Arrays.asList(Location1Endpoint, Location2Endpoint, Location3Endpoint))
+            },
+            {
+                new HashSet<>(),
+                null,
+                RxDocumentServiceRequest.create(
+                    mockDiagnosticsClientContext(),
+                    OperationType.Read,
+                    ResourceType.Document),
+                new HashSet<>(Arrays.asList(Location1Endpoint, Location2Endpoint)),
+                new HashSet<>(Arrays.asList(Location1Endpoint, Location2Endpoint, Location3Endpoint))
+            },
+            {
+                new HashSet<>(Arrays.asList("location5, location10, location10")),
+                null,
+                RxDocumentServiceRequest.create(
+                    mockDiagnosticsClientContext(),
+                    OperationType.Read,
+                    ResourceType.Document),
+                new HashSet<>(Arrays.asList(Location1Endpoint, Location2Endpoint)),
+                new HashSet<>(Arrays.asList(Location1Endpoint, Location2Endpoint, Location3Endpoint))
+            },
+            {
+                new HashSet<>(Arrays.asList("location1, location2, location10")),
+                Arrays.asList("location2"),
+                RxDocumentServiceRequest.create(
+                    mockDiagnosticsClientContext(),
+                    OperationType.Read,
+                    ResourceType.Document),
+                new HashSet<>(Arrays.asList(Location1Endpoint)),
+                new HashSet<>(Arrays.asList(Location1Endpoint, Location3Endpoint))
+            }
+        };
+    }
+
     @Test(groups = "long", dataProvider = "paramsProvider")
     public void validateAsync(boolean useMultipleWriteEndpoints,
                               boolean endpointDiscoveryEnabled,
@@ -104,6 +193,40 @@ public class LocationCacheTest {
         assertThat(this.cache.getWriteEndpoints().get(0)).isEqualTo(LocationCacheTest.Location1Endpoint);
         assertThat(this.cache.getWriteEndpoints().get(1)).isEqualTo(LocationCacheTest.Location2Endpoint);
         assertThat(this.cache.getWriteEndpoints().get(2)).isEqualTo(LocationCacheTest.Location3Endpoint);
+    }
+
+    @Test(groups = "unit", dataProvider = "excludedRegionsTestConfigs")
+    public void validateExcludedRegions(
+        Set<String> excludedRegionsOnClient,
+        List<String> excludedRegionsOnRequest,
+        RxDocumentServiceRequest request,
+        Set<URI> expectedApplicableReadEndpoints,
+        Set<URI> expectedApplicableWriteEndpoints) throws Exception {
+
+        this.initialize(true, true, false);
+        AtomicReference<CosmosExcludedRegions> cosmosExcludedRegionsAtomicReference = new AtomicReference<>(
+            new CosmosExcludedRegions(new HashSet<>()));
+        Supplier<CosmosExcludedRegions> excludedRegionsSupplier = () -> cosmosExcludedRegionsAtomicReference.get();
+
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(this.cache);
+
+        connectionPolicy.setExcludedRegionsSupplier(excludedRegionsSupplier);
+
+        if (excludedRegionsOnClient == null) {
+            assertThatThrownBy(() -> cosmosExcludedRegionsAtomicReference.set(new CosmosExcludedRegions(excludedRegionsOnClient)))
+                .isInstanceOf(IllegalArgumentException.class);
+        } else {
+
+            cosmosExcludedRegionsAtomicReference.set(new CosmosExcludedRegions(excludedRegionsOnClient));
+
+            request.requestContext.setExcludeRegions(excludedRegionsOnRequest);
+
+            List<URI> applicableReadEndpoints = cache.getApplicableReadEndpoints(request);
+            List<URI> applicableWriteEndpoints = cache.getApplicableWriteEndpoints(request);
+
+            assertThat(applicableReadEndpoints.size()).isEqualTo(expectedApplicableReadEndpoints.size());
+            assertThat(applicableWriteEndpoints.size()).isEqualTo(expectedApplicableWriteEndpoints.size());
+        }
     }
 
     @AfterClass()
@@ -135,6 +258,10 @@ public class LocationCacheTest {
             boolean enableEndpointDiscovery,
             boolean isPreferredLocationsListEmpty) throws Exception {
 
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+        connectionPolicy.setEndpointDiscoveryEnabled(enableEndpointDiscovery);
+        connectionPolicy.setMultipleWriteRegionsEnabled(useMultipleWriteLocations);
+
         this.mockedClient = new DatabaseAccountManagerInternalMock();
         this.databaseAccount = LocationCacheTest.createDatabaseAccount(useMultipleWriteLocations);
 
@@ -142,19 +269,14 @@ public class LocationCacheTest {
                 new UnmodifiableList<>(Collections.emptyList()) :
                 new UnmodifiableList<>(ImmutableList.of("location1", "location2", "location3"));
 
+        connectionPolicy.setPreferredRegions(this.preferredLocations);
+
         this.cache = new LocationCache(
-                this.preferredLocations,
+                connectionPolicy,
                 LocationCacheTest.DefaultEndpoint,
-                enableEndpointDiscovery,
-                useMultipleWriteLocations,
                 configs);
 
         this.cache.onDatabaseAccountRead(this.databaseAccount);
-
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-        connectionPolicy.setEndpointDiscoveryEnabled(enableEndpointDiscovery);
-        connectionPolicy.setMultipleWriteRegionsEnabled(useMultipleWriteLocations);
-        connectionPolicy.setPreferredRegions(this.preferredLocations);
 
         this.endpointManager = new GlobalEndpointManager(mockedClient, connectionPolicy, configs);
     }

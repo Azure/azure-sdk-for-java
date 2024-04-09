@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public interface WorkflowRunActionScopeRepetitionsClient {
     /**
      * List the workflow run action scoped repetitions.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -31,12 +31,12 @@ public interface WorkflowRunActionScopeRepetitionsClient {
      * @return a collection of workflow run action repetitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<WorkflowRunActionRepetitionDefinitionInner> listAsync(
-        String resourceGroupName, String name, String workflowName, String runName, String actionName);
+    PagedFlux<WorkflowRunActionRepetitionDefinitionInner> listAsync(String resourceGroupName, String name,
+        String workflowName, String runName, String actionName);
 
     /**
      * List the workflow run action scoped repetitions.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -48,12 +48,12 @@ public interface WorkflowRunActionScopeRepetitionsClient {
      * @return a collection of workflow run action repetitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(
-        String resourceGroupName, String name, String workflowName, String runName, String actionName);
+    PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(String resourceGroupName, String name,
+        String workflowName, String runName, String actionName);
 
     /**
      * List the workflow run action scoped repetitions.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -66,12 +66,12 @@ public interface WorkflowRunActionScopeRepetitionsClient {
      * @return a collection of workflow run action repetitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(
-        String resourceGroupName, String name, String workflowName, String runName, String actionName, Context context);
+    PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(String resourceGroupName, String name,
+        String workflowName, String runName, String actionName, Context context);
 
     /**
      * Get a workflow run action scoped repetition.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -81,21 +81,16 @@ public interface WorkflowRunActionScopeRepetitionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action scoped repetition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a workflow run action scoped repetition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<WorkflowRunActionRepetitionDefinitionInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName);
+    Mono<Response<WorkflowRunActionRepetitionDefinitionInner>> getWithResponseAsync(String resourceGroupName,
+        String name, String workflowName, String runName, String actionName, String repetitionName);
 
     /**
      * Get a workflow run action scoped repetition.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -108,17 +103,12 @@ public interface WorkflowRunActionScopeRepetitionsClient {
      * @return a workflow run action scoped repetition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<WorkflowRunActionRepetitionDefinitionInner> getAsync(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName);
+    Mono<WorkflowRunActionRepetitionDefinitionInner> getAsync(String resourceGroupName, String name,
+        String workflowName, String runName, String actionName, String repetitionName);
 
     /**
      * Get a workflow run action scoped repetition.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -132,18 +122,12 @@ public interface WorkflowRunActionScopeRepetitionsClient {
      * @return a workflow run action scoped repetition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowRunActionRepetitionDefinitionInner> getWithResponse(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        Context context);
+    Response<WorkflowRunActionRepetitionDefinitionInner> getWithResponse(String resourceGroupName, String name,
+        String workflowName, String runName, String actionName, String repetitionName, Context context);
 
     /**
      * Get a workflow run action scoped repetition.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName The workflow name.
@@ -156,11 +140,6 @@ public interface WorkflowRunActionScopeRepetitionsClient {
      * @return a workflow run action scoped repetition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkflowRunActionRepetitionDefinitionInner get(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName);
+    WorkflowRunActionRepetitionDefinitionInner get(String resourceGroupName, String name, String workflowName,
+        String runName, String actionName, String repetitionName);
 }

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.LocalizableString;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Usage of the quota resource. */
+/**
+ * Usage of the quota resource.
+ */
 @Fluent
 public final class CsmUsageQuotaInner {
     /*
@@ -42,13 +44,15 @@ public final class CsmUsageQuotaInner {
     @JsonProperty(value = "name")
     private LocalizableString name;
 
-    /** Creates an instance of CsmUsageQuotaInner class. */
+    /**
+     * Creates an instance of CsmUsageQuotaInner class.
+     */
     public CsmUsageQuotaInner() {
     }
 
     /**
      * Get the unit property: Units of measurement for the quota resource.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -57,7 +61,7 @@ public final class CsmUsageQuotaInner {
 
     /**
      * Set the unit property: Units of measurement for the quota resource.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the CsmUsageQuotaInner object itself.
      */
@@ -68,7 +72,7 @@ public final class CsmUsageQuotaInner {
 
     /**
      * Get the nextResetTime property: Next reset time for the resource counter.
-     *
+     * 
      * @return the nextResetTime value.
      */
     public OffsetDateTime nextResetTime() {
@@ -77,7 +81,7 @@ public final class CsmUsageQuotaInner {
 
     /**
      * Set the nextResetTime property: Next reset time for the resource counter.
-     *
+     * 
      * @param nextResetTime the nextResetTime value to set.
      * @return the CsmUsageQuotaInner object itself.
      */
@@ -88,7 +92,7 @@ public final class CsmUsageQuotaInner {
 
     /**
      * Get the currentValue property: The current value of the resource counter.
-     *
+     * 
      * @return the currentValue value.
      */
     public Long currentValue() {
@@ -97,7 +101,7 @@ public final class CsmUsageQuotaInner {
 
     /**
      * Set the currentValue property: The current value of the resource counter.
-     *
+     * 
      * @param currentValue the currentValue value to set.
      * @return the CsmUsageQuotaInner object itself.
      */
@@ -108,7 +112,7 @@ public final class CsmUsageQuotaInner {
 
     /**
      * Get the limit property: The resource limit.
-     *
+     * 
      * @return the limit value.
      */
     public Long limit() {
@@ -117,7 +121,7 @@ public final class CsmUsageQuotaInner {
 
     /**
      * Set the limit property: The resource limit.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the CsmUsageQuotaInner object itself.
      */
@@ -128,7 +132,7 @@ public final class CsmUsageQuotaInner {
 
     /**
      * Get the name property: Quota name.
-     *
+     * 
      * @return the name value.
      */
     public LocalizableString name() {
@@ -137,7 +141,7 @@ public final class CsmUsageQuotaInner {
 
     /**
      * Set the name property: Quota name.
-     *
+     * 
      * @param name the name value to set.
      * @return the CsmUsageQuotaInner object itself.
      */
@@ -148,7 +152,7 @@ public final class CsmUsageQuotaInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

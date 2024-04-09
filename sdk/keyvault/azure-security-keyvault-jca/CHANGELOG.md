@@ -1,6 +1,6 @@
 # Release History
 
-## 2.8.0-beta.1 (Unreleased)
+## 2.9.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,19 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.8.1 (2023-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+Regular updates for dependency versions.
+
+## 2.8.0 (2023-09-28)
+
+### Features Added
+- Support key type of `RSA-HSM` and `EC-HSM` in JCA [#36648](https://github.com/Azure/azure-sdk-for-java/pull/36648).
 
 ## 2.7.1 (2023-03-01)
 

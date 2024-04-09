@@ -32,7 +32,7 @@ public final class ServiceConfigurationsCreateOrupdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"mouexhdzx\",\"port\":7433658867107362465,\"provisioningState\":\"Canceled\"},\"id\":\"nxqbzvddn\",\"name\":\"wndeicbtwnp\",\"type\":\"aoqvuh\"}";
+            "{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"jjxhvpmo\",\"port\":5563523584093599698,\"provisioningState\":\"Failed\"},\"id\":\"i\",\"name\":\"qeojnxqbzvddntw\",\"type\":\"deicbtwnpzao\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,15 +63,15 @@ public final class ServiceConfigurationsCreateOrupdateWithResponseMockTests {
         ServiceConfigurationResource response =
             manager
                 .serviceConfigurations()
-                .define("qsqsy")
-                .withExistingEndpoint("djwzrlov", "clwhijcoejctbz")
-                .withServiceName(ServiceName.SSH)
-                .withResourceId("fkgukdkexxppof")
-                .withPort(8067111908299407616L)
+                .define("jctbza")
+                .withExistingEndpoint("mcl", "hijco")
+                .withServiceName(ServiceName.WAC)
+                .withResourceId("y")
+                .withPort(5593632114623401437L)
                 .create();
 
         Assertions.assertEquals(ServiceName.WAC, response.serviceName());
-        Assertions.assertEquals("mouexhdzx", response.resourceId());
-        Assertions.assertEquals(7433658867107362465L, response.port());
+        Assertions.assertEquals("jjxhvpmo", response.resourceId());
+        Assertions.assertEquals(5563523584093599698L, response.port());
     }
 }

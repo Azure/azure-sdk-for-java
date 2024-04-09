@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the parameters for the origin group override configuration. */
+/**
+ * Defines the parameters for the origin group override configuration.
+ */
 @Fluent
 public final class OriginGroupOverride {
     /*
@@ -23,8 +25,14 @@ public final class OriginGroupOverride {
     private ForwardingProtocol forwardingProtocol;
 
     /**
+     * Creates an instance of OriginGroupOverride class.
+     */
+    public OriginGroupOverride() {
+    }
+
+    /**
      * Get the originGroup property: defines the OriginGroup that would override the DefaultOriginGroup on route.
-     *
+     * 
      * @return the originGroup value.
      */
     public ResourceReference originGroup() {
@@ -33,7 +41,7 @@ public final class OriginGroupOverride {
 
     /**
      * Set the originGroup property: defines the OriginGroup that would override the DefaultOriginGroup on route.
-     *
+     * 
      * @param originGroup the originGroup value to set.
      * @return the OriginGroupOverride object itself.
      */
@@ -44,7 +52,7 @@ public final class OriginGroupOverride {
 
     /**
      * Get the forwardingProtocol property: Protocol this rule will use when forwarding traffic to backends.
-     *
+     * 
      * @return the forwardingProtocol value.
      */
     public ForwardingProtocol forwardingProtocol() {
@@ -53,7 +61,7 @@ public final class OriginGroupOverride {
 
     /**
      * Set the forwardingProtocol property: Protocol this rule will use when forwarding traffic to backends.
-     *
+     * 
      * @param forwardingProtocol the forwardingProtocol value to set.
      * @return the OriginGroupOverride object itself.
      */
@@ -64,7 +72,7 @@ public final class OriginGroupOverride {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

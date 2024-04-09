@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Update migration item input. */
+/**
+ * Update migration item input.
+ */
 @Fluent
 public final class UpdateMigrationItemInput {
     /*
@@ -16,13 +18,15 @@ public final class UpdateMigrationItemInput {
     @JsonProperty(value = "properties")
     private UpdateMigrationItemInputProperties properties;
 
-    /** Creates an instance of UpdateMigrationItemInput class. */
+    /**
+     * Creates an instance of UpdateMigrationItemInput class.
+     */
     public UpdateMigrationItemInput() {
     }
 
     /**
      * Get the properties property: Update migration item input properties.
-     *
+     * 
      * @return the properties value.
      */
     public UpdateMigrationItemInputProperties properties() {
@@ -31,7 +35,7 @@ public final class UpdateMigrationItemInput {
 
     /**
      * Set the properties property: Update migration item input properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the UpdateMigrationItemInput object itself.
      */
@@ -42,7 +46,7 @@ public final class UpdateMigrationItemInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

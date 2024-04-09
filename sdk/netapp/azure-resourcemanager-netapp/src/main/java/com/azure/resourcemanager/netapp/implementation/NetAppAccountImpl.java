@@ -112,20 +112,14 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
     }
 
     public NetAppAccount create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .createOrUpdate(resourceGroupName, accountName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getAccounts().createOrUpdate(resourceGroupName, accountName,
+            this.innerModel(), Context.NONE);
         return this;
     }
 
     public NetAppAccount create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .createOrUpdate(resourceGroupName, accountName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getAccounts().createOrUpdate(resourceGroupName, accountName,
+            this.innerModel(), context);
         return this;
     }
 
@@ -141,45 +135,34 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
     }
 
     public NetAppAccount apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .update(resourceGroupName, accountName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getAccounts().update(resourceGroupName, accountName,
+            updateBody, Context.NONE);
         return this;
     }
 
     public NetAppAccount apply(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getAccounts().update(resourceGroupName, accountName, updateBody, context);
+        this.innerObject
+            = serviceManager.serviceClient().getAccounts().update(resourceGroupName, accountName, updateBody, context);
         return this;
     }
 
-    NetAppAccountImpl(
-        NetAppAccountInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    NetAppAccountImpl(NetAppAccountInner innerObject,
+        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
     }
 
     public NetAppAccount refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
         return this;
     }
 
     public NetAppAccount refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, context).getValue();
         return this;
     }
 

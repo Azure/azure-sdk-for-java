@@ -11,26 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class RulestackDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RulestackDetails model =
-            BinaryData
-                .fromString(
-                    "{\"resourceId\":\"izsjqlhkrr\",\"rulestackId\":\"deibqip\",\"location\":\"ghvxndzwmkrefa\"}")
+        RulestackDetails model
+            = BinaryData.fromString("{\"resourceId\":\"ugzxnf\",\"rulestackId\":\"zpxdt\",\"location\":\"dm\"}")
                 .toObject(RulestackDetails.class);
-        Assertions.assertEquals("izsjqlhkrr", model.resourceId());
-        Assertions.assertEquals("deibqip", model.rulestackId());
-        Assertions.assertEquals("ghvxndzwmkrefa", model.location());
+        Assertions.assertEquals("ugzxnf", model.resourceId());
+        Assertions.assertEquals("zpxdt", model.rulestackId());
+        Assertions.assertEquals("dm", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RulestackDetails model =
-            new RulestackDetails()
-                .withResourceId("izsjqlhkrr")
-                .withRulestackId("deibqip")
-                .withLocation("ghvxndzwmkrefa");
+        RulestackDetails model
+            = new RulestackDetails().withResourceId("ugzxnf").withRulestackId("zpxdt").withLocation("dm");
         model = BinaryData.fromObject(model).toObject(RulestackDetails.class);
-        Assertions.assertEquals("izsjqlhkrr", model.resourceId());
-        Assertions.assertEquals("deibqip", model.rulestackId());
-        Assertions.assertEquals("ghvxndzwmkrefa", model.location());
+        Assertions.assertEquals("ugzxnf", model.resourceId());
+        Assertions.assertEquals("zpxdt", model.rulestackId());
+        Assertions.assertEquals("dm", model.location());
     }
 }

@@ -77,6 +77,14 @@ public final class TableImpl implements Table, Table.Definition, Table.Update {
         return this.innerModel().provisioningState();
     }
 
+    public Boolean retentionInDaysAsDefault() {
+        return this.innerModel().retentionInDaysAsDefault();
+    }
+
+    public Boolean totalRetentionInDaysAsDefault() {
+        return this.innerModel().totalRetentionInDaysAsDefault();
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -150,7 +158,7 @@ public final class TableImpl implements Table, Table.Definition, Table.Update {
     TableImpl(TableInner innerObject, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
+        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
         this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
         this.tableName = Utils.getValueFromIdByName(innerObject.id(), "tables");
     }
@@ -175,12 +183,20 @@ public final class TableImpl implements Table, Table.Definition, Table.Update {
         return this;
     }
 
+    public Response<Void> migrateWithResponse(Context context) {
+        return serviceManager.tables().migrateWithResponse(resourceGroupName, workspaceName, tableName, context);
+    }
+
     public void migrate() {
         serviceManager.tables().migrate(resourceGroupName, workspaceName, tableName);
     }
 
-    public Response<Void> migrateWithResponse(Context context) {
-        return serviceManager.tables().migrateWithResponse(resourceGroupName, workspaceName, tableName, context);
+    public Response<Void> cancelSearchWithResponse(Context context) {
+        return serviceManager.tables().cancelSearchWithResponse(resourceGroupName, workspaceName, tableName, context);
+    }
+
+    public void cancelSearch() {
+        serviceManager.tables().cancelSearch(resourceGroupName, workspaceName, tableName);
     }
 
     public TableImpl withRetentionInDays(Integer retentionInDays) {
@@ -200,11 +216,6 @@ public final class TableImpl implements Table, Table.Definition, Table.Update {
 
     public TableImpl withRestoredLogs(RestoredLogs restoredLogs) {
         this.innerModel().withRestoredLogs(restoredLogs);
-        return this;
-    }
-
-    public TableImpl withResultStatistics(ResultStatistics resultStatistics) {
-        this.innerModel().withResultStatistics(resultStatistics);
         return this;
     }
 

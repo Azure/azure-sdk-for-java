@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.confluent.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Organization Delete. */
+/**
+ * Samples for Organization Delete.
+ */
 public final class OrganizationDeleteSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/Organization_Delete.json
+     * x-ms-original-file:
+     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_Delete.json
      */
     /**
      * Sample code: Confluent_Delete.
-     *
+     * 
      * @param manager Entry point to ConfluentManager.
      */
     public static void confluentDelete(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager.organizations().delete("myResourceGroup", "myOrganization", Context.NONE);
+        manager.organizations().delete("myResourceGroup", "myOrganization", com.azure.core.util.Context.NONE);
     }
 }

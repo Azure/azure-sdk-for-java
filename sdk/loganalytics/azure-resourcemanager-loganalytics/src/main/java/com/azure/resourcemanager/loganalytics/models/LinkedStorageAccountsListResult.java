@@ -18,6 +18,10 @@ public final class LinkedStorageAccountsListResult {
     @JsonProperty(value = "value")
     private List<LinkedStorageAccountsResourceInner> value;
 
+    /** Creates an instance of LinkedStorageAccountsListResult class. */
+    public LinkedStorageAccountsListResult() {
+    }
+
     /**
      * Get the value property: A list of linked storage accounts instances.
      *

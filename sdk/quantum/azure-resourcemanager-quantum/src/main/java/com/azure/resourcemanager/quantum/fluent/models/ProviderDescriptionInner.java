@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.quantum.models.ProviderProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about an offering. A provider offering is an entity that offers Targets to run Azure Quantum Jobs. */
+/**
+ * Information about an offering. A provider offering is an entity that offers Targets to run Azure Quantum Jobs.
+ */
 @Fluent
 public final class ProviderDescriptionInner {
     /*
@@ -24,18 +26,20 @@ public final class ProviderDescriptionInner {
     private String name;
 
     /*
-     * A list of provider-specific properties.
+     * Provider properties.
      */
     @JsonProperty(value = "properties")
     private ProviderProperties properties;
 
-    /** Creates an instance of ProviderDescriptionInner class. */
+    /**
+     * Creates an instance of ProviderDescriptionInner class.
+     */
     public ProviderDescriptionInner() {
     }
 
     /**
      * Get the id property: Unique provider's id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -44,7 +48,7 @@ public final class ProviderDescriptionInner {
 
     /**
      * Set the id property: Unique provider's id.
-     *
+     * 
      * @param id the id value to set.
      * @return the ProviderDescriptionInner object itself.
      */
@@ -55,7 +59,7 @@ public final class ProviderDescriptionInner {
 
     /**
      * Get the name property: Provider's display name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,8 +67,8 @@ public final class ProviderDescriptionInner {
     }
 
     /**
-     * Get the properties property: A list of provider-specific properties.
-     *
+     * Get the properties property: Provider properties.
+     * 
      * @return the properties value.
      */
     public ProviderProperties properties() {
@@ -72,8 +76,8 @@ public final class ProviderDescriptionInner {
     }
 
     /**
-     * Set the properties property: A list of provider-specific properties.
-     *
+     * Set the properties property: Provider properties.
+     * 
      * @param properties the properties value to set.
      * @return the ProviderDescriptionInner object itself.
      */
@@ -84,7 +88,7 @@ public final class ProviderDescriptionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

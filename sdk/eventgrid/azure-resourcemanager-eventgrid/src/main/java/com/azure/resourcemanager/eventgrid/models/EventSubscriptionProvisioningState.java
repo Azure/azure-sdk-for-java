@@ -8,32 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the event subscription. */
+/**
+ * Provisioning state of the event subscription.
+ */
 public final class EventSubscriptionProvisioningState extends ExpandableStringEnum<EventSubscriptionProvisioningState> {
-    /** Static value Creating for EventSubscriptionProvisioningState. */
+    /**
+     * Static value Creating for EventSubscriptionProvisioningState.
+     */
     public static final EventSubscriptionProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for EventSubscriptionProvisioningState. */
+    /**
+     * Static value Updating for EventSubscriptionProvisioningState.
+     */
     public static final EventSubscriptionProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for EventSubscriptionProvisioningState. */
+    /**
+     * Static value Deleting for EventSubscriptionProvisioningState.
+     */
     public static final EventSubscriptionProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Succeeded for EventSubscriptionProvisioningState. */
+    /**
+     * Static value Succeeded for EventSubscriptionProvisioningState.
+     */
     public static final EventSubscriptionProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Canceled for EventSubscriptionProvisioningState. */
+    /**
+     * Static value Canceled for EventSubscriptionProvisioningState.
+     */
     public static final EventSubscriptionProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Failed for EventSubscriptionProvisioningState. */
+    /**
+     * Static value Failed for EventSubscriptionProvisioningState.
+     */
     public static final EventSubscriptionProvisioningState FAILED = fromString("Failed");
 
-    /** Static value AwaitingManualAction for EventSubscriptionProvisioningState. */
+    /**
+     * Static value AwaitingManualAction for EventSubscriptionProvisioningState.
+     */
     public static final EventSubscriptionProvisioningState AWAITING_MANUAL_ACTION = fromString("AwaitingManualAction");
 
     /**
      * Creates a new instance of EventSubscriptionProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +58,7 @@ public final class EventSubscriptionProvisioningState extends ExpandableStringEn
 
     /**
      * Creates or finds a EventSubscriptionProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EventSubscriptionProvisioningState.
      */
@@ -53,7 +69,7 @@ public final class EventSubscriptionProvisioningState extends ExpandableStringEn
 
     /**
      * Gets known EventSubscriptionProvisioningState values.
-     *
+     * 
      * @return known EventSubscriptionProvisioningState values.
      */
     public static Collection<EventSubscriptionProvisioningState> values() {

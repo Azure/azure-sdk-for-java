@@ -9,11 +9,10 @@ import com.azure.core.util.ConfigurationSource;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -25,38 +24,21 @@ public class EnvironmentConfiguration {
     /*
      * Configurations that are loaded into the global configuration store when the application starts.
      */
-    private static final Set<String> DEFAULT_CONFIGURATIONS = new HashSet<>(Arrays.asList(
-        Configuration.PROPERTY_HTTP_PROXY,
-        Configuration.PROPERTY_HTTPS_PROXY,
-        Configuration.PROPERTY_IDENTITY_ENDPOINT,
-        Configuration.PROPERTY_IDENTITY_HEADER,
-        Configuration.PROPERTY_NO_PROXY,
-        Configuration.PROPERTY_MSI_ENDPOINT,
-        Configuration.PROPERTY_MSI_SECRET,
-        Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID,
-        Configuration.PROPERTY_AZURE_USERNAME,
-        Configuration.PROPERTY_AZURE_PASSWORD,
-        Configuration.PROPERTY_AZURE_CLIENT_ID,
-        Configuration.PROPERTY_AZURE_CLIENT_SECRET,
-        Configuration.PROPERTY_AZURE_TENANT_ID,
-        Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH,
-        Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD,
-        Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1,
-        Configuration.PROPERTY_AZURE_RESOURCE_GROUP,
-        Configuration.PROPERTY_AZURE_CLOUD,
-        Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
-        Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED,
-        Configuration.PROPERTY_AZURE_LOG_LEVEL,
-        Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL,
-        Configuration.PROPERTY_AZURE_TRACING_DISABLED,
-        Configuration.PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL,
-        Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME,
-        Configuration.PROPERTY_AZURE_REQUEST_RETRY_COUNT,
-        Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT,
-        Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-        Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
-        Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT
-    ));
+    private static final List<String> DEFAULT_CONFIGURATIONS = Arrays.asList(Configuration.PROPERTY_HTTP_PROXY,
+        Configuration.PROPERTY_HTTPS_PROXY, Configuration.PROPERTY_IDENTITY_ENDPOINT,
+        Configuration.PROPERTY_IDENTITY_HEADER, Configuration.PROPERTY_NO_PROXY, Configuration.PROPERTY_MSI_ENDPOINT,
+        Configuration.PROPERTY_MSI_SECRET, Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID,
+        Configuration.PROPERTY_AZURE_USERNAME, Configuration.PROPERTY_AZURE_PASSWORD,
+        Configuration.PROPERTY_AZURE_CLIENT_ID, Configuration.PROPERTY_AZURE_CLIENT_SECRET,
+        Configuration.PROPERTY_AZURE_TENANT_ID, Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH,
+        Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD, Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1,
+        Configuration.PROPERTY_AZURE_RESOURCE_GROUP, Configuration.PROPERTY_AZURE_CLOUD,
+        Configuration.PROPERTY_AZURE_AUTHORITY_HOST, Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED,
+        Configuration.PROPERTY_AZURE_LOG_LEVEL, Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL,
+        Configuration.PROPERTY_AZURE_TRACING_DISABLED, Configuration.PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL,
+        Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME, Configuration.PROPERTY_AZURE_REQUEST_RETRY_COUNT,
+        Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
+        Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT);
 
     private static final EnvironmentConfiguration GLOBAL_CONFIGURATION = new EnvironmentConfiguration();
 
@@ -73,6 +55,8 @@ public class EnvironmentConfiguration {
 
     /**
      * Clones original configuration.
+     *
+     * @param original configuration to clone.
      */
     public EnvironmentConfiguration(EnvironmentConfiguration original) {
         this.explicitConfigurations = new ConcurrentHashMap<>(original.explicitConfigurations);
@@ -82,8 +66,12 @@ public class EnvironmentConfiguration {
 
     /**
      * Constructs a configuration containing mocked environment. Use this constructor for testing.
+     *
+     * @param systemPropertiesConfigurationSource mocked system properties configuration source.
+     * @param environmentConfigurationSource mocked environment configuration source.
      */
-    public EnvironmentConfiguration(ConfigurationSource systemPropertiesConfigurationSource, ConfigurationSource environmentConfigurationSource) {
+    public EnvironmentConfiguration(ConfigurationSource systemPropertiesConfigurationSource,
+        ConfigurationSource environmentConfigurationSource) {
         this.explicitConfigurations = new ConcurrentHashMap<>();
 
         if (environmentConfigurationSource == null) {
@@ -102,7 +90,8 @@ public class EnvironmentConfiguration {
             this.sysPropertiesConfigurations = new ConcurrentHashMap<>();
         } else {
             Map<String, String> fromSystemProperties = systemPropertiesConfigurationSource.getProperties(null);
-            Objects.requireNonNull(fromSystemProperties, "'systemPropertiesConfigurationSource.getProperties(null)' can't be null");
+            Objects.requireNonNull(fromSystemProperties,
+                "'systemPropertiesConfigurationSource.getProperties(null)' can't be null");
             this.sysPropertiesConfigurations = new ConcurrentHashMap<>(fromSystemProperties.size());
             for (Map.Entry<String, String> config : fromSystemProperties.entrySet()) {
                 this.sysPropertiesConfigurations.put(config.getKey(), Optional.ofNullable(config.getValue()));
@@ -110,6 +99,11 @@ public class EnvironmentConfiguration {
         }
     }
 
+    /**
+     * Gets the global configuration.
+     *
+     * @return The global configuration.
+     */
     public static EnvironmentConfiguration getGlobalConfiguration() {
         return GLOBAL_CONFIGURATION;
     }
@@ -170,10 +164,12 @@ public class EnvironmentConfiguration {
      * If no configuration is found null is returned.
      *
      * @param name Configuration property name.
+     * 
      * @return The configuration value from either the configuration store, runtime parameters, or environment
      * variable, in that order, if found, otherwise null.
      */
-    private String getOrLoad(String name, ConcurrentMap<String, Optional<String>> configurations, boolean loadFromSystemProperties) {
+    private String getOrLoad(String name, ConcurrentMap<String, Optional<String>> configurations,
+        boolean loadFromSystemProperties) {
         Optional<String> value = configurations.get(name);
         if (value != null) {
             return value.orElse(null);
@@ -189,7 +185,7 @@ public class EnvironmentConfiguration {
      * <p>
      * This will overwrite the previous configuration value if it existed.
      *
-     * @param name  Name of the configuration.
+     * @param name Name of the configuration.
      * @param value Value of the configuration.
      * @return The updated Configuration object.
      */
@@ -218,9 +214,16 @@ public class EnvironmentConfiguration {
         return System.getProperty(name);
     }
 
+    /**
+     * A configuration source that loads configuration values from the environment variables.
+     */
     public static final class EnvironmentVariablesConfigurationSource implements ConfigurationSource {
+        /**
+         * The global environment variables configuration source.
+         */
         public static final ConfigurationSource GLOBAL_SOURCE = new EnvironmentVariablesConfigurationSource();
-        Map<String, String> configurations;
+
+        private final Map<String, String> configurations;
 
         private EnvironmentVariablesConfigurationSource() {
             configurations = new HashMap<>();

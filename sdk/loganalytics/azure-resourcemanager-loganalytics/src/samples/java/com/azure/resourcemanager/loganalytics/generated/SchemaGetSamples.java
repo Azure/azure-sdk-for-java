@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Schema Get. */
 public final class SchemaGetSamples {
     /*
@@ -17,6 +15,6 @@ public final class SchemaGetSamples {
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void workspacesGetSchema(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.schemas().getWithResponse("mms-eus", "atlantisdemo", Context.NONE);
+        manager.schemas().getWithResponse("mms-eus", "atlantisdemo", com.azure.core.util.Context.NONE);
     }
 }

@@ -12,9 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class UpdateGroup {
     /*
-     * The name of the Fleet member group to update.
-     * It should match the name of an existing FleetMember group.
-     * A group can only appear once across all UpdateStages in the UpdateRun.
+     * Name of the group.
+     * It must match a group name of an existing fleet member.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -24,8 +23,7 @@ public final class UpdateGroup {
     }
 
     /**
-     * Get the name property: The name of the Fleet member group to update. It should match the name of an existing
-     * FleetMember group. A group can only appear once across all UpdateStages in the UpdateRun.
+     * Get the name property: Name of the group. It must match a group name of an existing fleet member.
      *
      * @return the name value.
      */
@@ -34,8 +32,7 @@ public final class UpdateGroup {
     }
 
     /**
-     * Set the name property: The name of the Fleet member group to update. It should match the name of an existing
-     * FleetMember group. A group can only appear once across all UpdateStages in the UpdateRun.
+     * Set the name property: Name of the group. It must match a group name of an existing fleet member.
      *
      * @param name the name value to set.
      * @return the UpdateGroup object itself.

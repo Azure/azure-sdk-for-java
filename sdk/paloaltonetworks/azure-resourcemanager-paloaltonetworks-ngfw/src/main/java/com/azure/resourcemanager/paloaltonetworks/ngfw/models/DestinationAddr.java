@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** destination address. */
+/**
+ * destination address.
+ */
 @Fluent
 public final class DestinationAddr {
     /*
@@ -41,13 +43,15 @@ public final class DestinationAddr {
     @JsonProperty(value = "fqdnLists")
     private List<String> fqdnLists;
 
-    /** Creates an instance of DestinationAddr class. */
+    /**
+     * Creates an instance of DestinationAddr class.
+     */
     public DestinationAddr() {
     }
 
     /**
      * Get the cidrs property: special value 'any'.
-     *
+     * 
      * @return the cidrs value.
      */
     public List<String> cidrs() {
@@ -56,7 +60,7 @@ public final class DestinationAddr {
 
     /**
      * Set the cidrs property: special value 'any'.
-     *
+     * 
      * @param cidrs the cidrs value to set.
      * @return the DestinationAddr object itself.
      */
@@ -67,7 +71,7 @@ public final class DestinationAddr {
 
     /**
      * Get the countries property: list of countries.
-     *
+     * 
      * @return the countries value.
      */
     public List<String> countries() {
@@ -76,7 +80,7 @@ public final class DestinationAddr {
 
     /**
      * Set the countries property: list of countries.
-     *
+     * 
      * @param countries the countries value to set.
      * @return the DestinationAddr object itself.
      */
@@ -87,7 +91,7 @@ public final class DestinationAddr {
 
     /**
      * Get the feeds property: list of feeds.
-     *
+     * 
      * @return the feeds value.
      */
     public List<String> feeds() {
@@ -96,7 +100,7 @@ public final class DestinationAddr {
 
     /**
      * Set the feeds property: list of feeds.
-     *
+     * 
      * @param feeds the feeds value to set.
      * @return the DestinationAddr object itself.
      */
@@ -107,7 +111,7 @@ public final class DestinationAddr {
 
     /**
      * Get the prefixLists property: prefix list.
-     *
+     * 
      * @return the prefixLists value.
      */
     public List<String> prefixLists() {
@@ -116,7 +120,7 @@ public final class DestinationAddr {
 
     /**
      * Set the prefixLists property: prefix list.
-     *
+     * 
      * @param prefixLists the prefixLists value to set.
      * @return the DestinationAddr object itself.
      */
@@ -127,7 +131,7 @@ public final class DestinationAddr {
 
     /**
      * Get the fqdnLists property: fqdn list.
-     *
+     * 
      * @return the fqdnLists value.
      */
     public List<String> fqdnLists() {
@@ -136,7 +140,7 @@ public final class DestinationAddr {
 
     /**
      * Set the fqdnLists property: fqdn list.
-     *
+     * 
      * @param fqdnLists the fqdnLists value to set.
      * @return the DestinationAddr object itself.
      */
@@ -147,7 +151,7 @@ public final class DestinationAddr {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

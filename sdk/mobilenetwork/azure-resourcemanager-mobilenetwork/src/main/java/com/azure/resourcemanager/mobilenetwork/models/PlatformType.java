@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The platform type where packet core is deployed. The contents of this enum can change. */
+/**
+ * The platform type where packet core is deployed. The contents of this enum can change.
+ */
 public final class PlatformType extends ExpandableStringEnum<PlatformType> {
-    /** Static value AKS-HCI for PlatformType. */
+    /**
+     * Static value AKS-HCI for PlatformType.
+     */
     public static final PlatformType AKS_HCI = fromString("AKS-HCI");
 
-    /** Static value 3P-AZURE-STACK-HCI for PlatformType. */
+    /**
+     * Static value 3P-AZURE-STACK-HCI for PlatformType.
+     */
     public static final PlatformType THREE_P_AZURE_STACK_HCI = fromString("3P-AZURE-STACK-HCI");
 
     /**
      * Creates a new instance of PlatformType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class PlatformType extends ExpandableStringEnum<PlatformType> {
 
     /**
      * Creates or finds a PlatformType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PlatformType.
      */
@@ -38,7 +44,7 @@ public final class PlatformType extends ExpandableStringEnum<PlatformType> {
 
     /**
      * Gets known PlatformType values.
-     *
+     * 
      * @return known PlatformType values.
      */
     public static Collection<PlatformType> values() {

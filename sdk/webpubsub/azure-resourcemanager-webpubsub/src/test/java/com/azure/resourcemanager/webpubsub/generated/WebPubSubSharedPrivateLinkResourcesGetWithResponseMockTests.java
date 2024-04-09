@@ -31,7 +31,7 @@ public final class WebPubSubSharedPrivateLinkResourcesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"groupId\":\"nnhdrl\",\"privateLinkResourceId\":\"tgjcsgguxheml\",\"provisioningState\":\"Deleting\",\"requestMessage\":\"eeczgfbu\",\"status\":\"Rejected\"},\"id\":\"elssxblycs\",\"name\":\"zujksrlsmdes\",\"type\":\"plpvm\"}";
+            "{\"properties\":{\"groupId\":\"lsrhmpqvwwskond\",\"privateLinkResourceId\":\"brwimuvqejosovyr\",\"provisioningState\":\"Running\",\"requestMessage\":\"esi\",\"status\":\"Disconnected\"},\"id\":\"ljqobbpihehcecyb\",\"name\":\"rqbrjbbmpxdlvyk\",\"type\":\"rexcrseqwjksghu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class WebPubSubSharedPrivateLinkResourcesGetWithResponseMockTests {
         SharedPrivateLinkResource response =
             manager
                 .webPubSubSharedPrivateLinkResources()
-                .getWithResponse("ddpqt", "ehnmnaoyankco", "qswankltytmhdr", com.azure.core.util.Context.NONE)
+                .getWithResponse("skw", "qjjyslurl", "shhkvpedw", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("nnhdrl", response.groupId());
-        Assertions.assertEquals("tgjcsgguxheml", response.privateLinkResourceId());
-        Assertions.assertEquals("eeczgfbu", response.requestMessage());
+        Assertions.assertEquals("lsrhmpqvwwskond", response.groupId());
+        Assertions.assertEquals("brwimuvqejosovyr", response.privateLinkResourceId());
+        Assertions.assertEquals("esi", response.requestMessage());
     }
 }

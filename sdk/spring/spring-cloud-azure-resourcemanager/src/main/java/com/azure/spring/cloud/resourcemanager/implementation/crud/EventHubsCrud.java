@@ -12,7 +12,7 @@ import reactor.util.function.Tuple2;
 /**
  * Resource manager for Azure Event Hubs.
  */
-public class EventHubsCrud extends AbstractResourceCrud<EventHub, Tuple2<String, String>> {
+public class EventHubsCrud extends AbstractResourceCrud<EventHub, Tuple2<String, String>, Object> {
 
     public EventHubsCrud(AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {
         super(azureResourceManager, azureResourceMetadata);

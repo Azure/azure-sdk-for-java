@@ -12,16 +12,16 @@ public final class RouteErrorPositionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RouteErrorPosition model =
-            BinaryData.fromString("{\"line\":875285248,\"column\":1367629772}").toObject(RouteErrorPosition.class);
-        Assertions.assertEquals(875285248, model.line());
-        Assertions.assertEquals(1367629772, model.column());
+            BinaryData.fromString("{\"line\":478734436,\"column\":829612504}").toObject(RouteErrorPosition.class);
+        Assertions.assertEquals(478734436, model.line());
+        Assertions.assertEquals(829612504, model.column());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RouteErrorPosition model = new RouteErrorPosition().withLine(875285248).withColumn(1367629772);
+        RouteErrorPosition model = new RouteErrorPosition().withLine(478734436).withColumn(829612504);
         model = BinaryData.fromObject(model).toObject(RouteErrorPosition.class);
-        Assertions.assertEquals(875285248, model.line());
-        Assertions.assertEquals(1367629772, model.column());
+        Assertions.assertEquals(478734436, model.line());
+        Assertions.assertEquals(829612504, model.column());
     }
 }

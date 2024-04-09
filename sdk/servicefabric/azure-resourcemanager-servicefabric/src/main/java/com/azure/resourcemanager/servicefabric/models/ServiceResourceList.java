@@ -4,29 +4,71 @@
 
 package com.azure.resourcemanager.servicefabric.models;
 
-import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceListInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceInner;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An immutable client-side representation of ServiceResourceList. */
-public interface ServiceResourceList {
+/**
+ * The list of service resources.
+ */
+@Fluent
+public final class ServiceResourceList {
+    /*
+     * The value property.
+     */
+    @JsonProperty(value = "value")
+    private List<ServiceResourceInner> value;
+
+    /*
+     * URL to get the next set of service list results if there are any.
+     */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    private String nextLink;
+
     /**
-     * Gets the value property: The value property.
-     *
+     * Creates an instance of ServiceResourceList class.
+     */
+    public ServiceResourceList() {
+    }
+
+    /**
+     * Get the value property: The value property.
+     * 
      * @return the value value.
      */
-    List<ServiceResource> value();
+    public List<ServiceResourceInner> value() {
+        return this.value;
+    }
 
     /**
-     * Gets the nextLink property: URL to get the next set of service list results if there are any.
-     *
+     * Set the value property: The value property.
+     * 
+     * @param value the value value to set.
+     * @return the ServiceResourceList object itself.
+     */
+    public ServiceResourceList withValue(List<ServiceResourceInner> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: URL to get the next set of service list results if there are any.
+     * 
      * @return the nextLink value.
      */
-    String nextLink();
+    public String nextLink() {
+        return this.nextLink;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceListInner object.
-     *
-     * @return the inner object.
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    ServiceResourceListInner innerModel();
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
+    }
 }

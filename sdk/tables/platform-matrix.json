@@ -6,36 +6,36 @@
   },
   "matrix": {
     "Agent": {
-      "windows-2022": { "OSVmImage": "windows-2022", "Pool": "azsdk-pool-mms-win-2022-general" },
-      "ubuntu-2004": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" },
-      "macos-11": { "OSVmImage": "macos-11", "Pool": "Azure Pipelines" }
+      "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" },
+      "ubuntu-2004": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" },
+      "macos-11": { "OSVmImage": "env:MACVMIMAGE", "Pool": "env:MACPOOL" }
     },
     "ArmTemplateParameters": [ "@{endpointType='storage'}", "@{endpointType='cosmos'}" ],
     "AZURE_TEST_HTTP_CLIENTS": "netty",
-    "JavaTestVersion": [ "1.8", "1.11" ]
+    "JavaTestVersion": [ "1.8", "1.21" ]
   },
   "include": [
     {
       "AZURE_TEST_HTTP_CLIENTS": "okhttp",
       "JavaTestVersion": "1.8",
       "Agent": {
-        "windows-2022": { "OSVmImage": "windows-2022", "Pool": "azsdk-pool-mms-win-2022-general" }
+        "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" }
       },
       "ArmTemplateParameters": "@{endpointType='storage'}"
     },
     {
       "AZURE_TEST_HTTP_CLIENTS": "okhttp",
-      "JavaTestVersion": "1.11",
+      "JavaTestVersion": "1.21",
       "Agent": {
-        "macos-11": { "OSVmImage": "macos-11", "Pool": "Azure Pipelines" }
+        "macos-11": { "OSVmImage": "env:MACVMIMAGE", "Pool": "env:MACPOOL" }
       },
       "ArmTemplateParameters": "@{endpointType='storage'}"
     },
     {
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "JavaTestVersion": "1.11",
+      "JavaTestVersion": "1.21",
       "Agent": {
-        "ubuntu-2004": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+        "ubuntu-2004": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
       "ArmTemplateParameters": "@{endpointType='storage'}",
       "TestFromSource": true

@@ -20,6 +20,15 @@ public final class MicrosoftGraphGiphyRatingType extends ExpandableStringEnum<Mi
     public static final MicrosoftGraphGiphyRatingType UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphGiphyRatingType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphGiphyRatingType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphGiphyRatingType from its string representation.
      *
      * @param name a name to look for.

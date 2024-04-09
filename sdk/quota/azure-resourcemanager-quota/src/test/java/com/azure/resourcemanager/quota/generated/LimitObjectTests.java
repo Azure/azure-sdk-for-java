@@ -12,19 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class LimitObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LimitObject model =
-            BinaryData
-                .fromString("{\"limitObjectType\":\"LimitValue\",\"value\":284238049,\"limitType\":\"Independent\"}")
+        LimitObject model
+            = BinaryData.fromString("{\"limitObjectType\":\"LimitValue\",\"value\":658406237,\"limitType\":\"Shared\"}")
                 .toObject(LimitObject.class);
-        Assertions.assertEquals(284238049, model.value());
-        Assertions.assertEquals(QuotaLimitTypes.INDEPENDENT, model.limitType());
+        Assertions.assertEquals(658406237, model.value());
+        Assertions.assertEquals(QuotaLimitTypes.SHARED, model.limitType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LimitObject model = new LimitObject().withValue(284238049).withLimitType(QuotaLimitTypes.INDEPENDENT);
+        LimitObject model = new LimitObject().withValue(658406237).withLimitType(QuotaLimitTypes.SHARED);
         model = BinaryData.fromObject(model).toObject(LimitObject.class);
-        Assertions.assertEquals(284238049, model.value());
-        Assertions.assertEquals(QuotaLimitTypes.INDEPENDENT, model.limitType());
+        Assertions.assertEquals(658406237, model.value());
+        Assertions.assertEquals(QuotaLimitTypes.SHARED, model.limitType());
     }
 }

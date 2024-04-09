@@ -6,7 +6,11 @@ package com.azure.resourcemanager.kubernetesconfiguration.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kubernetesconfiguration.models.KustomizationDefinition;
+import com.azure.resourcemanager.kubernetesconfiguration.models.PostBuildDefinition;
+import com.azure.resourcemanager.kubernetesconfiguration.models.SubstituteFromDefinition;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class KustomizationDefinitionTests {
@@ -15,35 +19,68 @@ public final class KustomizationDefinitionTests {
         KustomizationDefinition model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"wjdk\",\"path\":\"soodqxhcrmnoh\",\"dependsOn\":[\"kwh\",\"soifiyipjxsqw\"],\"timeoutInSeconds\":2704236244531071102,\"syncIntervalInSeconds\":6416527667848013602,\"retryIntervalInSeconds\":6117195169735305207,\"prune\":false,\"force\":false}")
+                    "{\"name\":\"qkwpyeicxmqc\",\"path\":\"q\",\"dependsOn\":[\"hix\",\"igdtopbob\",\"og\",\"m\"],\"timeoutInSeconds\":495685925173240949,\"syncIntervalInSeconds\":1066773928950935617,\"retryIntervalInSeconds\":5747639335856339043,\"prune\":true,\"force\":true,\"wait\":false,\"postBuild\":{\"substitute\":{\"iotkftutqxl\":\"f\",\"mi\":\"gxlefgugnxkrxd\"},\"substituteFrom\":[{\"kind\":\"zrvqdr\",\"name\":\"hjybigehoqfbo\",\"optional\":true}]}}")
                 .toObject(KustomizationDefinition.class);
-        Assertions.assertEquals("soodqxhcrmnoh", model.path());
-        Assertions.assertEquals("kwh", model.dependsOn().get(0));
-        Assertions.assertEquals(2704236244531071102L, model.timeoutInSeconds());
-        Assertions.assertEquals(6416527667848013602L, model.syncIntervalInSeconds());
-        Assertions.assertEquals(6117195169735305207L, model.retryIntervalInSeconds());
-        Assertions.assertEquals(false, model.prune());
-        Assertions.assertEquals(false, model.force());
+        Assertions.assertEquals("q", model.path());
+        Assertions.assertEquals("hix", model.dependsOn().get(0));
+        Assertions.assertEquals(495685925173240949L, model.timeoutInSeconds());
+        Assertions.assertEquals(1066773928950935617L, model.syncIntervalInSeconds());
+        Assertions.assertEquals(5747639335856339043L, model.retryIntervalInSeconds());
+        Assertions.assertEquals(true, model.prune());
+        Assertions.assertEquals(true, model.force());
+        Assertions.assertEquals(false, model.enableWait());
+        Assertions.assertEquals("f", model.postBuild().substitute().get("iotkftutqxl"));
+        Assertions.assertEquals("zrvqdr", model.postBuild().substituteFrom().get(0).kind());
+        Assertions.assertEquals("hjybigehoqfbo", model.postBuild().substituteFrom().get(0).name());
+        Assertions.assertEquals(true, model.postBuild().substituteFrom().get(0).optional());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         KustomizationDefinition model =
             new KustomizationDefinition()
-                .withPath("soodqxhcrmnoh")
-                .withDependsOn(Arrays.asList("kwh", "soifiyipjxsqw"))
-                .withTimeoutInSeconds(2704236244531071102L)
-                .withSyncIntervalInSeconds(6416527667848013602L)
-                .withRetryIntervalInSeconds(6117195169735305207L)
-                .withPrune(false)
-                .withForce(false);
+                .withPath("q")
+                .withDependsOn(Arrays.asList("hix", "igdtopbob", "og", "m"))
+                .withTimeoutInSeconds(495685925173240949L)
+                .withSyncIntervalInSeconds(1066773928950935617L)
+                .withRetryIntervalInSeconds(5747639335856339043L)
+                .withPrune(true)
+                .withForce(true)
+                .withEnableWait(false)
+                .withPostBuild(
+                    new PostBuildDefinition()
+                        .withSubstitute(mapOf("iotkftutqxl", "f", "mi", "gxlefgugnxkrxd"))
+                        .withSubstituteFrom(
+                            Arrays
+                                .asList(
+                                    new SubstituteFromDefinition()
+                                        .withKind("zrvqdr")
+                                        .withName("hjybigehoqfbo")
+                                        .withOptional(true))));
         model = BinaryData.fromObject(model).toObject(KustomizationDefinition.class);
-        Assertions.assertEquals("soodqxhcrmnoh", model.path());
-        Assertions.assertEquals("kwh", model.dependsOn().get(0));
-        Assertions.assertEquals(2704236244531071102L, model.timeoutInSeconds());
-        Assertions.assertEquals(6416527667848013602L, model.syncIntervalInSeconds());
-        Assertions.assertEquals(6117195169735305207L, model.retryIntervalInSeconds());
-        Assertions.assertEquals(false, model.prune());
-        Assertions.assertEquals(false, model.force());
+        Assertions.assertEquals("q", model.path());
+        Assertions.assertEquals("hix", model.dependsOn().get(0));
+        Assertions.assertEquals(495685925173240949L, model.timeoutInSeconds());
+        Assertions.assertEquals(1066773928950935617L, model.syncIntervalInSeconds());
+        Assertions.assertEquals(5747639335856339043L, model.retryIntervalInSeconds());
+        Assertions.assertEquals(true, model.prune());
+        Assertions.assertEquals(true, model.force());
+        Assertions.assertEquals(false, model.enableWait());
+        Assertions.assertEquals("f", model.postBuild().substitute().get("iotkftutqxl"));
+        Assertions.assertEquals("zrvqdr", model.postBuild().substituteFrom().get(0).kind());
+        Assertions.assertEquals("hjybigehoqfbo", model.postBuild().substituteFrom().get(0).name());
+        Assertions.assertEquals(true, model.postBuild().substituteFrom().get(0).optional());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

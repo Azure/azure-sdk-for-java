@@ -22,52 +22,42 @@ public final class SnapshotsImpl implements Snapshots {
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    public SnapshotsImpl(
-        SnapshotsClient innerClient, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    public SnapshotsImpl(SnapshotsClient innerClient,
+        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Snapshot> list(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
-        PagedIterable<SnapshotInner> inner =
-            this.serviceClient().list(resourceGroupName, accountName, poolName, volumeName);
-        return Utils.mapPage(inner, inner1 -> new SnapshotImpl(inner1, this.manager()));
+    public PagedIterable<Snapshot> list(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
+        PagedIterable<SnapshotInner> inner
+            = this.serviceClient().list(resourceGroupName, accountName, poolName, volumeName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SnapshotImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Snapshot> list(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
-        PagedIterable<SnapshotInner> inner =
-            this.serviceClient().list(resourceGroupName, accountName, poolName, volumeName, context);
-        return Utils.mapPage(inner, inner1 -> new SnapshotImpl(inner1, this.manager()));
+    public PagedIterable<Snapshot> list(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context) {
+        PagedIterable<SnapshotInner> inner
+            = this.serviceClient().list(resourceGroupName, accountName, poolName, volumeName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SnapshotImpl(inner1, this.manager()));
     }
 
-    public Response<Snapshot> getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        Context context) {
-        Response<SnapshotInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, accountName, poolName, volumeName, snapshotName, context);
+    public Response<Snapshot> getWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String snapshotName, Context context) {
+        Response<SnapshotInner> inner = this.serviceClient().getWithResponse(resourceGroupName, accountName, poolName,
+            volumeName, snapshotName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SnapshotImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Snapshot get(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String snapshotName) {
-        SnapshotInner inner =
-            this.serviceClient().get(resourceGroupName, accountName, poolName, volumeName, snapshotName);
+    public Snapshot get(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String snapshotName) {
+        SnapshotInner inner
+            = this.serviceClient().get(resourceGroupName, accountName, poolName, volumeName, snapshotName);
         if (inner != null) {
             return new SnapshotImpl(inner, this.manager());
         } else {
@@ -75,15 +65,10 @@ public final class SnapshotsImpl implements Snapshots {
         }
     }
 
-    public Snapshot update(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        Object body) {
-        SnapshotInner inner =
-            this.serviceClient().update(resourceGroupName, accountName, poolName, volumeName, snapshotName, body);
+    public Snapshot update(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String snapshotName, Object body) {
+        SnapshotInner inner
+            = this.serviceClient().update(resourceGroupName, accountName, poolName, volumeName, snapshotName, body);
         if (inner != null) {
             return new SnapshotImpl(inner, this.manager());
         } else {
@@ -91,18 +76,10 @@ public final class SnapshotsImpl implements Snapshots {
         }
     }
 
-    public Snapshot update(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        Object body,
-        Context context) {
-        SnapshotInner inner =
-            this
-                .serviceClient()
-                .update(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context);
+    public Snapshot update(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String snapshotName, Object body, Context context) {
+        SnapshotInner inner = this.serviceClient().update(resourceGroupName, accountName, poolName, volumeName,
+            snapshotName, body, context);
         if (inner != null) {
             return new SnapshotImpl(inner, this.manager());
         } else {
@@ -110,206 +87,140 @@ public final class SnapshotsImpl implements Snapshots {
         }
     }
 
-    public void delete(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String snapshotName) {
+    public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String snapshotName) {
         this.serviceClient().delete(resourceGroupName, accountName, poolName, volumeName, snapshotName);
     }
 
-    public void delete(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        Context context) {
+    public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String snapshotName, Context context) {
         this.serviceClient().delete(resourceGroupName, accountName, poolName, volumeName, snapshotName, context);
     }
 
-    public void restoreFiles(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        SnapshotRestoreFiles body) {
+    public void restoreFiles(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String snapshotName, SnapshotRestoreFiles body) {
         this.serviceClient().restoreFiles(resourceGroupName, accountName, poolName, volumeName, snapshotName, body);
     }
 
-    public void restoreFiles(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        SnapshotRestoreFiles body,
-        Context context) {
-        this
-            .serviceClient()
-            .restoreFiles(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context);
+    public void restoreFiles(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String snapshotName, SnapshotRestoreFiles body, Context context) {
+        this.serviceClient().restoreFiles(resourceGroupName, accountName, poolName, volumeName, snapshotName, body,
+            context);
     }
 
     public Snapshot getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String poolName = Utils.getValueFromIdByName(id, "capacityPools");
+        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
-        String volumeName = Utils.getValueFromIdByName(id, "volumes");
+        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
-        String snapshotName = Utils.getValueFromIdByName(id, "snapshots");
+        String snapshotName = ResourceManagerUtils.getValueFromIdByName(id, "snapshots");
         if (snapshotName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'snapshots'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'snapshots'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, snapshotName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, accountName, poolName, volumeName, snapshotName, Context.NONE)
             .getValue();
     }
 
     public Response<Snapshot> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String poolName = Utils.getValueFromIdByName(id, "capacityPools");
+        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
-        String volumeName = Utils.getValueFromIdByName(id, "volumes");
+        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
-        String snapshotName = Utils.getValueFromIdByName(id, "snapshots");
+        String snapshotName = ResourceManagerUtils.getValueFromIdByName(id, "snapshots");
         if (snapshotName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'snapshots'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'snapshots'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, poolName, volumeName, snapshotName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String poolName = Utils.getValueFromIdByName(id, "capacityPools");
+        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
-        String volumeName = Utils.getValueFromIdByName(id, "volumes");
+        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
-        String snapshotName = Utils.getValueFromIdByName(id, "snapshots");
+        String snapshotName = ResourceManagerUtils.getValueFromIdByName(id, "snapshots");
         if (snapshotName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'snapshots'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'snapshots'.", id)));
         }
         this.delete(resourceGroupName, accountName, poolName, volumeName, snapshotName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String poolName = Utils.getValueFromIdByName(id, "capacityPools");
+        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
-        String volumeName = Utils.getValueFromIdByName(id, "volumes");
+        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
-        String snapshotName = Utils.getValueFromIdByName(id, "snapshots");
+        String snapshotName = ResourceManagerUtils.getValueFromIdByName(id, "snapshots");
         if (snapshotName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'snapshots'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'snapshots'.", id)));
         }
         this.delete(resourceGroupName, accountName, poolName, volumeName, snapshotName, context);
     }

@@ -25,13 +25,15 @@ import com.azure.resourcemanager.netapp.models.RelocateVolumeRequest;
 import com.azure.resourcemanager.netapp.models.VolumePatch;
 import com.azure.resourcemanager.netapp.models.VolumeRevert;
 
-/** An instance of this class provides access to all the operations defined in VolumesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VolumesClient.
+ */
 public interface VolumesClient {
     /**
      * Describe all volumes
-     *
-     * <p>List all volumes within the capacity pool.
-     *
+     * 
+     * List all volumes within the capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -45,9 +47,9 @@ public interface VolumesClient {
 
     /**
      * Describe all volumes
-     *
-     * <p>List all volumes within the capacity pool.
-     *
+     * 
+     * List all volumes within the capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -62,9 +64,9 @@ public interface VolumesClient {
 
     /**
      * Describe a volume
-     *
-     * <p>Get the details of the specified volume.
-     *
+     * 
+     * Get the details of the specified volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -76,14 +78,14 @@ public interface VolumesClient {
      * @return the details of the specified volume along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VolumeInner> getWithResponse(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    Response<VolumeInner> getWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context);
 
     /**
      * Describe a volume
-     *
-     * <p>Get the details of the specified volume.
-     *
+     * 
+     * Get the details of the specified volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -98,9 +100,9 @@ public interface VolumesClient {
 
     /**
      * Create or Update a volume
-     *
-     * <p>Create or update the specified volume within the capacity pool.
-     *
+     * 
+     * Create or update the specified volume within the capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -112,14 +114,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdate(
-        String resourceGroupName, String accountName, String poolName, String volumeName, VolumeInner body);
+    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdate(String resourceGroupName, String accountName,
+        String poolName, String volumeName, VolumeInner body);
 
     /**
      * Create or Update a volume
-     *
-     * <p>Create or update the specified volume within the capacity pool.
-     *
+     * 
+     * Create or update the specified volume within the capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -132,19 +134,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        VolumeInner body,
-        Context context);
+    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdate(String resourceGroupName, String accountName,
+        String poolName, String volumeName, VolumeInner body, Context context);
 
     /**
      * Create or Update a volume
-     *
-     * <p>Create or update the specified volume within the capacity pool.
-     *
+     * 
+     * Create or update the specified volume within the capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -156,14 +153,14 @@ public interface VolumesClient {
      * @return volume resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VolumeInner createOrUpdate(
-        String resourceGroupName, String accountName, String poolName, String volumeName, VolumeInner body);
+    VolumeInner createOrUpdate(String resourceGroupName, String accountName, String poolName, String volumeName,
+        VolumeInner body);
 
     /**
      * Create or Update a volume
-     *
-     * <p>Create or update the specified volume within the capacity pool.
-     *
+     * 
+     * Create or update the specified volume within the capacity pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -176,19 +173,14 @@ public interface VolumesClient {
      * @return volume resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VolumeInner createOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        VolumeInner body,
-        Context context);
+    VolumeInner createOrUpdate(String resourceGroupName, String accountName, String poolName, String volumeName,
+        VolumeInner body, Context context);
 
     /**
      * Update a volume
-     *
-     * <p>Patch the specified volume.
-     *
+     * 
+     * Patch the specified volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -200,14 +192,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginUpdate(
-        String resourceGroupName, String accountName, String poolName, String volumeName, VolumePatch body);
+    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginUpdate(String resourceGroupName, String accountName,
+        String poolName, String volumeName, VolumePatch body);
 
     /**
      * Update a volume
-     *
-     * <p>Patch the specified volume.
-     *
+     * 
+     * Patch the specified volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -220,19 +212,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        VolumePatch body,
-        Context context);
+    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginUpdate(String resourceGroupName, String accountName,
+        String poolName, String volumeName, VolumePatch body, Context context);
 
     /**
      * Update a volume
-     *
-     * <p>Patch the specified volume.
-     *
+     * 
+     * Patch the specified volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -244,14 +231,14 @@ public interface VolumesClient {
      * @return volume resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VolumeInner update(
-        String resourceGroupName, String accountName, String poolName, String volumeName, VolumePatch body);
+    VolumeInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
+        VolumePatch body);
 
     /**
      * Update a volume
-     *
-     * <p>Patch the specified volume.
-     *
+     * 
+     * Patch the specified volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -264,19 +251,14 @@ public interface VolumesClient {
      * @return volume resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VolumeInner update(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        VolumePatch body,
-        Context context);
+    VolumeInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
+        VolumePatch body, Context context);
 
     /**
      * Delete a volume
-     *
-     * <p>Delete the specified volume.
-     *
+     * 
+     * Delete the specified volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -287,20 +269,20 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String poolName, String volumeName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
+        String volumeName);
 
     /**
      * Delete a volume
-     *
-     * <p>Delete the specified volume.
-     *
+     * 
+     * Delete the specified volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param forceDelete An option to force delete the volume. Will cleanup resources connected to the particular
-     *     volume.
+     * volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -308,19 +290,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        Boolean forceDelete,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Boolean forceDelete, Context context);
 
     /**
      * Delete a volume
-     *
-     * <p>Delete the specified volume.
-     *
+     * 
+     * Delete the specified volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -334,34 +311,103 @@ public interface VolumesClient {
 
     /**
      * Delete a volume
-     *
-     * <p>Delete the specified volume.
-     *
+     * 
+     * Delete the specified volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param forceDelete An option to force delete the volume. Will cleanup resources connected to the particular
-     *     volume.
+     * volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        Boolean forceDelete,
+    void delete(String resourceGroupName, String accountName, String poolName, String volumeName, Boolean forceDelete,
         Context context);
 
     /**
+     * Populate Availability Zone
+     * 
+     * This operation will populate availability zone information for a volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of volume resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginPopulateAvailabilityZone(String resourceGroupName,
+        String accountName, String poolName, String volumeName);
+
+    /**
+     * Populate Availability Zone
+     * 
+     * This operation will populate availability zone information for a volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of volume resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginPopulateAvailabilityZone(String resourceGroupName,
+        String accountName, String poolName, String volumeName, Context context);
+
+    /**
+     * Populate Availability Zone
+     * 
+     * This operation will populate availability zone information for a volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VolumeInner populateAvailabilityZone(String resourceGroupName, String accountName, String poolName,
+        String volumeName);
+
+    /**
+     * Populate Availability Zone
+     * 
+     * This operation will populate availability zone information for a volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VolumeInner populateAvailabilityZone(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context);
+
+    /**
      * Revert a volume to one of its snapshots
-     *
-     * <p>Revert a volume to the snapshot specified in the body.
-     *
+     * 
+     * Revert a volume to the snapshot specified in the body.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -373,14 +419,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRevert(
-        String resourceGroupName, String accountName, String poolName, String volumeName, VolumeRevert body);
+    SyncPoller<PollResult<Void>, Void> beginRevert(String resourceGroupName, String accountName, String poolName,
+        String volumeName, VolumeRevert body);
 
     /**
      * Revert a volume to one of its snapshots
-     *
-     * <p>Revert a volume to the snapshot specified in the body.
-     *
+     * 
+     * Revert a volume to the snapshot specified in the body.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -393,19 +439,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRevert(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        VolumeRevert body,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginRevert(String resourceGroupName, String accountName, String poolName,
+        String volumeName, VolumeRevert body, Context context);
 
     /**
      * Revert a volume to one of its snapshots
-     *
-     * <p>Revert a volume to the snapshot specified in the body.
-     *
+     * 
+     * Revert a volume to the snapshot specified in the body.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -420,9 +461,9 @@ public interface VolumesClient {
 
     /**
      * Revert a volume to one of its snapshots
-     *
-     * <p>Revert a volume to the snapshot specified in the body.
-     *
+     * 
+     * Revert a volume to the snapshot specified in the body.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -434,19 +475,14 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void revert(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        VolumeRevert body,
+    void revert(String resourceGroupName, String accountName, String poolName, String volumeName, VolumeRevert body,
         Context context);
 
     /**
      * Reset cifs password
-     *
-     * <p>Reset cifs password from volume.
-     *
+     * 
+     * Reset cifs password from volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -457,14 +493,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginResetCifsPassword(
-        String resourceGroupName, String accountName, String poolName, String volumeName);
+    SyncPoller<PollResult<Void>, Void> beginResetCifsPassword(String resourceGroupName, String accountName,
+        String poolName, String volumeName);
 
     /**
      * Reset cifs password
-     *
-     * <p>Reset cifs password from volume.
-     *
+     * 
+     * Reset cifs password from volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -476,14 +512,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginResetCifsPassword(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginResetCifsPassword(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context);
 
     /**
      * Reset cifs password
-     *
-     * <p>Reset cifs password from volume.
-     *
+     * 
+     * Reset cifs password from volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -497,9 +533,9 @@ public interface VolumesClient {
 
     /**
      * Reset cifs password
-     *
-     * <p>Reset cifs password from volume.
-     *
+     * 
+     * Reset cifs password from volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -510,14 +546,14 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void resetCifsPassword(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    void resetCifsPassword(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context);
 
     /**
      * Break file locks
-     *
-     * <p>Break all the file locks on a volume.
-     *
+     * 
+     * Break all the file locks on a volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -528,14 +564,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginBreakFileLocks(
-        String resourceGroupName, String accountName, String poolName, String volumeName);
+    SyncPoller<PollResult<Void>, Void> beginBreakFileLocks(String resourceGroupName, String accountName,
+        String poolName, String volumeName);
 
     /**
      * Break file locks
-     *
-     * <p>Break all the file locks on a volume.
-     *
+     * 
+     * Break all the file locks on a volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -548,19 +584,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginBreakFileLocks(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        BreakFileLocksRequest body,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginBreakFileLocks(String resourceGroupName, String accountName,
+        String poolName, String volumeName, BreakFileLocksRequest body, Context context);
 
     /**
      * Break file locks
-     *
-     * <p>Break all the file locks on a volume.
-     *
+     * 
+     * Break all the file locks on a volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -574,9 +605,9 @@ public interface VolumesClient {
 
     /**
      * Break file locks
-     *
-     * <p>Break all the file locks on a volume.
-     *
+     * 
+     * Break all the file locks on a volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -588,19 +619,14 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void breakFileLocks(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        BreakFileLocksRequest body,
-        Context context);
+    void breakFileLocks(String resourceGroupName, String accountName, String poolName, String volumeName,
+        BreakFileLocksRequest body, Context context);
 
     /**
      * Get Group Id List for LDAP User
-     *
-     * <p>Returns the list of group Ids for a specific LDAP User.
-     *
+     * 
+     * Returns the list of group Ids for a specific LDAP User.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -613,18 +639,14 @@ public interface VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
-        beginListGetGroupIdListForLdapUser(
-            String resourceGroupName,
-            String accountName,
-            String poolName,
-            String volumeName,
-            GetGroupIdListForLdapUserRequest body);
+        beginListGetGroupIdListForLdapUser(String resourceGroupName, String accountName, String poolName,
+            String volumeName, GetGroupIdListForLdapUserRequest body);
 
     /**
      * Get Group Id List for LDAP User
-     *
-     * <p>Returns the list of group Ids for a specific LDAP User.
-     *
+     * 
+     * Returns the list of group Ids for a specific LDAP User.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -638,19 +660,14 @@ public interface VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
-        beginListGetGroupIdListForLdapUser(
-            String resourceGroupName,
-            String accountName,
-            String poolName,
-            String volumeName,
-            GetGroupIdListForLdapUserRequest body,
-            Context context);
+        beginListGetGroupIdListForLdapUser(String resourceGroupName, String accountName, String poolName,
+            String volumeName, GetGroupIdListForLdapUserRequest body, Context context);
 
     /**
      * Get Group Id List for LDAP User
-     *
-     * <p>Returns the list of group Ids for a specific LDAP User.
-     *
+     * 
+     * Returns the list of group Ids for a specific LDAP User.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -662,18 +679,14 @@ public interface VolumesClient {
      * @return group Id list for Ldap user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GetGroupIdListForLdapUserResponseInner listGetGroupIdListForLdapUser(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        GetGroupIdListForLdapUserRequest body);
+    GetGroupIdListForLdapUserResponseInner listGetGroupIdListForLdapUser(String resourceGroupName, String accountName,
+        String poolName, String volumeName, GetGroupIdListForLdapUserRequest body);
 
     /**
      * Get Group Id List for LDAP User
-     *
-     * <p>Returns the list of group Ids for a specific LDAP User.
-     *
+     * 
+     * Returns the list of group Ids for a specific LDAP User.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -686,19 +699,14 @@ public interface VolumesClient {
      * @return group Id list for Ldap user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GetGroupIdListForLdapUserResponseInner listGetGroupIdListForLdapUser(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        GetGroupIdListForLdapUserRequest body,
-        Context context);
+    GetGroupIdListForLdapUserResponseInner listGetGroupIdListForLdapUser(String resourceGroupName, String accountName,
+        String poolName, String volumeName, GetGroupIdListForLdapUserRequest body, Context context);
 
     /**
      * Break volume replication
-     *
-     * <p>Break the replication connection on the destination volume.
-     *
+     * 
+     * Break the replication connection on the destination volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -709,14 +717,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginBreakReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName);
+    SyncPoller<PollResult<Void>, Void> beginBreakReplication(String resourceGroupName, String accountName,
+        String poolName, String volumeName);
 
     /**
      * Break volume replication
-     *
-     * <p>Break the replication connection on the destination volume.
-     *
+     * 
+     * Break the replication connection on the destination volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -729,19 +737,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginBreakReplication(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        BreakReplicationRequest body,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginBreakReplication(String resourceGroupName, String accountName,
+        String poolName, String volumeName, BreakReplicationRequest body, Context context);
 
     /**
      * Break volume replication
-     *
-     * <p>Break the replication connection on the destination volume.
-     *
+     * 
+     * Break the replication connection on the destination volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -755,9 +758,9 @@ public interface VolumesClient {
 
     /**
      * Break volume replication
-     *
-     * <p>Break the replication connection on the destination volume.
-     *
+     * 
+     * Break the replication connection on the destination volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -769,20 +772,15 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void breakReplication(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        BreakReplicationRequest body,
-        Context context);
+    void breakReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
+        BreakReplicationRequest body, Context context);
 
     /**
      * Re-establish volume replication
-     *
-     * <p>Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * 
+     * Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
      * snapshots.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -794,19 +792,15 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReestablishReplication(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        ReestablishReplicationRequest body);
+    SyncPoller<PollResult<Void>, Void> beginReestablishReplication(String resourceGroupName, String accountName,
+        String poolName, String volumeName, ReestablishReplicationRequest body);
 
     /**
      * Re-establish volume replication
-     *
-     * <p>Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * 
+     * Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
      * snapshots.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -819,20 +813,15 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReestablishReplication(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        ReestablishReplicationRequest body,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginReestablishReplication(String resourceGroupName, String accountName,
+        String poolName, String volumeName, ReestablishReplicationRequest body, Context context);
 
     /**
      * Re-establish volume replication
-     *
-     * <p>Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * 
+     * Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
      * snapshots.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -843,19 +832,15 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reestablishReplication(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
+    void reestablishReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
         ReestablishReplicationRequest body);
 
     /**
      * Re-establish volume replication
-     *
-     * <p>Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * 
+     * Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
      * snapshots.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -867,19 +852,14 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reestablishReplication(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        ReestablishReplicationRequest body,
-        Context context);
+    void reestablishReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
+        ReestablishReplicationRequest body, Context context);
 
     /**
      * Get volume replication status
-     *
-     * <p>Get the status of the replication.
-     *
+     * 
+     * Get the status of the replication.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -891,14 +871,14 @@ public interface VolumesClient {
      * @return the status of the replication along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReplicationStatusInner> replicationStatusWithResponse(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    Response<ReplicationStatusInner> replicationStatusWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context);
 
     /**
      * Get volume replication status
-     *
-     * <p>Get the status of the replication.
-     *
+     * 
+     * Get the status of the replication.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -909,14 +889,14 @@ public interface VolumesClient {
      * @return the status of the replication.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationStatusInner replicationStatus(
-        String resourceGroupName, String accountName, String poolName, String volumeName);
+    ReplicationStatusInner replicationStatus(String resourceGroupName, String accountName, String poolName,
+        String volumeName);
 
     /**
      * List replications for volume
-     *
-     * <p>List all replications for a specified volume.
-     *
+     * 
+     * List all replications for a specified volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -927,14 +907,14 @@ public interface VolumesClient {
      * @return list Replications as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReplicationInner> listReplications(
-        String resourceGroupName, String accountName, String poolName, String volumeName);
+    PagedIterable<ReplicationInner> listReplications(String resourceGroupName, String accountName, String poolName,
+        String volumeName);
 
     /**
      * List replications for volume
-     *
-     * <p>List all replications for a specified volume.
-     *
+     * 
+     * List all replications for a specified volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -946,15 +926,15 @@ public interface VolumesClient {
      * @return list Replications as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReplicationInner> listReplications(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    PagedIterable<ReplicationInner> listReplications(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context);
 
     /**
      * Resync volume replication
-     *
-     * <p>Resync the connection on the destination volume. If the operation is ran on the source volume it will
+     * 
+     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
      * reverse-resync the connection and sync from destination to source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -965,15 +945,15 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginResyncReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName);
+    SyncPoller<PollResult<Void>, Void> beginResyncReplication(String resourceGroupName, String accountName,
+        String poolName, String volumeName);
 
     /**
      * Resync volume replication
-     *
-     * <p>Resync the connection on the destination volume. If the operation is ran on the source volume it will
+     * 
+     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
      * reverse-resync the connection and sync from destination to source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -985,15 +965,15 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginResyncReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginResyncReplication(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context);
 
     /**
      * Resync volume replication
-     *
-     * <p>Resync the connection on the destination volume. If the operation is ran on the source volume it will
+     * 
+     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
      * reverse-resync the connection and sync from destination to source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1007,10 +987,10 @@ public interface VolumesClient {
 
     /**
      * Resync volume replication
-     *
-     * <p>Resync the connection on the destination volume. If the operation is ran on the source volume it will
+     * 
+     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
      * reverse-resync the connection and sync from destination to source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1021,14 +1001,14 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void resyncReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    void resyncReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context);
 
     /**
      * Delete volume replication
-     *
-     * <p>Delete the replication connection on the destination volume, and send release to the source replication.
-     *
+     * 
+     * Delete the replication connection on the destination volume, and send release to the source replication.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1039,14 +1019,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName);
+    SyncPoller<PollResult<Void>, Void> beginDeleteReplication(String resourceGroupName, String accountName,
+        String poolName, String volumeName);
 
     /**
      * Delete volume replication
-     *
-     * <p>Delete the replication connection on the destination volume, and send release to the source replication.
-     *
+     * 
+     * Delete the replication connection on the destination volume, and send release to the source replication.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1058,14 +1038,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeleteReplication(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context);
 
     /**
      * Delete volume replication
-     *
-     * <p>Delete the replication connection on the destination volume, and send release to the source replication.
-     *
+     * 
+     * Delete the replication connection on the destination volume, and send release to the source replication.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1079,9 +1059,9 @@ public interface VolumesClient {
 
     /**
      * Delete volume replication
-     *
-     * <p>Delete the replication connection on the destination volume, and send release to the source replication.
-     *
+     * 
+     * Delete the replication connection on the destination volume, and send release to the source replication.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1092,58 +1072,14 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
-
-    /**
-     * Authorize source volume replication
-     *
-     * <p>Authorize the replication connection on the source volume.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Authorize request object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginAuthorizeReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName, AuthorizeRequest body);
-
-    /**
-     * Authorize source volume replication
-     *
-     * <p>Authorize the replication connection on the source volume.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Authorize request object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginAuthorizeReplication(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        AuthorizeRequest body,
+    void deleteReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
         Context context);
 
     /**
      * Authorize source volume replication
-     *
-     * <p>Authorize the replication connection on the source volume.
-     *
+     * 
+     * Authorize the replication connection on the source volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1152,16 +1088,55 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void authorizeReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName, AuthorizeRequest body);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginAuthorizeReplication(String resourceGroupName, String accountName,
+        String poolName, String volumeName, AuthorizeRequest body);
 
     /**
      * Authorize source volume replication
-     *
-     * <p>Authorize the replication connection on the source volume.
-     *
+     * 
+     * Authorize the replication connection on the source volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Authorize request object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginAuthorizeReplication(String resourceGroupName, String accountName,
+        String poolName, String volumeName, AuthorizeRequest body, Context context);
+
+    /**
+     * Authorize source volume replication
+     * 
+     * Authorize the replication connection on the source volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Authorize request object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void authorizeReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
+        AuthorizeRequest body);
+
+    /**
+     * Authorize source volume replication
+     * 
+     * Authorize the replication connection on the source volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1173,19 +1148,14 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void authorizeReplication(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        AuthorizeRequest body,
-        Context context);
+    void authorizeReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
+        AuthorizeRequest body, Context context);
 
     /**
      * ReInitialize volume replication
-     *
-     * <p>Re-Initializes the replication connection on the destination volume.
-     *
+     * 
+     * Re-Initializes the replication connection on the destination volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1196,14 +1166,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReInitializeReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName);
+    SyncPoller<PollResult<Void>, Void> beginReInitializeReplication(String resourceGroupName, String accountName,
+        String poolName, String volumeName);
 
     /**
      * ReInitialize volume replication
-     *
-     * <p>Re-Initializes the replication connection on the destination volume.
-     *
+     * 
+     * Re-Initializes the replication connection on the destination volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1215,14 +1185,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReInitializeReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginReInitializeReplication(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context);
 
     /**
      * ReInitialize volume replication
-     *
-     * <p>Re-Initializes the replication connection on the destination volume.
-     *
+     * 
+     * Re-Initializes the replication connection on the destination volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1236,9 +1206,9 @@ public interface VolumesClient {
 
     /**
      * ReInitialize volume replication
-     *
-     * <p>Re-Initializes the replication connection on the destination volume.
-     *
+     * 
+     * Re-Initializes the replication connection on the destination volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1249,58 +1219,53 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reInitializeReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
-
-    /**
-     * Change pool for volume
-     *
-     * <p>Moves volume to another pool.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Move volume to the pool supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPoolChange(
-        String resourceGroupName, String accountName, String poolName, String volumeName, PoolChangeRequest body);
-
-    /**
-     * Change pool for volume
-     *
-     * <p>Moves volume to another pool.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Move volume to the pool supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPoolChange(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        PoolChangeRequest body,
+    void reInitializeReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
         Context context);
 
     /**
      * Change pool for volume
-     *
-     * <p>Moves volume to another pool.
-     *
+     * 
+     * Moves volume to another pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Move volume to the pool supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginPoolChange(String resourceGroupName, String accountName, String poolName,
+        String volumeName, PoolChangeRequest body);
+
+    /**
+     * Change pool for volume
+     * 
+     * Moves volume to another pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Move volume to the pool supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginPoolChange(String resourceGroupName, String accountName, String poolName,
+        String volumeName, PoolChangeRequest body, Context context);
+
+    /**
+     * Change pool for volume
+     * 
+     * Moves volume to another pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1311,14 +1276,14 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void poolChange(
-        String resourceGroupName, String accountName, String poolName, String volumeName, PoolChangeRequest body);
+    void poolChange(String resourceGroupName, String accountName, String poolName, String volumeName,
+        PoolChangeRequest body);
 
     /**
      * Change pool for volume
-     *
-     * <p>Moves volume to another pool.
-     *
+     * 
+     * Moves volume to another pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1330,19 +1295,14 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void poolChange(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        PoolChangeRequest body,
-        Context context);
+    void poolChange(String resourceGroupName, String accountName, String poolName, String volumeName,
+        PoolChangeRequest body, Context context);
 
     /**
      * Relocate volume
-     *
-     * <p>Relocates volume to a new stamp.
-     *
+     * 
+     * Relocates volume to a new stamp.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1353,14 +1313,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRelocate(
-        String resourceGroupName, String accountName, String poolName, String volumeName);
+    SyncPoller<PollResult<Void>, Void> beginRelocate(String resourceGroupName, String accountName, String poolName,
+        String volumeName);
 
     /**
      * Relocate volume
-     *
-     * <p>Relocates volume to a new stamp.
-     *
+     * 
+     * Relocates volume to a new stamp.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1373,19 +1333,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRelocate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        RelocateVolumeRequest body,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginRelocate(String resourceGroupName, String accountName, String poolName,
+        String volumeName, RelocateVolumeRequest body, Context context);
 
     /**
      * Relocate volume
-     *
-     * <p>Relocates volume to a new stamp.
-     *
+     * 
+     * Relocates volume to a new stamp.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1399,9 +1354,9 @@ public interface VolumesClient {
 
     /**
      * Relocate volume
-     *
-     * <p>Relocates volume to a new stamp.
-     *
+     * 
+     * Relocates volume to a new stamp.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1413,19 +1368,14 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void relocate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        RelocateVolumeRequest body,
-        Context context);
+    void relocate(String resourceGroupName, String accountName, String poolName, String volumeName,
+        RelocateVolumeRequest body, Context context);
 
     /**
      * Finalize volume relocation
-     *
-     * <p>Finalizes the relocation of the volume and cleans up the old volume.
-     *
+     * 
+     * Finalizes the relocation of the volume and cleans up the old volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1436,14 +1386,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginFinalizeRelocation(
-        String resourceGroupName, String accountName, String poolName, String volumeName);
+    SyncPoller<PollResult<Void>, Void> beginFinalizeRelocation(String resourceGroupName, String accountName,
+        String poolName, String volumeName);
 
     /**
      * Finalize volume relocation
-     *
-     * <p>Finalizes the relocation of the volume and cleans up the old volume.
-     *
+     * 
+     * Finalizes the relocation of the volume and cleans up the old volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1455,14 +1405,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginFinalizeRelocation(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginFinalizeRelocation(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context);
 
     /**
      * Finalize volume relocation
-     *
-     * <p>Finalizes the relocation of the volume and cleans up the old volume.
-     *
+     * 
+     * Finalizes the relocation of the volume and cleans up the old volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1476,9 +1426,9 @@ public interface VolumesClient {
 
     /**
      * Finalize volume relocation
-     *
-     * <p>Finalizes the relocation of the volume and cleans up the old volume.
-     *
+     * 
+     * Finalizes the relocation of the volume and cleans up the old volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1489,14 +1439,14 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void finalizeRelocation(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    void finalizeRelocation(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context);
 
     /**
      * Revert volume relocation
-     *
-     * <p>Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
-     *
+     * 
+     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1507,14 +1457,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRevertRelocation(
-        String resourceGroupName, String accountName, String poolName, String volumeName);
+    SyncPoller<PollResult<Void>, Void> beginRevertRelocation(String resourceGroupName, String accountName,
+        String poolName, String volumeName);
 
     /**
      * Revert volume relocation
-     *
-     * <p>Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
-     *
+     * 
+     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1526,14 +1476,14 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRevertRelocation(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRevertRelocation(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context);
 
     /**
      * Revert volume relocation
-     *
-     * <p>Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
-     *
+     * 
+     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1547,9 +1497,9 @@ public interface VolumesClient {
 
     /**
      * Revert volume relocation
-     *
-     * <p>Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
-     *
+     * 
+     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -1560,6 +1510,6 @@ public interface VolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void revertRelocation(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    void revertRelocation(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context);
 }

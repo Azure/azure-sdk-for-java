@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for Twilio. */
+/**
+ * Linked service for Twilio.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Twilio")
 @Fluent
@@ -24,41 +26,51 @@ public final class TwilioLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private TwilioLinkedServiceTypeProperties innerTypeProperties = new TwilioLinkedServiceTypeProperties();
 
-    /** Creates an instance of TwilioLinkedService class. */
+    /**
+     * Creates an instance of TwilioLinkedService class.
+     */
     public TwilioLinkedService() {
     }
 
     /**
      * Get the innerTypeProperties property: Twilio linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private TwilioLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TwilioLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TwilioLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TwilioLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TwilioLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -66,8 +78,9 @@ public final class TwilioLinkedService extends LinkedService {
     }
 
     /**
-     * Get the username property: The Account SID of Twilio service.
-     *
+     * Get the username property: The Account SID of Twilio service. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -75,8 +88,9 @@ public final class TwilioLinkedService extends LinkedService {
     }
 
     /**
-     * Set the username property: The Account SID of Twilio service.
-     *
+     * Set the username property: The Account SID of Twilio service. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param username the username value to set.
      * @return the TwilioLinkedService object itself.
      */
@@ -90,7 +104,7 @@ public final class TwilioLinkedService extends LinkedService {
 
     /**
      * Get the password property: The auth token of Twilio service.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -99,7 +113,7 @@ public final class TwilioLinkedService extends LinkedService {
 
     /**
      * Set the password property: The auth token of Twilio service.
-     *
+     * 
      * @param password the password value to set.
      * @return the TwilioLinkedService object itself.
      */
@@ -113,17 +127,15 @@ public final class TwilioLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model TwilioLinkedService"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model TwilioLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

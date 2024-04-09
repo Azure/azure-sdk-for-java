@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Script block of scripts. */
+/**
+ * Script block of scripts.
+ */
 @Fluent
 public final class ScriptActivityScriptBlock {
     /*
@@ -29,12 +31,15 @@ public final class ScriptActivityScriptBlock {
     @JsonProperty(value = "parameters")
     private List<ScriptActivityParameter> parameters;
 
-    /** Creates an instance of ScriptActivityScriptBlock class. */
-    public ScriptActivityScriptBlock() {}
+    /**
+     * Creates an instance of ScriptActivityScriptBlock class.
+     */
+    public ScriptActivityScriptBlock() {
+    }
 
     /**
      * Get the text property: The query text. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the text value.
      */
     public Object getText() {
@@ -43,7 +48,7 @@ public final class ScriptActivityScriptBlock {
 
     /**
      * Set the text property: The query text. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param text the text value to set.
      * @return the ScriptActivityScriptBlock object itself.
      */
@@ -54,7 +59,7 @@ public final class ScriptActivityScriptBlock {
 
     /**
      * Get the type property: The type of the query. Type: string.
-     *
+     * 
      * @return the type value.
      */
     public ScriptType getType() {
@@ -63,7 +68,7 @@ public final class ScriptActivityScriptBlock {
 
     /**
      * Set the type property: The type of the query. Type: string.
-     *
+     * 
      * @param type the type value to set.
      * @return the ScriptActivityScriptBlock object itself.
      */
@@ -74,7 +79,7 @@ public final class ScriptActivityScriptBlock {
 
     /**
      * Get the parameters property: Array of script parameters. Type: array.
-     *
+     * 
      * @return the parameters value.
      */
     public List<ScriptActivityParameter> getParameters() {
@@ -83,7 +88,7 @@ public final class ScriptActivityScriptBlock {
 
     /**
      * Set the parameters property: Array of script parameters. Type: array.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the ScriptActivityScriptBlock object itself.
      */

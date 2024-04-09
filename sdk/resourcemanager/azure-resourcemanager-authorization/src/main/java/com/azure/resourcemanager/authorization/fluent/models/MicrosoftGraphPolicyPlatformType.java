@@ -35,6 +35,15 @@ public final class MicrosoftGraphPolicyPlatformType extends ExpandableStringEnum
     public static final MicrosoftGraphPolicyPlatformType ALL = fromString("all");
 
     /**
+     * Creates a new instance of MicrosoftGraphPolicyPlatformType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphPolicyPlatformType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphPolicyPlatformType from its string representation.
      *
      * @param name a name to look for.

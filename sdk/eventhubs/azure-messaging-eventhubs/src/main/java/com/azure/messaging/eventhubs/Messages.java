@@ -91,6 +91,8 @@ public enum Messages {
     static final String ENCODING_TYPE_NOT_SUPPORTED_ENCODER = getMessage("ENCODING_TYPE_NOT_SUPPORTED_ENCODER");
 
     /**
+     * Gets the message given its corresponding key.
+     *
      * @param key the key of the message to retrieve
      * @return the message matching the given key
      */

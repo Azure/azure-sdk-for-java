@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The state of a private link connection. */
+/**
+ * The state of a private link connection.
+ */
 @Fluent
 public final class PrivateLinkConnectionState {
     /*
@@ -28,13 +30,15 @@ public final class PrivateLinkConnectionState {
     @JsonProperty(value = "actionsRequired")
     private String actionsRequired;
 
-    /** Creates an instance of PrivateLinkConnectionState class. */
+    /**
+     * Creates an instance of PrivateLinkConnectionState class.
+     */
     public PrivateLinkConnectionState() {
     }
 
     /**
      * Get the status property: Status of a private link connection.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -43,7 +47,7 @@ public final class PrivateLinkConnectionState {
 
     /**
      * Set the status property: Status of a private link connection.
-     *
+     * 
      * @param status the status value to set.
      * @return the PrivateLinkConnectionState object itself.
      */
@@ -54,7 +58,7 @@ public final class PrivateLinkConnectionState {
 
     /**
      * Get the description property: Description of a private link connection.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -63,7 +67,7 @@ public final class PrivateLinkConnectionState {
 
     /**
      * Set the description property: Description of a private link connection.
-     *
+     * 
      * @param description the description value to set.
      * @return the PrivateLinkConnectionState object itself.
      */
@@ -74,7 +78,7 @@ public final class PrivateLinkConnectionState {
 
     /**
      * Get the actionsRequired property: ActionsRequired for a private link connection.
-     *
+     * 
      * @return the actionsRequired value.
      */
     public String actionsRequired() {
@@ -83,7 +87,7 @@ public final class PrivateLinkConnectionState {
 
     /**
      * Set the actionsRequired property: ActionsRequired for a private link connection.
-     *
+     * 
      * @param actionsRequired the actionsRequired value to set.
      * @return the PrivateLinkConnectionState object itself.
      */
@@ -94,7 +98,7 @@ public final class PrivateLinkConnectionState {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

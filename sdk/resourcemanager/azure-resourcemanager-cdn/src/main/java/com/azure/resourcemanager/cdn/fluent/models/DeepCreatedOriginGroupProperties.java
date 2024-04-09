@@ -12,7 +12,9 @@ import com.azure.resourcemanager.cdn.models.ResponseBasedOriginErrorDetectionPar
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the origin group created on the CDN endpoint. */
+/**
+ * Properties of the origin group created on the CDN endpoint.
+ */
 @Fluent
 public final class DeepCreatedOriginGroupProperties {
     /*
@@ -42,9 +44,15 @@ public final class DeepCreatedOriginGroupProperties {
     private ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings;
 
     /**
-     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
-     * the origin.
-     *
+     * Creates an instance of DeepCreatedOriginGroupProperties class.
+     */
+    public DeepCreatedOriginGroupProperties() {
+    }
+
+    /**
+     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
+     * of the origin.
+     * 
      * @return the healthProbeSettings value.
      */
     public HealthProbeParameters healthProbeSettings() {
@@ -52,9 +60,9 @@ public final class DeepCreatedOriginGroupProperties {
     }
 
     /**
-     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
-     * the origin.
-     *
+     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
+     * of the origin.
+     * 
      * @param healthProbeSettings the healthProbeSettings value to set.
      * @return the DeepCreatedOriginGroupProperties object itself.
      */
@@ -65,7 +73,7 @@ public final class DeepCreatedOriginGroupProperties {
 
     /**
      * Get the origins property: The source of the content being delivered via CDN within given origin group.
-     *
+     * 
      * @return the origins value.
      */
     public List<ResourceReference> origins() {
@@ -74,7 +82,7 @@ public final class DeepCreatedOriginGroupProperties {
 
     /**
      * Set the origins property: The source of the content being delivered via CDN within given origin group.
-     *
+     * 
      * @param origins the origins value to set.
      * @return the DeepCreatedOriginGroupProperties object itself.
      */
@@ -87,7 +95,7 @@ public final class DeepCreatedOriginGroupProperties {
      * Get the trafficRestorationTimeToHealedOrNewEndpointsInMinutes property: Time in minutes to shift the traffic to
      * the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins.
      * This property is currently not supported.
-     *
+     * 
      * @return the trafficRestorationTimeToHealedOrNewEndpointsInMinutes value.
      */
     public Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes() {
@@ -98,22 +106,22 @@ public final class DeepCreatedOriginGroupProperties {
      * Set the trafficRestorationTimeToHealedOrNewEndpointsInMinutes property: Time in minutes to shift the traffic to
      * the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins.
      * This property is currently not supported.
-     *
+     * 
      * @param trafficRestorationTimeToHealedOrNewEndpointsInMinutes the
-     *     trafficRestorationTimeToHealedOrNewEndpointsInMinutes value to set.
+     * trafficRestorationTimeToHealedOrNewEndpointsInMinutes value to set.
      * @return the DeepCreatedOriginGroupProperties object itself.
      */
     public DeepCreatedOriginGroupProperties withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
         Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes) {
-        this.trafficRestorationTimeToHealedOrNewEndpointsInMinutes =
-            trafficRestorationTimeToHealedOrNewEndpointsInMinutes;
+        this.trafficRestorationTimeToHealedOrNewEndpointsInMinutes
+            = trafficRestorationTimeToHealedOrNewEndpointsInMinutes;
         return this;
     }
 
     /**
      * Get the responseBasedOriginErrorDetectionSettings property: The JSON object that contains the properties to
      * determine origin health using real requests/responses.This property is currently not supported.
-     *
+     * 
      * @return the responseBasedOriginErrorDetectionSettings value.
      */
     public ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings() {
@@ -123,7 +131,7 @@ public final class DeepCreatedOriginGroupProperties {
     /**
      * Set the responseBasedOriginErrorDetectionSettings property: The JSON object that contains the properties to
      * determine origin health using real requests/responses.This property is currently not supported.
-     *
+     * 
      * @param responseBasedOriginErrorDetectionSettings the responseBasedOriginErrorDetectionSettings value to set.
      * @return the DeepCreatedOriginGroupProperties object itself.
      */
@@ -135,7 +143,7 @@ public final class DeepCreatedOriginGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -143,10 +151,8 @@ public final class DeepCreatedOriginGroupProperties {
             healthProbeSettings().validate();
         }
         if (origins() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property origins in model DeepCreatedOriginGroupProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property origins in model DeepCreatedOriginGroupProperties"));
         } else {
             origins().forEach(e -> e.validate());
         }

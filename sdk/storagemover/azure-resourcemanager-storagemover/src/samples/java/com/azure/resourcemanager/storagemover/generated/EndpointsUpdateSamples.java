@@ -9,7 +9,7 @@ import com.azure.resourcemanager.storagemover.models.Endpoint;
 /** Samples for Endpoints Update. */
 public final class EndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Update_NfsMount.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/Endpoints_Update_NfsMount.json
      */
     /**
      * Sample code: Endpoints_Update_NfsMount.
@@ -30,7 +30,7 @@ public final class EndpointsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Update_AzureStorageSmbFileShare.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/Endpoints_Update_AzureStorageSmbFileShare.json
      */
     /**
      * Sample code: Endpoints_Update_AzureStorageSmbFileShare.
@@ -52,7 +52,7 @@ public final class EndpointsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Update_AzureStorageBlobContainer.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/Endpoints_Update_AzureStorageBlobContainer.json
      */
     /**
      * Sample code: Endpoints_Update_AzureStorageBlobContainer.
@@ -74,7 +74,7 @@ public final class EndpointsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/Endpoints_Update_SmbMount.json
+     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/Endpoints_Update_SmbMount.json
      */
     /**
      * Sample code: Endpoints_Update_SmbMount.

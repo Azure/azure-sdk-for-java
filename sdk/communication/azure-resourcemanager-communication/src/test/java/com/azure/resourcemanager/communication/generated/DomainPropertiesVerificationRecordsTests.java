@@ -11,22 +11,16 @@ import com.azure.resourcemanager.communication.models.DomainPropertiesVerificati
 public final class DomainPropertiesVerificationRecordsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DomainPropertiesVerificationRecords model =
-            BinaryData
-                .fromString(
-                    "{\"Domain\":{\"type\":\"pteehzzv\",\"name\":\"yqrimzin\",\"value\":\"swjdkirso\",\"ttl\":1633669342},\"SPF\":{\"type\":\"crmnohjtckwhds\",\"name\":\"fiyipjxsqwpgrj\",\"value\":\"norcjxvsnbyxqab\",\"ttl\":1299140464},\"DKIM\":{\"type\":\"cyshurzafbljjgp\",\"name\":\"oq\",\"value\":\"mkljavb\",\"ttl\":1581174340},\"DKIM2\":{\"type\":\"ajzyul\",\"name\":\"u\",\"value\":\"krlkhbzhfepg\",\"ttl\":701234104},\"DMARC\":{\"type\":\"zloc\",\"name\":\"c\",\"value\":\"ierhhbcsglummaj\",\"ttl\":1273206758}}")
-                .toObject(DomainPropertiesVerificationRecords.class);
+        DomainPropertiesVerificationRecords model = BinaryData.fromString(
+            "{\"Domain\":{\"type\":\"qcjm\",\"name\":\"javbqidtqajz\",\"value\":\"l\",\"ttl\":144447336},\"SPF\":{\"type\":\"krlkhbzhfepg\",\"name\":\"qex\",\"value\":\"ocxscpaierhhbcs\",\"ttl\":526297458},\"DKIM\":{\"type\":\"a\",\"name\":\"j\",\"value\":\"dxob\",\"ttl\":1455975978},\"DKIM2\":{\"type\":\"qp\",\"name\":\"kajionpim\",\"value\":\"gstxgcp\",\"ttl\":1867037750},\"DMARC\":{\"type\":\"ajrmvdjwzrlovmc\",\"name\":\"hijco\",\"value\":\"ctbzaq\",\"ttl\":2038129581}}")
+            .toObject(DomainPropertiesVerificationRecords.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DomainPropertiesVerificationRecords model =
-            new DomainPropertiesVerificationRecords()
-                .withDomain(new DnsRecord())
-                .withSpf(new DnsRecord())
-                .withDkim(new DnsRecord())
-                .withDkim2(new DnsRecord())
-                .withDmarc(new DnsRecord());
+        DomainPropertiesVerificationRecords model
+            = new DomainPropertiesVerificationRecords().withDomain(new DnsRecord()).withSpf(new DnsRecord())
+                .withDkim(new DnsRecord()).withDkim2(new DnsRecord()).withDmarc(new DnsRecord());
         model = BinaryData.fromObject(model).toObject(DomainPropertiesVerificationRecords.class);
     }
 }

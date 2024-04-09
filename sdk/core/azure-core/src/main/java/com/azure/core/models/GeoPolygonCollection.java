@@ -4,15 +4,39 @@
 package com.azure.core.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a collection of {@link GeoPolygon GeoPolygons}.
+ * <p>Represents a collection of {@link GeoPolygon GeoPolygons} in GeoJSON format.</p>
+ *
+ * <p>This class encapsulates a list of {@link GeoPolygon} instances that form a collection of polygons. Each polygon
+ * is defined by a list of {@link GeoLinearRing} instances that form the boundary of the polygon.</p>
+ *
+ * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the collection of polygons to JSON,
+ * and a {@link #fromJson(JsonReader)} method to deserialize a collection of polygons from JSON.</p>
+ *
+ * <p>This class is useful when you want to work with a collection of polygons in a geographic context. For example,
+ * you can use it to represent a complex geographic area on a map that is composed of multiple polygons.</p>
+ *
+ * <p>Note: A polygon collection requires at least one ring for each polygon, and each ring requires at least
+ * 4 coordinates (with the first and last coordinates being the same to form a closed loop).</p>
+ *
+ * @see GeoPolygon
+ * @see GeoLinearRing
+ * @see GeoPosition
+ * @see GeoObject
+ * @see JsonSerializable
  */
 @Immutable
 public final class GeoPolygonCollection extends GeoObject {
@@ -87,5 +111,62 @@ public final class GeoPolygonCollection extends GeoObject {
         GeoPolygonCollection other = (GeoPolygonCollection) obj;
 
         return super.equals(obj) && Objects.equals(polygons, other.polygons);
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject()
+            .writeStringField("type", GeoObjectType.MULTI_POLYGON.toString())
+            .writeArrayField("coordinates", polygons,
+                (writer, geoPolygon) -> writer.writeArray(geoPolygon.getRings(), JsonWriter::writeJson))
+            .writeJsonField("bbox", getBoundingBox());
+
+        return writeCustomProperties(jsonWriter).writeEndObject();
+    }
+
+    /**
+     * Reads a JSON stream into a {@link GeoPolygonCollection}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return The {@link GeoPolygonCollection} that the JSON stream represented, or null if it pointed to JSON null.
+     * @throws IllegalStateException If the {@code type} node exists and isn't equal to {@code MultiPolygon}.
+     * @throws IOException If a {@link GeoPolygonCollection} fails to be read from the {@code jsonReader}.
+     */
+    public static GeoPolygonCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<GeoPolygon> polygons = null;
+            GeoBoundingBox boundingBox = null;
+            Map<String, Object> customProperties = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    String type = reader.getString();
+                    if (!GeoObjectType.MULTI_POLYGON.toString().equals(type)) {
+                        throw new IllegalStateException("'type' was expected to be non-null and equal to "
+                            + "'MultiPolygon'. The found 'type' was '" + type + "'.");
+                    }
+                } else if ("coordinates".equals(fieldName)) {
+                    List<List<GeoLinearRing>> polygonRings
+                        = reader.readArray(polygon -> polygon.readArray(GeoLinearRing::fromJson));
+                    polygons = new ArrayList<>(polygonRings.size());
+                    for (List<GeoLinearRing> rings : polygonRings) {
+                        polygons.add(new GeoPolygon(rings));
+                    }
+                } else if ("bbox".equals(fieldName)) {
+                    boundingBox = GeoBoundingBox.fromJson(reader);
+                } else {
+                    if (customProperties == null) {
+                        customProperties = new LinkedHashMap<>();
+                    }
+
+                    customProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+
+            return new GeoPolygonCollection(polygons, boundingBox, customProperties);
+        });
     }
 }

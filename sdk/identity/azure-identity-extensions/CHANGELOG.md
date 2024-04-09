@@ -10,6 +10,66 @@
 
 ### Other Changes
 
+
+## 1.1.14 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.11.2` to version `1.11.4`.
+- Upgraded `postgresql` from `42.3.8` to version `42.3.9`.
+
+
+## 1.1.13 (2024-02-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.11.1` to version `1.11.2`.
+
+
+## 1.1.12 (2024-02-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.11.0` to version `1.11.1`.
+
+## 1.1.11 (2023-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.11.0` to version `1.11.1`.
+
+## 1.1.10 (2023-11-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.10.4` to version `1.11.0`.
+
+## 1.1.9 (2023-10-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.10.1` to version `1.10.4`.
+
+## 1.1.8 (2023-09-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.10.0` to version `1.10.1`.
+
 ## 1.1.7 (2023-08-18)
 
 ### Other Changes

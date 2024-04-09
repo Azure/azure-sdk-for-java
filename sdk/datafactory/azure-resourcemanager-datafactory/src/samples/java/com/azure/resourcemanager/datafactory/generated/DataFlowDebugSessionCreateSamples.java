@@ -13,42 +13,34 @@ import com.azure.resourcemanager.datafactory.models.ManagedIntegrationRuntime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DataFlowDebugSession Create. */
+/**
+ * Samples for DataFlowDebugSession Create.
+ */
 public final class DataFlowDebugSessionCreateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_Create.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * DataFlowDebugSession_Create.json
      */
     /**
      * Sample code: DataFlowDebugSession_Create.
-     *
+     * 
      * @param manager Entry point to DataFactoryManager.
      */
     public static void dataFlowDebugSessionCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager
-            .dataFlowDebugSessions()
-            .create(
-                "exampleResourceGroup",
-                "exampleFactoryName",
-                new CreateDataFlowDebugSessionRequest()
-                    .withTimeToLive(60)
-                    .withIntegrationRuntime(
-                        new IntegrationRuntimeDebugResource()
-                            .withName("ir1")
-                            .withProperties(
-                                new ManagedIntegrationRuntime()
-                                    .withComputeProperties(
-                                        new IntegrationRuntimeComputeProperties()
-                                            .withLocation("AutoResolve")
-                                            .withDataFlowProperties(
-                                                new IntegrationRuntimeDataFlowProperties()
-                                                    .withComputeType(DataFlowComputeType.GENERAL)
-                                                    .withCoreCount(48)
-                                                    .withTimeToLive(10)
-                                                    .withAdditionalProperties(mapOf()))
-                                            .withAdditionalProperties(mapOf())))),
+        manager.dataFlowDebugSessions()
+            .create("exampleResourceGroup", "exampleFactoryName",
+                new CreateDataFlowDebugSessionRequest().withTimeToLive(60)
+                    .withIntegrationRuntime(new IntegrationRuntimeDebugResource().withName("ir1")
+                        .withProperties(new ManagedIntegrationRuntime()
+                            .withComputeProperties(new IntegrationRuntimeComputeProperties().withLocation("AutoResolve")
+                                .withDataFlowProperties(new IntegrationRuntimeDataFlowProperties()
+                                    .withComputeType(DataFlowComputeType.GENERAL).withCoreCount(48).withTimeToLive(10)
+                                    .withAdditionalProperties(mapOf()))
+                                .withAdditionalProperties(mapOf())))),
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cdn.models.OriginResourceState;
 import com.azure.resourcemanager.cdn.models.PrivateEndpointStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JSON object that contains the properties of the origin. */
+/**
+ * The JSON object that contains the properties of the origin.
+ */
 @Fluent
 public final class OriginProperties extends OriginUpdatePropertiesParameters {
     /*
@@ -32,8 +34,14 @@ public final class OriginProperties extends OriginUpdatePropertiesParameters {
     private PrivateEndpointStatus privateEndpointStatus;
 
     /**
+     * Creates an instance of OriginProperties class.
+     */
+    public OriginProperties() {
+    }
+
+    /**
      * Get the resourceState property: Resource status of the origin.
-     *
+     * 
      * @return the resourceState value.
      */
     public OriginResourceState resourceState() {
@@ -42,7 +50,7 @@ public final class OriginProperties extends OriginUpdatePropertiesParameters {
 
     /**
      * Get the provisioningState property: Provisioning status of the origin.
-     *
+     * 
      * @return the provisioningState value.
      */
     public OriginProvisioningState provisioningState() {
@@ -51,84 +59,106 @@ public final class OriginProperties extends OriginUpdatePropertiesParameters {
 
     /**
      * Get the privateEndpointStatus property: The approval status for the connection to the Private Link.
-     *
+     * 
      * @return the privateEndpointStatus value.
      */
     public PrivateEndpointStatus privateEndpointStatus() {
         return this.privateEndpointStatus;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OriginProperties withHostname(String hostname) {
         super.withHostname(hostname);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OriginProperties withHttpPort(Integer httpPort) {
         super.withHttpPort(httpPort);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OriginProperties withHttpsPort(Integer httpsPort) {
         super.withHttpsPort(httpsPort);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OriginProperties withOriginHostHeader(String originHostHeader) {
         super.withOriginHostHeader(originHostHeader);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OriginProperties withPriority(Integer priority) {
         super.withPriority(priority);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OriginProperties withWeight(Integer weight) {
         super.withWeight(weight);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OriginProperties withEnabled(Boolean enabled) {
         super.withEnabled(enabled);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OriginProperties withPrivateLinkAlias(String privateLinkAlias) {
         super.withPrivateLinkAlias(privateLinkAlias);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OriginProperties withPrivateLinkResourceId(String privateLinkResourceId) {
         super.withPrivateLinkResourceId(privateLinkResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OriginProperties withPrivateLinkLocation(String privateLinkLocation) {
         super.withPrivateLinkLocation(privateLinkLocation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OriginProperties withPrivateLinkApprovalMessage(String privateLinkApprovalMessage) {
         super.withPrivateLinkApprovalMessage(privateLinkApprovalMessage);
@@ -137,7 +167,7 @@ public final class OriginProperties extends OriginUpdatePropertiesParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

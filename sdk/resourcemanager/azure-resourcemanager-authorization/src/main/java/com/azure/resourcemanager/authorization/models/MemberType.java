@@ -20,6 +20,15 @@ public final class MemberType extends ExpandableStringEnum<MemberType> {
     public static final MemberType GROUP = fromString("Group");
 
     /**
+     * Creates a new instance of MemberType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MemberType() {
+    }
+
+    /**
      * Creates or finds a MemberType from its string representation.
      *
      * @param name a name to look for.

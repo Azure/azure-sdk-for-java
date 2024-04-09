@@ -31,7 +31,7 @@ public final class ImagesListByDevCenterMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"btx\",\"publisher\":\"gfwsrtaw\",\"offer\":\"ezbrhubskh\",\"sku\":\"ygo\",\"recommendedMachineConfiguration\":{},\"provisioningState\":\"Deleting\",\"hibernateSupport\":\"Disabled\"},\"id\":\"vleo\",\"name\":\"fmluiqtqzfavyvn\",\"type\":\"qybaryeua\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"idxas\",\"publisher\":\"ddyvvjskgfmo\",\"offer\":\"ah\",\"sku\":\"gat\",\"recommendedMachineConfiguration\":{\"memory\":{\"min\":1528539116,\"max\":1199954406},\"vCPUs\":{\"min\":1668116178,\"max\":679664674}},\"provisioningState\":\"Created\",\"hibernateSupport\":\"Enabled\"},\"id\":\"jjidjk\",\"name\":\"yxkyxvx\",\"type\":\"vblbjednljlageua\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,8 @@ public final class ImagesListByDevCenterMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Image> response =
-            manager.images().listByDevCenter("qkdlw", "qfbumlkxtrqjf", 1704279837, com.azure.core.util.Context.NONE);
+            manager
+                .images()
+                .listByDevCenter("juwasqvdaeyyguxa", "jsqzhzbezk", 2095566189, com.azure.core.util.Context.NONE);
     }
 }

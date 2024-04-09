@@ -19,15 +19,15 @@ public final class PolicyInnerTests {
         PolicyInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"description\":\"wqiok\",\"status\":\"Enabled\",\"factName\":\"ScheduleEditPermission\",\"factData\":\"jmsvpkjp\",\"threshold\":\"kwcf\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-11-25T04:25:13Z\",\"provisioningState\":\"gtczheydb\",\"uniqueIdentifier\":\"shmkxmaehvbbxur\"},\"location\":\"pltfnhtba\",\"tags\":{\"kpyklyhp\":\"xywr\"},\"id\":\"uodpv\",\"name\":\"uudl\",\"type\":\"zibt\"}")
+                    "{\"properties\":{\"description\":\"xvd\",\"status\":\"Disabled\",\"factName\":\"UserOwnedLabVmCountInSubnet\",\"factData\":\"qrouda\",\"threshold\":\"avehhrvkbunzo\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-10-22T01:37:19Z\",\"provisioningState\":\"gkmoyxcdyuibhmfd\",\"uniqueIdentifier\":\"zydvfvf\"},\"location\":\"jnaeois\",\"tags\":{\"w\":\"mgorffukisc\",\"tg\":\"zhwplefaxvxilc\",\"qxtjjfzqlqhyca\":\"hnze\",\"beesmieknlra\":\"odggx\"},\"id\":\"iaa\",\"name\":\"iuagydwqfbylyrfg\",\"type\":\"agt\"}")
                 .toObject(PolicyInner.class);
-        Assertions.assertEquals("pltfnhtba", model.location());
-        Assertions.assertEquals("xywr", model.tags().get("kpyklyhp"));
-        Assertions.assertEquals("wqiok", model.description());
-        Assertions.assertEquals(PolicyStatus.ENABLED, model.status());
-        Assertions.assertEquals(PolicyFactName.SCHEDULE_EDIT_PERMISSION, model.factName());
-        Assertions.assertEquals("jmsvpkjp", model.factData());
-        Assertions.assertEquals("kwcf", model.threshold());
+        Assertions.assertEquals("jnaeois", model.location());
+        Assertions.assertEquals("mgorffukisc", model.tags().get("w"));
+        Assertions.assertEquals("xvd", model.description());
+        Assertions.assertEquals(PolicyStatus.DISABLED, model.status());
+        Assertions.assertEquals(PolicyFactName.USER_OWNED_LAB_VM_COUNT_IN_SUBNET, model.factName());
+        Assertions.assertEquals("qrouda", model.factData());
+        Assertions.assertEquals("avehhrvkbunzo", model.threshold());
         Assertions.assertEquals(PolicyEvaluatorType.MAX_VALUE_POLICY, model.evaluatorType());
     }
 
@@ -35,25 +35,28 @@ public final class PolicyInnerTests {
     public void testSerialize() throws Exception {
         PolicyInner model =
             new PolicyInner()
-                .withLocation("pltfnhtba")
-                .withTags(mapOf("kpyklyhp", "xywr"))
-                .withDescription("wqiok")
-                .withStatus(PolicyStatus.ENABLED)
-                .withFactName(PolicyFactName.SCHEDULE_EDIT_PERMISSION)
-                .withFactData("jmsvpkjp")
-                .withThreshold("kwcf")
+                .withLocation("jnaeois")
+                .withTags(
+                    mapOf(
+                        "w", "mgorffukisc", "tg", "zhwplefaxvxilc", "qxtjjfzqlqhyca", "hnze", "beesmieknlra", "odggx"))
+                .withDescription("xvd")
+                .withStatus(PolicyStatus.DISABLED)
+                .withFactName(PolicyFactName.USER_OWNED_LAB_VM_COUNT_IN_SUBNET)
+                .withFactData("qrouda")
+                .withThreshold("avehhrvkbunzo")
                 .withEvaluatorType(PolicyEvaluatorType.MAX_VALUE_POLICY);
         model = BinaryData.fromObject(model).toObject(PolicyInner.class);
-        Assertions.assertEquals("pltfnhtba", model.location());
-        Assertions.assertEquals("xywr", model.tags().get("kpyklyhp"));
-        Assertions.assertEquals("wqiok", model.description());
-        Assertions.assertEquals(PolicyStatus.ENABLED, model.status());
-        Assertions.assertEquals(PolicyFactName.SCHEDULE_EDIT_PERMISSION, model.factName());
-        Assertions.assertEquals("jmsvpkjp", model.factData());
-        Assertions.assertEquals("kwcf", model.threshold());
+        Assertions.assertEquals("jnaeois", model.location());
+        Assertions.assertEquals("mgorffukisc", model.tags().get("w"));
+        Assertions.assertEquals("xvd", model.description());
+        Assertions.assertEquals(PolicyStatus.DISABLED, model.status());
+        Assertions.assertEquals(PolicyFactName.USER_OWNED_LAB_VM_COUNT_IN_SUBNET, model.factName());
+        Assertions.assertEquals("qrouda", model.factData());
+        Assertions.assertEquals("avehhrvkbunzo", model.threshold());
         Assertions.assertEquals(PolicyEvaluatorType.MAX_VALUE_POLICY, model.evaluatorType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

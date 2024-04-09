@@ -45,25 +45,11 @@ public interface AzureStackHciClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the ArcSettingsClient object to access its operations.
+     * Gets the GalleryImagesOperationsClient object to access its operations.
      *
-     * @return the ArcSettingsClient object.
+     * @return the GalleryImagesOperationsClient object.
      */
-    ArcSettingsClient getArcSettings();
-
-    /**
-     * Gets the ClustersClient object to access its operations.
-     *
-     * @return the ClustersClient object.
-     */
-    ClustersClient getClusters();
-
-    /**
-     * Gets the ExtensionsClient object to access its operations.
-     *
-     * @return the ExtensionsClient object.
-     */
-    ExtensionsClient getExtensions();
+    GalleryImagesOperationsClient getGalleryImagesOperations();
 
     /**
      * Gets the OperationsClient object to access its operations.
@@ -71,4 +57,67 @@ public interface AzureStackHciClient {
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
+
+    /**
+     * Gets the LogicalNetworksOperationsClient object to access its operations.
+     *
+     * @return the LogicalNetworksOperationsClient object.
+     */
+    LogicalNetworksOperationsClient getLogicalNetworksOperations();
+
+    /**
+     * Gets the MarketplaceGalleryImagesOperationsClient object to access its operations.
+     *
+     * @return the MarketplaceGalleryImagesOperationsClient object.
+     */
+    MarketplaceGalleryImagesOperationsClient getMarketplaceGalleryImagesOperations();
+
+    /**
+     * Gets the NetworkInterfacesOperationsClient object to access its operations.
+     *
+     * @return the NetworkInterfacesOperationsClient object.
+     */
+    NetworkInterfacesOperationsClient getNetworkInterfacesOperations();
+
+    /**
+     * Gets the StorageContainersOperationsClient object to access its operations.
+     *
+     * @return the StorageContainersOperationsClient object.
+     */
+    StorageContainersOperationsClient getStorageContainersOperations();
+
+    /**
+     * Gets the VirtualHardDisksOperationsClient object to access its operations.
+     *
+     * @return the VirtualHardDisksOperationsClient object.
+     */
+    VirtualHardDisksOperationsClient getVirtualHardDisksOperations();
+
+    /**
+     * Gets the VirtualMachineInstancesClient object to access its operations.
+     *
+     * @return the VirtualMachineInstancesClient object.
+     */
+    VirtualMachineInstancesClient getVirtualMachineInstances();
+
+    /**
+     * Gets the HybridIdentityMetadatasClient object to access its operations.
+     *
+     * @return the HybridIdentityMetadatasClient object.
+     */
+    HybridIdentityMetadatasClient getHybridIdentityMetadatas();
+
+    /**
+     * Gets the GuestAgentsClient object to access its operations.
+     *
+     * @return the GuestAgentsClient object.
+     */
+    GuestAgentsClient getGuestAgents();
+
+    /**
+     * Gets the GuestAgentsOperationsClient object to access its operations.
+     *
+     * @return the GuestAgentsOperationsClient object.
+     */
+    GuestAgentsOperationsClient getGuestAgentsOperations();
 }

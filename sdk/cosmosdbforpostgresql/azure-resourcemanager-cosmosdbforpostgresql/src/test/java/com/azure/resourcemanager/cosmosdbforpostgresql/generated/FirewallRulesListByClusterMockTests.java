@@ -31,39 +31,28 @@ public final class FirewallRulesListByClusterMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"startIpAddress\":\"lqbhsf\",\"endIpAddress\":\"obl\",\"provisioningState\":\"Succeeded\"},\"id\":\"lmpewwwfbkr\",\"name\":\"rn\",\"type\":\"vshqjohxcr\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"startIpAddress\":\"pdggkzzlvm\",\"endIpAddress\":\"mpaxmodfvuefywsb\",\"provisioningState\":\"Succeeded\"},\"id\":\"wyhrfouyftaakc\",\"name\":\"wiyzvqtmnubexkp\",\"type\":\"ksmond\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CosmosDBForPostgreSqlManager manager =
-            CosmosDBForPostgreSqlManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CosmosDBForPostgreSqlManager manager = CosmosDBForPostgreSqlManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<FirewallRule> response =
-            manager.firewallRules().listByCluster("t", "qaqtdoqmcbxvwvxy", com.azure.core.util.Context.NONE);
+        PagedIterable<FirewallRule> response
+            = manager.firewallRules().listByCluster("lpmutwuoegrpkhj", "niyqslui", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lqbhsf", response.iterator().next().startIpAddress());
-        Assertions.assertEquals("obl", response.iterator().next().endIpAddress());
+        Assertions.assertEquals("pdggkzzlvm", response.iterator().next().startIpAddress());
+        Assertions.assertEquals("mpaxmodfvuefywsb", response.iterator().next().endIpAddress());
     }
 }

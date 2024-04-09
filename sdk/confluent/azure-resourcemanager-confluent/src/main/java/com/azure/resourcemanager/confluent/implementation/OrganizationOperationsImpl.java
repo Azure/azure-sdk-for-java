@@ -11,29 +11,28 @@ import com.azure.resourcemanager.confluent.fluent.OrganizationOperationsClient;
 import com.azure.resourcemanager.confluent.fluent.models.OperationResultInner;
 import com.azure.resourcemanager.confluent.models.OperationResult;
 import com.azure.resourcemanager.confluent.models.OrganizationOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OrganizationOperationsImpl implements OrganizationOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrganizationOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OrganizationOperationsImpl.class);
 
     private final OrganizationOperationsClient innerClient;
 
     private final com.azure.resourcemanager.confluent.ConfluentManager serviceManager;
 
-    public OrganizationOperationsImpl(
-        OrganizationOperationsClient innerClient, com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
+    public OrganizationOperationsImpl(OrganizationOperationsClient innerClient,
+        com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<OperationResult> list() {
         PagedIterable<OperationResultInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new OperationResultImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationResultImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OperationResult> list(Context context) {
         PagedIterable<OperationResultInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new OperationResultImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationResultImpl(inner1, this.manager()));
     }
 
     private OrganizationOperationsClient serviceClient() {

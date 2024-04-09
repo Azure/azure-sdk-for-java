@@ -70,8 +70,6 @@ extends IntegrationSpec
     assertMetrics(meterRegistry, "cosmos.client.op.latency", expectedToFind = true)
     assertMetrics(meterRegistry, "cosmos.client.req.gw", expectedToFind = true)
     assertMetrics(meterRegistry, "cosmos.client.req.rntbd", expectedToFind = false)
-    assertMetrics(meterRegistry, "cosmos.client.rntbd", expectedToFind = false)
-    assertMetrics(meterRegistry, "cosmos.client.rntbd.addressResolution", expectedToFind = false)
   }
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals

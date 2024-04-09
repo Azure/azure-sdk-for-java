@@ -7,68 +7,77 @@ package com.azure.resourcemanager.confluent.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for ConfluentManagementClient class. */
+/**
+ * The interface for ConfluentManagementClient class.
+ */
 public interface ConfluentManagementClient {
     /**
      * Gets Microsoft Azure subscription id.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the MarketplaceAgreementsClient object to access its operations.
-     *
+     * 
      * @return the MarketplaceAgreementsClient object.
      */
     MarketplaceAgreementsClient getMarketplaceAgreements();
 
     /**
      * Gets the OrganizationOperationsClient object to access its operations.
-     *
+     * 
      * @return the OrganizationOperationsClient object.
      */
     OrganizationOperationsClient getOrganizationOperations();
 
     /**
      * Gets the OrganizationsClient object to access its operations.
-     *
+     * 
      * @return the OrganizationsClient object.
      */
     OrganizationsClient getOrganizations();
 
     /**
      * Gets the ValidationsClient object to access its operations.
-     *
+     * 
      * @return the ValidationsClient object.
      */
     ValidationsClient getValidations();
+
+    /**
+     * Gets the AccessClient object to access its operations.
+     * 
+     * @return the AccessClient object.
+     */
+    AccessClient getAccess();
 }

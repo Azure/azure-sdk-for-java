@@ -15,29 +15,29 @@ public final class ResourceModelWithAllowedPropertySetSkuTests {
         ResourceModelWithAllowedPropertySetSku model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"dhsgcba\",\"tier\":\"Standard\",\"size\":\"jkot\",\"family\":\"qgoulznd\",\"capacity\":708367520}")
+                    "{\"name\":\"muouqfp\",\"tier\":\"Free\",\"size\":\"bngui\",\"family\":\"wu\",\"capacity\":1403075438}")
                 .toObject(ResourceModelWithAllowedPropertySetSku.class);
-        Assertions.assertEquals("dhsgcba", model.name());
-        Assertions.assertEquals(SkuTier.STANDARD, model.tier());
-        Assertions.assertEquals("jkot", model.size());
-        Assertions.assertEquals("qgoulznd", model.family());
-        Assertions.assertEquals(708367520, model.capacity());
+        Assertions.assertEquals("muouqfp", model.name());
+        Assertions.assertEquals(SkuTier.FREE, model.tier());
+        Assertions.assertEquals("bngui", model.size());
+        Assertions.assertEquals("wu", model.family());
+        Assertions.assertEquals(1403075438, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceModelWithAllowedPropertySetSku model =
             new ResourceModelWithAllowedPropertySetSku()
-                .withName("dhsgcba")
-                .withTier(SkuTier.STANDARD)
-                .withSize("jkot")
-                .withFamily("qgoulznd")
-                .withCapacity(708367520);
+                .withName("muouqfp")
+                .withTier(SkuTier.FREE)
+                .withSize("bngui")
+                .withFamily("wu")
+                .withCapacity(1403075438);
         model = BinaryData.fromObject(model).toObject(ResourceModelWithAllowedPropertySetSku.class);
-        Assertions.assertEquals("dhsgcba", model.name());
-        Assertions.assertEquals(SkuTier.STANDARD, model.tier());
-        Assertions.assertEquals("jkot", model.size());
-        Assertions.assertEquals("qgoulznd", model.family());
-        Assertions.assertEquals(708367520, model.capacity());
+        Assertions.assertEquals("muouqfp", model.name());
+        Assertions.assertEquals(SkuTier.FREE, model.tier());
+        Assertions.assertEquals("bngui", model.size());
+        Assertions.assertEquals("wu", model.family());
+        Assertions.assertEquals(1403075438, model.capacity());
     }
 }

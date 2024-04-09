@@ -27,22 +27,28 @@ import com.azure.resourcemanager.datafactory.fluent.models.ActivityRunsQueryResp
 import com.azure.resourcemanager.datafactory.models.RunFilterParameters;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ActivityRunsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ActivityRunsClient.
+ */
 public final class ActivityRunsClientImpl implements ActivityRunsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ActivityRunsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataFactoryManagementClientImpl client;
 
     /**
      * Initializes an instance of ActivityRunsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ActivityRunsClientImpl(DataFactoryManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ActivityRunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ActivityRunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,27 +59,21 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
     public interface ActivityRunsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/pipelineruns/{runId}/queryActivityruns")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}/queryActivityruns")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ActivityRunsQueryResponseInner>> queryByPipelineRun(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ActivityRunsQueryResponseInner>> queryByPipelineRun(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
-            @PathParam("runId") String runId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") RunFilterParameters filterParameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("runId") String runId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RunFilterParameters filterParameters, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Query activity runs based on input filter conditions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param runId The pipeline run identifier.
@@ -84,19 +84,15 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
      * @return a list activity runs along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ActivityRunsQueryResponseInner>> queryByPipelineRunWithResponseAsync(
-        String resourceGroupName, String factoryName, String runId, RunFilterParameters filterParameters) {
+    private Mono<Response<ActivityRunsQueryResponseInner>> queryByPipelineRunWithResponseAsync(String resourceGroupName,
+        String factoryName, String runId, RunFilterParameters filterParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -116,25 +112,15 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .queryByPipelineRun(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            runId,
-                            this.client.getApiVersion(),
-                            filterParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.queryByPipelineRun(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, factoryName, runId, this.client.getApiVersion(),
+                filterParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Query activity runs based on input filter conditions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param runId The pipeline run identifier.
@@ -146,23 +132,15 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
      * @return a list activity runs along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ActivityRunsQueryResponseInner>> queryByPipelineRunWithResponseAsync(
-        String resourceGroupName,
-        String factoryName,
-        String runId,
-        RunFilterParameters filterParameters,
-        Context context) {
+    private Mono<Response<ActivityRunsQueryResponseInner>> queryByPipelineRunWithResponseAsync(String resourceGroupName,
+        String factoryName, String runId, RunFilterParameters filterParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -182,22 +160,13 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .queryByPipelineRun(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                runId,
-                this.client.getApiVersion(),
-                filterParameters,
-                accept,
-                context);
+        return service.queryByPipelineRun(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, runId, this.client.getApiVersion(), filterParameters, accept, context);
     }
 
     /**
      * Query activity runs based on input filter conditions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param runId The pipeline run identifier.
@@ -208,15 +177,15 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
      * @return a list activity runs on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ActivityRunsQueryResponseInner> queryByPipelineRunAsync(
-        String resourceGroupName, String factoryName, String runId, RunFilterParameters filterParameters) {
+    private Mono<ActivityRunsQueryResponseInner> queryByPipelineRunAsync(String resourceGroupName, String factoryName,
+        String runId, RunFilterParameters filterParameters) {
         return queryByPipelineRunWithResponseAsync(resourceGroupName, factoryName, runId, filterParameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Query activity runs based on input filter conditions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param runId The pipeline run identifier.
@@ -228,19 +197,15 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
      * @return a list activity runs along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ActivityRunsQueryResponseInner> queryByPipelineRunWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String runId,
-        RunFilterParameters filterParameters,
-        Context context) {
+    public Response<ActivityRunsQueryResponseInner> queryByPipelineRunWithResponse(String resourceGroupName,
+        String factoryName, String runId, RunFilterParameters filterParameters, Context context) {
         return queryByPipelineRunWithResponseAsync(resourceGroupName, factoryName, runId, filterParameters, context)
             .block();
     }
 
     /**
      * Query activity runs based on input filter conditions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param runId The pipeline run identifier.
@@ -251,8 +216,8 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
      * @return a list activity runs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ActivityRunsQueryResponseInner queryByPipelineRun(
-        String resourceGroupName, String factoryName, String runId, RunFilterParameters filterParameters) {
+    public ActivityRunsQueryResponseInner queryByPipelineRun(String resourceGroupName, String factoryName, String runId,
+        RunFilterParameters filterParameters) {
         return queryByPipelineRunWithResponse(resourceGroupName, factoryName, runId, filterParameters, Context.NONE)
             .getValue();
     }

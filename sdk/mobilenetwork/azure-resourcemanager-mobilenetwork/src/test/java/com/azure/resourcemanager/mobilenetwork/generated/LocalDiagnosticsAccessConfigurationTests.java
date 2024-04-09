@@ -13,23 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class LocalDiagnosticsAccessConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LocalDiagnosticsAccessConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"authenticationType\":\"AAD\",\"httpsServerCertificate\":{\"certificateUrl\":\"nxdhbt\",\"provisioning\":{\"state\":\"Provisioned\",\"reason\":\"wpn\"}}}")
-                .toObject(LocalDiagnosticsAccessConfiguration.class);
+        LocalDiagnosticsAccessConfiguration model = BinaryData.fromString(
+            "{\"authenticationType\":\"AAD\",\"httpsServerCertificate\":{\"certificateUrl\":\"isgwbnbbeldawkz\",\"provisioning\":{\"state\":\"Failed\",\"reason\":\"urqhaka\"}}}")
+            .toObject(LocalDiagnosticsAccessConfiguration.class);
         Assertions.assertEquals(AuthenticationType.AAD, model.authenticationType());
-        Assertions.assertEquals("nxdhbt", model.httpsServerCertificate().certificateUrl());
+        Assertions.assertEquals("isgwbnbbeldawkz", model.httpsServerCertificate().certificateUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LocalDiagnosticsAccessConfiguration model =
-            new LocalDiagnosticsAccessConfiguration()
-                .withAuthenticationType(AuthenticationType.AAD)
-                .withHttpsServerCertificate(new HttpsServerCertificate().withCertificateUrl("nxdhbt"));
+        LocalDiagnosticsAccessConfiguration model
+            = new LocalDiagnosticsAccessConfiguration().withAuthenticationType(AuthenticationType.AAD)
+                .withHttpsServerCertificate(new HttpsServerCertificate().withCertificateUrl("isgwbnbbeldawkz"));
         model = BinaryData.fromObject(model).toObject(LocalDiagnosticsAccessConfiguration.class);
         Assertions.assertEquals(AuthenticationType.AAD, model.authenticationType());
-        Assertions.assertEquals("nxdhbt", model.httpsServerCertificate().certificateUrl());
+        Assertions.assertEquals("isgwbnbbeldawkz", model.httpsServerCertificate().certificateUrl());
     }
 }

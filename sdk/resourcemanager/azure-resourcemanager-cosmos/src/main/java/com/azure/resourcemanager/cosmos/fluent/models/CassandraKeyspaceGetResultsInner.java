@@ -11,7 +11,9 @@ import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceGetPropertiesRes
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An Azure Cosmos DB Cassandra keyspace. */
+/**
+ * An Azure Cosmos DB Cassandra keyspace.
+ */
 @Fluent
 public final class CassandraKeyspaceGetResultsInner extends ArmResourceProperties {
     /*
@@ -20,27 +22,33 @@ public final class CassandraKeyspaceGetResultsInner extends ArmResourcePropertie
     @JsonProperty(value = "properties")
     private CassandraKeyspaceGetProperties innerProperties;
 
-    /** Creates an instance of CassandraKeyspaceGetResultsInner class. */
+    /**
+     * Creates an instance of CassandraKeyspaceGetResultsInner class.
+     */
     public CassandraKeyspaceGetResultsInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB Cassandra keyspace.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CassandraKeyspaceGetProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraKeyspaceGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraKeyspaceGetResultsInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -49,7 +57,7 @@ public final class CassandraKeyspaceGetResultsInner extends ArmResourcePropertie
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public CassandraKeyspaceGetPropertiesResource resource() {
@@ -58,7 +66,7 @@ public final class CassandraKeyspaceGetResultsInner extends ArmResourcePropertie
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the CassandraKeyspaceGetResultsInner object itself.
      */
@@ -72,7 +80,7 @@ public final class CassandraKeyspaceGetResultsInner extends ArmResourcePropertie
 
     /**
      * Get the options property: The options property.
-     *
+     * 
      * @return the options value.
      */
     public CassandraKeyspaceGetPropertiesOptions options() {
@@ -81,7 +89,7 @@ public final class CassandraKeyspaceGetResultsInner extends ArmResourcePropertie
 
     /**
      * Set the options property: The options property.
-     *
+     * 
      * @param options the options value to set.
      * @return the CassandraKeyspaceGetResultsInner object itself.
      */
@@ -95,7 +103,7 @@ public final class CassandraKeyspaceGetResultsInner extends ArmResourcePropertie
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

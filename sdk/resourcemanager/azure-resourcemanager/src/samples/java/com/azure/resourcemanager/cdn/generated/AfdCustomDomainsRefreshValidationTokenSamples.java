@@ -4,24 +4,21 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for AfdCustomDomains RefreshValidationToken. */
+/**
+ * Samples for AfdCustomDomains RefreshValidationToken.
+ */
 public final class AfdCustomDomainsRefreshValidationTokenSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDCustomDomains_RefreshValidationToken.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/
+     * AFDCustomDomains_RefreshValidationToken.json
      */
     /**
      * Sample code: AFDCustomDomains_Delete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void aFDCustomDomainsDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cdnProfiles()
-            .manager()
-            .serviceClient()
-            .getAfdCustomDomains()
-            .refreshValidationToken("RG", "profile1", "domain1", Context.NONE);
+        azure.cdnProfiles().manager().serviceClient().getAfdCustomDomains().refreshValidationToken("RG", "profile1",
+            "domain1", com.azure.core.util.Context.NONE);
     }
 }

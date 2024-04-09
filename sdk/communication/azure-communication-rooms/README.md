@@ -25,7 +25,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-rooms</artifactId>
-  <version>1.0.2</version>
+  <version>1.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -82,7 +82,8 @@ participants.add(participant2);
 CreateRoomOptions roomOptions = new CreateRoomOptions()
         .setValidFrom(validFrom)
         .setValidUntil(validUntil)
-        .setParticipants(participants);
+        .setParticipants(participants)
+        .setPstnDialOutEnabled(true);
 
 CommunicationRoom roomResult = roomsClient.createRoom(roomOptions);
 ```
@@ -96,7 +97,8 @@ OffsetDateTime validUntil = validFrom.plusDays(30);
 // Update Room options
 UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
         .setValidFrom(validFrom)
-        .setValidUntil(validUntil);
+        .setValidUntil(validUntil)
+        .setPstnDialOutEnabled(true);
 
 try {
     CommunicationRoom roomResult = roomsClient.updateRoom("<Room Id>", updateRoomOptions);

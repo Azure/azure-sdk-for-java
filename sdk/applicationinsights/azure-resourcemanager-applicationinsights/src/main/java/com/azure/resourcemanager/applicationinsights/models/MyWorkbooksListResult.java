@@ -24,6 +24,10 @@ public final class MyWorkbooksListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of MyWorkbooksListResult class. */
+    public MyWorkbooksListResult() {
+    }
+
     /**
      * Get the value property: An array of private workbooks.
      *

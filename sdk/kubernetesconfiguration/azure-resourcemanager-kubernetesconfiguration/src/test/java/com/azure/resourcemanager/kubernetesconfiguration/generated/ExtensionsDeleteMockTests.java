@@ -58,7 +58,6 @@ public final class ExtensionsDeleteMockTests {
 
         manager
             .extensions()
-            .delete(
-                "lcgwxzvlvqh", "kbegibt", "mxiebw", "aloayqcgwrtzju", "gwyzm", false, com.azure.core.util.Context.NONE);
+            .delete("tppjflcx", "gaokonzmnsikv", "kqze", "qkdltfz", "mhhv", true, com.azure.core.util.Context.NONE);
     }
 }

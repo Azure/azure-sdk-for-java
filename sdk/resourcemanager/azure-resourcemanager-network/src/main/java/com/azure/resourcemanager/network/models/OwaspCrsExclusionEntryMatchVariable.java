@@ -8,39 +8,59 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The variable to be excluded. */
+/**
+ * The variable to be excluded.
+ */
 public final class OwaspCrsExclusionEntryMatchVariable
     extends ExpandableStringEnum<OwaspCrsExclusionEntryMatchVariable> {
-    /** Static value RequestHeaderNames for OwaspCrsExclusionEntryMatchVariable. */
+    /**
+     * Static value RequestHeaderNames for OwaspCrsExclusionEntryMatchVariable.
+     */
     public static final OwaspCrsExclusionEntryMatchVariable REQUEST_HEADER_NAMES = fromString("RequestHeaderNames");
 
-    /** Static value RequestCookieNames for OwaspCrsExclusionEntryMatchVariable. */
+    /**
+     * Static value RequestCookieNames for OwaspCrsExclusionEntryMatchVariable.
+     */
     public static final OwaspCrsExclusionEntryMatchVariable REQUEST_COOKIE_NAMES = fromString("RequestCookieNames");
 
-    /** Static value RequestArgNames for OwaspCrsExclusionEntryMatchVariable. */
+    /**
+     * Static value RequestArgNames for OwaspCrsExclusionEntryMatchVariable.
+     */
     public static final OwaspCrsExclusionEntryMatchVariable REQUEST_ARG_NAMES = fromString("RequestArgNames");
 
-    /** Static value RequestHeaderKeys for OwaspCrsExclusionEntryMatchVariable. */
+    /**
+     * Static value RequestHeaderKeys for OwaspCrsExclusionEntryMatchVariable.
+     */
     public static final OwaspCrsExclusionEntryMatchVariable REQUEST_HEADER_KEYS = fromString("RequestHeaderKeys");
 
-    /** Static value RequestHeaderValues for OwaspCrsExclusionEntryMatchVariable. */
+    /**
+     * Static value RequestHeaderValues for OwaspCrsExclusionEntryMatchVariable.
+     */
     public static final OwaspCrsExclusionEntryMatchVariable REQUEST_HEADER_VALUES = fromString("RequestHeaderValues");
 
-    /** Static value RequestCookieKeys for OwaspCrsExclusionEntryMatchVariable. */
+    /**
+     * Static value RequestCookieKeys for OwaspCrsExclusionEntryMatchVariable.
+     */
     public static final OwaspCrsExclusionEntryMatchVariable REQUEST_COOKIE_KEYS = fromString("RequestCookieKeys");
 
-    /** Static value RequestCookieValues for OwaspCrsExclusionEntryMatchVariable. */
+    /**
+     * Static value RequestCookieValues for OwaspCrsExclusionEntryMatchVariable.
+     */
     public static final OwaspCrsExclusionEntryMatchVariable REQUEST_COOKIE_VALUES = fromString("RequestCookieValues");
 
-    /** Static value RequestArgKeys for OwaspCrsExclusionEntryMatchVariable. */
+    /**
+     * Static value RequestArgKeys for OwaspCrsExclusionEntryMatchVariable.
+     */
     public static final OwaspCrsExclusionEntryMatchVariable REQUEST_ARG_KEYS = fromString("RequestArgKeys");
 
-    /** Static value RequestArgValues for OwaspCrsExclusionEntryMatchVariable. */
+    /**
+     * Static value RequestArgValues for OwaspCrsExclusionEntryMatchVariable.
+     */
     public static final OwaspCrsExclusionEntryMatchVariable REQUEST_ARG_VALUES = fromString("RequestArgValues");
 
     /**
      * Creates a new instance of OwaspCrsExclusionEntryMatchVariable value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -49,7 +69,7 @@ public final class OwaspCrsExclusionEntryMatchVariable
 
     /**
      * Creates or finds a OwaspCrsExclusionEntryMatchVariable from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OwaspCrsExclusionEntryMatchVariable.
      */
@@ -60,7 +80,7 @@ public final class OwaspCrsExclusionEntryMatchVariable
 
     /**
      * Gets known OwaspCrsExclusionEntryMatchVariable values.
-     *
+     * 
      * @return known OwaspCrsExclusionEntryMatchVariable values.
      */
     public static Collection<OwaspCrsExclusionEntryMatchVariable> values() {

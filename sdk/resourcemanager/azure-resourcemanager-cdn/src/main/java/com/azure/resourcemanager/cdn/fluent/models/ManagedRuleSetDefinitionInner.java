@@ -12,7 +12,9 @@ import com.azure.resourcemanager.cdn.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a managed rule set definition. */
+/**
+ * Describes a managed rule set definition.
+ */
 @Fluent
 public final class ManagedRuleSetDefinitionInner extends ProxyResource {
     /*
@@ -34,8 +36,14 @@ public final class ManagedRuleSetDefinitionInner extends ProxyResource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of ManagedRuleSetDefinitionInner class.
+     */
+    public ManagedRuleSetDefinitionInner() {
+    }
+
+    /**
      * Get the innerProperties property: Describes managed rule set definition properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedRuleSetDefinitionProperties innerProperties() {
@@ -45,7 +53,7 @@ public final class ManagedRuleSetDefinitionInner extends ProxyResource {
     /**
      * Get the sku property: The pricing tier (defines a CDN provider, feature list and rate) of the
      * CdnWebApplicationFirewallPolicy.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -55,7 +63,7 @@ public final class ManagedRuleSetDefinitionInner extends ProxyResource {
     /**
      * Set the sku property: The pricing tier (defines a CDN provider, feature list and rate) of the
      * CdnWebApplicationFirewallPolicy.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ManagedRuleSetDefinitionInner object itself.
      */
@@ -66,7 +74,7 @@ public final class ManagedRuleSetDefinitionInner extends ProxyResource {
 
     /**
      * Get the systemData property: Read only system data.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -75,7 +83,7 @@ public final class ManagedRuleSetDefinitionInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the managed rule set.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -84,7 +92,7 @@ public final class ManagedRuleSetDefinitionInner extends ProxyResource {
 
     /**
      * Get the ruleSetType property: Type of the managed rule set.
-     *
+     * 
      * @return the ruleSetType value.
      */
     public String ruleSetType() {
@@ -93,7 +101,7 @@ public final class ManagedRuleSetDefinitionInner extends ProxyResource {
 
     /**
      * Get the ruleSetVersion property: Version of the managed rule set type.
-     *
+     * 
      * @return the ruleSetVersion value.
      */
     public String ruleSetVersion() {
@@ -102,7 +110,7 @@ public final class ManagedRuleSetDefinitionInner extends ProxyResource {
 
     /**
      * Get the ruleGroups property: Rule groups of the managed rule set.
-     *
+     * 
      * @return the ruleGroups value.
      */
     public List<ManagedRuleGroupDefinition> ruleGroups() {
@@ -111,7 +119,7 @@ public final class ManagedRuleSetDefinitionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

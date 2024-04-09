@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ImmutabilitySettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImmutabilitySettings model =
-            BinaryData.fromString("{\"state\":\"Disabled\"}").toObject(ImmutabilitySettings.class);
+        ImmutabilitySettings model
+            = BinaryData.fromString("{\"state\":\"Disabled\"}").toObject(ImmutabilitySettings.class);
         Assertions.assertEquals(ImmutabilityState.DISABLED, model.state());
     }
 

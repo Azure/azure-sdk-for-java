@@ -34,8 +34,8 @@ public final class CreateCallRequestInternal {
     /*
      * The identifier of the source of the call
      */
-    @JsonProperty(value = "sourceIdentity")
-    private CommunicationUserIdentifierModel sourceIdentity;
+    @JsonProperty(value = "source")
+    private CommunicationUserIdentifierModel source;
 
     /*
      * A customer set value used to track the answering of a call.
@@ -56,16 +56,22 @@ public final class CreateCallRequestInternal {
     private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
 
     /*
-     * The identifier of the Cognitive Service resource assigned to this call.
+     * Live Transcription Configuration.
      */
-    @JsonProperty(value = "azureCognitiveServicesEndpointUrl")
-    private String azureCognitiveServicesEndpointUrl;
+    @JsonProperty(value = "transcriptionConfiguration")
+    private TranscriptionConfigurationInternal transcriptionConfiguration;
 
     /*
-     * Used by customer to send custom context to targets
+     * AI options for the call.
      */
-    @JsonProperty(value = "customContext")
-    private CustomContext customContext;
+    @JsonProperty(value = "callIntelligenceOptions")
+    private CallIntelligenceOptionsInternal callIntelligenceOptions;
+
+    /*
+     * Used by customer to send custom calling context to targets
+     */
+    @JsonProperty(value = "customCallingContext")
+    private CustomCallingContext customCallingContext;
 
     /**
      * Get the targets property: The targets of the call.
@@ -130,22 +136,22 @@ public final class CreateCallRequestInternal {
     }
 
     /**
-     * Get the sourceIdentity property: The identifier of the source of the call.
+     * Get the source property: The identifier of the source of the call.
      *
-     * @return the sourceIdentity value.
+     * @return the source value.
      */
-    public CommunicationUserIdentifierModel getSourceIdentity() {
-        return this.sourceIdentity;
+    public CommunicationUserIdentifierModel getSource() {
+        return this.source;
     }
 
     /**
-     * Set the sourceIdentity property: The identifier of the source of the call.
+     * Set the source property: The identifier of the source of the call.
      *
-     * @param sourceIdentity the sourceIdentity value to set.
+     * @param source the source value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setSourceIdentity(CommunicationUserIdentifierModel sourceIdentity) {
-        this.sourceIdentity = sourceIdentity;
+    public CreateCallRequestInternal setSource(CommunicationUserIdentifierModel source) {
+        this.source = source;
         return this;
     }
 
@@ -211,44 +217,64 @@ public final class CreateCallRequestInternal {
     }
 
     /**
-     * Get the azureCognitiveServicesEndpointUrl property: The identifier of the Cognitive Service resource assigned to
-     * this call.
+     * Get the transcriptionConfiguration property: Live Transcription Configuration.
      *
-     * @return the azureCognitiveServicesEndpointUrl value.
+     * @return the transcriptionConfiguration value.
      */
-    public String getAzureCognitiveServicesEndpointUrl() {
-        return this.azureCognitiveServicesEndpointUrl;
+    public TranscriptionConfigurationInternal getTranscriptionConfiguration() {
+        return this.transcriptionConfiguration;
     }
 
     /**
-     * Set the azureCognitiveServicesEndpointUrl property: The identifier of the Cognitive Service resource assigned to
-     * this call.
+     * Set the transcriptionConfiguration property: Live Transcription Configuration.
      *
-     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @param transcriptionConfiguration the transcriptionConfiguration value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
-        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
+    public CreateCallRequestInternal setTranscriptionConfiguration(
+            TranscriptionConfigurationInternal transcriptionConfiguration) {
+        this.transcriptionConfiguration = transcriptionConfiguration;
         return this;
     }
 
     /**
-     * Get the customContext property: Used by customer to send custom context to targets.
+     * Get the callIntelligenceOptions property: AI options for the call.
      *
-     * @return the customContext value.
+     * @return the callIntelligenceOptions value.
      */
-    public CustomContext getCustomContext() {
-        return this.customContext;
+    public CallIntelligenceOptionsInternal getCallIntelligenceOptions() {
+        return this.callIntelligenceOptions;
     }
 
     /**
-     * Set the customContext property: Used by customer to send custom context to targets.
+     * Set the callIntelligenceOptions property: AI options for the call.
      *
-     * @param customContext the customContext value to set.
+     * @param callIntelligenceOptions the callIntelligenceOptions value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setCustomContext(CustomContext customContext) {
-        this.customContext = customContext;
+    public CreateCallRequestInternal setCallIntelligenceOptions(
+            CallIntelligenceOptionsInternal callIntelligenceOptions) {
+        this.callIntelligenceOptions = callIntelligenceOptions;
+        return this;
+    }
+
+    /**
+     * Get the customCallingContext property: Used by customer to send custom calling context to targets.
+     *
+     * @return the customCallingContext value.
+     */
+    public CustomCallingContext getCustomCallingContext() {
+        return this.customCallingContext;
+    }
+
+    /**
+     * Set the customCallingContext property: Used by customer to send custom calling context to targets.
+     *
+     * @param customCallingContext the customCallingContext value to set.
+     * @return the CreateCallRequestInternal object itself.
+     */
+    public CreateCallRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
+        this.customCallingContext = customCallingContext;
         return this;
     }
 }

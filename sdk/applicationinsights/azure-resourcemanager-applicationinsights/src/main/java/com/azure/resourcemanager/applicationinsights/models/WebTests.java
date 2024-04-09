@@ -11,26 +11,26 @@ import com.azure.core.util.Context;
 /** Resource collection API of WebTests. */
 public interface WebTests {
     /**
-     * Get all Application Insights web tests defined within a specified resource group.
+     * Get all Application Insights web tests defined for the specified resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Application Insights web tests defined within a specified resource group as paginated response with
+     * @return all Application Insights web tests defined for the specified resource group as paginated response with
      *     {@link PagedIterable}.
      */
     PagedIterable<WebTest> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Get all Application Insights web tests defined within a specified resource group.
+     * Get all Application Insights web tests defined for the specified resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Application Insights web tests defined within a specified resource group as paginated response with
+     * @return all Application Insights web tests defined for the specified resource group as paginated response with
      *     {@link PagedIterable}.
      */
     PagedIterable<WebTest> listByResourceGroup(String resourceGroupName, Context context);
@@ -39,19 +39,7 @@ public interface WebTests {
      * Get a specific Application Insights web test definition.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param webTestName The name of the Application Insights webtest resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Application Insights web test definition.
-     */
-    WebTest getByResourceGroup(String resourceGroupName, String webTestName);
-
-    /**
-     * Get a specific Application Insights web test definition.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param webTestName The name of the Application Insights webtest resource.
+     * @param webTestName The name of the Application Insights WebTest resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -61,10 +49,35 @@ public interface WebTests {
     Response<WebTest> getByResourceGroupWithResponse(String resourceGroupName, String webTestName, Context context);
 
     /**
+     * Get a specific Application Insights web test definition.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param webTestName The name of the Application Insights WebTest resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific Application Insights web test definition.
+     */
+    WebTest getByResourceGroup(String resourceGroupName, String webTestName);
+
+    /**
      * Deletes an Application Insights web test.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param webTestName The name of the Application Insights webtest resource.
+     * @param webTestName The name of the Application Insights WebTest resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String webTestName, Context context);
+
+    /**
+     * Deletes an Application Insights web test.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param webTestName The name of the Application Insights WebTest resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -72,36 +85,23 @@ public interface WebTests {
     void deleteByResourceGroup(String resourceGroupName, String webTestName);
 
     /**
-     * Deletes an Application Insights web test.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param webTestName The name of the Application Insights webtest resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> deleteWithResponse(String resourceGroupName, String webTestName, Context context);
-
-    /**
-     * Get all Application Insights web test alerts definitions within a subscription.
+     * Get all Application Insights web test definitions for the specified subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Application Insights web test alerts definitions within a subscription as paginated response with
+     * @return all Application Insights web test definitions for the specified subscription as paginated response with
      *     {@link PagedIterable}.
      */
     PagedIterable<WebTest> list();
 
     /**
-     * Get all Application Insights web test alerts definitions within a subscription.
+     * Get all Application Insights web test definitions for the specified subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Application Insights web test alerts definitions within a subscription as paginated response with
+     * @return all Application Insights web test definitions for the specified subscription as paginated response with
      *     {@link PagedIterable}.
      */
     PagedIterable<WebTest> list(Context context);

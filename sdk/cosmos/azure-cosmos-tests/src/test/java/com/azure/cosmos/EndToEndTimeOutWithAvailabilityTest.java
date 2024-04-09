@@ -54,8 +54,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
     private static final int DEFAULT_NUM_DOCUMENTS = 100;
     private final Random random;
-    private final List<EndToEndTimeOutValidationTests.TestObject> createdDocuments = new ArrayList<>();
-    private final CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
     private static final int TIMEOUT = 60000;
     private CosmosAsyncClient clientWithPreferredRegions;
     private CosmosAsyncContainer cosmosAsyncContainer;
@@ -69,8 +67,6 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
     public EndToEndTimeOutWithAvailabilityTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         random = new Random();
-        endToEndOperationLatencyPolicyConfig = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
-            .build();
     }
 
     @BeforeClass(groups = {"multi-master"}, timeOut = SETUP_TIMEOUT * 100)
@@ -115,11 +111,14 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
         Thread.sleep(2000);
         FaultInjectionRule rule = injectFailure(cosmosAsyncContainer, faultInjectionOperationType);
         CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, options);
-        assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isGreaterThan(1);
-        ObjectNode diagnosticsNode = null;
+        assertThat(cosmosDiagnostics).isNotNull();
+        CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+        assertThat(diagnosticsContext).isNotNull();
+        assertThat(diagnosticsContext.getContactedRegionNames().size()).isGreaterThan(1);
+        ObjectNode diagnosticsNode;
         try {
             if (operationType == OperationType.Query) {
-                assertThat(cosmosDiagnostics.getClientSideRequestStatistics().iterator().next().getResponseStatisticsList().get(0).getRegionName())
+                assertThat(cosmosDiagnostics.getClientSideRequestStatistics().iterator().next().getResponseStatisticsList().iterator().next().getRegionName())
                     .isEqualTo(regions.get(1).toLowerCase(Locale.ROOT));
             } else {
                 diagnosticsNode = (ObjectNode) OBJECT_MAPPER.readTree(cosmosDiagnostics.toString());
@@ -127,8 +126,9 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             }
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
+        } finally {
+            rule.disable();
         }
-        rule.disable();
     }
 
     @DataProvider(name = "faultInjectionArgProvider")

@@ -11,61 +11,85 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.confluent.fluent.models.ApiKeyRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.ListRegionsSuccessResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
+import com.azure.resourcemanager.confluent.fluent.models.SCClusterRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.SCEnvironmentRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.SchemaRegistryClusterRecordInner;
+import com.azure.resourcemanager.confluent.models.CreateApiKeyModel;
+import com.azure.resourcemanager.confluent.models.ListAccessRequestModel;
 import com.azure.resourcemanager.confluent.models.OrganizationResourceUpdate;
 
-/** An instance of this class provides access to all the operations defined in OrganizationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OrganizationsClient.
+ */
 public interface OrganizationsClient {
     /**
      * List all organizations under the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OrganizationResourceInner> list();
 
     /**
      * List all organizations under the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OrganizationResourceInner> list(Context context);
 
     /**
      * List all Organizations under the specified resource group.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OrganizationResourceInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * List all Organizations under the specified resource group.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OrganizationResourceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Get the properties of a specific Organization resource.
-     *
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param organizationName Organization resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a specific Organization resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<OrganizationResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String organizationName, Context context);
+
+    /**
+     * Get the properties of a specific Organization resource.
+     * 
      * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,38 +101,22 @@ public interface OrganizationsClient {
     OrganizationResourceInner getByResourceGroup(String resourceGroupName, String organizationName);
 
     /**
-     * Get the properties of a specific Organization resource.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param organizationName Organization resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific Organization resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OrganizationResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String organizationName, Context context);
-
-    /**
      * Create Organization resource.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
-     * @param body Organization resource model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return organization resource.
+     * @return the {@link SyncPoller} for polling of organization resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner> beginCreate(
-        String resourceGroupName, String organizationName, OrganizationResourceInner body);
+    SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner> beginCreate(String resourceGroupName,
+        String organizationName);
 
     /**
      * Create Organization resource.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
@@ -116,29 +124,15 @@ public interface OrganizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return organization resource.
+     * @return the {@link SyncPoller} for polling of organization resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner> beginCreate(
-        String resourceGroupName, String organizationName, OrganizationResourceInner body, Context context);
+    SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner> beginCreate(String resourceGroupName,
+        String organizationName, OrganizationResourceInner body, Context context);
 
     /**
      * Create Organization resource.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param organizationName Organization resource name.
-     * @param body Organization resource model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return organization resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    OrganizationResourceInner create(String resourceGroupName, String organizationName, OrganizationResourceInner body);
-
-    /**
-     * Create Organization resource.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -151,7 +145,7 @@ public interface OrganizationsClient {
 
     /**
      * Create Organization resource.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
@@ -162,12 +156,28 @@ public interface OrganizationsClient {
      * @return organization resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OrganizationResourceInner create(
-        String resourceGroupName, String organizationName, OrganizationResourceInner body, Context context);
+    OrganizationResourceInner create(String resourceGroupName, String organizationName, OrganizationResourceInner body,
+        Context context);
 
     /**
      * Update Organization resource.
-     *
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param organizationName Organization resource name.
+     * @param body Updated Organization resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return organization resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<OrganizationResourceInner> updateWithResponse(String resourceGroupName, String organizationName,
+        OrganizationResourceUpdate body, Context context);
+
+    /**
+     * Update Organization resource.
+     * 
      * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -179,51 +189,35 @@ public interface OrganizationsClient {
     OrganizationResourceInner update(String resourceGroupName, String organizationName);
 
     /**
-     * Update Organization resource.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param organizationName Organization resource name.
-     * @param body Updated Organization resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return organization resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OrganizationResourceInner> updateWithResponse(
-        String resourceGroupName, String organizationName, OrganizationResourceUpdate body, Context context);
-
-    /**
      * Delete Organization resource.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName);
 
     /**
      * Delete Organization resource.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName, Context context);
 
     /**
      * Delete Organization resource.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -235,7 +229,7 @@ public interface OrganizationsClient {
 
     /**
      * Delete Organization resource.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param context The context to associate with this operation.
@@ -245,4 +239,326 @@ public interface OrganizationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String organizationName, Context context);
+
+    /**
+     * Lists of all the environments in a organization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list Confluent operations as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SCEnvironmentRecordInner> listEnvironments(String resourceGroupName, String organizationName);
+
+    /**
+     * Lists of all the environments in a organization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param pageSize Pagination size.
+     * @param pageToken An opaque pagination token to fetch the next set of records.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list Confluent operations as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SCEnvironmentRecordInner> listEnvironments(String resourceGroupName, String organizationName,
+        Integer pageSize, String pageToken, Context context);
+
+    /**
+     * Get Environment details by environment Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return environment details by environment Id along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SCEnvironmentRecordInner> getEnvironmentByIdWithResponse(String resourceGroupName, String organizationName,
+        String environmentId, Context context);
+
+    /**
+     * Get Environment details by environment Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return environment details by environment Id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SCEnvironmentRecordInner getEnvironmentById(String resourceGroupName, String organizationName,
+        String environmentId);
+
+    /**
+     * Lists of all the clusters in a environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list clusters in the environment of a confluent organization as paginated
+     * response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SCClusterRecordInner> listClusters(String resourceGroupName, String organizationName,
+        String environmentId);
+
+    /**
+     * Lists of all the clusters in a environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param pageSize Pagination size.
+     * @param pageToken An opaque pagination token to fetch the next set of records.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list clusters in the environment of a confluent organization as paginated
+     * response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SCClusterRecordInner> listClusters(String resourceGroupName, String organizationName,
+        String environmentId, Integer pageSize, String pageToken, Context context);
+
+    /**
+     * Get schema registry clusters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema registry clusters as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SchemaRegistryClusterRecordInner> listSchemaRegistryClusters(String resourceGroupName,
+        String organizationName, String environmentId);
+
+    /**
+     * Get schema registry clusters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param pageSize Pagination size.
+     * @param pageToken An opaque pagination token to fetch the next set of records.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema registry clusters as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SchemaRegistryClusterRecordInner> listSchemaRegistryClusters(String resourceGroupName,
+        String organizationName, String environmentId, Integer pageSize, String pageToken, Context context);
+
+    /**
+     * cloud provider regions available for creating Schema Registry clusters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body List Access Request Model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of POST request to list regions supported by confluent along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ListRegionsSuccessResponseInner> listRegionsWithResponse(String resourceGroupName, String organizationName,
+        ListAccessRequestModel body, Context context);
+
+    /**
+     * cloud provider regions available for creating Schema Registry clusters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body List Access Request Model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of POST request to list regions supported by confluent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ListRegionsSuccessResponseInner listRegions(String resourceGroupName, String organizationName,
+        ListAccessRequestModel body);
+
+    /**
+     * Creates API key for a schema registry Cluster ID or Kafka Cluster ID under a environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @param body Request payload for get creating API Key for schema registry Cluster ID or Kafka Cluster ID under a
+     * environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details API key along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ApiKeyRecordInner> createApiKeyWithResponse(String resourceGroupName, String organizationName,
+        String environmentId, String clusterId, CreateApiKeyModel body, Context context);
+
+    /**
+     * Creates API key for a schema registry Cluster ID or Kafka Cluster ID under a environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @param body Request payload for get creating API Key for schema registry Cluster ID or Kafka Cluster ID under a
+     * environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details API key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ApiKeyRecordInner createApiKey(String resourceGroupName, String organizationName, String environmentId,
+        String clusterId, CreateApiKeyModel body);
+
+    /**
+     * Deletes API key of a kafka or schema registry cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param apiKeyId Confluent API Key id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteClusterApiKeyWithResponse(String resourceGroupName, String organizationName, String apiKeyId,
+        Context context);
+
+    /**
+     * Deletes API key of a kafka or schema registry cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param apiKeyId Confluent API Key id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteClusterApiKey(String resourceGroupName, String organizationName, String apiKeyId);
+
+    /**
+     * Get API key details of a kafka or schema registry cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param apiKeyId Confluent API Key id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return aPI key details of a kafka or schema registry cluster along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ApiKeyRecordInner> getClusterApiKeyWithResponse(String resourceGroupName, String organizationName,
+        String apiKeyId, Context context);
+
+    /**
+     * Get API key details of a kafka or schema registry cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param apiKeyId Confluent API Key id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return aPI key details of a kafka or schema registry cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ApiKeyRecordInner getClusterApiKey(String resourceGroupName, String organizationName, String apiKeyId);
+
+    /**
+     * Get schema registry cluster by Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema registry cluster by Id along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SchemaRegistryClusterRecordInner> getSchemaRegistryClusterByIdWithResponse(String resourceGroupName,
+        String organizationName, String environmentId, String clusterId, Context context);
+
+    /**
+     * Get schema registry cluster by Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema registry cluster by Id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SchemaRegistryClusterRecordInner getSchemaRegistryClusterById(String resourceGroupName, String organizationName,
+        String environmentId, String clusterId);
+
+    /**
+     * Get cluster by Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster by Id along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SCClusterRecordInner> getClusterByIdWithResponse(String resourceGroupName, String organizationName,
+        String environmentId, String clusterId, Context context);
+
+    /**
+     * Get cluster by Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster by Id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SCClusterRecordInner getClusterById(String resourceGroupName, String organizationName, String environmentId,
+        String clusterId);
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.models.CategoryType;
 
 /** Samples for MyWorkbooks ListByResourceGroup. */
@@ -20,7 +19,8 @@ public final class MyWorkbooksListByResourceGroupSamples {
     public static void workbooksList(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
         manager
             .myWorkbooks()
-            .listByResourceGroup("my-resource-group", CategoryType.WORKBOOK, null, null, null, Context.NONE);
+            .listByResourceGroup(
+                "my-resource-group", CategoryType.WORKBOOK, null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -35,6 +35,7 @@ public final class MyWorkbooksListByResourceGroupSamples {
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
         manager
             .myWorkbooks()
-            .listByResourceGroup("my-resource-group", CategoryType.WORKBOOK, null, null, null, Context.NONE);
+            .listByResourceGroup(
+                "my-resource-group", CategoryType.WORKBOOK, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

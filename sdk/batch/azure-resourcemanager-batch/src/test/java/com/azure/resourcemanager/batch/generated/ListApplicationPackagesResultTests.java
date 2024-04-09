@@ -13,25 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ListApplicationPackagesResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListApplicationPackagesResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"state\":\"Pending\",\"format\":\"ckyfih\",\"storageUrl\":\"idf\",\"storageUrlExpiry\":\"2021-05-02T03:10:17Z\",\"lastActivationTime\":\"2021-09-09T05:52:09Z\"},\"etag\":\"tymw\",\"id\":\"sdkf\",\"name\":\"hwxmnteiwa\",\"type\":\"pvkmijcmmxdcuf\"},{\"properties\":{\"state\":\"Active\",\"format\":\"ymzidn\",\"storageUrl\":\"zcxtbzsgfyccsn\",\"storageUrlExpiry\":\"2021-11-18T18:16Z\",\"lastActivationTime\":\"2021-09-22T20:17:09Z\"},\"etag\":\"jeiachboosfl\",\"id\":\"ro\",\"name\":\"fqpte\",\"type\":\"hzzvypyq\"},{\"properties\":{\"state\":\"Pending\",\"format\":\"npvswjdkirso\",\"storageUrl\":\"qxhcrmn\",\"storageUrlExpiry\":\"2021-05-15T08:21:17Z\",\"lastActivationTime\":\"2021-01-19T09:55:19Z\"},\"etag\":\"whdsoifiyip\",\"id\":\"xsqwpgrjbznorc\",\"name\":\"xv\",\"type\":\"nb\"}],\"nextLink\":\"qabnmoc\"}")
-                .toObject(ListApplicationPackagesResult.class);
+        ListApplicationPackagesResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"state\":\"Pending\",\"format\":\"ckyfih\",\"storageUrl\":\"idf\",\"storageUrlExpiry\":\"2021-05-02T03:10:17Z\",\"lastActivationTime\":\"2021-09-09T05:52:09Z\"},\"etag\":\"tymw\",\"id\":\"sdkf\",\"name\":\"hwxmnteiwa\",\"type\":\"pvkmijcmmxdcuf\"},{\"properties\":{\"state\":\"Active\",\"format\":\"ymzidn\",\"storageUrl\":\"zcxtbzsgfyccsn\",\"storageUrlExpiry\":\"2021-11-18T18:16Z\",\"lastActivationTime\":\"2021-09-22T20:17:09Z\"},\"etag\":\"jeiachboosfl\",\"id\":\"ro\",\"name\":\"fqpte\",\"type\":\"hzzvypyq\"},{\"properties\":{\"state\":\"Pending\",\"format\":\"npvswjdkirso\",\"storageUrl\":\"qxhcrmn\",\"storageUrlExpiry\":\"2021-05-15T08:21:17Z\",\"lastActivationTime\":\"2021-01-19T09:55:19Z\"},\"etag\":\"whdsoifiyip\",\"id\":\"xsqwpgrjbznorc\",\"name\":\"xv\",\"type\":\"nb\"}],\"nextLink\":\"qabnmoc\"}")
+            .toObject(ListApplicationPackagesResult.class);
         Assertions.assertEquals("qabnmoc", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListApplicationPackagesResult model =
-            new ListApplicationPackagesResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ApplicationPackageInner(),
-                            new ApplicationPackageInner(),
-                            new ApplicationPackageInner()))
-                .withNextLink("qabnmoc");
+        ListApplicationPackagesResult model = new ListApplicationPackagesResult().withValue(
+            Arrays.asList(new ApplicationPackageInner(), new ApplicationPackageInner(), new ApplicationPackageInner()))
+            .withNextLink("qabnmoc");
         model = BinaryData.fromObject(model).toObject(ListApplicationPackagesResult.class);
         Assertions.assertEquals("qabnmoc", model.nextLink());
     }

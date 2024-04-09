@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class UnlockDeleteResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UnlockDeleteResponseInner model =
-            BinaryData.fromString("{\"unlockDeleteExpiryTime\":\"kr\"}").toObject(UnlockDeleteResponseInner.class);
-        Assertions.assertEquals("kr", model.unlockDeleteExpiryTime());
+        UnlockDeleteResponseInner model = BinaryData.fromString("{\"unlockDeleteExpiryTime\":\"ipmdscwx\"}")
+            .toObject(UnlockDeleteResponseInner.class);
+        Assertions.assertEquals("ipmdscwx", model.unlockDeleteExpiryTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UnlockDeleteResponseInner model = new UnlockDeleteResponseInner().withUnlockDeleteExpiryTime("kr");
+        UnlockDeleteResponseInner model = new UnlockDeleteResponseInner().withUnlockDeleteExpiryTime("ipmdscwx");
         model = BinaryData.fromObject(model).toObject(UnlockDeleteResponseInner.class);
-        Assertions.assertEquals("kr", model.unlockDeleteExpiryTime());
+        Assertions.assertEquals("ipmdscwx", model.unlockDeleteExpiryTime());
     }
 }

@@ -8,34 +8,19 @@ import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
 import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.test.TestBase;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
 public final class NotificationHookAsyncTest extends NotificationHookTestBase {
-    @BeforeAll
-    static void beforeAll() {
-        TestBase.setupClass();
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
@@ -52,12 +37,14 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
                 assertCreateEmailHookOutput(hook);
                 hookId[0] = hook.getId();
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         Mono<Void> deleteHookMono = client.deleteHook(hookId[0]);
 
         StepVerifier.create(deleteHookMono)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -75,12 +62,14 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
                 assertCreateWebHookOutput(hook);
                 hookId[0] = hook.getId();
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         Mono<Void> deleteHookMono = client.deleteHook(hookId[0]);
 
         StepVerifier.create(deleteHookMono)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -92,15 +81,13 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
 
         String[] hookId = new String[2];
         StepVerifier.create(client.createHook(ListHookInput.INSTANCE.emailHook))
-            .consumeNextWith(hook -> {
-                hookId[0] = hook.getId();
-            })
-            .verifyComplete();
+            .consumeNextWith(hook -> hookId[0] = hook.getId())
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
         StepVerifier.create(client.createHook(ListHookInput.INSTANCE.webHook))
-            .consumeNextWith(hook -> {
-                hookId[1] = hook.getId();
-            })
-            .verifyComplete();
+            .consumeNextWith(hook -> hookId[1] = hook.getId())
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         Assertions.assertNotNull(hookId[0]);
         Assertions.assertNotNull(hookId[1]);
@@ -108,7 +95,8 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
         List<NotificationHook> notificationHookList = new ArrayList<>();
         StepVerifier.create(client.listHooks(new ListHookOptions().setHookNameFilter("java_test")))
             .thenConsumeWhile(notificationHookList::add)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         assertListHookOutput(notificationHookList);
 
@@ -117,13 +105,16 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
             .setHookNameFilter("java_test")
             .setMaxPageSize(ListHookInput.INSTANCE.pageSize)).byPage())
             .thenConsumeWhile(hookPageList::add)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         assertPagedListHookOutput(hookPageList);
 
         StepVerifier.create(client.deleteHook(hookId[0]))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
         StepVerifier.create(client.deleteHook(hookId[1]))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 }

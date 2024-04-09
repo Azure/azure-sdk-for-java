@@ -84,7 +84,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         };
     }
 
-    @Test(dataProvider = "responseContinuationTokenLimitParamProvider", groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(dataProvider = "responseContinuationTokenLimitParamProvider", groups = { "fast" }, timeOut = TIMEOUT)
     public void queryWithContinuationTokenLimit(CosmosQueryRequestOptions options, String query, boolean isMultiParitionCollection) throws Exception {
         String collectionLink;
         if (isMultiParitionCollection) {
@@ -96,7 +96,11 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         client.clearCapturedRequests();
 
         Flux<FeedResponse<Document>> queryObservable = client
-                .queryDocuments(collectionLink, query, options, Document.class);
+                .queryDocuments(
+                    collectionLink,
+                    query,
+                    TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client),
+                    Document.class);
 
         List<Document> results = queryObservable.flatMap(p -> Flux.fromIterable(p.getResults()))
             .collectList().block();
@@ -135,7 +139,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
                 .createDocument(collectionLink, docDefinition, null, false).block().getResource();
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_DocumentQuerySpyWireContentTest() throws Exception {
 
         client = new SpyClientBuilder(this.clientBuilder()).build();
@@ -161,17 +165,23 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         TimeUnit.SECONDS.sleep(1);
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.Query,
+            options,
+            client
+        );
 
         // do the query once to ensure the collection is cached.
-        client.queryDocuments(getMultiPartitionCollectionLink(), "select * from root", options, Document.class)
+        client.queryDocuments(getMultiPartitionCollectionLink(), "select * from root", state, Document.class)
             .then().block();
 
         // do the query once to ensure the collection is cached.
-        client.queryDocuments(getSinglePartitionCollectionLink(), "select * from root", options, Document.class)
+        client.queryDocuments(getSinglePartitionCollectionLink(), "select * from root", state, Document.class)
               .then().block();
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }

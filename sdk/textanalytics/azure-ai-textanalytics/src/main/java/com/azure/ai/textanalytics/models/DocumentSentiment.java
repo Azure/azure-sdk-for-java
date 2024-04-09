@@ -7,7 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link DocumentSentiment} model that contains sentiment label of a document, confidence score of the
+ * The {@code DocumentSentiment} model that contains sentiment label of a document, confidence score of the
  * sentiment label, and a list of {@link SentenceSentiment}.
  */
 @Immutable
@@ -18,7 +18,7 @@ public final class DocumentSentiment {
     private final IterableStream<TextAnalyticsWarning> warnings;
 
     /**
-     * Creates a {@link DocumentSentiment} model that describes the sentiment of the document.
+     * Creates a {@code DocumentSentiment} model that describes the sentiment of the document.
      *
      * @param sentiment The sentiment label of the document.
      * @param confidenceScores The sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.

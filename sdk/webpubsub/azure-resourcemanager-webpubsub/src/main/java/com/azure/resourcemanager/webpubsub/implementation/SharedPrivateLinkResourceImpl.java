@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.webpubsub.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.webpubsub.fluent.models.SharedPrivateLinkResourceInner;
 import com.azure.resourcemanager.webpubsub.models.ProvisioningState;
@@ -26,6 +27,10 @@ public final class SharedPrivateLinkResourceImpl
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String groupId() {

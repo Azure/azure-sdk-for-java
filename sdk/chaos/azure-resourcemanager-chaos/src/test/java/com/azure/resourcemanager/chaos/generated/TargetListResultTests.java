@@ -10,11 +10,9 @@ import com.azure.resourcemanager.chaos.models.TargetListResult;
 public final class TargetListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TargetListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"location\":\"xllrxcyjm\",\"properties\":{\"hhyxxrw\":\"datadsuvarmywdmjsjqb\"},\"id\":\"yc\",\"name\":\"duhpk\",\"type\":\"kgymareqnajxqug\"},{\"location\":\"ycubeddgs\",\"properties\":{\"i\":\"datafwqmzqalkrmn\"},\"id\":\"pxacqqudfn\",\"name\":\"yxbaaabjyvayf\",\"type\":\"imrzrtuzqog\"}],\"nextLink\":\"xnevfdnwn\"}")
-                .toObject(TargetListResult.class);
+        TargetListResult model = BinaryData.fromString(
+            "{\"value\":[{\"location\":\"nuj\",\"properties\":{\"wj\":\"datammsbvdkcrodtjin\",\"f\":\"datafltkacjv\",\"gaowpulpqblylsyx\":\"datadlfoakggkfp\"},\"id\":\"qjnsjervtia\",\"name\":\"xsdszuempsb\",\"type\":\"kfzbeyvpnqicvi\"},{\"location\":\"jjxd\",\"properties\":{\"paztzpofncck\":\"databuukzclewyhml\",\"qa\":\"datayfzqwhxxbu\",\"lxorjaltolmncws\":\"datazfeqztppri\",\"ucqdpfuvglsb\":\"databqwcsdbnwdcf\"},\"id\":\"jcanvxbvtvudut\",\"name\":\"cormr\",\"type\":\"xqtvcofu\"}],\"nextLink\":\"lvkgju\"}")
+            .toObject(TargetListResult.class);
     }
 
     @org.junit.jupiter.api.Test

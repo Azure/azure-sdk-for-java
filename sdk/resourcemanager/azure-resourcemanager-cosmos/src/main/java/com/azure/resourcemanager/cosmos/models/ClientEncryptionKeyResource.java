@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB client encryption key resource object. */
+/**
+ * Cosmos DB client encryption key resource object.
+ */
 @Fluent
 public class ClientEncryptionKeyResource {
     /*
@@ -35,13 +37,15 @@ public class ClientEncryptionKeyResource {
     @JsonProperty(value = "keyWrapMetadata")
     private KeyWrapMetadata keyWrapMetadata;
 
-    /** Creates an instance of ClientEncryptionKeyResource class. */
+    /**
+     * Creates an instance of ClientEncryptionKeyResource class.
+     */
     public ClientEncryptionKeyResource() {
     }
 
     /**
      * Get the id property: Name of the ClientEncryptionKey.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -50,7 +54,7 @@ public class ClientEncryptionKeyResource {
 
     /**
      * Set the id property: Name of the ClientEncryptionKey.
-     *
+     * 
      * @param id the id value to set.
      * @return the ClientEncryptionKeyResource object itself.
      */
@@ -62,7 +66,7 @@ public class ClientEncryptionKeyResource {
     /**
      * Get the encryptionAlgorithm property: Encryption algorithm that will be used along with this client encryption
      * key to encrypt/decrypt data.
-     *
+     * 
      * @return the encryptionAlgorithm value.
      */
     public String encryptionAlgorithm() {
@@ -72,7 +76,7 @@ public class ClientEncryptionKeyResource {
     /**
      * Set the encryptionAlgorithm property: Encryption algorithm that will be used along with this client encryption
      * key to encrypt/decrypt data.
-     *
+     * 
      * @param encryptionAlgorithm the encryptionAlgorithm value to set.
      * @return the ClientEncryptionKeyResource object itself.
      */
@@ -83,7 +87,7 @@ public class ClientEncryptionKeyResource {
 
     /**
      * Get the wrappedDataEncryptionKey property: Wrapped (encrypted) form of the key represented as a byte array.
-     *
+     * 
      * @return the wrappedDataEncryptionKey value.
      */
     public byte[] wrappedDataEncryptionKey() {
@@ -92,7 +96,7 @@ public class ClientEncryptionKeyResource {
 
     /**
      * Set the wrappedDataEncryptionKey property: Wrapped (encrypted) form of the key represented as a byte array.
-     *
+     * 
      * @param wrappedDataEncryptionKey the wrappedDataEncryptionKey value to set.
      * @return the ClientEncryptionKeyResource object itself.
      */
@@ -104,7 +108,7 @@ public class ClientEncryptionKeyResource {
     /**
      * Get the keyWrapMetadata property: Metadata for the wrapping provider that can be used to unwrap the wrapped
      * client encryption key.
-     *
+     * 
      * @return the keyWrapMetadata value.
      */
     public KeyWrapMetadata keyWrapMetadata() {
@@ -114,7 +118,7 @@ public class ClientEncryptionKeyResource {
     /**
      * Set the keyWrapMetadata property: Metadata for the wrapping provider that can be used to unwrap the wrapped
      * client encryption key.
-     *
+     * 
      * @param keyWrapMetadata the keyWrapMetadata value to set.
      * @return the ClientEncryptionKeyResource object itself.
      */
@@ -125,7 +129,7 @@ public class ClientEncryptionKeyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

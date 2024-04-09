@@ -7,29 +7,27 @@ package com.azure.resourcemanager.hybridcontainerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** CloudProviderProfile - The underlying cloud infra provider properties. */
+/**
+ * The profile for the underlying cloud infrastructure provider for the provisioned cluster.
+ */
 @Fluent
 public final class CloudProviderProfile {
     /*
-     * InfraNetworkProfile - List of infra network profiles for the provisioned cluster
+     * The profile for the infrastructure networks used by the provisioned cluster
      */
     @JsonProperty(value = "infraNetworkProfile")
     private CloudProviderProfileInfraNetworkProfile infraNetworkProfile;
 
-    /*
-     * InfraStorageProfile - List of infra storage profiles for the provisioned cluster
+    /**
+     * Creates an instance of CloudProviderProfile class.
      */
-    @JsonProperty(value = "infraStorageProfile")
-    private CloudProviderProfileInfraStorageProfile infraStorageProfile;
-
-    /** Creates an instance of CloudProviderProfile class. */
     public CloudProviderProfile() {
     }
 
     /**
-     * Get the infraNetworkProfile property: InfraNetworkProfile - List of infra network profiles for the provisioned
+     * Get the infraNetworkProfile property: The profile for the infrastructure networks used by the provisioned
      * cluster.
-     *
+     * 
      * @return the infraNetworkProfile value.
      */
     public CloudProviderProfileInfraNetworkProfile infraNetworkProfile() {
@@ -37,9 +35,9 @@ public final class CloudProviderProfile {
     }
 
     /**
-     * Set the infraNetworkProfile property: InfraNetworkProfile - List of infra network profiles for the provisioned
+     * Set the infraNetworkProfile property: The profile for the infrastructure networks used by the provisioned
      * cluster.
-     *
+     * 
      * @param infraNetworkProfile the infraNetworkProfile value to set.
      * @return the CloudProviderProfile object itself.
      */
@@ -49,38 +47,13 @@ public final class CloudProviderProfile {
     }
 
     /**
-     * Get the infraStorageProfile property: InfraStorageProfile - List of infra storage profiles for the provisioned
-     * cluster.
-     *
-     * @return the infraStorageProfile value.
-     */
-    public CloudProviderProfileInfraStorageProfile infraStorageProfile() {
-        return this.infraStorageProfile;
-    }
-
-    /**
-     * Set the infraStorageProfile property: InfraStorageProfile - List of infra storage profiles for the provisioned
-     * cluster.
-     *
-     * @param infraStorageProfile the infraStorageProfile value to set.
-     * @return the CloudProviderProfile object itself.
-     */
-    public CloudProviderProfile withInfraStorageProfile(CloudProviderProfileInfraStorageProfile infraStorageProfile) {
-        this.infraStorageProfile = infraStorageProfile;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (infraNetworkProfile() != null) {
             infraNetworkProfile().validate();
-        }
-        if (infraStorageProfile() != null) {
-            infraStorageProfile().validate();
         }
     }
 }

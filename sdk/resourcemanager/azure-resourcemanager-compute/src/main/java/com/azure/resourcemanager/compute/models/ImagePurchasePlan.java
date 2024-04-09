@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the gallery image definition purchase plan. This is used by marketplace images. */
+/**
+ * Describes the gallery image definition purchase plan. This is used by marketplace images.
+ */
 @Fluent
 public final class ImagePurchasePlan {
     /*
@@ -28,13 +30,15 @@ public final class ImagePurchasePlan {
     @JsonProperty(value = "product")
     private String product;
 
-    /** Creates an instance of ImagePurchasePlan class. */
+    /**
+     * Creates an instance of ImagePurchasePlan class.
+     */
     public ImagePurchasePlan() {
     }
 
     /**
      * Get the name property: The plan ID.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +47,7 @@ public final class ImagePurchasePlan {
 
     /**
      * Set the name property: The plan ID.
-     *
+     * 
      * @param name the name value to set.
      * @return the ImagePurchasePlan object itself.
      */
@@ -54,7 +58,7 @@ public final class ImagePurchasePlan {
 
     /**
      * Get the publisher property: The publisher ID.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -63,7 +67,7 @@ public final class ImagePurchasePlan {
 
     /**
      * Set the publisher property: The publisher ID.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the ImagePurchasePlan object itself.
      */
@@ -74,7 +78,7 @@ public final class ImagePurchasePlan {
 
     /**
      * Get the product property: The product ID.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -83,7 +87,7 @@ public final class ImagePurchasePlan {
 
     /**
      * Set the product property: The product ID.
-     *
+     * 
      * @param product the product value to set.
      * @return the ImagePurchasePlan object itself.
      */
@@ -94,7 +98,7 @@ public final class ImagePurchasePlan {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -49,7 +49,7 @@ public class ReplicatedResourceClientTest {
     public void invokeAsyncWithGoneException() {
         Configs configs = new Configs();
         ReplicatedResourceClient resourceClient = new ReplicatedResourceClient(mockDiagnosticsClientContext(), configs, new AddressSelector(addressResolver, Protocol.HTTPS), null,
-                transportClient, serviceConfigReader, authorizationTokenProvider, enableReadRequestsFallback, false, null);
+                transportClient, serviceConfigReader, authorizationTokenProvider, false, null);
         FailureValidator validator = FailureValidator.builder().instanceOf(CosmosException.class).build();
         RxDocumentServiceRequest request = Mockito.spy(RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document));
         request.requestContext.cosmosDiagnostics = request.createCosmosDiagnostics();

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.chaos.fluent.models.ExperimentExecutionDetailsP
 public final class ExperimentExecutionDetailsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExperimentExecutionDetailsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"experimentId\":\"hxcr\",\"status\":\"fovasr\",\"failureReason\":\"v\",\"createdDateTime\":\"2021-07-10T06:08:41Z\",\"lastActionDateTime\":\"2021-03-07T17:24:46Z\",\"startDateTime\":\"2021-11-17T10:32:18Z\",\"stopDateTime\":\"2021-05-02T16:44:33Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"rxbpyb\",\"stepId\":\"fbjfdtwssotftpvj\",\"status\":\"exilzznfqqnvwpmq\",\"branches\":[{\"branchName\":\"oujmkcjhwqytj\",\"branchId\":\"bnw\",\"status\":\"wgdrjervnaenqp\",\"actions\":[{},{},{},{}]},{\"branchName\":\"doy\",\"branchId\":\"ifthnz\",\"status\":\"dslgnayqigynduh\",\"actions\":[{},{},{}]}]}]}}")
-                .toObject(ExperimentExecutionDetailsProperties.class);
+        ExperimentExecutionDetailsProperties model = BinaryData.fromString(
+            "{\"failureReason\":\"srruvwbhsqfsubcg\",\"lastActionAt\":\"2021-02-04T22:06:27Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"ybsrfbjfdtwss\",\"stepId\":\"ftpvjzbexil\",\"status\":\"nfqqnvwp\",\"branches\":[{\"branchName\":\"ruoujmk\",\"branchId\":\"hwqytj\",\"status\":\"bnw\",\"actions\":[{},{},{},{}]},{\"branchName\":\"drjervnaenqpehin\",\"branchId\":\"ygmi\",\"status\":\"hnzdndslgnayqi\",\"actions\":[{},{},{},{}]},{\"branchName\":\"uhavhql\",\"branchId\":\"humaqolbgyc\",\"status\":\"iertgccymvaolp\",\"actions\":[{},{}]}]},{\"stepName\":\"lfmmdnbbglzpswi\",\"stepId\":\"mcwyhzdxssadb\",\"status\":\"nvdfznuda\",\"branches\":[{\"branchName\":\"zbn\",\"branchId\":\"lylpstdb\",\"status\":\"xsrz\",\"actions\":[{},{},{},{}]},{\"branchName\":\"erscdntne\",\"branchId\":\"iwjmygtdssls\",\"status\":\"mweriofzpy\",\"actions\":[{},{}]}]},{\"stepName\":\"wab\",\"stepId\":\"tshhszhedp\",\"status\":\"wiwubm\",\"branches\":[{\"branchName\":\"sldnkwwtppjflcxo\",\"branchId\":\"okonzmnsikvmkqz\",\"status\":\"qkdltfz\",\"actions\":[{}]},{\"branchName\":\"v\",\"branchId\":\"ur\",\"status\":\"dkwobdagx\",\"actions\":[{},{}]},{\"branchName\":\"dxbx\",\"branchId\":\"kbogqxndlkzgx\",\"status\":\"ripl\",\"actions\":[{},{}]},{\"branchName\":\"xunkbebxmubyynt\",\"branchId\":\"rbqtkoie\",\"status\":\"eotg\",\"actions\":[{}]}]}]},\"status\":\"tmuwlauwzi\",\"startedAt\":\"2021-01-24T11:46:23Z\",\"stoppedAt\":\"2021-03-14T00:48:06Z\"}")
+            .toObject(ExperimentExecutionDetailsProperties.class);
     }
 
     @org.junit.jupiter.api.Test

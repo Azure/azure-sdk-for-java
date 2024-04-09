@@ -34,7 +34,7 @@ public final class TextDocumentBatchStatistics {
     private final long transactionCount;
 
     /**
-     * Creates a {@link TextDocumentBatchStatistics} model that describes the statistics of batch text.
+     * Creates a {@code TextDocumentBatchStatistics} model that describes the statistics of batch text.
      *
      * @param documentCount The number of documents submitted in the request.
      * @param validDocumentCount The number of valid documents. This excludes empty, over-size limit or

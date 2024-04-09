@@ -49,7 +49,7 @@ public class ProxyHostTest extends TestSuiteBase {
         super(createGatewayRxDocumentClient());
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_ProxyHostTest() throws Exception {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
@@ -66,7 +66,7 @@ public class ProxyHostTest extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createDocumentWithValidHttpProxy() throws Exception {
         CosmosAsyncClient clientWithRightProxy = null;
         try {
@@ -98,7 +98,7 @@ public class ProxyHostTest extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createDocumentWithValidHttpProxyWithNettyWireLogging() throws Exception {
         CosmosAsyncClient clientWithRightProxy = null;
         try {
@@ -131,7 +131,7 @@ public class ProxyHostTest extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() throws Exception {
         safeClose(client);
         httpProxyServer.shutDown();
@@ -141,7 +141,7 @@ public class ProxyHostTest extends TestSuiteBase {
         LogLevelTest.resetLoggingConfiguration();
     }
 
-    @AfterMethod(groups = { "simple" })
+    @AfterMethod(groups = { "fast" })
     public void afterMethod(Method method) {
         LogLevelTest.resetLoggingConfiguration();
     }
@@ -161,7 +161,7 @@ public class ProxyHostTest extends TestSuiteBase {
      * This test will try to create gateway connection policy via non http proxy.
      *
      */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT,
+    @Test(groups = { "fast" }, timeOut = TIMEOUT,
         expectedExceptions = IllegalArgumentException.class,
         expectedExceptionsMessageRegExp = "Only http proxy type is supported.")
     public void createWithNonHttpProxy() {

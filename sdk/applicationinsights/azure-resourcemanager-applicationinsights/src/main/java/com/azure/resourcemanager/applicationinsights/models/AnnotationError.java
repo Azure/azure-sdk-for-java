@@ -17,6 +17,10 @@ public final class AnnotationError extends ManagementError {
     @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
     private InnerError innererror;
 
+    /** Creates an instance of AnnotationError class. */
+    public AnnotationError() {
+    }
+
     /**
      * Get the innererror property: Inner error.
      *

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Error definition. */
+/**
+ * Error definition.
+ */
 @Fluent
 public final class Error {
     /*
@@ -35,13 +37,15 @@ public final class Error {
     @JsonProperty(value = "details")
     private List<Error> details;
 
-    /** Creates an instance of Error class. */
+    /**
+     * Creates an instance of Error class.
+     */
     public Error() {
     }
 
     /**
      * Get the code property: Service specific error code which serves as the substatus for the HTTP error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -50,7 +54,7 @@ public final class Error {
 
     /**
      * Get the type property: Service specific error type which serves as additional context for the error herein.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -59,7 +63,7 @@ public final class Error {
 
     /**
      * Get the message property: Description of the error.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -69,7 +73,7 @@ public final class Error {
     /**
      * Get the details property: An array of additional nested error response info objects, as described by this
      * contract.
-     *
+     * 
      * @return the details value.
      */
     public List<Error> details() {
@@ -79,7 +83,7 @@ public final class Error {
     /**
      * Set the details property: An array of additional nested error response info objects, as described by this
      * contract.
-     *
+     * 
      * @param details the details value to set.
      * @return the Error object itself.
      */
@@ -90,7 +94,7 @@ public final class Error {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

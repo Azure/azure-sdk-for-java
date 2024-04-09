@@ -3,16 +3,15 @@
 
 package com.azure.communication.identity;
 
-import org.junit.jupiter.params.provider.Arguments;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
+import org.junit.jupiter.params.provider.Arguments;
 
-import static com.azure.communication.identity.models.CommunicationTokenScope.CHAT;
-import static com.azure.communication.identity.models.CommunicationTokenScope.VOIP;
+import static com.azure.communication.identity.models.CommunicationTokenScope.*;
+import static java.util.Arrays.asList;
 
+@SuppressWarnings("all")
 public class TokenScopeTestHelper {
 
     /**
@@ -22,9 +21,15 @@ public class TokenScopeTestHelper {
      */
     static Stream<Arguments> getTokenScopes() {
         List<Arguments> argumentsList = new ArrayList<>();
-        argumentsList.add(Arguments.of("ChatScope", Arrays.asList(CHAT)));
-        argumentsList.add(Arguments.of("VoipScope", Arrays.asList(VOIP)));
-        argumentsList.add(Arguments.of("MultipleScopes", Arrays.asList(CHAT, VOIP)));
+        argumentsList.add(Arguments.of("ChatScope", asList(CHAT)));
+        argumentsList.add(Arguments.of("VoipScope", asList(VOIP)));
+        argumentsList.add(Arguments.of("ChatJoinScope", asList(CHAT_JOIN)));
+        argumentsList.add(Arguments.of("ChatJoinLimitedScope", asList(CHAT_JOIN_LIMITED)));
+        argumentsList.add(Arguments.of("VoipJoinScope", asList(VOIP_JOIN)));
+        argumentsList.add(Arguments.of("ChatVoipScopes", asList(CHAT, VOIP)));
+        argumentsList.add(Arguments.of("AllChatScopes", asList(CHAT, CHAT_JOIN, CHAT_JOIN_LIMITED)));
+        argumentsList.add(Arguments.of("AllVoipScopes", asList(VOIP, VOIP_JOIN)));
+        argumentsList.add(Arguments.of("ChatJoinVoipJoinScopes", asList(CHAT_JOIN, VOIP_JOIN)));
         return argumentsList.stream();
     }
 }

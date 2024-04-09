@@ -19,6 +19,8 @@ import java.util.UUID;
 /** keyCredential. */
 @Fluent
 public final class MicrosoftGraphKeyCredentialInner {
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
     /*
      * Custom key identifier
      */
@@ -88,7 +90,7 @@ public final class MicrosoftGraphKeyCredentialInner {
      */
     public byte[] customKeyIdentifier() {
         if (this.customKeyIdentifier == null) {
-            return new byte[0];
+            return EMPTY_BYTE_ARRAY;
         }
         return this.customKeyIdentifier.decodedBytes();
     }
@@ -160,7 +162,7 @@ public final class MicrosoftGraphKeyCredentialInner {
      */
     public byte[] key() {
         if (this.key == null) {
-            return new byte[0];
+            return EMPTY_BYTE_ARRAY;
         }
         return this.key.decodedBytes();
     }

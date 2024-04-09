@@ -62,7 +62,7 @@ public class QuantumClientTestBase extends TestProxyTestBase {
             customSanitizers.add(new TestProxySanitizer(getResourceGroup(), RESOURCE_GROUP, TestProxySanitizerType.URL));
             customSanitizers.add(new TestProxySanitizer(getWorkspaceName(), WORKSPACE, TestProxySanitizerType.URL));
             customSanitizers.add(new TestProxySanitizer(getLocation(), LOCATION, TestProxySanitizerType.URL));
-            customSanitizers.add(new TestProxySanitizer("(?:\\?(sv|sig|se|srt|ss|sp)=)(?<secret>.*)", SANITIZED, TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"));
+            customSanitizers.add(new TestProxySanitizer("(?:\\\\?(sv|sig|se|srt|ss|sp)=)(?<secret>.*)", SANITIZED, TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"));
             customSanitizers.add(new TestProxySanitizer("$..sasUri", null, SANITIZED, TestProxySanitizerType.BODY_KEY));
             customSanitizers.add(new TestProxySanitizer("$..containerUri", null, SANITIZED, TestProxySanitizerType.BODY_KEY));
             customSanitizers.add(new TestProxySanitizer("$..inputDataUri", null, SANITIZED, TestProxySanitizerType.BODY_KEY));

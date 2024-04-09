@@ -21,7 +21,7 @@ public final class AnalyzeHealthcareEntitiesPagedIterable extends ContinuablePag
     AnalyzeHealthcareEntitiesResultCollection, PagedResponse<AnalyzeHealthcareEntitiesResultCollection>> {
 
     /**
-     * Creates instance given {@link AnalyzeHealthcareEntitiesPagedIterable}.
+     * Creates instance given {@code AnalyzeHealthcareEntitiesPagedIterable}.
      *
      * @param pagedFlux It used as iterable.
      */
@@ -30,7 +30,7 @@ public final class AnalyzeHealthcareEntitiesPagedIterable extends ContinuablePag
     }
 
     /**
-     * Creates an instance of {@link AnalyzeHealthcareEntitiesPagedIterable}. The constructor takes a {@code Supplier}
+     * Creates an instance of {@code AnalyzeHealthcareEntitiesPagedIterable}. The constructor takes a {@code Supplier}
      * and {@code Function}. The {@code Supplier} returns the first page of
      * {@link AnalyzeHealthcareEntitiesResultCollection}, the {@code Function} retrieves subsequent pages of
      * {@link AnalyzeHealthcareEntitiesResultCollection}.

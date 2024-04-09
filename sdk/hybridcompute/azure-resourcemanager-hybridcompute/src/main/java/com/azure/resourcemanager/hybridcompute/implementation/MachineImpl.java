@@ -5,12 +5,30 @@
 package com.azure.resourcemanager.hybridcompute.implementation;
 
 import com.azure.core.management.SystemData;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileMachineInstanceViewInner;
+import com.azure.resourcemanager.hybridcompute.fluent.models.MachineExtensionInner;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineInner;
+import com.azure.resourcemanager.hybridcompute.fluent.models.NetworkProfileInner;
+import com.azure.resourcemanager.hybridcompute.models.AgentConfiguration;
+import com.azure.resourcemanager.hybridcompute.models.AgentUpgrade;
+import com.azure.resourcemanager.hybridcompute.models.ArcKindEnum;
+import com.azure.resourcemanager.hybridcompute.models.CloudMetadata;
 import com.azure.resourcemanager.hybridcompute.models.Identity;
+import com.azure.resourcemanager.hybridcompute.models.LicenseProfileMachineInstanceView;
+import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.Machine;
-import com.azure.resourcemanager.hybridcompute.models.MachineProperties;
+import com.azure.resourcemanager.hybridcompute.models.MachineExtension;
+import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceView;
+import com.azure.resourcemanager.hybridcompute.models.NetworkProfile;
+import com.azure.resourcemanager.hybridcompute.models.OSProfile;
+import com.azure.resourcemanager.hybridcompute.models.ServiceStatuses;
+import com.azure.resourcemanager.hybridcompute.models.StatusTypes;
+import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class MachineImpl implements Machine {
     private MachineInner innerObject;
@@ -47,16 +65,175 @@ public final class MachineImpl implements Machine {
         }
     }
 
-    public MachineProperties properties() {
-        return this.innerModel().properties();
+    public List<MachineExtension> resources() {
+        List<MachineExtensionInner> inner = this.innerModel().resources();
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new MachineExtensionImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Identity identity() {
         return this.innerModel().identity();
     }
 
+    public ArcKindEnum kind() {
+        return this.innerModel().kind();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public LocationData locationData() {
+        return this.innerModel().locationData();
+    }
+
+    public AgentConfiguration agentConfiguration() {
+        return this.innerModel().agentConfiguration();
+    }
+
+    public ServiceStatuses serviceStatuses() {
+        return this.innerModel().serviceStatuses();
+    }
+
+    public CloudMetadata cloudMetadata() {
+        return this.innerModel().cloudMetadata();
+    }
+
+    public AgentUpgrade agentUpgrade() {
+        return this.innerModel().agentUpgrade();
+    }
+
+    public OSProfile osProfile() {
+        return this.innerModel().osProfile();
+    }
+
+    public LicenseProfileMachineInstanceView licenseProfile() {
+        LicenseProfileMachineInstanceViewInner inner = this.innerModel().licenseProfile();
+        if (inner != null) {
+            return new LicenseProfileMachineInstanceViewImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public String provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public StatusTypes status() {
+        return this.innerModel().status();
+    }
+
+    public OffsetDateTime lastStatusChange() {
+        return this.innerModel().lastStatusChange();
+    }
+
+    public List<ManagementError> errorDetails() {
+        List<ManagementError> inner = this.innerModel().errorDetails();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public String agentVersion() {
+        return this.innerModel().agentVersion();
+    }
+
+    public String vmId() {
+        return this.innerModel().vmId();
+    }
+
+    public String displayName() {
+        return this.innerModel().displayName();
+    }
+
+    public String machineFqdn() {
+        return this.innerModel().machineFqdn();
+    }
+
+    public String clientPublicKey() {
+        return this.innerModel().clientPublicKey();
+    }
+
+    public String osName() {
+        return this.innerModel().osName();
+    }
+
+    public String osVersion() {
+        return this.innerModel().osVersion();
+    }
+
+    public String osType() {
+        return this.innerModel().osType();
+    }
+
+    public String vmUuid() {
+        return this.innerModel().vmUuid();
+    }
+
+    public List<MachineExtensionInstanceView> extensions() {
+        List<MachineExtensionInstanceView> inner = this.innerModel().extensions();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public String osSku() {
+        return this.innerModel().osSku();
+    }
+
+    public String domainName() {
+        return this.innerModel().domainName();
+    }
+
+    public String adFqdn() {
+        return this.innerModel().adFqdn();
+    }
+
+    public String dnsFqdn() {
+        return this.innerModel().dnsFqdn();
+    }
+
+    public String privateLinkScopeResourceId() {
+        return this.innerModel().privateLinkScopeResourceId();
+    }
+
+    public String parentClusterResourceId() {
+        return this.innerModel().parentClusterResourceId();
+    }
+
+    public String mssqlDiscovered() {
+        return this.innerModel().mssqlDiscovered();
+    }
+
+    public Map<String, String> detectedProperties() {
+        Map<String, String> inner = this.innerModel().detectedProperties();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
+    public NetworkProfile networkProfile() {
+        NetworkProfileInner inner = this.innerModel().networkProfile();
+        if (inner != null) {
+            return new NetworkProfileImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public MachineInner innerModel() {

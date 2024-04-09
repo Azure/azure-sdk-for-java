@@ -10,11 +10,9 @@ import com.azure.resourcemanager.chaos.fluent.models.ExperimentExecutionDetailsI
 public final class ExperimentExecutionDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExperimentExecutionDetailsInner model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"bkdmo\",\"id\":\"postmgrcfbunrm\",\"name\":\"jhhkxbp\",\"properties\":{\"experimentId\":\"mjh\",\"status\":\"j\",\"failureReason\":\"gudivkrtswbxqz\",\"createdDateTime\":\"2021-10-26T13:42:02Z\",\"lastActionDateTime\":\"2021-01-16T06:43:01Z\",\"startDateTime\":\"2021-04-01T03:47:56Z\",\"stopDateTime\":\"2021-07-06T14:56:49Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"ivetvtcq\",\"stepId\":\"tdo\",\"status\":\"cbxvwvxyslqbh\",\"branches\":[{},{},{}]},{\"stepName\":\"blytk\",\"stepId\":\"mpew\",\"status\":\"fbkrvrnsvs\",\"branches\":[{},{}]}]}}}")
-                .toObject(ExperimentExecutionDetailsInner.class);
+        ExperimentExecutionDetailsInner model = BinaryData.fromString(
+            "{\"type\":\"tfdygpfqb\",\"id\":\"ceopzfqrhhuaopp\",\"name\":\"qeqxo\",\"properties\":{\"failureReason\":\"ahzxctobgbk\",\"lastActionAt\":\"2021-03-02T22:54:24Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"stmgrcfbunrmfqjh\",\"stepId\":\"xbpvjymjhx\",\"status\":\"yngudivk\",\"branches\":[{},{}]},{\"stepName\":\"bxqz\",\"stepId\":\"zjf\",\"status\":\"vjfdx\",\"branches\":[{},{}]},{\"stepName\":\"tvtc\",\"stepId\":\"qtdo\",\"status\":\"cbxvwvxyslqbh\",\"branches\":[{},{},{}]},{\"stepName\":\"blytk\",\"stepId\":\"mpew\",\"status\":\"fbkrvrnsvs\",\"branches\":[{},{}]}]},\"status\":\"hxcr\",\"startedAt\":\"2020-12-28T12:25:09Z\",\"stoppedAt\":\"2021-11-28T02:47:56Z\"}}")
+            .toObject(ExperimentExecutionDetailsInner.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -32,7 +32,7 @@ public final class EndpointsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"type\":\"default\",\"resourceId\":\"ouf\",\"provisioningState\":\"mnkzsmod\"},\"id\":\"lougpbkw\",\"name\":\"mutduqktaps\",\"type\":\"wgcu\"}";
+            "{\"properties\":{\"type\":\"custom\",\"resourceId\":\"dqytbciqfouflmm\",\"provisioningState\":\"zsm\"},\"id\":\"mglougpbkw\",\"name\":\"mutduqktaps\",\"type\":\"wgcu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,9 @@ public final class EndpointsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         EndpointResource response =
-            manager.endpoints().getWithResponse("qsrxybzqqed", "ytb", com.azure.core.util.Context.NONE).getValue();
+            manager.endpoints().getWithResponse("gakeqsr", "yb", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(Type.DEFAULT, response.properties().type());
-        Assertions.assertEquals("ouf", response.properties().resourceId());
+        Assertions.assertEquals(Type.CUSTOM, response.properties().type());
+        Assertions.assertEquals("dqytbciqfouflmm", response.properties().resourceId());
     }
 }

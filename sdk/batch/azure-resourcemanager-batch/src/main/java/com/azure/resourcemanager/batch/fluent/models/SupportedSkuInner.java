@@ -7,9 +7,12 @@ package com.azure.resourcemanager.batch.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.batch.models.SkuCapability;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Describes a Batch supported SKU. */
+/**
+ * Describes a Batch supported SKU.
+ */
 @Immutable
 public final class SupportedSkuInner {
     /*
@@ -30,13 +33,21 @@ public final class SupportedSkuInner {
     @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuCapability> capabilities;
 
-    /** Creates an instance of SupportedSkuInner class. */
+    /*
+     * The time when Azure Batch service will retire this SKU.
+     */
+    @JsonProperty(value = "batchSupportEndOfLife", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime batchSupportEndOfLife;
+
+    /**
+     * Creates an instance of SupportedSkuInner class.
+     */
     public SupportedSkuInner() {
     }
 
     /**
      * Get the name property: The name of the SKU.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -45,7 +56,7 @@ public final class SupportedSkuInner {
 
     /**
      * Get the familyName property: The family name of the SKU.
-     *
+     * 
      * @return the familyName value.
      */
     public String familyName() {
@@ -54,7 +65,7 @@ public final class SupportedSkuInner {
 
     /**
      * Get the capabilities property: A collection of capabilities which this SKU supports.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<SkuCapability> capabilities() {
@@ -62,8 +73,17 @@ public final class SupportedSkuInner {
     }
 
     /**
+     * Get the batchSupportEndOfLife property: The time when Azure Batch service will retire this SKU.
+     * 
+     * @return the batchSupportEndOfLife value.
+     */
+    public OffsetDateTime batchSupportEndOfLife() {
+        return this.batchSupportEndOfLife;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

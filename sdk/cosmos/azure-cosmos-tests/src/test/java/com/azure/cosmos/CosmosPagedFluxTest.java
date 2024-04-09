@@ -35,7 +35,7 @@ public class CosmosPagedFluxTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_CosmosPagedFluxTest() throws JsonProcessingException {
         assertThat(this.cosmosAsyncClient).isNull();
         this.cosmosAsyncClient = getClientBuilder().buildAsyncClient();
@@ -45,13 +45,13 @@ public class CosmosPagedFluxTest extends TestSuiteBase {
         createItems(NUM_OF_ITEMS);
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.cosmosAsyncClient).isNotNull();
         this.cosmosAsyncClient.close();
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readAllItemsByPageWithCosmosPagedFluxHandler() throws Exception {
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
@@ -93,7 +93,7 @@ public class CosmosPagedFluxTest extends TestSuiteBase {
         assertThat(handleCount.get()).isEqualTo(yetAnotherChainedHandleCount.get());
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readAllItemsBySubscribeWithCosmosPagedFluxHandler() throws Exception {
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();

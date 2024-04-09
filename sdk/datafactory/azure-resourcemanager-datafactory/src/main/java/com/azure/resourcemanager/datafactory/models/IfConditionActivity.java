@@ -26,41 +26,69 @@ public final class IfConditionActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private IfConditionActivityTypeProperties innerTypeProperties = new IfConditionActivityTypeProperties();
 
-    /** Creates an instance of IfConditionActivity class. */
+    /**
+     * Creates an instance of IfConditionActivity class.
+     */
     public IfConditionActivity() {
     }
 
     /**
      * Get the innerTypeProperties property: IfCondition activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private IfConditionActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IfConditionActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IfConditionActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IfConditionActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IfConditionActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IfConditionActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IfConditionActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -68,9 +96,9 @@ public final class IfConditionActivity extends ControlActivity {
     }
 
     /**
-     * Get the expression property: An expression that would evaluate to Boolean. This is used to determine the block of
-     * activities (ifTrueActivities or ifFalseActivities) that will be executed.
-     *
+     * Get the expression property: An expression that would evaluate to Boolean. This is used to determine the block
+     * of activities (ifTrueActivities or ifFalseActivities) that will be executed.
+     * 
      * @return the expression value.
      */
     public Expression expression() {
@@ -78,9 +106,9 @@ public final class IfConditionActivity extends ControlActivity {
     }
 
     /**
-     * Set the expression property: An expression that would evaluate to Boolean. This is used to determine the block of
-     * activities (ifTrueActivities or ifFalseActivities) that will be executed.
-     *
+     * Set the expression property: An expression that would evaluate to Boolean. This is used to determine the block
+     * of activities (ifTrueActivities or ifFalseActivities) that will be executed.
+     * 
      * @param expression the expression value to set.
      * @return the IfConditionActivity object itself.
      */
@@ -95,7 +123,7 @@ public final class IfConditionActivity extends ControlActivity {
     /**
      * Get the ifTrueActivities property: List of activities to execute if expression is evaluated to true. This is an
      * optional property and if not provided, the activity will exit without any action.
-     *
+     * 
      * @return the ifTrueActivities value.
      */
     public List<Activity> ifTrueActivities() {
@@ -105,7 +133,7 @@ public final class IfConditionActivity extends ControlActivity {
     /**
      * Set the ifTrueActivities property: List of activities to execute if expression is evaluated to true. This is an
      * optional property and if not provided, the activity will exit without any action.
-     *
+     * 
      * @param ifTrueActivities the ifTrueActivities value to set.
      * @return the IfConditionActivity object itself.
      */
@@ -118,9 +146,9 @@ public final class IfConditionActivity extends ControlActivity {
     }
 
     /**
-     * Get the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is an
-     * optional property and if not provided, the activity will exit without any action.
-     *
+     * Get the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is
+     * an optional property and if not provided, the activity will exit without any action.
+     * 
      * @return the ifFalseActivities value.
      */
     public List<Activity> ifFalseActivities() {
@@ -128,9 +156,9 @@ public final class IfConditionActivity extends ControlActivity {
     }
 
     /**
-     * Set the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is an
-     * optional property and if not provided, the activity will exit without any action.
-     *
+     * Set the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is
+     * an optional property and if not provided, the activity will exit without any action.
+     * 
      * @param ifFalseActivities the ifFalseActivities value to set.
      * @return the IfConditionActivity object itself.
      */
@@ -144,17 +172,15 @@ public final class IfConditionActivity extends ControlActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model IfConditionActivity"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model IfConditionActivity"));
         } else {
             innerTypeProperties().validate();
         }

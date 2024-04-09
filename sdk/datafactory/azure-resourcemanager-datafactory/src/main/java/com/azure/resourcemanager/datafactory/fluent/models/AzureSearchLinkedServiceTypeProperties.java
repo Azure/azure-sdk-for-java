@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Windows Azure Search Service linked service properties. */
+/**
+ * Windows Azure Search Service linked service properties.
+ */
 @Fluent
 public final class AzureSearchLinkedServiceTypeProperties {
     /*
@@ -26,18 +28,20 @@ public final class AzureSearchLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of AzureSearchLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of AzureSearchLinkedServiceTypeProperties class.
+     */
     public AzureSearchLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the url property: URL for Azure Search service. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the url value.
      */
     public Object url() {
@@ -46,7 +50,7 @@ public final class AzureSearchLinkedServiceTypeProperties {
 
     /**
      * Set the url property: URL for Azure Search service. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param url the url value to set.
      * @return the AzureSearchLinkedServiceTypeProperties object itself.
      */
@@ -57,7 +61,7 @@ public final class AzureSearchLinkedServiceTypeProperties {
 
     /**
      * Get the key property: Admin Key for Azure Search service.
-     *
+     * 
      * @return the key value.
      */
     public SecretBase key() {
@@ -66,7 +70,7 @@ public final class AzureSearchLinkedServiceTypeProperties {
 
     /**
      * Set the key property: Admin Key for Azure Search service.
-     *
+     * 
      * @param key the key value to set.
      * @return the AzureSearchLinkedServiceTypeProperties object itself.
      */
@@ -76,38 +80,36 @@ public final class AzureSearchLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureSearchLinkedServiceTypeProperties object itself.
      */
-    public AzureSearchLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public AzureSearchLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property url in model AzureSearchLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property url in model AzureSearchLinkedServiceTypeProperties"));
         }
         if (key() != null) {
             key().validate();

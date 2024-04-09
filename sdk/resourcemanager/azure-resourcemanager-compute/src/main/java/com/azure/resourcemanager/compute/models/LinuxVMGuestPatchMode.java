@@ -16,15 +16,19 @@ import java.util.Collection;
  * provisionVMAgent must be true.
  */
 public final class LinuxVMGuestPatchMode extends ExpandableStringEnum<LinuxVMGuestPatchMode> {
-    /** Static value ImageDefault for LinuxVMGuestPatchMode. */
+    /**
+     * Static value ImageDefault for LinuxVMGuestPatchMode.
+     */
     public static final LinuxVMGuestPatchMode IMAGE_DEFAULT = fromString("ImageDefault");
 
-    /** Static value AutomaticByPlatform for LinuxVMGuestPatchMode. */
+    /**
+     * Static value AutomaticByPlatform for LinuxVMGuestPatchMode.
+     */
     public static final LinuxVMGuestPatchMode AUTOMATIC_BY_PLATFORM = fromString("AutomaticByPlatform");
 
     /**
      * Creates a new instance of LinuxVMGuestPatchMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +37,7 @@ public final class LinuxVMGuestPatchMode extends ExpandableStringEnum<LinuxVMGue
 
     /**
      * Creates or finds a LinuxVMGuestPatchMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LinuxVMGuestPatchMode.
      */
@@ -44,7 +48,7 @@ public final class LinuxVMGuestPatchMode extends ExpandableStringEnum<LinuxVMGue
 
     /**
      * Gets known LinuxVMGuestPatchMode values.
-     *
+     * 
      * @return known LinuxVMGuestPatchMode values.
      */
     public static Collection<LinuxVMGuestPatchMode> values() {

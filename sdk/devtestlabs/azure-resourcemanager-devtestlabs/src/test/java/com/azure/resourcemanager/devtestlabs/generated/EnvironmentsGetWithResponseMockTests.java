@@ -31,7 +31,7 @@ public final class EnvironmentsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"ncaqttiekoifu\",\"parameters\":[]},\"armTemplateDisplayName\":\"ttzgixgyrihlg\",\"resourceGroupId\":\"behlqtxnr\",\"createdByUser\":\"kndrndpgfjo\",\"provisioningState\":\"daqotwfh\",\"uniqueIdentifier\":\"xwgsa\"},\"location\":\"vcipo\",\"tags\":{\"pefyc\":\"fczuumljcir\"},\"id\":\"veitit\",\"name\":\"nsxzajlns\",\"type\":\"hwjuyxxbxqvmvua\"}";
+            "{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"kykipfsdyepfnoc\",\"parameters\":[{\"name\":\"acfpztgazwyqej\",\"value\":\"aokctgkp\"},{\"name\":\"kqzkcyzmff\",\"value\":\"dyfcix\"},{\"name\":\"lcqvhoejgoiutgw\",\"value\":\"kahpqhazynta\"}]},\"armTemplateDisplayName\":\"hncogmipnml\",\"resourceGroupId\":\"mvlbhikeaqgrv\",\"createdByUser\":\"omxp\",\"provisioningState\":\"dtsdfjy\",\"uniqueIdentifier\":\"socwiqbuout\"},\"location\":\"py\",\"tags\":{\"gbww\":\"eofjs\",\"cf\":\"vdajfwn\"},\"id\":\"aciq\",\"name\":\"jjrlhiqlwix\",\"type\":\"tbouguxtnd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +63,14 @@ public final class EnvironmentsGetWithResponseMockTests {
             manager
                 .environments()
                 .getWithResponse(
-                    "bjpjvlyw", "tmfwobbjwhl", "yj", "nqzocrdzg", "zeunt", com.azure.core.util.Context.NONE)
+                    "vdgxly", "kxitds", "ezsvkolrupjov", "ozsaye", "razwzlpzbt", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("vcipo", response.location());
-        Assertions.assertEquals("fczuumljcir", response.tags().get("pefyc"));
-        Assertions.assertEquals("ncaqttiekoifu", response.deploymentProperties().armTemplateId());
-        Assertions.assertEquals("ttzgixgyrihlg", response.armTemplateDisplayName());
+        Assertions.assertEquals("py", response.location());
+        Assertions.assertEquals("eofjs", response.tags().get("gbww"));
+        Assertions.assertEquals("kykipfsdyepfnoc", response.deploymentProperties().armTemplateId());
+        Assertions.assertEquals("acfpztgazwyqej", response.deploymentProperties().parameters().get(0).name());
+        Assertions.assertEquals("aokctgkp", response.deploymentProperties().parameters().get(0).value());
+        Assertions.assertEquals("hncogmipnml", response.armTemplateDisplayName());
     }
 }

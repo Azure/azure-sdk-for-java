@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Trusted client certificates properties of an application gateway. */
+/**
+ * Trusted client certificates properties of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayTrustedClientCertificatePropertiesFormat {
     /*
@@ -35,13 +37,15 @@ public final class ApplicationGatewayTrustedClientCertificatePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ApplicationGatewayTrustedClientCertificatePropertiesFormat class. */
+    /**
+     * Creates an instance of ApplicationGatewayTrustedClientCertificatePropertiesFormat class.
+     */
     public ApplicationGatewayTrustedClientCertificatePropertiesFormat() {
     }
 
     /**
      * Get the data property: Certificate public data.
-     *
+     * 
      * @return the data value.
      */
     public String data() {
@@ -50,7 +54,7 @@ public final class ApplicationGatewayTrustedClientCertificatePropertiesFormat {
 
     /**
      * Set the data property: Certificate public data.
-     *
+     * 
      * @param data the data value to set.
      * @return the ApplicationGatewayTrustedClientCertificatePropertiesFormat object itself.
      */
@@ -61,7 +65,7 @@ public final class ApplicationGatewayTrustedClientCertificatePropertiesFormat {
 
     /**
      * Get the validatedCertData property: Validated certificate data.
-     *
+     * 
      * @return the validatedCertData value.
      */
     public String validatedCertData() {
@@ -70,7 +74,7 @@ public final class ApplicationGatewayTrustedClientCertificatePropertiesFormat {
 
     /**
      * Get the clientCertIssuerDN property: Distinguished name of client certificate issuer.
-     *
+     * 
      * @return the clientCertIssuerDN value.
      */
     public String clientCertIssuerDN() {
@@ -79,7 +83,7 @@ public final class ApplicationGatewayTrustedClientCertificatePropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the trusted client certificate resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -88,7 +92,7 @@ public final class ApplicationGatewayTrustedClientCertificatePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

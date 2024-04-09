@@ -17,83 +17,60 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkloadProtectableItemResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadProtectableItemResourceList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"hoftr\",\"workloadType\":\"equi\",\"friendlyName\":\"xicslfao\",\"protectionState\":\"ProtectionFailed\"},\"eTag\":\"yylhalnswhccsp\",\"location\":\"kaivwit\",\"tags\":{\"wem\":\"ywuggwoluhcz\",\"sbrgz\":\"ai\",\"ggicccnxqhue\":\"wmsweypqwd\"},\"id\":\"mkttlstvlzywem\",\"name\":\"zrncsdt\",\"type\":\"lusiy\"},{\"properties\":{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"fgytguslfeadcyg\",\"workloadType\":\"kyhejhzisxgf\",\"friendlyName\":\"lolp\",\"protectionState\":\"Protecting\"},\"eTag\":\"r\",\"location\":\"qvujzraehtwdwrf\",\"tags\":{\"cdl\":\"iby\"},\"id\":\"h\",\"name\":\"hfwpracstwit\",\"type\":\"khevxccedc\"},{\"properties\":{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"dyodnwzxltj\",\"workloadType\":\"nhltiugcxn\",\"friendlyName\":\"vwxqibyqunyo\",\"protectionState\":\"Protected\"},\"eTag\":\"mdjrkvfgbvfvp\",\"location\":\"bodacizsjq\",\"tags\":{\"ibqipqkg\":\"rribd\",\"mkrefajpjorwkq\":\"vxndz\",\"sjabibs\":\"yhgbijtjivfx\"},\"id\":\"stawfsdjpvkv\",\"name\":\"bjxbkzbzk\",\"type\":\"vncjabudurgk\"},{\"properties\":{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"o\",\"workloadType\":\"hjjklff\",\"friendlyName\":\"ouw\",\"protectionState\":\"NotProtected\"},\"eTag\":\"rfzeey\",\"location\":\"bizikayuhq\",\"tags\":{\"bbqwrvtldg\":\"bs\",\"vm\":\"fp\"},\"id\":\"ipaslthaqfxssmwu\",\"name\":\"wbdsr\",\"type\":\"zpdrhneu\"}],\"nextLink\":\"wqkdwytisibi\"}")
-                .toObject(WorkloadProtectableItemResourceList.class);
-        Assertions.assertEquals("wqkdwytisibi", model.nextLink());
-        Assertions.assertEquals("kaivwit", model.value().get(0).location());
-        Assertions.assertEquals("ywuggwoluhcz", model.value().get(0).tags().get("wem"));
-        Assertions.assertEquals("hoftr", model.value().get(0).properties().backupManagementType());
-        Assertions.assertEquals("equi", model.value().get(0).properties().workloadType());
-        Assertions.assertEquals("xicslfao", model.value().get(0).properties().friendlyName());
-        Assertions
-            .assertEquals(ProtectionStatus.PROTECTION_FAILED, model.value().get(0).properties().protectionState());
-        Assertions.assertEquals("yylhalnswhccsp", model.value().get(0).etag());
+        WorkloadProtectableItemResourceList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"hmk\",\"workloadType\":\"grauwjuetaebur\",\"friendlyName\":\"dmovsm\",\"protectionState\":\"NotProtected\"},\"eTag\":\"ab\",\"location\":\"q\",\"tags\":{\"vtpuqujmqlgk\":\"kif\",\"ongbjcnt\":\"btndo\"},\"id\":\"jitcjedftwwaez\",\"name\":\"ojvdcpzfoqo\",\"type\":\"i\"},{\"properties\":{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"xarzgszufoxciq\",\"workloadType\":\"idoamciodhkha\",\"friendlyName\":\"khnzbonlw\",\"protectionState\":\"ProtectionFailed\"},\"eTag\":\"gokdwbwhks\",\"location\":\"zcmrvexztvb\",\"tags\":{\"wtl\":\"sfraoyzko\",\"uximerqfobw\":\"nguxawqaldsy\",\"r\":\"znkbykutwpfhpagm\"},\"id\":\"kdsnfdsdoakgtdl\",\"name\":\"kkze\",\"type\":\"dlhewp\"},{\"properties\":{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"sttwvogvbbe\",\"workloadType\":\"cngqqmoakufgmjz\",\"friendlyName\":\"rdgrtw\",\"protectionState\":\"NotProtected\"},\"eTag\":\"uzkopbminrfd\",\"location\":\"oyuhhziui\",\"tags\":{\"smlmzqhoftrm\":\"zbhd\",\"hxicslfaoqz\":\"equi\",\"kaivwit\":\"iyylhalnswhccsp\"},\"id\":\"scywuggwoluhc\",\"name\":\"bwemhairs\",\"type\":\"rgzdwmsweyp\"},{\"properties\":{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"xggicccnxqhuexmk\",\"workloadType\":\"lstvlzywe\",\"friendlyName\":\"zrncsdt\",\"protectionState\":\"Protected\"},\"eTag\":\"iypbsfgytgusl\",\"location\":\"eadcygqukyhejhz\",\"tags\":{\"jzraehtwdwrf\":\"gfpelolppvksrpqv\",\"dl\":\"swibyr\",\"hfwpracstwit\":\"h\"},\"id\":\"khevxccedc\",\"name\":\"nmdyodnwzxl\",\"type\":\"jc\"}],\"nextLink\":\"hlt\"}")
+            .toObject(WorkloadProtectableItemResourceList.class);
+        Assertions.assertEquals("hlt", model.nextLink());
+        Assertions.assertEquals("q", model.value().get(0).location());
+        Assertions.assertEquals("kif", model.value().get(0).tags().get("vtpuqujmqlgk"));
+        Assertions.assertEquals("hmk", model.value().get(0).properties().backupManagementType());
+        Assertions.assertEquals("grauwjuetaebur", model.value().get(0).properties().workloadType());
+        Assertions.assertEquals("dmovsm", model.value().get(0).properties().friendlyName());
+        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.value().get(0).properties().protectionState());
+        Assertions.assertEquals("ab", model.value().get(0).etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadProtectableItemResourceList model =
-            new WorkloadProtectableItemResourceList()
-                .withNextLink("wqkdwytisibi")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new WorkloadProtectableItemResourceInner()
-                                .withLocation("kaivwit")
-                                .withTags(mapOf("wem", "ywuggwoluhcz", "sbrgz", "ai", "ggicccnxqhue", "wmsweypqwd"))
-                                .withProperties(
-                                    new WorkloadProtectableItem()
-                                        .withBackupManagementType("hoftr")
-                                        .withWorkloadType("equi")
-                                        .withFriendlyName("xicslfao")
-                                        .withProtectionState(ProtectionStatus.PROTECTION_FAILED))
-                                .withEtag("yylhalnswhccsp"),
-                            new WorkloadProtectableItemResourceInner()
-                                .withLocation("qvujzraehtwdwrf")
-                                .withTags(mapOf("cdl", "iby"))
-                                .withProperties(
-                                    new WorkloadProtectableItem()
-                                        .withBackupManagementType("fgytguslfeadcyg")
-                                        .withWorkloadType("kyhejhzisxgf")
-                                        .withFriendlyName("lolp")
-                                        .withProtectionState(ProtectionStatus.PROTECTING))
-                                .withEtag("r"),
-                            new WorkloadProtectableItemResourceInner()
-                                .withLocation("bodacizsjq")
-                                .withTags(
-                                    mapOf("ibqipqkg", "rribd", "mkrefajpjorwkq", "vxndz", "sjabibs", "yhgbijtjivfx"))
-                                .withProperties(
-                                    new WorkloadProtectableItem()
-                                        .withBackupManagementType("dyodnwzxltj")
-                                        .withWorkloadType("nhltiugcxn")
-                                        .withFriendlyName("vwxqibyqunyo")
-                                        .withProtectionState(ProtectionStatus.PROTECTED))
-                                .withEtag("mdjrkvfgbvfvp"),
-                            new WorkloadProtectableItemResourceInner()
-                                .withLocation("bizikayuhq")
-                                .withTags(mapOf("bbqwrvtldg", "bs", "vm", "fp"))
-                                .withProperties(
-                                    new WorkloadProtectableItem()
-                                        .withBackupManagementType("o")
-                                        .withWorkloadType("hjjklff")
-                                        .withFriendlyName("ouw")
-                                        .withProtectionState(ProtectionStatus.NOT_PROTECTED))
-                                .withEtag("rfzeey")));
+        WorkloadProtectableItemResourceList model
+            = new WorkloadProtectableItemResourceList().withNextLink("hlt")
+                .withValue(Arrays.asList(
+                    new WorkloadProtectableItemResourceInner().withLocation("q")
+                        .withTags(mapOf("vtpuqujmqlgk", "kif", "ongbjcnt", "btndo"))
+                        .withProperties(new WorkloadProtectableItem().withBackupManagementType("hmk")
+                            .withWorkloadType("grauwjuetaebur").withFriendlyName("dmovsm")
+                            .withProtectionState(ProtectionStatus.NOT_PROTECTED))
+                        .withEtag("ab"),
+                    new WorkloadProtectableItemResourceInner().withLocation("zcmrvexztvb")
+                        .withTags(mapOf("wtl", "sfraoyzko", "uximerqfobw", "nguxawqaldsy", "r", "znkbykutwpfhpagm"))
+                        .withProperties(new WorkloadProtectableItem().withBackupManagementType("xarzgszufoxciq")
+                            .withWorkloadType("idoamciodhkha").withFriendlyName("khnzbonlw")
+                            .withProtectionState(ProtectionStatus.PROTECTION_FAILED))
+                        .withEtag("gokdwbwhks"),
+                    new WorkloadProtectableItemResourceInner().withLocation("oyuhhziui")
+                        .withTags(mapOf("smlmzqhoftrm", "zbhd", "hxicslfaoqz", "equi", "kaivwit", "iyylhalnswhccsp"))
+                        .withProperties(new WorkloadProtectableItem().withBackupManagementType("sttwvogvbbe")
+                            .withWorkloadType("cngqqmoakufgmjz").withFriendlyName("rdgrtw")
+                            .withProtectionState(ProtectionStatus.NOT_PROTECTED))
+                        .withEtag("uzkopbminrfd"),
+                    new WorkloadProtectableItemResourceInner().withLocation("eadcygqukyhejhz")
+                        .withTags(mapOf("jzraehtwdwrf", "gfpelolppvksrpqv", "dl", "swibyr", "hfwpracstwit", "h"))
+                        .withProperties(new WorkloadProtectableItem().withBackupManagementType("xggicccnxqhuexmk")
+                            .withWorkloadType("lstvlzywe").withFriendlyName("zrncsdt")
+                            .withProtectionState(ProtectionStatus.PROTECTED))
+                        .withEtag("iypbsfgytgusl")));
         model = BinaryData.fromObject(model).toObject(WorkloadProtectableItemResourceList.class);
-        Assertions.assertEquals("wqkdwytisibi", model.nextLink());
-        Assertions.assertEquals("kaivwit", model.value().get(0).location());
-        Assertions.assertEquals("ywuggwoluhcz", model.value().get(0).tags().get("wem"));
-        Assertions.assertEquals("hoftr", model.value().get(0).properties().backupManagementType());
-        Assertions.assertEquals("equi", model.value().get(0).properties().workloadType());
-        Assertions.assertEquals("xicslfao", model.value().get(0).properties().friendlyName());
-        Assertions
-            .assertEquals(ProtectionStatus.PROTECTION_FAILED, model.value().get(0).properties().protectionState());
-        Assertions.assertEquals("yylhalnswhccsp", model.value().get(0).etag());
+        Assertions.assertEquals("hlt", model.nextLink());
+        Assertions.assertEquals("q", model.value().get(0).location());
+        Assertions.assertEquals("kif", model.value().get(0).tags().get("vtpuqujmqlgk"));
+        Assertions.assertEquals("hmk", model.value().get(0).properties().backupManagementType());
+        Assertions.assertEquals("grauwjuetaebur", model.value().get(0).properties().workloadType());
+        Assertions.assertEquals("dmovsm", model.value().get(0).properties().friendlyName());
+        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.value().get(0).properties().protectionState());
+        Assertions.assertEquals("ab", model.value().get(0).etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

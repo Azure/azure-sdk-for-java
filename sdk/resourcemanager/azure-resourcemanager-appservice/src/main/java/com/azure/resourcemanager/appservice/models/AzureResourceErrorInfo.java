@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The azure resource error info. */
+/**
+ * The azure resource error info.
+ */
 @Fluent
 public final class AzureResourceErrorInfo extends ErrorInfo {
     /*
@@ -24,13 +26,15 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
     @JsonProperty(value = "details")
     private List<AzureResourceErrorInfo> details;
 
-    /** Creates an instance of AzureResourceErrorInfo class. */
+    /**
+     * Creates an instance of AzureResourceErrorInfo class.
+     */
     public AzureResourceErrorInfo() {
     }
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -39,7 +43,7 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
 
     /**
      * Set the message property: The error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the AzureResourceErrorInfo object itself.
      */
@@ -50,7 +54,7 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
 
     /**
      * Get the details property: The error details.
-     *
+     * 
      * @return the details value.
      */
     public List<AzureResourceErrorInfo> details() {
@@ -59,7 +63,7 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
 
     /**
      * Set the details property: The error details.
-     *
+     * 
      * @param details the details value to set.
      * @return the AzureResourceErrorInfo object itself.
      */
@@ -68,7 +72,9 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureResourceErrorInfo withCode(String code) {
         super.withCode(code);
@@ -77,16 +83,15 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (message() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property message in model AzureResourceErrorInfo"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property message in model AzureResourceErrorInfo"));
         }
         if (details() != null) {
             details().forEach(e -> e.validate());

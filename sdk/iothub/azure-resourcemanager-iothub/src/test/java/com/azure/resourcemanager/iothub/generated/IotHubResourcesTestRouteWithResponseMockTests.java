@@ -12,6 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.iothub.IotHubManager;
+import com.azure.resourcemanager.iothub.models.RouteErrorSeverity;
 import com.azure.resourcemanager.iothub.models.RouteProperties;
 import com.azure.resourcemanager.iothub.models.RoutingMessage;
 import com.azure.resourcemanager.iothub.models.RoutingSource;
@@ -40,7 +41,8 @@ public final class IotHubResourcesTestRouteWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"result\":\"undefined\",\"details\":{\"compilationErrors\":[]}}";
+        String responseStr =
+            "{\"result\":\"undefined\",\"details\":{\"compilationErrors\":[{\"message\":\"xdigrjg\",\"severity\":\"error\",\"location\":{\"start\":{},\"end\":{}}},{\"message\":\"yqtfihwh\",\"severity\":\"warning\",\"location\":{\"start\":{},\"end\":{}}},{\"message\":\"amvpphoszqzudph\",\"severity\":\"error\",\"location\":{\"start\":{},\"end\":{}}},{\"message\":\"wynwcvtbvkayhm\",\"severity\":\"error\",\"location\":{\"start\":{},\"end\":{}}}]}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -72,34 +74,38 @@ public final class IotHubResourcesTestRouteWithResponseMockTests {
             manager
                 .iotHubResources()
                 .testRouteWithResponse(
-                    "byqunyow",
-                    "wlmdjrkv",
+                    "ss",
+                    "wutwbdsre",
                     new TestRouteInput()
                         .withMessage(
                             new RoutingMessage()
-                                .withBody("vfvpdbodaciz")
-                                .withAppProperties(mapOf("hvxndzwmkrefajpj", "lhkrribdeibqipqk"))
-                                .withSystemProperties(mapOf("b", "kqnyh", "jivfxzsjabib", "j")))
+                                .withBody("rhneuyowq")
+                                .withAppProperties(mapOf("gpikpzimejza", "ytisibir"))
+                                .withSystemProperties(
+                                    mapOf("zonokixrjqci", "zxiavrm", "szrnwo", "gzpfrla", "bt", "indfpwpjyl")))
                         .withRoute(
                             new RouteProperties()
-                                .withName("ystawfsdjpvkvp")
-                                .withSource(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS)
-                                .withCondition("bkzbzkd")
-                                .withEndpointNames(Arrays.asList("cjabudurgkakmo"))
+                                .withName("h")
+                                .withSource(RoutingSource.DEVICE_MESSAGES)
+                                .withCondition("jcdh")
+                                .withEndpointNames(Arrays.asList("fjvfbgofeljagr", "mqhldvrii", "ojnal"))
                                 .withIsEnabled(true))
                         .withTwin(
                             new RoutingTwin()
-                                .withTags("datajk")
+                                .withTags("datavtvsexsowueluq")
                                 .withProperties(
                                     new RoutingTwinProperties()
-                                        .withDesired("datahmouwqlgzrfze")
-                                        .withReported("dataebizikayuh"))),
+                                        .withDesired("datahhxvrhmzkwpj")
+                                        .withReported("datawspughftqsxhqx"))),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(TestResultStatus.UNDEFINED, response.result());
+        Assertions.assertEquals("xdigrjg", response.details().compilationErrors().get(0).message());
+        Assertions.assertEquals(RouteErrorSeverity.ERROR, response.details().compilationErrors().get(0).severity());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

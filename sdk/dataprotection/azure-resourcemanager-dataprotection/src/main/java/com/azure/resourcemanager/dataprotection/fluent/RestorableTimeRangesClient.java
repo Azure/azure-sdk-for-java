@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.dataprotection.fluent.models.AzureBackupFindRestorableTimeRangesResponseResourceInner;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupFindRestorableTimeRangesRequest;
 
-/** An instance of this class provides access to all the operations defined in RestorableTimeRangesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RestorableTimeRangesClient.
+ */
 public interface RestorableTimeRangesClient {
     /**
      * The find operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -27,16 +29,13 @@ public interface RestorableTimeRangesClient {
      * @return list Restore Ranges Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AzureBackupFindRestorableTimeRangesResponseResourceInner> findWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupFindRestorableTimeRangesRequest parameters,
+    Response<AzureBackupFindRestorableTimeRangesResponseResourceInner> findWithResponse(String resourceGroupName,
+        String vaultName, String backupInstanceName, AzureBackupFindRestorableTimeRangesRequest parameters,
         Context context);
 
     /**
      * The find operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -47,9 +46,6 @@ public interface RestorableTimeRangesClient {
      * @return list Restore Ranges Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureBackupFindRestorableTimeRangesResponseResourceInner find(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupFindRestorableTimeRangesRequest parameters);
+    AzureBackupFindRestorableTimeRangesResponseResourceInner find(String resourceGroupName, String vaultName,
+        String backupInstanceName, AzureBackupFindRestorableTimeRangesRequest parameters);
 }

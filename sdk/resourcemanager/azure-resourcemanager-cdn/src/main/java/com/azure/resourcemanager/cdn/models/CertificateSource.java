@@ -8,17 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines the source of the SSL certificate. */
+/**
+ * Defines the source of the SSL certificate.
+ */
 public final class CertificateSource extends ExpandableStringEnum<CertificateSource> {
-    /** Static value AzureKeyVault for CertificateSource. */
+    /**
+     * Static value AzureKeyVault for CertificateSource.
+     */
     public static final CertificateSource AZURE_KEY_VAULT = fromString("AzureKeyVault");
 
-    /** Static value Cdn for CertificateSource. */
+    /**
+     * Static value Cdn for CertificateSource.
+     */
     public static final CertificateSource CDN = fromString("Cdn");
 
     /**
+     * Creates a new instance of CertificateSource value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CertificateSource() {
+    }
+
+    /**
      * Creates or finds a CertificateSource from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CertificateSource.
      */
@@ -29,7 +44,7 @@ public final class CertificateSource extends ExpandableStringEnum<CertificateSou
 
     /**
      * Gets known CertificateSource values.
-     *
+     * 
      * @return known CertificateSource values.
      */
     public static Collection<CertificateSource> values() {

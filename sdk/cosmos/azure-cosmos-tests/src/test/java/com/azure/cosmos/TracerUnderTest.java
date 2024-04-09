@@ -36,6 +36,8 @@ public class TracerUnderTest implements Tracer {
 
     private final ConcurrentLinkedDeque<SpanRecord> spanStack = new ConcurrentLinkedDeque<>();
     private SpanRecord currentSpan = null;
+
+    private final ConcurrentLinkedDeque<SpanRecord> collectedSiblingSpans = new ConcurrentLinkedDeque<>();
     SpanKind kind = SpanKind.INTERNAL;
 
     private Context startCore(
@@ -45,10 +47,17 @@ public class TracerUnderTest implements Tracer {
         SpanKind kind,
         Context context
     ) {
-        LOGGER.info("--> start {}", methodName);
+        LOGGER.info("--> start {} {}", this.currentSpan, methodName);
         SpanRecord parent = this.currentSpan;
         if (parent != null) {
-            this.spanStack.push(parent);
+            if (methodName.equals(parent.name)) {
+                LOGGER.info("Added new sibling span {}", parent.name);
+                this.collectedSiblingSpans.add(parent);
+                parent = null;
+            } else {
+                LOGGER.info("Added new parent span {}", parent.name);
+                this.spanStack.push(parent);
+            }
             this.currentSpan = null;
         }
         assertThat(this.currentSpan).isNull();
@@ -102,21 +111,26 @@ public class TracerUnderTest implements Tracer {
         this.currentSpan.setError(error);
         this.currentSpan.setStatusMessage(statusMessage);
 
+        String spanName = this.currentSpan.name;
+        String currentSpanHash = this.currentSpan.toString();
         SpanRecord parent = this.spanStack.poll();
         if (parent == null) {
 
             if (this.currentSpan.getError() != null) {
-                LOGGER.info("Span-Error: {}", this.currentSpan.getError().getMessage(), this.currentSpan.getError());
+                LOGGER.info("Span-Error: {} {}", this.currentSpan, this.currentSpan.getError().getMessage(), this.currentSpan.getError());
             }
 
             if (this.currentSpan.getStatusMessage() != null) {
-                LOGGER.info("Span-StatusMessage: {}", this.currentSpan.getStatusMessage());
+                LOGGER.info("Span-StatusMessage: {} {}", this.currentSpan, this.currentSpan.getStatusMessage());
             }
 
-            LOGGER.info("Span-Json: {}", this.currentSpan.toJson());
+            LOGGER.info("Span-Json: {} {}", this.currentSpan, this.currentSpan.toJson());
         } else {
+            LOGGER.info("Setting currentSpan {} to parent {}", this.currentSpan, parent);
             this.currentSpan = parent;
         }
+
+        LOGGER.info("<-- end {} {}", currentSpanHash, spanName);
     }
 
     @Override
@@ -132,12 +146,29 @@ public class TracerUnderTest implements Tracer {
     }
 
     public synchronized void reset() {
+        LOGGER.info("RESET {}", this.currentSpan);
         this.spanStack.clear();
-        this.currentSpan = null;;
+        this.currentSpan = null;
+        this.collectedSiblingSpans.clear();
     }
 
     public SpanRecord getCurrentSpan() {
         return this.currentSpan;
+    }
+
+    public Collection<EventRecord> getEventsOfAllCollectedSiblingSpans() {
+        ArrayList<EventRecord> events = new ArrayList<>(this.currentSpan.events);
+        LOGGER.info("getEventsOfAllCollectedSiblingSpans: {} {} - Siblings {}", this.currentSpan, this.currentSpan.events.size(), this.collectedSiblingSpans.size());
+        for (SpanRecord siblingSpan : this.collectedSiblingSpans) {
+            if (siblingSpan.name.equals(this.currentSpan.name)) {
+                LOGGER.info("  Included {} {}: {}", siblingSpan, siblingSpan.name, siblingSpan.events.size());
+                events.addAll(siblingSpan.events);
+            } else {
+                LOGGER.info("  Skipped {} {}: {}", siblingSpan, siblingSpan.name, siblingSpan.events.size());
+            }
+        }
+
+        return events;
     }
 
     public synchronized String toJson() {
@@ -296,7 +327,9 @@ public class TracerUnderTest implements Tracer {
         public String toString() {
 
             StringBuilder sb = new StringBuilder();
-            sb.append(this.name)
+            sb.append(super.toString())
+              .append(" - ")
+              .append(this.name)
               .append(" - ")
               .append(this.startTime)
               .append(" - ")

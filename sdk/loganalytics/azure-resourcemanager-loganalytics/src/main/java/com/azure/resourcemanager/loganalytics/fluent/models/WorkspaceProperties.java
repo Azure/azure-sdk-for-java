@@ -24,8 +24,7 @@ public final class WorkspaceProperties {
     private WorkspaceEntityStatus provisioningState;
 
     /*
-     * This is a read-only property. Represents the ID associated with the
-     * workspace.
+     * This is a read-only property. Represents the ID associated with the workspace.
      */
     @JsonProperty(value = "customerId", access = JsonProperty.Access.WRITE_ONLY)
     private String customerId;
@@ -37,8 +36,8 @@ public final class WorkspaceProperties {
     private WorkspaceSku sku;
 
     /*
-     * The workspace data retention in days. Allowed values are per pricing
-     * plan. See pricing tiers documentation for details.
+     * The workspace data retention in days. Allowed values are per pricing plan. See pricing tiers documentation for
+     * details.
      */
     @JsonProperty(value = "retentionInDays")
     private Integer retentionInDays;
@@ -74,8 +73,7 @@ public final class WorkspaceProperties {
     private PublicNetworkAccessType publicNetworkAccessForQuery;
 
     /*
-     * Indicates whether customer managed storage is mandatory for query
-     * management.
+     * Indicates whether customer managed storage is mandatory for query management.
      */
     @JsonProperty(value = "forceCmkForQuery")
     private Boolean forceCmkForQuery;
@@ -93,12 +91,15 @@ public final class WorkspaceProperties {
     private WorkspaceFeatures features;
 
     /*
-     * The resource ID of the default Data Collection Rule to use for this
-     * workspace. Expected format is -
+     * The resource ID of the default Data Collection Rule to use for this workspace. Expected format is -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules/{dcrName}.
      */
     @JsonProperty(value = "defaultDataCollectionRuleResourceId")
     private String defaultDataCollectionRuleResourceId;
+
+    /** Creates an instance of WorkspaceProperties class. */
+    public WorkspaceProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the workspace.

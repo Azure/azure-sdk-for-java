@@ -44,6 +44,15 @@ public final class MicrosoftGraphCalendarColor extends ExpandableStringEnum<Micr
     public static final MicrosoftGraphCalendarColor MAX_COLOR = fromString("maxColor");
 
     /**
+     * Creates a new instance of MicrosoftGraphCalendarColor value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphCalendarColor() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphCalendarColor from its string representation.
      *
      * @param name a name to look for.

@@ -14,20 +14,20 @@ public final class MsixPackagePatchTests {
         MsixPackagePatch model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"isActive\":false,\"isRegularRegistration\":true,\"displayName\":\"ywemhzrn\"},\"id\":\"sdtclusiypbs\",\"name\":\"gytguslfead\",\"type\":\"ygqukyhejh\"}")
+                    "{\"properties\":{\"isActive\":false,\"isRegularRegistration\":true,\"displayName\":\"kqfqjbvl\"},\"id\":\"orfmluiqt\",\"name\":\"zf\",\"type\":\"vyvnqqyb\"}")
                 .toObject(MsixPackagePatch.class);
         Assertions.assertEquals(false, model.isActive());
         Assertions.assertEquals(true, model.isRegularRegistration());
-        Assertions.assertEquals("ywemhzrn", model.displayName());
+        Assertions.assertEquals("kqfqjbvl", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MsixPackagePatch model =
-            new MsixPackagePatch().withIsActive(false).withIsRegularRegistration(true).withDisplayName("ywemhzrn");
+            new MsixPackagePatch().withIsActive(false).withIsRegularRegistration(true).withDisplayName("kqfqjbvl");
         model = BinaryData.fromObject(model).toObject(MsixPackagePatch.class);
         Assertions.assertEquals(false, model.isActive());
         Assertions.assertEquals(true, model.isRegularRegistration());
-        Assertions.assertEquals("ywemhzrn", model.displayName());
+        Assertions.assertEquals("kqfqjbvl", model.displayName());
     }
 }

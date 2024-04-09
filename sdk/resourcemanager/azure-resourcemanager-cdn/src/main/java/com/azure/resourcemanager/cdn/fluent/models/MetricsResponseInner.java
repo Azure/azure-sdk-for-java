@@ -5,13 +5,15 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.cdn.models.MetricsResponseGranularity;
+import com.azure.resourcemanager.cdn.models.MetricsGranularity;
 import com.azure.resourcemanager.cdn.models.MetricsResponseSeriesItem;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Metrics Response. */
+/**
+ * Metrics Response.
+ */
 @Fluent
 public final class MetricsResponseInner {
     /*
@@ -30,7 +32,7 @@ public final class MetricsResponseInner {
      * The granularity property.
      */
     @JsonProperty(value = "granularity")
-    private MetricsResponseGranularity granularity;
+    private MetricsGranularity granularity;
 
     /*
      * The series property.
@@ -39,8 +41,14 @@ public final class MetricsResponseInner {
     private List<MetricsResponseSeriesItem> series;
 
     /**
+     * Creates an instance of MetricsResponseInner class.
+     */
+    public MetricsResponseInner() {
+    }
+
+    /**
      * Get the dateTimeBegin property: The dateTimeBegin property.
-     *
+     * 
      * @return the dateTimeBegin value.
      */
     public OffsetDateTime dateTimeBegin() {
@@ -49,7 +57,7 @@ public final class MetricsResponseInner {
 
     /**
      * Set the dateTimeBegin property: The dateTimeBegin property.
-     *
+     * 
      * @param dateTimeBegin the dateTimeBegin value to set.
      * @return the MetricsResponseInner object itself.
      */
@@ -60,7 +68,7 @@ public final class MetricsResponseInner {
 
     /**
      * Get the dateTimeEnd property: The dateTimeEnd property.
-     *
+     * 
      * @return the dateTimeEnd value.
      */
     public OffsetDateTime dateTimeEnd() {
@@ -69,7 +77,7 @@ public final class MetricsResponseInner {
 
     /**
      * Set the dateTimeEnd property: The dateTimeEnd property.
-     *
+     * 
      * @param dateTimeEnd the dateTimeEnd value to set.
      * @return the MetricsResponseInner object itself.
      */
@@ -80,27 +88,27 @@ public final class MetricsResponseInner {
 
     /**
      * Get the granularity property: The granularity property.
-     *
+     * 
      * @return the granularity value.
      */
-    public MetricsResponseGranularity granularity() {
+    public MetricsGranularity granularity() {
         return this.granularity;
     }
 
     /**
      * Set the granularity property: The granularity property.
-     *
+     * 
      * @param granularity the granularity value to set.
      * @return the MetricsResponseInner object itself.
      */
-    public MetricsResponseInner withGranularity(MetricsResponseGranularity granularity) {
+    public MetricsResponseInner withGranularity(MetricsGranularity granularity) {
         this.granularity = granularity;
         return this;
     }
 
     /**
      * Get the series property: The series property.
-     *
+     * 
      * @return the series value.
      */
     public List<MetricsResponseSeriesItem> series() {
@@ -109,7 +117,7 @@ public final class MetricsResponseInner {
 
     /**
      * Set the series property: The series property.
-     *
+     * 
      * @param series the series value to set.
      * @return the MetricsResponseInner object itself.
      */
@@ -120,7 +128,7 @@ public final class MetricsResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

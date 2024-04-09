@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Url signing key parameters. */
+/**
+ * Url signing key parameters.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("UrlSigningKey")
 @Fluent
@@ -24,7 +26,10 @@ public final class UrlSigningKeyParameters extends SecretParameters {
 
     /*
      * Resource reference to the Azure Key Vault secret. Expected to be in format of
-     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
+     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}
+     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}
+     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}
+     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
      */
     @JsonProperty(value = "secretSource", required = true)
     private ResourceReference secretSource;
@@ -36,9 +41,15 @@ public final class UrlSigningKeyParameters extends SecretParameters {
     private String secretVersion;
 
     /**
+     * Creates an instance of UrlSigningKeyParameters class.
+     */
+    public UrlSigningKeyParameters() {
+    }
+
+    /**
      * Get the keyId property: Defines the customer defined key Id. This id will exist in the incoming request to
      * indicate the key used to form the hash.
-     *
+     * 
      * @return the keyId value.
      */
     public String keyId() {
@@ -48,7 +59,7 @@ public final class UrlSigningKeyParameters extends SecretParameters {
     /**
      * Set the keyId property: Defines the customer defined key Id. This id will exist in the incoming request to
      * indicate the key used to form the hash.
-     *
+     * 
      * @param keyId the keyId value to set.
      * @return the UrlSigningKeyParameters object itself.
      */
@@ -60,7 +71,7 @@ public final class UrlSigningKeyParameters extends SecretParameters {
     /**
      * Get the secretSource property: Resource reference to the Azure Key Vault secret. Expected to be in format of
      * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
-     *
+     * 
      * @return the secretSource value.
      */
     public ResourceReference secretSource() {
@@ -70,7 +81,7 @@ public final class UrlSigningKeyParameters extends SecretParameters {
     /**
      * Set the secretSource property: Resource reference to the Azure Key Vault secret. Expected to be in format of
      * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
-     *
+     * 
      * @param secretSource the secretSource value to set.
      * @return the UrlSigningKeyParameters object itself.
      */
@@ -81,7 +92,7 @@ public final class UrlSigningKeyParameters extends SecretParameters {
 
     /**
      * Get the secretVersion property: Version of the secret to be used.
-     *
+     * 
      * @return the secretVersion value.
      */
     public String secretVersion() {
@@ -90,7 +101,7 @@ public final class UrlSigningKeyParameters extends SecretParameters {
 
     /**
      * Set the secretVersion property: Version of the secret to be used.
-     *
+     * 
      * @param secretVersion the secretVersion value to set.
      * @return the UrlSigningKeyParameters object itself.
      */
@@ -101,22 +112,19 @@ public final class UrlSigningKeyParameters extends SecretParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (keyId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyId in model UrlSigningKeyParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keyId in model UrlSigningKeyParameters"));
         }
         if (secretSource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property secretSource in model UrlSigningKeyParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property secretSource in model UrlSigningKeyParameters"));
         } else {
             secretSource().validate();
         }

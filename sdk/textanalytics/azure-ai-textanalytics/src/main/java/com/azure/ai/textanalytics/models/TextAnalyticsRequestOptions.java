@@ -6,13 +6,19 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * The {@link TextAnalyticsRequestOptions} model.
+ * The {@code TextAnalyticsRequestOptions} model.
  */
 @Fluent
 public class TextAnalyticsRequestOptions {
     private String modelVersion;
     private boolean includeStatistics;
     private boolean disableServiceLogs;
+
+    /**
+     * Constructs a {@code TextAnalyticsRequestOptions} model.
+     */
+    public TextAnalyticsRequestOptions() {
+    }
 
     /**
      * Gets the version of the text analytics model used by this operation.
@@ -29,7 +35,7 @@ public class TextAnalyticsRequestOptions {
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link TextAnalyticsRequestOptions} object itself.
+     * @return The {@code TextAnalyticsRequestOptions} object itself.
      */
     public TextAnalyticsRequestOptions setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
@@ -53,7 +59,7 @@ public class TextAnalyticsRequestOptions {
      * @param includeStatistics If a boolean value was specified in the request this field will contain
      * information about the document payload.
      *
-     * @return the {@link TextAnalyticsRequestOptions} object itself.
+     * @return the {@code TextAnalyticsRequestOptions} object itself.
      */
     public TextAnalyticsRequestOptions setIncludeStatistics(boolean includeStatistics) {
         this.includeStatistics = includeStatistics;
@@ -80,7 +86,7 @@ public class TextAnalyticsRequestOptions {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return the {@link TextAnalyticsRequestOptions} object itself.
+     * @return the {@code TextAnalyticsRequestOptions} object itself.
      */
     public TextAnalyticsRequestOptions setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;

@@ -57,9 +57,224 @@ import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
 
 /**
  * This class provides a client that contains the operations for querying an index and uploading, merging, or deleting
- * documents in an Azure Cognitive Search service.
+ * documents in an Azure AI Search service.
  *
+ * <h2>
+ *     Overview
+ * </h2>
+ *
+ * <p>
+ *     Conceptually, a document is an entity in your index. Mapping this concept to more familiar database equivalents:
+ *     a search index equates to a table, and documents are roughly equivalent to rows in a table. Documents exist only
+ *     in an index, and are retrieved only through queries that target the documents collection (/docs) of an index. All
+ *     operations performed on the collection such as uploading, merging, deleting, or querying documents take place in
+ *     the context of a single index, so the URL format document operations will always include /indexes/[index name]/docs
+ *     for a given index name.
+ * </p>
+ *
+ * <p>
+ *     This client provides a synchronous API for accessing and performing operations on indexed documents. This client
+ *     assists with searching your indexed documents, autocompleting partially typed search terms based on documents within the index,
+ *     suggesting the most likely matching text in documents as a user types. The client provides operations for adding, updating, and deleting
+ *     documents from an index.
+ * </p>
+ *
+ * <h2>
+ *     Getting Started
+ * </h2>
+ *
+ * <p>
+ *     Authenticating and building instances of this client are handled by {@link SearchClientBuilder}. This sample shows
+ *     you how to authenticate and create an instance of the client:
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchClient-classLevelJavaDoc.instantiationWithSearchClientBuilder -->
+ * <pre>
+ * SearchClient searchClient = new SearchClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .indexName&#40;&quot;&#123;indexName&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.instantiationWithSearchClientBuilder -->
+ *
+ * <p>
+ *     For more information on authentication and building, see the {@link SearchClientBuilder} documentation.
+ * </p>
+ *
+ * <hr/>
+ *
+ * <h2>
+ *     Examples
+ * </h2>
+ *
+ * <p>
+ *     The following examples all use <a href="https://github.com/Azure-Samples/azure-search-sample-data">a simple Hotel
+ *     data set</a> that you can <a href="https://learn.microsoft.com/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source">
+ *         import into your own index from the Azure portal.</a>
+ *     These are just a few of the basics - please check out <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md">our Samples </a>for much more.
+ * </p>
+ *
+ * <h3>
+ *     Upload a Document
+ * </h3>
+ *
+ * <p>
+ *     The following sample uploads a new document to an index.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchClient-classLevelJavaDoc.uploadDocument#Map-boolean -->
+ * <pre>
+ * List&lt;Hotel&gt; hotels = new ArrayList&lt;&gt;&#40;&#41;;
+ * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;100&quot;&#41;&#41;;
+ * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;200&quot;&#41;&#41;;
+ * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;300&quot;&#41;&#41;;
+ * searchClient.uploadDocuments&#40;hotels&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.uploadDocument#Map-boolean -->
+ *
+ * <em>
+ *     For an asynchronous sample see {@link SearchAsyncClient#uploadDocuments(Iterable)}.
+ * </em>
+ *
+ * <h3>
+ *     Merge a Document
+ * </h3>
+ *
+ * <p>
+ *     The following sample merges documents in an index.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchClient-classLevelJavaDoc.mergeDocument#Map -->
+ * <pre>
+ * List&lt;Hotel&gt; hotels = new ArrayList&lt;&gt;&#40;&#41;;
+ * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;100&quot;&#41;&#41;;
+ * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;200&quot;&#41;&#41;;
+ * searchClient.mergeDocuments&#40;hotels&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.mergeDocument#Map -->
+ *
+ * <em>
+ *     For an asynchronous sample see {@link SearchAsyncClient#mergeDocuments(Iterable)}.
+ * </em>
+ *
+ * <h3>
+ *     Delete a Document
+ * </h3>
+ *
+ * <p>
+ *     The following sample deletes a document from an index.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchClient-classLevelJavaDoc.deleteDocument#String -->
+ * <pre>
+ * SearchDocument documentId = new SearchDocument&#40;&#41;;
+ * documentId.put&#40;&quot;hotelId&quot;, &quot;100&quot;&#41;;
+ * searchClient.deleteDocuments&#40;Collections.singletonList&#40;documentId&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.deleteDocument#String -->
+ *
+ * <em>
+ *     For an asynchronous sample see {@link SearchAsyncClient#deleteDocuments(Iterable)}.
+ * </em>
+ *
+ * <h3>
+ *     Get a Document
+ * </h3>
+ *
+ * <p>
+ *     The following sample gets a document from an index.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchClient-classLevelJavaDoc.getDocument#String-Class -->
+ * <pre>
+ * Hotel hotel = searchClient.getDocument&#40;&quot;100&quot;, Hotel.class&#41;;
+ * System.out.printf&#40;&quot;Retrieved Hotel %s%n&quot;, hotel.getHotelId&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.getDocument#String-Class -->
+ *
+ * <em>
+ *     For an asynchronous sample see {@link SearchAsyncClient#getDocument(String, Class)}.
+ * </em>
+ *
+ * <h3>
+ *     Search Documents
+ * </h3>
+ *
+ * <p>
+ *     The following sample searches for documents within an index.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchClient-classLevelJavaDoc.searchDocuments#String -->
+ * <pre>
+ * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
+ * searchDocument.put&#40;&quot;hotelId&quot;, &quot;8&quot;&#41;;
+ * searchDocument.put&#40;&quot;description&quot;, &quot;budget&quot;&#41;;
+ * searchDocument.put&#40;&quot;descriptionFr&quot;, &quot;motel&quot;&#41;;
+ *
+ * SearchDocument searchDocument1 = new SearchDocument&#40;&#41;;
+ * searchDocument1.put&#40;&quot;hotelId&quot;, &quot;9&quot;&#41;;
+ * searchDocument1.put&#40;&quot;description&quot;, &quot;budget&quot;&#41;;
+ * searchDocument1.put&#40;&quot;descriptionFr&quot;, &quot;motel&quot;&#41;;
+ *
+ * List&lt;SearchDocument&gt; searchDocuments = new ArrayList&lt;&gt;&#40;&#41;;
+ * searchDocuments.add&#40;searchDocument&#41;;
+ * searchDocuments.add&#40;searchDocument1&#41;;
+ * searchClient.uploadDocuments&#40;searchDocuments&#41;;
+ *
+ * SearchPagedIterable results = searchClient.search&#40;&quot;SearchText&quot;&#41;;
+ * System.out.printf&#40;&quot;There are %s results.%n&quot;, results.getTotalCount&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.searchDocuments#String -->
+ * <em>
+ *     For an asynchronous sample see {@link SearchAsyncClient#search(String)}.
+ * </em>
+ *
+ * <h3>
+ *     Make a Suggestion
+ * </h3>
+ *
+ * <p>
+ *     The following sample suggests the most likely matching text in documents.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchClient-classLevelJavaDoc.suggestDocuments#String-String -->
+ * <pre>
+ * SuggestPagedIterable suggestPagedIterable = searchClient.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
+ * for &#40;SuggestResult result: suggestPagedIterable&#41; &#123;
+ *     System.out.printf&#40;&quot;The suggested text is %s&quot;, result.getText&#40;&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.suggestDocuments#String-String -->
+ *
+ * <em>
+ *     For an asynchronous sample see {@link SearchAsyncClient#suggest(String, String)}.
+ * </em>
+ *
+ * <h3>
+ *     Provide an Autocompletion
+ * </h3>
+ *
+ * <p>
+ *     The following sample provides autocompletion for a partially typed query.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchClient-classLevelJavaDoc.autocomplete#String-String -->
+ * <pre>
+ * AutocompletePagedIterable autocompletePagedIterable = searchClient.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
+ * for &#40;AutocompleteItem result: autocompletePagedIterable&#41; &#123;
+ *     System.out.printf&#40;&quot;The complete term is %s&quot;, result.getText&#40;&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.autocomplete#String-String -->
+ *
+ * <em>
+ *     For an asynchronous sample see {@link SearchAsyncClient#autocomplete(String, String)}.
+ * </em>
+ *
+ * @see SearchAsyncClient
  * @see SearchClientBuilder
+ * @see com.azure.search.documents
  */
 @ServiceClient(builder = SearchClientBuilder.class)
 public final class SearchClient {
@@ -71,17 +286,17 @@ public final class SearchClient {
     private final SearchServiceVersion serviceVersion;
 
     /**
-     * The endpoint for the Azure Cognitive Search service.
+     * The endpoint for the Azure AI Search service.
      */
     private final String endpoint;
 
     /**
-     * The name of the Azure Cognitive Search index.
+     * The name of the Azure AI Search index.
      */
     private final String indexName;
 
     /**
-     * The underlying AutoRest client used to interact with the Azure Cognitive Search service
+     * The underlying AutoRest client used to interact with the Azure AI Search service
      */
     private final SearchIndexClientImpl restClient;
 
@@ -106,7 +321,7 @@ public final class SearchClient {
     }
 
     /**
-     * Gets the name of the Azure Cognitive Search index.
+     * Gets the name of the Azure AI Search index.
      *
      * @return the indexName value.
      */
@@ -119,12 +334,12 @@ public final class SearchClient {
      *
      * @return the pipeline.
      */
-    HttpPipeline getHttpPipeline() {
+    public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
     /**
-     * Gets the endpoint for the Azure Cognitive Search service.
+     * Gets the endpoint for the Azure AI Search service.
      *
      * @return the endpoint value.
      */
@@ -555,7 +770,7 @@ public final class SearchClient {
     }
 
     /**
-     * Retrieves a document from the Azure Cognitive Search index.
+     * Retrieves a document from the Azure AI Search index.
      * <p>
      * View <a href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules">naming rules</a> for guidelines on
      * constructing valid document keys.
@@ -585,7 +800,7 @@ public final class SearchClient {
     }
 
     /**
-     * Retrieves a document from the Azure Cognitive Search index.
+     * Retrieves a document from the Azure AI Search index.
      * <p>
      * View <a href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules">naming rules</a> for guidelines on
      * constructing valid document keys.
@@ -620,7 +835,7 @@ public final class SearchClient {
 
         try {
             Response<Map<String, Object>> response = restClient.getDocuments()
-                .getWithResponse(key, selectedFields, null, Utility.enableSyncRestProxy(context));
+                .getWithResponse(key, selectedFields, null, context);
 
             return new SimpleResponse<>(response, serializer.deserializeFromBytes(
                 serializer.serializeToBytes(response.getValue()), createInstance(modelClass)));
@@ -673,15 +888,23 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Long> getDocumentCountWithResponse(Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDocuments()
-            .countWithResponse(null, Utility.enableSyncRestProxy(context)));
+            .countWithResponse(null, context), LOGGER);
     }
 
     /**
-     * Searches for documents in the Azure Cognitive Search index.
+     * Searches for documents in the Azure AI Search index.
      * <p>
      * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
-     * syntax in Azure Cognitive Search</a> for more information about search query syntax.
+     * syntax in Azure AI Search</a> for more information about search query syntax.
+     * <p>
+     * The {@link SearchPagedIterable} will iterate through search result pages until all search results are returned.
+     * Each page is determined by the {@code $skip} and {@code $top} values and the Search service has a limit on the
+     * number of documents that can be skipped, more information about the {@code $skip} limit can be found at
+     * <a href="https://learn.microsoft.com/rest/api/searchservice/search-documents">Search Documents REST API</a> and
+     * reading the {@code $skip} description. If the total number of results exceeds the {@code $skip} limit the
+     * {@link SearchPagedIterable} won't prevent you from exceeding the {@code $skip} limit. To prevent exceeding the
+     * limit you can track the number of documents returned and stop requesting new pages when the limit is reached.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -692,8 +915,10 @@ public final class SearchClient {
      * SearchPagedIterable searchPagedIterable = SEARCH_CLIENT.search&#40;&quot;searchText&quot;&#41;;
      * System.out.printf&#40;&quot;There are around %d results.&quot;, searchPagedIterable.getTotalCount&#40;&#41;&#41;;
      *
+     * long numberOfDocumentsReturned = 0;
      * for &#40;SearchPagedResponse resultResponse: searchPagedIterable.iterableByPage&#40;&#41;&#41; &#123;
      *     System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
+     *     numberOfDocumentsReturned += resultResponse.getValue&#40;&#41;.size&#40;&#41;;
      *     resultResponse.getValue&#40;&#41;.forEach&#40;searchResult -&gt; &#123;
      *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair: searchResult
      *             .getDocument&#40;SearchDocument.class&#41;.entrySet&#40;&#41;&#41; &#123;
@@ -701,6 +926,11 @@ public final class SearchClient {
      *                 keyValuePair.getValue&#40;&#41;&#41;;
      *         &#125;
      *     &#125;&#41;;
+     *
+     *     if &#40;numberOfDocumentsReturned &gt;= SEARCH_SKIP_LIMIT&#41; &#123;
+     *         &#47;&#47; Reached the $skip limit, stop requesting more documents.
+     *         break;
+     *     &#125;
      * &#125;
      * </pre>
      * <!-- end com.azure.search.documents.SearchClient.search#String -->
@@ -717,11 +947,19 @@ public final class SearchClient {
     }
 
     /**
-     * Searches for documents in the Azure Cognitive Search index.
+     * Searches for documents in the Azure AI Search index.
      * <p>
      * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
-     * syntax in Azure Cognitive Search</a> for more information about search query syntax.
+     * syntax in Azure AI Search</a> for more information about search query syntax.
+     * <p>
+     * The {@link SearchPagedIterable} will iterate through search result pages until all search results are returned.
+     * Each page is determined by the {@code $skip} and {@code $top} values and the Search service has a limit on the
+     * number of documents that can be skipped, more information about the {@code $skip} limit can be found at
+     * <a href="https://learn.microsoft.com/rest/api/searchservice/search-documents">Search Documents REST API</a> and
+     * reading the {@code $skip} description. If the total number of results exceeds the {@code $skip} limit the
+     * {@link SearchPagedIterable} won't prevent you from exceeding the {@code $skip} limit. To prevent exceeding the
+     * limit you can track the number of documents returned and stop requesting new pages when the limit is reached.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -732,8 +970,11 @@ public final class SearchClient {
      * SearchPagedIterable searchPagedIterable = SEARCH_CLIENT.search&#40;&quot;searchText&quot;,
      *     new SearchOptions&#40;&#41;.setOrderBy&#40;&quot;hotelId desc&quot;&#41;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;There are around %d results.&quot;, searchPagedIterable.getTotalCount&#40;&#41;&#41;;
+     *
+     * long numberOfDocumentsReturned = 0;
      * for &#40;SearchPagedResponse resultResponse: searchPagedIterable.iterableByPage&#40;&#41;&#41; &#123;
      *     System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
+     *     numberOfDocumentsReturned += resultResponse.getValue&#40;&#41;.size&#40;&#41;;
      *     resultResponse.getValue&#40;&#41;.forEach&#40;searchResult -&gt; &#123;
      *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair: searchResult
      *             .getDocument&#40;SearchDocument.class&#41;.entrySet&#40;&#41;&#41; &#123;
@@ -741,6 +982,11 @@ public final class SearchClient {
      *                 keyValuePair.getValue&#40;&#41;&#41;;
      *         &#125;
      *     &#125;&#41;;
+     *
+     *     if &#40;numberOfDocumentsReturned &gt;= SEARCH_SKIP_LIMIT&#41; &#123;
+     *         &#47;&#47; Reached the $skip limit, stop requesting more documents.
+     *         break;
+     *     &#125;
      * &#125;
      * </pre>
      * <!-- end com.azure.search.documents.SearchClient.search#String-SearchOptions-Context -->
@@ -774,18 +1020,19 @@ public final class SearchClient {
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
         return Utility.executeRestCallWithExceptionHandling(() -> {
-            Response<SearchDocumentsResult> response = restClient.getDocuments().searchPostWithResponse(requestToUse, null, Utility.enableSyncRestProxy(context));
+            Response<SearchDocumentsResult> response = restClient.getDocuments()
+                .searchPostWithResponse(requestToUse, null, context);
             SearchDocumentsResult result = response.getValue();
             SearchPagedResponse page = new SearchPagedResponse(
                 new SimpleResponse<>(response, getSearchResults(result, serializer)),
                 createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
-                result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(), 
+                result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
                 result.getSemanticPartialResponseType());
             if (continuationToken == null) {
                 firstPageResponseWrapper.setFirstPageResponse(page);
             }
             return page;
-        });
+        }, LOGGER);
     }
 
     /**
@@ -858,11 +1105,12 @@ public final class SearchClient {
 
     private SuggestPagedResponse suggest(SuggestRequest suggestRequest, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> {
-            Response<SuggestDocumentsResult> response = restClient.getDocuments().suggestPostWithResponse(suggestRequest, null, Utility.enableSyncRestProxy(context));
+            Response<SuggestDocumentsResult> response = restClient.getDocuments()
+                .suggestPostWithResponse(suggestRequest, null, context);
             SuggestDocumentsResult result = response.getValue();
             return new SuggestPagedResponse(new SimpleResponse<>(response, getSuggestResults(result, serializer)),
                 result.getCoverage());
-        });
+        }, LOGGER);
     }
 
     /**
@@ -924,8 +1172,9 @@ public final class SearchClient {
 
     private AutocompletePagedResponse autocomplete(AutocompleteRequest request, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> {
-            Response<AutocompleteResult> response = restClient.getDocuments().autocompletePostWithResponse(request, null, Utility.enableSyncRestProxy(context));
+            Response<AutocompleteResult> response = restClient.getDocuments()
+                .autocompletePostWithResponse(request, null, context);
             return new AutocompletePagedResponse(new SimpleResponse<>(response, response.getValue()));
-        });
+        }, LOGGER);
     }
 }

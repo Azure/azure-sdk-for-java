@@ -30,6 +30,12 @@ public final class ClassificationCategory {
     }
 
     /**
+     * Constructs a {@code ClassificationCategory} model.
+     */
+    public ClassificationCategory() {
+    }
+
+    /**
      * Gets the classified category of document.
      *
      * @return The classified category of document.

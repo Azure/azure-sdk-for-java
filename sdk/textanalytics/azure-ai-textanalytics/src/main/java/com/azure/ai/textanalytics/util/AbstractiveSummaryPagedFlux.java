@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 public final class AbstractiveSummaryPagedFlux extends ContinuablePagedFluxCore<String,
         AbstractiveSummaryResultCollection, PagedResponse<AbstractiveSummaryResultCollection>> {
     /**
-     * Creates an instance of {@link AbstractiveSummaryPagedFlux}
+     * Creates an instance of {@code AbstractiveSummaryPagedFlux}
      *
      * @param pageRetrieverProvider a provider that returns {@link PageRetriever}
      */

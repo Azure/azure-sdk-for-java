@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Egress NAT. */
+/**
+ * Egress NAT.
+ */
 public final class EgressNat extends ExpandableStringEnum<EgressNat> {
-    /** Static value DISABLED for EgressNat. */
+    /**
+     * Static value DISABLED for EgressNat.
+     */
     public static final EgressNat DISABLED = fromString("DISABLED");
 
-    /** Static value ENABLED for EgressNat. */
+    /**
+     * Static value ENABLED for EgressNat.
+     */
     public static final EgressNat ENABLED = fromString("ENABLED");
 
     /**
      * Creates a new instance of EgressNat value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class EgressNat extends ExpandableStringEnum<EgressNat> {
 
     /**
      * Creates or finds a EgressNat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EgressNat.
      */
@@ -38,7 +44,7 @@ public final class EgressNat extends ExpandableStringEnum<EgressNat> {
 
     /**
      * Gets known EgressNat values.
-     *
+     * 
      * @return known EgressNat values.
      */
     public static Collection<EgressNat> values() {

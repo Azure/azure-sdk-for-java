@@ -8,7 +8,6 @@ import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppBasic;
 import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppSqlConnection;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppBasic;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppSlots;
-import com.azure.resourcemanager.appservice.samples.ManageWebAppSourceControlAsync;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppSqlConnection;
 
 import org.junit.jupiter.api.Assertions;
@@ -27,12 +26,6 @@ public class AppServiceSampleTests extends SamplesTestBase {
     @Disabled("Fails randomly when creating one of the three slots")
     public void testManageWebAppSlots() {
         Assertions.assertTrue(ManageWebAppSlots.runSample(azureResourceManager));
-    }
-
-    @Test
-    @Disabled("Failing in playback - dependent on git")
-    public void testManageWebAppSourceControlAsync() {
-        Assertions.assertTrue(ManageWebAppSourceControlAsync.runSample(azureResourceManager));
     }
 
     @Test

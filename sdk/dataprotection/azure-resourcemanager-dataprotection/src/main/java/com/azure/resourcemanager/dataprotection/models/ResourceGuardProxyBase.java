@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ResourceGuardProxyBase object, used in ResourceGuardProxyBaseResource. */
+/**
+ * ResourceGuardProxyBase object, used in ResourceGuardProxyBaseResource.
+ */
 @Fluent
 public final class ResourceGuardProxyBase {
     /*
@@ -35,13 +37,15 @@ public final class ResourceGuardProxyBase {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of ResourceGuardProxyBase class. */
+    /**
+     * Creates an instance of ResourceGuardProxyBase class.
+     */
     public ResourceGuardProxyBase() {
     }
 
     /**
      * Get the resourceGuardResourceId property: The resourceGuardResourceId property.
-     *
+     * 
      * @return the resourceGuardResourceId value.
      */
     public String resourceGuardResourceId() {
@@ -50,7 +54,7 @@ public final class ResourceGuardProxyBase {
 
     /**
      * Set the resourceGuardResourceId property: The resourceGuardResourceId property.
-     *
+     * 
      * @param resourceGuardResourceId the resourceGuardResourceId value to set.
      * @return the ResourceGuardProxyBase object itself.
      */
@@ -61,7 +65,7 @@ public final class ResourceGuardProxyBase {
 
     /**
      * Get the resourceGuardOperationDetails property: The resourceGuardOperationDetails property.
-     *
+     * 
      * @return the resourceGuardOperationDetails value.
      */
     public List<ResourceGuardOperationDetail> resourceGuardOperationDetails() {
@@ -70,19 +74,19 @@ public final class ResourceGuardProxyBase {
 
     /**
      * Set the resourceGuardOperationDetails property: The resourceGuardOperationDetails property.
-     *
+     * 
      * @param resourceGuardOperationDetails the resourceGuardOperationDetails value to set.
      * @return the ResourceGuardProxyBase object itself.
      */
-    public ResourceGuardProxyBase withResourceGuardOperationDetails(
-        List<ResourceGuardOperationDetail> resourceGuardOperationDetails) {
+    public ResourceGuardProxyBase
+        withResourceGuardOperationDetails(List<ResourceGuardOperationDetail> resourceGuardOperationDetails) {
         this.resourceGuardOperationDetails = resourceGuardOperationDetails;
         return this;
     }
 
     /**
      * Get the lastUpdatedTime property: The lastUpdatedTime property.
-     *
+     * 
      * @return the lastUpdatedTime value.
      */
     public String lastUpdatedTime() {
@@ -91,7 +95,7 @@ public final class ResourceGuardProxyBase {
 
     /**
      * Set the lastUpdatedTime property: The lastUpdatedTime property.
-     *
+     * 
      * @param lastUpdatedTime the lastUpdatedTime value to set.
      * @return the ResourceGuardProxyBase object itself.
      */
@@ -102,7 +106,7 @@ public final class ResourceGuardProxyBase {
 
     /**
      * Get the description property: The description property.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -111,7 +115,7 @@ public final class ResourceGuardProxyBase {
 
     /**
      * Set the description property: The description property.
-     *
+     * 
      * @param description the description value to set.
      * @return the ResourceGuardProxyBase object itself.
      */
@@ -122,7 +126,7 @@ public final class ResourceGuardProxyBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

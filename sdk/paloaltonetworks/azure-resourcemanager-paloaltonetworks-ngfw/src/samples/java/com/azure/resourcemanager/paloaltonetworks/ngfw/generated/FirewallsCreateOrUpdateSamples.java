@@ -32,173 +32,109 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Firewalls CreateOrUpdate. */
+/**
+ * Samples for Firewalls CreateOrUpdate.
+ */
 public final class FirewallsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * Firewalls_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_CreateOrUpdate_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void firewallsCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager
-            .firewalls()
-            .define("firewall1")
-            .withRegion("eastus")
-            .withExistingResourceGroup("firewall-rg")
-            .withNetworkProfile(
-                new NetworkProfile()
-                    .withVnetConfiguration(
-                        new VnetConfiguration()
-                            .withVnet(
-                                new IpAddressSpace()
-                                    .withResourceId(
-                                        "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet")
-                                    .withAddressSpace("10.1.0.0/16"))
-                            .withTrustSubnet(
-                                new IpAddressSpace()
-                                    .withResourceId(
-                                        "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet")
-                                    .withAddressSpace("10.1.1.0/24"))
-                            .withUnTrustSubnet(
-                                new IpAddressSpace()
-                                    .withResourceId(
-                                        "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet")
-                                    .withAddressSpace("10.1.1.0/24"))
-                            .withIpOfTrustSubnetForUdr(
-                                new IpAddress()
-                                    .withResourceId(
-                                        "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet")
-                                    .withAddress("10.1.1.0/24")))
-                    .withVwanConfiguration(
-                        new VwanConfiguration()
-                            .withNetworkVirtualApplianceId("2bf4a339-294d-4c25-b0b2-ef649e9f5c12")
-                            .withVHub(
-                                new IpAddressSpace()
-                                    .withResourceId(
-                                        "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet")
-                                    .withAddressSpace("10.1.1.0/24"))
-                            .withTrustSubnet(
-                                new IpAddressSpace()
-                                    .withResourceId(
-                                        "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet")
-                                    .withAddressSpace("10.1.1.0/24"))
-                            .withUnTrustSubnet(
-                                new IpAddressSpace()
-                                    .withResourceId(
-                                        "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet")
-                                    .withAddressSpace("10.1.1.0/24"))
-                            .withIpOfTrustSubnetForUdr(
-                                new IpAddress()
-                                    .withResourceId(
-                                        "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet")
-                                    .withAddress("10.1.1.0/24")))
-                    .withNetworkType(NetworkType.VNET)
-                    .withPublicIps(
-                        Arrays
-                            .asList(
-                                new IpAddress()
-                                    .withResourceId(
-                                        "/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-PublicIp1")
-                                    .withAddress("20.22.92.11")))
-                    .withEnableEgressNat(EgressNat.ENABLED)
-                    .withEgressNatIp(
-                        Arrays
-                            .asList(
-                                new IpAddress()
-                                    .withResourceId(
-                                        "/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-egressNatIp1")
-                                    .withAddress("20.22.92.111"))))
-            .withDnsSettings(
-                new DnsSettings()
-                    .withEnableDnsProxy(DnsProxy.DISABLED)
-                    .withEnabledDnsType(EnabledDnsType.CUSTOM)
-                    .withDnsServers(
-                        Arrays
-                            .asList(
-                                new IpAddress()
-                                    .withResourceId(
-                                        "/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-egressNatIp1")
-                                    .withAddress("20.22.92.111"))))
-            .withPlanData(
-                new PlanData()
-                    .withUsageType(UsageType.PAYG)
-                    .withBillingCycle(BillingCycle.MONTHLY)
-                    .withPlanId("liftrpantestplan"))
+        manager.firewalls().define("firewall1").withRegion("eastus").withExistingResourceGroup("firewall-rg")
+            .withNetworkProfile(new NetworkProfile().withVnetConfiguration(new VnetConfiguration()
+                .withVnet(new IpAddressSpace().withResourceId(
+                    "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet")
+                    .withAddressSpace("10.1.0.0/16"))
+                .withTrustSubnet(new IpAddressSpace().withResourceId(
+                    "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet")
+                    .withAddressSpace("10.1.1.0/24"))
+                .withUnTrustSubnet(new IpAddressSpace().withResourceId(
+                    "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet")
+                    .withAddressSpace("10.1.1.0/24"))
+                .withIpOfTrustSubnetForUdr(new IpAddress().withResourceId(
+                    "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet")
+                    .withAddress("10.1.1.0/24")))
+                .withVwanConfiguration(new VwanConfiguration()
+                    .withNetworkVirtualApplianceId("2bf4a339-294d-4c25-b0b2-ef649e9f5c12")
+                    .withVHub(new IpAddressSpace().withResourceId(
+                        "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet")
+                        .withAddressSpace("10.1.1.0/24"))
+                    .withTrustSubnet(new IpAddressSpace().withResourceId(
+                        "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet")
+                        .withAddressSpace("10.1.1.0/24"))
+                    .withUnTrustSubnet(new IpAddressSpace().withResourceId(
+                        "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet")
+                        .withAddressSpace("10.1.1.0/24"))
+                    .withIpOfTrustSubnetForUdr(new IpAddress().withResourceId(
+                        "/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet")
+                        .withAddress("10.1.1.0/24")))
+                .withNetworkType(NetworkType.VNET)
+                .withPublicIps(Arrays.asList(new IpAddress().withResourceId(
+                    "/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-PublicIp1")
+                    .withAddress("20.22.92.11")))
+                .withEnableEgressNat(EgressNat.ENABLED)
+                .withEgressNatIp(Arrays.asList(new IpAddress().withResourceId(
+                    "/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-egressNatIp1")
+                    .withAddress("20.22.92.111")))
+                .withTrustedRanges(Arrays.asList("20.22.92.11")))
+            .withDnsSettings(new DnsSettings().withEnableDnsProxy(DnsProxy.DISABLED)
+                .withEnabledDnsType(EnabledDnsType.CUSTOM)
+                .withDnsServers(Arrays.asList(new IpAddress().withResourceId(
+                    "/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-egressNatIp1")
+                    .withAddress("20.22.92.111"))))
+            .withPlanData(new PlanData().withUsageType(UsageType.PAYG).withBillingCycle(BillingCycle.MONTHLY)
+                .withPlanId("liftrpantestplan"))
             .withMarketplaceDetails(
-                new MarketplaceDetails()
-                    .withOfferId("liftr-pan-ame-test")
-                    .withPublisherId("isvtestuklegacy")
+                new MarketplaceDetails().withOfferId("liftr-pan-ame-test").withPublisherId("isvtestuklegacy")
                     .withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START))
             .withTags(mapOf("tagName", "value"))
-            .withIdentity(
-                new AzureResourceManagerManagedIdentityProperties()
-                    .withType(ManagedIdentityType.NONE)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "key16",
-                            new AzureResourceManagerUserAssignedIdentity()
-                                .withClientId("aaaa")
-                                .withPrincipalId("aaaaaaaaaaaaaaa"))))
-            .withPanEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c12")
-            .withIsPanoramaManaged(BooleanEnum.TRUE)
+            .withIdentity(new AzureResourceManagerManagedIdentityProperties().withType(ManagedIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key16",
+                    new AzureResourceManagerUserAssignedIdentity().withClientId("aaaa")
+                        .withPrincipalId("aaaaaaaaaaaaaaa"))))
+            .withPanEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c12").withIsPanoramaManaged(BooleanEnum.TRUE)
             .withPanoramaConfig(new PanoramaConfig().withConfigString("bas64EncodedString"))
             .withAssociatedRulestack(
                 new RulestackDetails().withResourceId("lrs1").withRulestackId("PANRSID").withLocation("eastus"))
-            .withFrontEndSettings(
-                Arrays
-                    .asList(
-                        new FrontendSetting()
-                            .withName("frontendsetting11")
-                            .withProtocol(ProtocolType.TCP)
-                            .withFrontendConfiguration(
-                                new EndpointConfiguration()
-                                    .withPort("80")
-                                    .withAddress(
-                                        new IpAddress()
-                                            .withResourceId(
-                                                "/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-frontendSettingIp1")
-                                            .withAddress("20.22.91.251")))
-                            .withBackendConfiguration(
-                                new EndpointConfiguration()
-                                    .withPort("80")
-                                    .withAddress(
-                                        new IpAddress()
-                                            .withResourceId(
-                                                "/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-frontendSettingIp2")
-                                            .withAddress("20.22.32.136")))))
+            .withFrontEndSettings(Arrays.asList(new FrontendSetting().withName("frontendsetting11")
+                .withProtocol(ProtocolType.TCP)
+                .withFrontendConfiguration(new EndpointConfiguration().withPort("80")
+                    .withAddress(new IpAddress().withResourceId(
+                        "/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-frontendSettingIp1")
+                        .withAddress("20.22.91.251")))
+                .withBackendConfiguration(new EndpointConfiguration().withPort("80")
+                    .withAddress(new IpAddress().withResourceId(
+                        "/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-frontendSettingIp2")
+                        .withAddress("20.22.32.136")))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * Firewalls_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_CreateOrUpdate_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void firewallsCreateOrUpdateMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager
-            .firewalls()
-            .define("firewall1")
-            .withRegion("eastus")
-            .withExistingResourceGroup("firewall-rg")
-            .withNetworkProfile(
-                new NetworkProfile()
-                    .withNetworkType(NetworkType.VNET)
-                    .withPublicIps(
-                        Arrays
-                            .asList(
-                                new IpAddress()
-                                    .withResourceId(
-                                        "/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-PublicIp1")
-                                    .withAddress("20.22.92.11")))
-                    .withEnableEgressNat(EgressNat.ENABLED))
+        manager.firewalls().define("firewall1").withRegion("eastus").withExistingResourceGroup("firewall-rg")
+            .withNetworkProfile(new NetworkProfile().withNetworkType(NetworkType.VNET)
+                .withPublicIps(Arrays.asList(new IpAddress().withResourceId(
+                    "/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-PublicIp1")
+                    .withAddress("20.22.92.11")))
+                .withEnableEgressNat(EgressNat.ENABLED))
             .withDnsSettings(new DnsSettings())
             .withPlanData(new PlanData().withBillingCycle(BillingCycle.MONTHLY).withPlanId("liftrpantestplan"))
             .withMarketplaceDetails(
@@ -206,6 +142,7 @@ public final class FirewallsCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

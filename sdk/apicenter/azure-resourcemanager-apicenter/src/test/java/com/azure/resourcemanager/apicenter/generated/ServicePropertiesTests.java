@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.apicenter.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.apicenter.fluent.models.ServiceProperties;
+import com.azure.resourcemanager.apicenter.models.ServiceProperties;
 
 public final class ServicePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceProperties model =
-            BinaryData.fromString("{\"provisioningState\":\"Canceled\"}").toObject(ServiceProperties.class);
+        ServiceProperties model
+            = BinaryData.fromString("{\"provisioningState\":\"Canceled\"}").toObject(ServiceProperties.class);
     }
 
     @org.junit.jupiter.api.Test

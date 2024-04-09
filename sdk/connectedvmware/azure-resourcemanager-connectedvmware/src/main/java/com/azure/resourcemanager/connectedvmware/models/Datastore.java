@@ -121,6 +121,20 @@ public interface Datastore {
     String customResourceName();
 
     /**
+     * Gets the capacityGB property: Gets or sets Maximum capacity of this datastore in GBs.
+     *
+     * @return the capacityGB value.
+     */
+    Long capacityGB();
+
+    /**
+     * Gets the freeSpaceGB property: Gets or sets Available space of this datastore in GBs.
+     *
+     * @return the freeSpaceGB value.
+     */
+    Long freeSpaceGB();
+
+    /**
      * Gets the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
@@ -162,11 +176,13 @@ public interface Datastore {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The Datastore definition stages. */
     interface DefinitionStages {
         /** The first stage of the Datastore definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Datastore definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -185,6 +201,7 @@ public interface Datastore {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Datastore definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -195,6 +212,7 @@ public interface Datastore {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Datastore definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -221,6 +239,7 @@ public interface Datastore {
              */
             Datastore create(Context context);
         }
+
         /** The stage of the Datastore definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -231,6 +250,7 @@ public interface Datastore {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Datastore definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -241,6 +261,7 @@ public interface Datastore {
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the Datastore definition allowing to specify kind. */
         interface WithKind {
             /**
@@ -255,6 +276,7 @@ public interface Datastore {
              */
             WithCreate withKind(String kind);
         }
+
         /** The stage of the Datastore definition allowing to specify vCenterId. */
         interface WithVCenterId {
             /**
@@ -266,6 +288,7 @@ public interface Datastore {
              */
             WithCreate withVCenterId(String vCenterId);
         }
+
         /** The stage of the Datastore definition allowing to specify moRefId. */
         interface WithMoRefId {
             /**
@@ -277,6 +300,7 @@ public interface Datastore {
              */
             WithCreate withMoRefId(String moRefId);
         }
+
         /** The stage of the Datastore definition allowing to specify inventoryItemId. */
         interface WithInventoryItemId {
             /**
@@ -288,6 +312,7 @@ public interface Datastore {
             WithCreate withInventoryItemId(String inventoryItemId);
         }
     }
+
     /**
      * Begins update for the Datastore resource.
      *
@@ -312,6 +337,7 @@ public interface Datastore {
          */
         Datastore apply(Context context);
     }
+
     /** The Datastore update stages. */
     interface UpdateStages {
         /** The stage of the Datastore update allowing to specify tags. */
@@ -325,6 +351,7 @@ public interface Datastore {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

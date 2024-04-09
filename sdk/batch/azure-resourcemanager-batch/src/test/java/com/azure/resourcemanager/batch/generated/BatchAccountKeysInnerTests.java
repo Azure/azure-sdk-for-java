@@ -10,9 +10,8 @@ import com.azure.resourcemanager.batch.fluent.models.BatchAccountKeysInner;
 public final class BatchAccountKeysInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BatchAccountKeysInner model =
-            BinaryData
-                .fromString("{\"accountName\":\"nzl\",\"primary\":\"fmppe\",\"secondary\":\"vmgxsab\"}")
+        BatchAccountKeysInner model
+            = BinaryData.fromString("{\"accountName\":\"nzl\",\"primary\":\"fmppe\",\"secondary\":\"vmgxsab\"}")
                 .toObject(BatchAccountKeysInner.class);
     }
 

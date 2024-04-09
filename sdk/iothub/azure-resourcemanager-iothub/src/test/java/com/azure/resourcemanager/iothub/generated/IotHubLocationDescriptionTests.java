@@ -14,18 +14,18 @@ public final class IotHubLocationDescriptionTests {
     public void testDeserialize() throws Exception {
         IotHubLocationDescription model =
             BinaryData
-                .fromString("{\"location\":\"ijhtxf\",\"role\":\"primary\"}")
+                .fromString("{\"location\":\"nxytxh\",\"role\":\"primary\"}")
                 .toObject(IotHubLocationDescription.class);
-        Assertions.assertEquals("ijhtxf", model.location());
+        Assertions.assertEquals("nxytxh", model.location());
         Assertions.assertEquals(IotHubReplicaRoleType.PRIMARY, model.role());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IotHubLocationDescription model =
-            new IotHubLocationDescription().withLocation("ijhtxf").withRole(IotHubReplicaRoleType.PRIMARY);
+            new IotHubLocationDescription().withLocation("nxytxh").withRole(IotHubReplicaRoleType.PRIMARY);
         model = BinaryData.fromObject(model).toObject(IotHubLocationDescription.class);
-        Assertions.assertEquals("ijhtxf", model.location());
+        Assertions.assertEquals("nxytxh", model.location());
         Assertions.assertEquals(IotHubReplicaRoleType.PRIMARY, model.role());
     }
 }

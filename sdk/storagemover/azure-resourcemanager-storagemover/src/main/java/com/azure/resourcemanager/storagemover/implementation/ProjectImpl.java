@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.storagemover.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagemover.fluent.models.ProjectInner;
 import com.azure.resourcemanager.storagemover.models.Project;
@@ -25,6 +26,10 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String description() {

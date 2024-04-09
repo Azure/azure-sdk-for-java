@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AfdOriginsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AfdOriginsClient.
+ */
 public final class AfdOriginsClientImpl implements AfdOriginsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AfdOriginsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CdnManagementClientImpl client;
 
     /**
      * Initializes an instance of AfdOriginsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AfdOriginsClientImpl(CdnManagementClientImpl client) {
-        this.service =
-            RestProxy.create(AfdOriginsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(AfdOriginsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,125 +71,86 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientA")
-    private interface AfdOriginsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/originGroups/{originGroupName}/origins")
-        @ExpectedResponses({200})
+    public interface AfdOriginsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/origins")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AfdOriginListResult>> listByOriginGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("originGroupName") String originGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<AfdOriginListResult>> listByOriginGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("originGroupName") String originGroupName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/origins/{originName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AfdOriginInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("originGroupName") String originGroupName, @PathParam("originName") String originName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/origins/{originName}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("originGroupName") String originGroupName, @PathParam("originName") String originName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") AfdOriginInner origin, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/originGroups/{originGroupName}/origins/{originName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/origins/{originName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AfdOriginInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("originGroupName") String originGroupName,
-            @PathParam("originName") String originName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/originGroups/{originGroupName}/origins/{originName}")
-        @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("originGroupName") String originGroupName,
-            @PathParam("originName") String originName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AfdOriginInner origin,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/originGroups/{originGroupName}/origins/{originName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("originGroupName") String originGroupName,
-            @PathParam("originName") String originName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("originGroupName") String originGroupName, @PathParam("originName") String originName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AfdOriginUpdateParameters originUpdateProperties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/originGroups/{originGroupName}/origins/{originName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/origins/{originName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("originGroupName") String originGroupName,
-            @PathParam("originName") String originName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("originGroupName") String originGroupName, @PathParam("originName") String originName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AfdOriginListResult>> listByOriginGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all of the existing origins within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origins along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the request to list origins along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AfdOriginInner>> listByOriginGroupSinglePageAsync(
-        String resourceGroupName, String profileName, String originGroupName) {
+    private Mono<PagedResponse<AfdOriginInner>> listByOriginGroupSinglePageAsync(String resourceGroupName,
+        String profileName, String originGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -197,59 +164,38 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
                 .error(new IllegalArgumentException("Parameter originGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByOriginGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            originGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<AfdOriginInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByOriginGroup(this.client.getEndpoint(), resourceGroupName, profileName,
+                originGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<AfdOriginInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all of the existing origins within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origins along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the request to list origins along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AfdOriginInner>> listByOriginGroupSinglePageAsync(
-        String resourceGroupName, String profileName, String originGroupName, Context context) {
+    private Mono<PagedResponse<AfdOriginInner>> listByOriginGroupSinglePageAsync(String resourceGroupName,
+        String profileName, String originGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -263,40 +209,24 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
                 .error(new IllegalArgumentException("Parameter originGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByOriginGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                originGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByOriginGroup(this.client.getEndpoint(), resourceGroupName, profileName, originGroupName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all of the existing origins within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -304,19 +234,18 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @return result of the request to list origins as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AfdOriginInner> listByOriginGroupAsync(
-        String resourceGroupName, String profileName, String originGroupName) {
-        return new PagedFlux<>(
-            () -> listByOriginGroupSinglePageAsync(resourceGroupName, profileName, originGroupName),
+    public PagedFlux<AfdOriginInner> listByOriginGroupAsync(String resourceGroupName, String profileName,
+        String originGroupName) {
+        return new PagedFlux<>(() -> listByOriginGroupSinglePageAsync(resourceGroupName, profileName, originGroupName),
             nextLink -> listByOriginGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the existing origins within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -325,8 +254,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @return result of the request to list origins as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AfdOriginInner> listByOriginGroupAsync(
-        String resourceGroupName, String profileName, String originGroupName, Context context) {
+    private PagedFlux<AfdOriginInner> listByOriginGroupAsync(String resourceGroupName, String profileName,
+        String originGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByOriginGroupSinglePageAsync(resourceGroupName, profileName, originGroupName, context),
             nextLink -> listByOriginGroupNextSinglePageAsync(nextLink, context));
@@ -334,10 +263,10 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
 
     /**
      * Lists all of the existing origins within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -345,17 +274,17 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @return result of the request to list origins as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AfdOriginInner> listByOriginGroup(
-        String resourceGroupName, String profileName, String originGroupName) {
+    public PagedIterable<AfdOriginInner> listByOriginGroup(String resourceGroupName, String profileName,
+        String originGroupName) {
         return new PagedIterable<>(listByOriginGroupAsync(resourceGroupName, profileName, originGroupName));
     }
 
     /**
      * Lists all of the existing origins within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -364,33 +293,31 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @return result of the request to list origins as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AfdOriginInner> listByOriginGroup(
-        String resourceGroupName, String profileName, String originGroupName, Context context) {
+    public PagedIterable<AfdOriginInner> listByOriginGroup(String resourceGroupName, String profileName,
+        String originGroupName, Context context) {
         return new PagedIterable<>(listByOriginGroupAsync(resourceGroupName, profileName, originGroupName, context));
     }
 
     /**
      * Gets an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin within an origin group along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an existing origin within an origin group along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AfdOriginInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, String originGroupName, String originName) {
+    public Mono<Response<AfdOriginInner>> getWithResponseAsync(String resourceGroupName, String profileName,
+        String originGroupName, String originName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -407,52 +334,38 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
             return Mono.error(new IllegalArgumentException("Parameter originName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            originGroupName,
-                            originName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), resourceGroupName, profileName, originGroupName,
+                    originName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin within an origin group along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an existing origin within an origin group along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AfdOriginInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, String originGroupName, String originName, Context context) {
+    private Mono<Response<AfdOriginInner>> getWithResponseAsync(String resourceGroupName, String profileName,
+        String originGroupName, String originName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -469,32 +382,21 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
             return Mono.error(new IllegalArgumentException("Parameter originName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                originGroupName,
-                originName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, profileName, originGroupName, originName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -503,36 +405,18 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @return an existing origin within an origin group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AfdOriginInner> getAsync(
-        String resourceGroupName, String profileName, String originGroupName, String originName) {
+    public Mono<AfdOriginInner> getAsync(String resourceGroupName, String profileName, String originGroupName,
+        String originName) {
         return getWithResponseAsync(resourceGroupName, profileName, originGroupName, originName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param originGroupName Name of the origin group which is unique within the profile.
-     * @param originName Name of the origin which is unique within the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin within an origin group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AfdOriginInner get(String resourceGroupName, String profileName, String originGroupName, String originName) {
-        return getAsync(resourceGroupName, profileName, originGroupName, originName).block();
-    }
-
-    /**
-     * Gets an existing origin within an origin group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param context The context to associate with this operation.
@@ -542,38 +426,50 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @return an existing origin within an origin group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AfdOriginInner> getWithResponse(
-        String resourceGroupName, String profileName, String originGroupName, String originName, Context context) {
+    public Response<AfdOriginInner> getWithResponse(String resourceGroupName, String profileName,
+        String originGroupName, String originName, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, originGroupName, originName, context).block();
     }
 
     /**
-     * Creates a new origin within the specified origin group.
-     *
+     * Gets an existing origin within an origin group.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
+     * @param originGroupName Name of the origin group which is unique within the profile.
+     * @param originName Name of the origin which is unique within the profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing origin within an origin group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AfdOriginInner get(String resourceGroupName, String profileName, String originGroupName, String originName) {
+        return getWithResponse(resourceGroupName, profileName, originGroupName, originName, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a new origin within the specified origin group.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin that is unique within the profile.
      * @param origin Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
-        AfdOriginInner origin) {
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
+        String originGroupName, String originName, AfdOriginInner origin) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -590,10 +486,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
             return Mono.error(new IllegalArgumentException("Parameter originName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (origin == null) {
             return Mono.error(new IllegalArgumentException("Parameter origin is required and cannot be null."));
@@ -603,28 +497,17 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            originGroupName,
-                            originName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            origin,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), resourceGroupName, profileName, originGroupName,
+                    originName, this.client.getSubscriptionId(), this.client.getApiVersion(), origin, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new origin within the specified origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin that is unique within the profile.
      * @param origin Origin properties.
@@ -632,22 +515,15 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
-        AfdOriginInner origin,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
+        String originGroupName, String originName, AfdOriginInner origin, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -664,10 +540,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
             return Mono.error(new IllegalArgumentException("Parameter originName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (origin == null) {
             return Mono.error(new IllegalArgumentException("Parameter origin is required and cannot be null."));
@@ -676,59 +550,40 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                originGroupName,
-                originName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                origin,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), resourceGroupName, profileName, originGroupName, originName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), origin, accept, context);
     }
 
     /**
      * Creates a new origin within the specified origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin that is unique within the profile.
      * @param origin Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link PollerFlux} for polling of azure Front Door origin is the source of the content being
+     * delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<AfdOriginInner>, AfdOriginInner> beginCreateAsync(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
-        AfdOriginInner origin) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, profileName, originGroupName, originName, origin);
-        return this
-            .client
-            .<AfdOriginInner, AfdOriginInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AfdOriginInner.class,
-                AfdOriginInner.class,
-                this.client.getContext());
+    public PollerFlux<PollResult<AfdOriginInner>, AfdOriginInner> beginCreateAsync(String resourceGroupName,
+        String profileName, String originGroupName, String originName, AfdOriginInner origin) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, profileName, originGroupName, originName, origin);
+        return this.client.<AfdOriginInner, AfdOriginInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AfdOriginInner.class, AfdOriginInner.class, this.client.getContext());
     }
 
     /**
      * Creates a new origin within the specified origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin that is unique within the profile.
      * @param origin Origin properties.
@@ -736,108 +591,47 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link PollerFlux} for polling of azure Front Door origin is the source of the content being
+     * delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AfdOriginInner>, AfdOriginInner> beginCreateAsync(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
-        AfdOriginInner origin,
-        Context context) {
+    private PollerFlux<PollResult<AfdOriginInner>, AfdOriginInner> beginCreateAsync(String resourceGroupName,
+        String profileName, String originGroupName, String originName, AfdOriginInner origin, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, profileName, originGroupName, originName, origin, context);
-        return this
-            .client
-            .<AfdOriginInner, AfdOriginInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AfdOriginInner.class, AfdOriginInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, profileName, originGroupName, originName, origin, context);
+        return this.client.<AfdOriginInner, AfdOriginInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AfdOriginInner.class, AfdOriginInner.class, context);
     }
 
     /**
      * Creates a new origin within the specified origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin that is unique within the profile.
      * @param origin Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link SyncPoller} for polling of azure Front Door origin is the source of the content being
+     * delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AfdOriginInner>, AfdOriginInner> beginCreate(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
-        AfdOriginInner origin) {
-        return beginCreateAsync(resourceGroupName, profileName, originGroupName, originName, origin).getSyncPoller();
-    }
-
-    /**
-     * Creates a new origin within the specified origin group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param originGroupName Name of the origin group which is unique within the profile.
-     * @param originName Name of the origin that is unique within the profile.
-     * @param origin Origin properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AfdOriginInner>, AfdOriginInner> beginCreate(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
-        AfdOriginInner origin,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, originGroupName, originName, origin, context)
+    public SyncPoller<PollResult<AfdOriginInner>, AfdOriginInner> beginCreate(String resourceGroupName,
+        String profileName, String originGroupName, String originName, AfdOriginInner origin) {
+        return this.beginCreateAsync(resourceGroupName, profileName, originGroupName, originName, origin)
             .getSyncPoller();
     }
 
     /**
      * Creates a new origin within the specified origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param originGroupName Name of the origin group which is unique within the profile.
-     * @param originName Name of the origin that is unique within the profile.
-     * @param origin Origin properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AfdOriginInner> createAsync(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
-        AfdOriginInner origin) {
-        return beginCreateAsync(resourceGroupName, profileName, originGroupName, originName, origin)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates a new origin within the specified origin group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin that is unique within the profile.
      * @param origin Origin properties.
@@ -845,51 +639,87 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of azure Front Door origin is the source of the content being
+     * delivered via Azure Front Door.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AfdOriginInner> createAsync(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
-        AfdOriginInner origin,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, originGroupName, originName, origin, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AfdOriginInner>, AfdOriginInner> beginCreate(String resourceGroupName,
+        String profileName, String originGroupName, String originName, AfdOriginInner origin, Context context) {
+        return this.beginCreateAsync(resourceGroupName, profileName, originGroupName, originName, origin, context)
+            .getSyncPoller();
     }
 
     /**
      * Creates a new origin within the specified origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin that is unique within the profile.
      * @param origin Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AfdOriginInner create(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
-        AfdOriginInner origin) {
+    public Mono<AfdOriginInner> createAsync(String resourceGroupName, String profileName, String originGroupName,
+        String originName, AfdOriginInner origin) {
+        return beginCreateAsync(resourceGroupName, profileName, originGroupName, originName, origin).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates a new origin within the specified origin group.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     * within the resource group.
+     * @param originGroupName Name of the origin group which is unique within the profile.
+     * @param originName Name of the origin that is unique within the profile.
+     * @param origin Origin properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AfdOriginInner> createAsync(String resourceGroupName, String profileName, String originGroupName,
+        String originName, AfdOriginInner origin, Context context) {
+        return beginCreateAsync(resourceGroupName, profileName, originGroupName, originName, origin, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates a new origin within the specified origin group.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     * within the resource group.
+     * @param originGroupName Name of the origin group which is unique within the profile.
+     * @param originName Name of the origin that is unique within the profile.
+     * @param origin Origin properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AfdOriginInner create(String resourceGroupName, String profileName, String originGroupName,
+        String originName, AfdOriginInner origin) {
         return createAsync(resourceGroupName, profileName, originGroupName, originName, origin).block();
     }
 
     /**
      * Creates a new origin within the specified origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin that is unique within the profile.
      * @param origin Origin properties.
@@ -897,46 +727,35 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AfdOriginInner create(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
-        AfdOriginInner origin,
-        Context context) {
+    public AfdOriginInner create(String resourceGroupName, String profileName, String originGroupName,
+        String originName, AfdOriginInner origin, Context context) {
         return createAsync(resourceGroupName, profileName, originGroupName, originName, origin, context).block();
     }
 
     /**
      * Updates an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param originUpdateProperties Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
-        AfdOriginUpdateParameters originUpdateProperties) {
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String profileName,
+        String originGroupName, String originName, AfdOriginUpdateParameters originUpdateProperties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -953,43 +772,29 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
             return Mono.error(new IllegalArgumentException("Parameter originName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (originUpdateProperties == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter originUpdateProperties is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter originUpdateProperties is required and cannot be null."));
         } else {
             originUpdateProperties.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            originGroupName,
-                            originName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            originUpdateProperties,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, profileName,
+                originGroupName, originName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                originUpdateProperties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param originUpdateProperties Origin properties.
@@ -997,22 +802,15 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
-        AfdOriginUpdateParameters originUpdateProperties,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String profileName,
+        String originGroupName, String originName, AfdOriginUpdateParameters originUpdateProperties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1029,74 +827,52 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
             return Mono.error(new IllegalArgumentException("Parameter originName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (originUpdateProperties == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter originUpdateProperties is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter originUpdateProperties is required and cannot be null."));
         } else {
             originUpdateProperties.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                originGroupName,
-                originName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                originUpdateProperties,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, profileName, originGroupName, originName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), originUpdateProperties, accept, context);
     }
 
     /**
      * Updates an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param originUpdateProperties Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link PollerFlux} for polling of azure Front Door origin is the source of the content being
+     * delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<AfdOriginInner>, AfdOriginInner> beginUpdateAsync(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
+    public PollerFlux<PollResult<AfdOriginInner>, AfdOriginInner> beginUpdateAsync(String resourceGroupName,
+        String profileName, String originGroupName, String originName,
         AfdOriginUpdateParameters originUpdateProperties) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, profileName, originGroupName, originName, originUpdateProperties);
-        return this
-            .client
-            .<AfdOriginInner, AfdOriginInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AfdOriginInner.class,
-                AfdOriginInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, profileName, originGroupName,
+            originName, originUpdateProperties);
+        return this.client.<AfdOriginInner, AfdOriginInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AfdOriginInner.class, AfdOriginInner.class, this.client.getContext());
     }
 
     /**
      * Updates an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param originUpdateProperties Origin properties.
@@ -1104,57 +880,50 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link PollerFlux} for polling of azure Front Door origin is the source of the content being
+     * delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AfdOriginInner>, AfdOriginInner> beginUpdateAsync(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
-        AfdOriginUpdateParameters originUpdateProperties,
+    private PollerFlux<PollResult<AfdOriginInner>, AfdOriginInner> beginUpdateAsync(String resourceGroupName,
+        String profileName, String originGroupName, String originName, AfdOriginUpdateParameters originUpdateProperties,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, profileName, originGroupName, originName, originUpdateProperties, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, profileName, originGroupName,
+            originName, originUpdateProperties, context);
+        return this.client.<AfdOriginInner, AfdOriginInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AfdOriginInner.class, AfdOriginInner.class, context);
+    }
+
+    /**
+     * Updates an existing origin within an origin group.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     * within the resource group.
+     * @param originGroupName Name of the origin group which is unique within the profile.
+     * @param originName Name of the origin which is unique within the profile.
+     * @param originUpdateProperties Origin properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of azure Front Door origin is the source of the content being
+     * delivered via Azure Front Door.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AfdOriginInner>, AfdOriginInner> beginUpdate(String resourceGroupName,
+        String profileName, String originGroupName, String originName,
+        AfdOriginUpdateParameters originUpdateProperties) {
         return this
-            .client
-            .<AfdOriginInner, AfdOriginInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AfdOriginInner.class, AfdOriginInner.class, context);
-    }
-
-    /**
-     * Updates an existing origin within an origin group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param originGroupName Name of the origin group which is unique within the profile.
-     * @param originName Name of the origin which is unique within the profile.
-     * @param originUpdateProperties Origin properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AfdOriginInner>, AfdOriginInner> beginUpdate(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
-        AfdOriginUpdateParameters originUpdateProperties) {
-        return beginUpdateAsync(resourceGroupName, profileName, originGroupName, originName, originUpdateProperties)
+            .beginUpdateAsync(resourceGroupName, profileName, originGroupName, originName, originUpdateProperties)
             .getSyncPoller();
     }
 
     /**
      * Updates an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param originUpdateProperties Origin properties.
@@ -1162,53 +931,45 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link SyncPoller} for polling of azure Front Door origin is the source of the content being
+     * delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AfdOriginInner>, AfdOriginInner> beginUpdate(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
-        AfdOriginUpdateParameters originUpdateProperties,
+    public SyncPoller<PollResult<AfdOriginInner>, AfdOriginInner> beginUpdate(String resourceGroupName,
+        String profileName, String originGroupName, String originName, AfdOriginUpdateParameters originUpdateProperties,
         Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, profileName, originGroupName, originName, originUpdateProperties, context)
-            .getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, profileName, originGroupName, originName,
+            originUpdateProperties, context).getSyncPoller();
     }
 
     /**
      * Updates an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param originUpdateProperties Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN on successful completion of {@link Mono}.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AfdOriginInner> updateAsync(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
-        AfdOriginUpdateParameters originUpdateProperties) {
+    public Mono<AfdOriginInner> updateAsync(String resourceGroupName, String profileName, String originGroupName,
+        String originName, AfdOriginUpdateParameters originUpdateProperties) {
         return beginUpdateAsync(resourceGroupName, profileName, originGroupName, originName, originUpdateProperties)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param originUpdateProperties Origin properties.
@@ -1216,52 +977,42 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN on successful completion of {@link Mono}.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AfdOriginInner> updateAsync(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
-        AfdOriginUpdateParameters originUpdateProperties,
-        Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, profileName, originGroupName, originName, originUpdateProperties, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<AfdOriginInner> updateAsync(String resourceGroupName, String profileName, String originGroupName,
+        String originName, AfdOriginUpdateParameters originUpdateProperties, Context context) {
+        return beginUpdateAsync(resourceGroupName, profileName, originGroupName, originName, originUpdateProperties,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param originUpdateProperties Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AfdOriginInner update(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
-        AfdOriginUpdateParameters originUpdateProperties) {
+    public AfdOriginInner update(String resourceGroupName, String profileName, String originGroupName,
+        String originName, AfdOriginUpdateParameters originUpdateProperties) {
         return updateAsync(resourceGroupName, profileName, originGroupName, originName, originUpdateProperties).block();
     }
 
     /**
      * Updates an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param originUpdateProperties Origin properties.
@@ -1269,26 +1020,21 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AfdOriginInner update(
-        String resourceGroupName,
-        String profileName,
-        String originGroupName,
-        String originName,
-        AfdOriginUpdateParameters originUpdateProperties,
-        Context context) {
+    public AfdOriginInner update(String resourceGroupName, String profileName, String originGroupName,
+        String originName, AfdOriginUpdateParameters originUpdateProperties, Context context) {
         return updateAsync(resourceGroupName, profileName, originGroupName, originName, originUpdateProperties, context)
             .block();
     }
 
     /**
      * Deletes an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1297,13 +1043,11 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, String originGroupName, String originName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName,
+        String originGroupName, String originName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1320,35 +1064,23 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
             return Mono.error(new IllegalArgumentException("Parameter originName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            originGroupName,
-                            originName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), resourceGroupName, profileName, originGroupName,
+                    originName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param context The context to associate with this operation.
@@ -1358,13 +1090,11 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, String originGroupName, String originName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName,
+        String originGroupName, String originName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1381,32 +1111,21 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
             return Mono.error(new IllegalArgumentException("Parameter originName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                originGroupName,
-                originName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, profileName, originGroupName, originName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1415,22 +1134,20 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String profileName, String originGroupName, String originName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, profileName, originGroupName, originName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName,
+        String originGroupName, String originName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, profileName, originGroupName, originName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param context The context to associate with this operation.
@@ -1440,22 +1157,21 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String profileName, String originGroupName, String originName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName,
+        String originGroupName, String originName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, profileName, originGroupName, originName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, profileName, originGroupName, originName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1464,17 +1180,17 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String profileName, String originGroupName, String originName) {
-        return beginDeleteAsync(resourceGroupName, profileName, originGroupName, originName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
+        String originGroupName, String originName) {
+        return this.beginDeleteAsync(resourceGroupName, profileName, originGroupName, originName).getSyncPoller();
     }
 
     /**
      * Deletes an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param context The context to associate with this operation.
@@ -1484,17 +1200,18 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String profileName, String originGroupName, String originName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, originGroupName, originName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
+        String originGroupName, String originName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, profileName, originGroupName, originName, context)
+            .getSyncPoller();
     }
 
     /**
      * Deletes an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1503,19 +1220,18 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String profileName, String originGroupName, String originName) {
-        return beginDeleteAsync(resourceGroupName, profileName, originGroupName, originName)
-            .last()
+    public Mono<Void> deleteAsync(String resourceGroupName, String profileName, String originGroupName,
+        String originName) {
+        return beginDeleteAsync(resourceGroupName, profileName, originGroupName, originName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param context The context to associate with this operation.
@@ -1525,19 +1241,18 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String profileName, String originGroupName, String originName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, originGroupName, originName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String profileName, String originGroupName,
+        String originName, Context context) {
+        return beginDeleteAsync(resourceGroupName, profileName, originGroupName, originName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1551,10 +1266,10 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
 
     /**
      * Deletes an existing origin within an origin group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param context The context to associate with this operation.
@@ -1563,21 +1278,22 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String profileName, String originGroupName, String originName, Context context) {
+    public void delete(String resourceGroupName, String profileName, String originGroupName, String originName,
+        Context context) {
         deleteAsync(resourceGroupName, profileName, originGroupName, originName, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origins along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the request to list origins along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AfdOriginInner>> listByOriginGroupNextSinglePageAsync(String nextLink) {
@@ -1585,37 +1301,29 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByOriginGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AfdOriginInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AfdOriginInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origins along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the request to list origins along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AfdOriginInner>> listByOriginGroupNextSinglePageAsync(String nextLink, Context context) {
@@ -1623,23 +1331,13 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByOriginGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByOriginGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

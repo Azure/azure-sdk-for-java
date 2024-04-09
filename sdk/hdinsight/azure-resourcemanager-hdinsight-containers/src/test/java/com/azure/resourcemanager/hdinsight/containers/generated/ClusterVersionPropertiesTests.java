@@ -5,38 +5,32 @@
 package com.azure.resourcemanager.hdinsight.containers.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterVersionProperties;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterVersionProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class ClusterVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterVersionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"clusterType\":\"fk\",\"clusterVersion\":\"vsexsowuelu\",\"ossVersion\":\"hahhxvrhmzkwpj\",\"clusterPoolVersion\":\"wspughftqsxhqx\",\"isPreview\":true,\"components\":[{\"name\":\"dxdigr\",\"version\":\"uufzdmsyqtfihw\"},{\"name\":\"otzi\",\"version\":\"amvpphoszqzudph\"},{\"name\":\"mvdk\",\"version\":\"ynwcvtbv\"}]}")
-                .toObject(ClusterVersionProperties.class);
-        Assertions.assertEquals("fk", model.clusterType());
-        Assertions.assertEquals("vsexsowuelu", model.clusterVersion());
-        Assertions.assertEquals("hahhxvrhmzkwpj", model.ossVersion());
-        Assertions.assertEquals("wspughftqsxhqx", model.clusterPoolVersion());
+        ClusterVersionProperties model = BinaryData.fromString(
+            "{\"clusterType\":\"ngitvgbmhrixkwm\",\"clusterVersion\":\"jejveg\",\"ossVersion\":\"bpnaixexccbdre\",\"clusterPoolVersion\":\"hcexdrrvqa\",\"isPreview\":true,\"components\":[{\"name\":\"pwijnhy\",\"version\":\"vfycxzb\"},{\"name\":\"oowvrv\",\"version\":\"gjqppy\"}]}")
+            .toObject(ClusterVersionProperties.class);
+        Assertions.assertEquals("ngitvgbmhrixkwm", model.clusterType());
+        Assertions.assertEquals("jejveg", model.clusterVersion());
+        Assertions.assertEquals("bpnaixexccbdre", model.ossVersion());
+        Assertions.assertEquals("hcexdrrvqa", model.clusterPoolVersion());
         Assertions.assertEquals(true, model.isPreview());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterVersionProperties model =
-            new ClusterVersionProperties()
-                .withClusterType("fk")
-                .withClusterVersion("vsexsowuelu")
-                .withOssVersion("hahhxvrhmzkwpj")
-                .withClusterPoolVersion("wspughftqsxhqx")
-                .withIsPreview(true);
+        ClusterVersionProperties model
+            = new ClusterVersionProperties().withClusterType("ngitvgbmhrixkwm").withClusterVersion("jejveg")
+                .withOssVersion("bpnaixexccbdre").withClusterPoolVersion("hcexdrrvqa").withIsPreview(true);
         model = BinaryData.fromObject(model).toObject(ClusterVersionProperties.class);
-        Assertions.assertEquals("fk", model.clusterType());
-        Assertions.assertEquals("vsexsowuelu", model.clusterVersion());
-        Assertions.assertEquals("hahhxvrhmzkwpj", model.ossVersion());
-        Assertions.assertEquals("wspughftqsxhqx", model.clusterPoolVersion());
+        Assertions.assertEquals("ngitvgbmhrixkwm", model.clusterType());
+        Assertions.assertEquals("jejveg", model.clusterVersion());
+        Assertions.assertEquals("bpnaixexccbdre", model.ossVersion());
+        Assertions.assertEquals("hcexdrrvqa", model.clusterPoolVersion());
         Assertions.assertEquals(true, model.isPreview());
     }
 }

@@ -56,8 +56,6 @@ public final class MsixPackagesDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .msixPackages()
-            .deleteWithResponse("crpfbcunez", "cez", "lfwyfwlwxjwetn", com.azure.core.util.Context.NONE);
+        manager.msixPackages().deleteWithResponse("taf", "bzf", "ovwmbjlzqsczpgvd", com.azure.core.util.Context.NONE);
     }
 }

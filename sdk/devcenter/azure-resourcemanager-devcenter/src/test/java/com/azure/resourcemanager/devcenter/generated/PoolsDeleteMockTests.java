@@ -56,6 +56,6 @@ public final class PoolsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.pools().delete("iymerteeammxqi", "kk", "zddrt", com.azure.core.util.Context.NONE);
+        manager.pools().delete("hzjqatucoige", "xncnwfe", "bnwgfmxj", com.azure.core.util.Context.NONE);
     }
 }

@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Base class for all execution activities. */
+/**
+ * Base class for all execution activities.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -44,8 +46,7 @@ import java.util.List;
     @JsonSubTypes.Type(name = "ExecuteDataFlow", value = ExecuteDataFlowActivity.class),
     @JsonSubTypes.Type(name = "Script", value = ScriptActivity.class),
     @JsonSubTypes.Type(name = "SynapseNotebook", value = SynapseNotebookActivity.class),
-    @JsonSubTypes.Type(name = "SparkJob", value = SynapseSparkJobDefinitionActivity.class)
-})
+    @JsonSubTypes.Type(name = "SparkJob", value = SynapseSparkJobDefinitionActivity.class) })
 @Fluent
 public class ExecutionActivity extends Activity {
     /*
@@ -60,13 +61,15 @@ public class ExecutionActivity extends Activity {
     @JsonProperty(value = "policy")
     private ActivityPolicy policy;
 
-    /** Creates an instance of ExecutionActivity class. */
+    /**
+     * Creates an instance of ExecutionActivity class.
+     */
     public ExecutionActivity() {
     }
 
     /**
      * Get the linkedServiceName property: Linked service reference.
-     *
+     * 
      * @return the linkedServiceName value.
      */
     public LinkedServiceReference linkedServiceName() {
@@ -75,7 +78,7 @@ public class ExecutionActivity extends Activity {
 
     /**
      * Set the linkedServiceName property: Linked service reference.
-     *
+     * 
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the ExecutionActivity object itself.
      */
@@ -86,7 +89,7 @@ public class ExecutionActivity extends Activity {
 
     /**
      * Get the policy property: Activity policy.
-     *
+     * 
      * @return the policy value.
      */
     public ActivityPolicy policy() {
@@ -95,7 +98,7 @@ public class ExecutionActivity extends Activity {
 
     /**
      * Set the policy property: Activity policy.
-     *
+     * 
      * @param policy the policy value to set.
      * @return the ExecutionActivity object itself.
      */
@@ -104,28 +107,54 @@ public class ExecutionActivity extends Activity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutionActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutionActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExecutionActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExecutionActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutionActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutionActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -134,7 +163,7 @@ public class ExecutionActivity extends Activity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

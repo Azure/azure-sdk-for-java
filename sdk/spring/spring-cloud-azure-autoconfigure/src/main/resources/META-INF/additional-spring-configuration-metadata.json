@@ -13,7 +13,7 @@
     {
       "name": "azure.activedirectory.allow-telemetry",
       "type": "java.lang.Boolean",
-      "description": "If Telemetry events should be published to Azure AD.",
+      "description": "If Telemetry events should be published to Microsoft Entra ID.",
       "defaultValue": true,
       "deprecation": {
         "level": "error",
@@ -33,7 +33,7 @@
     {
       "name": "azure.activedirectory.application-type",
       "type": "java.lang.String",
-      "description": "Type of the AAD application.",
+      "description": "Type of the Microsoft Entra application.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
@@ -262,7 +262,7 @@
     {
       "name": "azure.activedirectory.client-id",
       "type": "java.lang.String",
-      "description": "Registered application ID in Azure AD. Must be configured when OAuth2 authentication is done in front end.",
+      "description": "Registered application ID in Microsoft Entra ID. Must be configured when OAuth2 authentication is done in front end.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
@@ -1007,7 +1007,7 @@
     {
       "name": "spring.cloud.azure.active-directory.enabled",
       "type": "java.lang.Boolean",
-      "description": "Whether to enable Azure Active Directory related auto-configuration.",
+      "description": "Whether to enable Microsoft Entra ID related auto-configuration.",
       "defaultValue": false
     },
     {
@@ -1307,7 +1307,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.active-directory-endpoint",
       "type": "java.lang.String",
-      "description": "The Azure Active Directory endpoint to connect to.",
+      "description": "The Microsoft Entra endpoint to connect to.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
@@ -1325,7 +1325,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.active-directory-resource-id",
       "type": "java.lang.String",
-      "description": "The Azure Active Directory resource ID.",
+      "description": "The Microsoft Entra resource ID.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
@@ -1585,7 +1585,7 @@
     {
       "name": "spring.datasource.azure.profile.environment.active-directory-endpoint",
       "type": "java.lang.String",
-      "description": "The Azure Active Directory endpoint to connect to.",
+      "description": "The Microsoft Entra endpoint to connect to.",
       "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzureJdbcPasswordlessProperties"
     },
     {
@@ -1603,7 +1603,7 @@
     {
       "name": "spring.datasource.azure.passwordless-enabled",
       "type": "java.lang.Boolean",
-      "description": "Whether to enable passwordless connections to Azure databases by using OAuth2 Azure Active Directory token credentials.",
+      "description": "Whether to enable passwordless connections to Azure databases by using OAuth2 Microsoft Entra token credentials.",
       "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzureJdbcPasswordlessProperties",
       "defaultValue": false
     },
@@ -1653,7 +1653,7 @@
     {
       "name": "spring.redis.azure.profile.environment.active-directory-endpoint",
       "type": "java.lang.String",
-      "description": "The Azure Active Directory endpoint to connect to.",
+      "description": "The Microsoft Entra endpoint to connect to.",
       "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzureRedisPasswordlessProperties"
     },
     {
@@ -1671,7 +1671,7 @@
     {
       "name": "spring.redis.azure.passwordless-enabled",
       "type": "java.lang.Boolean",
-      "description": "Whether to enable passwordless connections to Azure Redis Cache by using OAuth2 Azure Active Directory token credentials.",
+      "description": "Whether to enable passwordless connections to Azure Redis Cache by using OAuth2 Microsoft Entra token credentials.",
       "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzureRedisPasswordlessProperties",
       "defaultValue": false
     },

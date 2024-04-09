@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link SentimentConfidenceScores} model
+ * The {@code SentimentConfidenceScores} model
  */
 @Immutable
 public final class SentimentConfidenceScores {
@@ -15,7 +15,7 @@ public final class SentimentConfidenceScores {
     private final double positiveScore;
 
     /**
-     * Creates a {@link SentimentConfidenceScores} model that describes the sentiment score of the sentiment label.
+     * Creates a {@code SentimentConfidenceScores} model that describes the sentiment score of the sentiment label.
      *
      * @param negativeScore The negative score value, range in between 0 and 1.0.
      * @param neutralScore The neutral score value, range in between 0 and 1.0.

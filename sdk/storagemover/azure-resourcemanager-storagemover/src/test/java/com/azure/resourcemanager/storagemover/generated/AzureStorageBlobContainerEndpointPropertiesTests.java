@@ -14,23 +14,23 @@ public final class AzureStorageBlobContainerEndpointPropertiesTests {
         AzureStorageBlobContainerEndpointProperties model =
             BinaryData
                 .fromString(
-                    "{\"endpointType\":\"AzureStorageBlobContainer\",\"storageAccountResourceId\":\"yokacspkw\",\"blobContainerName\":\"hzdobpxjmflbvvnc\",\"description\":\"kcciwwzjuqkhr\",\"provisioningState\":\"Succeeded\"}")
+                    "{\"endpointType\":\"AzureStorageBlobContainer\",\"storageAccountResourceId\":\"v\",\"blobContainerName\":\"hxmzsbbzoggig\",\"description\":\"wburvjxxjnspydpt\",\"provisioningState\":\"Succeeded\"}")
                 .toObject(AzureStorageBlobContainerEndpointProperties.class);
-        Assertions.assertEquals("kcciwwzjuqkhr", model.description());
-        Assertions.assertEquals("yokacspkw", model.storageAccountResourceId());
-        Assertions.assertEquals("hzdobpxjmflbvvnc", model.blobContainerName());
+        Assertions.assertEquals("wburvjxxjnspydpt", model.description());
+        Assertions.assertEquals("v", model.storageAccountResourceId());
+        Assertions.assertEquals("hxmzsbbzoggig", model.blobContainerName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureStorageBlobContainerEndpointProperties model =
             new AzureStorageBlobContainerEndpointProperties()
-                .withDescription("kcciwwzjuqkhr")
-                .withStorageAccountResourceId("yokacspkw")
-                .withBlobContainerName("hzdobpxjmflbvvnc");
+                .withDescription("wburvjxxjnspydpt")
+                .withStorageAccountResourceId("v")
+                .withBlobContainerName("hxmzsbbzoggig");
         model = BinaryData.fromObject(model).toObject(AzureStorageBlobContainerEndpointProperties.class);
-        Assertions.assertEquals("kcciwwzjuqkhr", model.description());
-        Assertions.assertEquals("yokacspkw", model.storageAccountResourceId());
-        Assertions.assertEquals("hzdobpxjmflbvvnc", model.blobContainerName());
+        Assertions.assertEquals("wburvjxxjnspydpt", model.description());
+        Assertions.assertEquals("v", model.storageAccountResourceId());
+        Assertions.assertEquals("hxmzsbbzoggig", model.blobContainerName());
     }
 }

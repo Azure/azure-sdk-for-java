@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.AutoApprovedPrivateLinkSe
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An array of private link service id that can be linked to a private end point with auto approved. */
+/**
+ * An array of private link service id that can be linked to a private end point with auto approved.
+ */
 @Fluent
 public final class AutoApprovedPrivateLinkServicesResult {
     /*
@@ -24,13 +26,15 @@ public final class AutoApprovedPrivateLinkServicesResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of AutoApprovedPrivateLinkServicesResult class. */
+    /**
+     * Creates an instance of AutoApprovedPrivateLinkServicesResult class.
+     */
     public AutoApprovedPrivateLinkServicesResult() {
     }
 
     /**
      * Get the value property: An array of auto approved private link service.
-     *
+     * 
      * @return the value value.
      */
     public List<AutoApprovedPrivateLinkServiceInner> value() {
@@ -39,7 +43,7 @@ public final class AutoApprovedPrivateLinkServicesResult {
 
     /**
      * Set the value property: An array of auto approved private link service.
-     *
+     * 
      * @param value the value value to set.
      * @return the AutoApprovedPrivateLinkServicesResult object itself.
      */
@@ -50,7 +54,7 @@ public final class AutoApprovedPrivateLinkServicesResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class AutoApprovedPrivateLinkServicesResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

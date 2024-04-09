@@ -2,11 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
+import com.azure.communication.phonenumbers.implementation.converters.PhoneNumberErrorConverter;
+import com.azure.communication.phonenumbers.implementation.models.CommunicationError;
+import com.azure.communication.phonenumbers.models.BillingFrequency;
+import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
+import com.azure.communication.phonenumbers.models.OperatorInformationResult;
+import com.azure.communication.phonenumbers.models.OperatorInformationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
+import com.azure.communication.phonenumbers.models.PhoneNumberError;
 import com.azure.communication.phonenumbers.models.PhoneNumberLocality;
 import com.azure.communication.phonenumbers.models.PhoneNumberOffering;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
@@ -29,6 +36,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -258,10 +267,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         StepVerifier.create(
                 this.getClientWithManagedIdentity(httpClient, "listAvailableTollFreeAreaCodes")
                         .listAvailableTollFreeAreaCodes("US", PhoneNumberAssignmentType.APPLICATION).next())
-                .assertNext((PhoneNumberAreaCode areaCodes) -> {
-                    assertNotNull(areaCodes.getAreaCode());
-                })
-                .verifyComplete();
+                .expectAccessibleContext();
     }
 
     @ParameterizedTest
@@ -276,6 +282,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         .next())
                 .assertNext((PhoneNumberAreaCode areaCodes) -> {
                     assertNotNull(areaCodes);
+                    assertNotNull(areaCodes.getAreaCode());
                 })
                 .verifyComplete();
     }
@@ -314,6 +321,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 .assertNext((PhoneNumberLocality localityWithAD) -> {
                     assertNotNull(localityWithAD);
                     assertEquals(localityWithAD.getAdministrativeDivision().getAbbreviatedName(), locality.getAdministrativeDivision().getAbbreviatedName());
+                    assertEquals(localityWithAD.getAdministrativeDivision().getLocalizedName(), locality.getAdministrativeDivision().getLocalizedName());
                 })
                 .verifyComplete();
     }
@@ -326,6 +334,10 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         .listAvailableOfferings("US", null, null).next())
                 .assertNext((PhoneNumberOffering offering) -> {
                     assertNotNull(offering);
+                    offering.getCost().getBillingFrequency();
+                    assertNotNull(BillingFrequency.values());
+                    assertNotNull(offering.getCost().getCurrencyCode());
+                    assertNotNull(offering.getCost().getAmount());
                 })
                 .verifyComplete();
     }
@@ -336,10 +348,16 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
                         .listAvailableTollFreeAreaCodes("US", PhoneNumberAssignmentType.APPLICATION).next())
-                .assertNext((PhoneNumberAreaCode areaCodes) -> {
-                    assertNotNull(areaCodes.getAreaCode());
-                })
-                .verifyComplete();
+                .expectAccessibleContext();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getTollFreeAreaCodesWrongCountryCode(HttpClient httpClient) {
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
+                        .listAvailableTollFreeAreaCodes("XX", PhoneNumberAssignmentType.APPLICATION).next())
+                .expectError();
     }
 
     @ParameterizedTest
@@ -354,8 +372,20 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         .next())
                 .assertNext((PhoneNumberAreaCode areaCodes) -> {
                     assertNotNull(areaCodes);
+                    assertNotNull(areaCodes.getAreaCode());
                 })
                 .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getGeographicAreaCodesWronglocality(HttpClient httpClient) {
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes")
+                        .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON,
+                                "XX", "XX")
+                        .next())
+                .expectError();
     }
 
     @ParameterizedTest
@@ -385,17 +415,28 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getLocalitiesAdministrativeDivision(HttpClient httpClient) {
-        String localityAdministraiveDivision = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
-                .listAvailableLocalities("US", null).blockFirst().getAdministrativeDivision().getAbbreviatedName();
+        PhoneNumberAdministrativeDivision localityAdministraiveDivision = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", null).blockFirst().getAdministrativeDivision();
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
-                        .listAvailableLocalities("US", localityAdministraiveDivision).next())
+                        .listAvailableLocalities("US", localityAdministraiveDivision.getAbbreviatedName()).next())
                 .assertNext((PhoneNumberLocality locality) -> {
                     assertNotNull(locality);
                     assertEquals(locality.getAdministrativeDivision().getAbbreviatedName(),
-                            localityAdministraiveDivision);
+                            localityAdministraiveDivision.getAbbreviatedName());
+                    assertEquals(locality.getAdministrativeDivision().getLocalizedName(),
+                            localityAdministraiveDivision.getLocalizedName());
                 })
                 .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalitiesInvalidAdministrativeDivision(HttpClient httpClient) {
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                        .listAvailableLocalities("US", "null").next())
+                .expectError();
     }
 
     @ParameterizedTest
@@ -406,6 +447,98 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         .listAvailableOfferings("US", null, null).next())
                 .assertNext((PhoneNumberOffering offering) -> {
                     assertNotNull(offering);
+                    offering.getCost().getBillingFrequency();
+                    assertNotNull(BillingFrequency.values());
+                    assertNotNull(offering.getCost().getCurrencyCode());
+                    assertNotNull(offering.getCost().getAmount());
+                })
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void convertCommunicationError(HttpClient httpClient) {
+        List<PhoneNumberError> details = new ArrayList<PhoneNumberError>();
+        CommunicationError communicationError = new CommunicationError();
+        communicationError.setCode("500");
+        communicationError.setMessage("Communication Error");
+
+        PhoneNumberError phoneNumberError = new PhoneNumberError(
+            communicationError.getMessage(),
+            communicationError.getCode(),
+            communicationError.getTarget(),
+            details
+        );
+        PhoneNumberError error = PhoneNumberErrorConverter.convert(communicationError);
+        assertEquals(phoneNumberError.getCode(), error.getCode());
+        assertEquals(phoneNumberError.getMessage(), error.getMessage());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void convertCommunicationErrorWithNull(HttpClient httpClient) {
+        CommunicationError communicationError = null;
+        PhoneNumberError error = PhoneNumberErrorConverter.convert(communicationError);
+        assertEquals(null, error);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void searchOperatorInformationSucceeds(HttpClient httpClient) {
+        List<String> phoneNumbers = new ArrayList<String>();
+        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
+                        .searchOperatorInformation(phoneNumbers))
+                .assertNext((OperatorInformationResult result) -> {
+                    assertEquals(phoneNumbers.get(0), result.getValues().get(0).getPhoneNumber());
+                })
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void searchOperatorInformationOnlyAcceptsOnePhoneNumber(HttpClient httpClient) {
+        List<String> phoneNumbers = new ArrayList<String>();
+        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
+        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "searchOperatorInformationOnlyAcceptsOnePhoneNumber")
+                        .searchOperatorInformation(phoneNumbers))
+                .verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void searchOperatorInformationRespectsSearchOptions(HttpClient httpClient) {
+        List<String> phoneNumbers = new ArrayList<String>();
+        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
+        OperatorInformationOptions requestOptions = new OperatorInformationOptions();
+        requestOptions.setIncludeAdditionalOperatorDetails(false);
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
+                        .searchOperatorInformationWithResponse(phoneNumbers, requestOptions))
+                .assertNext((Response<OperatorInformationResult> result) -> {
+                    assertEquals(phoneNumbers.get(0), result.getValue().getValues().get(0).getPhoneNumber());
+                    assertNotNull(result.getValue().getValues().get(0).getNationalFormat());
+                    assertNotNull(result.getValue().getValues().get(0).getInternationalFormat());
+                    assertEquals(null, result.getValue().getValues().get(0).getNumberType());
+                    assertEquals(null, result.getValue().getValues().get(0).getIsoCountryCode());
+                    assertEquals(null, result.getValue().getValues().get(0).getOperatorDetails());
+                })
+                .verifyComplete();
+
+        requestOptions.setIncludeAdditionalOperatorDetails(true);
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
+                        .searchOperatorInformationWithResponse(phoneNumbers, requestOptions))
+                .assertNext((Response<OperatorInformationResult> result) -> {
+                    assertEquals(phoneNumbers.get(0), result.getValue().getValues().get(0).getPhoneNumber());
+                    assertNotNull(result.getValue().getValues().get(0).getNationalFormat());
+                    assertNotNull(result.getValue().getValues().get(0).getInternationalFormat());
+                    assertNotNull(result.getValue().getValues().get(0).getNumberType());
+                    assertNotNull(result.getValue().getValues().get(0).getIsoCountryCode());
+                    assertNotNull(result.getValue().getValues().get(0).getOperatorDetails());
                 })
                 .verifyComplete();
     }

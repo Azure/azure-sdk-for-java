@@ -13,6 +13,7 @@ import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -38,6 +39,60 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * </pre>
  * <!-- end com.azure.cosmos.changeFeedProcessor.builder -->
  *
+ * Below is an example of building ChangeFeedProcessor with throughput control for handleChanges.
+ *
+ * <!-- src_embed com.azure.cosmos.changeFeedProcessor.withThroughputControl -->
+ * <pre>
+ * ThroughputControlGroupConfig throughputControlGroupConfig =
+ *         new ThroughputControlGroupConfigBuilder&#40;&#41;
+ *                 .groupName&#40;&quot;cfp&quot;&#41;
+ *                 .targetThroughput&#40;300&#41;
+ *                 .priorityLevel&#40;PriorityLevel.LOW&#41;
+ *                 .build&#40;&#41;;
+ * ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder&#40;&#41;
+ *         .hostName&#40;hostName&#41;
+ *         .feedContainer&#40;feedContainer&#41;
+ *         .leaseContainer&#40;leaseContainer&#41;
+ *         .handleChanges&#40;docs -&gt; &#123;
+ *             for &#40;JsonNode item : docs&#41; &#123;
+ *                 &#47;&#47; Implementation for handling and processing of each JsonNode item goes here
+ *             &#125;
+ *         &#125;&#41;
+ *         .options&#40;
+ *                 new ChangeFeedProcessorOptions&#40;&#41;
+ *                         .setFeedPollThroughputControlConfig&#40;throughputControlGroupConfig&#41;
+ *         &#41;
+ *         .buildChangeFeedProcessor&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.cosmos.changeFeedProcessor.withThroughputControl -->
+ *
+ * Below is an example of building ChangeFeedProcessor with throughput control for LatestVersion mode.
+ *
+ * <!-- src_embed com.azure.cosmos.latestVersionChanges.withThroughputControl -->
+ * <pre>
+ * ThroughputControlGroupConfig throughputControlGroupConfig =
+ *         new ThroughputControlGroupConfigBuilder&#40;&#41;
+ *                 .groupName&#40;&quot;cfp&quot;&#41;
+ *                 .targetThroughput&#40;300&#41;
+ *                 .priorityLevel&#40;PriorityLevel.LOW&#41;
+ *                 .build&#40;&#41;;
+ * ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder&#40;&#41;
+ *         .hostName&#40;hostName&#41;
+ *         .feedContainer&#40;feedContainer&#41;
+ *         .leaseContainer&#40;leaseContainer&#41;
+ *         .handleLatestVersionChanges&#40;changeFeedProcessorItems -&gt; &#123;
+ *             for &#40;ChangeFeedProcessorItem item : changeFeedProcessorItems&#41; &#123;
+ *                 &#47;&#47; Implementation for handling and processing of each change feed item goes here
+ *             &#125;
+ *         &#125;&#41;
+ *         .options&#40;
+ *                 new ChangeFeedProcessorOptions&#40;&#41;
+ *                         .setFeedPollThroughputControlConfig&#40;throughputControlGroupConfig&#41;
+ *         &#41;
+ *         .buildChangeFeedProcessor&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.cosmos.latestVersionChanges.withThroughputControl -->
+ *
  * Below is an example of building ChangeFeedProcessor for AllVersionsAndDeletes mode.
  *
  * <!-- src_embed com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.builder -->
@@ -54,6 +109,24 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *     .buildChangeFeedProcessor&#40;&#41;;
  * </pre>
  * <!-- end com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.builder -->
+ *
+ * Below is an example of building ChangeFeedProcessor for AllVersionsAndDeletes mode when also wishing to process a {@link ChangeFeedProcessorContext}.
+ * <!-- src_embed com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessorWithContext.builder -->
+ * <pre>
+ * ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder&#40;&#41;
+ *     .hostName&#40;hostName&#41;
+ *     .feedContainer&#40;feedContainer&#41;
+ *     .leaseContainer&#40;leaseContainer&#41;
+ *     .handleAllVersionsAndDeletesChanges&#40;&#40;docs, context&#41; -&gt; &#123;
+ *         for &#40;ChangeFeedProcessorItem item : docs&#41; &#123;
+ *             &#47;&#47; Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
+ *         &#125;
+ *         String leaseToken = context.getLeaseToken&#40;&#41;;
+ *         &#47;&#47; Handling of the lease token corresponding to a batch of change feed processor item goes here
+ *     &#125;&#41;
+ *     .buildChangeFeedProcessor&#40;&#41;;
+ * </pre>
+ *  <!-- end com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessorWithContext.builder -->
  */
 public class ChangeFeedProcessorBuilder {
     private String hostName;
@@ -63,6 +136,7 @@ public class ChangeFeedProcessorBuilder {
     private Consumer<List<JsonNode>> incrementalModeLeaseConsumerPkRangeIdVersion;
     private Consumer<List<ChangeFeedProcessorItem>> incrementalModeLeaseConsumerEpkVersion;
     private Consumer<List<ChangeFeedProcessorItem>> fullFidelityModeLeaseConsumer;
+    private BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext> fullFidelityModeLeaseWithContextConsumer;
     private ChangeFeedMode changeFeedMode = ChangeFeedMode.INCREMENTAL;
     private LeaseVersion leaseVersion = LeaseVersion.PARTITION_KEY_BASED_LEASE;
 
@@ -183,7 +257,43 @@ public class ChangeFeedProcessorBuilder {
      */
     @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedProcessorBuilder handleAllVersionsAndDeletesChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
+        checkNotNull(consumer, "consumer cannot be null");
+        checkArgument(this.fullFidelityModeLeaseWithContextConsumer == null,
+            "handleAllVersionsAndDeletesChanges biConsumer has already been defined.");
+
         this.fullFidelityModeLeaseConsumer = consumer;
+        this.changeFeedMode = ChangeFeedMode.FULL_FIDELITY;
+        this.leaseVersion = LeaseVersion.EPK_RANGE_BASED_LEASE;
+        return this;
+    }
+
+    /**
+     * Sets a {@link BiConsumer} function which will be called to process changes for AllVersionsAndDeletes change feed mode.
+     *
+     * <!-- src_embed com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessorWithContext.handleChanges -->
+     * <pre>
+     * .handleAllVersionsAndDeletesChanges&#40;&#40;docs, context&#41; -&gt; &#123;
+     *     for &#40;ChangeFeedProcessorItem item : docs&#41; &#123;
+     *         &#47;&#47; Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
+     *     &#125;
+     *     String leaseToken = context.getLeaseToken&#40;&#41;;
+     *     &#47;&#47; Handling of the lease token corresponding to a batch of change feed processor item goes here
+     * &#125;&#41;
+     * </pre>
+     * <!-- end com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessorWithContext.handleChanges -->
+     *
+     * @param biConsumer the {@link BiConsumer} to call for handling the feeds and the {@link ChangeFeedProcessorContext} instance.
+     * @return current Builder.
+     */
+    @Beta(value = Beta.SinceVersion.V4_51_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ChangeFeedProcessorBuilder handleAllVersionsAndDeletesChanges(
+        BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext> biConsumer) {
+
+        checkNotNull(biConsumer, "biConsumer cannot be null");
+        checkArgument(this.fullFidelityModeLeaseConsumer == null,
+            "handleAllVersionsAndDeletesChanges consumer has already been defined.");
+
+        this.fullFidelityModeLeaseWithContextConsumer = biConsumer;
         this.changeFeedMode = ChangeFeedMode.FULL_FIDELITY;
         this.leaseVersion = LeaseVersion.EPK_RANGE_BASED_LEASE;
         return this;
@@ -225,12 +335,21 @@ public class ChangeFeedProcessorBuilder {
         if (this.leaseVersion == LeaseVersion.EPK_RANGE_BASED_LEASE) {
             switch (this.changeFeedMode) {
                 case FULL_FIDELITY:
-                    changeFeedProcessor = new FullFidelityChangeFeedProcessorImpl(
+                    if (this.fullFidelityModeLeaseConsumer != null) {
+                        changeFeedProcessor = new FullFidelityChangeFeedProcessorImpl(
                             this.hostName,
                             this.feedContainer,
                             this.leaseContainer,
                             this.fullFidelityModeLeaseConsumer,
                             this.changeFeedProcessorOptions);
+                    } else if (this.fullFidelityModeLeaseWithContextConsumer != null) {
+                        changeFeedProcessor = new FullFidelityChangeFeedProcessorImpl(
+                            this.hostName,
+                            this.feedContainer,
+                            this.leaseContainer,
+                            this.fullFidelityModeLeaseWithContextConsumer,
+                            this.changeFeedProcessorOptions);
+                    }
                     break;
                 case INCREMENTAL:
                     changeFeedProcessor = new com.azure.cosmos.implementation.changefeed.epkversion.IncrementalChangeFeedProcessorImpl(
@@ -268,7 +387,7 @@ public class ChangeFeedProcessorBuilder {
     }
 
     private boolean isFullFidelityConsumerDefined() {
-        return this.fullFidelityModeLeaseConsumer != null;
+        return this.fullFidelityModeLeaseConsumer != null || this.fullFidelityModeLeaseWithContextConsumer != null;
     }
 
     private boolean isIncrementalConsumerDefined() {

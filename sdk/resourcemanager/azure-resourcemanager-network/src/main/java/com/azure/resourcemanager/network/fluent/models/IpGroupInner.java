@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The IpGroups resource information. */
+/**
+ * The IpGroups resource information.
+ */
 @Fluent
 public final class IpGroupInner extends Resource {
     /*
@@ -33,13 +35,15 @@ public final class IpGroupInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of IpGroupInner class. */
+    /**
+     * Creates an instance of IpGroupInner class.
+     */
     public IpGroupInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the IpGroups.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IpGroupPropertiesFormat innerProperties() {
@@ -48,7 +52,7 @@ public final class IpGroupInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -57,7 +61,7 @@ public final class IpGroupInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -66,7 +70,7 @@ public final class IpGroupInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the IpGroupInner object itself.
      */
@@ -75,14 +79,18 @@ public final class IpGroupInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IpGroupInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IpGroupInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -91,7 +99,7 @@ public final class IpGroupInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the IpGroups resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -100,7 +108,7 @@ public final class IpGroupInner extends Resource {
 
     /**
      * Get the ipAddresses property: IpAddresses/IpAddressPrefixes in the IpGroups resource.
-     *
+     * 
      * @return the ipAddresses value.
      */
     public List<String> ipAddresses() {
@@ -109,7 +117,7 @@ public final class IpGroupInner extends Resource {
 
     /**
      * Set the ipAddresses property: IpAddresses/IpAddressPrefixes in the IpGroups resource.
-     *
+     * 
      * @param ipAddresses the ipAddresses value to set.
      * @return the IpGroupInner object itself.
      */
@@ -123,7 +131,7 @@ public final class IpGroupInner extends Resource {
 
     /**
      * Get the firewalls property: List of references to Firewall resources that this IpGroups is associated with.
-     *
+     * 
      * @return the firewalls value.
      */
     public List<SubResource> firewalls() {
@@ -133,7 +141,7 @@ public final class IpGroupInner extends Resource {
     /**
      * Get the firewallPolicies property: List of references to Firewall Policies resources that this IpGroups is
      * associated with.
-     *
+     * 
      * @return the firewallPolicies value.
      */
     public List<SubResource> firewallPolicies() {
@@ -142,7 +150,7 @@ public final class IpGroupInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

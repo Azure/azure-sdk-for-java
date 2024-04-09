@@ -5,15 +5,16 @@
 package com.azure.resourcemanager.nginx.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.nginx.models.NginxConfigurationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
 
-/** The NginxConfiguration model. */
+/**
+ * The NginxConfiguration model.
+ */
 @Fluent
-public final class NginxConfigurationInner extends Resource {
+public final class NginxConfigurationInner extends ProxyResource {
     /*
      * The properties property.
      */
@@ -21,18 +22,26 @@ public final class NginxConfigurationInner extends Resource {
     private NginxConfigurationProperties properties;
 
     /*
+     * The location property.
+     */
+    @JsonProperty(value = "location")
+    private String location;
+
+    /*
      * Metadata pertaining to creation and last modification of the resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of NginxConfigurationInner class. */
+    /**
+     * Creates an instance of NginxConfigurationInner class.
+     */
     public NginxConfigurationInner() {
     }
 
     /**
      * Get the properties property: The properties property.
-     *
+     * 
      * @return the properties value.
      */
     public NginxConfigurationProperties properties() {
@@ -41,7 +50,7 @@ public final class NginxConfigurationInner extends Resource {
 
     /**
      * Set the properties property: The properties property.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the NginxConfigurationInner object itself.
      */
@@ -51,31 +60,37 @@ public final class NginxConfigurationInner extends Resource {
     }
 
     /**
+     * Get the location property: The location property.
+     * 
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: The location property.
+     * 
+     * @param location the location value to set.
+     * @return the NginxConfigurationInner object itself.
+     */
+    public NginxConfigurationInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public NginxConfigurationInner withLocation(String location) {
-        super.withLocation(location);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public NginxConfigurationInner withTags(Map<String, String> tags) {
-        super.withTags(tags);
-        return this;
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

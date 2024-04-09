@@ -19,19 +19,6 @@ public interface ExportConfigurationsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Continuous Export configuration of an Application Insights component.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<ApplicationInsightsComponentExportConfigurationInner> list(String resourceGroupName, String resourceName);
-
-    /**
-     * Gets a list of Continuous Export configuration of an Application Insights component.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,20 +31,17 @@ public interface ExportConfigurationsClient {
         String resourceGroupName, String resourceName, Context context);
 
     /**
-     * Create a Continuous Export configuration of an Application Insights component.
+     * Gets a list of Continuous Export configuration of an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
-     * @param exportProperties Properties that need to be specified to create a Continuous Export configuration of a
-     *     Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Continuous Export configurations.
+     * @return a list of Continuous Export configuration of an Application Insights component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    List<ApplicationInsightsComponentExportConfigurationInner> create(
-        String resourceGroupName, String resourceName, ApplicationInsightsComponentExportRequest exportProperties);
+    List<ApplicationInsightsComponentExportConfigurationInner> list(String resourceGroupName, String resourceName);
 
     /**
      * Create a Continuous Export configuration of an Application Insights component.
@@ -80,19 +64,20 @@ public interface ExportConfigurationsClient {
         Context context);
 
     /**
-     * Delete a Continuous Export configuration of an Application Insights component.
+     * Create a Continuous Export configuration of an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
-     * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
+     * @param exportProperties Properties that need to be specified to create a Continuous Export configuration of a
+     *     Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a Continuous Export configuration.
+     * @return a list of Continuous Export configurations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInsightsComponentExportConfigurationInner delete(
-        String resourceGroupName, String resourceName, String exportId);
+    List<ApplicationInsightsComponentExportConfigurationInner> create(
+        String resourceGroupName, String resourceName, ApplicationInsightsComponentExportRequest exportProperties);
 
     /**
      * Delete a Continuous Export configuration of an Application Insights component.
@@ -111,7 +96,7 @@ public interface ExportConfigurationsClient {
         String resourceGroupName, String resourceName, String exportId, Context context);
 
     /**
-     * Get the Continuous Export configuration for this export id.
+     * Delete a Continuous Export configuration of an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
@@ -119,10 +104,10 @@ public interface ExportConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Continuous Export configuration for this export id.
+     * @return properties that define a Continuous Export configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInsightsComponentExportConfigurationInner get(
+    ApplicationInsightsComponentExportConfigurationInner delete(
         String resourceGroupName, String resourceName, String exportId);
 
     /**
@@ -142,23 +127,19 @@ public interface ExportConfigurationsClient {
         String resourceGroupName, String resourceName, String exportId, Context context);
 
     /**
-     * Update the Continuous Export configuration for this export id.
+     * Get the Continuous Export configuration for this export id.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
-     * @param exportProperties Properties that need to be specified to update the Continuous Export configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a Continuous Export configuration.
+     * @return the Continuous Export configuration for this export id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInsightsComponentExportConfigurationInner update(
-        String resourceGroupName,
-        String resourceName,
-        String exportId,
-        ApplicationInsightsComponentExportRequest exportProperties);
+    ApplicationInsightsComponentExportConfigurationInner get(
+        String resourceGroupName, String resourceName, String exportId);
 
     /**
      * Update the Continuous Export configuration for this export id.
@@ -180,4 +161,23 @@ public interface ExportConfigurationsClient {
         String exportId,
         ApplicationInsightsComponentExportRequest exportProperties,
         Context context);
+
+    /**
+     * Update the Continuous Export configuration for this export id.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
+     * @param exportProperties Properties that need to be specified to update the Continuous Export configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties that define a Continuous Export configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ApplicationInsightsComponentExportConfigurationInner update(
+        String resourceGroupName,
+        String resourceName,
+        String exportId,
+        ApplicationInsightsComponentExportRequest exportProperties);
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Details about a service operation. */
+/**
+ * Details about a service operation.
+ */
 @Fluent
 public final class OperationServiceSpecification {
     /*
@@ -23,13 +25,15 @@ public final class OperationServiceSpecification {
     @JsonProperty(value = "metricSpecifications")
     private List<OperationMetricSpecification> metricSpecifications;
 
-    /** Creates an instance of OperationServiceSpecification class. */
+    /**
+     * Creates an instance of OperationServiceSpecification class.
+     */
     public OperationServiceSpecification() {
     }
 
     /**
      * Get the logSpecifications property: Details about operations related to logs.
-     *
+     * 
      * @return the logSpecifications value.
      */
     public List<OperationLogSpecification> logSpecifications() {
@@ -38,7 +42,7 @@ public final class OperationServiceSpecification {
 
     /**
      * Set the logSpecifications property: Details about operations related to logs.
-     *
+     * 
      * @param logSpecifications the logSpecifications value to set.
      * @return the OperationServiceSpecification object itself.
      */
@@ -49,7 +53,7 @@ public final class OperationServiceSpecification {
 
     /**
      * Get the metricSpecifications property: Details about operations related to metrics.
-     *
+     * 
      * @return the metricSpecifications value.
      */
     public List<OperationMetricSpecification> metricSpecifications() {
@@ -58,19 +62,19 @@ public final class OperationServiceSpecification {
 
     /**
      * Set the metricSpecifications property: Details about operations related to metrics.
-     *
+     * 
      * @param metricSpecifications the metricSpecifications value to set.
      * @return the OperationServiceSpecification object itself.
      */
-    public OperationServiceSpecification withMetricSpecifications(
-        List<OperationMetricSpecification> metricSpecifications) {
+    public OperationServiceSpecification
+        withMetricSpecifications(List<OperationMetricSpecification> metricSpecifications) {
         this.metricSpecifications = metricSpecifications;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

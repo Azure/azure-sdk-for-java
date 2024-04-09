@@ -12,11 +12,13 @@ import com.azure.resourcemanager.datafactory.fluent.models.PipelineRunInner;
 import com.azure.resourcemanager.datafactory.fluent.models.PipelineRunsQueryResponseInner;
 import com.azure.resourcemanager.datafactory.models.RunFilterParameters;
 
-/** An instance of this class provides access to all the operations defined in PipelineRunsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PipelineRunsClient.
+ */
 public interface PipelineRunsClient {
     /**
      * Query pipeline runs in the factory based on input filter conditions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param filterParameters Parameters to filter the pipeline run.
@@ -27,12 +29,12 @@ public interface PipelineRunsClient {
      * @return a list pipeline runs along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PipelineRunsQueryResponseInner> queryByFactoryWithResponse(
-        String resourceGroupName, String factoryName, RunFilterParameters filterParameters, Context context);
+    Response<PipelineRunsQueryResponseInner> queryByFactoryWithResponse(String resourceGroupName, String factoryName,
+        RunFilterParameters filterParameters, Context context);
 
     /**
      * Query pipeline runs in the factory based on input filter conditions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param filterParameters Parameters to filter the pipeline run.
@@ -42,12 +44,12 @@ public interface PipelineRunsClient {
      * @return a list pipeline runs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PipelineRunsQueryResponseInner queryByFactory(
-        String resourceGroupName, String factoryName, RunFilterParameters filterParameters);
+    PipelineRunsQueryResponseInner queryByFactory(String resourceGroupName, String factoryName,
+        RunFilterParameters filterParameters);
 
     /**
      * Get a pipeline run by its run ID.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param runId The pipeline run identifier.
@@ -58,12 +60,12 @@ public interface PipelineRunsClient {
      * @return a pipeline run by its run ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PipelineRunInner> getWithResponse(
-        String resourceGroupName, String factoryName, String runId, Context context);
+    Response<PipelineRunInner> getWithResponse(String resourceGroupName, String factoryName, String runId,
+        Context context);
 
     /**
      * Get a pipeline run by its run ID.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param runId The pipeline run identifier.
@@ -77,7 +79,7 @@ public interface PipelineRunsClient {
 
     /**
      * Cancel a pipeline run by its run ID.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param runId The pipeline run identifier.
@@ -89,12 +91,12 @@ public interface PipelineRunsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> cancelWithResponse(
-        String resourceGroupName, String factoryName, String runId, Boolean isRecursive, Context context);
+    Response<Void> cancelWithResponse(String resourceGroupName, String factoryName, String runId, Boolean isRecursive,
+        Context context);
 
     /**
      * Cancel a pipeline run by its run ID.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param runId The pipeline run identifier.

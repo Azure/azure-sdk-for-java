@@ -24,6 +24,15 @@ public final class MicrosoftGraphChatMessageImportance
     public static final MicrosoftGraphChatMessageImportance UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphChatMessageImportance value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphChatMessageImportance() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphChatMessageImportance from its string representation.
      *
      * @param name a name to look for.

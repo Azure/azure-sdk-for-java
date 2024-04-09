@@ -10,36 +10,30 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Pipelines CreateRun. */
+/**
+ * Samples for Pipelines CreateRun.
+ */
 public final class PipelinesCreateRunSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_CreateRun.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_CreateRun.
+     * json
      */
     /**
      * Sample code: Pipelines_CreateRun.
-     *
+     * 
      * @param manager Entry point to DataFactoryManager.
      */
     public static void pipelinesCreateRun(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        manager
-            .pipelines()
-            .createRunWithResponse(
-                "exampleResourceGroup",
-                "exampleFactoryName",
-                "examplePipeline",
-                null,
-                null,
-                null,
-                null,
-                mapOf(
-                    "OutputBlobNameList",
-                    SerializerFactory
-                        .createDefaultManagementSerializerAdapter()
-                        .deserialize("[\"exampleoutput.csv\"]", Object.class, SerializerEncoding.JSON)),
-                com.azure.core.util.Context.NONE);
+        manager.pipelines().createRunWithResponse("exampleResourceGroup", "exampleFactoryName", "examplePipeline", null,
+            null, null, null,
+            mapOf("OutputBlobNameList", SerializerFactory.createDefaultManagementSerializerAdapter()
+                .deserialize("[\"exampleoutput.csv\"]", Object.class, SerializerEncoding.JSON)),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

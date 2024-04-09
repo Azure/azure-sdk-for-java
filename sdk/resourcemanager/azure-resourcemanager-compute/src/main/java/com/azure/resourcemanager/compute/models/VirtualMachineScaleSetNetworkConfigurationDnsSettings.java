@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a virtual machines scale sets network configuration's DNS settings. */
+/**
+ * Describes a virtual machines scale sets network configuration's DNS settings.
+ */
 @Fluent
 public final class VirtualMachineScaleSetNetworkConfigurationDnsSettings {
     /*
@@ -17,13 +19,15 @@ public final class VirtualMachineScaleSetNetworkConfigurationDnsSettings {
     @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;
 
-    /** Creates an instance of VirtualMachineScaleSetNetworkConfigurationDnsSettings class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetNetworkConfigurationDnsSettings class.
+     */
     public VirtualMachineScaleSetNetworkConfigurationDnsSettings() {
     }
 
     /**
      * Get the dnsServers property: List of DNS servers IP addresses.
-     *
+     * 
      * @return the dnsServers value.
      */
     public List<String> dnsServers() {
@@ -32,7 +36,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationDnsSettings {
 
     /**
      * Set the dnsServers property: List of DNS servers IP addresses.
-     *
+     * 
      * @param dnsServers the dnsServers value to set.
      * @return the VirtualMachineScaleSetNetworkConfigurationDnsSettings object itself.
      */
@@ -43,7 +47,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationDnsSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

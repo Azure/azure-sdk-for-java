@@ -83,8 +83,17 @@ public class RuntimeStack {
     /** Tomcat 10.0-java17 image with catalina root set to Azure wwwroot. */
     public static final RuntimeStack TOMCAT_10_0_JAVA17 = COLLECTION.addValue(new RuntimeStack("TOMCAT", "10.0-java17"));
 
-    /** Tomcat 10.0-jre11 image with catalina root set to Azure wwwroot. */
-    public static final RuntimeStack TOMCAT_10_0_JRE11 = COLLECTION.addValue(new RuntimeStack("TOMCAT", "10.0-jre11"));
+    /** Tomcat 10.0-java11 image with catalina root set to Azure wwwroot. */
+    public static final RuntimeStack TOMCAT_10_0_JAVA11 = COLLECTION.addValue(new RuntimeStack("TOMCAT", "10.0-java11"));
+
+    /**
+     * Tomcat 10.0-jre11 image with catalina root set to Azure wwwroot.
+     *
+     * @deprecated Use {@link #TOMCAT_10_0_JAVA11}.
+     */
+    @Deprecated
+    // Do not add to COLLECTION
+    public static final RuntimeStack TOMCAT_10_0_JRE11 = new RuntimeStack("TOMCAT", "10.0-jre11");
 
     /** Tomcat 10.0-jre8 image with catalina root set to Azure wwwroot. */
     public static final RuntimeStack TOMCAT_10_0_JRE8 = COLLECTION.addValue(new RuntimeStack("TOMCAT", "10.0-jre8"));

@@ -122,22 +122,15 @@ public final class PartnerTopicImpl implements PartnerTopic, PartnerTopic.Defini
     }
 
     public PartnerTopic create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPartnerTopics()
-                .createOrUpdateWithResponse(resourceGroupName, partnerTopicName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getPartnerTopics()
+            .createOrUpdateWithResponse(resourceGroupName, partnerTopicName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public PartnerTopic create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPartnerTopics()
-                .createOrUpdateWithResponse(resourceGroupName, partnerTopicName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getPartnerTopics()
+            .createOrUpdateWithResponse(resourceGroupName, partnerTopicName, this.innerModel(), context).getValue();
         return this;
     }
 
@@ -153,28 +146,21 @@ public final class PartnerTopicImpl implements PartnerTopic, PartnerTopic.Defini
     }
 
     public PartnerTopic apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPartnerTopics()
-                .updateWithResponse(
-                    resourceGroupName, partnerTopicName, updatePartnerTopicUpdateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getPartnerTopics()
+            .updateWithResponse(resourceGroupName, partnerTopicName, updatePartnerTopicUpdateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PartnerTopic apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPartnerTopics()
-                .updateWithResponse(resourceGroupName, partnerTopicName, updatePartnerTopicUpdateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getPartnerTopics()
+            .updateWithResponse(resourceGroupName, partnerTopicName, updatePartnerTopicUpdateParameters, context)
+            .getValue();
         return this;
     }
 
-    PartnerTopicImpl(
-        PartnerTopicInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
+    PartnerTopicImpl(PartnerTopicInner innerObject,
+        com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -182,22 +168,14 @@ public final class PartnerTopicImpl implements PartnerTopic, PartnerTopic.Defini
     }
 
     public PartnerTopic refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPartnerTopics()
-                .getByResourceGroupWithResponse(resourceGroupName, partnerTopicName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getPartnerTopics()
+            .getByResourceGroupWithResponse(resourceGroupName, partnerTopicName, Context.NONE).getValue();
         return this;
     }
 
     public PartnerTopic refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPartnerTopics()
-                .getByResourceGroupWithResponse(resourceGroupName, partnerTopicName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getPartnerTopics()
+            .getByResourceGroupWithResponse(resourceGroupName, partnerTopicName, context).getValue();
         return this;
     }
 

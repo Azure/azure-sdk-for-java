@@ -30,44 +30,33 @@ public final class PacketCapturesStopMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"id\":\"hnykz\",\"name\":\"gswvxwlmzqwm\",\"status\":\"tx\",\"resourceId\":\"mxmcuqudtcvclxy\",\"startTime\":\"2021-06-24T22:05:31Z\",\"endTime\":\"2021-08-20T13:54:14Z\",\"percentComplete\":56.83583807388026,\"properties\":\"datauiyjib\"}";
+        String responseStr
+            = "{\"id\":\"tixo\",\"name\":\"fqyinljqepqw\",\"status\":\"ixmonstshiyxg\",\"resourceId\":\"lfcldu\",\"startTime\":\"2021-03-30T02:54:32Z\",\"endTime\":\"2021-10-18T23:01:08Z\",\"percentComplete\":18.709508916398665,\"properties\":\"datawcobie\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MobileNetworkManager manager = MobileNetworkManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AsyncOperationStatus response =
-            manager.packetCaptures().stop("ovmribiattg", "lu", "fotang", com.azure.core.util.Context.NONE);
+        AsyncOperationStatus response = manager.packetCaptures().stop("gicgaaoepttaq", "tdewemxswvruu", "zzjgehkfki",
+            com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hnykz", response.id());
-        Assertions.assertEquals("gswvxwlmzqwm", response.name());
-        Assertions.assertEquals("tx", response.status());
-        Assertions.assertEquals("mxmcuqudtcvclxy", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-24T22:05:31Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-20T13:54:14Z"), response.endTime());
-        Assertions.assertEquals(56.83583807388026D, response.percentComplete());
+        Assertions.assertEquals("tixo", response.id());
+        Assertions.assertEquals("fqyinljqepqw", response.name());
+        Assertions.assertEquals("ixmonstshiyxg", response.status());
+        Assertions.assertEquals("lfcldu", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-30T02:54:32Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-18T23:01:08Z"), response.endTime());
+        Assertions.assertEquals(18.709508916398665D, response.percentComplete());
     }
 }

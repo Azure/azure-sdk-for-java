@@ -175,8 +175,10 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                         ContainerDirectConnectionMetadata containerDirectConnectionMetadata = containerPropertiesMap
                                                                 .get(cosmosContainerIdentity);
 
-                                                        int connectionsPerEndpointCountForContainer = containerDirectConnectionMetadata
-                                                                .getMinConnectionPoolSizePerEndpointForContainer();
+                                                        // check against the COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT system property
+                                                        // during client initialization
+                                                        int connectionsPerEndpointCountForContainer = Math.max(containerDirectConnectionMetadata
+                                                            .getMinConnectionPoolSizePerEndpointForContainer(), Configs.getMinConnectionPoolSizePerEndpoint());
 
                                                         return this.submitOpenConnectionInternal(
                                                                 endpointCache,

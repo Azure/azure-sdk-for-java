@@ -12,8 +12,8 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.models.TestProxyRecordingOptions;
 import com.azure.core.test.models.RecordFilePayload;
+import com.azure.core.test.models.TestProxyRecordingOptions;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
@@ -21,7 +21,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
@@ -30,21 +29,20 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 
+import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
+import static com.azure.core.test.utils.TestProxyUtils.createAddSanitizersRequest;
 import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
-import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
-
 
 /**
  * A {@link HttpPipelinePolicy} for redirecting traffic through the test proxy for recording.
  */
 public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final HttpHeaderName X_RECORDING_ID = HttpHeaderName.fromString("x-recording-id");
     private final HttpClient client;
     private final URL proxyUrl;
@@ -75,41 +73,52 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      * @throws RuntimeException Failed to serialize body payload.
      */
     public void startRecording(File recordFile, Path testClassPath) {
-        String assetJsonPath = getAssetJsonFile(recordFile, testClassPath);
-        HttpRequest request = null;
         try {
-            request = new HttpRequest(HttpMethod.POST, String.format("%s/record/start", proxyUrl.toString()))
-                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath),
-                    SerializerEncoding.JSON))
+            String assetJsonPath = getAssetJsonFile(recordFile, testClassPath);
+            HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/record/start").setBody(SERIALIZER
+                .serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath), SerializerEncoding.JSON))
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
+
+            try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+                checkForTestProxyErrors(response);
+                if (response.getStatusCode() != 200) {
+                    throw new RuntimeException(response.getBodyAsBinaryData().toString());
+                }
+
+                this.xRecordingId = response.getHeaderValue(X_RECORDING_ID);
+            }
+
+            addProxySanitization(this.sanitizers);
+            setDefaultRecordingOptions();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        HttpResponse response = client.sendSync(request, Context.NONE);
-
-        this.xRecordingId = response.getHeaderValue(X_RECORDING_ID);
-
-        addProxySanitization(this.sanitizers);
-        setDefaultRecordingOptions();
     }
 
     private void setDefaultRecordingOptions() {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/SetRecordingOptions", proxyUrl.toString()));
-        request.setBody("{\"HandleRedirects\": false}");
-        request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-        client.sendSync(request, Context.NONE);
+        HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/SetRecordingOptions")
+            .setBody("{\"HandleRedirects\": false}")
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
+        client.sendSync(request, Context.NONE).close();
     }
 
     /**
      * Stops recording of test traffic.
      * @param variables A list of random variables generated during the test which is saved in the recording.
+     * @throws RuntimeException If the test proxy returns an error while stopping recording.
      */
     public void stopRecording(Queue<String> variables) {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/record/stop", proxyUrl.toString()))
+        HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/record/stop")
             .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
             .setHeader(X_RECORDING_ID, xRecordingId)
             .setBody(serializeVariables(variables));
-        client.sendSync(request, Context.NONE);
+
+        try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+            checkForTestProxyErrors(response);
+            if (response.getStatusCode() != 200) {
+                throw new RuntimeException(response.getBodyAsBinaryData().toString());
+            }
+        }
     }
 
     /**
@@ -122,16 +131,25 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
             return "{}";
         }
 
+        StringBuilder builder = new StringBuilder().append('{');
+
         int count = 0;
-        Map<String, String> map = new LinkedHashMap<>();
         for (String variable : variables) {
-            map.put(String.valueOf(count++), variable);
+            if (count > 0) {
+                builder.append(',');
+            }
+
+            builder.append('"').append(count).append("\":\"");
+            count++;
+
+            if (variable == null) {
+                builder.append("null");
+            } else {
+                builder.append(variable).append('"');
+            }
         }
-        try {
-            return SERIALIZER.serialize(map, SerializerEncoding.JSON);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+        return builder.append('}').toString();
     }
 
     /**
@@ -140,7 +158,8 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      * @param context The request context.
      */
     private void beforeSendingRequest(HttpPipelineCallContext context) {
-        TestProxyUtils.changeHeaders(context.getHttpRequest(), proxyUrl, xRecordingId, RECORD_MODE, skipRecordingRequestBody);
+        TestProxyUtils.changeHeaders(context.getHttpRequest(), proxyUrl, xRecordingId, RECORD_MODE,
+            skipRecordingRequestBody);
     }
 
     /**
@@ -163,13 +182,10 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return Mono.fromCallable(
-                () -> {
-                    beforeSendingRequest(context);
-                    return next;
-                })
-            .flatMap(ignored -> next.process())
-            .map(this::afterReceivedResponse);
+        return Mono.fromCallable(() -> {
+            beforeSendingRequest(context);
+            return next;
+        }).flatMap(ignored -> next.process()).map(this::afterReceivedResponse);
     }
 
     /**
@@ -178,11 +194,10 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      */
     public void addProxySanitization(List<TestProxySanitizer> sanitizers) {
         if (isRecording()) {
-            getSanitizerRequests(sanitizers, proxyUrl)
-                .forEach(request -> {
-                    request.setHeader(X_RECORDING_ID, xRecordingId);
-                    client.sendSync(request, Context.NONE);
-                });
+            HttpRequest request
+                = createAddSanitizersRequest(sanitizers, proxyUrl).setHeader(X_RECORDING_ID, xRecordingId);
+
+            client.sendSync(request, Context.NONE).close();
         } else {
             this.sanitizers.addAll(sanitizers);
         }
@@ -198,17 +213,13 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      * @throws IllegalArgumentException if testProxyRecordingOptions cannot be serialized
      */
     public void setRecordingOptions(TestProxyRecordingOptions testProxyRecordingOptions) {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/admin/setrecordingoptions", proxyUrl.toString()));
-        String body;
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            body = mapper.writeValueAsString(testProxyRecordingOptions);
-        } catch (JsonProcessingException ex) {
+            HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/admin/setrecordingoptions")
+                .setBody(MAPPER.writeValueAsString(testProxyRecordingOptions))
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
+            client.sendSync(request, Context.NONE).close();
+        } catch (IOException ex) {
             throw new IllegalArgumentException("Failed to process JSON input", ex);
         }
-        request.setBody(body);
-        request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-        client.sendSync(request, Context.NONE);
     }
 }
-

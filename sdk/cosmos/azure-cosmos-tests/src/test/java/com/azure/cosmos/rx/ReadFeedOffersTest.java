@@ -2,6 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
+import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -51,7 +59,23 @@ public class ReadFeedOffersTest extends TestSuiteBase {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 2);
 
-        Flux<FeedResponse<Offer>> feedObservable = client.readOffers(options);
+        CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
+            .key(TestConfigurations.MASTER_KEY)
+            .endpoint(TestConfigurations.HOST)
+            .buildAsyncClient();
+        QueryFeedOperationState dummyState = new QueryFeedOperationState(
+            cosmosClient,
+            "SomeSpanName",
+            "SomeDBName",
+            "SomeContainerName",
+            ResourceType.Document,
+            OperationType.Query,
+            null,
+            options,
+            new CosmosPagedFluxOptions()
+        );
+
+        Flux<FeedResponse<Offer>> feedObservable = client.readOffers(dummyState);
 
         int maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
         int expectedPageSize = (allOffers.size() + maxItemCount - 1) / maxItemCount;
@@ -75,7 +99,14 @@ public class ReadFeedOffersTest extends TestSuiteBase {
             createCollections(client);
         }
 
-        allOffers = client.readOffers(null)
+        allOffers = client.readOffers(
+                              TestUtils.createDummyQueryFeedOperationState(
+                                  ResourceType.Offer,
+                                  OperationType.ReadFeed,
+                                  new CosmosQueryRequestOptions(),
+                                  client
+                              )
+                          )
                           .map(FeedResponse::getResults)
                           .collectList()
                           .map(list -> list.stream().flatMap(Collection::stream).collect(Collectors.toList()))

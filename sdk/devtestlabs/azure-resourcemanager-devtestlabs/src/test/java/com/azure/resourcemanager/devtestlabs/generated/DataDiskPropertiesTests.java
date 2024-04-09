@@ -17,13 +17,13 @@ public final class DataDiskPropertiesTests {
         DataDiskProperties model =
             BinaryData
                 .fromString(
-                    "{\"attachNewDataDiskOptions\":{\"diskSizeGiB\":299337354,\"diskName\":\"ltha\",\"diskType\":\"Standard\"},\"existingLabDiskId\":\"smwutwbdsrezpd\",\"hostCaching\":\"ReadWrite\"}")
+                    "{\"attachNewDataDiskOptions\":{\"diskSizeGiB\":1554558708,\"diskName\":\"crpw\",\"diskType\":\"StandardSSD\"},\"existingLabDiskId\":\"noigbrnjwmwk\",\"hostCaching\":\"None\"}")
                 .toObject(DataDiskProperties.class);
-        Assertions.assertEquals(299337354, model.attachNewDataDiskOptions().diskSizeGiB());
-        Assertions.assertEquals("ltha", model.attachNewDataDiskOptions().diskName());
-        Assertions.assertEquals(StorageType.STANDARD, model.attachNewDataDiskOptions().diskType());
-        Assertions.assertEquals("smwutwbdsrezpd", model.existingLabDiskId());
-        Assertions.assertEquals(HostCachingOptions.READ_WRITE, model.hostCaching());
+        Assertions.assertEquals(1554558708, model.attachNewDataDiskOptions().diskSizeGiB());
+        Assertions.assertEquals("crpw", model.attachNewDataDiskOptions().diskName());
+        Assertions.assertEquals(StorageType.STANDARD_SSD, model.attachNewDataDiskOptions().diskType());
+        Assertions.assertEquals("noigbrnjwmwk", model.existingLabDiskId());
+        Assertions.assertEquals(HostCachingOptions.NONE, model.hostCaching());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,16 +32,16 @@ public final class DataDiskPropertiesTests {
             new DataDiskProperties()
                 .withAttachNewDataDiskOptions(
                     new AttachNewDataDiskOptions()
-                        .withDiskSizeGiB(299337354)
-                        .withDiskName("ltha")
-                        .withDiskType(StorageType.STANDARD))
-                .withExistingLabDiskId("smwutwbdsrezpd")
-                .withHostCaching(HostCachingOptions.READ_WRITE);
+                        .withDiskSizeGiB(1554558708)
+                        .withDiskName("crpw")
+                        .withDiskType(StorageType.STANDARD_SSD))
+                .withExistingLabDiskId("noigbrnjwmwk")
+                .withHostCaching(HostCachingOptions.NONE);
         model = BinaryData.fromObject(model).toObject(DataDiskProperties.class);
-        Assertions.assertEquals(299337354, model.attachNewDataDiskOptions().diskSizeGiB());
-        Assertions.assertEquals("ltha", model.attachNewDataDiskOptions().diskName());
-        Assertions.assertEquals(StorageType.STANDARD, model.attachNewDataDiskOptions().diskType());
-        Assertions.assertEquals("smwutwbdsrezpd", model.existingLabDiskId());
-        Assertions.assertEquals(HostCachingOptions.READ_WRITE, model.hostCaching());
+        Assertions.assertEquals(1554558708, model.attachNewDataDiskOptions().diskSizeGiB());
+        Assertions.assertEquals("crpw", model.attachNewDataDiskOptions().diskName());
+        Assertions.assertEquals(StorageType.STANDARD_SSD, model.attachNewDataDiskOptions().diskType());
+        Assertions.assertEquals("noigbrnjwmwk", model.existingLabDiskId());
+        Assertions.assertEquals(HostCachingOptions.NONE, model.hostCaching());
     }
 }

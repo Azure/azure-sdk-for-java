@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An application type version resource for the specified application type name resource. */
+/**
+ * An application type version resource for the specified application type name resource.
+ */
 @Fluent
 public final class ApplicationTypeVersionResourceInner extends ProxyResource {
     /*
@@ -45,13 +47,15 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ApplicationTypeVersionResourceInner class. */
+    /**
+     * Creates an instance of ApplicationTypeVersionResourceInner class.
+     */
     public ApplicationTypeVersionResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the application type version resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationTypeVersionResourceProperties innerProperties() {
@@ -60,7 +64,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
 
     /**
      * Get the location property: It will be deprecated in New API, resource location depends on the parent resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -69,7 +73,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
 
     /**
      * Set the location property: It will be deprecated in New API, resource location depends on the parent resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the ApplicationTypeVersionResourceInner object itself.
      */
@@ -80,7 +84,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
 
     /**
      * Get the tags property: Azure resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -89,7 +93,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
 
     /**
      * Set the tags property: Azure resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ApplicationTypeVersionResourceInner object itself.
      */
@@ -100,7 +104,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
 
     /**
      * Get the etag property: Azure resource etag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -109,7 +113,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -119,7 +123,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
     /**
      * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
      * response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -128,7 +132,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
 
     /**
      * Get the appPackageUrl property: The URL to the application package.
-     *
+     * 
      * @return the appPackageUrl value.
      */
     public String appPackageUrl() {
@@ -137,7 +141,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
 
     /**
      * Set the appPackageUrl property: The URL to the application package.
-     *
+     * 
      * @param appPackageUrl the appPackageUrl value to set.
      * @return the ApplicationTypeVersionResourceInner object itself.
      */
@@ -152,7 +156,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
     /**
      * Get the defaultParameterList property: List of application type parameters that can be overridden when creating
      * or updating the application.
-     *
+     * 
      * @return the defaultParameterList value.
      */
     public Map<String, String> defaultParameterList() {
@@ -161,7 +165,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

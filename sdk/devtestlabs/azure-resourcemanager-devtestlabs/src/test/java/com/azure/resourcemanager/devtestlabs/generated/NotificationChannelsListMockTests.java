@@ -14,6 +14,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.devtestlabs.DevTestLabsManager;
 import com.azure.resourcemanager.devtestlabs.models.NotificationChannel;
+import com.azure.resourcemanager.devtestlabs.models.NotificationChannelEventType;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -32,7 +33,7 @@ public final class NotificationChannelsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"webHookUrl\":\"huxiqhzlraymez\",\"emailRecipient\":\"skihmxrfd\",\"notificationLocale\":\"jrednwyysh\",\"description\":\"w\",\"events\":[],\"createdDate\":\"2021-08-02T10:16:43Z\",\"provisioningState\":\"fpwzyifrkgwltx\",\"uniqueIdentifier\":\"ipxgzdy\"},\"location\":\"msfayorpravk\",\"tags\":{\"aekqsykvwj\":\"eslabnsmjkwynq\",\"spxklu\":\"qpkevmyltjc\",\"ytzpo\":\"cclfgxannn\"},\"id\":\"ewxigpxvk\",\"name\":\"maupxvpi\",\"type\":\"dfaifyzyzeyuube\"}]}";
+            "{\"value\":[{\"properties\":{\"webHookUrl\":\"wcjsqggjhffbxrq\",\"emailRecipient\":\"ijpeuql\",\"notificationLocale\":\"x\",\"description\":\"ztv\",\"events\":[{\"eventName\":\"Cost\"},{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"AutoShutdown\"}],\"createdDate\":\"2021-06-21T22:46:32Z\",\"provisioningState\":\"wwa\",\"uniqueIdentifier\":\"cleqioulndhzyo\"},\"location\":\"ojhtollhs\",\"tags\":{\"lxpnovyoanf\":\"mytzln\"},\"id\":\"cswqa\",\"name\":\"ywv\",\"type\":\"xigvjrktpgaeuk\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,19 +65,21 @@ public final class NotificationChannelsListMockTests {
             manager
                 .notificationChannels()
                 .list(
-                    "meottawj",
-                    "osxw",
-                    "hnhjtfvpndpmi",
-                    "jpnwynudql",
-                    1502364938,
-                    "sauzpjlx",
+                    "ixmqrudjizcbf",
+                    "mcrunfhiucn",
+                    "fbcpaqktkrumzu",
+                    "dkyzbfvxov",
+                    781078177,
+                    "xiuxqggvqrnhy",
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("msfayorpravk", response.iterator().next().location());
-        Assertions.assertEquals("eslabnsmjkwynq", response.iterator().next().tags().get("aekqsykvwj"));
-        Assertions.assertEquals("huxiqhzlraymez", response.iterator().next().webhookUrl());
-        Assertions.assertEquals("skihmxrfd", response.iterator().next().emailRecipient());
-        Assertions.assertEquals("jrednwyysh", response.iterator().next().notificationLocale());
-        Assertions.assertEquals("w", response.iterator().next().description());
+        Assertions.assertEquals("ojhtollhs", response.iterator().next().location());
+        Assertions.assertEquals("mytzln", response.iterator().next().tags().get("lxpnovyoanf"));
+        Assertions.assertEquals("wcjsqggjhffbxrq", response.iterator().next().webhookUrl());
+        Assertions.assertEquals("ijpeuql", response.iterator().next().emailRecipient());
+        Assertions.assertEquals("x", response.iterator().next().notificationLocale());
+        Assertions.assertEquals("ztv", response.iterator().next().description());
+        Assertions
+            .assertEquals(NotificationChannelEventType.COST, response.iterator().next().events().get(0).eventName());
     }
 }

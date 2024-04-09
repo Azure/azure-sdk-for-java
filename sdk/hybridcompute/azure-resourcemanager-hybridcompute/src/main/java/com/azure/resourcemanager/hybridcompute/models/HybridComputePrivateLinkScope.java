@@ -96,11 +96,13 @@ public interface HybridComputePrivateLinkScope {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The HybridComputePrivateLinkScope definition stages. */
     interface DefinitionStages {
         /** The first stage of the HybridComputePrivateLinkScope definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the HybridComputePrivateLinkScope definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -119,6 +121,7 @@ public interface HybridComputePrivateLinkScope {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the HybridComputePrivateLinkScope definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -129,6 +132,7 @@ public interface HybridComputePrivateLinkScope {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the HybridComputePrivateLinkScope definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
@@ -149,6 +153,7 @@ public interface HybridComputePrivateLinkScope {
              */
             HybridComputePrivateLinkScope create(Context context);
         }
+
         /** The stage of the HybridComputePrivateLinkScope definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -159,6 +164,7 @@ public interface HybridComputePrivateLinkScope {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the HybridComputePrivateLinkScope definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -170,6 +176,7 @@ public interface HybridComputePrivateLinkScope {
             WithCreate withProperties(HybridComputePrivateLinkScopeProperties properties);
         }
     }
+
     /**
      * Begins update for the HybridComputePrivateLinkScope resource.
      *
@@ -194,6 +201,7 @@ public interface HybridComputePrivateLinkScope {
          */
         HybridComputePrivateLinkScope apply(Context context);
     }
+
     /** The HybridComputePrivateLinkScope update stages. */
     interface UpdateStages {
         /** The stage of the HybridComputePrivateLinkScope update allowing to specify tags. */
@@ -207,6 +215,7 @@ public interface HybridComputePrivateLinkScope {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

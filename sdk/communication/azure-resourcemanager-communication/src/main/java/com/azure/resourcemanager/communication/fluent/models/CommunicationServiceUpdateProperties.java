@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A class that describes the properties that can be updated for CommunicationService resource. */
+/**
+ * A class that describes the properties that can be updated for CommunicationService resource.
+ */
 @Fluent
 public final class CommunicationServiceUpdateProperties {
     /*
@@ -17,13 +19,15 @@ public final class CommunicationServiceUpdateProperties {
     @JsonProperty(value = "linkedDomains")
     private List<String> linkedDomains;
 
-    /** Creates an instance of CommunicationServiceUpdateProperties class. */
+    /**
+     * Creates an instance of CommunicationServiceUpdateProperties class.
+     */
     public CommunicationServiceUpdateProperties() {
     }
 
     /**
      * Get the linkedDomains property: List of email Domain resource Ids.
-     *
+     * 
      * @return the linkedDomains value.
      */
     public List<String> linkedDomains() {
@@ -32,7 +36,7 @@ public final class CommunicationServiceUpdateProperties {
 
     /**
      * Set the linkedDomains property: List of email Domain resource Ids.
-     *
+     * 
      * @param linkedDomains the linkedDomains value to set.
      * @return the CommunicationServiceUpdateProperties object itself.
      */
@@ -43,7 +47,7 @@ public final class CommunicationServiceUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,11 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.connectedvmware.models.GuestCredential;
 import com.azure.resourcemanager.connectedvmware.models.HttpProxyConfiguration;
 import com.azure.resourcemanager.connectedvmware.models.ProvisioningAction;
+import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines the resource properties. */
+/** Describes the properties of a Virtual Machine Guest Agent. */
 @Fluent
 public final class GuestAgentProperties {
     /*
@@ -26,6 +27,12 @@ public final class GuestAgentProperties {
      */
     @JsonProperty(value = "credentials")
     private GuestCredential credentials;
+
+    /*
+     * The resource id of the private link scope this machine is assigned to, if any.
+     */
+    @JsonProperty(value = "privateLinkScopeResourceId")
+    private String privateLinkScopeResourceId;
 
     /*
      * HTTP Proxy configuration for the VM.
@@ -58,10 +65,14 @@ public final class GuestAgentProperties {
     private List<ResourceStatus> statuses;
 
     /*
-     * Gets or sets the provisioning state.
+     * Gets the provisioning state.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
+
+    /** Creates an instance of GuestAgentProperties class. */
+    public GuestAgentProperties() {
+    }
 
     /**
      * Get the uuid property: Gets or sets a unique identifier for this resource.
@@ -89,6 +100,28 @@ public final class GuestAgentProperties {
      */
     public GuestAgentProperties withCredentials(GuestCredential credentials) {
         this.credentials = credentials;
+        return this;
+    }
+
+    /**
+     * Get the privateLinkScopeResourceId property: The resource id of the private link scope this machine is assigned
+     * to, if any.
+     *
+     * @return the privateLinkScopeResourceId value.
+     */
+    public String privateLinkScopeResourceId() {
+        return this.privateLinkScopeResourceId;
+    }
+
+    /**
+     * Set the privateLinkScopeResourceId property: The resource id of the private link scope this machine is assigned
+     * to, if any.
+     *
+     * @param privateLinkScopeResourceId the privateLinkScopeResourceId value to set.
+     * @return the GuestAgentProperties object itself.
+     */
+    public GuestAgentProperties withPrivateLinkScopeResourceId(String privateLinkScopeResourceId) {
+        this.privateLinkScopeResourceId = privateLinkScopeResourceId;
         return this;
     }
 
@@ -160,11 +193,11 @@ public final class GuestAgentProperties {
     }
 
     /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
+     * Get the provisioningState property: Gets the provisioning state.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

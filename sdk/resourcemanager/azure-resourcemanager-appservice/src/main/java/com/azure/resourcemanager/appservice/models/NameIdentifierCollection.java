@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.NameIdentifierInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of domain name identifiers. */
+/**
+ * Collection of domain name identifiers.
+ */
 @Fluent
 public final class NameIdentifierCollection {
     /*
@@ -25,13 +27,15 @@ public final class NameIdentifierCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of NameIdentifierCollection class. */
+    /**
+     * Creates an instance of NameIdentifierCollection class.
+     */
     public NameIdentifierCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<NameIdentifierInner> value() {
@@ -40,7 +44,7 @@ public final class NameIdentifierCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the NameIdentifierCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class NameIdentifierCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class NameIdentifierCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model NameIdentifierCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model NameIdentifierCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

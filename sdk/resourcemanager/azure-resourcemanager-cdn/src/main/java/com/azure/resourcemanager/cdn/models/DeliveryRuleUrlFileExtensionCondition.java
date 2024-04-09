@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Defines the UrlFileExtension condition for the delivery rule. */
+/**
+ * Defines the UrlFileExtension condition for the delivery rule.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
 @JsonTypeName("UrlFileExtension")
 @Fluent
@@ -22,8 +24,14 @@ public final class DeliveryRuleUrlFileExtensionCondition extends DeliveryRuleCon
     private UrlFileExtensionMatchConditionParameters parameters;
 
     /**
+     * Creates an instance of DeliveryRuleUrlFileExtensionCondition class.
+     */
+    public DeliveryRuleUrlFileExtensionCondition() {
+    }
+
+    /**
      * Get the parameters property: Defines the parameters for the condition.
-     *
+     * 
      * @return the parameters value.
      */
     public UrlFileExtensionMatchConditionParameters parameters() {
@@ -32,7 +40,7 @@ public final class DeliveryRuleUrlFileExtensionCondition extends DeliveryRuleCon
 
     /**
      * Set the parameters property: Defines the parameters for the condition.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DeliveryRuleUrlFileExtensionCondition object itself.
      */
@@ -43,17 +51,15 @@ public final class DeliveryRuleUrlFileExtensionCondition extends DeliveryRuleCon
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property parameters in model DeliveryRuleUrlFileExtensionCondition"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property parameters in model DeliveryRuleUrlFileExtensionCondition"));
         } else {
             parameters().validate();
         }

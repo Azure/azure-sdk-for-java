@@ -3,14 +3,12 @@
 
 package com.azure.messaging.webpubsub.client;
 
-import com.azure.messaging.webpubsub.WebPubSubServiceAsyncClient;
+import com.azure.messaging.webpubsub.WebPubSubServiceClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClientBuilder;
 import com.azure.messaging.webpubsub.client.models.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.models.WebPubSubClientCredential;
-import com.azure.messaging.webpubsub.client.models.WebPubSubJsonProtocol;
+import com.azure.messaging.webpubsub.client.models.WebPubSubProtocolType;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
-import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
-import reactor.core.publisher.Mono;
 
 public final class ReadmeSamples {
 
@@ -24,20 +22,20 @@ public final class ReadmeSamples {
 
     public void createClientFromCredential() {
         // BEGIN: readme-sample-createClientFromCredential
-        // WebPubSubServiceAsyncClient is from com.azure:azure-messaging-webpubsub
+        // WebPubSubServiceClient is from com.azure:azure-messaging-webpubsub
         // create WebPubSub service client
-        WebPubSubServiceAsyncClient serverClient = new WebPubSubServiceClientBuilder()
+        WebPubSubServiceClient serverClient = new WebPubSubServiceClientBuilder()
             .connectionString("<connection-string>")
             .hub("<hub>>")
-            .buildAsyncClient();
+            .buildClient();
 
-        // wrap WebPubSubServiceAsyncClient.getClientAccessToken as WebPubSubClientCredential
-        WebPubSubClientCredential clientCredential = new WebPubSubClientCredential(Mono.defer(() ->
-            serverClient.getClientAccessToken(new GetClientAccessTokenOptions()
+        // wrap WebPubSubServiceClient.getClientAccessToken as WebPubSubClientCredential
+        WebPubSubClientCredential clientCredential = new WebPubSubClientCredential(
+            () -> serverClient.getClientAccessToken(new GetClientAccessTokenOptions()
                     .setUserId("<user-name>")
                     .addRole("webpubsub.joinLeaveGroup")
                     .addRole("webpubsub.sendToGroup"))
-                .map(WebPubSubClientAccessToken::getUrl)));
+                .getUrl());
 
         // create WebPubSub client
         WebPubSubClient client = new WebPubSubClientBuilder()
@@ -50,7 +48,7 @@ public final class ReadmeSamples {
         // BEGIN: readme-sample-createClientWithProtocol
         WebPubSubClient client = new WebPubSubClientBuilder()
             .clientAccessUrl("<client-access-url>")
-            .protocol(new WebPubSubJsonProtocol())
+            .protocol(WebPubSubProtocolType.JSON_PROTOCOL)
             .buildClient();
         // END: readme-sample-createClientWithProtocol
     }

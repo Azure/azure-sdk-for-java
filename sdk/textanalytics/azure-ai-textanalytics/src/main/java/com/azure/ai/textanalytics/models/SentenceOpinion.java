@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link SentenceOpinion} model.
+ * The {@code SentenceOpinion} model.
  */
 @Immutable
 public final class SentenceOpinion {
@@ -28,6 +28,12 @@ public final class SentenceOpinion {
                     sentenceOpinion.setAssessments(assessments);
                 }
             });
+    }
+
+    /**
+     * Constructs a {@code SentenceOpinion} model.
+     */
+    public SentenceOpinion() {
     }
 
     /**

@@ -12,14 +12,14 @@ import org.junit.jupiter.api.Assertions;
 public final class EventTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Event model = BinaryData.fromString("{\"eventName\":\"AutoShutdown\"}").toObject(Event.class);
-        Assertions.assertEquals(NotificationChannelEventType.AUTO_SHUTDOWN, model.eventName());
+        Event model = BinaryData.fromString("{\"eventName\":\"Cost\"}").toObject(Event.class);
+        Assertions.assertEquals(NotificationChannelEventType.COST, model.eventName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Event model = new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN);
+        Event model = new Event().withEventName(NotificationChannelEventType.COST);
         model = BinaryData.fromObject(model).toObject(Event.class);
-        Assertions.assertEquals(NotificationChannelEventType.AUTO_SHUTDOWN, model.eventName());
+        Assertions.assertEquals(NotificationChannelEventType.COST, model.eventName());
     }
 }

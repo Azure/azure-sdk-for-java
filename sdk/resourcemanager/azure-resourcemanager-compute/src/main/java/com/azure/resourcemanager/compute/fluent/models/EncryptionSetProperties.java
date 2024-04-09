@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The EncryptionSetProperties model. */
+/**
+ * The EncryptionSetProperties model.
+ */
 @Fluent
 public final class EncryptionSetProperties {
     /*
@@ -66,13 +68,15 @@ public final class EncryptionSetProperties {
     @JsonProperty(value = "federatedClientId")
     private String federatedClientId;
 
-    /** Creates an instance of EncryptionSetProperties class. */
+    /**
+     * Creates an instance of EncryptionSetProperties class.
+     */
     public EncryptionSetProperties() {
     }
 
     /**
      * Get the encryptionType property: The type of key used to encrypt the data of the disk.
-     *
+     * 
      * @return the encryptionType value.
      */
     public DiskEncryptionSetType encryptionType() {
@@ -81,7 +85,7 @@ public final class EncryptionSetProperties {
 
     /**
      * Set the encryptionType property: The type of key used to encrypt the data of the disk.
-     *
+     * 
      * @param encryptionType the encryptionType value to set.
      * @return the EncryptionSetProperties object itself.
      */
@@ -92,7 +96,7 @@ public final class EncryptionSetProperties {
 
     /**
      * Get the activeKey property: The key vault key which is currently used by this disk encryption set.
-     *
+     * 
      * @return the activeKey value.
      */
     public KeyForDiskEncryptionSet activeKey() {
@@ -101,7 +105,7 @@ public final class EncryptionSetProperties {
 
     /**
      * Set the activeKey property: The key vault key which is currently used by this disk encryption set.
-     *
+     * 
      * @param activeKey the activeKey value to set.
      * @return the EncryptionSetProperties object itself.
      */
@@ -113,7 +117,7 @@ public final class EncryptionSetProperties {
     /**
      * Get the previousKeys property: A readonly collection of key vault keys previously used by this disk encryption
      * set while a key rotation is in progress. It will be empty if there is no ongoing key rotation.
-     *
+     * 
      * @return the previousKeys value.
      */
     public List<KeyForDiskEncryptionSet> previousKeys() {
@@ -122,7 +126,7 @@ public final class EncryptionSetProperties {
 
     /**
      * Get the provisioningState property: The disk encryption set provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -132,7 +136,7 @@ public final class EncryptionSetProperties {
     /**
      * Get the rotationToLatestKeyVersionEnabled property: Set this flag to true to enable auto-updating of this disk
      * encryption set to the latest key version.
-     *
+     * 
      * @return the rotationToLatestKeyVersionEnabled value.
      */
     public Boolean rotationToLatestKeyVersionEnabled() {
@@ -142,7 +146,7 @@ public final class EncryptionSetProperties {
     /**
      * Set the rotationToLatestKeyVersionEnabled property: Set this flag to true to enable auto-updating of this disk
      * encryption set to the latest key version.
-     *
+     * 
      * @param rotationToLatestKeyVersionEnabled the rotationToLatestKeyVersionEnabled value to set.
      * @return the EncryptionSetProperties object itself.
      */
@@ -153,7 +157,7 @@ public final class EncryptionSetProperties {
 
     /**
      * Get the lastKeyRotationTimestamp property: The time when the active key of this disk encryption set was updated.
-     *
+     * 
      * @return the lastKeyRotationTimestamp value.
      */
     public OffsetDateTime lastKeyRotationTimestamp() {
@@ -163,7 +167,7 @@ public final class EncryptionSetProperties {
     /**
      * Get the autoKeyRotationError property: The error that was encountered during auto-key rotation. If an error is
      * present, then auto-key rotation will not be attempted until the error on this disk encryption set is fixed.
-     *
+     * 
      * @return the autoKeyRotationError value.
      */
     public ApiError autoKeyRotationError() {
@@ -171,9 +175,9 @@ public final class EncryptionSetProperties {
     }
 
     /**
-     * Get the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
-     * Setting the value to 'None' will clear the property.
-     *
+     * Get the federatedClientId property: Multi-tenant application client id to access key vault in a different
+     * tenant. Setting the value to 'None' will clear the property.
+     * 
      * @return the federatedClientId value.
      */
     public String federatedClientId() {
@@ -181,9 +185,9 @@ public final class EncryptionSetProperties {
     }
 
     /**
-     * Set the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
-     * Setting the value to 'None' will clear the property.
-     *
+     * Set the federatedClientId property: Multi-tenant application client id to access key vault in a different
+     * tenant. Setting the value to 'None' will clear the property.
+     * 
      * @param federatedClientId the federatedClientId value to set.
      * @return the EncryptionSetProperties object itself.
      */
@@ -194,7 +198,7 @@ public final class EncryptionSetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

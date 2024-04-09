@@ -9,23 +9,25 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result data of a query. */
+/**
+ * The result data of a query.
+ */
 @Fluent
 public final class Metric {
     /*
-     * the metric Id.
+     * The metric Id.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
-     * the resource type of the metric resource.
+     * The resource type of the metric resource.
      */
     @JsonProperty(value = "type", required = true)
     private String type;
 
     /*
-     * the name and the display name of the metric, i.e. it is localizable string.
+     * The name and the display name of the metric, i.e. it is localizable string.
      */
     @JsonProperty(value = "name", required = true)
     private LocalizableString name;
@@ -55,14 +57,14 @@ public final class Metric {
     private MetricUnit unit;
 
     /*
-     * the time series returned when a data query is performed.
+     * The time series returned when a data query is performed.
      */
     @JsonProperty(value = "timeseries", required = true)
     private List<TimeSeriesElement> timeseries;
 
     /**
      * Creates an instance of Metric class.
-     *
+     * 
      * @param id the id value to set.
      * @param type the type value to set.
      * @param name the name value to set.
@@ -70,12 +72,11 @@ public final class Metric {
      * @param timeseries the timeseries value to set.
      */
     @JsonCreator
-    public Metric(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "type", required = true) String type,
-            @JsonProperty(value = "name", required = true) LocalizableString name,
-            @JsonProperty(value = "unit", required = true) MetricUnit unit,
-            @JsonProperty(value = "timeseries", required = true) List<TimeSeriesElement> timeseries) {
+    public Metric(@JsonProperty(value = "id", required = true) String id,
+        @JsonProperty(value = "type", required = true) String type,
+        @JsonProperty(value = "name", required = true) LocalizableString name,
+        @JsonProperty(value = "unit", required = true) MetricUnit unit,
+        @JsonProperty(value = "timeseries", required = true) List<TimeSeriesElement> timeseries) {
         this.id = id;
         this.type = type;
         this.name = name;
@@ -84,8 +85,8 @@ public final class Metric {
     }
 
     /**
-     * Get the id property: the metric Id.
-     *
+     * Get the id property: The metric Id.
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -93,8 +94,8 @@ public final class Metric {
     }
 
     /**
-     * Get the type property: the resource type of the metric resource.
-     *
+     * Get the type property: The resource type of the metric resource.
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -102,8 +103,8 @@ public final class Metric {
     }
 
     /**
-     * Get the name property: the name and the display name of the metric, i.e. it is localizable string.
-     *
+     * Get the name property: The name and the display name of the metric, i.e. it is localizable string.
+     * 
      * @return the name value.
      */
     public LocalizableString getName() {
@@ -112,7 +113,7 @@ public final class Metric {
 
     /**
      * Get the displayDescription property: Detailed description of this metric.
-     *
+     * 
      * @return the displayDescription value.
      */
     public String getDisplayDescription() {
@@ -121,7 +122,7 @@ public final class Metric {
 
     /**
      * Set the displayDescription property: Detailed description of this metric.
-     *
+     * 
      * @param displayDescription the displayDescription value to set.
      * @return the Metric object itself.
      */
@@ -132,7 +133,7 @@ public final class Metric {
 
     /**
      * Get the errorCode property: 'Success' or the error details on query failures for this metric.
-     *
+     * 
      * @return the errorCode value.
      */
     public String getErrorCode() {
@@ -141,7 +142,7 @@ public final class Metric {
 
     /**
      * Set the errorCode property: 'Success' or the error details on query failures for this metric.
-     *
+     * 
      * @param errorCode the errorCode value to set.
      * @return the Metric object itself.
      */
@@ -152,7 +153,7 @@ public final class Metric {
 
     /**
      * Get the errorMessage property: Error message encountered querying this specific metric.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String getErrorMessage() {
@@ -161,7 +162,7 @@ public final class Metric {
 
     /**
      * Set the errorMessage property: Error message encountered querying this specific metric.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the Metric object itself.
      */
@@ -172,7 +173,7 @@ public final class Metric {
 
     /**
      * Get the unit property: The unit of the metric.
-     *
+     * 
      * @return the unit value.
      */
     public MetricUnit getUnit() {
@@ -180,38 +181,11 @@ public final class Metric {
     }
 
     /**
-     * Get the timeseries property: the time series returned when a data query is performed.
-     *
+     * Get the timeseries property: The time series returned when a data query is performed.
+     * 
      * @return the timeseries value.
      */
     public List<TimeSeriesElement> getTimeseries() {
         return this.timeseries;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getId() == null) {
-            throw new IllegalArgumentException("Missing required property id in model Metric");
-        }
-        if (getType() == null) {
-            throw new IllegalArgumentException("Missing required property type in model Metric");
-        }
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model Metric");
-        } else {
-            getName().validate();
-        }
-        if (getUnit() == null) {
-            throw new IllegalArgumentException("Missing required property unit in model Metric");
-        }
-        if (getTimeseries() == null) {
-            throw new IllegalArgumentException("Missing required property timeseries in model Metric");
-        } else {
-            getTimeseries().forEach(e -> e.validate());
-        }
     }
 }

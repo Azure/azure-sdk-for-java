@@ -29,7 +29,7 @@ public class CosmosTriggerTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosTriggerTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildClient();
@@ -37,13 +37,13 @@ public class CosmosTriggerTest extends TestSuiteBase {
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void createTrigger() throws Exception {
         CosmosTriggerProperties trigger = getCosmosTriggerProperties();
 
@@ -52,7 +52,7 @@ public class CosmosTriggerTest extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void readTrigger() throws Exception {
         CosmosTriggerProperties trigger = getCosmosTriggerProperties();
 
@@ -63,7 +63,7 @@ public class CosmosTriggerTest extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void replaceTrigger() throws Exception {
         CosmosTriggerProperties trigger = getCosmosTriggerProperties();
 
@@ -76,7 +76,7 @@ public class CosmosTriggerTest extends TestSuiteBase {
         validateResponse(trigger, replace);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void deleteTrigger() throws Exception {
         CosmosTriggerProperties trigger = getCosmosTriggerProperties();
 
@@ -86,7 +86,7 @@ public class CosmosTriggerTest extends TestSuiteBase {
     }
 
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void readAllTriggers() throws Exception {
         CosmosTriggerProperties trigger = getCosmosTriggerProperties();
 
@@ -110,7 +110,7 @@ public class CosmosTriggerTest extends TestSuiteBase {
         return trigger;
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void queryTriggers() throws Exception {
         CosmosTriggerProperties properties = getCosmosTriggerProperties();
         container.getScripts().createTrigger(properties);

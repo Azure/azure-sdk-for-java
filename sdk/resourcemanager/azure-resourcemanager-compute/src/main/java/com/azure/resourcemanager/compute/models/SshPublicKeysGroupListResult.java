@@ -10,7 +10,9 @@ import com.azure.resourcemanager.compute.fluent.models.SshPublicKeyResourceInner
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list SSH public keys operation response. */
+/**
+ * The list SSH public keys operation response.
+ */
 @Fluent
 public final class SshPublicKeysGroupListResult {
     /*
@@ -26,13 +28,15 @@ public final class SshPublicKeysGroupListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SshPublicKeysGroupListResult class. */
+    /**
+     * Creates an instance of SshPublicKeysGroupListResult class.
+     */
     public SshPublicKeysGroupListResult() {
     }
 
     /**
      * Get the value property: The list of SSH public keys.
-     *
+     * 
      * @return the value value.
      */
     public List<SshPublicKeyResourceInner> value() {
@@ -41,7 +45,7 @@ public final class SshPublicKeysGroupListResult {
 
     /**
      * Set the value property: The list of SSH public keys.
-     *
+     * 
      * @param value the value value to set.
      * @return the SshPublicKeysGroupListResult object itself.
      */
@@ -53,7 +57,7 @@ public final class SshPublicKeysGroupListResult {
     /**
      * Get the nextLink property: The URI to fetch the next page of SSH public keys. Call ListNext() with this URI to
      * fetch the next page of SSH public keys.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +67,7 @@ public final class SshPublicKeysGroupListResult {
     /**
      * Set the nextLink property: The URI to fetch the next page of SSH public keys. Call ListNext() with this URI to
      * fetch the next page of SSH public keys.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SshPublicKeysGroupListResult object itself.
      */
@@ -74,15 +78,13 @@ public final class SshPublicKeysGroupListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model SshPublicKeysGroupListResult"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model SshPublicKeysGroupListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

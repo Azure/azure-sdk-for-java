@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details needed if the VM was encrypted at the time of backup. */
+/**
+ * Details needed if the VM was encrypted at the time of backup.
+ */
 @Fluent
 public final class EncryptionDetails {
     /*
@@ -40,14 +42,16 @@ public final class EncryptionDetails {
     @JsonProperty(value = "secretKeyVaultId")
     private String secretKeyVaultId;
 
-    /** Creates an instance of EncryptionDetails class. */
+    /**
+     * Creates an instance of EncryptionDetails class.
+     */
     public EncryptionDetails() {
     }
 
     /**
-     * Get the encryptionEnabled property: Identifies whether this backup copy represents an encrypted VM at the time of
-     * backup.
-     *
+     * Get the encryptionEnabled property: Identifies whether this backup copy represents an encrypted VM at the time
+     * of backup.
+     * 
      * @return the encryptionEnabled value.
      */
     public Boolean encryptionEnabled() {
@@ -55,9 +59,9 @@ public final class EncryptionDetails {
     }
 
     /**
-     * Set the encryptionEnabled property: Identifies whether this backup copy represents an encrypted VM at the time of
-     * backup.
-     *
+     * Set the encryptionEnabled property: Identifies whether this backup copy represents an encrypted VM at the time
+     * of backup.
+     * 
      * @param encryptionEnabled the encryptionEnabled value to set.
      * @return the EncryptionDetails object itself.
      */
@@ -68,7 +72,7 @@ public final class EncryptionDetails {
 
     /**
      * Get the kekUrl property: Key Url.
-     *
+     * 
      * @return the kekUrl value.
      */
     public String kekUrl() {
@@ -77,7 +81,7 @@ public final class EncryptionDetails {
 
     /**
      * Set the kekUrl property: Key Url.
-     *
+     * 
      * @param kekUrl the kekUrl value to set.
      * @return the EncryptionDetails object itself.
      */
@@ -88,7 +92,7 @@ public final class EncryptionDetails {
 
     /**
      * Get the secretKeyUrl property: Secret Url.
-     *
+     * 
      * @return the secretKeyUrl value.
      */
     public String secretKeyUrl() {
@@ -97,7 +101,7 @@ public final class EncryptionDetails {
 
     /**
      * Set the secretKeyUrl property: Secret Url.
-     *
+     * 
      * @param secretKeyUrl the secretKeyUrl value to set.
      * @return the EncryptionDetails object itself.
      */
@@ -108,7 +112,7 @@ public final class EncryptionDetails {
 
     /**
      * Get the kekVaultId property: ID of Key Vault where KEK is stored.
-     *
+     * 
      * @return the kekVaultId value.
      */
     public String kekVaultId() {
@@ -117,7 +121,7 @@ public final class EncryptionDetails {
 
     /**
      * Set the kekVaultId property: ID of Key Vault where KEK is stored.
-     *
+     * 
      * @param kekVaultId the kekVaultId value to set.
      * @return the EncryptionDetails object itself.
      */
@@ -128,7 +132,7 @@ public final class EncryptionDetails {
 
     /**
      * Get the secretKeyVaultId property: ID of Key Vault where Secret is stored.
-     *
+     * 
      * @return the secretKeyVaultId value.
      */
     public String secretKeyVaultId() {
@@ -137,7 +141,7 @@ public final class EncryptionDetails {
 
     /**
      * Set the secretKeyVaultId property: ID of Key Vault where Secret is stored.
-     *
+     * 
      * @param secretKeyVaultId the secretKeyVaultId value to set.
      * @return the EncryptionDetails object itself.
      */
@@ -148,7 +152,7 @@ public final class EncryptionDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

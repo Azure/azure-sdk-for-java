@@ -64,4 +64,11 @@ public interface ApplicationClient {
      * @return the ApplicationDefinitionsClient object.
      */
     ApplicationDefinitionsClient getApplicationDefinitions();
+
+    /**
+     * Gets the JitRequestsClient object to access its operations.
+     *
+     * @return the JitRequestsClient object.
+     */
+    JitRequestsClient getJitRequests();
 }

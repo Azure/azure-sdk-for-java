@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a scale-in policy for a virtual machine scale set. */
+/**
+ * Describes a scale-in policy for a virtual machine scale set.
+ */
 @Fluent
 public final class ScaleInPolicy {
     /*
@@ -34,7 +36,9 @@ public final class ScaleInPolicy {
     @JsonProperty(value = "forceDeletion")
     private Boolean forceDeletion;
 
-    /** Creates an instance of ScaleInPolicy class. */
+    /**
+     * Creates an instance of ScaleInPolicy class.
+     */
     public ScaleInPolicy() {
     }
 
@@ -51,7 +55,7 @@ public final class ScaleInPolicy {
      * machines that are not protected from scale-in will be chosen for removal. For zonal virtual machine scale sets,
      * the scale set will first be balanced across zones. Within each zone, the newest virtual machines that are not
      * protected will be chosen for removal. &lt;br&gt;&lt;br&gt;.
-     *
+     * 
      * @return the rules value.
      */
     public List<VirtualMachineScaleSetScaleInRules> rules() {
@@ -71,7 +75,7 @@ public final class ScaleInPolicy {
      * machines that are not protected from scale-in will be chosen for removal. For zonal virtual machine scale sets,
      * the scale set will first be balanced across zones. Within each zone, the newest virtual machines that are not
      * protected will be chosen for removal. &lt;br&gt;&lt;br&gt;.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the ScaleInPolicy object itself.
      */
@@ -83,7 +87,7 @@ public final class ScaleInPolicy {
     /**
      * Get the forceDeletion property: This property allows you to specify if virtual machines chosen for removal have
      * to be force deleted when a virtual machine scale set is being scaled-in.(Feature in Preview).
-     *
+     * 
      * @return the forceDeletion value.
      */
     public Boolean forceDeletion() {
@@ -93,7 +97,7 @@ public final class ScaleInPolicy {
     /**
      * Set the forceDeletion property: This property allows you to specify if virtual machines chosen for removal have
      * to be force deleted when a virtual machine scale set is being scaled-in.(Feature in Preview).
-     *
+     * 
      * @param forceDeletion the forceDeletion value to set.
      * @return the ScaleInPolicy object itself.
      */
@@ -104,7 +108,7 @@ public final class ScaleInPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

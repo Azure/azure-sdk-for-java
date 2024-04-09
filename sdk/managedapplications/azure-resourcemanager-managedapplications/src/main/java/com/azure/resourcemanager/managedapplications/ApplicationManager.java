@@ -27,9 +27,11 @@ import com.azure.resourcemanager.managedapplications.fluent.ApplicationClient;
 import com.azure.resourcemanager.managedapplications.implementation.ApplicationClientBuilder;
 import com.azure.resourcemanager.managedapplications.implementation.ApplicationDefinitionsImpl;
 import com.azure.resourcemanager.managedapplications.implementation.ApplicationsImpl;
+import com.azure.resourcemanager.managedapplications.implementation.JitRequestsImpl;
 import com.azure.resourcemanager.managedapplications.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.managedapplications.models.ApplicationDefinitions;
 import com.azure.resourcemanager.managedapplications.models.Applications;
+import com.azure.resourcemanager.managedapplications.models.JitRequests;
 import com.azure.resourcemanager.managedapplications.models.ResourceProviders;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -45,6 +47,8 @@ public final class ApplicationManager {
     private Applications applications;
 
     private ApplicationDefinitions applicationDefinitions;
+
+    private JitRequests jitRequests;
 
     private final ApplicationClient clientObject;
 
@@ -211,7 +215,7 @@ public final class ApplicationManager {
                 .append("-")
                 .append("com.azure.resourcemanager.managedapplications")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -306,8 +310,22 @@ public final class ApplicationManager {
     }
 
     /**
-     * @return Wrapped service client ApplicationClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets the resource collection API of JitRequests. It manages JitRequestDefinition.
+     *
+     * @return Resource collection API of JitRequests.
+     */
+    public JitRequests jitRequests() {
+        if (this.jitRequests == null) {
+            this.jitRequests = new JitRequestsImpl(clientObject.getJitRequests(), this);
+        }
+        return jitRequests;
+    }
+
+    /**
+     * Gets wrapped service client ApplicationClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client ApplicationClient.
      */
     public ApplicationClient serviceClient() {
         return this.clientObject;

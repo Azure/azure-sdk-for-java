@@ -60,9 +60,9 @@ public final class GlobalSchedulesRetargetMockTests {
         manager
             .globalSchedules()
             .retarget(
-                "nxkympqanxrjk",
-                "xtwbta",
-                new RetargetScheduleProperties().withCurrentResourceId("pnyghs").withTargetResourceId("cyl"),
+                "ckyeclcdigpta",
+                "brzmqxucycijoclx",
+                new RetargetScheduleProperties().withCurrentResourceId("tgjcy").withTargetResourceId("zjd"),
                 com.azure.core.util.Context.NONE);
     }
 }

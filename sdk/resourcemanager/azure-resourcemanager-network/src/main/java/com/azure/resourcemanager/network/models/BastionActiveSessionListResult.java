@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.BastionActiveSessionInner
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for GetActiveSessions. */
+/**
+ * Response for GetActiveSessions.
+ */
 @Fluent
 public final class BastionActiveSessionListResult {
     /*
@@ -24,13 +26,15 @@ public final class BastionActiveSessionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of BastionActiveSessionListResult class. */
+    /**
+     * Creates an instance of BastionActiveSessionListResult class.
+     */
     public BastionActiveSessionListResult() {
     }
 
     /**
      * Get the value property: List of active sessions on the bastion.
-     *
+     * 
      * @return the value value.
      */
     public List<BastionActiveSessionInner> value() {
@@ -39,7 +43,7 @@ public final class BastionActiveSessionListResult {
 
     /**
      * Set the value property: List of active sessions on the bastion.
-     *
+     * 
      * @param value the value value to set.
      * @return the BastionActiveSessionListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class BastionActiveSessionListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class BastionActiveSessionListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the BastionActiveSessionListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class BastionActiveSessionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

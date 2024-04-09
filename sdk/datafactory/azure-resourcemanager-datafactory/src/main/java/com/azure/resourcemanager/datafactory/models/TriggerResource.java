@@ -8,90 +8,103 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.fluent.models.TriggerResourceInner;
 
-/** An immutable client-side representation of TriggerResource. */
+/**
+ * An immutable client-side representation of TriggerResource.
+ */
 public interface TriggerResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the properties property: Properties of the trigger.
-     *
+     * 
      * @return the properties value.
      */
     Trigger properties();
 
     /**
      * Gets the name property: The resource name.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the etag property: Etag identifies change in the resource.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.datafactory.fluent.models.TriggerResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     TriggerResourceInner innerModel();
 
-    /** The entirety of the TriggerResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithProperties,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the TriggerResource definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
-    /** The TriggerResource definition stages. */
+
+    /**
+     * The TriggerResource definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the TriggerResource definition. */
+        /**
+         * The first stage of the TriggerResource definition.
+         */
         interface Blank extends WithParentResource {
         }
-        /** The stage of the TriggerResource definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the TriggerResource definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, factoryName.
-             *
+             * 
              * @param resourceGroupName The resource group name.
              * @param factoryName The factory name.
              * @return the next definition stage.
              */
             WithProperties withExistingFactory(String resourceGroupName, String factoryName);
         }
-        /** The stage of the TriggerResource definition allowing to specify properties. */
+
+        /**
+         * The stage of the TriggerResource definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: Properties of the trigger..
-             *
+             * 
              * @param properties Properties of the trigger.
              * @return the next definition stage.
              */
             WithCreate withProperties(Trigger properties);
         }
+
         /**
          * The stage of the TriggerResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -99,91 +112,106 @@ public interface TriggerResource {
         interface WithCreate extends DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             TriggerResource create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             TriggerResource create(Context context);
         }
-        /** The stage of the TriggerResource definition allowing to specify ifMatch. */
+
+        /**
+         * The stage of the TriggerResource definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the trigger entity. Should only be specified for update, for
              * which it should match existing entity or can be * for unconditional update..
-             *
+             * 
              * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
-             *     existing entity or can be * for unconditional update.
+             * existing entity or can be * for unconditional update.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the TriggerResource resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     TriggerResource.Update update();
 
-    /** The template for TriggerResource update. */
+    /**
+     * The template for TriggerResource update.
+     */
     interface Update extends UpdateStages.WithProperties, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         TriggerResource apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         TriggerResource apply(Context context);
     }
-    /** The TriggerResource update stages. */
+
+    /**
+     * The TriggerResource update stages.
+     */
     interface UpdateStages {
-        /** The stage of the TriggerResource update allowing to specify properties. */
+        /**
+         * The stage of the TriggerResource update allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: Properties of the trigger..
-             *
+             * 
              * @param properties Properties of the trigger.
              * @return the next definition stage.
              */
             Update withProperties(Trigger properties);
         }
-        /** The stage of the TriggerResource update allowing to specify ifMatch. */
+
+        /**
+         * The stage of the TriggerResource update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the trigger entity. Should only be specified for update, for
              * which it should match existing entity or can be * for unconditional update..
-             *
+             * 
              * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
-             *     existing entity or can be * for unconditional update.
+             * existing entity or can be * for unconditional update.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     TriggerResource refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -191,7 +219,7 @@ public interface TriggerResource {
 
     /**
      * Subscribe event trigger to events.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation.
@@ -200,7 +228,7 @@ public interface TriggerResource {
 
     /**
      * Subscribe event trigger to events.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -211,7 +239,7 @@ public interface TriggerResource {
 
     /**
      * Get a trigger's event subscription status.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -222,7 +250,7 @@ public interface TriggerResource {
 
     /**
      * Get a trigger's event subscription status.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a trigger's event subscription status.
@@ -231,7 +259,7 @@ public interface TriggerResource {
 
     /**
      * Unsubscribe event trigger from events.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation.
@@ -240,7 +268,7 @@ public interface TriggerResource {
 
     /**
      * Unsubscribe event trigger from events.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -251,7 +279,7 @@ public interface TriggerResource {
 
     /**
      * Starts a trigger.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -259,7 +287,7 @@ public interface TriggerResource {
 
     /**
      * Starts a trigger.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -269,7 +297,7 @@ public interface TriggerResource {
 
     /**
      * Stops a trigger.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -277,7 +305,7 @@ public interface TriggerResource {
 
     /**
      * Stops a trigger.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

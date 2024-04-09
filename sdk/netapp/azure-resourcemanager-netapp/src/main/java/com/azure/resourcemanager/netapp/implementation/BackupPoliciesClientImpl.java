@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BackupPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BackupPoliciesClient.
+ */
 public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BackupPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetAppManagementClientImpl client;
 
     /**
      * Initializes an instance of BackupPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BackupPoliciesClientImpl(NetAppManagementClientImpl client) {
-        this.service =
-            RestProxy.create(BackupPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(BackupPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,87 +72,63 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     @Host("{$host}")
     @ServiceInterface(name = "NetAppManagementClie")
     public interface BackupPoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupPolicies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupPolicies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BackupPoliciesList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<BackupPoliciesList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BackupPolicyInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("backupPolicyName") String backupPolicyName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("backupPolicyName") String backupPolicyName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BackupPolicyInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BackupPolicyInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("backupPolicyName") String backupPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("backupPolicyName") String backupPolicyName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BackupPolicyPatch body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("backupPolicyName") String backupPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") BackupPolicyInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("backupPolicyName") String backupPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") BackupPolicyPatch body,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("backupPolicyName") String backupPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("backupPolicyName") String backupPolicyName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List backup policies
-     *
-     * <p>List backup policies for Netapp Account.
-     *
+     * 
+     * List backup policies for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -157,16 +139,12 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BackupPolicyInner>> listSinglePageAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -177,29 +155,18 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<BackupPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<BackupPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List backup policies
-     *
-     * <p>List backup policies for Netapp Account.
-     *
+     * 
+     * List backup policies for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
@@ -209,19 +176,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return list of Backup Policies along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BackupPolicyInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<PagedResponse<BackupPolicyInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -233,25 +196,17 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * List backup policies
-     *
-     * <p>List backup policies for Netapp Account.
-     *
+     * 
+     * List backup policies for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -266,9 +221,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
 
     /**
      * List backup policies
-     *
-     * <p>List backup policies for Netapp Account.
-     *
+     * 
+     * List backup policies for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
@@ -284,9 +239,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
 
     /**
      * List backup policies
-     *
-     * <p>List backup policies for Netapp Account.
-     *
+     * 
+     * List backup policies for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -301,9 +256,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
 
     /**
      * List backup policies
-     *
-     * <p>List backup policies for Netapp Account.
-     *
+     * 
+     * List backup policies for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
@@ -319,9 +274,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
 
     /**
      * Get a backup Policy
-     *
-     * <p>Get a particular backup Policy.
-     *
+     * 
+     * Get a particular backup Policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -331,19 +286,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return a particular backup Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String backupPolicyName) {
+    private Mono<Response<BackupPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String backupPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -358,26 +309,16 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            backupPolicyName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, backupPolicyName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a backup Policy
-     *
-     * <p>Get a particular backup Policy.
-     *
+     * 
+     * Get a particular backup Policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -388,19 +329,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return a particular backup Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String backupPolicyName, Context context) {
+    private Mono<Response<BackupPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String backupPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -415,23 +352,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                backupPolicyName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            backupPolicyName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get a backup Policy
-     *
-     * <p>Get a particular backup Policy.
-     *
+     * 
+     * Get a particular backup Policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -448,9 +377,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
 
     /**
      * Get a backup Policy
-     *
-     * <p>Get a particular backup Policy.
-     *
+     * 
+     * Get a particular backup Policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -461,16 +390,16 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return a particular backup Policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BackupPolicyInner> getWithResponse(
-        String resourceGroupName, String accountName, String backupPolicyName, Context context) {
+    public Response<BackupPolicyInner> getWithResponse(String resourceGroupName, String accountName,
+        String backupPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, backupPolicyName, context).block();
     }
 
     /**
      * Get a backup Policy
-     *
-     * <p>Get a particular backup Policy.
-     *
+     * 
+     * Get a particular backup Policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -486,9 +415,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
 
     /**
      * Create a backup policy
-     *
-     * <p>Create a backup policy for Netapp Account.
-     *
+     * 
+     * Create a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -499,19 +428,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return backup policy information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String backupPolicyName, BackupPolicyInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -531,27 +456,16 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            backupPolicyName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, backupPolicyName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a backup policy
-     *
-     * <p>Create a backup policy for Netapp Account.
-     *
+     * 
+     * Create a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -563,23 +477,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return backup policy information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String backupPolicyName,
-        BackupPolicyInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String backupPolicyName, BackupPolicyInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -599,24 +505,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                backupPolicyName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, backupPolicyName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Create a backup policy
-     *
-     * <p>Create a backup policy for Netapp Account.
-     *
+     * 
+     * Create a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -627,25 +524,19 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return the {@link PollerFlux} for polling of backup policy information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreateAsync(
-        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, accountName, backupPolicyName, body);
-        return this
-            .client
-            .<BackupPolicyInner, BackupPolicyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BackupPolicyInner.class,
-                BackupPolicyInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreateAsync(String resourceGroupName,
+        String accountName, String backupPolicyName, BackupPolicyInner body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, accountName, backupPolicyName, body);
+        return this.client.<BackupPolicyInner, BackupPolicyInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BackupPolicyInner.class, BackupPolicyInner.class, this.client.getContext());
     }
 
     /**
      * Create a backup policy
-     *
-     * <p>Create a backup policy for Netapp Account.
-     *
+     * 
+     * Create a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -657,26 +548,20 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return the {@link PollerFlux} for polling of backup policy information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreateAsync(
-        String resourceGroupName,
-        String accountName,
-        String backupPolicyName,
-        BackupPolicyInner body,
-        Context context) {
+    private PollerFlux<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreateAsync(String resourceGroupName,
+        String accountName, String backupPolicyName, BackupPolicyInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, accountName, backupPolicyName, body, context);
-        return this
-            .client
-            .<BackupPolicyInner, BackupPolicyInner>getLroResult(
-                mono, this.client.getHttpPipeline(), BackupPolicyInner.class, BackupPolicyInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, accountName, backupPolicyName, body, context);
+        return this.client.<BackupPolicyInner, BackupPolicyInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BackupPolicyInner.class, BackupPolicyInner.class, context);
     }
 
     /**
      * Create a backup policy
-     *
-     * <p>Create a backup policy for Netapp Account.
-     *
+     * 
+     * Create a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -687,16 +572,16 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return the {@link SyncPoller} for polling of backup policy information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreate(
-        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body) {
+    public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreate(String resourceGroupName,
+        String accountName, String backupPolicyName, BackupPolicyInner body) {
         return this.beginCreateAsync(resourceGroupName, accountName, backupPolicyName, body).getSyncPoller();
     }
 
     /**
      * Create a backup policy
-     *
-     * <p>Create a backup policy for Netapp Account.
-     *
+     * 
+     * Create a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -708,20 +593,16 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return the {@link SyncPoller} for polling of backup policy information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String backupPolicyName,
-        BackupPolicyInner body,
-        Context context) {
+    public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreate(String resourceGroupName,
+        String accountName, String backupPolicyName, BackupPolicyInner body, Context context) {
         return this.beginCreateAsync(resourceGroupName, accountName, backupPolicyName, body, context).getSyncPoller();
     }
 
     /**
      * Create a backup policy
-     *
-     * <p>Create a backup policy for Netapp Account.
-     *
+     * 
+     * Create a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -732,18 +613,17 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return backup policy information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BackupPolicyInner> createAsync(
-        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body) {
-        return beginCreateAsync(resourceGroupName, accountName, backupPolicyName, body)
-            .last()
+    private Mono<BackupPolicyInner> createAsync(String resourceGroupName, String accountName, String backupPolicyName,
+        BackupPolicyInner body) {
+        return beginCreateAsync(resourceGroupName, accountName, backupPolicyName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a backup policy
-     *
-     * <p>Create a backup policy for Netapp Account.
-     *
+     * 
+     * Create a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -755,22 +635,17 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return backup policy information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BackupPolicyInner> createAsync(
-        String resourceGroupName,
-        String accountName,
-        String backupPolicyName,
-        BackupPolicyInner body,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, accountName, backupPolicyName, body, context)
-            .last()
+    private Mono<BackupPolicyInner> createAsync(String resourceGroupName, String accountName, String backupPolicyName,
+        BackupPolicyInner body, Context context) {
+        return beginCreateAsync(resourceGroupName, accountName, backupPolicyName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a backup policy
-     *
-     * <p>Create a backup policy for Netapp Account.
-     *
+     * 
+     * Create a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -781,16 +656,16 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return backup policy information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupPolicyInner create(
-        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body) {
+    public BackupPolicyInner create(String resourceGroupName, String accountName, String backupPolicyName,
+        BackupPolicyInner body) {
         return createAsync(resourceGroupName, accountName, backupPolicyName, body).block();
     }
 
     /**
      * Create a backup policy
-     *
-     * <p>Create a backup policy for Netapp Account.
-     *
+     * 
+     * Create a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -802,20 +677,16 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return backup policy information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupPolicyInner create(
-        String resourceGroupName,
-        String accountName,
-        String backupPolicyName,
-        BackupPolicyInner body,
-        Context context) {
+    public BackupPolicyInner create(String resourceGroupName, String accountName, String backupPolicyName,
+        BackupPolicyInner body, Context context) {
         return createAsync(resourceGroupName, accountName, backupPolicyName, body, context).block();
     }
 
     /**
      * Patch a backup policy
-     *
-     * <p>Patch a backup policy for Netapp Account.
-     *
+     * 
+     * Patch a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -826,19 +697,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return backup policy information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String backupPolicyName, BackupPolicyPatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -858,27 +725,16 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            backupPolicyName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, backupPolicyName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Patch a backup policy
-     *
-     * <p>Patch a backup policy for Netapp Account.
-     *
+     * 
+     * Patch a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -890,23 +746,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return backup policy information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String backupPolicyName,
-        BackupPolicyPatch body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String backupPolicyName, BackupPolicyPatch body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -926,24 +774,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                backupPolicyName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, backupPolicyName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Patch a backup policy
-     *
-     * <p>Patch a backup policy for Netapp Account.
-     *
+     * 
+     * Patch a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -954,25 +793,19 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return the {@link PollerFlux} for polling of backup policy information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdateAsync(
-        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, accountName, backupPolicyName, body);
-        return this
-            .client
-            .<BackupPolicyInner, BackupPolicyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BackupPolicyInner.class,
-                BackupPolicyInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, String backupPolicyName, BackupPolicyPatch body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, accountName, backupPolicyName, body);
+        return this.client.<BackupPolicyInner, BackupPolicyInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BackupPolicyInner.class, BackupPolicyInner.class, this.client.getContext());
     }
 
     /**
      * Patch a backup policy
-     *
-     * <p>Patch a backup policy for Netapp Account.
-     *
+     * 
+     * Patch a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -984,26 +817,20 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return the {@link PollerFlux} for polling of backup policy information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        String backupPolicyName,
-        BackupPolicyPatch body,
-        Context context) {
+    private PollerFlux<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, String backupPolicyName, BackupPolicyPatch body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, accountName, backupPolicyName, body, context);
-        return this
-            .client
-            .<BackupPolicyInner, BackupPolicyInner>getLroResult(
-                mono, this.client.getHttpPipeline(), BackupPolicyInner.class, BackupPolicyInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, accountName, backupPolicyName, body, context);
+        return this.client.<BackupPolicyInner, BackupPolicyInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BackupPolicyInner.class, BackupPolicyInner.class, context);
     }
 
     /**
      * Patch a backup policy
-     *
-     * <p>Patch a backup policy for Netapp Account.
-     *
+     * 
+     * Patch a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -1014,16 +841,16 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return the {@link SyncPoller} for polling of backup policy information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(
-        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body) {
+    public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(String resourceGroupName,
+        String accountName, String backupPolicyName, BackupPolicyPatch body) {
         return this.beginUpdateAsync(resourceGroupName, accountName, backupPolicyName, body).getSyncPoller();
     }
 
     /**
      * Patch a backup policy
-     *
-     * <p>Patch a backup policy for Netapp Account.
-     *
+     * 
+     * Patch a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -1035,20 +862,16 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return the {@link SyncPoller} for polling of backup policy information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        String backupPolicyName,
-        BackupPolicyPatch body,
-        Context context) {
+    public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(String resourceGroupName,
+        String accountName, String backupPolicyName, BackupPolicyPatch body, Context context) {
         return this.beginUpdateAsync(resourceGroupName, accountName, backupPolicyName, body, context).getSyncPoller();
     }
 
     /**
      * Patch a backup policy
-     *
-     * <p>Patch a backup policy for Netapp Account.
-     *
+     * 
+     * Patch a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -1059,18 +882,17 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return backup policy information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BackupPolicyInner> updateAsync(
-        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body) {
-        return beginUpdateAsync(resourceGroupName, accountName, backupPolicyName, body)
-            .last()
+    private Mono<BackupPolicyInner> updateAsync(String resourceGroupName, String accountName, String backupPolicyName,
+        BackupPolicyPatch body) {
+        return beginUpdateAsync(resourceGroupName, accountName, backupPolicyName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch a backup policy
-     *
-     * <p>Patch a backup policy for Netapp Account.
-     *
+     * 
+     * Patch a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -1082,22 +904,17 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return backup policy information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BackupPolicyInner> updateAsync(
-        String resourceGroupName,
-        String accountName,
-        String backupPolicyName,
-        BackupPolicyPatch body,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, backupPolicyName, body, context)
-            .last()
+    private Mono<BackupPolicyInner> updateAsync(String resourceGroupName, String accountName, String backupPolicyName,
+        BackupPolicyPatch body, Context context) {
+        return beginUpdateAsync(resourceGroupName, accountName, backupPolicyName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch a backup policy
-     *
-     * <p>Patch a backup policy for Netapp Account.
-     *
+     * 
+     * Patch a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -1108,16 +925,16 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return backup policy information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupPolicyInner update(
-        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body) {
+    public BackupPolicyInner update(String resourceGroupName, String accountName, String backupPolicyName,
+        BackupPolicyPatch body) {
         return updateAsync(resourceGroupName, accountName, backupPolicyName, body).block();
     }
 
     /**
      * Patch a backup policy
-     *
-     * <p>Patch a backup policy for Netapp Account.
-     *
+     * 
+     * Patch a backup policy for Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -1129,20 +946,16 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return backup policy information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupPolicyInner update(
-        String resourceGroupName,
-        String accountName,
-        String backupPolicyName,
-        BackupPolicyPatch body,
-        Context context) {
+    public BackupPolicyInner update(String resourceGroupName, String accountName, String backupPolicyName,
+        BackupPolicyPatch body, Context context) {
         return updateAsync(resourceGroupName, accountName, backupPolicyName, body, context).block();
     }
 
     /**
      * Delete a backup policy
-     *
-     * <p>Delete backup policy.
-     *
+     * 
+     * Delete backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -1152,19 +965,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String backupPolicyName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String backupPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1177,26 +986,18 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter backupPolicyName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            backupPolicyName,
-                            this.client.getApiVersion(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, backupPolicyName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a backup policy
-     *
-     * <p>Delete backup policy.
-     *
+     * 
+     * Delete backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -1207,19 +1008,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String backupPolicyName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String backupPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1232,23 +1029,17 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter backupPolicyName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                backupPolicyName,
-                this.client.getApiVersion(),
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, backupPolicyName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete a backup policy
-     *
-     * <p>Delete backup policy.
-     *
+     * 
+     * Delete backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -1258,21 +1049,19 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String backupPolicyName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, backupPolicyName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String backupPolicyName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, backupPolicyName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a backup policy
-     *
-     * <p>Delete backup policy.
-     *
+     * 
+     * Delete backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -1283,21 +1072,20 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String backupPolicyName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String backupPolicyName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, backupPolicyName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, backupPolicyName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a backup policy
-     *
-     * <p>Delete backup policy.
-     *
+     * 
+     * Delete backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -1307,16 +1095,16 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String backupPolicyName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String backupPolicyName) {
         return this.beginDeleteAsync(resourceGroupName, accountName, backupPolicyName).getSyncPoller();
     }
 
     /**
      * Delete a backup policy
-     *
-     * <p>Delete backup policy.
-     *
+     * 
+     * Delete backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -1327,16 +1115,16 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String backupPolicyName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String backupPolicyName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, accountName, backupPolicyName, context).getSyncPoller();
     }
 
     /**
      * Delete a backup policy
-     *
-     * <p>Delete backup policy.
-     *
+     * 
+     * Delete backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -1347,16 +1135,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String backupPolicyName) {
-        return beginDeleteAsync(resourceGroupName, accountName, backupPolicyName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, accountName, backupPolicyName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a backup policy
-     *
-     * <p>Delete backup policy.
-     *
+     * 
+     * Delete backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -1367,18 +1154,17 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String accountName, String backupPolicyName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, backupPolicyName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String backupPolicyName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, accountName, backupPolicyName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a backup policy
-     *
-     * <p>Delete backup policy.
-     *
+     * 
+     * Delete backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
@@ -1393,9 +1179,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
 
     /**
      * Delete a backup policy
-     *
-     * <p>Delete backup policy.
-     *
+     * 
+     * Delete backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.

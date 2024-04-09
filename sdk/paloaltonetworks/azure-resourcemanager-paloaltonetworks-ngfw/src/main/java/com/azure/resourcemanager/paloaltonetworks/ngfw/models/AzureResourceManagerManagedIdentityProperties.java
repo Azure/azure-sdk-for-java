@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The properties of the managed service identities assigned to this resource. */
+/**
+ * The properties of the managed service identities assigned to this resource.
+ */
 @Fluent
 public final class AzureResourceManagerManagedIdentityProperties {
     /*
@@ -38,13 +40,15 @@ public final class AzureResourceManagerManagedIdentityProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, AzureResourceManagerUserAssignedIdentity> userAssignedIdentities;
 
-    /** Creates an instance of AzureResourceManagerManagedIdentityProperties class. */
+    /**
+     * Creates an instance of AzureResourceManagerManagedIdentityProperties class.
+     */
     public AzureResourceManagerManagedIdentityProperties() {
     }
 
     /**
      * Get the tenantId property: The Active Directory tenant id of the principal.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -53,7 +57,7 @@ public final class AzureResourceManagerManagedIdentityProperties {
 
     /**
      * Get the principalId property: The active directory identifier of this principal.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -62,7 +66,7 @@ public final class AzureResourceManagerManagedIdentityProperties {
 
     /**
      * Get the type property: The type of managed identity assigned to this resource.
-     *
+     * 
      * @return the type value.
      */
     public ManagedIdentityType type() {
@@ -71,7 +75,7 @@ public final class AzureResourceManagerManagedIdentityProperties {
 
     /**
      * Set the type property: The type of managed identity assigned to this resource.
-     *
+     * 
      * @param type the type value to set.
      * @return the AzureResourceManagerManagedIdentityProperties object itself.
      */
@@ -82,7 +86,7 @@ public final class AzureResourceManagerManagedIdentityProperties {
 
     /**
      * Get the userAssignedIdentities property: The identities assigned to this resource by the user.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, AzureResourceManagerUserAssignedIdentity> userAssignedIdentities() {
@@ -91,37 +95,32 @@ public final class AzureResourceManagerManagedIdentityProperties {
 
     /**
      * Set the userAssignedIdentities property: The identities assigned to this resource by the user.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the AzureResourceManagerManagedIdentityProperties object itself.
      */
-    public AzureResourceManagerManagedIdentityProperties withUserAssignedIdentities(
-        Map<String, AzureResourceManagerUserAssignedIdentity> userAssignedIdentities) {
+    public AzureResourceManagerManagedIdentityProperties
+        withUserAssignedIdentities(Map<String, AzureResourceManagerUserAssignedIdentity> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property type in model AzureResourceManagerManagedIdentityProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property type in model AzureResourceManagerManagedIdentityProperties"));
         }
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

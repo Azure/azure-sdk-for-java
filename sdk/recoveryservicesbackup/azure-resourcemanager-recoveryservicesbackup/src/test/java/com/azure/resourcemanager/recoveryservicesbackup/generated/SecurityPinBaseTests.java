@@ -12,18 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SecurityPinBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecurityPinBase model =
-            BinaryData
-                .fromString("{\"resourceGuardOperationRequests\":[\"yrqufegxuvwz\",\"bnhlmc\"]}")
+        SecurityPinBase model
+            = BinaryData.fromString("{\"resourceGuardOperationRequests\":[\"yajguqfhwygzlv\",\"nk\"]}")
                 .toObject(SecurityPinBase.class);
-        Assertions.assertEquals("yrqufegxuvwz", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("yajguqfhwygzlv", model.resourceGuardOperationRequests().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityPinBase model =
-            new SecurityPinBase().withResourceGuardOperationRequests(Arrays.asList("yrqufegxuvwz", "bnhlmc"));
+        SecurityPinBase model
+            = new SecurityPinBase().withResourceGuardOperationRequests(Arrays.asList("yajguqfhwygzlv", "nk"));
         model = BinaryData.fromObject(model).toObject(SecurityPinBase.class);
-        Assertions.assertEquals("yrqufegxuvwz", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("yajguqfhwygzlv", model.resourceGuardOperationRequests().get(0));
     }
 }

@@ -12,23 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ListRecoveryPointsRecommendedForMoveRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListRecoveryPointsRecommendedForMoveRequest model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"kw\",\"excludedRPList\":[\"jejveg\",\"hbpnaixexccbd\",\"eaxhcexdrrvqahqk\"]}")
+        ListRecoveryPointsRecommendedForMoveRequest model
+            = BinaryData.fromString("{\"objectType\":\"elvezrypq\",\"excludedRPList\":[\"eokerqwkyhkobopg\"]}")
                 .toObject(ListRecoveryPointsRecommendedForMoveRequest.class);
-        Assertions.assertEquals("kw", model.objectType());
-        Assertions.assertEquals("jejveg", model.excludedRPList().get(0));
+        Assertions.assertEquals("elvezrypq", model.objectType());
+        Assertions.assertEquals("eokerqwkyhkobopg", model.excludedRPList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListRecoveryPointsRecommendedForMoveRequest model =
-            new ListRecoveryPointsRecommendedForMoveRequest()
-                .withObjectType("kw")
-                .withExcludedRPList(Arrays.asList("jejveg", "hbpnaixexccbd", "eaxhcexdrrvqahqk"));
+        ListRecoveryPointsRecommendedForMoveRequest model = new ListRecoveryPointsRecommendedForMoveRequest()
+            .withObjectType("elvezrypq").withExcludedRPList(Arrays.asList("eokerqwkyhkobopg"));
         model = BinaryData.fromObject(model).toObject(ListRecoveryPointsRecommendedForMoveRequest.class);
-        Assertions.assertEquals("kw", model.objectType());
-        Assertions.assertEquals("jejveg", model.excludedRPList().get(0));
+        Assertions.assertEquals("elvezrypq", model.objectType());
+        Assertions.assertEquals("eokerqwkyhkobopg", model.excludedRPList().get(0));
     }
 }

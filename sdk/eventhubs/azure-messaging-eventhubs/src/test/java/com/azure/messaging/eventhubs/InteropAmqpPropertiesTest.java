@@ -252,7 +252,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         // Act & Assert
         StepVerifier.create(producer.send(data, options))
             .expectComplete()
-            .verify();
+            .verify(TIMEOUT);
 
         StepVerifier.create(consumer.receiveFromPartition(partitionId, EventPosition.fromOffset(lastOffset)))
             .assertNext(partitionEvent -> {
@@ -262,7 +262,16 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
                 final String bodyContents = partitionEvent.getData().getBodyAsString();
                 assertEquals(body, bodyContents);
 
-                assertEquals(applicationPairTypes.size(), properties.size());
+                int actualSize = properties.size();
+                if (properties.containsKey("traceparent")) {
+                    if (properties.containsKey("Diagnostic-Id")) {
+                        actualSize--;
+                    }
+
+                    actualSize--;
+                }
+
+                assertEquals(applicationPairTypes.size(), actualSize);
                 for (Pair expected : applicationPairTypes) {
                     LOGGER.info("\tComparing {}", expected.getKey());
 
@@ -276,7 +285,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
                 }
             })
             .thenCancel()
-            .verify();
+            .verify(TIMEOUT);
     }
 
     private void validateAmqpProperties(Message message, Map<Symbol, Object> messageAnnotations,

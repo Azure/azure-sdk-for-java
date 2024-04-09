@@ -2,8 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.indexes;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.indexes.models.CorsOptions;
@@ -19,6 +21,8 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.SynonymMap;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -52,11 +56,36 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IndexManagementTests extends SearchTestBase {
+    private static SearchIndexClient sharedIndexClient;
+    private static SynonymMap sharedSynonymMap;
+
     private final List<String> indexesToDelete = new ArrayList<>();
-    private final List<String> synonymMapsToDelete = new ArrayList<>();
 
     private SearchIndexClient client;
     private SearchIndexAsyncClient asyncClient;
+
+    @BeforeAll
+    public static void setupSharedResources() {
+        sharedIndexClient = new SearchIndexClientBuilder()
+            .endpoint(ENDPOINT)
+            .credential(new AzureKeyCredential(API_KEY))
+            .buildClient();
+
+        sharedSynonymMap = new SynonymMap("sharedhotelmotel").setSynonyms("hotel,motel");
+
+        if (TEST_MODE != TestMode.PLAYBACK) {
+            sharedSynonymMap = sharedIndexClient.createSynonymMap(sharedSynonymMap);
+        }
+    }
+
+    @AfterAll
+    public static void cleanupSharedResources() {
+        if (TEST_MODE == TestMode.PLAYBACK) {
+            return; // Running in PLAYBACK, no need to run.
+        }
+
+        sharedIndexClient.deleteSynonymMap(sharedSynonymMap.getName());
+    }
 
     @Override
     protected void beforeTest() {
@@ -70,18 +99,8 @@ public class IndexManagementTests extends SearchTestBase {
     protected void afterTest() {
         super.afterTest();
 
-        boolean synonymMapsDeleted = false;
-        for (String synonymMap : synonymMapsToDelete) {
-            client.deleteSynonymMap(synonymMap);
-            synonymMapsDeleted = true;
-        }
-
         for (String index : indexesToDelete) {
             client.deleteIndex(index);
-        }
-
-        if (synonymMapsDeleted) {
-            sleepIfRunningAgainstService(3000);
         }
     }
 
@@ -254,7 +273,7 @@ public class IndexManagementTests extends SearchTestBase {
 
         // Update the resource, the eTag will be changed
         SearchIndex updatedIndex = asyncClient.createOrUpdateIndexWithResponse(
-                originalIndex.setCorsOptions(new CorsOptions(Collections.singletonList("https://test.com/"))), false, false)
+            originalIndex.setCorsOptions(new CorsOptions(Collections.singletonList("https://test.com/"))), false, false)
             .map(Response::getValue)
             .block();
 
@@ -356,11 +375,12 @@ public class IndexManagementTests extends SearchTestBase {
         Map<String, SearchIndex> actualIndexes = client.listIndexes().stream()
             .collect(Collectors.toMap(SearchIndex::getName, si -> si));
 
-        compareMaps(expectedIndexes, actualIndexes, (expected, actual) -> assertObjectEquals(expected, actual, true));
+        compareMaps(expectedIndexes, actualIndexes, (expected, actual) -> assertObjectEquals(expected, actual, true),
+            false);
 
         StepVerifier.create(asyncClient.listIndexes().collectMap(SearchIndex::getName))
             .assertNext(actualIndexes2 -> compareMaps(expectedIndexes, actualIndexes2,
-                (expected, actual) -> assertObjectEquals(expected, actual, true)))
+                (expected, actual) -> assertObjectEquals(expected, actual, true), false))
             .verifyComplete();
     }
 
@@ -378,30 +398,23 @@ public class IndexManagementTests extends SearchTestBase {
         Set<String> actualIndexNames = client.listIndexNames(Context.NONE).stream()
             .collect(Collectors.toSet());
 
-        assertEquals(expectedIndexNames.size(), actualIndexNames.size());
+        // Only check that listing returned the expected index names. Don't check the number of indexes returned as
+        // other tests may have created indexes.
         assertTrue(actualIndexNames.containsAll(expectedIndexNames));
 
         StepVerifier.create(asyncClient.listIndexNames().collect(Collectors.toSet()))
-            .assertNext(actualIndexNames2 -> {
-                assertEquals(expectedIndexNames.size(), actualIndexNames2.size());
-                assertTrue(actualIndexNames2.containsAll(expectedIndexNames));
-            })
+            .assertNext(actualIndexNames2 -> assertTrue(actualIndexNames2.containsAll(expectedIndexNames)))
             .verifyComplete();
     }
 
     @Test
     public void canAddSynonymFieldPropertySync() {
-        String synonymMapName = testResourceNamer.randomName("names", 32);
-        SynonymMap synonymMap = new SynonymMap(synonymMapName).setSynonyms("hotel,motel");
-        client.createSynonymMap(synonymMap);
-        synonymMapsToDelete.add(synonymMap.getName());
-
         SearchIndex index = new SearchIndex(HOTEL_INDEX_NAME)
             .setFields(Arrays.asList(
                 new SearchField("HotelId", SearchFieldDataType.STRING)
                     .setKey(true),
                 new SearchField("HotelName", SearchFieldDataType.STRING)
-                    .setSynonymMapNames(synonymMapName)));
+                    .setSynonymMapNames(sharedSynonymMap.getName())));
 
         SearchIndex createdIndex = client.createIndex(index);
         indexesToDelete.add(createdIndex.getName());
@@ -413,17 +426,12 @@ public class IndexManagementTests extends SearchTestBase {
 
     @Test
     public void canAddSynonymFieldPropertyAsync() {
-        String synonymMapName = testResourceNamer.randomName("names", 32);
-        SynonymMap synonymMap = new SynonymMap(synonymMapName).setSynonyms("hotel,motel");
-        asyncClient.createSynonymMap(synonymMap).block();
-        synonymMapsToDelete.add(synonymMap.getName());
-
         SearchIndex index = new SearchIndex(HOTEL_INDEX_NAME)
             .setFields(Arrays.asList(
                 new SearchField("HotelId", SearchFieldDataType.STRING)
                     .setKey(true),
                 new SearchField("HotelName", SearchFieldDataType.STRING)
-                    .setSynonymMapNames(synonymMapName)));
+                    .setSynonymMapNames(sharedSynonymMap.getName())));
 
         StepVerifier.create(asyncClient.createIndex(index))
             .assertNext(createdIndex -> {
@@ -438,17 +446,10 @@ public class IndexManagementTests extends SearchTestBase {
 
     @Test
     public void canUpdateSynonymFieldPropertySync() {
-        String synonymMapName = testResourceNamer.randomName("names", 32);
-        SynonymMap synonymMap = new SynonymMap(synonymMapName)
-            .setSynonyms("hotel,motel");
-
-        client.createSynonymMap(synonymMap);
-        synonymMapsToDelete.add(synonymMap.getName());
-
         // Create an index
         SearchIndex index = createTestIndex(null);
         SearchField hotelNameField = getFieldByName(index, "HotelName");
-        hotelNameField.setSynonymMapNames(synonymMapName);
+        hotelNameField.setSynonymMapNames(sharedSynonymMap.getName());
         client.createIndex(index);
         indexesToDelete.add(index.getName());
 
@@ -464,16 +465,10 @@ public class IndexManagementTests extends SearchTestBase {
 
     @Test
     public void canUpdateSynonymFieldPropertyAsync() {
-        String synonymMapName = testResourceNamer.randomName("names", 32);
-        SynonymMap synonymMap = new SynonymMap(synonymMapName).setSynonyms("hotel,motel");
-
-        asyncClient.createSynonymMap(synonymMap).block();
-        synonymMapsToDelete.add(synonymMap.getName());
-
         // Create an index
         SearchIndex index = createTestIndex(null);
         SearchField hotelNameField = getFieldByName(index, "HotelName");
-        hotelNameField.setSynonymMapNames(synonymMapName);
+        hotelNameField.setSynonymMapNames(sharedSynonymMap.getName());
         asyncClient.createIndex(index).block();
         indexesToDelete.add(index.getName());
 
@@ -518,16 +513,10 @@ public class IndexManagementTests extends SearchTestBase {
         // Modify the fields on an existing index
         SearchIndex existingIndex = client.getIndex(fullFeaturedIndex.getName());
 
-        SynonymMap synonymMap = client.createSynonymMap(new SynonymMap(
-            testResourceNamer.randomName("names", 32))
-            .setSynonyms("hotel,motel")
-        );
-        synonymMapsToDelete.add(synonymMap.getName());
-
         SearchField tagsField = getFieldByName(existingIndex, "Description_Custom");
         tagsField.setHidden(true)
             .setSearchAnalyzerName(LexicalAnalyzerName.WHITESPACE)
-            .setSynonymMapNames(synonymMap.getName());
+            .setSynonymMapNames(sharedSynonymMap.getName());
 
         SearchField hotelWebSiteField = new SearchField("HotelWebsite", SearchFieldDataType.STRING)
             .setSearchable(Boolean.TRUE)
@@ -573,16 +562,10 @@ public class IndexManagementTests extends SearchTestBase {
             .blockOptional()
             .orElseThrow(NoSuchElementException::new);
 
-        SynonymMap synonymMap = asyncClient.createSynonymMap(new SynonymMap(testResourceNamer.randomName("names", 32))
-            .setSynonyms("hotel,motel"))
-            .blockOptional()
-            .orElseThrow(NoSuchElementException::new);
-        synonymMapsToDelete.add(synonymMap.getName());
-
         SearchField tagsField = getFieldByName(existingIndex, "Description_Custom");
         tagsField.setHidden(true)
             .setSearchAnalyzerName(LexicalAnalyzerName.WHITESPACE)
-            .setSynonymMapNames(synonymMap.getName());
+            .setSynonymMapNames(sharedSynonymMap.getName());
 
         SearchField hotelWebSiteField = new SearchField("HotelWebsite", SearchFieldDataType.STRING)
             .setSearchable(Boolean.TRUE)

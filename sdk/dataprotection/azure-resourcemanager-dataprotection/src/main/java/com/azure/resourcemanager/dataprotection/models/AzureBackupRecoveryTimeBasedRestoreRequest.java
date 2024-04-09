@@ -12,8 +12,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * AzureBackupRecoveryTimeBasedRestoreRequest
- *
- * <p>AzureBackup RecoveryPointTime Based Restore Request.
+ * 
+ * AzureBackup RecoveryPointTime Based Restore Request.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AzureBackupRecoveryTimeBasedRestoreRequest")
@@ -25,13 +25,15 @@ public final class AzureBackupRecoveryTimeBasedRestoreRequest extends AzureBacku
     @JsonProperty(value = "recoveryPointTime", required = true)
     private String recoveryPointTime;
 
-    /** Creates an instance of AzureBackupRecoveryTimeBasedRestoreRequest class. */
+    /**
+     * Creates an instance of AzureBackupRecoveryTimeBasedRestoreRequest class.
+     */
     public AzureBackupRecoveryTimeBasedRestoreRequest() {
     }
 
     /**
      * Get the recoveryPointTime property: The recovery time in ISO 8601 format example - 2020-08-14T17:30:00.0000000Z.
-     *
+     * 
      * @return the recoveryPointTime value.
      */
     public String recoveryPointTime() {
@@ -40,7 +42,7 @@ public final class AzureBackupRecoveryTimeBasedRestoreRequest extends AzureBacku
 
     /**
      * Set the recoveryPointTime property: The recovery time in ISO 8601 format example - 2020-08-14T17:30:00.0000000Z.
-     *
+     * 
      * @param recoveryPointTime the recoveryPointTime value to set.
      * @return the AzureBackupRecoveryTimeBasedRestoreRequest object itself.
      */
@@ -49,28 +51,36 @@ public final class AzureBackupRecoveryTimeBasedRestoreRequest extends AzureBacku
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupRecoveryTimeBasedRestoreRequest withRestoreTargetInfo(RestoreTargetInfoBase restoreTargetInfo) {
         super.withRestoreTargetInfo(restoreTargetInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupRecoveryTimeBasedRestoreRequest withSourceDataStoreType(SourceDataStoreType sourceDataStoreType) {
         super.withSourceDataStoreType(sourceDataStoreType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupRecoveryTimeBasedRestoreRequest withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupRecoveryTimeBasedRestoreRequest withIdentityDetails(IdentityDetails identityDetails) {
         super.withIdentityDetails(identityDetails);
@@ -79,18 +89,15 @@ public final class AzureBackupRecoveryTimeBasedRestoreRequest extends AzureBacku
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (recoveryPointTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryPointTime in model"
-                            + " AzureBackupRecoveryTimeBasedRestoreRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoveryPointTime in model AzureBackupRecoveryTimeBasedRestoreRequest"));
         }
     }
 

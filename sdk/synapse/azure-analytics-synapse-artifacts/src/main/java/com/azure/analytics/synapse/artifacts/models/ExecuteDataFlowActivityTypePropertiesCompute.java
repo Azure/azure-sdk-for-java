@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Compute properties for data flow activity. */
+/**
+ * Compute properties for data flow activity.
+ */
 @Fluent
 public final class ExecuteDataFlowActivityTypePropertiesCompute {
     /*
@@ -23,12 +25,15 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute {
     @JsonProperty(value = "coreCount")
     private Integer coreCount;
 
-    /** Creates an instance of ExecuteDataFlowActivityTypePropertiesCompute class. */
-    public ExecuteDataFlowActivityTypePropertiesCompute() {}
+    /**
+     * Creates an instance of ExecuteDataFlowActivityTypePropertiesCompute class.
+     */
+    public ExecuteDataFlowActivityTypePropertiesCompute() {
+    }
 
     /**
      * Get the computeType property: Compute type of the cluster which will execute data flow job.
-     *
+     * 
      * @return the computeType value.
      */
     public DataFlowComputeType getComputeType() {
@@ -37,7 +42,7 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute {
 
     /**
      * Set the computeType property: Compute type of the cluster which will execute data flow job.
-     *
+     * 
      * @param computeType the computeType value to set.
      * @return the ExecuteDataFlowActivityTypePropertiesCompute object itself.
      */
@@ -49,7 +54,7 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute {
     /**
      * Get the coreCount property: Core count of the cluster which will execute data flow job. Supported values are: 8,
      * 16, 32, 48, 80, 144 and 272.
-     *
+     * 
      * @return the coreCount value.
      */
     public Integer getCoreCount() {
@@ -59,7 +64,7 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute {
     /**
      * Set the coreCount property: Core count of the cluster which will execute data flow job. Supported values are: 8,
      * 16, 32, 48, 80, 144 and 272.
-     *
+     * 
      * @param coreCount the coreCount value to set.
      * @return the ExecuteDataFlowActivityTypePropertiesCompute object itself.
      */

@@ -1,6 +1,68 @@
 # Release History
 
-## 2.31.0-beta.1 (Unreleased)
+## 2.38.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Supported setting `DeleteOptions` for public IP addresses associated with `NetworkInterface`.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.37.0 (2024-03-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.36.0 (2024-02-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-09-01`.
+
+## 2.35.0 (2024-01-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.34.0 (2023-12-22)
+
+### Breaking Changes
+
+- Removed class `RoutingConfigurationNfv`. Please used class `RoutingConfiguration`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-06-01`.
+
+## 2.33.0 (2023-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.32.0 (2023-10-27)
+
+### Features Added
+
+- Supported `withHostNameFromBackendHttpSettings` for `ApplicationGatewayProbe` under `ApplicationGateway`.
+
+## 2.31.0 (2023-09-28)
 
 ### Other Changes
 

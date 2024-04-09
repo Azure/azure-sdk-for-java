@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.fluent.models.DeletedAppRestoreRequestProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details about restoring a deleted app. */
+/**
+ * Details about restoring a deleted app.
+ */
 @Fluent
 public final class DeletedAppRestoreRequest extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class DeletedAppRestoreRequest extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private DeletedAppRestoreRequestProperties innerProperties;
 
-    /** Creates an instance of DeletedAppRestoreRequest class. */
+    /**
+     * Creates an instance of DeletedAppRestoreRequest class.
+     */
     public DeletedAppRestoreRequest() {
     }
 
     /**
      * Get the innerProperties property: DeletedAppRestoreRequest resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DeletedAppRestoreRequestProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedAppRestoreRequest withKind(String kind) {
         super.withKind(kind);
@@ -40,7 +46,7 @@ public final class DeletedAppRestoreRequest extends ProxyOnlyResource {
     /**
      * Get the deletedSiteId property: ARM resource ID of the deleted app. Example:
      * /subscriptions/{subId}/providers/Microsoft.Web/deletedSites/{deletedSiteId}.
-     *
+     * 
      * @return the deletedSiteId value.
      */
     public String deletedSiteId() {
@@ -50,7 +56,7 @@ public final class DeletedAppRestoreRequest extends ProxyOnlyResource {
     /**
      * Set the deletedSiteId property: ARM resource ID of the deleted app. Example:
      * /subscriptions/{subId}/providers/Microsoft.Web/deletedSites/{deletedSiteId}.
-     *
+     * 
      * @param deletedSiteId the deletedSiteId value to set.
      * @return the DeletedAppRestoreRequest object itself.
      */
@@ -65,7 +71,7 @@ public final class DeletedAppRestoreRequest extends ProxyOnlyResource {
     /**
      * Get the recoverConfiguration property: If true, deleted site configuration, in addition to content, will be
      * restored.
-     *
+     * 
      * @return the recoverConfiguration value.
      */
     public Boolean recoverConfiguration() {
@@ -75,7 +81,7 @@ public final class DeletedAppRestoreRequest extends ProxyOnlyResource {
     /**
      * Set the recoverConfiguration property: If true, deleted site configuration, in addition to content, will be
      * restored.
-     *
+     * 
      * @param recoverConfiguration the recoverConfiguration value to set.
      * @return the DeletedAppRestoreRequest object itself.
      */
@@ -88,9 +94,9 @@ public final class DeletedAppRestoreRequest extends ProxyOnlyResource {
     }
 
     /**
-     * Get the snapshotTime property: Point in time to restore the deleted app from, formatted as a DateTime string. If
-     * unspecified, default value is the time that the app was deleted.
-     *
+     * Get the snapshotTime property: Point in time to restore the deleted app from, formatted as a DateTime string.
+     * If unspecified, default value is the time that the app was deleted.
+     * 
      * @return the snapshotTime value.
      */
     public String snapshotTime() {
@@ -98,9 +104,9 @@ public final class DeletedAppRestoreRequest extends ProxyOnlyResource {
     }
 
     /**
-     * Set the snapshotTime property: Point in time to restore the deleted app from, formatted as a DateTime string. If
-     * unspecified, default value is the time that the app was deleted.
-     *
+     * Set the snapshotTime property: Point in time to restore the deleted app from, formatted as a DateTime string.
+     * If unspecified, default value is the time that the app was deleted.
+     * 
      * @param snapshotTime the snapshotTime value to set.
      * @return the DeletedAppRestoreRequest object itself.
      */
@@ -114,7 +120,7 @@ public final class DeletedAppRestoreRequest extends ProxyOnlyResource {
 
     /**
      * Get the useDRSecondary property: If true, the snapshot is retrieved from DRSecondary endpoint.
-     *
+     * 
      * @return the useDRSecondary value.
      */
     public Boolean useDRSecondary() {
@@ -123,7 +129,7 @@ public final class DeletedAppRestoreRequest extends ProxyOnlyResource {
 
     /**
      * Set the useDRSecondary property: If true, the snapshot is retrieved from DRSecondary endpoint.
-     *
+     * 
      * @param useDRSecondary the useDRSecondary value to set.
      * @return the DeletedAppRestoreRequest object itself.
      */
@@ -137,7 +143,7 @@ public final class DeletedAppRestoreRequest extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -13,8 +13,8 @@ public final class CurrentUsagesBaseImpl implements CurrentUsagesBase {
 
     private final com.azure.resourcemanager.quota.QuotaManager serviceManager;
 
-    CurrentUsagesBaseImpl(
-        CurrentUsagesBaseInner innerObject, com.azure.resourcemanager.quota.QuotaManager serviceManager) {
+    CurrentUsagesBaseImpl(CurrentUsagesBaseInner innerObject,
+        com.azure.resourcemanager.quota.QuotaManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

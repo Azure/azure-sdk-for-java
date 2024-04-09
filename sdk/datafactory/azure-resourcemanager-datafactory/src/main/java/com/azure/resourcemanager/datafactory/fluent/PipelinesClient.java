@@ -13,11 +13,13 @@ import com.azure.resourcemanager.datafactory.fluent.models.CreateRunResponseInne
 import com.azure.resourcemanager.datafactory.fluent.models.PipelineResourceInner;
 import java.util.Map;
 
-/** An instance of this class provides access to all the operations defined in PipelinesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PipelinesClient.
+ */
 public interface PipelinesClient {
     /**
      * Lists pipelines.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface PipelinesClient {
 
     /**
      * Lists pipelines.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -44,13 +46,13 @@ public interface PipelinesClient {
 
     /**
      * Creates or updates a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
      * @param pipeline Pipeline resource definition.
      * @param ifMatch ETag of the pipeline entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
+     * existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -58,17 +60,12 @@ public interface PipelinesClient {
      * @return pipeline resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PipelineResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String pipelineName,
-        PipelineResourceInner pipeline,
-        String ifMatch,
-        Context context);
+    Response<PipelineResourceInner> createOrUpdateWithResponse(String resourceGroupName, String factoryName,
+        String pipelineName, PipelineResourceInner pipeline, String ifMatch, Context context);
 
     /**
      * Creates or updates a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
@@ -79,17 +76,17 @@ public interface PipelinesClient {
      * @return pipeline resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PipelineResourceInner createOrUpdate(
-        String resourceGroupName, String factoryName, String pipelineName, PipelineResourceInner pipeline);
+    PipelineResourceInner createOrUpdate(String resourceGroupName, String factoryName, String pipelineName,
+        PipelineResourceInner pipeline);
 
     /**
      * Gets a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
      * @param ifNoneMatch ETag of the pipeline entity. Should only be specified for get. If the ETag matches the
-     *     existing entity tag, or if * was provided, then no content will be returned.
+     * existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -97,12 +94,12 @@ public interface PipelinesClient {
      * @return a pipeline along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PipelineResourceInner> getWithResponse(
-        String resourceGroupName, String factoryName, String pipelineName, String ifNoneMatch, Context context);
+    Response<PipelineResourceInner> getWithResponse(String resourceGroupName, String factoryName, String pipelineName,
+        String ifNoneMatch, Context context);
 
     /**
      * Gets a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
@@ -116,7 +113,7 @@ public interface PipelinesClient {
 
     /**
      * Deletes a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
@@ -127,12 +124,12 @@ public interface PipelinesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String factoryName, String pipelineName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String pipelineName,
+        Context context);
 
     /**
      * Deletes a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
@@ -145,20 +142,20 @@ public interface PipelinesClient {
 
     /**
      * Creates a run of a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
      * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified
-     *     run will be used to create a new run.
+     * run will be used to create a new run.
      * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and
-     *     the new run will be grouped under the same groupId.
+     * the new run will be grouped under the same groupId.
      * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all
-     *     activities will run.
+     * activities will run.
      * @param startFromFailure In recovery mode, if set to true, the rerun will start from failed activities. The
-     *     property will be used only if startActivityName is not specified.
+     * property will be used only if startActivityName is not specified.
      * @param parameters Parameters of the pipeline run. These parameters will be used only if the runId is not
-     *     specified.
+     * specified.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -166,20 +163,13 @@ public interface PipelinesClient {
      * @return response body with a run identifier along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CreateRunResponseInner> createRunWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String pipelineName,
-        String referencePipelineRunId,
-        Boolean isRecovery,
-        String startActivityName,
-        Boolean startFromFailure,
-        Map<String, Object> parameters,
-        Context context);
+    Response<CreateRunResponseInner> createRunWithResponse(String resourceGroupName, String factoryName,
+        String pipelineName, String referencePipelineRunId, Boolean isRecovery, String startActivityName,
+        Boolean startFromFailure, Map<String, Object> parameters, Context context);
 
     /**
      * Creates a run of a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.

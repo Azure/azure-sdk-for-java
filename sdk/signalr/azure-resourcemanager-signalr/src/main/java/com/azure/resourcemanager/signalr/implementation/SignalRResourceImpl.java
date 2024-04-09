@@ -184,6 +184,14 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
         return this.innerModel().disableAadAuth();
     }
 
+    public String regionEndpointEnabled() {
+        return this.innerModel().regionEndpointEnabled();
+    }
+
+    public String resourceStopped() {
+        return this.innerModel().resourceStopped();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -393,6 +401,16 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
 
     public SignalRResourceImpl withDisableAadAuth(Boolean disableAadAuth) {
         this.innerModel().withDisableAadAuth(disableAadAuth);
+        return this;
+    }
+
+    public SignalRResourceImpl withRegionEndpointEnabled(String regionEndpointEnabled) {
+        this.innerModel().withRegionEndpointEnabled(regionEndpointEnabled);
+        return this;
+    }
+
+    public SignalRResourceImpl withResourceStopped(String resourceStopped) {
+        this.innerModel().withResourceStopped(resourceStopped);
         return this;
     }
 }

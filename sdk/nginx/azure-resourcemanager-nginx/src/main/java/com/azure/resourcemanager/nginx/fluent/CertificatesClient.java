@@ -13,43 +13,45 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.nginx.fluent.models.NginxCertificateInner;
 
-/** An instance of this class provides access to all the operations defined in CertificatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CertificatesClient.
+ */
 public interface CertificatesClient {
     /**
-     * Get a certificate of given Nginx deployment.
-     *
+     * Get a certificate of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate of given Nginx deployment along with {@link Response}.
+     * @return a certificate of given NGINX deployment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NginxCertificateInner> getWithResponse(
-        String resourceGroupName, String deploymentName, String certificateName, Context context);
+    Response<NginxCertificateInner> getWithResponse(String resourceGroupName, String deploymentName,
+        String certificateName, Context context);
 
     /**
-     * Get a certificate of given Nginx deployment.
-     *
+     * Get a certificate of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate of given Nginx deployment.
+     * @return a certificate of given NGINX deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NginxCertificateInner get(String resourceGroupName, String deploymentName, String certificateName);
 
     /**
-     * Create or update the Nginx certificates for given Nginx deployment.
-     *
+     * Create or update the NGINX certificates for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -57,14 +59,14 @@ public interface CertificatesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NginxCertificateInner>, NginxCertificateInner> beginCreateOrUpdate(
-        String resourceGroupName, String deploymentName, String certificateName);
+    SyncPoller<PollResult<NginxCertificateInner>, NginxCertificateInner> beginCreateOrUpdate(String resourceGroupName,
+        String deploymentName, String certificateName);
 
     /**
-     * Create or update the Nginx certificates for given Nginx deployment.
-     *
+     * Create or update the NGINX certificates for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param body The certificate.
      * @param context The context to associate with this operation.
@@ -74,18 +76,14 @@ public interface CertificatesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NginxCertificateInner>, NginxCertificateInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String deploymentName,
-        String certificateName,
-        NginxCertificateInner body,
-        Context context);
+    SyncPoller<PollResult<NginxCertificateInner>, NginxCertificateInner> beginCreateOrUpdate(String resourceGroupName,
+        String deploymentName, String certificateName, NginxCertificateInner body, Context context);
 
     /**
-     * Create or update the Nginx certificates for given Nginx deployment.
-     *
+     * Create or update the NGINX certificates for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -96,10 +94,10 @@ public interface CertificatesClient {
     NginxCertificateInner createOrUpdate(String resourceGroupName, String deploymentName, String certificateName);
 
     /**
-     * Create or update the Nginx certificates for given Nginx deployment.
-     *
+     * Create or update the NGINX certificates for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param body The certificate.
      * @param context The context to associate with this operation.
@@ -109,18 +107,14 @@ public interface CertificatesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NginxCertificateInner createOrUpdate(
-        String resourceGroupName,
-        String deploymentName,
-        String certificateName,
-        NginxCertificateInner body,
-        Context context);
+    NginxCertificateInner createOrUpdate(String resourceGroupName, String deploymentName, String certificateName,
+        NginxCertificateInner body, Context context);
 
     /**
-     * Deletes a certificate from the nginx deployment.
-     *
+     * Deletes a certificate from the NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -128,14 +122,14 @@ public interface CertificatesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String deploymentName, String certificateName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName,
+        String certificateName);
 
     /**
-     * Deletes a certificate from the nginx deployment.
-     *
+     * Deletes a certificate from the NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -144,14 +138,14 @@ public interface CertificatesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String deploymentName, String certificateName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName,
+        String certificateName, Context context);
 
     /**
-     * Deletes a certificate from the nginx deployment.
-     *
+     * Deletes a certificate from the NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -161,10 +155,10 @@ public interface CertificatesClient {
     void delete(String resourceGroupName, String deploymentName, String certificateName);
 
     /**
-     * Deletes a certificate from the nginx deployment.
-     *
+     * Deletes a certificate from the NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param certificateName The name of certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -175,10 +169,10 @@ public interface CertificatesClient {
     void delete(String resourceGroupName, String deploymentName, String certificateName, Context context);
 
     /**
-     * List all certificates of given Nginx deployment.
-     *
+     * List all certificates of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -188,10 +182,10 @@ public interface CertificatesClient {
     PagedIterable<NginxCertificateInner> list(String resourceGroupName, String deploymentName);
 
     /**
-     * List all certificates of given Nginx deployment.
-     *
+     * List all certificates of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

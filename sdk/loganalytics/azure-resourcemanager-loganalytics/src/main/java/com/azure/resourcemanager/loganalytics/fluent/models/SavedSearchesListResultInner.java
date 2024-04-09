@@ -17,6 +17,10 @@ public final class SavedSearchesListResultInner {
     @JsonProperty(value = "value")
     private List<SavedSearchInner> value;
 
+    /** Creates an instance of SavedSearchesListResultInner class. */
+    public SavedSearchesListResultInner() {
+    }
+
     /**
      * Get the value property: The array of result values.
      *

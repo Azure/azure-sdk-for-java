@@ -39,14 +39,7 @@ public class FunctionAppsImpl
 
     @Override
     public FunctionApp getByResourceGroup(String groupName, String name) {
-        SiteInner siteInner = this.inner().getByResourceGroup(groupName, name);
-        if (siteInner == null) {
-            return null;
-        }
-        return wrapModel(
-            siteInner,
-            this.inner().getConfiguration(groupName, name),
-            this.inner().getDiagnosticLogsConfiguration(groupName, name));
+        return getByResourceGroupAsync(groupName, name).block();
     }
 
     @Override
@@ -62,13 +55,19 @@ public class FunctionAppsImpl
         return this
             .getInnerAsync(resourceGroupName, name)
             .flatMap(
-                siteInner ->
-                    Mono
-                        .zip(
+                siteInner -> {
+                    if (FunctionAppImpl.isFunctionAppOnACA(siteInner)) {
+                        // Function App on ACA only supports Application Insights as log option.
+                        return this.inner().getConfigurationAsync(resourceGroupName, name)
+                            .map(siteConfigResourceInner -> wrapModel(siteInner, siteConfigResourceInner, null));
+                    } else {
+                        return Mono.zip(
                             this.inner().getConfigurationAsync(resourceGroupName, name),
                             this.inner().getDiagnosticLogsConfigurationAsync(resourceGroupName, name),
                             (SiteConfigResourceInner siteConfigResourceInner, SiteLogsConfigInner logsConfigInner) ->
-                                wrapModel(siteInner, siteConfigResourceInner, logsConfigInner)));
+                                wrapModel(siteInner, siteConfigResourceInner, logsConfigInner));
+                    }
+                });
     }
 
     @Override

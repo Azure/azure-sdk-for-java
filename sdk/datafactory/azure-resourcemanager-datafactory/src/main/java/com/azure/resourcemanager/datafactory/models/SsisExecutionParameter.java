@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SSIS execution parameter. */
+/**
+ * SSIS execution parameter.
+ */
 @Fluent
 public final class SsisExecutionParameter {
     /*
@@ -17,14 +19,16 @@ public final class SsisExecutionParameter {
     @JsonProperty(value = "value", required = true)
     private Object value;
 
-    /** Creates an instance of SsisExecutionParameter class. */
+    /**
+     * Creates an instance of SsisExecutionParameter class.
+     */
     public SsisExecutionParameter() {
     }
 
     /**
      * Get the value property: SSIS package execution parameter value. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -34,7 +38,7 @@ public final class SsisExecutionParameter {
     /**
      * Set the value property: SSIS package execution parameter value. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param value the value value to set.
      * @return the SsisExecutionParameter object itself.
      */
@@ -45,14 +49,13 @@ public final class SsisExecutionParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model SsisExecutionParameter"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model SsisExecutionParameter"));
         }
     }
 

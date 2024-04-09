@@ -123,15 +123,14 @@ public class CosmosAsyncTrigger {
             null,
             OperationType.Read,
             ResourceType.Trigger,
-            client.getEffectiveDiagnosticsThresholds(null));
+            null);
     }
 
     private Mono<CosmosTriggerResponse> replaceInternal(CosmosTriggerProperties triggerSettings, Context context) {
         String spanName = "replaceTrigger." + container.getId();
         Mono<CosmosTriggerResponse> responseMono = container.getDatabase()
             .getDocClientWrapper()
-            .replaceTrigger(new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(
-                ModelBridgeInternal.getResource(triggerSettings))), null)
+            .replaceTrigger(new Trigger(ModelBridgeInternal.getResource(triggerSettings).getPropertyBag()), null)
             .map(ModelBridgeInternal::createCosmosTriggerResponse)
             .single();
         CosmosAsyncClient client = container.getDatabase().getClient();
@@ -146,7 +145,7 @@ public class CosmosAsyncTrigger {
             null,
             OperationType.Replace,
             ResourceType.Trigger,
-            client.getEffectiveDiagnosticsThresholds(null));
+            null);
     }
 
     private Mono<CosmosTriggerResponse> deleteInternal(Context context) {
@@ -167,6 +166,6 @@ public class CosmosAsyncTrigger {
             null,
             OperationType.Delete,
             ResourceType.Trigger,
-            client.getEffectiveDiagnosticsThresholds(null));
+            null);
     }
 }

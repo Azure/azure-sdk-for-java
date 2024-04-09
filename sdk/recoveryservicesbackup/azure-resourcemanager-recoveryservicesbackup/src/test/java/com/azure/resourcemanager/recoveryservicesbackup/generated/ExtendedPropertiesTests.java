@@ -13,26 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ExtendedPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExtendedProperties model =
-            BinaryData
-                .fromString(
-                    "{\"diskExclusionProperties\":{\"diskLunList\":[1699726584],\"isInclusionList\":true},\"linuxVmApplicationName\":\"kulfg\"}")
-                .toObject(ExtendedProperties.class);
-        Assertions.assertEquals(1699726584, model.diskExclusionProperties().diskLunList().get(0));
+        ExtendedProperties model = BinaryData.fromString(
+            "{\"diskExclusionProperties\":{\"diskLunList\":[1194423212,1625919856,1811866943,2002865497],\"isInclusionList\":true},\"linuxVmApplicationName\":\"esjcbhern\"}")
+            .toObject(ExtendedProperties.class);
+        Assertions.assertEquals(1194423212, model.diskExclusionProperties().diskLunList().get(0));
         Assertions.assertEquals(true, model.diskExclusionProperties().isInclusionList());
-        Assertions.assertEquals("kulfg", model.linuxVmApplicationName());
+        Assertions.assertEquals("esjcbhern", model.linuxVmApplicationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExtendedProperties model =
-            new ExtendedProperties()
-                .withDiskExclusionProperties(
-                    new DiskExclusionProperties().withDiskLunList(Arrays.asList(1699726584)).withIsInclusionList(true))
-                .withLinuxVmApplicationName("kulfg");
+        ExtendedProperties model = new ExtendedProperties().withDiskExclusionProperties(new DiskExclusionProperties()
+            .withDiskLunList(Arrays.asList(1194423212, 1625919856, 1811866943, 2002865497)).withIsInclusionList(true))
+            .withLinuxVmApplicationName("esjcbhern");
         model = BinaryData.fromObject(model).toObject(ExtendedProperties.class);
-        Assertions.assertEquals(1699726584, model.diskExclusionProperties().diskLunList().get(0));
+        Assertions.assertEquals(1194423212, model.diskExclusionProperties().diskLunList().get(0));
         Assertions.assertEquals(true, model.diskExclusionProperties().isInclusionList());
-        Assertions.assertEquals("kulfg", model.linuxVmApplicationName());
+        Assertions.assertEquals("esjcbhern", model.linuxVmApplicationName());
     }
 }

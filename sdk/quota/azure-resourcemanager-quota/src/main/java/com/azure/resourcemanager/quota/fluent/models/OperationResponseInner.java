@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.quota.models.OperationDisplay;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The OperationResponse model. */
+/**
+ * The OperationResponse model.
+ */
 @Fluent
 public final class OperationResponseInner {
     /*
@@ -29,13 +31,15 @@ public final class OperationResponseInner {
     @JsonProperty(value = "origin")
     private String origin;
 
-    /** Creates an instance of OperationResponseInner class. */
+    /**
+     * Creates an instance of OperationResponseInner class.
+     */
     public OperationResponseInner() {
     }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +48,7 @@ public final class OperationResponseInner {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationResponseInner object itself.
      */
@@ -55,7 +59,7 @@ public final class OperationResponseInner {
 
     /**
      * Get the display property: The display property.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -64,7 +68,7 @@ public final class OperationResponseInner {
 
     /**
      * Set the display property: The display property.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationResponseInner object itself.
      */
@@ -75,7 +79,7 @@ public final class OperationResponseInner {
 
     /**
      * Get the origin property: The origin property.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -84,7 +88,7 @@ public final class OperationResponseInner {
 
     /**
      * Set the origin property: The origin property.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the OperationResponseInner object itself.
      */
@@ -95,7 +99,7 @@ public final class OperationResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

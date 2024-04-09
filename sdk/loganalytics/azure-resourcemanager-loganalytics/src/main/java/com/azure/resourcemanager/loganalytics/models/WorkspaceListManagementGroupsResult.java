@@ -18,6 +18,10 @@ public final class WorkspaceListManagementGroupsResult {
     @JsonProperty(value = "value")
     private List<ManagementGroupInner> value;
 
+    /** Creates an instance of WorkspaceListManagementGroupsResult class. */
+    public WorkspaceListManagementGroupsResult() {
+    }
+
     /**
      * Get the value property: Gets or sets a list of management groups attached to the workspace.
      *

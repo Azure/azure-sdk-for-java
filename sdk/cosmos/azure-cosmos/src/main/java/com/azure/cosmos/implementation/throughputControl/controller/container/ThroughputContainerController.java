@@ -9,8 +9,13 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -145,13 +150,13 @@ public class ThroughputContainerController implements IThroughputContainerContro
     private Mono<ThroughputResponse> resolveDatabaseThroughput() {
         return Mono.justOrEmpty(this.targetDatabaseRid)
             .switchIfEmpty(this.resolveDatabaseResourceId())
-            .flatMap(databaseRid -> this.resolveThroughputByResourceId(databaseRid));
+            .flatMap(this::resolveThroughputByResourceId);
     }
 
     private Mono<ThroughputResponse> resolveContainerThroughput() {
         if (StringUtils.isEmpty(this.targetContainerRid)) {
             return this.resolveContainerResourceId()
-                .flatMap(containerRid -> this.resolveThroughputByResourceId(containerRid))
+                .flatMap(this::resolveThroughputByResourceId)
                 .onErrorResume(throwable -> {
                     if (this.isOwnerResourceNotExistsException(throwable)) {
                         // During initialization time, the collection cache may contain staled info,
@@ -165,10 +170,10 @@ public class ThroughputContainerController implements IThroughputContainerContro
 
                     return Mono.error(throwable);
                 })
-                .retryWhen(RetrySpec.max(1).filter(throwable -> this.isOwnerResourceNotExistsException(throwable)));
+                .retryWhen(RetrySpec.max(1).filter(this::isOwnerResourceNotExistsException));
         } else {
             return Mono.just(this.targetContainerRid)
-                .flatMap(containerRid -> this.resolveThroughputByResourceId(containerRid));
+                .flatMap(this::resolveThroughputByResourceId);
         }
     }
 
@@ -208,7 +213,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
                 // which is constant value, hence no need to resolve throughput
                 return Mono.empty();
             })
-            .map(throughputResponse -> this.getMaxContainerThroughput(throughputResponse))
+            .map(this::getMaxContainerThroughput)
             .onErrorResume(throwable -> {
                 if (this.isOwnerResourceNotExistsException(throwable)) {
                     this.cancellationTokenSource.close();
@@ -219,7 +224,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
             .retryWhen(
                 // Throughput can be configured on database level or container level
                 // Retry at most 1 time so we can try on database and container both
-                RetrySpec.max(1).filter(throwable -> this.isOfferNotConfiguredException(throwable))
+                RetrySpec.max(1).filter(this::isOfferNotConfiguredException)
             );
     }
 
@@ -229,8 +234,19 @@ public class ThroughputContainerController implements IThroughputContainerContro
         // We are not supporting serverless account for throughput control for now. But the protocol may change in future,
         // use https://github.com/Azure/azure-sdk-for-java/issues/18776 to keep track for possible future work.
         checkArgument(StringUtils.isNotEmpty(resourceId), "ResourceId can not be null or empty");
+        QueryFeedOperationState state = new QueryFeedOperationState(
+            ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.getCosmosAsyncDatabaseAccessor().getCosmosAsyncClient(this.targetContainer.getDatabase()),
+            "resolveThroughputByResourceId",
+            this.targetContainer.getDatabase().getId(),
+            this.targetContainer.getId(),
+            ResourceType.Offer,
+            OperationType.Query,
+            null,
+            new CosmosQueryRequestOptions(),
+            new CosmosPagedFluxOptions()
+        );
         return this.client.queryOffers(
-                    BridgeInternal.getOfferQuerySpecFromResourceId(this.targetContainer, resourceId), new CosmosQueryRequestOptions())
+                    BridgeInternal.getOfferQuerySpecFromResourceId(this.targetContainer, resourceId), state)
             .single()
             .flatMap(offerFeedResponse -> {
                 if (offerFeedResponse.getResults().isEmpty()) {
@@ -319,7 +335,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
 
     private Mono<ThroughputContainerController> createAndInitializeGroupControllers() {
         return Flux.fromIterable(this.groups)
-            .flatMap(group -> this.resolveThroughputGroupController(group))
+            .flatMap(this::resolveThroughputGroupController)
             .then(Mono.just(this));
     }
 
@@ -372,7 +388,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
                 }
             })
             .flatMapIterable(controller -> this.groups)
-            .flatMap(group -> this.resolveThroughputGroupController(group))
+            .flatMap(this::resolveThroughputGroupController)
             .doOnNext(groupController -> groupController.onContainerMaxThroughputRefresh(this.maxContainerThroughput.get()))
             .onErrorResume(throwable -> {
                 logger.warn("Refresh throughput failed with reason {}", throwable.getMessage());

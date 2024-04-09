@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devcenter.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.CatalogInner;
@@ -55,6 +56,27 @@ public interface Catalog {
     CatalogSyncState syncState();
 
     /**
+     * Gets the lastSyncStats property: Stats of the latest synchronization.
+     *
+     * @return the lastSyncStats value.
+     */
+    SyncStats lastSyncStats();
+
+    /**
+     * Gets the connectionState property: The connection state of the catalog.
+     *
+     * @return the connectionState value.
+     */
+    CatalogConnectionState connectionState();
+
+    /**
+     * Gets the lastConnectionTime property: When the catalog was last connected.
+     *
+     * @return the lastConnectionTime value.
+     */
+    OffsetDateTime lastConnectionTime();
+
+    /**
      * Gets the lastSyncTime property: When the catalog was last synced.
      *
      * @return the lastSyncTime value.
@@ -76,6 +98,13 @@ public interface Catalog {
     GitCatalog adoGit();
 
     /**
+     * Gets the syncType property: Indicates the type of sync that is configured for the catalog.
+     *
+     * @return the syncType value.
+     */
+    CatalogSyncType syncType();
+
+    /**
      * Gets the name of the resource group.
      *
      * @return the name of the resource group.
@@ -93,11 +122,13 @@ public interface Catalog {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Catalog definition stages. */
     interface DefinitionStages {
         /** The first stage of the Catalog definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Catalog definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -109,11 +140,13 @@ public interface Catalog {
              */
             WithCreate withExistingDevcenter(String resourceGroupName, String devCenterName);
         }
+
         /**
          * The stage of the Catalog definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithGitHub, DefinitionStages.WithAdoGit {
+        interface WithCreate
+            extends DefinitionStages.WithGitHub, DefinitionStages.WithAdoGit, DefinitionStages.WithSyncType {
             /**
              * Executes the create request.
              *
@@ -129,6 +162,7 @@ public interface Catalog {
              */
             Catalog create(Context context);
         }
+
         /** The stage of the Catalog definition allowing to specify gitHub. */
         interface WithGitHub {
             /**
@@ -139,6 +173,7 @@ public interface Catalog {
              */
             WithCreate withGitHub(GitCatalog gitHub);
         }
+
         /** The stage of the Catalog definition allowing to specify adoGit. */
         interface WithAdoGit {
             /**
@@ -149,7 +184,19 @@ public interface Catalog {
              */
             WithCreate withAdoGit(GitCatalog adoGit);
         }
+
+        /** The stage of the Catalog definition allowing to specify syncType. */
+        interface WithSyncType {
+            /**
+             * Specifies the syncType property: Indicates the type of sync that is configured for the catalog..
+             *
+             * @param syncType Indicates the type of sync that is configured for the catalog.
+             * @return the next definition stage.
+             */
+            WithCreate withSyncType(CatalogSyncType syncType);
+        }
     }
+
     /**
      * Begins update for the Catalog resource.
      *
@@ -158,7 +205,8 @@ public interface Catalog {
     Catalog.Update update();
 
     /** The template for Catalog update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithGitHub, UpdateStages.WithAdoGit {
+    interface Update
+        extends UpdateStages.WithTags, UpdateStages.WithGitHub, UpdateStages.WithAdoGit, UpdateStages.WithSyncType {
         /**
          * Executes the update request.
          *
@@ -174,6 +222,7 @@ public interface Catalog {
          */
         Catalog apply(Context context);
     }
+
     /** The Catalog update stages. */
     interface UpdateStages {
         /** The stage of the Catalog update allowing to specify tags. */
@@ -186,6 +235,7 @@ public interface Catalog {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Catalog update allowing to specify gitHub. */
         interface WithGitHub {
             /**
@@ -196,6 +246,7 @@ public interface Catalog {
              */
             Update withGitHub(GitCatalog gitHub);
         }
+
         /** The stage of the Catalog update allowing to specify adoGit. */
         interface WithAdoGit {
             /**
@@ -206,7 +257,19 @@ public interface Catalog {
              */
             Update withAdoGit(GitCatalog adoGit);
         }
+
+        /** The stage of the Catalog update allowing to specify syncType. */
+        interface WithSyncType {
+            /**
+             * Specifies the syncType property: Indicates the type of sync that is configured for the catalog..
+             *
+             * @param syncType Indicates the type of sync that is configured for the catalog.
+             * @return the next definition stage.
+             */
+            Update withSyncType(CatalogSyncType syncType);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -221,6 +284,26 @@ public interface Catalog {
      * @return the refreshed resource.
      */
     Catalog refresh(Context context);
+
+    /**
+     * Gets catalog synchronization error details.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return catalog synchronization error details along with {@link Response}.
+     */
+    Response<SyncErrorDetails> getSyncErrorDetailsWithResponse(Context context);
+
+    /**
+     * Gets catalog synchronization error details.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return catalog synchronization error details.
+     */
+    SyncErrorDetails getSyncErrorDetails();
 
     /**
      * Syncs templates for a template source.
@@ -239,4 +322,22 @@ public interface Catalog {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void sync(Context context);
+
+    /**
+     * Connects a catalog to enable syncing.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void connect();
+
+    /**
+     * Connects a catalog to enable syncing.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void connect(Context context);
 }

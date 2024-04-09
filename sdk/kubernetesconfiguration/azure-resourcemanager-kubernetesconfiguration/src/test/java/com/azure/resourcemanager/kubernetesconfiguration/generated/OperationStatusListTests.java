@@ -13,7 +13,7 @@ public final class OperationStatusListTests {
         OperationStatusList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"id\":\"yp\",\"name\":\"bpizcdrqjsdpydn\",\"status\":\"yhxdeoejzicwi\",\"properties\":{\"cbkhajdeyeamdph\":\"ttgzfbis\",\"lpbuxwgipwhonowk\":\"g\"}},{\"id\":\"wankixzbi\",\"name\":\"eputtmrywnuzoqf\",\"status\":\"iyqzrnk\",\"properties\":{\"whzlsicohoq\":\"yx\",\"hgyxzkonoc\":\"nwvlryavwhheunmm\",\"uconuqszfkbey\":\"koklya\",\"senhwlrs\":\"ewrmjmwvvjektc\"}},{\"id\":\"zpwv\",\"name\":\"dqgbiqylihkaetc\",\"status\":\"tvfcivfsn\",\"properties\":{\"rjcxerfuwu\":\"uctqhjfbe\"}},{\"id\":\"xfvjrbirp\",\"name\":\"epcyvahfnlj\",\"status\":\"yq\",\"properties\":{\"gvcl\":\"uujqgidokgjljyo\",\"jhtxfvgxbfsmxne\":\"bgsncghkjeszzhb\"}}],\"nextLink\":\"vecxgodebfqkk\"}")
+                    "{\"value\":[{\"id\":\"uhashsfwx\",\"name\":\"owzxcu\",\"status\":\"i\",\"properties\":{\"wfvovbv\":\"oxdjebwpuc\",\"jrwjueiotwm\":\"euecivyhzceuoj\",\"rjaw\":\"dytdxwitx\"}},{\"id\":\"gxhnisk\",\"name\":\"bkpyc\",\"status\":\"klwndnhjdauwhv\",\"properties\":{\"xujznbmpowu\":\"zbtd\",\"lupj\":\"przqlveu\"}},{\"id\":\"fxobbcsws\",\"name\":\"jriplrbpbewtghf\",\"status\":\"blcg\",\"properties\":{\"t\":\"vlvqhjkbegi\",\"aloayqcgwrtzju\":\"mxiebw\",\"txon\":\"gwyzm\",\"rknftguvriuhprwm\":\"mtsavjcbpwxqp\"}}],\"nextLink\":\"xqtayriwwro\"}")
                 .toObject(OperationStatusList.class);
     }
 

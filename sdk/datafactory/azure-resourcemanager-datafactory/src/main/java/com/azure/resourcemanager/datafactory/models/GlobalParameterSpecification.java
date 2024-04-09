@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Definition of a single parameter for an entity. */
+/**
+ * Definition of a single parameter for an entity.
+ */
 @Fluent
 public final class GlobalParameterSpecification {
     /*
@@ -23,13 +25,15 @@ public final class GlobalParameterSpecification {
     @JsonProperty(value = "value", required = true)
     private Object value;
 
-    /** Creates an instance of GlobalParameterSpecification class. */
+    /**
+     * Creates an instance of GlobalParameterSpecification class.
+     */
     public GlobalParameterSpecification() {
     }
 
     /**
      * Get the type property: Global Parameter type.
-     *
+     * 
      * @return the type value.
      */
     public GlobalParameterType type() {
@@ -38,7 +42,7 @@ public final class GlobalParameterSpecification {
 
     /**
      * Set the type property: Global Parameter type.
-     *
+     * 
      * @param type the type value to set.
      * @return the GlobalParameterSpecification object itself.
      */
@@ -49,7 +53,7 @@ public final class GlobalParameterSpecification {
 
     /**
      * Get the value property: Value of parameter.
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -58,7 +62,7 @@ public final class GlobalParameterSpecification {
 
     /**
      * Set the value property: Value of parameter.
-     *
+     * 
      * @param value the value value to set.
      * @return the GlobalParameterSpecification object itself.
      */
@@ -69,21 +73,17 @@ public final class GlobalParameterSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property type in model GlobalParameterSpecification"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model GlobalParameterSpecification"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model GlobalParameterSpecification"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model GlobalParameterSpecification"));
         }
     }
 

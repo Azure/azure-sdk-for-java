@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** DocumentDB Collection dataset properties. */
+/**
+ * DocumentDB Collection dataset properties.
+ */
 @Fluent
 public final class DocumentDbCollectionDatasetTypeProperties {
     /*
@@ -17,14 +19,16 @@ public final class DocumentDbCollectionDatasetTypeProperties {
     @JsonProperty(value = "collectionName", required = true)
     private Object collectionName;
 
-    /** Creates an instance of DocumentDbCollectionDatasetTypeProperties class. */
+    /**
+     * Creates an instance of DocumentDbCollectionDatasetTypeProperties class.
+     */
     public DocumentDbCollectionDatasetTypeProperties() {
     }
 
     /**
      * Get the collectionName property: Document Database collection name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the collectionName value.
      */
     public Object collectionName() {
@@ -34,7 +38,7 @@ public final class DocumentDbCollectionDatasetTypeProperties {
     /**
      * Set the collectionName property: Document Database collection name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param collectionName the collectionName value to set.
      * @return the DocumentDbCollectionDatasetTypeProperties object itself.
      */
@@ -45,15 +49,13 @@ public final class DocumentDbCollectionDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (collectionName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property collectionName in model DocumentDbCollectionDatasetTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property collectionName in model DocumentDbCollectionDatasetTypeProperties"));
         }
     }
 

@@ -31,48 +31,35 @@ public final class ServersGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"fullyQualifiedDomainName\":\"plwzbhvgyugu\",\"role\":\"Worker\",\"state\":\"kfssxqukkf\",\"haState\":\"gmgsxnkjzkde\",\"availabilityZone\":\"pvlopwiyighxpkd\",\"postgresqlVersion\":\"baiuebbaumny\",\"citusVersion\":\"ped\",\"serverEdition\":\"jn\",\"storageQuotaInMb\":949740199,\"vCores\":1650881541,\"enableHa\":true,\"enablePublicIpAccess\":true,\"isReadOnly\":true,\"administratorLogin\":\"ebtfhvpesap\"},\"id\":\"rdqmhjjdhtldwkyz\",\"name\":\"uutkncw\",\"type\":\"cwsvlxotog\"}";
+        String responseStr
+            = "{\"properties\":{\"fullyQualifiedDomainName\":\"xrmcqibycnojvk\",\"role\":\"Coordinator\",\"state\":\"qsgzvahapj\",\"haState\":\"hpvgqz\",\"availabilityZone\":\"rvxdjzlmw\",\"postgresqlVersion\":\"kvugfhzovawjvzun\",\"citusVersion\":\"thnnpr\",\"serverEdition\":\"i\",\"storageQuotaInMb\":1381337865,\"vCores\":1073043267,\"enableHa\":false,\"enablePublicIpAccess\":false,\"isReadOnly\":true,\"administratorLogin\":\"dultskz\"},\"id\":\"tdzumveekgpw\",\"name\":\"zuhkfpbsjyof\",\"type\":\"xl\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CosmosDBForPostgreSqlManager manager =
-            CosmosDBForPostgreSqlManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CosmosDBForPostgreSqlManager manager = CosmosDBForPostgreSqlManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ClusterServer response =
-            manager
-                .servers()
-                .getWithResponse("xytxhpzxbz", "fzab", "lcuhxwtctyqiklb", com.azure.core.util.Context.NONE)
-                .getValue();
+        ClusterServer response = manager.servers()
+            .getWithResponse("mtsavjcbpwxqp", "rknftguvriuhprwm", "yvxqtayriwwroy", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals(ServerRole.WORKER, response.role());
-        Assertions.assertEquals("pvlopwiyighxpkd", response.availabilityZone());
-        Assertions.assertEquals("baiuebbaumny", response.postgresqlVersion());
-        Assertions.assertEquals("ped", response.citusVersion());
-        Assertions.assertEquals("jn", response.serverEdition());
-        Assertions.assertEquals(949740199, response.storageQuotaInMb());
-        Assertions.assertEquals(1650881541, response.vCores());
-        Assertions.assertEquals(true, response.enableHa());
+        Assertions.assertEquals(ServerRole.COORDINATOR, response.role());
+        Assertions.assertEquals("rvxdjzlmw", response.availabilityZone());
+        Assertions.assertEquals("kvugfhzovawjvzun", response.postgresqlVersion());
+        Assertions.assertEquals("thnnpr", response.citusVersion());
+        Assertions.assertEquals("i", response.serverEdition());
+        Assertions.assertEquals(1381337865, response.storageQuotaInMb());
+        Assertions.assertEquals(1073043267, response.vCores());
+        Assertions.assertEquals(false, response.enableHa());
     }
 }

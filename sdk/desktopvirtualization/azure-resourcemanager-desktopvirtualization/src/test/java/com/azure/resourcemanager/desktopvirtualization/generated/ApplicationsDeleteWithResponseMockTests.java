@@ -58,6 +58,6 @@ public final class ApplicationsDeleteWithResponseMockTests {
 
         manager
             .applications()
-            .deleteWithResponse("jsqzhzbezk", "imsidxasicddyvvj", "kgfmocwahpq", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("csgguxhemlw", "waeeczgfb", "kklelssxblycs", com.azure.core.util.Context.NONE);
     }
 }

@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** An object that represents a scope map for a container registry. */
+/**
+ * An object that represents a scope map for a container registry.
+ */
 @Fluent
 public final class ScopeMapInner extends ProxyResource {
     /*
@@ -27,13 +29,15 @@ public final class ScopeMapInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ScopeMapInner class. */
+    /**
+     * Creates an instance of ScopeMapInner class.
+     */
     public ScopeMapInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the scope map.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ScopeMapProperties innerProperties() {
@@ -42,7 +46,7 @@ public final class ScopeMapInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -51,7 +55,7 @@ public final class ScopeMapInner extends ProxyResource {
 
     /**
      * Get the description property: The user friendly description of the scope map.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -60,7 +64,7 @@ public final class ScopeMapInner extends ProxyResource {
 
     /**
      * Set the description property: The user friendly description of the scope map.
-     *
+     * 
      * @param description the description value to set.
      * @return the ScopeMapInner object itself.
      */
@@ -74,7 +78,7 @@ public final class ScopeMapInner extends ProxyResource {
 
     /**
      * Get the type property: The type of the scope map. E.g. BuildIn scope map.
-     *
+     * 
      * @return the type value.
      */
     public String typePropertiesType() {
@@ -83,7 +87,7 @@ public final class ScopeMapInner extends ProxyResource {
 
     /**
      * Get the creationDate property: The creation date of scope map.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -92,7 +96,7 @@ public final class ScopeMapInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -100,9 +104,10 @@ public final class ScopeMapInner extends ProxyResource {
     }
 
     /**
-     * Get the actions property: The list of scoped permissions for registry artifacts. E.g.
-     * repositories/repository-name/content/read, repositories/repository-name/metadata/write.
-     *
+     * Get the actions property: The list of scoped permissions for registry artifacts.
+     * E.g. repositories/repository-name/content/read,
+     * repositories/repository-name/metadata/write.
+     * 
      * @return the actions value.
      */
     public List<String> actions() {
@@ -110,9 +115,10 @@ public final class ScopeMapInner extends ProxyResource {
     }
 
     /**
-     * Set the actions property: The list of scoped permissions for registry artifacts. E.g.
-     * repositories/repository-name/content/read, repositories/repository-name/metadata/write.
-     *
+     * Set the actions property: The list of scoped permissions for registry artifacts.
+     * E.g. repositories/repository-name/content/read,
+     * repositories/repository-name/metadata/write.
+     * 
      * @param actions the actions value to set.
      * @return the ScopeMapInner object itself.
      */
@@ -126,7 +132,7 @@ public final class ScopeMapInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -20,57 +20,55 @@ public final class SchedulePropertiesTests {
         ScheduleProperties model =
             BinaryData
                 .fromString(
-                    "{\"status\":\"Enabled\",\"taskType\":\"jeyp\",\"weeklyRecurrence\":{\"weekdays\":[\"rkgqhcjrefo\",\"gm\",\"qsl\",\"yyvxyqjpkcattpn\"],\"time\":\"cr\"},\"dailyRecurrence\":{\"time\":\"sqpjhvmdajvn\"},\"hourlyRecurrence\":{\"minute\":340667292},\"timeZoneId\":\"q\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":389510865,\"webhookUrl\":\"upfh\",\"emailRecipient\":\"ltrpmopj\",\"notificationLocale\":\"matuok\"},\"createdDate\":\"2021-07-09T17:51:05Z\",\"targetResourceId\":\"iuaod\",\"provisioningState\":\"cpkvxodp\",\"uniqueIdentifier\":\"zmyzydagf\"}")
+                    "{\"status\":\"Disabled\",\"taskType\":\"jzkdeslpvlopwi\",\"weeklyRecurrence\":{\"weekdays\":[\"xpkd\",\"zb\"],\"time\":\"uebbaumnyqup\"},\"dailyRecurrence\":{\"time\":\"ojnabckhsmtxpsie\"},\"hourlyRecurrence\":{\"minute\":1146165631},\"timeZoneId\":\"pesapskrdqmhjj\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":692373611,\"webhookUrl\":\"yzxuutkncw\",\"emailRecipient\":\"wsvlxotogtwrupqs\",\"notificationLocale\":\"nmic\"},\"createdDate\":\"2021-01-26T07:44:08Z\",\"targetResourceId\":\"eoveilovnotyf\",\"provisioningState\":\"cnjbkcnxdhbt\",\"uniqueIdentifier\":\"phywpnvj\"}")
                 .toObject(ScheduleProperties.class);
-        Assertions.assertEquals(EnableStatus.ENABLED, model.status());
-        Assertions.assertEquals("jeyp", model.taskType());
-        Assertions.assertEquals("rkgqhcjrefo", model.weeklyRecurrence().weekdays().get(0));
-        Assertions.assertEquals("cr", model.weeklyRecurrence().time());
-        Assertions.assertEquals("sqpjhvmdajvn", model.dailyRecurrence().time());
-        Assertions.assertEquals(340667292, model.hourlyRecurrence().minute());
-        Assertions.assertEquals("q", model.timeZoneId());
-        Assertions.assertEquals(EnableStatus.ENABLED, model.notificationSettings().status());
-        Assertions.assertEquals(389510865, model.notificationSettings().timeInMinutes());
-        Assertions.assertEquals("upfh", model.notificationSettings().webhookUrl());
-        Assertions.assertEquals("ltrpmopj", model.notificationSettings().emailRecipient());
-        Assertions.assertEquals("matuok", model.notificationSettings().notificationLocale());
-        Assertions.assertEquals("iuaod", model.targetResourceId());
+        Assertions.assertEquals(EnableStatus.DISABLED, model.status());
+        Assertions.assertEquals("jzkdeslpvlopwi", model.taskType());
+        Assertions.assertEquals("xpkd", model.weeklyRecurrence().weekdays().get(0));
+        Assertions.assertEquals("uebbaumnyqup", model.weeklyRecurrence().time());
+        Assertions.assertEquals("ojnabckhsmtxpsie", model.dailyRecurrence().time());
+        Assertions.assertEquals(1146165631, model.hourlyRecurrence().minute());
+        Assertions.assertEquals("pesapskrdqmhjj", model.timeZoneId());
+        Assertions.assertEquals(EnableStatus.DISABLED, model.notificationSettings().status());
+        Assertions.assertEquals(692373611, model.notificationSettings().timeInMinutes());
+        Assertions.assertEquals("yzxuutkncw", model.notificationSettings().webhookUrl());
+        Assertions.assertEquals("wsvlxotogtwrupqs", model.notificationSettings().emailRecipient());
+        Assertions.assertEquals("nmic", model.notificationSettings().notificationLocale());
+        Assertions.assertEquals("eoveilovnotyf", model.targetResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScheduleProperties model =
             new ScheduleProperties()
-                .withStatus(EnableStatus.ENABLED)
-                .withTaskType("jeyp")
+                .withStatus(EnableStatus.DISABLED)
+                .withTaskType("jzkdeslpvlopwi")
                 .withWeeklyRecurrence(
-                    new WeekDetails()
-                        .withWeekdays(Arrays.asList("rkgqhcjrefo", "gm", "qsl", "yyvxyqjpkcattpn"))
-                        .withTime("cr"))
-                .withDailyRecurrence(new DayDetails().withTime("sqpjhvmdajvn"))
-                .withHourlyRecurrence(new HourDetails().withMinute(340667292))
-                .withTimeZoneId("q")
+                    new WeekDetails().withWeekdays(Arrays.asList("xpkd", "zb")).withTime("uebbaumnyqup"))
+                .withDailyRecurrence(new DayDetails().withTime("ojnabckhsmtxpsie"))
+                .withHourlyRecurrence(new HourDetails().withMinute(1146165631))
+                .withTimeZoneId("pesapskrdqmhjj")
                 .withNotificationSettings(
                     new NotificationSettings()
-                        .withStatus(EnableStatus.ENABLED)
-                        .withTimeInMinutes(389510865)
-                        .withWebhookUrl("upfh")
-                        .withEmailRecipient("ltrpmopj")
-                        .withNotificationLocale("matuok"))
-                .withTargetResourceId("iuaod");
+                        .withStatus(EnableStatus.DISABLED)
+                        .withTimeInMinutes(692373611)
+                        .withWebhookUrl("yzxuutkncw")
+                        .withEmailRecipient("wsvlxotogtwrupqs")
+                        .withNotificationLocale("nmic"))
+                .withTargetResourceId("eoveilovnotyf");
         model = BinaryData.fromObject(model).toObject(ScheduleProperties.class);
-        Assertions.assertEquals(EnableStatus.ENABLED, model.status());
-        Assertions.assertEquals("jeyp", model.taskType());
-        Assertions.assertEquals("rkgqhcjrefo", model.weeklyRecurrence().weekdays().get(0));
-        Assertions.assertEquals("cr", model.weeklyRecurrence().time());
-        Assertions.assertEquals("sqpjhvmdajvn", model.dailyRecurrence().time());
-        Assertions.assertEquals(340667292, model.hourlyRecurrence().minute());
-        Assertions.assertEquals("q", model.timeZoneId());
-        Assertions.assertEquals(EnableStatus.ENABLED, model.notificationSettings().status());
-        Assertions.assertEquals(389510865, model.notificationSettings().timeInMinutes());
-        Assertions.assertEquals("upfh", model.notificationSettings().webhookUrl());
-        Assertions.assertEquals("ltrpmopj", model.notificationSettings().emailRecipient());
-        Assertions.assertEquals("matuok", model.notificationSettings().notificationLocale());
-        Assertions.assertEquals("iuaod", model.targetResourceId());
+        Assertions.assertEquals(EnableStatus.DISABLED, model.status());
+        Assertions.assertEquals("jzkdeslpvlopwi", model.taskType());
+        Assertions.assertEquals("xpkd", model.weeklyRecurrence().weekdays().get(0));
+        Assertions.assertEquals("uebbaumnyqup", model.weeklyRecurrence().time());
+        Assertions.assertEquals("ojnabckhsmtxpsie", model.dailyRecurrence().time());
+        Assertions.assertEquals(1146165631, model.hourlyRecurrence().minute());
+        Assertions.assertEquals("pesapskrdqmhjj", model.timeZoneId());
+        Assertions.assertEquals(EnableStatus.DISABLED, model.notificationSettings().status());
+        Assertions.assertEquals(692373611, model.notificationSettings().timeInMinutes());
+        Assertions.assertEquals("yzxuutkncw", model.notificationSettings().webhookUrl());
+        Assertions.assertEquals("wsvlxotogtwrupqs", model.notificationSettings().emailRecipient());
+        Assertions.assertEquals("nmic", model.notificationSettings().notificationLocale());
+        Assertions.assertEquals("eoveilovnotyf", model.targetResourceId());
     }
 }

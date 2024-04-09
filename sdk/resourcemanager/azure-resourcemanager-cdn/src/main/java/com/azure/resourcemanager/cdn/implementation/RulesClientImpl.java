@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RulesClient.
+ */
 public final class RulesClientImpl implements RulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CdnManagementClientImpl client;
 
     /**
      * Initializes an instance of RulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RulesClientImpl(CdnManagementClientImpl client) {
@@ -64,125 +70,84 @@ public final class RulesClientImpl implements RulesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientR")
-    private interface RulesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/ruleSets/{ruleSetName}/rules")
-        @ExpectedResponses({200})
+    public interface RulesService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/rules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RuleListResult>> listByRuleSet(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("ruleSetName") String ruleSetName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RuleListResult>> listByRuleSet(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("ruleSetName") String ruleSetName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RuleInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("ruleSetName") String ruleSetName,
-            @PathParam("ruleName") String ruleName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RuleInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("ruleSetName") String ruleSetName, @PathParam("ruleName") String ruleName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("ruleSetName") String ruleSetName,
-            @PathParam("ruleName") String ruleName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") RuleInner rule,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("ruleSetName") String ruleSetName, @PathParam("ruleName") String ruleName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RuleInner rule, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("ruleSetName") String ruleSetName,
-            @PathParam("ruleName") String ruleName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("ruleSetName") String ruleSetName, @PathParam("ruleName") String ruleName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") RuleUpdateParameters ruleUpdateProperties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("ruleSetName") String ruleSetName,
-            @PathParam("ruleName") String ruleName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("ruleSetName") String ruleSetName, @PathParam("ruleName") String ruleName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RuleListResult>> listByRuleSetNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RuleListResult>> listByRuleSetNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all of the existing delivery rules within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list rules along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the request to list rules along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RuleInner>> listByRuleSetSinglePageAsync(
-        String resourceGroupName, String profileName, String ruleSetName) {
+    private Mono<PagedResponse<RuleInner>> listByRuleSetSinglePageAsync(String resourceGroupName, String profileName,
+        String ruleSetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -195,59 +160,38 @@ public final class RulesClientImpl implements RulesClient {
             return Mono.error(new IllegalArgumentException("Parameter ruleSetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByRuleSet(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            ruleSetName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<RuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByRuleSet(this.client.getEndpoint(), resourceGroupName, profileName,
+                ruleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<RuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all of the existing delivery rules within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list rules along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the request to list rules along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RuleInner>> listByRuleSetSinglePageAsync(
-        String resourceGroupName, String profileName, String ruleSetName, Context context) {
+    private Mono<PagedResponse<RuleInner>> listByRuleSetSinglePageAsync(String resourceGroupName, String profileName,
+        String ruleSetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -260,40 +204,24 @@ public final class RulesClientImpl implements RulesClient {
             return Mono.error(new IllegalArgumentException("Parameter ruleSetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByRuleSet(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                ruleSetName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByRuleSet(this.client.getEndpoint(), resourceGroupName, profileName, ruleSetName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all of the existing delivery rules within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -302,17 +230,16 @@ public final class RulesClientImpl implements RulesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RuleInner> listByRuleSetAsync(String resourceGroupName, String profileName, String ruleSetName) {
-        return new PagedFlux<>(
-            () -> listByRuleSetSinglePageAsync(resourceGroupName, profileName, ruleSetName),
+        return new PagedFlux<>(() -> listByRuleSetSinglePageAsync(resourceGroupName, profileName, ruleSetName),
             nextLink -> listByRuleSetNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the existing delivery rules within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -321,19 +248,18 @@ public final class RulesClientImpl implements RulesClient {
      * @return result of the request to list rules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RuleInner> listByRuleSetAsync(
-        String resourceGroupName, String profileName, String ruleSetName, Context context) {
-        return new PagedFlux<>(
-            () -> listByRuleSetSinglePageAsync(resourceGroupName, profileName, ruleSetName, context),
+    private PagedFlux<RuleInner> listByRuleSetAsync(String resourceGroupName, String profileName, String ruleSetName,
+        Context context) {
+        return new PagedFlux<>(() -> listByRuleSetSinglePageAsync(resourceGroupName, profileName, ruleSetName, context),
             nextLink -> listByRuleSetNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all of the existing delivery rules within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -347,10 +273,10 @@ public final class RulesClientImpl implements RulesClient {
 
     /**
      * Lists all of the existing delivery rules within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -359,33 +285,31 @@ public final class RulesClientImpl implements RulesClient {
      * @return result of the request to list rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RuleInner> listByRuleSet(
-        String resourceGroupName, String profileName, String ruleSetName, Context context) {
+    public PagedIterable<RuleInner> listByRuleSet(String resourceGroupName, String profileName, String ruleSetName,
+        Context context) {
         return new PagedIterable<>(listByRuleSetAsync(resourceGroupName, profileName, ruleSetName, context));
     }
 
     /**
      * Gets an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing delivery rule within a rule set along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RuleInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, String ruleSetName, String ruleName) {
+    public Mono<Response<RuleInner>> getWithResponseAsync(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -401,35 +325,22 @@ public final class RulesClientImpl implements RulesClient {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            ruleSetName,
-                            ruleName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, profileName, ruleSetName,
+                ruleName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param context The context to associate with this operation.
@@ -437,16 +348,14 @@ public final class RulesClientImpl implements RulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing delivery rule within a rule set along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RuleInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, String ruleSetName, String ruleName, Context context) {
+    private Mono<Response<RuleInner>> getWithResponseAsync(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -462,32 +371,21 @@ public final class RulesClientImpl implements RulesClient {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                ruleSetName,
-                ruleName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, profileName, ruleSetName, ruleName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -503,28 +401,10 @@ public final class RulesClientImpl implements RulesClient {
 
     /**
      * Gets an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param ruleSetName Name of the rule set under the profile.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing delivery rule within a rule set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RuleInner get(String resourceGroupName, String profileName, String ruleSetName, String ruleName) {
-        return getAsync(resourceGroupName, profileName, ruleSetName, ruleName).block();
-    }
-
-    /**
-     * Gets an existing delivery rule within a rule set.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param context The context to associate with this operation.
@@ -534,17 +414,35 @@ public final class RulesClientImpl implements RulesClient {
      * @return an existing delivery rule within a rule set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RuleInner> getWithResponse(
-        String resourceGroupName, String profileName, String ruleSetName, String ruleName, Context context) {
+    public Response<RuleInner> getWithResponse(String resourceGroupName, String profileName, String ruleSetName,
+        String ruleName, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, ruleSetName, ruleName, context).block();
     }
 
     /**
-     * Creates a new delivery rule within the specified rule set.
-     *
+     * Gets an existing delivery rule within a rule set.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
+     * @param ruleSetName Name of the rule set under the profile.
+     * @param ruleName Name of the delivery rule which is unique within the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing delivery rule within a rule set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RuleInner get(String resourceGroupName, String profileName, String ruleSetName, String ruleName) {
+        return getWithResponse(resourceGroupName, profileName, ruleSetName, ruleName, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a new delivery rule within the specified rule set.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param rule The delivery rule properties.
@@ -552,16 +450,14 @@ public final class RulesClientImpl implements RulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Rules name mapping to the any Rules or secret related information along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String profileName, String ruleSetName, String ruleName, RuleInner rule) {
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName, RuleInner rule) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -577,10 +473,8 @@ public final class RulesClientImpl implements RulesClient {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (rule == null) {
             return Mono.error(new IllegalArgumentException("Parameter rule is required and cannot be null."));
@@ -590,28 +484,17 @@ public final class RulesClientImpl implements RulesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            ruleSetName,
-                            ruleName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            rule,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), resourceGroupName, profileName, ruleSetName,
+                    ruleName, this.client.getSubscriptionId(), this.client.getApiVersion(), rule, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new delivery rule within the specified rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param rule The delivery rule properties.
@@ -620,21 +503,14 @@ public final class RulesClientImpl implements RulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Rules name mapping to the any Rules or secret related information along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String ruleSetName,
-        String ruleName,
-        RuleInner rule,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName, RuleInner rule, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -650,10 +526,8 @@ public final class RulesClientImpl implements RulesClient {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (rule == null) {
             return Mono.error(new IllegalArgumentException("Parameter rule is required and cannot be null."));
@@ -662,26 +536,16 @@ public final class RulesClientImpl implements RulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                ruleSetName,
-                ruleName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                rule,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), resourceGroupName, profileName, ruleSetName, ruleName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), rule, accept, context);
     }
 
     /**
      * Creates a new delivery rule within the specified rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param rule The delivery rule properties.
@@ -689,25 +553,23 @@ public final class RulesClientImpl implements RulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of friendly Rules name mapping to the any Rules or secret related
-     *     information.
+     * information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<RuleInner>, RuleInner> beginCreateAsync(
-        String resourceGroupName, String profileName, String ruleSetName, String ruleName, RuleInner rule) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule);
-        return this
-            .client
-            .<RuleInner, RuleInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RuleInner.class, RuleInner.class, this.client.getContext());
+    public PollerFlux<PollResult<RuleInner>, RuleInner> beginCreateAsync(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName, RuleInner rule) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule);
+        return this.client.<RuleInner, RuleInner>getLroResult(mono, this.client.getHttpPipeline(), RuleInner.class,
+            RuleInner.class, this.client.getContext());
     }
 
     /**
      * Creates a new delivery rule within the specified rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param rule The delivery rule properties.
@@ -716,31 +578,24 @@ public final class RulesClientImpl implements RulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of friendly Rules name mapping to the any Rules or secret related
-     *     information.
+     * information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<RuleInner>, RuleInner> beginCreateAsync(
-        String resourceGroupName,
-        String profileName,
-        String ruleSetName,
-        String ruleName,
-        RuleInner rule,
-        Context context) {
+    private PollerFlux<PollResult<RuleInner>, RuleInner> beginCreateAsync(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName, RuleInner rule, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule, context);
-        return this
-            .client
-            .<RuleInner, RuleInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RuleInner.class, RuleInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule, context);
+        return this.client.<RuleInner, RuleInner>getLroResult(mono, this.client.getHttpPipeline(), RuleInner.class,
+            RuleInner.class, context);
     }
 
     /**
      * Creates a new delivery rule within the specified rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param rule The delivery rule properties.
@@ -748,20 +603,20 @@ public final class RulesClientImpl implements RulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of friendly Rules name mapping to the any Rules or secret related
-     *     information.
+     * information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RuleInner>, RuleInner> beginCreate(
-        String resourceGroupName, String profileName, String ruleSetName, String ruleName, RuleInner rule) {
-        return beginCreateAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule).getSyncPoller();
+    public SyncPoller<PollResult<RuleInner>, RuleInner> beginCreate(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName, RuleInner rule) {
+        return this.beginCreateAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule).getSyncPoller();
     }
 
     /**
      * Creates a new delivery rule within the specified rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param rule The delivery rule properties.
@@ -770,25 +625,21 @@ public final class RulesClientImpl implements RulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of friendly Rules name mapping to the any Rules or secret related
-     *     information.
+     * information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RuleInner>, RuleInner> beginCreate(
-        String resourceGroupName,
-        String profileName,
-        String ruleSetName,
-        String ruleName,
-        RuleInner rule,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule, context).getSyncPoller();
+    public SyncPoller<PollResult<RuleInner>, RuleInner> beginCreate(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName, RuleInner rule, Context context) {
+        return this.beginCreateAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule, context)
+            .getSyncPoller();
     }
 
     /**
      * Creates a new delivery rule within the specified rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param rule The delivery rule properties.
@@ -796,22 +647,21 @@ public final class RulesClientImpl implements RulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Rules name mapping to the any Rules or secret related information on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RuleInner> createAsync(
-        String resourceGroupName, String profileName, String ruleSetName, String ruleName, RuleInner rule) {
-        return beginCreateAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule)
-            .last()
+    public Mono<RuleInner> createAsync(String resourceGroupName, String profileName, String ruleSetName,
+        String ruleName, RuleInner rule) {
+        return beginCreateAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new delivery rule within the specified rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param rule The delivery rule properties.
@@ -820,27 +670,21 @@ public final class RulesClientImpl implements RulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Rules name mapping to the any Rules or secret related information on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RuleInner> createAsync(
-        String resourceGroupName,
-        String profileName,
-        String ruleSetName,
-        String ruleName,
-        RuleInner rule,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule, context)
-            .last()
+    private Mono<RuleInner> createAsync(String resourceGroupName, String profileName, String ruleSetName,
+        String ruleName, RuleInner rule, Context context) {
+        return beginCreateAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new delivery rule within the specified rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param rule The delivery rule properties.
@@ -850,17 +694,17 @@ public final class RulesClientImpl implements RulesClient {
      * @return friendly Rules name mapping to the any Rules or secret related information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RuleInner create(
-        String resourceGroupName, String profileName, String ruleSetName, String ruleName, RuleInner rule) {
+    public RuleInner create(String resourceGroupName, String profileName, String ruleSetName, String ruleName,
+        RuleInner rule) {
         return createAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule).block();
     }
 
     /**
      * Creates a new delivery rule within the specified rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param rule The delivery rule properties.
@@ -871,22 +715,17 @@ public final class RulesClientImpl implements RulesClient {
      * @return friendly Rules name mapping to the any Rules or secret related information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RuleInner create(
-        String resourceGroupName,
-        String profileName,
-        String ruleSetName,
-        String ruleName,
-        RuleInner rule,
-        Context context) {
+    public RuleInner create(String resourceGroupName, String profileName, String ruleSetName, String ruleName,
+        RuleInner rule, Context context) {
         return createAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule, context).block();
     }
 
     /**
      * Updates an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param ruleUpdateProperties Delivery rule properties.
@@ -894,20 +733,14 @@ public final class RulesClientImpl implements RulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Rules name mapping to the any Rules or secret related information along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String ruleSetName,
-        String ruleName,
-        RuleUpdateParameters ruleUpdateProperties) {
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName, RuleUpdateParameters ruleUpdateProperties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -923,10 +756,8 @@ public final class RulesClientImpl implements RulesClient {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (ruleUpdateProperties == null) {
             return Mono
@@ -936,29 +767,18 @@ public final class RulesClientImpl implements RulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            ruleSetName,
-                            ruleName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            ruleUpdateProperties,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, profileName,
+                ruleSetName, ruleName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                ruleUpdateProperties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param ruleUpdateProperties Delivery rule properties.
@@ -967,21 +787,14 @@ public final class RulesClientImpl implements RulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Rules name mapping to the any Rules or secret related information along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String ruleSetName,
-        String ruleName,
-        RuleUpdateParameters ruleUpdateProperties,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName, RuleUpdateParameters ruleUpdateProperties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -997,10 +810,8 @@ public final class RulesClientImpl implements RulesClient {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (ruleUpdateProperties == null) {
             return Mono
@@ -1010,26 +821,16 @@ public final class RulesClientImpl implements RulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                ruleSetName,
-                ruleName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                ruleUpdateProperties,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, profileName, ruleSetName, ruleName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), ruleUpdateProperties, accept, context);
     }
 
     /**
      * Updates an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param ruleUpdateProperties Delivery rule properties.
@@ -1037,29 +838,23 @@ public final class RulesClientImpl implements RulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of friendly Rules name mapping to the any Rules or secret related
-     *     information.
+     * information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<RuleInner>, RuleInner> beginUpdateAsync(
-        String resourceGroupName,
-        String profileName,
-        String ruleSetName,
-        String ruleName,
-        RuleUpdateParameters ruleUpdateProperties) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, profileName, ruleSetName, ruleName, ruleUpdateProperties);
-        return this
-            .client
-            .<RuleInner, RuleInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RuleInner.class, RuleInner.class, this.client.getContext());
+    public PollerFlux<PollResult<RuleInner>, RuleInner> beginUpdateAsync(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName, RuleUpdateParameters ruleUpdateProperties) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, profileName, ruleSetName, ruleName, ruleUpdateProperties);
+        return this.client.<RuleInner, RuleInner>getLroResult(mono, this.client.getHttpPipeline(), RuleInner.class,
+            RuleInner.class, this.client.getContext());
     }
 
     /**
      * Updates an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param ruleUpdateProperties Delivery rule properties.
@@ -1068,86 +863,70 @@ public final class RulesClientImpl implements RulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of friendly Rules name mapping to the any Rules or secret related
-     *     information.
+     * information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<RuleInner>, RuleInner> beginUpdateAsync(
-        String resourceGroupName,
-        String profileName,
-        String ruleSetName,
-        String ruleName,
-        RuleUpdateParameters ruleUpdateProperties,
-        Context context) {
+    private PollerFlux<PollResult<RuleInner>, RuleInner> beginUpdateAsync(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName, RuleUpdateParameters ruleUpdateProperties, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, profileName, ruleSetName, ruleName, ruleUpdateProperties, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, profileName, ruleSetName,
+            ruleName, ruleUpdateProperties, context);
+        return this.client.<RuleInner, RuleInner>getLroResult(mono, this.client.getHttpPipeline(), RuleInner.class,
+            RuleInner.class, context);
+    }
+
+    /**
+     * Updates an existing delivery rule within a rule set.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     * within the resource group.
+     * @param ruleSetName Name of the rule set under the profile.
+     * @param ruleName Name of the delivery rule which is unique within the endpoint.
+     * @param ruleUpdateProperties Delivery rule properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of friendly Rules name mapping to the any Rules or secret related
+     * information.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<RuleInner>, RuleInner> beginUpdate(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName, RuleUpdateParameters ruleUpdateProperties) {
+        return this.beginUpdateAsync(resourceGroupName, profileName, ruleSetName, ruleName, ruleUpdateProperties)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates an existing delivery rule within a rule set.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     * within the resource group.
+     * @param ruleSetName Name of the rule set under the profile.
+     * @param ruleName Name of the delivery rule which is unique within the endpoint.
+     * @param ruleUpdateProperties Delivery rule properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of friendly Rules name mapping to the any Rules or secret related
+     * information.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<RuleInner>, RuleInner> beginUpdate(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName, RuleUpdateParameters ruleUpdateProperties, Context context) {
         return this
-            .client
-            .<RuleInner, RuleInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RuleInner.class, RuleInner.class, context);
-    }
-
-    /**
-     * Updates an existing delivery rule within a rule set.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param ruleSetName Name of the rule set under the profile.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @param ruleUpdateProperties Delivery rule properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of friendly Rules name mapping to the any Rules or secret related
-     *     information.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RuleInner>, RuleInner> beginUpdate(
-        String resourceGroupName,
-        String profileName,
-        String ruleSetName,
-        String ruleName,
-        RuleUpdateParameters ruleUpdateProperties) {
-        return beginUpdateAsync(resourceGroupName, profileName, ruleSetName, ruleName, ruleUpdateProperties)
+            .beginUpdateAsync(resourceGroupName, profileName, ruleSetName, ruleName, ruleUpdateProperties, context)
             .getSyncPoller();
     }
 
     /**
      * Updates an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param ruleSetName Name of the rule set under the profile.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @param ruleUpdateProperties Delivery rule properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of friendly Rules name mapping to the any Rules or secret related
-     *     information.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RuleInner>, RuleInner> beginUpdate(
-        String resourceGroupName,
-        String profileName,
-        String ruleSetName,
-        String ruleName,
-        RuleUpdateParameters ruleUpdateProperties,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, profileName, ruleSetName, ruleName, ruleUpdateProperties, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Updates an existing delivery rule within a rule set.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param ruleUpdateProperties Delivery rule properties.
@@ -1155,26 +934,21 @@ public final class RulesClientImpl implements RulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Rules name mapping to the any Rules or secret related information on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RuleInner> updateAsync(
-        String resourceGroupName,
-        String profileName,
-        String ruleSetName,
-        String ruleName,
-        RuleUpdateParameters ruleUpdateProperties) {
-        return beginUpdateAsync(resourceGroupName, profileName, ruleSetName, ruleName, ruleUpdateProperties)
-            .last()
+    public Mono<RuleInner> updateAsync(String resourceGroupName, String profileName, String ruleSetName,
+        String ruleName, RuleUpdateParameters ruleUpdateProperties) {
+        return beginUpdateAsync(resourceGroupName, profileName, ruleSetName, ruleName, ruleUpdateProperties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param ruleUpdateProperties Delivery rule properties.
@@ -1183,27 +957,21 @@ public final class RulesClientImpl implements RulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Rules name mapping to the any Rules or secret related information on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RuleInner> updateAsync(
-        String resourceGroupName,
-        String profileName,
-        String ruleSetName,
-        String ruleName,
-        RuleUpdateParameters ruleUpdateProperties,
-        Context context) {
+    private Mono<RuleInner> updateAsync(String resourceGroupName, String profileName, String ruleSetName,
+        String ruleName, RuleUpdateParameters ruleUpdateProperties, Context context) {
         return beginUpdateAsync(resourceGroupName, profileName, ruleSetName, ruleName, ruleUpdateProperties, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param ruleUpdateProperties Delivery rule properties.
@@ -1213,21 +981,17 @@ public final class RulesClientImpl implements RulesClient {
      * @return friendly Rules name mapping to the any Rules or secret related information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RuleInner update(
-        String resourceGroupName,
-        String profileName,
-        String ruleSetName,
-        String ruleName,
+    public RuleInner update(String resourceGroupName, String profileName, String ruleSetName, String ruleName,
         RuleUpdateParameters ruleUpdateProperties) {
         return updateAsync(resourceGroupName, profileName, ruleSetName, ruleName, ruleUpdateProperties).block();
     }
 
     /**
      * Updates an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param ruleUpdateProperties Delivery rule properties.
@@ -1238,23 +1002,18 @@ public final class RulesClientImpl implements RulesClient {
      * @return friendly Rules name mapping to the any Rules or secret related information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RuleInner update(
-        String resourceGroupName,
-        String profileName,
-        String ruleSetName,
-        String ruleName,
-        RuleUpdateParameters ruleUpdateProperties,
-        Context context) {
+    public RuleInner update(String resourceGroupName, String profileName, String ruleSetName, String ruleName,
+        RuleUpdateParameters ruleUpdateProperties, Context context) {
         return updateAsync(resourceGroupName, profileName, ruleSetName, ruleName, ruleUpdateProperties, context)
             .block();
     }
 
     /**
      * Deletes an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1263,13 +1022,11 @@ public final class RulesClientImpl implements RulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, String ruleSetName, String ruleName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1285,35 +1042,22 @@ public final class RulesClientImpl implements RulesClient {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            ruleSetName,
-                            ruleName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, profileName,
+                ruleSetName, ruleName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param context The context to associate with this operation.
@@ -1323,13 +1067,11 @@ public final class RulesClientImpl implements RulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, String ruleSetName, String ruleName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1345,32 +1087,21 @@ public final class RulesClientImpl implements RulesClient {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                ruleSetName,
-                ruleName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, profileName, ruleSetName, ruleName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1379,22 +1110,20 @@ public final class RulesClientImpl implements RulesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String profileName, String ruleSetName, String ruleName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, profileName, ruleSetName, ruleName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, profileName, ruleSetName, ruleName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param context The context to associate with this operation.
@@ -1404,22 +1133,21 @@ public final class RulesClientImpl implements RulesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String profileName, String ruleSetName, String ruleName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, profileName, ruleSetName, ruleName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, profileName, ruleSetName, ruleName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1428,17 +1156,17 @@ public final class RulesClientImpl implements RulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String profileName, String ruleSetName, String ruleName) {
-        return beginDeleteAsync(resourceGroupName, profileName, ruleSetName, ruleName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName) {
+        return this.beginDeleteAsync(resourceGroupName, profileName, ruleSetName, ruleName).getSyncPoller();
     }
 
     /**
      * Deletes an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param context The context to associate with this operation.
@@ -1448,17 +1176,17 @@ public final class RulesClientImpl implements RulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String profileName, String ruleSetName, String ruleName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, ruleSetName, ruleName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
+        String ruleSetName, String ruleName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, profileName, ruleSetName, ruleName, context).getSyncPoller();
     }
 
     /**
      * Deletes an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1468,17 +1196,16 @@ public final class RulesClientImpl implements RulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String profileName, String ruleSetName, String ruleName) {
-        return beginDeleteAsync(resourceGroupName, profileName, ruleSetName, ruleName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, profileName, ruleSetName, ruleName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param context The context to associate with this operation.
@@ -1488,19 +1215,18 @@ public final class RulesClientImpl implements RulesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String profileName, String ruleSetName, String ruleName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, ruleSetName, ruleName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String profileName, String ruleSetName, String ruleName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, profileName, ruleSetName, ruleName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1514,10 +1240,10 @@ public final class RulesClientImpl implements RulesClient {
 
     /**
      * Deletes an existing delivery rule within a rule set.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param context The context to associate with this operation.
@@ -1526,21 +1252,22 @@ public final class RulesClientImpl implements RulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String profileName, String ruleSetName, String ruleName, Context context) {
+    public void delete(String resourceGroupName, String profileName, String ruleSetName, String ruleName,
+        Context context) {
         deleteAsync(resourceGroupName, profileName, ruleSetName, ruleName, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list rules along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the request to list rules along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RuleInner>> listByRuleSetNextSinglePageAsync(String nextLink) {
@@ -1548,37 +1275,29 @@ public final class RulesClientImpl implements RulesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByRuleSetNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<RuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list rules along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the request to list rules along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RuleInner>> listByRuleSetNextSinglePageAsync(String nextLink, Context context) {
@@ -1586,23 +1305,13 @@ public final class RulesClientImpl implements RulesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByRuleSetNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByRuleSetNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

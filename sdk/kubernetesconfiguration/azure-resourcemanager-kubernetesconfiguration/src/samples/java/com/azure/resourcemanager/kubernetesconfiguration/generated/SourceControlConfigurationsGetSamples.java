@@ -7,7 +7,7 @@ package com.azure.resourcemanager.kubernetesconfiguration.generated;
 /** Samples for SourceControlConfigurations Get. */
 public final class SourceControlConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/GetSourceControlConfiguration.json
+     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/examples/GetSourceControlConfiguration.json
      */
     /**
      * Sample code: Get Source Control Configuration.

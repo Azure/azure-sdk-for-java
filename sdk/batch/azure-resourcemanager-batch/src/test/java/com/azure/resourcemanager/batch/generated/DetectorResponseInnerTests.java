@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DetectorResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DetectorResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"value\":\"xmzsbbzogg\"},\"etag\":\"rxwburv\",\"id\":\"xxjnspydptk\",\"name\":\"enkouknvudw\",\"type\":\"iukbldngkpoci\"}")
-                .toObject(DetectorResponseInner.class);
-        Assertions.assertEquals("xmzsbbzogg", model.value());
+        DetectorResponseInner model = BinaryData.fromString(
+            "{\"properties\":{\"value\":\"ovm\"},\"etag\":\"kacspkw\",\"id\":\"hzdobpxjmflbvvnc\",\"name\":\"rkcciwwzjuqk\",\"type\":\"rsa\"}")
+            .toObject(DetectorResponseInner.class);
+        Assertions.assertEquals("ovm", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DetectorResponseInner model = new DetectorResponseInner().withValue("xmzsbbzogg");
+        DetectorResponseInner model = new DetectorResponseInner().withValue("ovm");
         model = BinaryData.fromObject(model).toObject(DetectorResponseInner.class);
-        Assertions.assertEquals("xmzsbbzogg", model.value());
+        Assertions.assertEquals("ovm", model.value());
     }
 }

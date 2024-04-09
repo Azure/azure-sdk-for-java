@@ -14,28 +14,33 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.Map;
 
-/** A copy activity translator. */
+/**
+ * A copy activity translator.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "type",
     defaultImpl = CopyTranslator.class)
 @JsonTypeName("CopyTranslator")
-@JsonSubTypes({@JsonSubTypes.Type(name = "TabularTranslator", value = TabularTranslator.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "TabularTranslator", value = TabularTranslator.class) })
 @Fluent
 public class CopyTranslator {
     /*
      * A copy activity translator.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of CopyTranslator class. */
+    /**
+     * Creates an instance of CopyTranslator class.
+     */
     public CopyTranslator() {
     }
 
     /**
      * Get the additionalProperties property: A copy activity translator.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -45,7 +50,7 @@ public class CopyTranslator {
 
     /**
      * Set the additionalProperties property: A copy activity translator.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the CopyTranslator object itself.
      */
@@ -64,7 +69,7 @@ public class CopyTranslator {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

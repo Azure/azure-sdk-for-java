@@ -16,11 +16,11 @@ public final class ServiceSpecificationTests {
         ServiceSpecification model =
             BinaryData
                 .fromString(
-                    "{\"logSpecifications\":[{\"name\":\"okjye\",\"displayName\":\"kvnipjoxz\",\"blobDuration\":\"chgejspodm\"},{\"name\":\"lzydehojwyahux\",\"displayName\":\"pmqnja\",\"blobDuration\":\"ixjsprozvcputeg\"}]}")
+                    "{\"logSpecifications\":[{\"name\":\"qniwbybrkxvdumj\",\"displayName\":\"tfwvukxgaudc\",\"blobDuration\":\"nhsjcnyej\"}]}")
                 .toObject(ServiceSpecification.class);
-        Assertions.assertEquals("okjye", model.logSpecifications().get(0).name());
-        Assertions.assertEquals("kvnipjoxz", model.logSpecifications().get(0).displayName());
-        Assertions.assertEquals("chgejspodm", model.logSpecifications().get(0).blobDuration());
+        Assertions.assertEquals("qniwbybrkxvdumj", model.logSpecifications().get(0).name());
+        Assertions.assertEquals("tfwvukxgaudc", model.logSpecifications().get(0).displayName());
+        Assertions.assertEquals("nhsjcnyej", model.logSpecifications().get(0).blobDuration());
     }
 
     @org.junit.jupiter.api.Test
@@ -31,16 +31,12 @@ public final class ServiceSpecificationTests {
                     Arrays
                         .asList(
                             new LogSpecification()
-                                .withName("okjye")
-                                .withDisplayName("kvnipjoxz")
-                                .withBlobDuration("chgejspodm"),
-                            new LogSpecification()
-                                .withName("lzydehojwyahux")
-                                .withDisplayName("pmqnja")
-                                .withBlobDuration("ixjsprozvcputeg")));
+                                .withName("qniwbybrkxvdumj")
+                                .withDisplayName("tfwvukxgaudc")
+                                .withBlobDuration("nhsjcnyej")));
         model = BinaryData.fromObject(model).toObject(ServiceSpecification.class);
-        Assertions.assertEquals("okjye", model.logSpecifications().get(0).name());
-        Assertions.assertEquals("kvnipjoxz", model.logSpecifications().get(0).displayName());
-        Assertions.assertEquals("chgejspodm", model.logSpecifications().get(0).blobDuration());
+        Assertions.assertEquals("qniwbybrkxvdumj", model.logSpecifications().get(0).name());
+        Assertions.assertEquals("tfwvukxgaudc", model.logSpecifications().get(0).displayName());
+        Assertions.assertEquals("nhsjcnyej", model.logSpecifications().get(0).blobDuration());
     }
 }

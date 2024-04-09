@@ -15,8 +15,8 @@ import com.azure.messaging.webpubsub.client.models.ConnectedEvent;
 import com.azure.messaging.webpubsub.client.models.DisconnectedEvent;
 import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
 import com.azure.messaging.webpubsub.client.models.WebPubSubClientCredential;
-import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
-import com.azure.messaging.webpubsub.client.models.WebPubSubJsonProtocol;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
+import com.azure.messaging.webpubsub.client.models.WebPubSubProtocolType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
@@ -83,7 +83,7 @@ public class ClientTests extends TestBase {
         client1.joinGroup(groupName);
         client2.joinGroup(groupName);
 
-        client2.sendToGroup(groupName, BinaryData.fromString("hello"), WebPubSubDataType.TEXT);
+        client2.sendToGroup(groupName, BinaryData.fromString("hello"), WebPubSubDataFormat.TEXT);
 
         client2.stop();
 
@@ -92,6 +92,40 @@ public class ClientTests extends TestBase {
 
         Assertions.assertTrue(success);
         Assertions.assertEquals(0, latch.getCount());
+    }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void testClientCloseable() {
+        CountDownLatch connectedLatch = new CountDownLatch(1);
+        CountDownLatch stoppedLatch = new CountDownLatch(1);
+        AtomicBoolean stoppedEventReceived = new AtomicBoolean(false);
+        AtomicBoolean disconnectedEventReceived = new AtomicBoolean(false);
+
+        try (WebPubSubClient client = getClientBuilder().buildClient()) {
+            client.addOnStoppedEventHandler(stoppedEvent -> {
+                stoppedEventReceived.set(true);
+                stoppedLatch.countDown();
+            });
+            client.addOnConnectedEventHandler(connectedEvent -> {
+                connectedLatch.countDown();
+            });
+            client.addOnDisconnectedEventHandler(disconnectedEvent -> {
+                disconnectedEventReceived.set(true);
+            });
+
+            client.start();
+
+            connectedLatch.countDown();
+
+            // stop not called explicitly
+        }
+
+        stoppedLatch.countDown();
+
+        // verify client stopped via Closeable
+        Assertions.assertTrue(stoppedEventReceived.get());
+        Assertions.assertTrue(disconnectedEventReceived.get());
     }
 
     @Test
@@ -116,7 +150,7 @@ public class ClientTests extends TestBase {
         // start and stop
         client.start();
         client.joinGroup(groupName);
-        client.sendToGroup(groupName, BinaryData.fromString("hello"), WebPubSubDataType.TEXT);
+        client.sendToGroup(groupName, BinaryData.fromString("hello"), WebPubSubDataFormat.TEXT);
 
         Assertions.assertNotNull(client.getConnectionId());
 
@@ -130,7 +164,7 @@ public class ClientTests extends TestBase {
 
         client.start();
         client.joinGroup(groupName);
-        client.sendToGroup(groupName, BinaryData.fromString("hello"), WebPubSubDataType.TEXT);
+        client.sendToGroup(groupName, BinaryData.fromString("hello"), WebPubSubDataFormat.TEXT);
 
         success = latch2.await(10, TimeUnit.SECONDS);
         client.stop();
@@ -218,7 +252,7 @@ public class ClientTests extends TestBase {
     public void testBothCredential() {
         Assertions.assertThrows(IllegalStateException.class, () -> {
             WebPubSubClient client = new WebPubSubClientBuilder()
-                .credential(new WebPubSubClientCredential(Mono.just("mock")))
+                .credential(new WebPubSubClientCredential(() -> "mock"))
                 .clientAccessUrl("mock")
                 .buildClient();
         });
@@ -437,7 +471,7 @@ public class ClientTests extends TestBase {
         AtomicReference<String> connectionId = new AtomicReference<>();
 
         WebPubSubClient client = getClientBuilder()
-            .protocol(new WebPubSubJsonProtocol())
+            .protocol(WebPubSubProtocolType.JSON_PROTOCOL)
             .autoReconnect(true)
             .buildClient();
 
@@ -487,7 +521,7 @@ public class ClientTests extends TestBase {
         AtomicReference<String> connectionId = new AtomicReference<>();
 
         WebPubSubClient client = getClientBuilder()
-            .protocol(new WebPubSubJsonProtocol())
+            .protocol(WebPubSubProtocolType.JSON_PROTOCOL)
             .autoReconnect(false)
             .buildClient();
 
@@ -541,7 +575,7 @@ public class ClientTests extends TestBase {
     @DoNotRecord(skipInPlayback = true)
     public void testProtocol() {
         WebPubSubClient client = getClientBuilder()
-            .protocol(new WebPubSubJsonProtocol())
+            .protocol(WebPubSubProtocolType.JSON_PROTOCOL)
             .buildClient();
 
         client.start();
@@ -549,18 +583,4 @@ public class ClientTests extends TestBase {
         client.sendToGroup("testProtocol", "message");
         client.stop();
     }
-
-//    @Test
-//    @DoNotRecord(skipInPlayback = true)
-//    @Order(1000)    // last
-//    public void testClosed() {
-//        WebPubSubClient client = getClient();
-//
-//        Assertions.assertEquals(WebPubSubClientState.STOPPED, client.getClientState());
-//
-//        client.close();
-//        Assertions.assertEquals(WebPubSubClientState.CLOSED, client.getClientState());
-//
-//        Assertions.assertThrows(IllegalStateException.class, () -> client.joinGroup("group"));
-//    }
 }

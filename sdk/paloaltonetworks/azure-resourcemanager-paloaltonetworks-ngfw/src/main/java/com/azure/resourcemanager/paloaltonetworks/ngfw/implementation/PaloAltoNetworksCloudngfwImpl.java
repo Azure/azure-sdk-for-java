@@ -46,243 +46,285 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the PaloAltoNetworksCloudngfwImpl type. */
+/**
+ * Initializes a new instance of the PaloAltoNetworksCloudngfwImpl type.
+ */
 @ServiceClient(builder = PaloAltoNetworksCloudngfwBuilder.class)
 public final class PaloAltoNetworksCloudngfwImpl implements PaloAltoNetworksCloudngfw {
-    /** The ID of the target subscription. */
+    /**
+     * The ID of the target subscription.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The GlobalRulestacksClient object to access its operations. */
+    /**
+     * The GlobalRulestacksClient object to access its operations.
+     */
     private final GlobalRulestacksClient globalRulestacks;
 
     /**
      * Gets the GlobalRulestacksClient object to access its operations.
-     *
+     * 
      * @return the GlobalRulestacksClient object.
      */
     public GlobalRulestacksClient getGlobalRulestacks() {
         return this.globalRulestacks;
     }
 
-    /** The CertificateObjectGlobalRulestacksClient object to access its operations. */
+    /**
+     * The CertificateObjectGlobalRulestacksClient object to access its operations.
+     */
     private final CertificateObjectGlobalRulestacksClient certificateObjectGlobalRulestacks;
 
     /**
      * Gets the CertificateObjectGlobalRulestacksClient object to access its operations.
-     *
+     * 
      * @return the CertificateObjectGlobalRulestacksClient object.
      */
     public CertificateObjectGlobalRulestacksClient getCertificateObjectGlobalRulestacks() {
         return this.certificateObjectGlobalRulestacks;
     }
 
-    /** The FqdnListGlobalRulestacksClient object to access its operations. */
+    /**
+     * The FqdnListGlobalRulestacksClient object to access its operations.
+     */
     private final FqdnListGlobalRulestacksClient fqdnListGlobalRulestacks;
 
     /**
      * Gets the FqdnListGlobalRulestacksClient object to access its operations.
-     *
+     * 
      * @return the FqdnListGlobalRulestacksClient object.
      */
     public FqdnListGlobalRulestacksClient getFqdnListGlobalRulestacks() {
         return this.fqdnListGlobalRulestacks;
     }
 
-    /** The PostRulesClient object to access its operations. */
+    /**
+     * The PostRulesClient object to access its operations.
+     */
     private final PostRulesClient postRules;
 
     /**
      * Gets the PostRulesClient object to access its operations.
-     *
+     * 
      * @return the PostRulesClient object.
      */
     public PostRulesClient getPostRules() {
         return this.postRules;
     }
 
-    /** The PrefixListGlobalRulestacksClient object to access its operations. */
+    /**
+     * The PrefixListGlobalRulestacksClient object to access its operations.
+     */
     private final PrefixListGlobalRulestacksClient prefixListGlobalRulestacks;
 
     /**
      * Gets the PrefixListGlobalRulestacksClient object to access its operations.
-     *
+     * 
      * @return the PrefixListGlobalRulestacksClient object.
      */
     public PrefixListGlobalRulestacksClient getPrefixListGlobalRulestacks() {
         return this.prefixListGlobalRulestacks;
     }
 
-    /** The PreRulesClient object to access its operations. */
+    /**
+     * The PreRulesClient object to access its operations.
+     */
     private final PreRulesClient preRules;
 
     /**
      * Gets the PreRulesClient object to access its operations.
-     *
+     * 
      * @return the PreRulesClient object.
      */
     public PreRulesClient getPreRules() {
         return this.preRules;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The FirewallsClient object to access its operations. */
+    /**
+     * The FirewallsClient object to access its operations.
+     */
     private final FirewallsClient firewalls;
 
     /**
      * Gets the FirewallsClient object to access its operations.
-     *
+     * 
      * @return the FirewallsClient object.
      */
     public FirewallsClient getFirewalls() {
         return this.firewalls;
     }
 
-    /** The LocalRulestacksClient object to access its operations. */
+    /**
+     * The LocalRulestacksClient object to access its operations.
+     */
     private final LocalRulestacksClient localRulestacks;
 
     /**
      * Gets the LocalRulestacksClient object to access its operations.
-     *
+     * 
      * @return the LocalRulestacksClient object.
      */
     public LocalRulestacksClient getLocalRulestacks() {
         return this.localRulestacks;
     }
 
-    /** The FirewallStatusClient object to access its operations. */
+    /**
+     * The FirewallStatusClient object to access its operations.
+     */
     private final FirewallStatusClient firewallStatus;
 
     /**
      * Gets the FirewallStatusClient object to access its operations.
-     *
+     * 
      * @return the FirewallStatusClient object.
      */
     public FirewallStatusClient getFirewallStatus() {
         return this.firewallStatus;
     }
 
-    /** The CertificateObjectLocalRulestacksClient object to access its operations. */
+    /**
+     * The CertificateObjectLocalRulestacksClient object to access its operations.
+     */
     private final CertificateObjectLocalRulestacksClient certificateObjectLocalRulestacks;
 
     /**
      * Gets the CertificateObjectLocalRulestacksClient object to access its operations.
-     *
+     * 
      * @return the CertificateObjectLocalRulestacksClient object.
      */
     public CertificateObjectLocalRulestacksClient getCertificateObjectLocalRulestacks() {
         return this.certificateObjectLocalRulestacks;
     }
 
-    /** The FqdnListLocalRulestacksClient object to access its operations. */
+    /**
+     * The FqdnListLocalRulestacksClient object to access its operations.
+     */
     private final FqdnListLocalRulestacksClient fqdnListLocalRulestacks;
 
     /**
      * Gets the FqdnListLocalRulestacksClient object to access its operations.
-     *
+     * 
      * @return the FqdnListLocalRulestacksClient object.
      */
     public FqdnListLocalRulestacksClient getFqdnListLocalRulestacks() {
         return this.fqdnListLocalRulestacks;
     }
 
-    /** The LocalRulesClient object to access its operations. */
+    /**
+     * The LocalRulesClient object to access its operations.
+     */
     private final LocalRulesClient localRules;
 
     /**
      * Gets the LocalRulesClient object to access its operations.
-     *
+     * 
      * @return the LocalRulesClient object.
      */
     public LocalRulesClient getLocalRules() {
         return this.localRules;
     }
 
-    /** The PrefixListLocalRulestacksClient object to access its operations. */
+    /**
+     * The PrefixListLocalRulestacksClient object to access its operations.
+     */
     private final PrefixListLocalRulestacksClient prefixListLocalRulestacks;
 
     /**
      * Gets the PrefixListLocalRulestacksClient object to access its operations.
-     *
+     * 
      * @return the PrefixListLocalRulestacksClient object.
      */
     public PrefixListLocalRulestacksClient getPrefixListLocalRulestacks() {
@@ -291,7 +333,7 @@ public final class PaloAltoNetworksCloudngfwImpl implements PaloAltoNetworksClou
 
     /**
      * Initializes an instance of PaloAltoNetworksCloudngfw client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -299,19 +341,14 @@ public final class PaloAltoNetworksCloudngfwImpl implements PaloAltoNetworksClou
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    PaloAltoNetworksCloudngfwImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    PaloAltoNetworksCloudngfwImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-08-29";
+        this.apiVersion = "2023-09-01";
         this.globalRulestacks = new GlobalRulestacksClientImpl(this);
         this.certificateObjectGlobalRulestacks = new CertificateObjectGlobalRulestacksClientImpl(this);
         this.fqdnListGlobalRulestacks = new FqdnListGlobalRulestacksClientImpl(this);
@@ -330,7 +367,7 @@ public final class PaloAltoNetworksCloudngfwImpl implements PaloAltoNetworksClou
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -339,7 +376,7 @@ public final class PaloAltoNetworksCloudngfwImpl implements PaloAltoNetworksClou
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -349,7 +386,7 @@ public final class PaloAltoNetworksCloudngfwImpl implements PaloAltoNetworksClou
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -359,26 +396,15 @@ public final class PaloAltoNetworksCloudngfwImpl implements PaloAltoNetworksClou
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -391,19 +417,16 @@ public final class PaloAltoNetworksCloudngfwImpl implements PaloAltoNetworksClou
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
+                            SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }

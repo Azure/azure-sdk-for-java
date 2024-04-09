@@ -38,7 +38,7 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
 
     /**
      * Creates an instance of SearchAlias class.
-     *
+     * 
      * @param name the name value to set.
      * @param indexes the indexes value to set.
      */
@@ -49,7 +49,7 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
 
     /**
      * Get the name property: The name of the alias.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -58,7 +58,7 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
 
     /**
      * Get the indexes property: The name of the index this alias maps to. Only one index name may be specified.
-     *
+     * 
      * @return the indexes value.
      */
     public List<String> getIndexes() {
@@ -67,7 +67,7 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
 
     /**
      * Get the eTag property: The ETag of the alias.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -76,7 +76,7 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
 
     /**
      * Set the eTag property: The ETag of the alias.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the SearchAlias object itself.
      */
@@ -96,53 +96,52 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
 
     /**
      * Reads an instance of SearchAlias from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchAlias if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchAlias.
      */
     public static SearchAlias fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean nameFound = false;
-                    String name = null;
-                    boolean indexesFound = false;
-                    List<String> indexes = null;
-                    String eTag = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            boolean indexesFound = false;
+            List<String> indexes = null;
+            String eTag = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("name".equals(fieldName)) {
-                            name = reader.getString();
-                            nameFound = true;
-                        } else if ("indexes".equals(fieldName)) {
-                            indexes = reader.readArray(reader1 -> reader1.getString());
-                            indexesFound = true;
-                        } else if ("@odata.etag".equals(fieldName)) {
-                            eTag = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (nameFound && indexesFound) {
-                        SearchAlias deserializedSearchAlias = new SearchAlias(name, indexes);
-                        deserializedSearchAlias.eTag = eTag;
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("indexes".equals(fieldName)) {
+                    indexes = reader.readArray(reader1 -> reader1.getString());
+                    indexesFound = true;
+                } else if ("@odata.etag".equals(fieldName)) {
+                    eTag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound && indexesFound) {
+                SearchAlias deserializedSearchAlias = new SearchAlias(name, indexes);
+                deserializedSearchAlias.eTag = eTag;
 
-                        return deserializedSearchAlias;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!nameFound) {
-                        missingProperties.add("name");
-                    }
-                    if (!indexesFound) {
-                        missingProperties.add("indexes");
-                    }
+                return deserializedSearchAlias;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+            if (!indexesFound) {
+                missingProperties.add("indexes");
+            }
 
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

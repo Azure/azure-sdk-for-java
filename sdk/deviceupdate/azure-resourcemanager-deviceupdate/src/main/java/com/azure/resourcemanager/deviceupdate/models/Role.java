@@ -8,17 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Whether the location is primary or failover. */
+/**
+ * Whether the location is primary or failover.
+ */
 public final class Role extends ExpandableStringEnum<Role> {
-    /** Static value Primary for Role. */
+    /**
+     * Static value Primary for Role.
+     */
     public static final Role PRIMARY = fromString("Primary");
 
-    /** Static value Failover for Role. */
+    /**
+     * Static value Failover for Role.
+     */
     public static final Role FAILOVER = fromString("Failover");
 
     /**
+     * Creates a new instance of Role value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Role() {
+    }
+
+    /**
      * Creates or finds a Role from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Role.
      */
@@ -29,7 +44,7 @@ public final class Role extends ExpandableStringEnum<Role> {
 
     /**
      * Gets known Role values.
-     *
+     * 
      * @return known Role values.
      */
     public static Collection<Role> values() {

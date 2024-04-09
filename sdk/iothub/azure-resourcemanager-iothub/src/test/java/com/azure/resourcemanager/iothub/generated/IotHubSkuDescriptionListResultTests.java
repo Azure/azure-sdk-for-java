@@ -19,10 +19,10 @@ public final class IotHubSkuDescriptionListResultTests {
         IotHubSkuDescriptionListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"resourceType\":\"qugxywpmueefjzwf\",\"sku\":{\"name\":\"B1\",\"tier\":\"Free\",\"capacity\":2752624738826273376},\"capacity\":{\"minimum\":2895240290674738337,\"maximum\":722648832186407891,\"default\":5846205401797666469,\"scaleType\":\"Automatic\"}},{\"resourceType\":\"qxtccmgyudx\",\"sku\":{\"name\":\"B2\",\"tier\":\"Standard\",\"capacity\":5036022727729954665},\"capacity\":{\"minimum\":5697722366346871182,\"maximum\":328428173774055677,\"default\":1705151259952930874,\"scaleType\":\"None\"}},{\"resourceType\":\"hdzhlrqj\",\"sku\":{\"name\":\"B2\",\"tier\":\"Standard\",\"capacity\":6374623406138918990},\"capacity\":{\"minimum\":8781176229641624570,\"maximum\":5275318016138914703,\"default\":1967797899884280622,\"scaleType\":\"None\"}},{\"resourceType\":\"n\",\"sku\":{\"name\":\"S2\",\"tier\":\"Free\",\"capacity\":5373828477618369096},\"capacity\":{\"minimum\":739899630467630797,\"maximum\":574839923891984639,\"default\":6504833090063292182,\"scaleType\":\"Automatic\"}}],\"nextLink\":\"hhseyv\"}")
+                    "{\"value\":[{\"resourceType\":\"clfp\",\"sku\":{\"name\":\"S2\",\"tier\":\"Free\",\"capacity\":4783074084944223804},\"capacity\":{\"minimum\":4751177504452360818,\"maximum\":8751195016646991326,\"default\":1457030135916183053,\"scaleType\":\"None\"}},{\"resourceType\":\"tazqugxywpmueefj\",\"sku\":{\"name\":\"B1\",\"tier\":\"Standard\",\"capacity\":833817548931918464},\"capacity\":{\"minimum\":2752624738826273376,\"maximum\":2895240290674738337,\"default\":722648832186407891,\"scaleType\":\"None\"}},{\"resourceType\":\"aocqxtccmgy\",\"sku\":{\"name\":\"B2\",\"tier\":\"Basic\",\"capacity\":6169817169504749618},\"capacity\":{\"minimum\":5036022727729954665,\"maximum\":5697722366346871182,\"default\":328428173774055677,\"scaleType\":\"Manual\"}}],\"nextLink\":\"ntxhdzhlrqjbhck\"}")
                 .toObject(IotHubSkuDescriptionListResult.class);
-        Assertions.assertEquals(IotHubSku.B1, model.value().get(0).sku().name());
-        Assertions.assertEquals(2752624738826273376L, model.value().get(0).sku().capacity());
+        Assertions.assertEquals(IotHubSku.S2, model.value().get(0).sku().name());
+        Assertions.assertEquals(4783074084944223804L, model.value().get(0).sku().capacity());
     }
 
     @org.junit.jupiter.api.Test
@@ -33,19 +33,16 @@ public final class IotHubSkuDescriptionListResultTests {
                     Arrays
                         .asList(
                             new IotHubSkuDescriptionInner()
-                                .withSku(new IotHubSkuInfo().withName(IotHubSku.B1).withCapacity(2752624738826273376L))
+                                .withSku(new IotHubSkuInfo().withName(IotHubSku.S2).withCapacity(4783074084944223804L))
                                 .withCapacity(new IotHubCapacity()),
                             new IotHubSkuDescriptionInner()
-                                .withSku(new IotHubSkuInfo().withName(IotHubSku.B2).withCapacity(5036022727729954665L))
+                                .withSku(new IotHubSkuInfo().withName(IotHubSku.B1).withCapacity(833817548931918464L))
                                 .withCapacity(new IotHubCapacity()),
                             new IotHubSkuDescriptionInner()
-                                .withSku(new IotHubSkuInfo().withName(IotHubSku.B2).withCapacity(6374623406138918990L))
-                                .withCapacity(new IotHubCapacity()),
-                            new IotHubSkuDescriptionInner()
-                                .withSku(new IotHubSkuInfo().withName(IotHubSku.S2).withCapacity(5373828477618369096L))
+                                .withSku(new IotHubSkuInfo().withName(IotHubSku.B2).withCapacity(6169817169504749618L))
                                 .withCapacity(new IotHubCapacity())));
         model = BinaryData.fromObject(model).toObject(IotHubSkuDescriptionListResult.class);
-        Assertions.assertEquals(IotHubSku.B1, model.value().get(0).sku().name());
-        Assertions.assertEquals(2752624738826273376L, model.value().get(0).sku().capacity());
+        Assertions.assertEquals(IotHubSku.S2, model.value().get(0).sku().name());
+        Assertions.assertEquals(4783074084944223804L, model.value().get(0).sku().capacity());
     }
 }

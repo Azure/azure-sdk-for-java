@@ -58,6 +58,7 @@ public final class UserSessionsDisconnectWithResponseMockTests {
 
         manager
             .userSessions()
-            .disconnectWithResponse("czurtlei", "q", "bkwvzg", "zvd", com.azure.core.util.Context.NONE);
+            .disconnectWithResponse(
+                "bsjuscvsfx", "gctmgxuupbezq", "cydrtceukdqkk", "ihztgeqmgqzgwldo", com.azure.core.util.Context.NONE);
     }
 }

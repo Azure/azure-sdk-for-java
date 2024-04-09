@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RoleDefinitions Get. */
 public final class RoleDefinitionsGetSamples {
     /*
@@ -23,6 +21,6 @@ public final class RoleDefinitionsGetSamples {
             .manager()
             .roleServiceClient()
             .getRoleDefinitions()
-            .getWithResponse("scope", "roleDefinitionId", Context.NONE);
+            .getWithResponse("scope", "roleDefinitionId", com.azure.core.util.Context.NONE);
     }
 }

@@ -15,12 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Connector read setting. */
+/**
+ * Connector read setting.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = StoreReadSettings.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = StoreReadSettings.class)
 @JsonTypeName("StoreReadSettings")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureBlobStorageReadSettings", value = AzureBlobStorageReadSettings.class),
@@ -33,8 +35,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "FtpReadSettings", value = FtpReadSettings.class),
     @JsonSubTypes.Type(name = "SftpReadSettings", value = SftpReadSettings.class),
     @JsonSubTypes.Type(name = "HttpReadSettings", value = HttpReadSettings.class),
-    @JsonSubTypes.Type(name = "HdfsReadSettings", value = HdfsReadSettings.class)
-})
+    @JsonSubTypes.Type(name = "HdfsReadSettings", value = HdfsReadSettings.class) })
 @Fluent
 public class StoreReadSettings {
     /*
@@ -47,15 +48,19 @@ public class StoreReadSettings {
     /*
      * Connector read setting.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of StoreReadSettings class. */
-    public StoreReadSettings() {}
+    /**
+     * Creates an instance of StoreReadSettings class.
+     */
+    public StoreReadSettings() {
+    }
 
     /**
      * Get the maxConcurrentConnections property: The maximum concurrent connection count for the source data store.
      * Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @return the maxConcurrentConnections value.
      */
     public Object getMaxConcurrentConnections() {
@@ -65,7 +70,7 @@ public class StoreReadSettings {
     /**
      * Set the maxConcurrentConnections property: The maximum concurrent connection count for the source data store.
      * Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @param maxConcurrentConnections the maxConcurrentConnections value to set.
      * @return the StoreReadSettings object itself.
      */
@@ -76,7 +81,7 @@ public class StoreReadSettings {
 
     /**
      * Get the additionalProperties property: Connector read setting.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -86,7 +91,7 @@ public class StoreReadSettings {
 
     /**
      * Set the additionalProperties property: Connector read setting.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the StoreReadSettings object itself.
      */

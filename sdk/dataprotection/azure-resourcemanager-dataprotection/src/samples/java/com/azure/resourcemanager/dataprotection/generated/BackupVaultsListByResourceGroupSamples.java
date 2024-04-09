@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-/** Samples for BackupVaults ListByResourceGroup. */
+/**
+ * Samples for BackupVaults ListByResourceGroup.
+ */
 public final class BackupVaultsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/VaultCRUD/GetBackupVaultsInResourceGroup.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/
+     * GetBackupVaultsInResourceGroup.json
      */
     /**
      * Sample code: Get BackupVaults in ResourceGroup.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getBackupVaultsInResourceGroup(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+    public static void
+        getBackupVaultsInResourceGroup(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
         manager.backupVaults().listByResourceGroup("SampleResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

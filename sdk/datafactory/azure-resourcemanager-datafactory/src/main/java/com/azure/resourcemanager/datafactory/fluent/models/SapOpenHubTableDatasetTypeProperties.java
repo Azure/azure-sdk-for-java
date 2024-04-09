@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Sap Business Warehouse Open Hub Destination Table properties. */
+/**
+ * Sap Business Warehouse Open Hub Destination Table properties.
+ */
 @Fluent
 public final class SapOpenHubTableDatasetTypeProperties {
     /*
@@ -32,14 +34,16 @@ public final class SapOpenHubTableDatasetTypeProperties {
     @JsonProperty(value = "baseRequestId")
     private Object baseRequestId;
 
-    /** Creates an instance of SapOpenHubTableDatasetTypeProperties class. */
+    /**
+     * Creates an instance of SapOpenHubTableDatasetTypeProperties class.
+     */
     public SapOpenHubTableDatasetTypeProperties() {
     }
 
     /**
      * Get the openHubDestinationName property: The name of the Open Hub Destination with destination type as Database
      * Table. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the openHubDestinationName value.
      */
     public Object openHubDestinationName() {
@@ -49,7 +53,7 @@ public final class SapOpenHubTableDatasetTypeProperties {
     /**
      * Set the openHubDestinationName property: The name of the Open Hub Destination with destination type as Database
      * Table. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param openHubDestinationName the openHubDestinationName value to set.
      * @return the SapOpenHubTableDatasetTypeProperties object itself.
      */
@@ -61,7 +65,7 @@ public final class SapOpenHubTableDatasetTypeProperties {
     /**
      * Get the excludeLastRequest property: Whether to exclude the records of the last request. The default value is
      * true. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the excludeLastRequest value.
      */
     public Object excludeLastRequest() {
@@ -71,7 +75,7 @@ public final class SapOpenHubTableDatasetTypeProperties {
     /**
      * Set the excludeLastRequest property: Whether to exclude the records of the last request. The default value is
      * true. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param excludeLastRequest the excludeLastRequest value to set.
      * @return the SapOpenHubTableDatasetTypeProperties object itself.
      */
@@ -84,7 +88,7 @@ public final class SapOpenHubTableDatasetTypeProperties {
      * Get the baseRequestId property: The ID of request for delta loading. Once it is set, only data with requestId
      * larger than the value of this property will be retrieved. The default value is 0. Type: integer (or Expression
      * with resultType integer ).
-     *
+     * 
      * @return the baseRequestId value.
      */
     public Object baseRequestId() {
@@ -95,7 +99,7 @@ public final class SapOpenHubTableDatasetTypeProperties {
      * Set the baseRequestId property: The ID of request for delta loading. Once it is set, only data with requestId
      * larger than the value of this property will be retrieved. The default value is 0. Type: integer (or Expression
      * with resultType integer ).
-     *
+     * 
      * @param baseRequestId the baseRequestId value to set.
      * @return the SapOpenHubTableDatasetTypeProperties object itself.
      */
@@ -106,16 +110,13 @@ public final class SapOpenHubTableDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (openHubDestinationName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property openHubDestinationName in model"
-                            + " SapOpenHubTableDatasetTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property openHubDestinationName in model SapOpenHubTableDatasetTypeProperties"));
         }
     }
 

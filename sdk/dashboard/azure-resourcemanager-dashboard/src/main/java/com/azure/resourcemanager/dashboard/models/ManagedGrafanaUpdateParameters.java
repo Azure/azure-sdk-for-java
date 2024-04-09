@@ -9,9 +9,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The parameters for a PATCH request to a grafana resource. */
+/**
+ * The parameters for a PATCH request to a grafana resource.
+ */
 @Fluent
 public final class ManagedGrafanaUpdateParameters {
+    /*
+     * The sku property.
+     */
+    @JsonProperty(value = "sku")
+    private ResourceSku sku;
+
     /*
      * The managed identity of the grafana resource.
      */
@@ -32,8 +40,34 @@ public final class ManagedGrafanaUpdateParameters {
     private ManagedGrafanaPropertiesUpdateParameters properties;
 
     /**
+     * Creates an instance of ManagedGrafanaUpdateParameters class.
+     */
+    public ManagedGrafanaUpdateParameters() {
+    }
+
+    /**
+     * Get the sku property: The sku property.
+     * 
+     * @return the sku value.
+     */
+    public ResourceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The sku property.
+     * 
+     * @param sku the sku value to set.
+     * @return the ManagedGrafanaUpdateParameters object itself.
+     */
+    public ManagedGrafanaUpdateParameters withSku(ResourceSku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
      * Get the identity property: The managed identity of the grafana resource.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -42,7 +76,7 @@ public final class ManagedGrafanaUpdateParameters {
 
     /**
      * Set the identity property: The managed identity of the grafana resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ManagedGrafanaUpdateParameters object itself.
      */
@@ -53,7 +87,7 @@ public final class ManagedGrafanaUpdateParameters {
 
     /**
      * Get the tags property: The new tags of the grafana resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -62,7 +96,7 @@ public final class ManagedGrafanaUpdateParameters {
 
     /**
      * Set the tags property: The new tags of the grafana resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ManagedGrafanaUpdateParameters object itself.
      */
@@ -73,7 +107,7 @@ public final class ManagedGrafanaUpdateParameters {
 
     /**
      * Get the properties property: Properties specific to the managed grafana resource.
-     *
+     * 
      * @return the properties value.
      */
     public ManagedGrafanaPropertiesUpdateParameters properties() {
@@ -82,7 +116,7 @@ public final class ManagedGrafanaUpdateParameters {
 
     /**
      * Set the properties property: Properties specific to the managed grafana resource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ManagedGrafanaUpdateParameters object itself.
      */
@@ -93,10 +127,13 @@ public final class ManagedGrafanaUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
         if (identity() != null) {
             identity().validate();
         }

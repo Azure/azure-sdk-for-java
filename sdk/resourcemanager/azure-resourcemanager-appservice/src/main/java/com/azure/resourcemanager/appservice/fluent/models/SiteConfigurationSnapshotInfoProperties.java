@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** SiteConfigurationSnapshotInfo resource specific properties. */
+/**
+ * SiteConfigurationSnapshotInfo resource specific properties.
+ */
 @Immutable
 public final class SiteConfigurationSnapshotInfoProperties {
     /*
@@ -23,13 +25,15 @@ public final class SiteConfigurationSnapshotInfoProperties {
     @JsonProperty(value = "snapshotId", access = JsonProperty.Access.WRITE_ONLY)
     private Integer snapshotId;
 
-    /** Creates an instance of SiteConfigurationSnapshotInfoProperties class. */
+    /**
+     * Creates an instance of SiteConfigurationSnapshotInfoProperties class.
+     */
     public SiteConfigurationSnapshotInfoProperties() {
     }
 
     /**
      * Get the time property: The time the snapshot was taken.
-     *
+     * 
      * @return the time value.
      */
     public OffsetDateTime time() {
@@ -38,7 +42,7 @@ public final class SiteConfigurationSnapshotInfoProperties {
 
     /**
      * Get the snapshotId property: The id of the snapshot.
-     *
+     * 
      * @return the snapshotId value.
      */
     public Integer snapshotId() {
@@ -47,7 +51,7 @@ public final class SiteConfigurationSnapshotInfoProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

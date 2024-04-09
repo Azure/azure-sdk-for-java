@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Rule of type application. */
+/**
+ * Rule of type application.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
 @JsonTypeName("ApplicationRule")
 @Fluent
@@ -75,13 +77,15 @@ public final class ApplicationRule extends FirewallPolicyRule {
     @JsonProperty(value = "httpHeadersToInsert")
     private List<FirewallPolicyHttpHeaderToInsert> httpHeadersToInsert;
 
-    /** Creates an instance of ApplicationRule class. */
+    /**
+     * Creates an instance of ApplicationRule class.
+     */
     public ApplicationRule() {
     }
 
     /**
      * Get the sourceAddresses property: List of source IP addresses for this rule.
-     *
+     * 
      * @return the sourceAddresses value.
      */
     public List<String> sourceAddresses() {
@@ -90,7 +94,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the sourceAddresses property: List of source IP addresses for this rule.
-     *
+     * 
      * @param sourceAddresses the sourceAddresses value to set.
      * @return the ApplicationRule object itself.
      */
@@ -101,7 +105,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the destinationAddresses property: List of destination IP addresses or Service Tags.
-     *
+     * 
      * @return the destinationAddresses value.
      */
     public List<String> destinationAddresses() {
@@ -110,7 +114,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the destinationAddresses property: List of destination IP addresses or Service Tags.
-     *
+     * 
      * @param destinationAddresses the destinationAddresses value to set.
      * @return the ApplicationRule object itself.
      */
@@ -121,7 +125,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the protocols property: Array of Application Protocols.
-     *
+     * 
      * @return the protocols value.
      */
     public List<FirewallPolicyRuleApplicationProtocol> protocols() {
@@ -130,7 +134,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the protocols property: Array of Application Protocols.
-     *
+     * 
      * @param protocols the protocols value to set.
      * @return the ApplicationRule object itself.
      */
@@ -141,7 +145,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the targetFqdns property: List of FQDNs for this rule.
-     *
+     * 
      * @return the targetFqdns value.
      */
     public List<String> targetFqdns() {
@@ -150,7 +154,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the targetFqdns property: List of FQDNs for this rule.
-     *
+     * 
      * @param targetFqdns the targetFqdns value to set.
      * @return the ApplicationRule object itself.
      */
@@ -161,7 +165,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the targetUrls property: List of Urls for this rule condition.
-     *
+     * 
      * @return the targetUrls value.
      */
     public List<String> targetUrls() {
@@ -170,7 +174,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the targetUrls property: List of Urls for this rule condition.
-     *
+     * 
      * @param targetUrls the targetUrls value to set.
      * @return the ApplicationRule object itself.
      */
@@ -181,7 +185,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the fqdnTags property: List of FQDN Tags for this rule.
-     *
+     * 
      * @return the fqdnTags value.
      */
     public List<String> fqdnTags() {
@@ -190,7 +194,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the fqdnTags property: List of FQDN Tags for this rule.
-     *
+     * 
      * @param fqdnTags the fqdnTags value to set.
      * @return the ApplicationRule object itself.
      */
@@ -201,7 +205,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the sourceIpGroups property: List of source IpGroups for this rule.
-     *
+     * 
      * @return the sourceIpGroups value.
      */
     public List<String> sourceIpGroups() {
@@ -210,7 +214,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the sourceIpGroups property: List of source IpGroups for this rule.
-     *
+     * 
      * @param sourceIpGroups the sourceIpGroups value to set.
      * @return the ApplicationRule object itself.
      */
@@ -221,7 +225,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the terminateTls property: Terminate TLS connections for this rule.
-     *
+     * 
      * @return the terminateTls value.
      */
     public Boolean terminateTls() {
@@ -230,7 +234,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the terminateTls property: Terminate TLS connections for this rule.
-     *
+     * 
      * @param terminateTls the terminateTls value to set.
      * @return the ApplicationRule object itself.
      */
@@ -241,7 +245,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the webCategories property: List of destination azure web categories.
-     *
+     * 
      * @return the webCategories value.
      */
     public List<String> webCategories() {
@@ -250,7 +254,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the webCategories property: List of destination azure web categories.
-     *
+     * 
      * @param webCategories the webCategories value to set.
      * @return the ApplicationRule object itself.
      */
@@ -261,7 +265,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the httpHeadersToInsert property: List of HTTP/S headers to insert.
-     *
+     * 
      * @return the httpHeadersToInsert value.
      */
     public List<FirewallPolicyHttpHeaderToInsert> httpHeadersToInsert() {
@@ -270,7 +274,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the httpHeadersToInsert property: List of HTTP/S headers to insert.
-     *
+     * 
      * @param httpHeadersToInsert the httpHeadersToInsert value to set.
      * @return the ApplicationRule object itself.
      */
@@ -279,14 +283,18 @@ public final class ApplicationRule extends FirewallPolicyRule {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationRule withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationRule withDescription(String description) {
         super.withDescription(description);
@@ -295,7 +303,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Service Endpoint Policy resource. */
+/**
+ * Service Endpoint Policy resource.
+ */
 @Fluent
 public final class ServiceEndpointPolicyPropertiesFormat {
     /*
@@ -48,14 +50,16 @@ public final class ServiceEndpointPolicyPropertiesFormat {
     @JsonProperty(value = "contextualServiceEndpointPolicies")
     private List<String> contextualServiceEndpointPolicies;
 
-    /** Creates an instance of ServiceEndpointPolicyPropertiesFormat class. */
+    /**
+     * Creates an instance of ServiceEndpointPolicyPropertiesFormat class.
+     */
     public ServiceEndpointPolicyPropertiesFormat() {
     }
 
     /**
      * Get the serviceEndpointPolicyDefinitions property: A collection of service endpoint policy definitions of the
      * service endpoint policy.
-     *
+     * 
      * @return the serviceEndpointPolicyDefinitions value.
      */
     public List<ServiceEndpointPolicyDefinitionInner> serviceEndpointPolicyDefinitions() {
@@ -65,7 +69,7 @@ public final class ServiceEndpointPolicyPropertiesFormat {
     /**
      * Set the serviceEndpointPolicyDefinitions property: A collection of service endpoint policy definitions of the
      * service endpoint policy.
-     *
+     * 
      * @param serviceEndpointPolicyDefinitions the serviceEndpointPolicyDefinitions value to set.
      * @return the ServiceEndpointPolicyPropertiesFormat object itself.
      */
@@ -77,7 +81,7 @@ public final class ServiceEndpointPolicyPropertiesFormat {
 
     /**
      * Get the subnets property: A collection of references to subnets.
-     *
+     * 
      * @return the subnets value.
      */
     public List<SubnetInner> subnets() {
@@ -86,7 +90,7 @@ public final class ServiceEndpointPolicyPropertiesFormat {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the service endpoint policy resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -95,7 +99,7 @@ public final class ServiceEndpointPolicyPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the service endpoint policy resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -104,7 +108,7 @@ public final class ServiceEndpointPolicyPropertiesFormat {
 
     /**
      * Get the serviceAlias property: The alias indicating if the policy belongs to a service.
-     *
+     * 
      * @return the serviceAlias value.
      */
     public String serviceAlias() {
@@ -113,7 +117,7 @@ public final class ServiceEndpointPolicyPropertiesFormat {
 
     /**
      * Set the serviceAlias property: The alias indicating if the policy belongs to a service.
-     *
+     * 
      * @param serviceAlias the serviceAlias value to set.
      * @return the ServiceEndpointPolicyPropertiesFormat object itself.
      */
@@ -124,7 +128,7 @@ public final class ServiceEndpointPolicyPropertiesFormat {
 
     /**
      * Get the contextualServiceEndpointPolicies property: A collection of contextual service endpoint policy.
-     *
+     * 
      * @return the contextualServiceEndpointPolicies value.
      */
     public List<String> contextualServiceEndpointPolicies() {
@@ -133,19 +137,19 @@ public final class ServiceEndpointPolicyPropertiesFormat {
 
     /**
      * Set the contextualServiceEndpointPolicies property: A collection of contextual service endpoint policy.
-     *
+     * 
      * @param contextualServiceEndpointPolicies the contextualServiceEndpointPolicies value to set.
      * @return the ServiceEndpointPolicyPropertiesFormat object itself.
      */
-    public ServiceEndpointPolicyPropertiesFormat withContextualServiceEndpointPolicies(
-        List<String> contextualServiceEndpointPolicies) {
+    public ServiceEndpointPolicyPropertiesFormat
+        withContextualServiceEndpointPolicies(List<String> contextualServiceEndpointPolicies) {
         this.contextualServiceEndpointPolicies = contextualServiceEndpointPolicies;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The state of a private link service connection. */
+/**
+ * The state of a private link service connection.
+ */
 @Fluent
 public final class PrivateLinkServiceConnectionState {
     /*
@@ -29,13 +31,15 @@ public final class PrivateLinkServiceConnectionState {
     @JsonProperty(value = "actionsRequired")
     private ActionsRequired actionsRequired;
 
-    /** Creates an instance of PrivateLinkServiceConnectionState class. */
+    /**
+     * Creates an instance of PrivateLinkServiceConnectionState class.
+     */
     public PrivateLinkServiceConnectionState() {
     }
 
     /**
      * Get the status property: The private link service connection status.
-     *
+     * 
      * @return the status value.
      */
     public ConnectionStatus status() {
@@ -44,7 +48,7 @@ public final class PrivateLinkServiceConnectionState {
 
     /**
      * Set the status property: The private link service connection status.
-     *
+     * 
      * @param status the status value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
@@ -54,9 +58,9 @@ public final class PrivateLinkServiceConnectionState {
     }
 
     /**
-     * Get the description property: The description for connection status. For example if connection is rejected it can
-     * indicate reason for rejection.
-     *
+     * Get the description property: The description for connection status. For example if connection is rejected it
+     * can indicate reason for rejection.
+     * 
      * @return the description value.
      */
     public String description() {
@@ -64,9 +68,9 @@ public final class PrivateLinkServiceConnectionState {
     }
 
     /**
-     * Set the description property: The description for connection status. For example if connection is rejected it can
-     * indicate reason for rejection.
-     *
+     * Set the description property: The description for connection status. For example if connection is rejected it
+     * can indicate reason for rejection.
+     * 
      * @param description the description value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
@@ -78,7 +82,7 @@ public final class PrivateLinkServiceConnectionState {
     /**
      * Get the actionsRequired property: A message indicating if changes on the service provider require any updates on
      * the consumer.
-     *
+     * 
      * @return the actionsRequired value.
      */
     public ActionsRequired actionsRequired() {
@@ -88,7 +92,7 @@ public final class PrivateLinkServiceConnectionState {
     /**
      * Set the actionsRequired property: A message indicating if changes on the service provider require any updates on
      * the consumer.
-     *
+     * 
      * @param actionsRequired the actionsRequired value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
@@ -99,7 +103,7 @@ public final class PrivateLinkServiceConnectionState {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

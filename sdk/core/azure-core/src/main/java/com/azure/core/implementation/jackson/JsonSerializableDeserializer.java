@@ -3,7 +3,9 @@
 
 package com.azure.core.implementation.jackson;
 
+import com.azure.core.implementation.ReflectionSerializable;
 import com.azure.core.implementation.ReflectionUtils;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -17,26 +19,12 @@ import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
 
 final class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializable<?>> {
     private static final ClientLogger LOGGER = new ClientLogger(JsonSerializableDeserializer.class);
 
-    private static final Module MODULE = new SimpleModule()
-        .setDeserializerModifier(new BeanDeserializerModifier() {
-            @SuppressWarnings("unchecked")
-            @Override
-            public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc,
-                JsonDeserializer<?> deserializer) {
-                return (JsonSerializable.class.isAssignableFrom(beanDesc.getBeanClass()))
-                    ? new JsonSerializableDeserializer((Class<? extends JsonSerializable<?>>) beanDesc.getBeanClass())
-                    : deserializer;
-            }
-        });
-
     private final Class<? extends JsonSerializable<?>> jsonSerializableType;
-    private final MethodHandle readJson;
+    private final ReflectiveInvoker readJson;
 
     /**
      * Gets a module wrapping this deserializer as an adapter for the Jackson ObjectMapper.
@@ -44,7 +32,16 @@ final class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializab
      * @return A module to be plugged into Jackson ObjectMapper.
      */
     public static Module getModule() {
-        return MODULE;
+        return new SimpleModule().setDeserializerModifier(new BeanDeserializerModifier() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc,
+                JsonDeserializer<?> deserializer) {
+                return ReflectionSerializable.supportsJsonSerializable(beanDesc.getBeanClass())
+                    ? new JsonSerializableDeserializer((Class<? extends JsonSerializable<?>>) beanDesc.getBeanClass())
+                    : deserializer;
+            }
+        });
     }
 
     /**
@@ -55,8 +52,8 @@ final class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializab
     JsonSerializableDeserializer(Class<? extends JsonSerializable<?>> jsonSerializableType) {
         this.jsonSerializableType = jsonSerializableType;
         try {
-            MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(jsonSerializableType);
-            this.readJson = lookup.unreflect(jsonSerializableType.getDeclaredMethod("fromJson", JsonReader.class));
+            this.readJson = ReflectionUtils.getMethodInvoker(jsonSerializableType,
+                jsonSerializableType.getDeclaredMethod("fromJson", JsonReader.class));
         } catch (Exception e) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(e));
         }
@@ -66,14 +63,9 @@ final class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializab
     public JsonSerializable<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         try {
             return jsonSerializableType.cast(readJson.invokeWithArguments(AzureJsonUtils.createReader(p)));
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e;
-            } else if (e instanceof Exception) {
-                throw new IOException(e);
-            } else {
-                throw (Error) e;
-            }
+        } catch (Exception e) {
+            IOException ioException = (e instanceof IOException) ? (IOException) e : new IOException(e);
+            throw LOGGER.logThrowableAsError(ioException);
         }
     }
 }

@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of authentication used to connect to the OData service. */
+/**
+ * Type of authentication used to connect to the OData service.
+ */
 public final class ODataAuthenticationType extends ExpandableStringEnum<ODataAuthenticationType> {
-    /** Static value Basic for ODataAuthenticationType. */
+    /**
+     * Static value Basic for ODataAuthenticationType.
+     */
     public static final ODataAuthenticationType BASIC = fromString("Basic");
 
-    /** Static value Anonymous for ODataAuthenticationType. */
+    /**
+     * Static value Anonymous for ODataAuthenticationType.
+     */
     public static final ODataAuthenticationType ANONYMOUS = fromString("Anonymous");
 
-    /** Static value Windows for ODataAuthenticationType. */
+    /**
+     * Static value Windows for ODataAuthenticationType.
+     */
     public static final ODataAuthenticationType WINDOWS = fromString("Windows");
 
-    /** Static value AadServicePrincipal for ODataAuthenticationType. */
+    /**
+     * Static value AadServicePrincipal for ODataAuthenticationType.
+     */
     public static final ODataAuthenticationType AAD_SERVICE_PRINCIPAL = fromString("AadServicePrincipal");
 
-    /** Static value ManagedServiceIdentity for ODataAuthenticationType. */
+    /**
+     * Static value ManagedServiceIdentity for ODataAuthenticationType.
+     */
     public static final ODataAuthenticationType MANAGED_SERVICE_IDENTITY = fromString("ManagedServiceIdentity");
 
     /**
      * Creates a new instance of ODataAuthenticationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class ODataAuthenticationType extends ExpandableStringEnum<ODataAut
 
     /**
      * Creates or finds a ODataAuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ODataAuthenticationType.
      */
@@ -47,7 +59,7 @@ public final class ODataAuthenticationType extends ExpandableStringEnum<ODataAut
 
     /**
      * Gets known ODataAuthenticationType values.
-     *
+     * 
      * @return known ODataAuthenticationType values.
      */
     public static Collection<ODataAuthenticationType> values() {

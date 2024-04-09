@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for Google Cloud Storage. */
+/**
+ * Linked service for Google Cloud Storage.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("GoogleCloudStorage")
 @Fluent
@@ -22,44 +24,54 @@ public final class GoogleCloudStorageLinkedService extends LinkedService {
      * Google Cloud Storage linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
-    private GoogleCloudStorageLinkedServiceTypeProperties innerTypeProperties =
-        new GoogleCloudStorageLinkedServiceTypeProperties();
+    private GoogleCloudStorageLinkedServiceTypeProperties innerTypeProperties
+        = new GoogleCloudStorageLinkedServiceTypeProperties();
 
-    /** Creates an instance of GoogleCloudStorageLinkedService class. */
+    /**
+     * Creates an instance of GoogleCloudStorageLinkedService class.
+     */
     public GoogleCloudStorageLinkedService() {
     }
 
     /**
      * Get the innerTypeProperties property: Google Cloud Storage linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private GoogleCloudStorageLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleCloudStorageLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleCloudStorageLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleCloudStorageLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleCloudStorageLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -69,7 +81,7 @@ public final class GoogleCloudStorageLinkedService extends LinkedService {
     /**
      * Get the accessKeyId property: The access key identifier of the Google Cloud Storage Identity and Access
      * Management (IAM) user. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the accessKeyId value.
      */
     public Object accessKeyId() {
@@ -79,7 +91,7 @@ public final class GoogleCloudStorageLinkedService extends LinkedService {
     /**
      * Set the accessKeyId property: The access key identifier of the Google Cloud Storage Identity and Access
      * Management (IAM) user. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param accessKeyId the accessKeyId value to set.
      * @return the GoogleCloudStorageLinkedService object itself.
      */
@@ -94,7 +106,7 @@ public final class GoogleCloudStorageLinkedService extends LinkedService {
     /**
      * Get the secretAccessKey property: The secret access key of the Google Cloud Storage Identity and Access
      * Management (IAM) user.
-     *
+     * 
      * @return the secretAccessKey value.
      */
     public SecretBase secretAccessKey() {
@@ -104,7 +116,7 @@ public final class GoogleCloudStorageLinkedService extends LinkedService {
     /**
      * Set the secretAccessKey property: The secret access key of the Google Cloud Storage Identity and Access
      * Management (IAM) user.
-     *
+     * 
      * @param secretAccessKey the secretAccessKey value to set.
      * @return the GoogleCloudStorageLinkedService object itself.
      */
@@ -117,10 +129,10 @@ public final class GoogleCloudStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Get the serviceUrl property: This value specifies the endpoint to access with the Google Cloud Storage Connector.
-     * This is an optional property; change it only if you want to try a different service endpoint or want to switch
-     * between https and http. Type: string (or Expression with resultType string).
-     *
+     * Get the serviceUrl property: This value specifies the endpoint to access with the Google Cloud Storage
+     * Connector. This is an optional property; change it only if you want to try a different service endpoint or want
+     * to switch between https and http. Type: string (or Expression with resultType string).
+     * 
      * @return the serviceUrl value.
      */
     public Object serviceUrl() {
@@ -128,10 +140,10 @@ public final class GoogleCloudStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Set the serviceUrl property: This value specifies the endpoint to access with the Google Cloud Storage Connector.
-     * This is an optional property; change it only if you want to try a different service endpoint or want to switch
-     * between https and http. Type: string (or Expression with resultType string).
-     *
+     * Set the serviceUrl property: This value specifies the endpoint to access with the Google Cloud Storage
+     * Connector. This is an optional property; change it only if you want to try a different service endpoint or want
+     * to switch between https and http. Type: string (or Expression with resultType string).
+     * 
      * @param serviceUrl the serviceUrl value to set.
      * @return the GoogleCloudStorageLinkedService object itself.
      */
@@ -144,23 +156,23 @@ public final class GoogleCloudStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the GoogleCloudStorageLinkedService object itself.
      */
-    public GoogleCloudStorageLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public GoogleCloudStorageLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new GoogleCloudStorageLinkedServiceTypeProperties();
         }
@@ -170,17 +182,15 @@ public final class GoogleCloudStorageLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model GoogleCloudStorageLinkedService"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model GoogleCloudStorageLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

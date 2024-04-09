@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters required for content load. */
+/**
+ * Parameters required for content load.
+ */
 @Fluent
 public final class LoadParameters {
     /*
@@ -19,9 +21,15 @@ public final class LoadParameters {
     private List<String> contentPaths;
 
     /**
+     * Creates an instance of LoadParameters class.
+     */
+    public LoadParameters() {
+    }
+
+    /**
      * Get the contentPaths property: The path to the content to be loaded. Path should be a relative file URL of the
      * origin.
-     *
+     * 
      * @return the contentPaths value.
      */
     public List<String> contentPaths() {
@@ -31,7 +39,7 @@ public final class LoadParameters {
     /**
      * Set the contentPaths property: The path to the content to be loaded. Path should be a relative file URL of the
      * origin.
-     *
+     * 
      * @param contentPaths the contentPaths value to set.
      * @return the LoadParameters object itself.
      */
@@ -42,14 +50,13 @@ public final class LoadParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (contentPaths() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property contentPaths in model LoadParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property contentPaths in model LoadParameters"));
         }
     }
 

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.datafactory.models.PrivateLinkResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Wrapper for a collection of private link resources. */
+/**
+ * Wrapper for a collection of private link resources.
+ */
 @Fluent
 public final class PrivateLinkResourcesWrapperInner {
     /*
@@ -19,13 +21,15 @@ public final class PrivateLinkResourcesWrapperInner {
     @JsonProperty(value = "value", required = true)
     private List<PrivateLinkResource> value;
 
-    /** Creates an instance of PrivateLinkResourcesWrapperInner class. */
+    /**
+     * Creates an instance of PrivateLinkResourcesWrapperInner class.
+     */
     public PrivateLinkResourcesWrapperInner() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateLinkResource> value() {
@@ -34,7 +38,7 @@ public final class PrivateLinkResourcesWrapperInner {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateLinkResourcesWrapperInner object itself.
      */
@@ -45,15 +49,13 @@ public final class PrivateLinkResourcesWrapperInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model PrivateLinkResourcesWrapperInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model PrivateLinkResourcesWrapperInner"));
         } else {
             value().forEach(e -> e.validate());
         }

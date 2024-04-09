@@ -7,7 +7,9 @@ package com.azure.resourcemanager.netapp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Weekly Schedule properties, make a snapshot every week at a specific day or days. */
+/**
+ * Weekly Schedule properties, make a snapshot every week at a specific day or days.
+ */
 @Fluent
 public final class WeeklySchedule {
     /*
@@ -40,13 +42,15 @@ public final class WeeklySchedule {
     @JsonProperty(value = "usedBytes")
     private Long usedBytes;
 
-    /** Creates an instance of WeeklySchedule class. */
+    /**
+     * Creates an instance of WeeklySchedule class.
+     */
     public WeeklySchedule() {
     }
 
     /**
      * Get the snapshotsToKeep property: Weekly snapshot count to keep.
-     *
+     * 
      * @return the snapshotsToKeep value.
      */
     public Integer snapshotsToKeep() {
@@ -55,7 +59,7 @@ public final class WeeklySchedule {
 
     /**
      * Set the snapshotsToKeep property: Weekly snapshot count to keep.
-     *
+     * 
      * @param snapshotsToKeep the snapshotsToKeep value to set.
      * @return the WeeklySchedule object itself.
      */
@@ -67,7 +71,7 @@ public final class WeeklySchedule {
     /**
      * Get the day property: Indicates which weekdays snapshot should be taken, accepts a comma separated list of week
      * day names in english.
-     *
+     * 
      * @return the day value.
      */
     public String day() {
@@ -77,7 +81,7 @@ public final class WeeklySchedule {
     /**
      * Set the day property: Indicates which weekdays snapshot should be taken, accepts a comma separated list of week
      * day names in english.
-     *
+     * 
      * @param day the day value to set.
      * @return the WeeklySchedule object itself.
      */
@@ -88,7 +92,7 @@ public final class WeeklySchedule {
 
     /**
      * Get the hour property: Indicates which hour in UTC timezone a snapshot should be taken.
-     *
+     * 
      * @return the hour value.
      */
     public Integer hour() {
@@ -97,7 +101,7 @@ public final class WeeklySchedule {
 
     /**
      * Set the hour property: Indicates which hour in UTC timezone a snapshot should be taken.
-     *
+     * 
      * @param hour the hour value to set.
      * @return the WeeklySchedule object itself.
      */
@@ -108,7 +112,7 @@ public final class WeeklySchedule {
 
     /**
      * Get the minute property: Indicates which minute snapshot should be taken.
-     *
+     * 
      * @return the minute value.
      */
     public Integer minute() {
@@ -117,7 +121,7 @@ public final class WeeklySchedule {
 
     /**
      * Set the minute property: Indicates which minute snapshot should be taken.
-     *
+     * 
      * @param minute the minute value to set.
      * @return the WeeklySchedule object itself.
      */
@@ -128,7 +132,7 @@ public final class WeeklySchedule {
 
     /**
      * Get the usedBytes property: Resource size in bytes, current storage usage for the volume in bytes.
-     *
+     * 
      * @return the usedBytes value.
      */
     public Long usedBytes() {
@@ -137,7 +141,7 @@ public final class WeeklySchedule {
 
     /**
      * Set the usedBytes property: Resource size in bytes, current storage usage for the volume in bytes.
-     *
+     * 
      * @param usedBytes the usedBytes value to set.
      * @return the WeeklySchedule object itself.
      */
@@ -148,7 +152,7 @@ public final class WeeklySchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

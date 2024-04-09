@@ -10,20 +10,14 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.okhttp.implementation.BinaryDataRequestBody;
 import com.azure.core.http.okhttp.implementation.OkHttpAsyncBufferedResponse;
 import com.azure.core.http.okhttp.implementation.OkHttpAsyncResponse;
-import com.azure.core.http.okhttp.implementation.OkHttpFileRequestBody;
 import com.azure.core.http.okhttp.implementation.OkHttpFluxRequestBody;
-import com.azure.core.http.okhttp.implementation.OkHttpInputStreamRequestBody;
 import com.azure.core.http.okhttp.implementation.OkHttpProgressReportingRequestBody;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
-import com.azure.core.implementation.util.ByteArrayContent;
-import com.azure.core.implementation.util.ByteBufferContent;
-import com.azure.core.implementation.util.FileContent;
-import com.azure.core.implementation.util.InputStreamContent;
-import com.azure.core.implementation.util.SerializableContent;
-import com.azure.core.implementation.util.StringContent;
+import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
@@ -43,7 +37,32 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 
 /**
- * HttpClient implementation for OkHttp.
+ * This class provides a OkHttp-based implementation for the {@link HttpClient} interface. Creating an instance of this
+ * class can be achieved by using the {@link OkHttpAsyncHttpClientBuilder} class, which offers OkHttp-specific API for
+ * features such as {@link OkHttpAsyncHttpClientBuilder#proxy(ProxyOptions) setProxy configuration}, and much more.
+ *
+ * <p>
+ * <strong>Sample: Construct OkHttpAsyncHttpClient with Default Configuration</strong>
+ * </p>
+ *
+ * <p>
+ * The following code sample demonstrates the creation of a OkHttp HttpClient that uses port 80 and has no proxy.
+ * </p>
+ *
+ * <!-- src_embed com.azure.core.http.okhttp.instantiation-simple -->
+ * <pre>
+ * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;
+ *         .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.okhttp.instantiation-simple -->
+ *
+ * <p>
+ * For more ways to instantiate OkHttpAsyncHttpClient, refer to {@link OkHttpAsyncHttpClientBuilder}.
+ * </p>
+ *
+ * @see com.azure.core.http.okhttp
+ * @see OkHttpAsyncHttpClientBuilder
+ * @see HttpClient
  */
 class OkHttpAsyncHttpClient implements HttpClient {
 
@@ -80,24 +99,23 @@ class OkHttpAsyncHttpClient implements HttpClient {
             // The blocking behavior toOkHttpRequest(r).subscribe call:
             //
             // The okhttp3.Request emitted by toOkHttpRequest(r) is chained from the body of request Flux<ByteBuffer>:
-            //   1. If Flux<ByteBuffer> synchronous and send(r) caller does not apply subscribeOn then
-            //      subscribe block on caller thread.
-            //   2. If Flux<ByteBuffer> synchronous and send(r) caller apply subscribeOn then
-            //      does not block caller thread but block on scheduler thread.
-            //   3. If Flux<ByteBuffer> asynchronous then subscribe does not block caller thread
-            //      but block on the thread backing flux. This ignore any subscribeOn applied to send(r)
+            // 1. If Flux<ByteBuffer> synchronous and send(r) caller does not apply subscribeOn then
+            // subscribe block on caller thread.
+            // 2. If Flux<ByteBuffer> synchronous and send(r) caller apply subscribeOn then
+            // does not block caller thread but block on scheduler thread.
+            // 3. If Flux<ByteBuffer> asynchronous then subscribe does not block caller thread
+            // but block on the thread backing flux. This ignore any subscribeOn applied to send(r)
             //
-            Mono.fromCallable(() -> toOkHttpRequest(request, progressReporter))
-                .subscribe(okHttpRequest -> {
-                    try {
-                        Call call = httpClient.newCall(okHttpRequest);
-                        call.enqueue(new OkHttpCallback(sink, request, eagerlyReadResponse, ignoreResponseBody,
-                            eagerlyConvertHeaders));
-                        sink.onCancel(call::cancel);
-                    } catch (Exception ex) {
-                        sink.error(ex);
-                    }
-                }, sink::error);
+            Mono.fromCallable(() -> toOkHttpRequest(request, progressReporter)).subscribe(okHttpRequest -> {
+                try {
+                    Call call = httpClient.newCall(okHttpRequest);
+                    call.enqueue(new OkHttpCallback(sink, request, eagerlyReadResponse, ignoreResponseBody,
+                        eagerlyConvertHeaders));
+                    sink.onCancel(call::cancel);
+                } catch (Exception ex) {
+                    sink.error(ex);
+                }
+            }, sink::error);
         }));
     }
 
@@ -127,8 +145,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
      * @return the okhttp request
      */
     private okhttp3.Request toOkHttpRequest(HttpRequest request, ProgressReporter progressReporter) {
-        Request.Builder requestBuilder = new Request.Builder()
-            .url(request.getUrl());
+        Request.Builder requestBuilder = new Request.Builder().url(request.getUrl());
 
         if (request.getHeaders() != null) {
             for (HttpHeader hdr : request.getHeaders()) {
@@ -148,8 +165,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
         if (progressReporter != null) {
             okHttpRequestBody = new OkHttpProgressReportingRequestBody(okHttpRequestBody, progressReporter);
         }
-        return requestBuilder.method(request.getHttpMethod().toString(), okHttpRequestBody)
-            .build();
+        return requestBuilder.method(request.getHttpMethod().toString(), okHttpRequestBody).build();
     }
 
     /**
@@ -169,25 +185,15 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
         BinaryDataContent content = BinaryDataHelper.getContent(bodyContent);
 
-        if (content instanceof ByteArrayContent
-            || content instanceof StringContent
-            || content instanceof SerializableContent
-            || content instanceof ByteBufferContent) {
-            return RequestBody.create(content.toBytes(), mediaType);
+        long effectiveContentLength = getRequestContentLength(content, headers);
+        if (content instanceof FluxByteBufferContent) {
+            // The OkHttpFluxRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
+            // TODO (alzimmer): Is this still required? Specifically find out if the timeout is needed.
+            return new OkHttpFluxRequestBody(content, effectiveContentLength, mediaType,
+                httpClient.callTimeoutMillis());
         } else {
-            long effectiveContentLength = getRequestContentLength(content, headers);
-            if (content instanceof InputStreamContent) {
-                // The OkHttpInputStreamRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
-                return new OkHttpInputStreamRequestBody(
-                    (InputStreamContent) content, effectiveContentLength, mediaType);
-            } else if (content instanceof FileContent) {
-                // The OkHttpFileRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
-                return new OkHttpFileRequestBody((FileContent) content, effectiveContentLength, mediaType);
-            } else {
-                // The OkHttpFluxRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
-                return new OkHttpFluxRequestBody(
-                    content, effectiveContentLength, mediaType, httpClient.callTimeoutMillis());
-            }
+            // Default is to use a generic BinaryData RequestBody.
+            return new BinaryDataRequestBody(bodyContent, mediaType, effectiveContentLength);
         }
     }
 
@@ -208,18 +214,18 @@ class OkHttpAsyncHttpClient implements HttpClient {
     private static HttpResponse toHttpResponse(HttpRequest request, okhttp3.Response response,
         boolean eagerlyReadResponse, boolean ignoreResponseBody, boolean eagerlyConvertHeaders) throws IOException {
         // For now, eagerlyReadResponse and ignoreResponseBody works the same.
-//        if (ignoreResponseBody) {
-//            ResponseBody body = response.body();
-//            if (body != null) {
-//                if (body.contentLength() > 0) {
-//                    LOGGER.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
-//                        + "Response body will be ignored as directed.");
-//                }
-//                body.close();
-//            }
-//
-//            return new OkHttpAsyncBufferedResponse(response, request, EMPTY_BODY, eagerlyConvertHeaders);
-//        }
+        // if (ignoreResponseBody) {
+        // ResponseBody body = response.body();
+        // if (body != null) {
+        // if (body.contentLength() > 0) {
+        // LOGGER.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
+        // + "Response body will be ignored as directed.");
+        // }
+        // body.close();
+        // }
+        //
+        // return new OkHttpAsyncBufferedResponse(response, request, EMPTY_BODY, eagerlyConvertHeaders);
+        // }
 
         /*
          * Use a buffered response when we are eagerly reading the response from the network and the body isn't
@@ -267,8 +273,8 @@ class OkHttpAsyncHttpClient implements HttpClient {
         @Override
         public void onResponse(okhttp3.Call call, okhttp3.Response response) {
             try {
-                sink.success(toHttpResponse(request, response, eagerlyReadResponse, ignoreResponseBody,
-                    eagerlyConvertHeaders));
+                sink.success(
+                    toHttpResponse(request, response, eagerlyReadResponse, ignoreResponseBody, eagerlyConvertHeaders));
             } catch (IOException ex) {
                 // Reading the body bytes may cause an IOException, if it happens propagate it.
                 sink.error(ex);

@@ -16,6 +16,10 @@ public final class SecurityProfile {
     @JsonProperty(value = "uefiSettings")
     private UefiSettings uefiSettings;
 
+    /** Creates an instance of SecurityProfile class. */
+    public SecurityProfile() {
+    }
+
     /**
      * Get the uefiSettings property: Specifies the security settings like secure boot used while creating the virtual
      * machine.

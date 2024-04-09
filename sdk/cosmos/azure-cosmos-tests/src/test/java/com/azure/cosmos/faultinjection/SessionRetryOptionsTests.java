@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.SessionRetryOptionsBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
@@ -16,6 +17,7 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
@@ -23,11 +25,9 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
@@ -58,7 +58,11 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.testng.AssertJUnit.fail;
 
-public class SessionRetryOptionsTests extends TestSuiteBase {
+public class SessionRetryOptionsTests extends FaultInjectionTestBase {
+    private final static ImplementationBridgeHelpers.CosmosSessionRetryOptionsHelper.CosmosSessionRetryOptionsAccessor
+        sessionRetryOptionsAccessor = ImplementationBridgeHelpers
+        .CosmosSessionRetryOptionsHelper
+        .getCosmosSessionRetryOptionsAccessor();
 
     private CosmosAsyncClient cosmosAsyncClient;
     private CosmosAsyncContainer cosmosAsyncContainer;
@@ -105,6 +109,79 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
             {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 1}
 
         };
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void SessionRetryOptionsBuilder_defaultValues() {
+        SessionRetryOptions optionsWithDefaultValues = new SessionRetryOptionsBuilder()
+            .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
+            .build();
+
+        assertThat(sessionRetryOptionsAccessor.getMaxInRegionRetryCount(optionsWithDefaultValues))
+            .isEqualTo(Configs.getMaxRetriesInLocalRegionWhenRemoteRegionPreferred());
+
+        assertThat(sessionRetryOptionsAccessor.getMinInRegionRetryTime(optionsWithDefaultValues))
+            .isEqualTo(Configs.getMinRetryTimeInLocalRegionWhenRemoteRegionPreferred());
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void SessionRetryOptionsBuilder_customValues() {
+        SessionRetryOptions optionsWithDefaultValues = new SessionRetryOptionsBuilder()
+            .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
+            .minTimeoutPerRegion(Duration.ofSeconds(1))
+            .maxRetriesPerRegion(3)
+            .build();
+
+        assertThat(sessionRetryOptionsAccessor.getMaxInRegionRetryCount(optionsWithDefaultValues))
+            .isEqualTo(3);
+
+        assertThat(sessionRetryOptionsAccessor.getMinInRegionRetryTime(optionsWithDefaultValues))
+            .isEqualTo(Duration.ofSeconds(1));
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void SessionRetryOptionsBuilder_minimum_maxRetryCountEnforced() {
+        SessionRetryOptionsBuilder builder = new SessionRetryOptionsBuilder()
+            .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
+            .maxRetriesPerRegion(0);
+
+        try {
+            builder.build();
+
+            fail("Building the session retry options should have failed");
+        } catch (IllegalArgumentException illegalArgumentException) {
+            logger.info("Expected IllegalArgumentException", illegalArgumentException);
+        }
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void SessionRetryOptionsBuilder_minimum_minRetryTimeEnforced() {
+        SessionRetryOptionsBuilder builder = new SessionRetryOptionsBuilder()
+            .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
+            .minTimeoutPerRegion(Duration.ofMillis(99));
+
+        try {
+            builder.build();
+
+            fail("Building the session retry options should have failed");
+        } catch (IllegalArgumentException illegalArgumentException) {
+            logger.info("Expected IllegalArgumentException", illegalArgumentException);
+        }
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void SessionRetryOptionsBuilder_minRetryTimeRequired() {
+        SessionRetryOptionsBuilder builder = new SessionRetryOptionsBuilder()
+            .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
+            .minTimeoutPerRegion(null);
+
+        try {
+            builder.build();
+
+            fail("Building the session retry options should have failed");
+        } catch (IllegalArgumentException illegalArgumentException) {
+            logger.info("Expected IllegalArgumentException", illegalArgumentException);
+        }
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "nonWriteOperationContextProvider", timeOut = TIMEOUT)
@@ -176,7 +253,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
             // Check if the SessionTokenMismatchRetryPolicy retries on the bad / lagging region
             // for sessionTokenMismatchRetryAttempts by tracking the badSessionTokenRule hit count
             if (regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED) {
-                assertThat(badSessionTokenRule.getHitCount()).isBetween((long) sessionTokenMismatchRetryAttempts, sessionTokenMismatchRetryAttempts * 4L);
+                assertThat(badSessionTokenRule.getHitCount()).isBetween((long) sessionTokenMismatchRetryAttempts, (1 + sessionTokenMismatchRetryAttempts) * 4L);
             }
         } finally {
             System.clearProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED");
@@ -250,7 +327,9 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
             // Check if the SessionTokenMismatchRetryPolicy retries on the bad / lagging region
             // for sessionTokenMismatchRetryAttempts by tracking the badSessionTokenRule hit count
             if (regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED) {
-                assertThat(badSessionTokenRule.getHitCount()).isEqualTo(sessionTokenMismatchRetryAttempts);
+                // higher hit count is possible while in MinRetryWaitTimeWithinRegion
+                assertThat(badSessionTokenRule.getHitCount()).isGreaterThanOrEqualTo(
+                    sessionTokenMismatchRetryAttempts);
             }
         } finally {
             System.clearProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED");

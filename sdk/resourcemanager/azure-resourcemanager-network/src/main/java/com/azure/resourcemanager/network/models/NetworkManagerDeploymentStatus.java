@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Network Manager Deployment Status. */
+/**
+ * Network Manager Deployment Status.
+ */
 @Fluent
 public final class NetworkManagerDeploymentStatus {
     /*
@@ -48,13 +50,15 @@ public final class NetworkManagerDeploymentStatus {
     @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
-    /** Creates an instance of NetworkManagerDeploymentStatus class. */
+    /**
+     * Creates an instance of NetworkManagerDeploymentStatus class.
+     */
     public NetworkManagerDeploymentStatus() {
     }
 
     /**
      * Get the commitTime property: Commit Time.
-     *
+     * 
      * @return the commitTime value.
      */
     public OffsetDateTime commitTime() {
@@ -63,7 +67,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Set the commitTime property: Commit Time.
-     *
+     * 
      * @param commitTime the commitTime value to set.
      * @return the NetworkManagerDeploymentStatus object itself.
      */
@@ -74,7 +78,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Get the region property: Region Name.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -83,7 +87,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Set the region property: Region Name.
-     *
+     * 
      * @param region the region value to set.
      * @return the NetworkManagerDeploymentStatus object itself.
      */
@@ -94,7 +98,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Get the deploymentStatus property: Deployment Status.
-     *
+     * 
      * @return the deploymentStatus value.
      */
     public DeploymentStatus deploymentStatus() {
@@ -103,7 +107,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Set the deploymentStatus property: Deployment Status.
-     *
+     * 
      * @param deploymentStatus the deploymentStatus value to set.
      * @return the NetworkManagerDeploymentStatus object itself.
      */
@@ -114,7 +118,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Get the configurationIds property: List of configuration ids.
-     *
+     * 
      * @return the configurationIds value.
      */
     public List<String> configurationIds() {
@@ -123,7 +127,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Set the configurationIds property: List of configuration ids.
-     *
+     * 
      * @param configurationIds the configurationIds value to set.
      * @return the NetworkManagerDeploymentStatus object itself.
      */
@@ -134,7 +138,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Get the deploymentType property: Configuration Deployment Type.
-     *
+     * 
      * @return the deploymentType value.
      */
     public ConfigurationType deploymentType() {
@@ -143,7 +147,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Set the deploymentType property: Configuration Deployment Type.
-     *
+     * 
      * @param deploymentType the deploymentType value to set.
      * @return the NetworkManagerDeploymentStatus object itself.
      */
@@ -154,7 +158,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Get the errorMessage property: Error Message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -163,7 +167,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Set the errorMessage property: Error Message.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the NetworkManagerDeploymentStatus object itself.
      */
@@ -174,7 +178,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

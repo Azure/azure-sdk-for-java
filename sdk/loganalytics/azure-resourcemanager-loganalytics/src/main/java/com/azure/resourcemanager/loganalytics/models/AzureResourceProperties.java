@@ -35,6 +35,10 @@ public class AzureResourceProperties {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of AzureResourceProperties class. */
+    public AzureResourceProperties() {
+    }
+
     /**
      * Get the id property: Azure resource Id.
      *

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourcePools List. */
 public final class ResourcePoolsListSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/ListResourcePools.json
+     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListResourcePools.json
      */
     /**
      * Sample code: ListResourcePools.
@@ -17,6 +15,6 @@ public final class ResourcePoolsListSamples {
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void listResourcePools(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager.resourcePools().list(Context.NONE);
+        manager.resourcePools().list(com.azure.core.util.Context.NONE);
     }
 }

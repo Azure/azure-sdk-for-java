@@ -553,6 +553,15 @@ public final class PiiEntityCategory extends ExpandableStringEnum<PiiEntityCateg
     public static final PiiEntityCategory DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of {@code PiiEntityCategory} value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PiiEntityCategory() {
+    }
+
+    /**
      * Creates or finds a PiiEntityCategory from its string representation.
      *
      * @param name a name to look for.
@@ -563,7 +572,11 @@ public final class PiiEntityCategory extends ExpandableStringEnum<PiiEntityCateg
         return fromString(name, PiiEntityCategory.class);
     }
 
-    /** @return known PiiEntityCategory values. */
+    /**
+     * All known PiiEntityCategory values.
+     *
+     * @return known PiiEntityCategory values.
+     */
     public static Collection<PiiEntityCategory> values() {
         return values(PiiEntityCategory.class);
     }

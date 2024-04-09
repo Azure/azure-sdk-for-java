@@ -144,7 +144,9 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         }
 
         // Send messages
-        StepVerifier.create(senderAsyncA.sendMessages(messages)).verifyComplete();
+        StepVerifier.create(senderAsyncA.sendMessages(messages))
+            .expectComplete()
+            .verify(TIMEOUT);
         // Create an instance of the processor through the ServiceBusClientBuilder
 
         // Act
@@ -171,7 +173,9 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
                 .assertNext(receivedMessage -> {
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                     messagesPending.decrementAndGet();
-                }).verifyComplete();
+                })
+                .expectComplete()
+                .verify(TIMEOUT);
         }
     }
 
@@ -258,7 +262,9 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         }
 
         // Send messages
-        StepVerifier.create(senderAsyncA.sendMessages(messages)).verifyComplete();
+        StepVerifier.create(senderAsyncA.sendMessages(messages))
+            .expectComplete()
+            .verify(TIMEOUT);
         // Create an instance of the processor through the ServiceBusClientBuilder
 
         // Act
@@ -285,7 +291,9 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
                 .assertNext(receivedMessage -> {
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                     messagesPending.decrementAndGet();
-                }).verifyComplete();
+                })
+                .expectComplete()
+                .verify(TIMEOUT);
         }
     }
 
@@ -322,7 +330,9 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusSenderClient senderSyncB = toClose(builder.sender().queueName(queueB).buildClient());
 
         // Send messages
-        StepVerifier.create(senderAsyncA.sendMessages(messages)).verifyComplete();
+        StepVerifier.create(senderAsyncA.sendMessages(messages))
+            .expectComplete()
+            .verify(TIMEOUT);
 
         final ServiceBusReceiverAsyncClient receiverA;
 
@@ -369,7 +379,9 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
                 .assertNext(receivedMessage -> {
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                     messagesPending.decrementAndGet();
-                }).verifyComplete();
+                })
+                .expectComplete()
+                .verify(TIMEOUT);
         }
     }
 
@@ -407,7 +419,9 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
 
 
         // Send messages
-        StepVerifier.create(senderAsyncA.sendMessages(messages)).verifyComplete();
+        StepVerifier.create(senderAsyncA.sendMessages(messages))
+            .expectComplete()
+            .verify(TIMEOUT);
 
         final ServiceBusReceiverAsyncClient receiverA;
 
@@ -450,7 +464,9 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
                 .assertNext(receivedMessage -> {
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                     messagesPending.decrementAndGet();
-                }).verifyComplete();
+                })
+                .expectComplete()
+                .verify(TIMEOUT);
         }
     }
 

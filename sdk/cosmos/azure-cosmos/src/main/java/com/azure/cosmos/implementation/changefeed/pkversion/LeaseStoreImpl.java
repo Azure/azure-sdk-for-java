@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper;
+import com.azure.cosmos.implementation.changefeed.epkversion.ServiceItemLeaseV1;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.Constants;
@@ -73,7 +74,11 @@ class LeaseStoreImpl implements LeaseStore {
         InternalObjectNode containerDocument = new InternalObjectNode();
         containerDocument.setId(markerDocId);
 
-        return this.client.createItem(this.leaseCollectionLink, containerDocument, new CosmosItemRequestOptions(), false)
+        return this.client.createItem(
+            this.leaseCollectionLink,
+                containerDocument,
+                this.requestOptionsFactory.createItemRequestOptions(ServiceItemLeaseV1.fromDocument(containerDocument)),
+                false)
             .map( item -> true)
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosException) {
@@ -95,7 +100,11 @@ class LeaseStoreImpl implements LeaseStore {
         containerDocument.setId(lockId);
         BridgeInternal.setProperty(containerDocument, Constants.Properties.TTL, Long.valueOf(lockExpirationTime.getSeconds()).intValue());
 
-        return this.client.createItem(this.leaseCollectionLink, containerDocument, new CosmosItemRequestOptions(), false)
+        return this.client.createItem(
+            this.leaseCollectionLink,
+                containerDocument,
+                this.requestOptionsFactory.createItemRequestOptions(ServiceItemLeaseV1.fromDocument(containerDocument)),
+                false)
             .map(documentResourceResponse -> {
                 if (BridgeInternal.getProperties(documentResourceResponse) != null) {
                     this.lockETag = BridgeInternal.getProperties(documentResourceResponse).getETag();

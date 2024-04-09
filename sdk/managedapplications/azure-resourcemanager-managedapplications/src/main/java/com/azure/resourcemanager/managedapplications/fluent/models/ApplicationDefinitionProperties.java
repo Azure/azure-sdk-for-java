@@ -6,9 +6,14 @@ package com.azure.resourcemanager.managedapplications.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.managedapplications.models.ApplicationArtifact;
+import com.azure.resourcemanager.managedapplications.models.ApplicationAuthorization;
+import com.azure.resourcemanager.managedapplications.models.ApplicationDefinitionArtifact;
+import com.azure.resourcemanager.managedapplications.models.ApplicationDeploymentPolicy;
 import com.azure.resourcemanager.managedapplications.models.ApplicationLockLevel;
-import com.azure.resourcemanager.managedapplications.models.ApplicationProviderAuthorization;
+import com.azure.resourcemanager.managedapplications.models.ApplicationManagementPolicy;
+import com.azure.resourcemanager.managedapplications.models.ApplicationNotificationPolicy;
+import com.azure.resourcemanager.managedapplications.models.ApplicationPackageLockingPolicyDefinition;
+import com.azure.resourcemanager.managedapplications.models.ApplicationPolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -31,20 +36,20 @@ public final class ApplicationDefinitionProperties {
      * A value indicating whether the package is enabled or not.
      */
     @JsonProperty(value = "isEnabled")
-    private String isEnabled;
+    private Boolean isEnabled;
 
     /*
      * The managed application provider authorizations.
      */
-    @JsonProperty(value = "authorizations", required = true)
-    private List<ApplicationProviderAuthorization> authorizations;
+    @JsonProperty(value = "authorizations")
+    private List<ApplicationAuthorization> authorizations;
 
     /*
      * The collection of managed application artifacts. The portal will use the files specified as artifacts to
      * construct the user experience of creating a managed application from a managed application definition.
      */
     @JsonProperty(value = "artifacts")
-    private List<ApplicationArtifact> artifacts;
+    private List<ApplicationDefinitionArtifact> artifacts;
 
     /*
      * The managed application definition description.
@@ -59,6 +64,12 @@ public final class ApplicationDefinitionProperties {
     private String packageFileUri;
 
     /*
+     * The storage account id for bring your own storage scenario.
+     */
+    @JsonProperty(value = "storageAccountId")
+    private String storageAccountId;
+
+    /*
      * The inline main template json which has resources to be provisioned. It can be a JObject or well-formed JSON
      * string.
      */
@@ -71,6 +82,36 @@ public final class ApplicationDefinitionProperties {
      */
     @JsonProperty(value = "createUiDefinition")
     private Object createUiDefinition;
+
+    /*
+     * The managed application notification policy.
+     */
+    @JsonProperty(value = "notificationPolicy")
+    private ApplicationNotificationPolicy notificationPolicy;
+
+    /*
+     * The managed application locking policy.
+     */
+    @JsonProperty(value = "lockingPolicy")
+    private ApplicationPackageLockingPolicyDefinition lockingPolicy;
+
+    /*
+     * The managed application deployment policy.
+     */
+    @JsonProperty(value = "deploymentPolicy")
+    private ApplicationDeploymentPolicy deploymentPolicy;
+
+    /*
+     * The managed application management policy that determines publisher's access to the managed resource group.
+     */
+    @JsonProperty(value = "managementPolicy")
+    private ApplicationManagementPolicy managementPolicy;
+
+    /*
+     * The managed application provider policies.
+     */
+    @JsonProperty(value = "policies")
+    private List<ApplicationPolicy> policies;
 
     /** Creates an instance of ApplicationDefinitionProperties class. */
     public ApplicationDefinitionProperties() {
@@ -121,7 +162,7 @@ public final class ApplicationDefinitionProperties {
      *
      * @return the isEnabled value.
      */
-    public String isEnabled() {
+    public Boolean isEnabled() {
         return this.isEnabled;
     }
 
@@ -131,7 +172,7 @@ public final class ApplicationDefinitionProperties {
      * @param isEnabled the isEnabled value to set.
      * @return the ApplicationDefinitionProperties object itself.
      */
-    public ApplicationDefinitionProperties withIsEnabled(String isEnabled) {
+    public ApplicationDefinitionProperties withIsEnabled(Boolean isEnabled) {
         this.isEnabled = isEnabled;
         return this;
     }
@@ -141,7 +182,7 @@ public final class ApplicationDefinitionProperties {
      *
      * @return the authorizations value.
      */
-    public List<ApplicationProviderAuthorization> authorizations() {
+    public List<ApplicationAuthorization> authorizations() {
         return this.authorizations;
     }
 
@@ -151,7 +192,7 @@ public final class ApplicationDefinitionProperties {
      * @param authorizations the authorizations value to set.
      * @return the ApplicationDefinitionProperties object itself.
      */
-    public ApplicationDefinitionProperties withAuthorizations(List<ApplicationProviderAuthorization> authorizations) {
+    public ApplicationDefinitionProperties withAuthorizations(List<ApplicationAuthorization> authorizations) {
         this.authorizations = authorizations;
         return this;
     }
@@ -163,7 +204,7 @@ public final class ApplicationDefinitionProperties {
      *
      * @return the artifacts value.
      */
-    public List<ApplicationArtifact> artifacts() {
+    public List<ApplicationDefinitionArtifact> artifacts() {
         return this.artifacts;
     }
 
@@ -175,7 +216,7 @@ public final class ApplicationDefinitionProperties {
      * @param artifacts the artifacts value to set.
      * @return the ApplicationDefinitionProperties object itself.
      */
-    public ApplicationDefinitionProperties withArtifacts(List<ApplicationArtifact> artifacts) {
+    public ApplicationDefinitionProperties withArtifacts(List<ApplicationDefinitionArtifact> artifacts) {
         this.artifacts = artifacts;
         return this;
     }
@@ -217,6 +258,26 @@ public final class ApplicationDefinitionProperties {
      */
     public ApplicationDefinitionProperties withPackageFileUri(String packageFileUri) {
         this.packageFileUri = packageFileUri;
+        return this;
+    }
+
+    /**
+     * Get the storageAccountId property: The storage account id for bring your own storage scenario.
+     *
+     * @return the storageAccountId value.
+     */
+    public String storageAccountId() {
+        return this.storageAccountId;
+    }
+
+    /**
+     * Set the storageAccountId property: The storage account id for bring your own storage scenario.
+     *
+     * @param storageAccountId the storageAccountId value to set.
+     * @return the ApplicationDefinitionProperties object itself.
+     */
+    public ApplicationDefinitionProperties withStorageAccountId(String storageAccountId) {
+        this.storageAccountId = storageAccountId;
         return this;
     }
 
@@ -265,6 +326,108 @@ public final class ApplicationDefinitionProperties {
     }
 
     /**
+     * Get the notificationPolicy property: The managed application notification policy.
+     *
+     * @return the notificationPolicy value.
+     */
+    public ApplicationNotificationPolicy notificationPolicy() {
+        return this.notificationPolicy;
+    }
+
+    /**
+     * Set the notificationPolicy property: The managed application notification policy.
+     *
+     * @param notificationPolicy the notificationPolicy value to set.
+     * @return the ApplicationDefinitionProperties object itself.
+     */
+    public ApplicationDefinitionProperties withNotificationPolicy(ApplicationNotificationPolicy notificationPolicy) {
+        this.notificationPolicy = notificationPolicy;
+        return this;
+    }
+
+    /**
+     * Get the lockingPolicy property: The managed application locking policy.
+     *
+     * @return the lockingPolicy value.
+     */
+    public ApplicationPackageLockingPolicyDefinition lockingPolicy() {
+        return this.lockingPolicy;
+    }
+
+    /**
+     * Set the lockingPolicy property: The managed application locking policy.
+     *
+     * @param lockingPolicy the lockingPolicy value to set.
+     * @return the ApplicationDefinitionProperties object itself.
+     */
+    public ApplicationDefinitionProperties withLockingPolicy(ApplicationPackageLockingPolicyDefinition lockingPolicy) {
+        this.lockingPolicy = lockingPolicy;
+        return this;
+    }
+
+    /**
+     * Get the deploymentPolicy property: The managed application deployment policy.
+     *
+     * @return the deploymentPolicy value.
+     */
+    public ApplicationDeploymentPolicy deploymentPolicy() {
+        return this.deploymentPolicy;
+    }
+
+    /**
+     * Set the deploymentPolicy property: The managed application deployment policy.
+     *
+     * @param deploymentPolicy the deploymentPolicy value to set.
+     * @return the ApplicationDefinitionProperties object itself.
+     */
+    public ApplicationDefinitionProperties withDeploymentPolicy(ApplicationDeploymentPolicy deploymentPolicy) {
+        this.deploymentPolicy = deploymentPolicy;
+        return this;
+    }
+
+    /**
+     * Get the managementPolicy property: The managed application management policy that determines publisher's access
+     * to the managed resource group.
+     *
+     * @return the managementPolicy value.
+     */
+    public ApplicationManagementPolicy managementPolicy() {
+        return this.managementPolicy;
+    }
+
+    /**
+     * Set the managementPolicy property: The managed application management policy that determines publisher's access
+     * to the managed resource group.
+     *
+     * @param managementPolicy the managementPolicy value to set.
+     * @return the ApplicationDefinitionProperties object itself.
+     */
+    public ApplicationDefinitionProperties withManagementPolicy(ApplicationManagementPolicy managementPolicy) {
+        this.managementPolicy = managementPolicy;
+        return this;
+    }
+
+    /**
+     * Get the policies property: The managed application provider policies.
+     *
+     * @return the policies value.
+     */
+    public List<ApplicationPolicy> policies() {
+        return this.policies;
+    }
+
+    /**
+     * Set the policies property: The managed application provider policies.
+     *
+     * @param policies the policies value to set.
+     * @return the ApplicationDefinitionProperties object itself.
+     */
+    public ApplicationDefinitionProperties withPolicies(List<ApplicationPolicy> policies) {
+        this.policies = policies;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -276,16 +439,26 @@ public final class ApplicationDefinitionProperties {
                     new IllegalArgumentException(
                         "Missing required property lockLevel in model ApplicationDefinitionProperties"));
         }
-        if (authorizations() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property authorizations in model ApplicationDefinitionProperties"));
-        } else {
+        if (authorizations() != null) {
             authorizations().forEach(e -> e.validate());
         }
         if (artifacts() != null) {
             artifacts().forEach(e -> e.validate());
+        }
+        if (notificationPolicy() != null) {
+            notificationPolicy().validate();
+        }
+        if (lockingPolicy() != null) {
+            lockingPolicy().validate();
+        }
+        if (deploymentPolicy() != null) {
+            deploymentPolicy().validate();
+        }
+        if (managementPolicy() != null) {
+            managementPolicy().validate();
+        }
+        if (policies() != null) {
+            policies().forEach(e -> e.validate());
         }
     }
 

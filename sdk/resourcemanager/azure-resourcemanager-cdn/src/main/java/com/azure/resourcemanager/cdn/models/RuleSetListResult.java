@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Result of the request to list rule sets. It contains a list of rule set objects and a URL link to get the next set of
- * results.
+ * Result of the request to list rule sets. It contains a list of rule set objects and a URL link to get the next set
+ * of results.
  */
 @Fluent
 public final class RuleSetListResult {
@@ -28,8 +28,14 @@ public final class RuleSetListResult {
     private String nextLink;
 
     /**
+     * Creates an instance of RuleSetListResult class.
+     */
+    public RuleSetListResult() {
+    }
+
+    /**
      * Get the value property: List of AzureFrontDoor rule sets within a profile.
-     *
+     * 
      * @return the value value.
      */
     public List<RuleSetInner> value() {
@@ -38,7 +44,7 @@ public final class RuleSetListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of rule set objects if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -47,7 +53,7 @@ public final class RuleSetListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of rule set objects if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the RuleSetListResult object itself.
      */
@@ -58,7 +64,7 @@ public final class RuleSetListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

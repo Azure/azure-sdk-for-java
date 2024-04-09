@@ -10,7 +10,9 @@ import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** HDInsight linked service properties. */
+/**
+ * HDInsight linked service properties.
+ */
 @Fluent
 public final class HDInsightLinkedServiceTypeProperties {
     /*
@@ -45,10 +47,10 @@ public final class HDInsightLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /*
      * Specify if the HDInsight is created with ESP (Enterprise Security Package). Type: Boolean.
@@ -63,13 +65,15 @@ public final class HDInsightLinkedServiceTypeProperties {
     @JsonProperty(value = "fileSystem")
     private Object fileSystem;
 
-    /** Creates an instance of HDInsightLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of HDInsightLinkedServiceTypeProperties class.
+     */
     public HDInsightLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the clusterUri property: HDInsight cluster URI. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the clusterUri value.
      */
     public Object clusterUri() {
@@ -78,7 +82,7 @@ public final class HDInsightLinkedServiceTypeProperties {
 
     /**
      * Set the clusterUri property: HDInsight cluster URI. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param clusterUri the clusterUri value to set.
      * @return the HDInsightLinkedServiceTypeProperties object itself.
      */
@@ -89,7 +93,7 @@ public final class HDInsightLinkedServiceTypeProperties {
 
     /**
      * Get the username property: HDInsight cluster user name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -98,7 +102,7 @@ public final class HDInsightLinkedServiceTypeProperties {
 
     /**
      * Set the username property: HDInsight cluster user name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param username the username value to set.
      * @return the HDInsightLinkedServiceTypeProperties object itself.
      */
@@ -109,7 +113,7 @@ public final class HDInsightLinkedServiceTypeProperties {
 
     /**
      * Get the password property: HDInsight cluster password.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -118,7 +122,7 @@ public final class HDInsightLinkedServiceTypeProperties {
 
     /**
      * Set the password property: HDInsight cluster password.
-     *
+     * 
      * @param password the password value to set.
      * @return the HDInsightLinkedServiceTypeProperties object itself.
      */
@@ -129,7 +133,7 @@ public final class HDInsightLinkedServiceTypeProperties {
 
     /**
      * Get the linkedServiceName property: The Azure Storage linked service reference.
-     *
+     * 
      * @return the linkedServiceName value.
      */
     public LinkedServiceReference linkedServiceName() {
@@ -138,7 +142,7 @@ public final class HDInsightLinkedServiceTypeProperties {
 
     /**
      * Set the linkedServiceName property: The Azure Storage linked service reference.
-     *
+     * 
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the HDInsightLinkedServiceTypeProperties object itself.
      */
@@ -150,7 +154,7 @@ public final class HDInsightLinkedServiceTypeProperties {
     /**
      * Get the hcatalogLinkedServiceName property: A reference to the Azure SQL linked service that points to the
      * HCatalog database.
-     *
+     * 
      * @return the hcatalogLinkedServiceName value.
      */
     public LinkedServiceReference hcatalogLinkedServiceName() {
@@ -160,34 +164,34 @@ public final class HDInsightLinkedServiceTypeProperties {
     /**
      * Set the hcatalogLinkedServiceName property: A reference to the Azure SQL linked service that points to the
      * HCatalog database.
-     *
+     * 
      * @param hcatalogLinkedServiceName the hcatalogLinkedServiceName value to set.
      * @return the HDInsightLinkedServiceTypeProperties object itself.
      */
-    public HDInsightLinkedServiceTypeProperties withHcatalogLinkedServiceName(
-        LinkedServiceReference hcatalogLinkedServiceName) {
+    public HDInsightLinkedServiceTypeProperties
+        withHcatalogLinkedServiceName(LinkedServiceReference hcatalogLinkedServiceName) {
         this.hcatalogLinkedServiceName = hcatalogLinkedServiceName;
         return this;
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HDInsightLinkedServiceTypeProperties object itself.
      */
-    public HDInsightLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public HDInsightLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
@@ -195,7 +199,7 @@ public final class HDInsightLinkedServiceTypeProperties {
     /**
      * Get the isEspEnabled property: Specify if the HDInsight is created with ESP (Enterprise Security Package). Type:
      * Boolean.
-     *
+     * 
      * @return the isEspEnabled value.
      */
     public Object isEspEnabled() {
@@ -205,7 +209,7 @@ public final class HDInsightLinkedServiceTypeProperties {
     /**
      * Set the isEspEnabled property: Specify if the HDInsight is created with ESP (Enterprise Security Package). Type:
      * Boolean.
-     *
+     * 
      * @param isEspEnabled the isEspEnabled value to set.
      * @return the HDInsightLinkedServiceTypeProperties object itself.
      */
@@ -217,7 +221,7 @@ public final class HDInsightLinkedServiceTypeProperties {
     /**
      * Get the fileSystem property: Specify the FileSystem if the main storage for the HDInsight is ADLS Gen2. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @return the fileSystem value.
      */
     public Object fileSystem() {
@@ -227,7 +231,7 @@ public final class HDInsightLinkedServiceTypeProperties {
     /**
      * Set the fileSystem property: Specify the FileSystem if the main storage for the HDInsight is ADLS Gen2. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @param fileSystem the fileSystem value to set.
      * @return the HDInsightLinkedServiceTypeProperties object itself.
      */
@@ -238,15 +242,13 @@ public final class HDInsightLinkedServiceTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (clusterUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clusterUri in model HDInsightLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property clusterUri in model HDInsightLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

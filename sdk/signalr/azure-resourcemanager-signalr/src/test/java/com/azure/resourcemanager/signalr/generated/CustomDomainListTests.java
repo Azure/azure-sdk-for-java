@@ -17,11 +17,11 @@ public final class CustomDomainListTests {
         CustomDomainList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"domainName\":\"f\",\"customCertificate\":{\"id\":\"esgogc\"}},\"id\":\"honnxkrlgnyhmos\",\"name\":\"xkk\",\"type\":\"thrrgh\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"domainName\":\"dhqxvcx\",\"customCertificate\":{\"id\":\"rpdsof\"}},\"id\":\"shrnsvbuswdvz\",\"name\":\"ybycnunvj\",\"type\":\"rtkfawnopq\"},{\"properties\":{\"provisioningState\":\"Running\",\"domainName\":\"yzirtxdyuxzejn\",\"customCertificate\":{\"id\":\"sewgioilqukr\"}},\"id\":\"dxtqmieoxo\",\"name\":\"ggufhyaomtb\",\"type\":\"hhavgrvkffovjz\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"domainName\":\"bibgjmfxumv\",\"customCertificate\":{\"id\":\"luyovwxnbkfezzx\"}},\"id\":\"cy\",\"name\":\"wzdgirujbzbo\",\"type\":\"vzzbtdcq\"}],\"nextLink\":\"niyujv\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"domainName\":\"jw\",\"customCertificate\":{\"id\":\"wqiok\"}},\"id\":\"sx\",\"name\":\"ojmsvpkjprvkwc\",\"type\":\"zqljyxgtczh\"}],\"nextLink\":\"dbsdshm\"}")
                 .toObject(CustomDomainList.class);
-        Assertions.assertEquals("f", model.value().get(0).domainName());
-        Assertions.assertEquals("esgogc", model.value().get(0).customCertificate().id());
-        Assertions.assertEquals("niyujv", model.nextLink());
+        Assertions.assertEquals("jw", model.value().get(0).domainName());
+        Assertions.assertEquals("wqiok", model.value().get(0).customCertificate().id());
+        Assertions.assertEquals("dbsdshm", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,21 +32,12 @@ public final class CustomDomainListTests {
                     Arrays
                         .asList(
                             new CustomDomainInner()
-                                .withDomainName("f")
-                                .withCustomCertificate(new ResourceReference().withId("esgogc")),
-                            new CustomDomainInner()
-                                .withDomainName("dhqxvcx")
-                                .withCustomCertificate(new ResourceReference().withId("rpdsof")),
-                            new CustomDomainInner()
-                                .withDomainName("yzirtxdyuxzejn")
-                                .withCustomCertificate(new ResourceReference().withId("sewgioilqukr")),
-                            new CustomDomainInner()
-                                .withDomainName("bibgjmfxumv")
-                                .withCustomCertificate(new ResourceReference().withId("luyovwxnbkfezzx"))))
-                .withNextLink("niyujv");
+                                .withDomainName("jw")
+                                .withCustomCertificate(new ResourceReference().withId("wqiok"))))
+                .withNextLink("dbsdshm");
         model = BinaryData.fromObject(model).toObject(CustomDomainList.class);
-        Assertions.assertEquals("f", model.value().get(0).domainName());
-        Assertions.assertEquals("esgogc", model.value().get(0).customCertificate().id());
-        Assertions.assertEquals("niyujv", model.nextLink());
+        Assertions.assertEquals("jw", model.value().get(0).domainName());
+        Assertions.assertEquals("wqiok", model.value().get(0).customCertificate().id());
+        Assertions.assertEquals("dbsdshm", model.nextLink());
     }
 }

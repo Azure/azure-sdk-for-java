@@ -56,6 +56,8 @@ public final class CustomImagesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.customImages().delete("ceysfaqeg", "lwryshwddkvbxgkq", "sybwptdaca", com.azure.core.util.Context.NONE);
+        manager
+            .customImages()
+            .delete("drlefgnaavuag", "tetaoutnpdctuhs", "fefyihduyeuyld", com.azure.core.util.Context.NONE);
     }
 }

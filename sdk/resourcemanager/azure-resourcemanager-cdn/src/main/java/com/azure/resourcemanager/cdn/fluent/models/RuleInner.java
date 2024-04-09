@@ -15,7 +15,9 @@ import com.azure.resourcemanager.cdn.models.MatchProcessingBehavior;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Friendly Rules name mapping to the any Rules or secret related information. */
+/**
+ * Friendly Rules name mapping to the any Rules or secret related information.
+ */
 @Fluent
 public final class RuleInner extends ProxyResource {
     /*
@@ -31,8 +33,14 @@ public final class RuleInner extends ProxyResource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of RuleInner class.
+     */
+    public RuleInner() {
+    }
+
+    /**
      * Get the innerProperties property: The JSON object that contains the properties of the Rules to create.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RuleProperties innerProperties() {
@@ -41,7 +49,7 @@ public final class RuleInner extends ProxyResource {
 
     /**
      * Get the systemData property: Read only system data.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -50,7 +58,7 @@ public final class RuleInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AfdProvisioningState provisioningState() {
@@ -59,7 +67,7 @@ public final class RuleInner extends ProxyResource {
 
     /**
      * Get the deploymentStatus property: The deploymentStatus property.
-     *
+     * 
      * @return the deploymentStatus value.
      */
     public DeploymentStatus deploymentStatus() {
@@ -68,7 +76,7 @@ public final class RuleInner extends ProxyResource {
 
     /**
      * Get the ruleSetName property: The name of the rule set containing the rule.
-     *
+     * 
      * @return the ruleSetName value.
      */
     public String ruleSetName() {
@@ -76,10 +84,10 @@ public final class RuleInner extends ProxyResource {
     }
 
     /**
-     * Get the order property: The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}.
-     * A rule with a lesser order will be applied before a rule with a greater order. Rule with order 0 is a special
-     * rule. It does not require any condition and actions listed in it will always be applied.
-     *
+     * Get the order property: The order in which the rules are applied for the endpoint. Possible values
+     * {0,1,2,3,………}. A rule with a lesser order will be applied before a rule with a greater order. Rule with order 0
+     * is a special rule. It does not require any condition and actions listed in it will always be applied.
+     * 
      * @return the order value.
      */
     public Integer order() {
@@ -87,10 +95,10 @@ public final class RuleInner extends ProxyResource {
     }
 
     /**
-     * Set the order property: The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}.
-     * A rule with a lesser order will be applied before a rule with a greater order. Rule with order 0 is a special
-     * rule. It does not require any condition and actions listed in it will always be applied.
-     *
+     * Set the order property: The order in which the rules are applied for the endpoint. Possible values
+     * {0,1,2,3,………}. A rule with a lesser order will be applied before a rule with a greater order. Rule with order 0
+     * is a special rule. It does not require any condition and actions listed in it will always be applied.
+     * 
      * @param order the order value to set.
      * @return the RuleInner object itself.
      */
@@ -104,7 +112,7 @@ public final class RuleInner extends ProxyResource {
 
     /**
      * Get the conditions property: A list of conditions that must be matched for the actions to be executed.
-     *
+     * 
      * @return the conditions value.
      */
     public List<DeliveryRuleCondition> conditions() {
@@ -113,7 +121,7 @@ public final class RuleInner extends ProxyResource {
 
     /**
      * Set the conditions property: A list of conditions that must be matched for the actions to be executed.
-     *
+     * 
      * @param conditions the conditions value to set.
      * @return the RuleInner object itself.
      */
@@ -127,7 +135,7 @@ public final class RuleInner extends ProxyResource {
 
     /**
      * Get the actions property: A list of actions that are executed when all the conditions of a rule are satisfied.
-     *
+     * 
      * @return the actions value.
      */
     public List<DeliveryRuleAction> actions() {
@@ -136,7 +144,7 @@ public final class RuleInner extends ProxyResource {
 
     /**
      * Set the actions property: A list of actions that are executed when all the conditions of a rule are satisfied.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the RuleInner object itself.
      */
@@ -151,7 +159,7 @@ public final class RuleInner extends ProxyResource {
     /**
      * Get the matchProcessingBehavior property: If this rule is a match should the rules engine continue running the
      * remaining rules or stop. If not present, defaults to Continue.
-     *
+     * 
      * @return the matchProcessingBehavior value.
      */
     public MatchProcessingBehavior matchProcessingBehavior() {
@@ -161,7 +169,7 @@ public final class RuleInner extends ProxyResource {
     /**
      * Set the matchProcessingBehavior property: If this rule is a match should the rules engine continue running the
      * remaining rules or stop. If not present, defaults to Continue.
-     *
+     * 
      * @param matchProcessingBehavior the matchProcessingBehavior value to set.
      * @return the RuleInner object itself.
      */
@@ -175,7 +183,7 @@ public final class RuleInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

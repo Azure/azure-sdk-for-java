@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Filter and return results from input array based on the conditions. */
+/**
+ * Filter and return results from input array based on the conditions.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Filter")
 @Fluent
@@ -23,41 +25,69 @@ public final class FilterActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private FilterActivityTypeProperties innerTypeProperties = new FilterActivityTypeProperties();
 
-    /** Creates an instance of FilterActivity class. */
+    /**
+     * Creates an instance of FilterActivity class.
+     */
     public FilterActivity() {
     }
 
     /**
      * Get the innerTypeProperties property: Filter activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private FilterActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FilterActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FilterActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FilterActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FilterActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FilterActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FilterActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -66,7 +96,7 @@ public final class FilterActivity extends ControlActivity {
 
     /**
      * Get the items property: Input array on which filter should be applied.
-     *
+     * 
      * @return the items value.
      */
     public Expression items() {
@@ -75,7 +105,7 @@ public final class FilterActivity extends ControlActivity {
 
     /**
      * Set the items property: Input array on which filter should be applied.
-     *
+     * 
      * @param items the items value to set.
      * @return the FilterActivity object itself.
      */
@@ -89,7 +119,7 @@ public final class FilterActivity extends ControlActivity {
 
     /**
      * Get the condition property: Condition to be used for filtering the input.
-     *
+     * 
      * @return the condition value.
      */
     public Expression condition() {
@@ -98,7 +128,7 @@ public final class FilterActivity extends ControlActivity {
 
     /**
      * Set the condition property: Condition to be used for filtering the input.
-     *
+     * 
      * @param condition the condition value to set.
      * @return the FilterActivity object itself.
      */
@@ -112,17 +142,15 @@ public final class FilterActivity extends ControlActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model FilterActivity"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerTypeProperties in model FilterActivity"));
         } else {
             innerTypeProperties().validate();
         }

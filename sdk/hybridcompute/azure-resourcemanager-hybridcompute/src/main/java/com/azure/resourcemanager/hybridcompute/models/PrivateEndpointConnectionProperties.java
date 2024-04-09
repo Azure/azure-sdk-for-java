@@ -6,6 +6,7 @@ package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Properties of a private endpoint connection. */
 @Fluent
@@ -27,6 +28,12 @@ public final class PrivateEndpointConnectionProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
+
+    /*
+     * List of group IDs.
+     */
+    @JsonProperty(value = "groupIds", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> groupIds;
 
     /** Creates an instance of PrivateEndpointConnectionProperties class. */
     public PrivateEndpointConnectionProperties() {
@@ -80,6 +87,15 @@ public final class PrivateEndpointConnectionProperties {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the groupIds property: List of group IDs.
+     *
+     * @return the groupIds value.
+     */
+    public List<String> groupIds() {
+        return this.groupIds;
     }
 
     /**

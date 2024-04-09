@@ -7,14 +7,20 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import java.util.List;
 
-/** The visibility list of the private link service. */
+/**
+ * The visibility list of the private link service.
+ */
 @Fluent
 public final class PrivateLinkServicePropertiesVisibility extends ResourceSet {
-    /** Creates an instance of PrivateLinkServicePropertiesVisibility class. */
+    /**
+     * Creates an instance of PrivateLinkServicePropertiesVisibility class.
+     */
     public PrivateLinkServicePropertiesVisibility() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PrivateLinkServicePropertiesVisibility withSubscriptions(List<String> subscriptions) {
         super.withSubscriptions(subscriptions);
@@ -23,7 +29,7 @@ public final class PrivateLinkServicePropertiesVisibility extends ResourceSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

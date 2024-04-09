@@ -14,7 +14,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** NetApp account resource. */
+/**
+ * NetApp account resource.
+ */
 @Fluent
 public final class NetAppAccountInner extends Resource {
     /*
@@ -41,13 +43,15 @@ public final class NetAppAccountInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of NetAppAccountInner class. */
+    /**
+     * Creates an instance of NetAppAccountInner class.
+     */
     public NetAppAccountInner() {
     }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -56,7 +60,7 @@ public final class NetAppAccountInner extends Resource {
 
     /**
      * Get the innerProperties property: NetApp Account properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AccountProperties innerProperties() {
@@ -65,7 +69,7 @@ public final class NetAppAccountInner extends Resource {
 
     /**
      * Get the identity property: The identity used for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -74,7 +78,7 @@ public final class NetAppAccountInner extends Resource {
 
     /**
      * Set the identity property: The identity used for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the NetAppAccountInner object itself.
      */
@@ -85,21 +89,25 @@ public final class NetAppAccountInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetAppAccountInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetAppAccountInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -108,7 +116,7 @@ public final class NetAppAccountInner extends Resource {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -117,7 +125,7 @@ public final class NetAppAccountInner extends Resource {
 
     /**
      * Get the activeDirectories property: Active Directories.
-     *
+     * 
      * @return the activeDirectories value.
      */
     public List<ActiveDirectory> activeDirectories() {
@@ -126,7 +134,7 @@ public final class NetAppAccountInner extends Resource {
 
     /**
      * Set the activeDirectories property: Active Directories.
-     *
+     * 
      * @param activeDirectories the activeDirectories value to set.
      * @return the NetAppAccountInner object itself.
      */
@@ -140,7 +148,7 @@ public final class NetAppAccountInner extends Resource {
 
     /**
      * Get the encryption property: Encryption settings.
-     *
+     * 
      * @return the encryption value.
      */
     public AccountEncryption encryption() {
@@ -149,7 +157,7 @@ public final class NetAppAccountInner extends Resource {
 
     /**
      * Set the encryption property: Encryption settings.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the NetAppAccountInner object itself.
      */
@@ -164,7 +172,7 @@ public final class NetAppAccountInner extends Resource {
     /**
      * Get the disableShowmount property: Shows the status of disableShowmount for all volumes under the subscription,
      * null equals false.
-     *
+     * 
      * @return the disableShowmount value.
      */
     public Boolean disableShowmount() {
@@ -173,7 +181,7 @@ public final class NetAppAccountInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -32,43 +32,32 @@ public final class ExperimentsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"flsjc\":{\"principalId\":\"4c7cbc3d-2c6e-4727-90a1-2ea9cc668963\",\"clientId\":\"afc8e789-a7dc-4f45-b17c-935e06e1b82e\"},\"zfjvfbgofe\":{\"principalId\":\"51256333-c15d-4f4c-a031-9c3f734caccc\",\"clientId\":\"bb3f4b67-5151-454c-a2db-cce7d9187729\"},\"grqmqhldvrii\":{\"principalId\":\"175e5096-c854-4e01-946d-940bbdd2b69d\",\"clientId\":\"9681afac-8c36-4d6e-bf43-abf10867808f\"},\"nalghfkvtvsexso\":{\"principalId\":\"1910718a-d2d1-428c-b5e8-c8f657406e06\",\"clientId\":\"4d435627-1e68-4c9c-aa27-ea75fb2fd655\"}},\"principalId\":\"el\",\"tenantId\":\"hhahhxvrhmzkwpjg\"},\"properties\":{\"steps\":[{\"name\":\"spughftqsxhq\",\"branches\":[{\"name\":\"j\",\"actions\":[]},{\"name\":\"ukndxdigrjgu\",\"actions\":[]},{\"name\":\"fzdm\",\"actions\":[]}]},{\"name\":\"yqtfihwh\",\"branches\":[{\"name\":\"tzingamvpph\",\"actions\":[]}]},{\"name\":\"szqzudphqamv\",\"branches\":[{\"name\":\"fwynwcvtbvkay\",\"actions\":[]},{\"name\":\"mtnvyq\",\"actions\":[]}]},{\"name\":\"atkzwpcnpw\",\"branches\":[{\"name\":\"jaesgvvsccya\",\"actions\":[]},{\"name\":\"g\",\"actions\":[]},{\"name\":\"qfhwyg\",\"actions\":[]}]}],\"selectors\":[{\"type\":\"Selector\",\"id\":\"vdnkfxusem\",\"filter\":{\"type\":\"Filter\"},\"\":{\"svuo\":\"datamuhapfcqdpsqxqv\",\"mfe\":\"datamgccelvezrypq\",\"ob\":\"datakerqwkyh\"}},{\"type\":\"Selector\",\"id\":\"pg\",\"filter\":{\"type\":\"Filter\"},\"\":{\"ccsnjvcdwxlpq\":\"dataowepbqpcrfkb\"}}],\"startOnCreation\":false},\"location\":\"tn\",\"tags\":{\"dhtmdvypgikd\":\"jsyingwfqatm\",\"hlhkjoqrvqqaatj\":\"szywkbirryu\"},\"id\":\"nrvgoupmfiibfgg\",\"name\":\"ioolvrwxkvtkkgll\",\"type\":\"wjygvjayvblmhvk\"}]}";
+        String responseStr
+            = "{\"value\":[{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ixkwmyijejveg\":{\"principalId\":\"cc1b7169-3ea9-4e3e-8e9c-9da325fbd6d6\",\"clientId\":\"283a5759-690d-4a2f-81b0-cf54f7f0038c\"},\"pna\":{\"principalId\":\"19de67e8-5fb5-4422-bcf4-f04b0ff13c34\",\"clientId\":\"f470ab26-71a1-4133-8067-4882dab06c7e\"},\"xccbdreaxhcex\":{\"principalId\":\"8f92162f-760d-47a9-9ab6-ffa73bfe34f0\",\"clientId\":\"f3d81987-4331-499d-9ad6-a7ab24671ed0\"},\"vqahqkghtpwi\":{\"principalId\":\"7c4bf370-3cff-4a7e-bfb7-df7ec7a5b8b9\",\"clientId\":\"58a5a2a5-a4c4-4336-a6d0-df2207854d28\"}},\"principalId\":\"hyjsvfycx\",\"tenantId\":\"fvoow\"},\"properties\":{\"provisioningState\":\"Creating\",\"steps\":[{\"name\":\"t\",\"branches\":[{\"name\":\"qp\",\"actions\":[]},{\"name\":\"y\",\"actions\":[]},{\"name\":\"s\",\"actions\":[]},{\"name\":\"ronzmyhgfip\",\"actions\":[]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"xkmcwaekrrjre\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"lbqpvuzlmvfelf\":\"datasgumhjglikkxwsl\",\"crpw\":\"datatgp\"}}]},\"location\":\"xeznoi\",\"tags\":{\"qkagfhsxt\":\"njwmwkpnbsazejj\",\"dm\":\"augzxnfaazpxdtn\"},\"id\":\"qjjlwuen\",\"name\":\"rkpyouaibrebqaay\",\"type\":\"j\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ChaosManager manager =
-            ChaosManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ChaosManager manager = ChaosManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Experiment> response = manager.experiments().list(true, "pwp", com.azure.core.util.Context.NONE);
+        PagedIterable<Experiment> response
+            = manager.experiments().list(false, "nhlmctlpdng", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tn", response.iterator().next().location());
-        Assertions.assertEquals("jsyingwfqatm", response.iterator().next().tags().get("dhtmdvypgikd"));
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("spughftqsxhq", response.iterator().next().steps().get(0).name());
-        Assertions.assertEquals("j", response.iterator().next().steps().get(0).branches().get(0).name());
-        Assertions.assertEquals("vdnkfxusem", response.iterator().next().selectors().get(0).id());
-        Assertions.assertEquals(false, response.iterator().next().startOnCreation());
+        Assertions.assertEquals("xeznoi", response.iterator().next().location());
+        Assertions.assertEquals("njwmwkpnbsazejj", response.iterator().next().tags().get("qkagfhsxt"));
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("t", response.iterator().next().steps().get(0).name());
+        Assertions.assertEquals("qp", response.iterator().next().steps().get(0).branches().get(0).name());
+        Assertions.assertEquals("xkmcwaekrrjre", response.iterator().next().selectors().get(0).id());
     }
 }

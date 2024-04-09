@@ -63,11 +63,10 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "OperationalInsightsM")
-    private interface LinkedServicesService {
+    public interface LinkedServicesService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/linkedServices/{linkedServiceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedServices/{linkedServiceName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -83,8 +82,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/linkedServices/{linkedServiceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedServices/{linkedServiceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -99,8 +97,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/linkedServices/{linkedServiceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedServices/{linkedServiceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LinkedServiceInner>> get(
@@ -115,8 +112,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/linkedServices")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LinkedServiceListResult>> listByWorkspace(
@@ -328,7 +324,8 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LinkedServiceInner>, LinkedServiceInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String linkedServiceName, LinkedServiceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, linkedServiceName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, linkedServiceName, parameters)
             .getSyncPoller();
     }
 
@@ -352,7 +349,8 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
         String linkedServiceName,
         LinkedServiceInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, linkedServiceName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, linkedServiceName, parameters, context)
             .getSyncPoller();
     }
 
@@ -616,7 +614,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LinkedServiceInner>, LinkedServiceInner> beginDelete(
         String resourceGroupName, String workspaceName, String linkedServiceName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, linkedServiceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, linkedServiceName).getSyncPoller();
     }
 
     /**
@@ -634,7 +632,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LinkedServiceInner>, LinkedServiceInner> beginDelete(
         String resourceGroupName, String workspaceName, String linkedServiceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, linkedServiceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, linkedServiceName, context).getSyncPoller();
     }
 
     /**
@@ -842,22 +840,6 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param linkedServiceName Name of the linked service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a linked service instance.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LinkedServiceInner get(String resourceGroupName, String workspaceName, String linkedServiceName) {
-        return getAsync(resourceGroupName, workspaceName, linkedServiceName).block();
-    }
-
-    /**
-     * Gets a linked service instance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param linkedServiceName Name of the linked service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -868,6 +850,22 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
     public Response<LinkedServiceInner> getWithResponse(
         String resourceGroupName, String workspaceName, String linkedServiceName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, linkedServiceName, context).block();
+    }
+
+    /**
+     * Gets a linked service instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param linkedServiceName Name of the linked service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a linked service instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LinkedServiceInner get(String resourceGroupName, String workspaceName, String linkedServiceName) {
+        return getWithResponse(resourceGroupName, workspaceName, linkedServiceName, Context.NONE).getValue();
     }
 
     /**

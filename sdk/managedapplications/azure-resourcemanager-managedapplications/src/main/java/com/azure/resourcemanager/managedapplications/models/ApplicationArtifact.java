@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Managed application artifact. */
@@ -13,19 +14,19 @@ public final class ApplicationArtifact {
     /*
      * The managed application artifact name.
      */
-    @JsonProperty(value = "name")
-    private String name;
+    @JsonProperty(value = "name", required = true)
+    private ApplicationArtifactName name;
 
     /*
      * The managed application artifact blob uri.
      */
-    @JsonProperty(value = "uri")
+    @JsonProperty(value = "uri", required = true)
     private String uri;
 
     /*
      * The managed application artifact type.
      */
-    @JsonProperty(value = "type")
+    @JsonProperty(value = "type", required = true)
     private ApplicationArtifactType type;
 
     /** Creates an instance of ApplicationArtifact class. */
@@ -37,7 +38,7 @@ public final class ApplicationArtifact {
      *
      * @return the name value.
      */
-    public String name() {
+    public ApplicationArtifactName name() {
         return this.name;
     }
 
@@ -47,7 +48,7 @@ public final class ApplicationArtifact {
      * @param name the name value to set.
      * @return the ApplicationArtifact object itself.
      */
-    public ApplicationArtifact withName(String name) {
+    public ApplicationArtifact withName(ApplicationArtifactName name) {
         this.name = name;
         return this;
     }
@@ -98,5 +99,22 @@ public final class ApplicationArtifact {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (name() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property name in model ApplicationArtifact"));
+        }
+        if (uri() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property uri in model ApplicationArtifact"));
+        }
+        if (type() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property type in model ApplicationArtifact"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationArtifact.class);
 }

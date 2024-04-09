@@ -10,7 +10,9 @@ import com.azure.resourcemanager.security.models.ProvisioningState;
 import com.azure.resourcemanager.security.models.SecurityFamily;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SecuritySolution model. */
+/**
+ * The SecuritySolution model.
+ */
 @Fluent
 public final class SecuritySolutionInner extends ProxyResource {
     /*
@@ -25,13 +27,15 @@ public final class SecuritySolutionInner extends ProxyResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /** Creates an instance of SecuritySolutionInner class. */
+    /**
+     * Creates an instance of SecuritySolutionInner class.
+     */
     public SecuritySolutionInner() {
     }
 
     /**
      * Get the innerProperties property: The properties property.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecuritySolutionProperties innerProperties() {
@@ -40,7 +44,7 @@ public final class SecuritySolutionInner extends ProxyResource {
 
     /**
      * Get the location property: Location where the resource is stored.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -49,7 +53,7 @@ public final class SecuritySolutionInner extends ProxyResource {
 
     /**
      * Get the securityFamily property: The security family of the security solution.
-     *
+     * 
      * @return the securityFamily value.
      */
     public SecurityFamily securityFamily() {
@@ -58,7 +62,7 @@ public final class SecuritySolutionInner extends ProxyResource {
 
     /**
      * Set the securityFamily property: The security family of the security solution.
-     *
+     * 
      * @param securityFamily the securityFamily value to set.
      * @return the SecuritySolutionInner object itself.
      */
@@ -72,7 +76,7 @@ public final class SecuritySolutionInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The security family provisioning State.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -81,7 +85,7 @@ public final class SecuritySolutionInner extends ProxyResource {
 
     /**
      * Set the provisioningState property: The security family provisioning State.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the SecuritySolutionInner object itself.
      */
@@ -95,7 +99,7 @@ public final class SecuritySolutionInner extends ProxyResource {
 
     /**
      * Get the template property: The security solutions' template.
-     *
+     * 
      * @return the template value.
      */
     public String template() {
@@ -104,7 +108,7 @@ public final class SecuritySolutionInner extends ProxyResource {
 
     /**
      * Set the template property: The security solutions' template.
-     *
+     * 
      * @param template the template value to set.
      * @return the SecuritySolutionInner object itself.
      */
@@ -118,7 +122,7 @@ public final class SecuritySolutionInner extends ProxyResource {
 
     /**
      * Get the protectionStatus property: The security solutions' status.
-     *
+     * 
      * @return the protectionStatus value.
      */
     public String protectionStatus() {
@@ -127,7 +131,7 @@ public final class SecuritySolutionInner extends ProxyResource {
 
     /**
      * Set the protectionStatus property: The security solutions' status.
-     *
+     * 
      * @param protectionStatus the protectionStatus value to set.
      * @return the SecuritySolutionInner object itself.
      */
@@ -141,7 +145,7 @@ public final class SecuritySolutionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

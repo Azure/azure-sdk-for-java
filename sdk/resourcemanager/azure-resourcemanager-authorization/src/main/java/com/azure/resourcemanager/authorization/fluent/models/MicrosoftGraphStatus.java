@@ -26,6 +26,15 @@ public final class MicrosoftGraphStatus extends ExpandableStringEnum<MicrosoftGr
     public static final MicrosoftGraphStatus UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphStatus() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphStatus from its string representation.
      *
      * @param name a name to look for.

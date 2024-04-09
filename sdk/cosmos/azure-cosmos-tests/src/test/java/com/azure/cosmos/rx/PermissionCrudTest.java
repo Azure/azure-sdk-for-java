@@ -37,7 +37,7 @@ public class PermissionCrudTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createPermission() throws Exception {
 
         createdUser = safeCreateUser(client, createdDatabase.getId(), getUserDefinition());
@@ -62,7 +62,7 @@ public class PermissionCrudTest extends TestSuiteBase {
         validateSuccess(createObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readPermission() throws Exception {
         createdUser = safeCreateUser(client, createdDatabase.getId(), getUserDefinition());
 
@@ -86,7 +86,7 @@ public class PermissionCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void deletePermission() throws Exception {
 
         createdUser = safeCreateUser(client, createdDatabase.getId(), getUserDefinition());
@@ -116,7 +116,7 @@ public class PermissionCrudTest extends TestSuiteBase {
         validateFailure(readObservable, notFoundValidator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void upsertPermission() throws Exception {
 
         createdUser = safeCreateUser(client, createdDatabase.getId(), getUserDefinition());
@@ -157,7 +157,7 @@ public class PermissionCrudTest extends TestSuiteBase {
         validateSuccess(updateObservable, validatorForUpdate);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void replacePermission() throws Exception {
 
         createdUser = safeCreateUser(client, createdDatabase.getId(), getUserDefinition());
@@ -198,13 +198,13 @@ public class PermissionCrudTest extends TestSuiteBase {
         validateSuccess(updateObservable, validatorForUpdate);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_PermissionCrudTest() {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }

@@ -27,6 +27,15 @@ public final class MicrosoftGraphDeviceManagementExchangeAccessState
     public static final MicrosoftGraphDeviceManagementExchangeAccessState QUARANTINED = fromString("quarantined");
 
     /**
+     * Creates a new instance of MicrosoftGraphDeviceManagementExchangeAccessState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphDeviceManagementExchangeAccessState() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphDeviceManagementExchangeAccessState from its string representation.
      *
      * @param name a name to look for.

@@ -28,7 +28,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosSyncUDFTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildClient();
@@ -36,13 +36,13 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void createUDF() throws Exception {
         CosmosUserDefinedFunctionProperties udf = getCosmosUserDefinedFunctionProperties();
 
@@ -51,7 +51,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void readUDF() throws Exception {
         CosmosUserDefinedFunctionProperties udf = getCosmosUserDefinedFunctionProperties();
 
@@ -61,7 +61,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
         validateResponse(udf, read);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void replaceUDF() throws Exception {
 
         CosmosUserDefinedFunctionProperties udf = getCosmosUserDefinedFunctionProperties();
@@ -81,7 +81,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void deleteUDF() throws Exception {
         CosmosUserDefinedFunctionProperties udf = getCosmosUserDefinedFunctionProperties();
 
@@ -102,7 +102,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
         return udf;
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void readAllUDFs() throws Exception {
         CosmosUserDefinedFunctionProperties udf = getCosmosUserDefinedFunctionProperties();
 
@@ -115,7 +115,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void queryUDFs() throws Exception {
         CosmosUserDefinedFunctionProperties properties = getCosmosUserDefinedFunctionProperties();
 

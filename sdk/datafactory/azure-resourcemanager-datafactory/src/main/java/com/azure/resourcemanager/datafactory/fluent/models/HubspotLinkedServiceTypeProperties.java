@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Hubspot Service linked service properties. */
+/**
+ * Hubspot Service linked service properties.
+ */
 @Fluent
 public final class HubspotLinkedServiceTypeProperties {
     /*
@@ -57,18 +59,20 @@ public final class HubspotLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of HubspotLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of HubspotLinkedServiceTypeProperties class.
+     */
     public HubspotLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the clientId property: The client ID associated with your Hubspot application.
-     *
+     * 
      * @return the clientId value.
      */
     public Object clientId() {
@@ -77,7 +81,7 @@ public final class HubspotLinkedServiceTypeProperties {
 
     /**
      * Set the clientId property: The client ID associated with your Hubspot application.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the HubspotLinkedServiceTypeProperties object itself.
      */
@@ -88,7 +92,7 @@ public final class HubspotLinkedServiceTypeProperties {
 
     /**
      * Get the clientSecret property: The client secret associated with your Hubspot application.
-     *
+     * 
      * @return the clientSecret value.
      */
     public SecretBase clientSecret() {
@@ -97,7 +101,7 @@ public final class HubspotLinkedServiceTypeProperties {
 
     /**
      * Set the clientSecret property: The client secret associated with your Hubspot application.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the HubspotLinkedServiceTypeProperties object itself.
      */
@@ -108,7 +112,7 @@ public final class HubspotLinkedServiceTypeProperties {
 
     /**
      * Get the accessToken property: The access token obtained when initially authenticating your OAuth integration.
-     *
+     * 
      * @return the accessToken value.
      */
     public SecretBase accessToken() {
@@ -117,7 +121,7 @@ public final class HubspotLinkedServiceTypeProperties {
 
     /**
      * Set the accessToken property: The access token obtained when initially authenticating your OAuth integration.
-     *
+     * 
      * @param accessToken the accessToken value to set.
      * @return the HubspotLinkedServiceTypeProperties object itself.
      */
@@ -128,7 +132,7 @@ public final class HubspotLinkedServiceTypeProperties {
 
     /**
      * Get the refreshToken property: The refresh token obtained when initially authenticating your OAuth integration.
-     *
+     * 
      * @return the refreshToken value.
      */
     public SecretBase refreshToken() {
@@ -137,7 +141,7 @@ public final class HubspotLinkedServiceTypeProperties {
 
     /**
      * Set the refreshToken property: The refresh token obtained when initially authenticating your OAuth integration.
-     *
+     * 
      * @param refreshToken the refreshToken value to set.
      * @return the HubspotLinkedServiceTypeProperties object itself.
      */
@@ -149,7 +153,7 @@ public final class HubspotLinkedServiceTypeProperties {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object useEncryptedEndpoints() {
@@ -159,7 +163,7 @@ public final class HubspotLinkedServiceTypeProperties {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the HubspotLinkedServiceTypeProperties object itself.
      */
@@ -171,7 +175,7 @@ public final class HubspotLinkedServiceTypeProperties {
     /**
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @return the useHostVerification value.
      */
     public Object useHostVerification() {
@@ -181,7 +185,7 @@ public final class HubspotLinkedServiceTypeProperties {
     /**
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @param useHostVerification the useHostVerification value to set.
      * @return the HubspotLinkedServiceTypeProperties object itself.
      */
@@ -191,9 +195,9 @@ public final class HubspotLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true.
+     * 
      * @return the usePeerVerification value.
      */
     public Object usePeerVerification() {
@@ -201,9 +205,9 @@ public final class HubspotLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true.
+     * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the HubspotLinkedServiceTypeProperties object itself.
      */
@@ -213,38 +217,36 @@ public final class HubspotLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HubspotLinkedServiceTypeProperties object itself.
      */
-    public HubspotLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public HubspotLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (clientId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientId in model HubspotLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property clientId in model HubspotLinkedServiceTypeProperties"));
         }
         if (clientSecret() != null) {
             clientSecret().validate();

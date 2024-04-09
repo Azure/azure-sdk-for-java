@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.fluent.models.CapabilityInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Description of a SKU for a scalable resource. */
+/**
+ * Description of a SKU for a scalable resource.
+ */
 @Fluent
 public final class SkuDescription {
     /*
@@ -60,13 +62,15 @@ public final class SkuDescription {
     @JsonProperty(value = "capabilities")
     private List<CapabilityInner> capabilities;
 
-    /** Creates an instance of SkuDescription class. */
+    /**
+     * Creates an instance of SkuDescription class.
+     */
     public SkuDescription() {
     }
 
     /**
      * Get the name property: Name of the resource SKU.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -75,7 +79,7 @@ public final class SkuDescription {
 
     /**
      * Set the name property: Name of the resource SKU.
-     *
+     * 
      * @param name the name value to set.
      * @return the SkuDescription object itself.
      */
@@ -86,7 +90,7 @@ public final class SkuDescription {
 
     /**
      * Get the tier property: Service tier of the resource SKU.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -95,7 +99,7 @@ public final class SkuDescription {
 
     /**
      * Set the tier property: Service tier of the resource SKU.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the SkuDescription object itself.
      */
@@ -106,7 +110,7 @@ public final class SkuDescription {
 
     /**
      * Get the size property: Size specifier of the resource SKU.
-     *
+     * 
      * @return the size value.
      */
     public String size() {
@@ -115,7 +119,7 @@ public final class SkuDescription {
 
     /**
      * Set the size property: Size specifier of the resource SKU.
-     *
+     * 
      * @param size the size value to set.
      * @return the SkuDescription object itself.
      */
@@ -126,7 +130,7 @@ public final class SkuDescription {
 
     /**
      * Get the family property: Family code of the resource SKU.
-     *
+     * 
      * @return the family value.
      */
     public String family() {
@@ -135,7 +139,7 @@ public final class SkuDescription {
 
     /**
      * Set the family property: Family code of the resource SKU.
-     *
+     * 
      * @param family the family value to set.
      * @return the SkuDescription object itself.
      */
@@ -146,7 +150,7 @@ public final class SkuDescription {
 
     /**
      * Get the capacity property: Current number of instances assigned to the resource.
-     *
+     * 
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -155,7 +159,7 @@ public final class SkuDescription {
 
     /**
      * Set the capacity property: Current number of instances assigned to the resource.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the SkuDescription object itself.
      */
@@ -166,7 +170,7 @@ public final class SkuDescription {
 
     /**
      * Get the skuCapacity property: Min, max, and default scale values of the SKU.
-     *
+     * 
      * @return the skuCapacity value.
      */
     public SkuCapacity skuCapacity() {
@@ -175,7 +179,7 @@ public final class SkuDescription {
 
     /**
      * Set the skuCapacity property: Min, max, and default scale values of the SKU.
-     *
+     * 
      * @param skuCapacity the skuCapacity value to set.
      * @return the SkuDescription object itself.
      */
@@ -186,7 +190,7 @@ public final class SkuDescription {
 
     /**
      * Get the locations property: Locations of the SKU.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -195,7 +199,7 @@ public final class SkuDescription {
 
     /**
      * Set the locations property: Locations of the SKU.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the SkuDescription object itself.
      */
@@ -206,7 +210,7 @@ public final class SkuDescription {
 
     /**
      * Get the capabilities property: Capabilities of the SKU, e.g., is traffic manager enabled?.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<CapabilityInner> capabilities() {
@@ -215,7 +219,7 @@ public final class SkuDescription {
 
     /**
      * Set the capabilities property: Capabilities of the SKU, e.g., is traffic manager enabled?.
-     *
+     * 
      * @param capabilities the capabilities value to set.
      * @return the SkuDescription object itself.
      */
@@ -226,7 +230,7 @@ public final class SkuDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

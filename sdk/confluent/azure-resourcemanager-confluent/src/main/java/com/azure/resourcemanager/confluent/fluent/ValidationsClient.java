@@ -9,27 +9,15 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
+import com.azure.resourcemanager.confluent.fluent.models.ValidationResponseInner;
 
-/** An instance of this class provides access to all the operations defined in ValidationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ValidationsClient.
+ */
 public interface ValidationsClient {
     /**
      * Organization Validate proxy resource.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param organizationName Organization resource name.
-     * @param body Organization resource model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return organization resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    OrganizationResourceInner validateOrganization(
-        String resourceGroupName, String organizationName, OrganizationResourceInner body);
-
-    /**
-     * Organization Validate proxy resource.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
@@ -37,9 +25,55 @@ public interface ValidationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return organization resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<OrganizationResourceInner> validateOrganizationWithResponse(String resourceGroupName,
+        String organizationName, OrganizationResourceInner body, Context context);
+
+    /**
+     * Organization Validate proxy resource.
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param organizationName Organization resource name.
+     * @param body Organization resource model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return organization resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OrganizationResourceInner> validateOrganizationWithResponse(
-        String resourceGroupName, String organizationName, OrganizationResourceInner body, Context context);
+    OrganizationResourceInner validateOrganization(String resourceGroupName, String organizationName,
+        OrganizationResourceInner body);
+
+    /**
+     * Organization Validate proxy resource.
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param organizationName Organization resource name.
+     * @param body Organization resource model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validationResponse along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ValidationResponseInner> validateOrganizationV2WithResponse(String resourceGroupName,
+        String organizationName, OrganizationResourceInner body, Context context);
+
+    /**
+     * Organization Validate proxy resource.
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param organizationName Organization resource name.
+     * @param body Organization resource model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validationResponse.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ValidationResponseInner validateOrganizationV2(String resourceGroupName, String organizationName,
+        OrganizationResourceInner body);
 }

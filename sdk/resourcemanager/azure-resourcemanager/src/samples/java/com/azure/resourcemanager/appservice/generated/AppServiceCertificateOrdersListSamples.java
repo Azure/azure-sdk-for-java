@@ -4,23 +4,23 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-/** Samples for AppServiceCertificateOrders List. */
+/**
+ * Samples for AppServiceCertificateOrders List.
+ */
 public final class AppServiceCertificateOrdersListSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/ListAppServiceCertificateOrdersBySubscription.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/
+     * ListAppServiceCertificateOrdersBySubscription.json
      */
     /**
      * Sample code: List App Service Certificate orders by subscription.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listAppServiceCertificateOrdersBySubscription(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
-            .manager()
-            .serviceClient()
-            .getAppServiceCertificateOrders()
+    public static void
+        listAppServiceCertificateOrdersBySubscription(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.webApps().manager().serviceClient().getAppServiceCertificateOrders()
             .list(com.azure.core.util.Context.NONE);
     }
 }

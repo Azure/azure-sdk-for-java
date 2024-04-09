@@ -58,5 +58,9 @@ public enum FaultInjectionOperationType {
     /**
      * Address refresh request.
      */
-    METADATA_REQUEST_ADDRESS_REFRESH;
+    METADATA_REQUEST_ADDRESS_REFRESH,
+    /**
+     * Read change feed items
+     */
+    READ_FEED_ITEM
 }

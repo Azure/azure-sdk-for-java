@@ -15,7 +15,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The workflow run properties. */
+/**
+ * The workflow run properties.
+ */
 @Fluent
 public final class WorkflowRunProperties {
     /*
@@ -91,13 +93,15 @@ public final class WorkflowRunProperties {
     @JsonProperty(value = "response", access = JsonProperty.Access.WRITE_ONLY)
     private WorkflowRunTrigger response;
 
-    /** Creates an instance of WorkflowRunProperties class. */
+    /**
+     * Creates an instance of WorkflowRunProperties class.
+     */
     public WorkflowRunProperties() {
     }
 
     /**
      * Get the waitEndTime property: Gets the wait end time.
-     *
+     * 
      * @return the waitEndTime value.
      */
     public OffsetDateTime waitEndTime() {
@@ -106,7 +110,7 @@ public final class WorkflowRunProperties {
 
     /**
      * Get the startTime property: Gets the start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -115,7 +119,7 @@ public final class WorkflowRunProperties {
 
     /**
      * Get the endTime property: Gets the end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -124,7 +128,7 @@ public final class WorkflowRunProperties {
 
     /**
      * Get the status property: Gets the status.
-     *
+     * 
      * @return the status value.
      */
     public WorkflowStatus status() {
@@ -133,7 +137,7 @@ public final class WorkflowRunProperties {
 
     /**
      * Get the code property: Gets the code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -142,7 +146,7 @@ public final class WorkflowRunProperties {
 
     /**
      * Get the error property: Gets the error.
-     *
+     * 
      * @return the error value.
      */
     public Object error() {
@@ -151,7 +155,7 @@ public final class WorkflowRunProperties {
 
     /**
      * Get the correlationId property: Gets the correlation id.
-     *
+     * 
      * @return the correlationId value.
      */
     public String correlationId() {
@@ -160,7 +164,7 @@ public final class WorkflowRunProperties {
 
     /**
      * Get the correlation property: The run correlation.
-     *
+     * 
      * @return the correlation value.
      */
     public Correlation correlation() {
@@ -169,7 +173,7 @@ public final class WorkflowRunProperties {
 
     /**
      * Set the correlation property: The run correlation.
-     *
+     * 
      * @param correlation the correlation value to set.
      * @return the WorkflowRunProperties object itself.
      */
@@ -180,7 +184,7 @@ public final class WorkflowRunProperties {
 
     /**
      * Get the workflow property: Gets the reference to workflow version.
-     *
+     * 
      * @return the workflow value.
      */
     public ResourceReference workflow() {
@@ -189,7 +193,7 @@ public final class WorkflowRunProperties {
 
     /**
      * Get the trigger property: Gets the fired trigger.
-     *
+     * 
      * @return the trigger value.
      */
     public WorkflowRunTrigger trigger() {
@@ -198,7 +202,7 @@ public final class WorkflowRunProperties {
 
     /**
      * Get the outputs property: Gets the outputs.
-     *
+     * 
      * @return the outputs value.
      */
     public Map<String, WorkflowOutputParameter> outputs() {
@@ -207,7 +211,7 @@ public final class WorkflowRunProperties {
 
     /**
      * Get the response property: Gets the response of the flow run.
-     *
+     * 
      * @return the response value.
      */
     public WorkflowRunTrigger response() {
@@ -216,7 +220,7 @@ public final class WorkflowRunProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -230,14 +234,11 @@ public final class WorkflowRunProperties {
             trigger().validate();
         }
         if (outputs() != null) {
-            outputs()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            outputs().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (response() != null) {
             response().validate();

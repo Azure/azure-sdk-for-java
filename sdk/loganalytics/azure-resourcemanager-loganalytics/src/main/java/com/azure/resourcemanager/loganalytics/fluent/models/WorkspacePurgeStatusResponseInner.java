@@ -18,6 +18,10 @@ public final class WorkspacePurgeStatusResponseInner {
     @JsonProperty(value = "status", required = true)
     private PurgeState status;
 
+    /** Creates an instance of WorkspacePurgeStatusResponseInner class. */
+    public WorkspacePurgeStatusResponseInner() {
+    }
+
     /**
      * Get the status property: Status of the operation represented by the requested Id.
      *

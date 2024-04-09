@@ -128,7 +128,7 @@ public class CosmosAsyncUserDefinedFunction {
             null,
             OperationType.Read,
             ResourceType.UserDefinedFunction,
-            client.getEffectiveDiagnosticsThresholds(null));
+            null);
     }
 
     private Mono<CosmosUserDefinedFunctionResponse> replaceInternal(CosmosUserDefinedFunctionProperties udfSettings,
@@ -136,8 +136,8 @@ public class CosmosAsyncUserDefinedFunction {
         String spanName = "replaceUserDefinedFunction." + container.getId();
         Mono<CosmosUserDefinedFunctionResponse> responseMono = container.getDatabase()
             .getDocClientWrapper()
-            .replaceUserDefinedFunction(new UserDefinedFunction(ModelBridgeInternal.toJsonFromJsonSerializable(
-                ModelBridgeInternal.getResource(udfSettings))), null)
+            .replaceUserDefinedFunction(new UserDefinedFunction(
+                ModelBridgeInternal.getResource(udfSettings).getPropertyBag()), null)
             .map(ModelBridgeInternal::createCosmosUserDefinedFunctionResponse)
             .single();
         CosmosAsyncClient client = container.getDatabase().getClient();
@@ -151,7 +151,7 @@ public class CosmosAsyncUserDefinedFunction {
             null,
             OperationType.Replace,
             ResourceType.UserDefinedFunction,
-            client.getEffectiveDiagnosticsThresholds(null));
+            null);
     }
 
     private Mono<CosmosUserDefinedFunctionResponse> deleteInternal(Context context) {
@@ -172,6 +172,6 @@ public class CosmosAsyncUserDefinedFunction {
             null,
             OperationType.Delete,
             ResourceType.UserDefinedFunction,
-            client.getEffectiveDiagnosticsThresholds(null));
+            null);
     }
 }

@@ -1,10 +1,88 @@
 # Release History
 
-## 12.3.15 (2023-09-13)
+## 12.4.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
 
 ### Bugs Fixed
-- Fixed bug where delete entity did not work on entities with empty primary keys.[(33390)](https://github.com/Azure/azure-sdk-for-java/issues/36690)
-- Fixed bug where get entity did not work on entities with empty primary keys.
+
+- Fixed the issue where `createTableIfNotExists` utilized improper logic for checking for 409 status code.
+
+### Other Changes
+
+## 12.4.0-beta.1 (2024-03-13)
+
+### Breaking Changes
+
+- Removed `jackson-dataformat-xml` as a dependency.
+
+### Other Changes
+
+- Migrating from Jackson to stream-style serialization.
+
+#### Dependency Updates
+
+- Introducing `azure-xml` version `1.0.0-beta.3` as a beta dependency.
+
+## 12.3.20 (2024-03-07)
+
+### Bugs Fixed
+- Removed the 409 status-code error-level log message "TableAlreadyExists" that was printed when calling `TableServiceClient.createTableIfNotExists()` on a table that already exists.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+
+## 12.3.19 (2024-02-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+
+
+## 12.3.18 (2023-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
+- Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+
+
+## 12.3.17 (2023-11-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
+
+
+## 12.3.16 (2023-10-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+
+
+## 12.3.15 (2023-09-18)
+
+### Bugs Fixed
+- Fixed the issue with `TableClient` and `TableAsyncClient` where `deleteEntity` did not work on entities with empty primary keys.[(33390)](https://github.com/Azure/azure-sdk-for-java/issues/36690)
+- Fixed the issue with `TableClient` and `TableAsyncClient` where `getEntity` did not work on entities with empty primary keys.
 
 ### Other Changes
 - Migrate test recordings to assets repo

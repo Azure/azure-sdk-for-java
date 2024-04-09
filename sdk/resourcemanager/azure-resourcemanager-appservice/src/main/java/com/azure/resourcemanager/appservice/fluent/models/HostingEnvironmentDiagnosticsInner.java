@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Diagnostics for an App Service Environment. */
+/**
+ * Diagnostics for an App Service Environment.
+ */
 @Fluent
 public final class HostingEnvironmentDiagnosticsInner {
     /*
@@ -22,13 +24,15 @@ public final class HostingEnvironmentDiagnosticsInner {
     @JsonProperty(value = "diagnosticsOutput")
     private String diagnosticsOutput;
 
-    /** Creates an instance of HostingEnvironmentDiagnosticsInner class. */
+    /**
+     * Creates an instance of HostingEnvironmentDiagnosticsInner class.
+     */
     public HostingEnvironmentDiagnosticsInner() {
     }
 
     /**
      * Get the name property: Name/identifier of the diagnostics.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class HostingEnvironmentDiagnosticsInner {
 
     /**
      * Set the name property: Name/identifier of the diagnostics.
-     *
+     * 
      * @param name the name value to set.
      * @return the HostingEnvironmentDiagnosticsInner object itself.
      */
@@ -48,7 +52,7 @@ public final class HostingEnvironmentDiagnosticsInner {
 
     /**
      * Get the diagnosticsOutput property: Diagnostics output.
-     *
+     * 
      * @return the diagnosticsOutput value.
      */
     public String diagnosticsOutput() {
@@ -57,7 +61,7 @@ public final class HostingEnvironmentDiagnosticsInner {
 
     /**
      * Set the diagnosticsOutput property: Diagnostics output.
-     *
+     * 
      * @param diagnosticsOutput the diagnosticsOutput value to set.
      * @return the HostingEnvironmentDiagnosticsInner object itself.
      */
@@ -68,7 +72,7 @@ public final class HostingEnvironmentDiagnosticsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

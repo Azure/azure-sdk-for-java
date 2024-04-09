@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.appservice.models.TriggerTypes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** StaticSiteFunctionOverviewARMResource resource specific properties. */
+/**
+ * StaticSiteFunctionOverviewARMResource resource specific properties.
+ */
 @Immutable
 public final class StaticSiteFunctionOverviewArmResourceProperties {
     /*
@@ -23,13 +25,15 @@ public final class StaticSiteFunctionOverviewArmResourceProperties {
     @JsonProperty(value = "triggerType", access = JsonProperty.Access.WRITE_ONLY)
     private TriggerTypes triggerType;
 
-    /** Creates an instance of StaticSiteFunctionOverviewArmResourceProperties class. */
+    /**
+     * Creates an instance of StaticSiteFunctionOverviewArmResourceProperties class.
+     */
     public StaticSiteFunctionOverviewArmResourceProperties() {
     }
 
     /**
      * Get the functionName property: The name for the function.
-     *
+     * 
      * @return the functionName value.
      */
     public String functionName() {
@@ -38,7 +42,7 @@ public final class StaticSiteFunctionOverviewArmResourceProperties {
 
     /**
      * Get the triggerType property: The trigger type of the function.
-     *
+     * 
      * @return the triggerType value.
      */
     public TriggerTypes triggerType() {
@@ -47,7 +51,7 @@ public final class StaticSiteFunctionOverviewArmResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

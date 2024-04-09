@@ -33,7 +33,7 @@ public final class VirtualMachineSchedulesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"jmwvvbtuqkxxi\",\"weeklyRecurrence\":{\"weekdays\":[],\"time\":\"qldekotjg\"},\"dailyRecurrence\":{\"time\":\"qfkyfhiwvjaqu\"},\"hourlyRecurrence\":{\"minute\":1783799808},\"timeZoneId\":\"vsk\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":1759748665,\"webhookUrl\":\"umexmj\",\"emailRecipient\":\"cbccwkqmt\",\"notificationLocale\":\"p\"},\"createdDate\":\"2021-03-16T19:37:18Z\",\"targetResourceId\":\"crpilgftrq\",\"provisioningState\":\"jdaahuqimldahlfx\",\"uniqueIdentifier\":\"uifmuadjnfs\"},\"location\":\"cskiioshjgc\",\"tags\":{\"j\":\"ybnxgztlcgc\",\"ywjzebecuvlbefvw\":\"hfjv\",\"wpsyxjij\":\"ljkxpylrwoxz\",\"qwjxi\":\"ypdvrbkerdkdkga\"},\"id\":\"dfkcef\",\"name\":\"ygzqpjoisfmn\",\"type\":\"ybdjnxumentq\"}]}";
+            "{\"value\":[{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"tbspvkhglaqjs\",\"weeklyRecurrence\":{\"weekdays\":[\"tujrzxrkn\",\"fdrld\",\"yehi\",\"ittugyu\"],\"time\":\"rldaxurfqa\"},\"dailyRecurrence\":{\"time\":\"ozjv\"},\"hourlyRecurrence\":{\"minute\":662238435},\"timeZoneId\":\"ggbnvtxo\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":208696047,\"webhookUrl\":\"whoea\",\"emailRecipient\":\"e\",\"notificationLocale\":\"doey\"},\"createdDate\":\"2021-04-03T18:48:17Z\",\"targetResourceId\":\"imtwuuhau\",\"provisioningState\":\"nkwmnfeub\",\"uniqueIdentifier\":\"jyrkwfug\"},\"location\":\"phrrkuum\",\"tags\":{\"pue\":\"urhzzf\",\"ttoztj\":\"qusvwlujopwnib\",\"ctxegt\":\"qumqvfmwcaddt\",\"elfnzzryiz\":\"gwyur\"},\"id\":\"bxgde\",\"name\":\"xlayunomir\",\"type\":\"p\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,28 +65,29 @@ public final class VirtualMachineSchedulesListMockTests {
             manager
                 .virtualMachineSchedules()
                 .list(
-                    "mx",
-                    "vlrrskapbxwieexu",
-                    "aderltfokyk",
-                    "yimyccgrvk",
-                    "xzznnui",
-                    1659751922,
-                    "rsejegprkj",
+                    "icqqw",
+                    "v",
+                    "wkslvlized",
+                    "biabvnsrgekz",
+                    "qx",
+                    1170425933,
+                    "yfhbmwkh",
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cskiioshjgc", response.iterator().next().location());
-        Assertions.assertEquals("ybnxgztlcgc", response.iterator().next().tags().get("j"));
-        Assertions.assertEquals(EnableStatus.ENABLED, response.iterator().next().status());
-        Assertions.assertEquals("jmwvvbtuqkxxi", response.iterator().next().taskType());
-        Assertions.assertEquals("qldekotjg", response.iterator().next().weeklyRecurrence().time());
-        Assertions.assertEquals("qfkyfhiwvjaqu", response.iterator().next().dailyRecurrence().time());
-        Assertions.assertEquals(1783799808, response.iterator().next().hourlyRecurrence().minute());
-        Assertions.assertEquals("vsk", response.iterator().next().timeZoneId());
-        Assertions.assertEquals(EnableStatus.DISABLED, response.iterator().next().notificationSettings().status());
-        Assertions.assertEquals(1759748665, response.iterator().next().notificationSettings().timeInMinutes());
-        Assertions.assertEquals("umexmj", response.iterator().next().notificationSettings().webhookUrl());
-        Assertions.assertEquals("cbccwkqmt", response.iterator().next().notificationSettings().emailRecipient());
-        Assertions.assertEquals("p", response.iterator().next().notificationSettings().notificationLocale());
-        Assertions.assertEquals("crpilgftrq", response.iterator().next().targetResourceId());
+        Assertions.assertEquals("phrrkuum", response.iterator().next().location());
+        Assertions.assertEquals("urhzzf", response.iterator().next().tags().get("pue"));
+        Assertions.assertEquals(EnableStatus.DISABLED, response.iterator().next().status());
+        Assertions.assertEquals("tbspvkhglaqjs", response.iterator().next().taskType());
+        Assertions.assertEquals("tujrzxrkn", response.iterator().next().weeklyRecurrence().weekdays().get(0));
+        Assertions.assertEquals("rldaxurfqa", response.iterator().next().weeklyRecurrence().time());
+        Assertions.assertEquals("ozjv", response.iterator().next().dailyRecurrence().time());
+        Assertions.assertEquals(662238435, response.iterator().next().hourlyRecurrence().minute());
+        Assertions.assertEquals("ggbnvtxo", response.iterator().next().timeZoneId());
+        Assertions.assertEquals(EnableStatus.ENABLED, response.iterator().next().notificationSettings().status());
+        Assertions.assertEquals(208696047, response.iterator().next().notificationSettings().timeInMinutes());
+        Assertions.assertEquals("whoea", response.iterator().next().notificationSettings().webhookUrl());
+        Assertions.assertEquals("e", response.iterator().next().notificationSettings().emailRecipient());
+        Assertions.assertEquals("doey", response.iterator().next().notificationSettings().notificationLocale());
+        Assertions.assertEquals("imtwuuhau", response.iterator().next().targetResourceId());
     }
 }

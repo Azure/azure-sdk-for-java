@@ -198,13 +198,15 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         ImplementationBridgeHelpers
             .CosmosQueryRequestOptionsHelper
             .getCosmosQueryRequestOptionsAccessor()
+            .getImpl(options)
             // Custom Factory Method will always get the ObjectNode - so if VALUE function is used
             // the value needs to be extracted manually. This is intentional right now
             // to allow late-binding the decision whether we really want to surface JsonNode or ObjectNode to
             // customers if we ever make the custom factory method public
             // For now in Spark don't need to worry about extracting values - we would need a wrapper to
             // allow inferring schema anyway.
-            .setItemFactoryMethod(options, (node) -> node.get("_value").intValue());
+            .setItemFactoryMethod(
+                (node) -> node.get("_value").intValue());
 
         int pageSize = 3;
         CosmosPagedFlux<Integer> queryObservable = createdCollection.queryItems(query, options,
@@ -445,8 +447,9 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         options.setPartitionKey(new PartitionKey("duplicatePartitionKeyValue"));
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
+        int preferredPageSize = 3;
         TestSubscriber<FeedResponse<InternalObjectNode>> subscriber = new TestSubscriber<>();
-        queryObservable.byPage(3).take(1).subscribe(subscriber);
+        queryObservable.byPage(preferredPageSize).take(1).subscribe(subscriber);
 
         subscriber.awaitTerminalEvent();
         subscriber.assertComplete();
@@ -464,8 +467,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         List<InternalObjectNode> expectedDocs = createdDocuments.stream()
                                                                 .filter(d -> (StringUtils.equals("duplicatePartitionKeyValue", ModelBridgeInternal.getStringFromJsonSerializable(d,"mypk"))))
                                                                 .filter(d -> (ModelBridgeInternal.getIntFromJsonSerializable(d,"propScopedPartitionInt") > 2)).collect(Collectors.toList());
-        Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
-        int expectedPageSize = (expectedDocs.size() + maxItemCount - 1) / maxItemCount;
+        int expectedPageSize = (expectedDocs.size() + preferredPageSize - 1) / preferredPageSize;
 
         assertThat(expectedDocs).hasSize(10 - 3);
 
@@ -481,7 +483,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .requestChargeGreaterThanOrEqualTo(1.0).build())
             .build();
 
-        validateQuerySuccess(queryObservable.byPage(page.getContinuationToken()), validator);
+        validateQuerySuccess(queryObservable.byPage(page.getContinuationToken(), preferredPageSize), validator);
     }
 
     @Test(groups = { "query" }, timeOut = TIMEOUT)
@@ -697,7 +699,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         }
 
         numberOfPartitions = CosmosBridgeInternal.getAsyncDocumentClient(client)
-                .readPartitionKeyRanges("dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId(), null)
+                .readPartitionKeyRanges("dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId(), (CosmosQueryRequestOptions) null)
                 .flatMap(p -> Flux.fromIterable(p.getResults())).collectList().single().block().size();
 
         waitIfNeededForReplicasToCatchUp(getClientBuilder());

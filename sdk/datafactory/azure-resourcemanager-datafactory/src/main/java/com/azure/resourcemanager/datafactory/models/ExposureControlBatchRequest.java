@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of exposure control features. */
+/**
+ * A list of exposure control features.
+ */
 @Fluent
 public final class ExposureControlBatchRequest {
     /*
@@ -18,13 +20,15 @@ public final class ExposureControlBatchRequest {
     @JsonProperty(value = "exposureControlRequests", required = true)
     private List<ExposureControlRequest> exposureControlRequests;
 
-    /** Creates an instance of ExposureControlBatchRequest class. */
+    /**
+     * Creates an instance of ExposureControlBatchRequest class.
+     */
     public ExposureControlBatchRequest() {
     }
 
     /**
      * Get the exposureControlRequests property: List of exposure control features.
-     *
+     * 
      * @return the exposureControlRequests value.
      */
     public List<ExposureControlRequest> exposureControlRequests() {
@@ -33,27 +37,25 @@ public final class ExposureControlBatchRequest {
 
     /**
      * Set the exposureControlRequests property: List of exposure control features.
-     *
+     * 
      * @param exposureControlRequests the exposureControlRequests value to set.
      * @return the ExposureControlBatchRequest object itself.
      */
-    public ExposureControlBatchRequest withExposureControlRequests(
-        List<ExposureControlRequest> exposureControlRequests) {
+    public ExposureControlBatchRequest
+        withExposureControlRequests(List<ExposureControlRequest> exposureControlRequests) {
         this.exposureControlRequests = exposureControlRequests;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (exposureControlRequests() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property exposureControlRequests in model ExposureControlBatchRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property exposureControlRequests in model ExposureControlBatchRequest"));
         } else {
             exposureControlRequests().forEach(e -> e.validate());
         }

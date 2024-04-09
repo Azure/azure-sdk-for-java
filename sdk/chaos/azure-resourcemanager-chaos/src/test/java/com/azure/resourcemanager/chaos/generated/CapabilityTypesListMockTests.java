@@ -31,38 +31,27 @@ public final class CapabilityTypesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"location\":\"ujzra\",\"properties\":{\"publisher\":\"w\",\"targetType\":\"r\",\"displayName\":\"swibyr\",\"description\":\"l\",\"parametersSchema\":\"shfwpracstwity\",\"urn\":\"evxccedcp\",\"kind\":\"dyodnwzxltj\",\"azureRbacActions\":[\"hlt\",\"ugcxnavvwxq\",\"byqunyow\"],\"azureRbacDataActions\":[\"mdjrkvfgbvfvp\",\"bodacizsjq\",\"hkr\",\"ibdeibq\"],\"runtimeProperties\":{\"kind\":\"kghv\"}},\"id\":\"ndzwmkrefa\",\"name\":\"pjorwkqnyhg\",\"type\":\"ij\"}]}";
+        String responseStr
+            = "{\"value\":[{\"location\":\"sexso\",\"properties\":{\"publisher\":\"luqhhahhxv\",\"targetType\":\"mzkwpjg\",\"displayName\":\"spughftqsxhq\",\"description\":\"j\",\"parametersSchema\":\"kndxdigrjgu\",\"urn\":\"zdmsyqtfi\",\"kind\":\"hbotzingamvppho\",\"azureRbacActions\":[\"zudphqamvdkfw\",\"nwcvtbvkayhmtnv\"],\"azureRbacDataActions\":[\"atkzwpcnpw\",\"cjaesgvvs\",\"cyajguqf\"],\"runtimeProperties\":{\"kind\":\"gzlvdnkfxu\"}},\"id\":\"emdwzrmuhapfc\",\"name\":\"dpsqx\",\"type\":\"vpsvuoymgcce\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ChaosManager manager =
-            ChaosManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ChaosManager manager = ChaosManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<CapabilityType> response =
-            manager.capabilityTypes().list("lolp", "vk", "r", com.azure.core.util.Context.NONE);
+        PagedIterable<CapabilityType> response = manager.capabilityTypes().list("jvfbgofelja", "rqmq",
+            "ldvriiiojnalghfk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ujzra", response.iterator().next().location());
+        Assertions.assertEquals("sexso", response.iterator().next().location());
     }
 }

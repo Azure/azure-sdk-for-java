@@ -36,6 +36,7 @@ import com.azure.resourcemanager.kusto.fluent.OperationsResultsClient;
 import com.azure.resourcemanager.kusto.fluent.OperationsResultsLocationsClient;
 import com.azure.resourcemanager.kusto.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.kusto.fluent.PrivateLinkResourcesClient;
+import com.azure.resourcemanager.kusto.fluent.SandboxCustomImagesClient;
 import com.azure.resourcemanager.kusto.fluent.ScriptsClient;
 import com.azure.resourcemanager.kusto.fluent.SkusClient;
 import java.io.IOException;
@@ -230,6 +231,18 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
         return this.scripts;
     }
 
+    /** The SandboxCustomImagesClient object to access its operations. */
+    private final SandboxCustomImagesClient sandboxCustomImages;
+
+    /**
+     * Gets the SandboxCustomImagesClient object to access its operations.
+     *
+     * @return the SandboxCustomImagesClient object.
+     */
+    public SandboxCustomImagesClient getSandboxCustomImages() {
+        return this.sandboxCustomImages;
+    }
+
     /** The PrivateEndpointConnectionsClient object to access its operations. */
     private final PrivateEndpointConnectionsClient privateEndpointConnections;
 
@@ -324,7 +337,7 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-05-02";
+        this.apiVersion = "2023-08-15";
         this.clusters = new ClustersClientImpl(this);
         this.clusterPrincipalAssignments = new ClusterPrincipalAssignmentsClientImpl(this);
         this.skus = new SkusClientImpl(this);
@@ -334,6 +347,7 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
         this.databaseOperations = new DatabaseOperationsClientImpl(this);
         this.databasePrincipalAssignments = new DatabasePrincipalAssignmentsClientImpl(this);
         this.scripts = new ScriptsClientImpl(this);
+        this.sandboxCustomImages = new SandboxCustomImagesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.dataConnections = new DataConnectionsClientImpl(this);

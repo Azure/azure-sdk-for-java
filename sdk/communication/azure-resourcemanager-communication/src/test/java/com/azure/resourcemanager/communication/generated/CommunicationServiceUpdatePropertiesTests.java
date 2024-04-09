@@ -12,18 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CommunicationServiceUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommunicationServiceUpdateProperties model =
-            BinaryData
-                .fromString("{\"linkedDomains\":[\"bmdg\",\"bjf\",\"dgmb\"]}")
+        CommunicationServiceUpdateProperties model
+            = BinaryData.fromString("{\"linkedDomains\":[\"fvzwdzuhty\",\"wisdkft\",\"wxmnteiwao\"]}")
                 .toObject(CommunicationServiceUpdateProperties.class);
-        Assertions.assertEquals("bmdg", model.linkedDomains().get(0));
+        Assertions.assertEquals("fvzwdzuhty", model.linkedDomains().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommunicationServiceUpdateProperties model =
-            new CommunicationServiceUpdateProperties().withLinkedDomains(Arrays.asList("bmdg", "bjf", "dgmb"));
+        CommunicationServiceUpdateProperties model = new CommunicationServiceUpdateProperties()
+            .withLinkedDomains(Arrays.asList("fvzwdzuhty", "wisdkft", "wxmnteiwao"));
         model = BinaryData.fromObject(model).toObject(CommunicationServiceUpdateProperties.class);
-        Assertions.assertEquals("bmdg", model.linkedDomains().get(0));
+        Assertions.assertEquals("fvzwdzuhty", model.linkedDomains().get(0));
     }
 }

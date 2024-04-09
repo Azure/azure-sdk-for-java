@@ -58,6 +58,6 @@ public final class VirtualMachinesTransferDisksMockTests {
 
         manager
             .virtualMachines()
-            .transferDisks("ixv", "lwynpbbfqvzfj", "spugzfeuzjljmph", com.azure.core.util.Context.NONE);
+            .transferDisks("yakmlwktf", "wzkroyrdurxfl", "qjimejtgzjxxlfej", com.azure.core.util.Context.NONE);
     }
 }

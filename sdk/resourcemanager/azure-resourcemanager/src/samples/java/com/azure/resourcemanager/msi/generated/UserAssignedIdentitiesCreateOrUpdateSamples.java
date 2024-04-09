@@ -27,10 +27,13 @@ public final class UserAssignedIdentitiesCreateOrUpdateSamples {
             .createOrUpdateWithResponse(
                 "rgName",
                 "resourceName",
-                new IdentityInner().withLocation("eastus").withTags(mapOf("key1", "value1", "key2", "value2")),
+                new IdentityInner()
+                    .withLocation("eastus")
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Update migration item provider specific input. */
+/**
+ * Update migration item provider specific input.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "instanceType",
     defaultImpl = UpdateMigrationItemProviderSpecificInput.class)
 @JsonTypeName("UpdateMigrationItemProviderSpecificInput")
-@JsonSubTypes({@JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtUpdateMigrationItemInput.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtUpdateMigrationItemInput.class) })
 @Immutable
 public class UpdateMigrationItemProviderSpecificInput {
-    /** Creates an instance of UpdateMigrationItemProviderSpecificInput class. */
+    /**
+     * Creates an instance of UpdateMigrationItemProviderSpecificInput class.
+     */
     public UpdateMigrationItemProviderSpecificInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,10 +10,6 @@ module com.azure.resourcemanager.eventgrid {
     exports com.azure.resourcemanager.eventgrid.fluent.models;
     exports com.azure.resourcemanager.eventgrid.models;
 
-    opens com.azure.resourcemanager.eventgrid.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.eventgrid.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.eventgrid.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.eventgrid.models to com.azure.core, com.fasterxml.jackson.databind;
 }

@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.storagecache.generated;
 
-/** Samples for AmlFilesystems GetByResourceGroup. */
+/**
+ * Samples for AmlFilesystems GetByResourceGroup.
+ */
 public final class AmlFilesystemsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/amlFilesystems_Get.json
+     * x-ms-original-file:
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/
+     * amlFilesystems_Get.json
      */
     /**
      * Sample code: amlFilesystems_Get.
-     *
+     * 
      * @param manager Entry point to StorageCacheManager.
      */
     public static void amlFilesystemsGet(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {

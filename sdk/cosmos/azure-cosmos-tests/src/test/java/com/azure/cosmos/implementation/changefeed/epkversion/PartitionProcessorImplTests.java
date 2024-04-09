@@ -60,7 +60,8 @@ public class PartitionProcessorImplTests {
             partitionCheckpointer,
             leaseMock,
             ChangeFeedProcessorItem.class,
-            ChangeFeedMode.INCREMENTAL
+            ChangeFeedMode.INCREMENTAL,
+            null
         );
 
         StepVerifier.create(partitionProcessor.run(new CancellationTokenSource().getToken()))

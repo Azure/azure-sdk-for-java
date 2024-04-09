@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cdn.models.ResourcesResponseEndpointsItem;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Resources Response. */
+/**
+ * Resources Response.
+ */
 @Fluent
 public final class ResourcesResponseInner {
     /*
@@ -26,8 +28,14 @@ public final class ResourcesResponseInner {
     private List<ResourcesResponseCustomDomainsItem> customDomains;
 
     /**
+     * Creates an instance of ResourcesResponseInner class.
+     */
+    public ResourcesResponseInner() {
+    }
+
+    /**
      * Get the endpoints property: The endpoints property.
-     *
+     * 
      * @return the endpoints value.
      */
     public List<ResourcesResponseEndpointsItem> endpoints() {
@@ -36,7 +44,7 @@ public final class ResourcesResponseInner {
 
     /**
      * Set the endpoints property: The endpoints property.
-     *
+     * 
      * @param endpoints the endpoints value to set.
      * @return the ResourcesResponseInner object itself.
      */
@@ -47,7 +55,7 @@ public final class ResourcesResponseInner {
 
     /**
      * Get the customDomains property: The customDomains property.
-     *
+     * 
      * @return the customDomains value.
      */
     public List<ResourcesResponseCustomDomainsItem> customDomains() {
@@ -56,7 +64,7 @@ public final class ResourcesResponseInner {
 
     /**
      * Set the customDomains property: The customDomains property.
-     *
+     * 
      * @param customDomains the customDomains value to set.
      * @return the ResourcesResponseInner object itself.
      */
@@ -67,7 +75,7 @@ public final class ResourcesResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

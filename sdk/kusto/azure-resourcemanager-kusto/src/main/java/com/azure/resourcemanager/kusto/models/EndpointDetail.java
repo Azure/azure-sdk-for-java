@@ -16,6 +16,12 @@ public final class EndpointDetail {
     @JsonProperty(value = "port")
     private Integer port;
 
+    /*
+     * The ip address of the endpoint.
+     */
+    @JsonProperty(value = "ipAddress")
+    private String ipAddress;
+
     /** Creates an instance of EndpointDetail class. */
     public EndpointDetail() {
     }
@@ -37,6 +43,26 @@ public final class EndpointDetail {
      */
     public EndpointDetail withPort(Integer port) {
         this.port = port;
+        return this;
+    }
+
+    /**
+     * Get the ipAddress property: The ip address of the endpoint.
+     *
+     * @return the ipAddress value.
+     */
+    public String ipAddress() {
+        return this.ipAddress;
+    }
+
+    /**
+     * Set the ipAddress property: The ip address of the endpoint.
+     *
+     * @param ipAddress the ipAddress value to set.
+     * @return the EndpointDetail object itself.
+     */
+    public EndpointDetail withIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
         return this;
     }
 

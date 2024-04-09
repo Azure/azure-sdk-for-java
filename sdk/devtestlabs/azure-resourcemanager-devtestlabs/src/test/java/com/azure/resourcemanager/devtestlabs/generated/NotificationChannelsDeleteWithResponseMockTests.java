@@ -56,8 +56,6 @@ public final class NotificationChannelsDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .notificationChannels()
-            .deleteWithResponse("banf", "ndscxmxeatk", "bmwnrdjyibqb", com.azure.core.util.Context.NONE);
+        manager.notificationChannels().deleteWithResponse("rzwnyk", "id", "chl", com.azure.core.util.Context.NONE);
     }
 }

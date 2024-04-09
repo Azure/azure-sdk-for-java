@@ -60,11 +60,11 @@ public final class LabsExportResourceUsageMockTests {
         manager
             .labs()
             .exportResourceUsage(
-                "fmuvapckccr",
-                "vwe",
+                "xptlghwzho",
+                "ewj",
                 new ExportResourceUsageParameters()
-                    .withBlobStorageAbsoluteSasUri("xoy")
-                    .withUsageStartDate(OffsetDateTime.parse("2021-01-04T07:21:14Z")),
+                    .withBlobStorageAbsoluteSasUri("tl")
+                    .withUsageStartDate(OffsetDateTime.parse("2021-01-04T12:30:58Z")),
                 com.azure.core.util.Context.NONE);
     }
 }

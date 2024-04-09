@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Custom error of an application gateway. */
+/**
+ * Custom error of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayCustomError {
     /*
@@ -22,13 +24,15 @@ public final class ApplicationGatewayCustomError {
     @JsonProperty(value = "customErrorPageUrl")
     private String customErrorPageUrl;
 
-    /** Creates an instance of ApplicationGatewayCustomError class. */
+    /**
+     * Creates an instance of ApplicationGatewayCustomError class.
+     */
     public ApplicationGatewayCustomError() {
     }
 
     /**
      * Get the statusCode property: Status code of the application gateway custom error.
-     *
+     * 
      * @return the statusCode value.
      */
     public ApplicationGatewayCustomErrorStatusCode statusCode() {
@@ -37,7 +41,7 @@ public final class ApplicationGatewayCustomError {
 
     /**
      * Set the statusCode property: Status code of the application gateway custom error.
-     *
+     * 
      * @param statusCode the statusCode value to set.
      * @return the ApplicationGatewayCustomError object itself.
      */
@@ -48,7 +52,7 @@ public final class ApplicationGatewayCustomError {
 
     /**
      * Get the customErrorPageUrl property: Error page URL of the application gateway custom error.
-     *
+     * 
      * @return the customErrorPageUrl value.
      */
     public String customErrorPageUrl() {
@@ -57,7 +61,7 @@ public final class ApplicationGatewayCustomError {
 
     /**
      * Set the customErrorPageUrl property: Error page URL of the application gateway custom error.
-     *
+     * 
      * @param customErrorPageUrl the customErrorPageUrl value to set.
      * @return the ApplicationGatewayCustomError object itself.
      */
@@ -68,7 +72,7 @@ public final class ApplicationGatewayCustomError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

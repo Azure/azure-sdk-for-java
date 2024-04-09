@@ -21,34 +21,30 @@ public final class CertificateObjectGlobalRulestacksImpl implements CertificateO
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    public CertificateObjectGlobalRulestacksImpl(
-        CertificateObjectGlobalRulestacksClient innerClient,
+    public CertificateObjectGlobalRulestacksImpl(CertificateObjectGlobalRulestacksClient innerClient,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<CertificateObjectGlobalRulestackResource> list(String globalRulestackName) {
-        PagedIterable<CertificateObjectGlobalRulestackResourceInner> inner =
-            this.serviceClient().list(globalRulestackName);
+        PagedIterable<CertificateObjectGlobalRulestackResourceInner> inner
+            = this.serviceClient().list(globalRulestackName);
         return Utils.mapPage(inner, inner1 -> new CertificateObjectGlobalRulestackResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CertificateObjectGlobalRulestackResource> list(String globalRulestackName, Context context) {
-        PagedIterable<CertificateObjectGlobalRulestackResourceInner> inner =
-            this.serviceClient().list(globalRulestackName, context);
+        PagedIterable<CertificateObjectGlobalRulestackResourceInner> inner
+            = this.serviceClient().list(globalRulestackName, context);
         return Utils.mapPage(inner, inner1 -> new CertificateObjectGlobalRulestackResourceImpl(inner1, this.manager()));
     }
 
-    public Response<CertificateObjectGlobalRulestackResource> getWithResponse(
-        String globalRulestackName, String name, Context context) {
-        Response<CertificateObjectGlobalRulestackResourceInner> inner =
-            this.serviceClient().getWithResponse(globalRulestackName, name, context);
+    public Response<CertificateObjectGlobalRulestackResource> getWithResponse(String globalRulestackName, String name,
+        Context context) {
+        Response<CertificateObjectGlobalRulestackResourceInner> inner
+            = this.serviceClient().getWithResponse(globalRulestackName, name, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CertificateObjectGlobalRulestackResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -64,10 +60,10 @@ public final class CertificateObjectGlobalRulestacksImpl implements CertificateO
         }
     }
 
-    public CertificateObjectGlobalRulestackResource createOrUpdate(
-        String globalRulestackName, String name, CertificateObjectGlobalRulestackResourceInner resource) {
-        CertificateObjectGlobalRulestackResourceInner inner =
-            this.serviceClient().createOrUpdate(globalRulestackName, name, resource);
+    public CertificateObjectGlobalRulestackResource createOrUpdate(String globalRulestackName, String name,
+        CertificateObjectGlobalRulestackResourceInner resource) {
+        CertificateObjectGlobalRulestackResourceInner inner
+            = this.serviceClient().createOrUpdate(globalRulestackName, name, resource);
         if (inner != null) {
             return new CertificateObjectGlobalRulestackResourceImpl(inner, this.manager());
         } else {
@@ -75,13 +71,10 @@ public final class CertificateObjectGlobalRulestacksImpl implements CertificateO
         }
     }
 
-    public CertificateObjectGlobalRulestackResource createOrUpdate(
-        String globalRulestackName,
-        String name,
-        CertificateObjectGlobalRulestackResourceInner resource,
-        Context context) {
-        CertificateObjectGlobalRulestackResourceInner inner =
-            this.serviceClient().createOrUpdate(globalRulestackName, name, resource, context);
+    public CertificateObjectGlobalRulestackResource createOrUpdate(String globalRulestackName, String name,
+        CertificateObjectGlobalRulestackResourceInner resource, Context context) {
+        CertificateObjectGlobalRulestackResourceInner inner
+            = this.serviceClient().createOrUpdate(globalRulestackName, name, resource, context);
         if (inner != null) {
             return new CertificateObjectGlobalRulestackResourceImpl(inner, this.manager());
         } else {

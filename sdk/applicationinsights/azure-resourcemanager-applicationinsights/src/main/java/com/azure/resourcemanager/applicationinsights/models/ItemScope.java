@@ -8,13 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ItemScope. */
+/**
+ * Enum indicating if this item definition is owned by a specific user or is shared between all users with access to the
+ * Application Insights component.
+ */
 public final class ItemScope extends ExpandableStringEnum<ItemScope> {
     /** Static value shared for ItemScope. */
     public static final ItemScope SHARED = fromString("shared");
 
     /** Static value user for ItemScope. */
     public static final ItemScope USER = fromString("user");
+
+    /**
+     * Creates a new instance of ItemScope value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ItemScope() {
+    }
 
     /**
      * Creates or finds a ItemScope from its string representation.

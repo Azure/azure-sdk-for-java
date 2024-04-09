@@ -10,7 +10,7 @@ import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines the resource properties. */
+/** Describes the properties of a Datastore. */
 @Fluent
 public final class DatastoreProperties {
     /*
@@ -56,10 +56,26 @@ public final class DatastoreProperties {
     private String customResourceName;
 
     /*
+     * Gets or sets Maximum capacity of this datastore in GBs.
+     */
+    @JsonProperty(value = "capacityGB", access = JsonProperty.Access.WRITE_ONLY)
+    private Long capacityGB;
+
+    /*
+     * Gets or sets Available space of this datastore in GBs.
+     */
+    @JsonProperty(value = "freeSpaceGB", access = JsonProperty.Access.WRITE_ONLY)
+    private Long freeSpaceGB;
+
+    /*
      * Provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of DatastoreProperties class. */
+    public DatastoreProperties() {
+    }
 
     /**
      * Get the uuid property: Gets or sets a unique identifier for this resource.
@@ -155,6 +171,24 @@ public final class DatastoreProperties {
      */
     public String customResourceName() {
         return this.customResourceName;
+    }
+
+    /**
+     * Get the capacityGB property: Gets or sets Maximum capacity of this datastore in GBs.
+     *
+     * @return the capacityGB value.
+     */
+    public Long capacityGB() {
+        return this.capacityGB;
+    }
+
+    /**
+     * Get the freeSpaceGB property: Gets or sets Available space of this datastore in GBs.
+     *
+     * @return the freeSpaceGB value.
+     */
+    public Long freeSpaceGB() {
+        return this.freeSpaceGB;
     }
 
     /**

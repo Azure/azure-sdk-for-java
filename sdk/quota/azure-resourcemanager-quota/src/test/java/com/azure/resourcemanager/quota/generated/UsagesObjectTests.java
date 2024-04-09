@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class UsagesObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsagesObject model =
-            BinaryData.fromString("{\"value\":1667898231,\"usagesType\":\"Individual\"}").toObject(UsagesObject.class);
+        UsagesObject model = BinaryData.fromString("{\"value\":1667898231,\"usagesType\":\"Individual\"}")
+            .toObject(UsagesObject.class);
         Assertions.assertEquals(1667898231, model.value());
         Assertions.assertEquals(UsagesTypes.INDIVIDUAL, model.usagesType());
     }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Gets the workflow trigger callback URL query parameters. */
+/**
+ * Gets the workflow trigger callback URL query parameters.
+ */
 @Fluent
 public final class WorkflowTriggerListCallbackUrlQueries {
     /*
@@ -40,13 +42,15 @@ public final class WorkflowTriggerListCallbackUrlQueries {
     @JsonProperty(value = "se")
     private String se;
 
-    /** Creates an instance of WorkflowTriggerListCallbackUrlQueries class. */
+    /**
+     * Creates an instance of WorkflowTriggerListCallbackUrlQueries class.
+     */
     public WorkflowTriggerListCallbackUrlQueries() {
     }
 
     /**
      * Get the apiVersion property: The api version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String apiVersion() {
@@ -55,7 +59,7 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Set the apiVersion property: The api version.
-     *
+     * 
      * @param apiVersion the apiVersion value to set.
      * @return the WorkflowTriggerListCallbackUrlQueries object itself.
      */
@@ -66,7 +70,7 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Get the sp property: The SAS permissions.
-     *
+     * 
      * @return the sp value.
      */
     public String sp() {
@@ -75,7 +79,7 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Set the sp property: The SAS permissions.
-     *
+     * 
      * @param sp the sp value to set.
      * @return the WorkflowTriggerListCallbackUrlQueries object itself.
      */
@@ -86,7 +90,7 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Get the sv property: The SAS version.
-     *
+     * 
      * @return the sv value.
      */
     public String sv() {
@@ -95,7 +99,7 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Set the sv property: The SAS version.
-     *
+     * 
      * @param sv the sv value to set.
      * @return the WorkflowTriggerListCallbackUrlQueries object itself.
      */
@@ -106,7 +110,7 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Get the sig property: The SAS signature.
-     *
+     * 
      * @return the sig value.
      */
     public String sig() {
@@ -115,7 +119,7 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Set the sig property: The SAS signature.
-     *
+     * 
      * @param sig the sig value to set.
      * @return the WorkflowTriggerListCallbackUrlQueries object itself.
      */
@@ -126,7 +130,7 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Get the se property: The SAS timestamp.
-     *
+     * 
      * @return the se value.
      */
     public String se() {
@@ -135,7 +139,7 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Set the se property: The SAS timestamp.
-     *
+     * 
      * @param se the se value to set.
      * @return the WorkflowTriggerListCallbackUrlQueries object itself.
      */
@@ -146,7 +150,7 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

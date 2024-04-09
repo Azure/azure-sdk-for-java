@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Dapr component configuration. */
+/**
+ * Dapr component configuration.
+ */
 @Fluent
 public final class DaprComponent {
     /*
@@ -35,13 +37,15 @@ public final class DaprComponent {
     @JsonProperty(value = "metadata")
     private List<DaprMetadata> metadata;
 
-    /** Creates an instance of DaprComponent class. */
+    /**
+     * Creates an instance of DaprComponent class.
+     */
     public DaprComponent() {
     }
 
     /**
      * Get the name property: Component name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +54,7 @@ public final class DaprComponent {
 
     /**
      * Set the name property: Component name.
-     *
+     * 
      * @param name the name value to set.
      * @return the DaprComponent object itself.
      */
@@ -61,7 +65,7 @@ public final class DaprComponent {
 
     /**
      * Get the type property: Component type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -70,7 +74,7 @@ public final class DaprComponent {
 
     /**
      * Set the type property: Component type.
-     *
+     * 
      * @param type the type value to set.
      * @return the DaprComponent object itself.
      */
@@ -81,7 +85,7 @@ public final class DaprComponent {
 
     /**
      * Get the version property: Component version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -90,7 +94,7 @@ public final class DaprComponent {
 
     /**
      * Set the version property: Component version.
-     *
+     * 
      * @param version the version value to set.
      * @return the DaprComponent object itself.
      */
@@ -101,7 +105,7 @@ public final class DaprComponent {
 
     /**
      * Get the metadata property: Component metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public List<DaprMetadata> metadata() {
@@ -110,7 +114,7 @@ public final class DaprComponent {
 
     /**
      * Set the metadata property: Component metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the DaprComponent object itself.
      */
@@ -121,7 +125,7 @@ public final class DaprComponent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

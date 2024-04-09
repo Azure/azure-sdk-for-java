@@ -31,42 +31,31 @@ public final class QuotaOperationsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"gujjugwdkcglh\",\"display\":{\"provider\":\"zj\",\"resource\":\"ggd\",\"operation\":\"ixhbkuofqweykhm\",\"description\":\"evfyexfwhybcib\"},\"origin\":\"vdcsitynn\"}]}";
+        String responseStr
+            = "{\"value\":[{\"name\":\"nqvpkvlrxnje\",\"display\":{\"provider\":\"ipheoflokeyyien\",\"resource\":\"dlwtgrhpdj\",\"operation\":\"umasxazjpq\",\"description\":\"gual\"},\"origin\":\"xxhejjzzvd\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        QuotaManager manager =
-            QuotaManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        QuotaManager manager = QuotaManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<OperationResponse> response = manager.quotaOperations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gujjugwdkcglh", response.iterator().next().name());
-        Assertions.assertEquals("zj", response.iterator().next().display().provider());
-        Assertions.assertEquals("ggd", response.iterator().next().display().resource());
-        Assertions.assertEquals("ixhbkuofqweykhm", response.iterator().next().display().operation());
-        Assertions.assertEquals("evfyexfwhybcib", response.iterator().next().display().description());
-        Assertions.assertEquals("vdcsitynn", response.iterator().next().origin());
+        Assertions.assertEquals("nqvpkvlrxnje", response.iterator().next().name());
+        Assertions.assertEquals("ipheoflokeyyien", response.iterator().next().display().provider());
+        Assertions.assertEquals("dlwtgrhpdj", response.iterator().next().display().resource());
+        Assertions.assertEquals("umasxazjpq", response.iterator().next().display().operation());
+        Assertions.assertEquals("gual", response.iterator().next().display().description());
+        Assertions.assertEquals("xxhejjzzvd", response.iterator().next().origin());
     }
 }

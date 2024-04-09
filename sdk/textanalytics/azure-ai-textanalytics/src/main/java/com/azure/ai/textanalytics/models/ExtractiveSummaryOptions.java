@@ -16,12 +16,18 @@ public final class ExtractiveSummaryOptions extends TextAnalyticsRequestOptions 
     private ExtractiveSummarySentencesOrder orderBy;
 
     /**
+     * Constructs a {@code ExtractiveSummaryOptions} model.
+     */
+    public ExtractiveSummaryOptions() {
+    }
+
+    /**
      * Sets the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
      * If a model-version is not specified, the API will default to the latest, non-preview version.
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link ExtractiveSummaryOptions} object itself.
+     * @return The {@code ExtractiveSummaryOptions} object itself.
      */
     @Override
     public ExtractiveSummaryOptions setModelVersion(String modelVersion) {
@@ -37,7 +43,7 @@ public final class ExtractiveSummaryOptions extends TextAnalyticsRequestOptions 
      * @param includeStatistics If a boolean value was specified in the request this field will contain
      * information about the document payload.
      *
-     * @return The {@link ExtractiveSummaryOptions} object itself.
+     * @return The {@code ExtractiveSummaryOptions} object itself.
      */
     @Override
     public ExtractiveSummaryOptions setIncludeStatistics(boolean includeStatistics) {
@@ -53,7 +59,7 @@ public final class ExtractiveSummaryOptions extends TextAnalyticsRequestOptions 
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link ExtractiveSummaryOptions} object itself.
+     * @return The {@code ExtractiveSummaryOptions} object itself.
      */
     @Override
     public ExtractiveSummaryOptions setServiceLogsDisabled(boolean disableServiceLogs) {
@@ -75,7 +81,7 @@ public final class ExtractiveSummaryOptions extends TextAnalyticsRequestOptions 
      *
      * @param displayName Display name of the operation.
      *
-     * @return The {@link ExtractiveSummaryOptions} object itself.
+     * @return The {@code ExtractiveSummaryOptions} object itself.
      */
     public ExtractiveSummaryOptions setDisplayName(String displayName) {
         this.displayName = displayName;
@@ -100,7 +106,7 @@ public final class ExtractiveSummaryOptions extends TextAnalyticsRequestOptions 
      *
      * @param maxSentenceCount The maximum extractive summarization sentences number to be returned in the response.
      *
-     * @return The {@link ExtractiveSummaryOptions} object itself.
+     * @return The {@code ExtractiveSummaryOptions} object itself.
      */
     public ExtractiveSummaryOptions setMaxSentenceCount(Integer maxSentenceCount) {
         this.maxSentenceCount = maxSentenceCount;
@@ -123,7 +129,7 @@ public final class ExtractiveSummaryOptions extends TextAnalyticsRequestOptions 
      * @param orderBy The type of summary sentences order. Defaults to {@link ExtractiveSummarySentencesOrder#OFFSET}
      * if not specified.
      *
-     * @return The {@link ExtractiveSummaryOptions} object itself.
+     * @return The {@code ExtractiveSummaryOptions} object itself.
      */
     public ExtractiveSummaryOptions setOrderBy(ExtractiveSummarySentencesOrder orderBy) {
         this.orderBy = orderBy;

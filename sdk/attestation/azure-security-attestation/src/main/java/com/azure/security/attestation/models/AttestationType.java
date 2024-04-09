@@ -20,6 +20,11 @@ public final class AttestationType extends ExpandableStringEnum<AttestationType>
     public static final AttestationType TPM = fromString("Tpm");
 
     /**
+     * Creates an instance of {@link AttestationType}
+     */
+    public AttestationType() { }
+
+    /**
      * Creates or finds a AttestationType from its string representation.
      *
      * @param name a name to look for.
@@ -30,7 +35,11 @@ public final class AttestationType extends ExpandableStringEnum<AttestationType>
         return fromString(name, AttestationType.class);
     }
 
-    /** @return known AttestationType values. */
+    /**
+     * Returns the collection of {@link AttestationType} as values.
+     *
+     * @return the known AttestationType values.
+     */
     public static Collection<AttestationType> values() {
         return values(AttestationType.class);
     }

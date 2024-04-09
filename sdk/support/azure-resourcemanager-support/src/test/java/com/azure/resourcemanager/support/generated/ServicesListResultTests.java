@@ -13,26 +13,26 @@ import org.junit.jupiter.api.Assertions;
 public final class ServicesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServicesListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"m\",\"name\":\"fp\",\"type\":\"qobmtukk\",\"properties\":{\"displayName\":\"rtihfxtijbpz\",\"resourceTypes\":[]}},{\"id\":\"wzsymglzufcy\",\"name\":\"ohdbihanufh\",\"type\":\"bj\",\"properties\":{\"displayName\":\"git\",\"resourceTypes\":[]}},{\"id\":\"hab\",\"name\":\"pikxwczbyscnpqxu\",\"type\":\"vyq\",\"properties\":{\"displayName\":\"b\",\"resourceTypes\":[]}},{\"id\":\"k\",\"name\":\"dumjgrtfwvuk\",\"type\":\"audccsnhs\",\"properties\":{\"displayName\":\"yejhk\",\"resourceTypes\":[]}}]}")
-                .toObject(ServicesListResult.class);
+        ServicesListResult model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"m\",\"name\":\"fp\",\"type\":\"qobmtukk\",\"properties\":{\"displayName\":\"rtihfxtijbpz\",\"resourceTypes\":[\"wzsymglzufcy\",\"kohdbiha\"],\"metadata\":{\"ithxqhabifpi\":\"hfcbjysa\",\"x\":\"xwczbyscnp\"}}},{\"id\":\"ivyqniwbybrkxvd\",\"name\":\"jgrtfwvukxga\",\"type\":\"ccsnhsjc\",\"properties\":{\"displayName\":\"j\",\"resourceTypes\":[\"yhtnapczwlokjye\",\"kkvnipjox\",\"jnchgej\",\"podmailzydehojwy\"],\"metadata\":{\"ixjsprozvcputeg\":\"xinpmqnjaq\",\"atscmd\":\"vwmf\",\"zkrwfn\":\"pjhulsuuvmkj\"}}},{\"id\":\"odjpslwejd\",\"name\":\"wryoqpsoacc\",\"type\":\"zakljlahbc\",\"properties\":{\"displayName\":\"fdfdosygexpa\",\"resourceTypes\":[\"khmsbz\",\"hcrzevd\",\"hlxaolthqtr\"],\"metadata\":{\"fsinzgvfcjrwzoxx\":\"bpf\"}}},{\"id\":\"felluwfzitonpe\",\"name\":\"pjkjlxofpdv\",\"type\":\"fxxypininmayhuy\",\"properties\":{\"displayName\":\"podepoo\",\"resourceTypes\":[\"uvamiheognarxzxt\",\"eotusivyevc\",\"iqihn\"],\"metadata\":{\"gxg\":\"gbwjzrnf\",\"fublj\":\"spemvtzfk\"}}}]}")
+            .toObject(ServicesListResult.class);
         Assertions.assertEquals("rtihfxtijbpz", model.value().get(0).displayName());
+        Assertions.assertEquals("wzsymglzufcy", model.value().get(0).resourceTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServicesListResult model =
-            new ServicesListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ServiceInner().withDisplayName("rtihfxtijbpz").withResourceTypes(Arrays.asList()),
-                            new ServiceInner().withDisplayName("git").withResourceTypes(Arrays.asList()),
-                            new ServiceInner().withDisplayName("b").withResourceTypes(Arrays.asList()),
-                            new ServiceInner().withDisplayName("yejhk").withResourceTypes(Arrays.asList())));
+        ServicesListResult model = new ServicesListResult().withValue(Arrays.asList(
+            new ServiceInner().withDisplayName("rtihfxtijbpz")
+                .withResourceTypes(Arrays.asList("wzsymglzufcy", "kohdbiha")),
+            new ServiceInner().withDisplayName("j")
+                .withResourceTypes(Arrays.asList("yhtnapczwlokjye", "kkvnipjox", "jnchgej", "podmailzydehojwy")),
+            new ServiceInner().withDisplayName("fdfdosygexpa")
+                .withResourceTypes(Arrays.asList("khmsbz", "hcrzevd", "hlxaolthqtr")),
+            new ServiceInner().withDisplayName("podepoo")
+                .withResourceTypes(Arrays.asList("uvamiheognarxzxt", "eotusivyevc", "iqihn"))));
         model = BinaryData.fromObject(model).toObject(ServicesListResult.class);
         Assertions.assertEquals("rtihfxtijbpz", model.value().get(0).displayName());
+        Assertions.assertEquals("wzsymglzufcy", model.value().get(0).resourceTypes().get(0));
     }
 }

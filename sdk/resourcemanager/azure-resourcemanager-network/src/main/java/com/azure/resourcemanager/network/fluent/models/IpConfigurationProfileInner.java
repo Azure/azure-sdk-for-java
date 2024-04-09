@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** IP configuration profile child resource. */
+/**
+ * IP configuration profile child resource.
+ */
 @Fluent
 public final class IpConfigurationProfileInner extends SubResource {
     /*
@@ -36,13 +38,15 @@ public final class IpConfigurationProfileInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of IpConfigurationProfileInner class. */
+    /**
+     * Creates an instance of IpConfigurationProfileInner class.
+     */
     public IpConfigurationProfileInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the IP configuration profile.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IpConfigurationProfilePropertiesFormatInner innerProperties() {
@@ -51,7 +55,7 @@ public final class IpConfigurationProfileInner extends SubResource {
 
     /**
      * Get the name property: The name of the resource. This name can be used to access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +64,7 @@ public final class IpConfigurationProfileInner extends SubResource {
 
     /**
      * Set the name property: The name of the resource. This name can be used to access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the IpConfigurationProfileInner object itself.
      */
@@ -71,7 +75,7 @@ public final class IpConfigurationProfileInner extends SubResource {
 
     /**
      * Get the type property: Sub Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -80,14 +84,16 @@ public final class IpConfigurationProfileInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IpConfigurationProfileInner withId(String id) {
         super.withId(id);
@@ -97,7 +103,7 @@ public final class IpConfigurationProfileInner extends SubResource {
     /**
      * Get the subnet property: The reference to the subnet resource to create a container network interface ip
      * configuration.
-     *
+     * 
      * @return the subnet value.
      */
     public SubnetInner subnet() {
@@ -107,7 +113,7 @@ public final class IpConfigurationProfileInner extends SubResource {
     /**
      * Set the subnet property: The reference to the subnet resource to create a container network interface ip
      * configuration.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the IpConfigurationProfileInner object itself.
      */
@@ -121,7 +127,7 @@ public final class IpConfigurationProfileInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the IP configuration profile resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -130,7 +136,7 @@ public final class IpConfigurationProfileInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

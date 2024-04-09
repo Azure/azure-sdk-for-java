@@ -21,7 +21,7 @@ public final class ClassifyDocumentPagedIterable extends ContinuablePagedIterabl
     ClassifyDocumentResultCollection, PagedResponse<ClassifyDocumentResultCollection>> {
 
     /**
-     * Creates instance given {@link ClassifyDocumentPagedIterable}.
+     * Creates instance given {@code ClassifyDocumentPagedIterable}.
      *
      * @param pagedFlux It used as iterable.
      */
@@ -30,7 +30,7 @@ public final class ClassifyDocumentPagedIterable extends ContinuablePagedIterabl
     }
 
     /**
-     * Creates an instance of {@link ClassifyDocumentPagedIterable}. The constructor takes a {@code Supplier} and
+     * Creates an instance of {@code ClassifyDocumentPagedIterable}. The constructor takes a {@code Supplier} and
      * {@code Function}. The {@code Supplier} returns the first page of {@link ClassifyDocumentResultCollection},
      * the {@code Function} retrieves subsequent pages of {@link ClassifyDocumentResultCollection}.
      *

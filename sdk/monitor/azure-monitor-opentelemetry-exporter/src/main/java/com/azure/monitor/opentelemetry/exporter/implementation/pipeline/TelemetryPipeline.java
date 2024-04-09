@@ -7,8 +7,11 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
+import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageTelemetryPipelineListener;
+import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.StatusCode;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import reactor.core.publisher.Mono;
@@ -26,18 +29,22 @@ import java.util.Map;
 
 public class TelemetryPipeline {
 
+    private static final ClientLogger LOGGER = new ClientLogger(TelemetryPipeline.class);
+
     // Based on Stamp specific redirects design doc
     private static final int MAX_REDIRECTS = 10;
     private static final HttpHeaderName LOCATION =  HttpHeaderName.fromString("Location");
 
     private final HttpPipeline pipeline;
+    private final Runnable statsbeatShutdown;
 
     // key is connectionString, value is redirectUrl
     private final Map<String, URL> redirectCache =
         Collections.synchronizedMap(new BoundedHashMap<>(100));
 
-    public TelemetryPipeline(HttpPipeline pipeline) {
+    public TelemetryPipeline(HttpPipeline pipeline, Runnable statsbeatShutdown) {
         this.pipeline = pipeline;
+        this.statsbeatShutdown = statsbeatShutdown;
     }
 
     public CompletableResultCode send(
@@ -137,10 +144,17 @@ public class TelemetryPipeline {
             return;
         }
 
-        listener.onResponse(request, new TelemetryPipelineResponse(responseCode, responseBody));
+        TelemetryPipelineResponse telemetryPipelineResponse = new TelemetryPipelineResponse(responseCode, responseBody);
+        listener.onResponse(request, telemetryPipelineResponse);
         if (responseCode == 200) {
             result.succeed();
         } else {
+            if (responseCode == 400
+                && statsbeatShutdown != null
+                && telemetryPipelineResponse.isInvalidInstrumentationKey()) {
+                LOGGER.verbose("400 status code is returned for an invalid instrumentation key. Shutting down Statsbeat.");
+                statsbeatShutdown.run();
+            }
             result.fail();
         }
     }

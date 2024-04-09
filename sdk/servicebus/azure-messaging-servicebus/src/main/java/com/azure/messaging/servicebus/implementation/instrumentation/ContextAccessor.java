@@ -21,6 +21,7 @@ public final class ContextAccessor {
     }
 
     public static ServiceBusReceivedMessage setContext(ServiceBusReceivedMessage message, Context context) {
+        assert message != null; // message is never null on this path.
         return receiveAccessor.setContext(message, context);
     }
 

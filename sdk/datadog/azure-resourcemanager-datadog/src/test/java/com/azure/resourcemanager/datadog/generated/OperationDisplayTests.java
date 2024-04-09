@@ -14,26 +14,26 @@ public final class OperationDisplayTests {
         OperationDisplay model =
             BinaryData
                 .fromString(
-                    "{\"provider\":\"lkhbz\",\"resource\":\"epgzgqexz\",\"operation\":\"c\",\"description\":\"c\"}")
+                    "{\"provider\":\"kexxppof\",\"resource\":\"axcfjpgddtocjjx\",\"operation\":\"pmouexhdz\",\"description\":\"bqe\"}")
                 .toObject(OperationDisplay.class);
-        Assertions.assertEquals("lkhbz", model.provider());
-        Assertions.assertEquals("epgzgqexz", model.resource());
-        Assertions.assertEquals("c", model.operation());
-        Assertions.assertEquals("c", model.description());
+        Assertions.assertEquals("kexxppof", model.provider());
+        Assertions.assertEquals("axcfjpgddtocjjx", model.resource());
+        Assertions.assertEquals("pmouexhdz", model.operation());
+        Assertions.assertEquals("bqe", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OperationDisplay model =
             new OperationDisplay()
-                .withProvider("lkhbz")
-                .withResource("epgzgqexz")
-                .withOperation("c")
-                .withDescription("c");
+                .withProvider("kexxppof")
+                .withResource("axcfjpgddtocjjx")
+                .withOperation("pmouexhdz")
+                .withDescription("bqe");
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
-        Assertions.assertEquals("lkhbz", model.provider());
-        Assertions.assertEquals("epgzgqexz", model.resource());
-        Assertions.assertEquals("c", model.operation());
-        Assertions.assertEquals("c", model.description());
+        Assertions.assertEquals("kexxppof", model.provider());
+        Assertions.assertEquals("axcfjpgddtocjjx", model.resource());
+        Assertions.assertEquals("pmouexhdz", model.operation());
+        Assertions.assertEquals("bqe", model.description());
     }
 }

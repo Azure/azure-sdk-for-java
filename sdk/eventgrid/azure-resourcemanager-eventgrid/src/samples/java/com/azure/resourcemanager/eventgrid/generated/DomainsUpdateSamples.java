@@ -12,34 +12,32 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Domains Update. */
+/**
+ * Samples for Domains Update.
+ */
 public final class DomainsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Domains_Update.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/Domains_Update.
+     * json
      */
     /**
      * Sample code: Domains_Update.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void domainsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        Domain resource =
-            manager
-                .domains()
-                .getByResourceGroupWithResponse("examplerg", "exampledomain1", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withTags(mapOf("tag1", "value1", "tag2", "value2"))
+        Domain resource = manager.domains()
+            .getByResourceGroupWithResponse("examplerg", "exampledomain1", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2"))
             .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
             .withInboundIpRules(
-                Arrays
-                    .asList(
-                        new InboundIpRule().withIpMask("12.18.30.15").withAction(IpActionType.ALLOW),
-                        new InboundIpRule().withIpMask("12.18.176.1").withAction(IpActionType.ALLOW)))
+                Arrays.asList(new InboundIpRule().withIpMask("12.18.30.15").withAction(IpActionType.ALLOW),
+                    new InboundIpRule().withIpMask("12.18.176.1").withAction(IpActionType.ALLOW)))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

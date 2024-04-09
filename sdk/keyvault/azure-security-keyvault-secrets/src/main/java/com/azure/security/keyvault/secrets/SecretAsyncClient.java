@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -289,13 +288,13 @@ public final class SecretAsyncClient {
             SecretProperties secretProperties = secret.getProperties();
             if (secretProperties == null) {
                 return implClient.setSecretWithResponseAsync(vaultUrl, secret.getName(), secret.getValue(),
-                        null, ContentType.APPLICATION_JSON, null)
+                        null, null, null)
                     .onErrorMap(KeyVaultErrorException.class, SecretAsyncClient::mapSetSecretException)
                     .map(response -> new SimpleResponse<>(response, createKeyVaultSecret(response.getValue())));
             } else {
                 return implClient.setSecretWithResponseAsync(vaultUrl, secret.getName(), secret.getValue(),
-                        secret.getProperties().getTags(), ContentType.APPLICATION_JSON,
-                        createSecretAttributes(secret.getProperties()))
+                        secretProperties.getTags(), secretProperties.getContentType(),
+                        createSecretAttributes(secretProperties))
                     .onErrorMap(KeyVaultErrorException.class, SecretAsyncClient::mapSetSecretException)
                     .map(response -> new SimpleResponse<>(response, createKeyVaultSecret(response.getValue())));
             }
@@ -516,7 +515,7 @@ public final class SecretAsyncClient {
     public Mono<Response<SecretProperties>> updateSecretPropertiesWithResponse(SecretProperties secretProperties) {
         try {
             return implClient.updateSecretWithResponseAsync(vaultUrl, secretProperties.getName(),
-                secretProperties.getVersion(), ContentType.APPLICATION_JSON,
+                secretProperties.getVersion(), secretProperties.getContentType(),
                     createSecretAttributes(secretProperties), secretProperties.getTags())
                 .map(response -> new SimpleResponse<>(response, createSecretProperties(response.getValue())));
         } catch (RuntimeException ex) {

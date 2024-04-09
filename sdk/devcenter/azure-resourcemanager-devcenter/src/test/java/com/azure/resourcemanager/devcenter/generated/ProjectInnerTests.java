@@ -16,32 +16,36 @@ public final class ProjectInnerTests {
         ProjectInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"MovingResources\",\"devCenterUri\":\"gakeqsr\",\"devCenterId\":\"bzqqedqytbciq\",\"description\":\"uflmm\",\"maxDevBoxesPerUser\":799119693},\"location\":\"modmglougpb\",\"tags\":{\"wgcu\":\"mutduqktaps\"},\"id\":\"rtumkdosvq\",\"name\":\"hbmdgbbjfdd\",\"type\":\"mbmbexppbh\"}")
+                    "{\"properties\":{\"provisioningState\":\"NotSpecified\",\"devCenterUri\":\"ciqihnhung\",\"devCenterId\":\"jzrnf\",\"description\":\"xgispemvtzfkufu\",\"maxDevBoxesPerUser\":1437097866,\"displayName\":\"fxqeof\"},\"location\":\"e\",\"tags\":{\"jqul\":\"qjbasvms\",\"clxxwrljdo\":\"gsntnbybkzgcwr\",\"wtnhxbnjbiksqr\":\"skcqvkocrcjd\"},\"id\":\"lssai\",\"name\":\"qpjwnzlljfm\",\"type\":\"pee\"}")
                 .toObject(ProjectInner.class);
-        Assertions.assertEquals("modmglougpb", model.location());
-        Assertions.assertEquals("mutduqktaps", model.tags().get("wgcu"));
-        Assertions.assertEquals("bzqqedqytbciq", model.devCenterId());
-        Assertions.assertEquals("uflmm", model.description());
-        Assertions.assertEquals(799119693, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("e", model.location());
+        Assertions.assertEquals("qjbasvms", model.tags().get("jqul"));
+        Assertions.assertEquals("jzrnf", model.devCenterId());
+        Assertions.assertEquals("xgispemvtzfkufu", model.description());
+        Assertions.assertEquals(1437097866, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("fxqeof", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProjectInner model =
             new ProjectInner()
-                .withLocation("modmglougpb")
-                .withTags(mapOf("wgcu", "mutduqktaps"))
-                .withDevCenterId("bzqqedqytbciq")
-                .withDescription("uflmm")
-                .withMaxDevBoxesPerUser(799119693);
+                .withLocation("e")
+                .withTags(mapOf("jqul", "qjbasvms", "clxxwrljdo", "gsntnbybkzgcwr", "wtnhxbnjbiksqr", "skcqvkocrcjd"))
+                .withDevCenterId("jzrnf")
+                .withDescription("xgispemvtzfkufu")
+                .withMaxDevBoxesPerUser(1437097866)
+                .withDisplayName("fxqeof");
         model = BinaryData.fromObject(model).toObject(ProjectInner.class);
-        Assertions.assertEquals("modmglougpb", model.location());
-        Assertions.assertEquals("mutduqktaps", model.tags().get("wgcu"));
-        Assertions.assertEquals("bzqqedqytbciq", model.devCenterId());
-        Assertions.assertEquals("uflmm", model.description());
-        Assertions.assertEquals(799119693, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("e", model.location());
+        Assertions.assertEquals("qjbasvms", model.tags().get("jqul"));
+        Assertions.assertEquals("jzrnf", model.devCenterId());
+        Assertions.assertEquals("xgispemvtzfkufu", model.description());
+        Assertions.assertEquals(1437097866, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("fxqeof", model.displayName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

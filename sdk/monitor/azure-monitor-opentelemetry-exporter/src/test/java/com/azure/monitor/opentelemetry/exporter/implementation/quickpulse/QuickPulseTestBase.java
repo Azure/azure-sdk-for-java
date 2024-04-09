@@ -18,7 +18,8 @@ import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.FluxUtil;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.RemoteDependencyTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.RequestTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
@@ -42,11 +43,7 @@ public class QuickPulseTestBase extends TestProxyTestBase {
     HttpPipeline getHttpPipelineWithAuthentication() {
         if (getTestMode() == TestMode.RECORD || getTestMode() == TestMode.LIVE) {
             TokenCredential credential =
-                new ClientSecretCredentialBuilder()
-                    .tenantId(System.getenv("AZURE_TENANT_ID"))
-                    .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))
-                    .clientId(System.getenv("AZURE_CLIENT_ID"))
-                    .build();
+                new DefaultAzureCredentialBuilder().managedIdentityClientId("AZURE_CLIENT_ID").build();
             return getHttpPipeline(
                 new BearerTokenAuthenticationPolicy(
                     credential, APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE));
@@ -72,6 +69,7 @@ public class QuickPulseTestBase extends TestProxyTestBase {
         return new HttpPipelineBuilder()
             .httpClient(httpClient)
             .policies(allPolicies.toArray(new HttpPipelinePolicy[0]))
+            .tracer(new NoopTracer())
             .build();
     }
 

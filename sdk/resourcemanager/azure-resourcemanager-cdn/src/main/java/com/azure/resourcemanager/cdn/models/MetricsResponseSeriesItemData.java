@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The MetricsResponseSeriesItemData model. */
+/**
+ * The MetricsResponseSeriesItemData model.
+ */
 @Fluent
 public final class MetricsResponseSeriesItemData {
     /*
@@ -24,8 +26,14 @@ public final class MetricsResponseSeriesItemData {
     private Float value;
 
     /**
+     * Creates an instance of MetricsResponseSeriesItemData class.
+     */
+    public MetricsResponseSeriesItemData() {
+    }
+
+    /**
      * Get the dateTime property: The dateTime property.
-     *
+     * 
      * @return the dateTime value.
      */
     public OffsetDateTime dateTime() {
@@ -34,7 +42,7 @@ public final class MetricsResponseSeriesItemData {
 
     /**
      * Set the dateTime property: The dateTime property.
-     *
+     * 
      * @param dateTime the dateTime value to set.
      * @return the MetricsResponseSeriesItemData object itself.
      */
@@ -45,7 +53,7 @@ public final class MetricsResponseSeriesItemData {
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public Float value() {
@@ -54,7 +62,7 @@ public final class MetricsResponseSeriesItemData {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the MetricsResponseSeriesItemData object itself.
      */
@@ -65,7 +73,7 @@ public final class MetricsResponseSeriesItemData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -33,7 +33,7 @@ public final class ApplicationsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"objectId\":\"vk\",\"description\":\"yzunbixxrtikv\",\"friendlyName\":\"wpgclrcivt\",\"filePath\":\"xfrk\",\"msixPackageFamilyName\":\"xpmyyefrpmpdnq\",\"msixPackageApplicationId\":\"ka\",\"applicationType\":\"InBuilt\",\"commandLineSetting\":\"Allow\",\"commandLineArguments\":\"mmbnpqfrtql\",\"showInPortal\":false,\"iconPath\":\"gnitgvkxlzyq\",\"iconIndex\":1463810851,\"iconHash\":\"gcealzxwh\"},\"id\":\"nsymoyqhlwigd\",\"name\":\"vbkbxgomf\",\"type\":\"juwasqvdaeyyguxa\"}";
+            "{\"properties\":{\"objectId\":\"mdyomkxfbvfbh\",\"description\":\"i\",\"friendlyName\":\"pwpgddei\",\"filePath\":\"wzovgk\",\"msixPackageFamilyName\":\"muikjcjcaztbws\",\"msixPackageApplicationId\":\"qowxwcom\",\"applicationType\":\"InBuilt\",\"commandLineSetting\":\"DoNotAllow\",\"commandLineArguments\":\"wvczcswkacve\",\"showInPortal\":false,\"iconPath\":\"vlvhbwrnfxtgd\",\"iconIndex\":994119130,\"iconHash\":\"hehnmnaoya\"},\"id\":\"coeqswankltytm\",\"name\":\"droznn\",\"type\":\"drlktg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,19 +64,19 @@ public final class ApplicationsGetWithResponseMockTests {
         Application response =
             manager
                 .applications()
-                .getWithResponse("nygq", "nfwqzdzgtilaxhn", "hqlyvijo", com.azure.core.util.Context.NONE)
+                .getWithResponse("qwjksghudgz", "xog", "ggsvoujkxibdaf", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("yzunbixxrtikv", response.description());
-        Assertions.assertEquals("wpgclrcivt", response.friendlyName());
-        Assertions.assertEquals("xfrk", response.filePath());
-        Assertions.assertEquals("xpmyyefrpmpdnq", response.msixPackageFamilyName());
-        Assertions.assertEquals("ka", response.msixPackageApplicationId());
+        Assertions.assertEquals("i", response.description());
+        Assertions.assertEquals("pwpgddei", response.friendlyName());
+        Assertions.assertEquals("wzovgk", response.filePath());
+        Assertions.assertEquals("muikjcjcaztbws", response.msixPackageFamilyName());
+        Assertions.assertEquals("qowxwcom", response.msixPackageApplicationId());
         Assertions.assertEquals(RemoteApplicationType.IN_BUILT, response.applicationType());
-        Assertions.assertEquals(CommandLineSetting.ALLOW, response.commandLineSetting());
-        Assertions.assertEquals("mmbnpqfrtql", response.commandLineArguments());
+        Assertions.assertEquals(CommandLineSetting.DO_NOT_ALLOW, response.commandLineSetting());
+        Assertions.assertEquals("wvczcswkacve", response.commandLineArguments());
         Assertions.assertEquals(false, response.showInPortal());
-        Assertions.assertEquals("gnitgvkxlzyq", response.iconPath());
-        Assertions.assertEquals(1463810851, response.iconIndex());
+        Assertions.assertEquals("vlvhbwrnfxtgd", response.iconPath());
+        Assertions.assertEquals(994119130, response.iconIndex());
     }
 }

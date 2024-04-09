@@ -41,22 +41,28 @@ import com.azure.resourcemanager.datafactory.models.GitHubAccessTokenRequest;
 import com.azure.resourcemanager.datafactory.models.UserAccessPolicy;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FactoriesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FactoriesClient.
+ */
 public final class FactoriesClientImpl implements FactoriesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FactoriesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataFactoryManagementClientImpl client;
 
     /**
      * Initializes an instance of FactoriesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FactoriesClientImpl(DataFactoryManagementClientImpl client) {
-        this.service =
-            RestProxy.create(FactoriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(FactoriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,166 +73,113 @@ public final class FactoriesClientImpl implements FactoriesClient {
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
     public interface FactoriesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/factories")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FactoryListResponse>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<FactoryListResponse>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/locations/{locationId}/configureFactoryRepo")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<FactoryInner>> configureFactoryRepo(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("locationId") String locationId,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") FactoryRepoUpdate factoryRepoUpdate, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/locations/{locationId}"
-                + "/configureFactoryRepo")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FactoryInner>> configureFactoryRepo(
-            @HostParam("$host") String endpoint,
+        Mono<Response<FactoryListResponse>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("locationId") String locationId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") FactoryRepoUpdate factoryRepoUpdate,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FactoryListResponse>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<FactoryInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/json") FactoryInner factory, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FactoryInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<FactoryInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-Match") String ifMatch,
-            @BodyParam("application/json") FactoryInner factory,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FactoryInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") FactoryUpdateParameters factoryUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}")
-        @ExpectedResponses({200, 304})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}")
+        @ExpectedResponses({ 200, 304 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FactoryInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<FactoryInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-None-Match") String ifNoneMatch,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/getGitHubAccessToken")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getGitHubAccessToken")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GitHubAccessTokenResponseInner>> getGitHubAccessToken(
-            @HostParam("$host") String endpoint,
+        Mono<Response<GitHubAccessTokenResponseInner>> getGitHubAccessToken(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GitHubAccessTokenRequest gitHubAccessTokenRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/getDataPlaneAccess")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getDataPlaneAccess")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccessPolicyResponseInner>> getDataPlaneAccess(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AccessPolicyResponseInner>> getDataPlaneAccess(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") UserAccessPolicy policy,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") UserAccessPolicy policy,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FactoryListResponse>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<FactoryListResponse>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FactoryListResponse>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists factories under the specified subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of factory resources along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -234,43 +187,25 @@ public final class FactoriesClientImpl implements FactoriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FactoryInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<FactoryInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<FactoryInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists factories under the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -280,40 +215,25 @@ public final class FactoriesClientImpl implements FactoriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FactoryInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists factories under the specified subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of factory resources as paginated response with {@link PagedFlux}.
@@ -325,7 +245,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
 
     /**
      * Lists factories under the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -334,13 +254,13 @@ public final class FactoriesClientImpl implements FactoriesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FactoryInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists factories under the specified subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of factory resources as paginated response with {@link PagedIterable}.
@@ -352,7 +272,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
 
     /**
      * Lists factories under the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -366,7 +286,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
 
     /**
      * Updates a factory's repo information.
-     *
+     * 
      * @param locationId The location identifier.
      * @param factoryRepoUpdate Update factory repo request definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -375,19 +295,15 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return factory resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FactoryInner>> configureFactoryRepoWithResponseAsync(
-        String locationId, FactoryRepoUpdate factoryRepoUpdate) {
+    private Mono<Response<FactoryInner>> configureFactoryRepoWithResponseAsync(String locationId,
+        FactoryRepoUpdate factoryRepoUpdate) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationId is required and cannot be null."));
@@ -401,22 +317,14 @@ public final class FactoriesClientImpl implements FactoriesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .configureFactoryRepo(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            locationId,
-                            this.client.getApiVersion(),
-                            factoryRepoUpdate,
-                            accept,
-                            context))
+                context -> service.configureFactoryRepo(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    locationId, this.client.getApiVersion(), factoryRepoUpdate, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a factory's repo information.
-     *
+     * 
      * @param locationId The location identifier.
      * @param factoryRepoUpdate Update factory repo request definition.
      * @param context The context to associate with this operation.
@@ -426,19 +334,15 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return factory resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FactoryInner>> configureFactoryRepoWithResponseAsync(
-        String locationId, FactoryRepoUpdate factoryRepoUpdate, Context context) {
+    private Mono<Response<FactoryInner>> configureFactoryRepoWithResponseAsync(String locationId,
+        FactoryRepoUpdate factoryRepoUpdate, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationId is required and cannot be null."));
@@ -451,20 +355,13 @@ public final class FactoriesClientImpl implements FactoriesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .configureFactoryRepo(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                locationId,
-                this.client.getApiVersion(),
-                factoryRepoUpdate,
-                accept,
-                context);
+        return service.configureFactoryRepo(this.client.getEndpoint(), this.client.getSubscriptionId(), locationId,
+            this.client.getApiVersion(), factoryRepoUpdate, accept, context);
     }
 
     /**
      * Updates a factory's repo information.
-     *
+     * 
      * @param locationId The location identifier.
      * @param factoryRepoUpdate Update factory repo request definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -480,7 +377,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
 
     /**
      * Updates a factory's repo information.
-     *
+     * 
      * @param locationId The location identifier.
      * @param factoryRepoUpdate Update factory repo request definition.
      * @param context The context to associate with this operation.
@@ -490,14 +387,14 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return factory resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FactoryInner> configureFactoryRepoWithResponse(
-        String locationId, FactoryRepoUpdate factoryRepoUpdate, Context context) {
+    public Response<FactoryInner> configureFactoryRepoWithResponse(String locationId,
+        FactoryRepoUpdate factoryRepoUpdate, Context context) {
         return configureFactoryRepoWithResponseAsync(locationId, factoryRepoUpdate, context).block();
     }
 
     /**
      * Updates a factory's repo information.
-     *
+     * 
      * @param locationId The location identifier.
      * @param factoryRepoUpdate Update factory repo request definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -512,7 +409,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
 
     /**
      * Lists factories.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -522,16 +419,12 @@ public final class FactoriesClientImpl implements FactoriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FactoryInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -539,31 +432,16 @@ public final class FactoriesClientImpl implements FactoriesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<FactoryInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<FactoryInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists factories.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -572,19 +450,15 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return a list of factory resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FactoryInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<FactoryInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -593,27 +467,15 @@ public final class FactoriesClientImpl implements FactoriesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists factories.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -622,14 +484,13 @@ public final class FactoriesClientImpl implements FactoriesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FactoryInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists factories.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -639,14 +500,13 @@ public final class FactoriesClientImpl implements FactoriesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FactoryInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists factories.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -660,7 +520,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
 
     /**
      * Lists factories.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -675,31 +535,27 @@ public final class FactoriesClientImpl implements FactoriesClient {
 
     /**
      * Creates or updates a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param factory Factory resource definition.
      * @param ifMatch ETag of the factory entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
+     * existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return factory resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FactoryInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String factoryName, FactoryInner factory, String ifMatch) {
+    private Mono<Response<FactoryInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String factoryName,
+        FactoryInner factory, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -715,30 +571,19 @@ public final class FactoriesClientImpl implements FactoriesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            this.client.getApiVersion(),
-                            ifMatch,
-                            factory,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, factoryName, this.client.getApiVersion(), ifMatch, factory, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param factory Factory resource definition.
      * @param ifMatch ETag of the factory entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
+     * existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -746,19 +591,15 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return factory resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FactoryInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String factoryName, FactoryInner factory, String ifMatch, Context context) {
+    private Mono<Response<FactoryInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String factoryName,
+        FactoryInner factory, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -774,22 +615,13 @@ public final class FactoriesClientImpl implements FactoriesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                this.client.getApiVersion(),
-                ifMatch,
-                factory,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, this.client.getApiVersion(), ifMatch, factory, accept, context);
     }
 
     /**
      * Creates or updates a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param factory Factory resource definition.
@@ -807,12 +639,12 @@ public final class FactoriesClientImpl implements FactoriesClient {
 
     /**
      * Creates or updates a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param factory Factory resource definition.
      * @param ifMatch ETag of the factory entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
+     * existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -820,14 +652,14 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return factory resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FactoryInner> createOrUpdateWithResponse(
-        String resourceGroupName, String factoryName, FactoryInner factory, String ifMatch, Context context) {
+    public Response<FactoryInner> createOrUpdateWithResponse(String resourceGroupName, String factoryName,
+        FactoryInner factory, String ifMatch, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, factory, ifMatch, context).block();
     }
 
     /**
      * Creates or updates a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param factory Factory resource definition.
@@ -844,7 +676,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
 
     /**
      * Updates a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param factoryUpdateParameters The parameters for updating a factory.
@@ -854,19 +686,15 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return factory resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FactoryInner>> updateWithResponseAsync(
-        String resourceGroupName, String factoryName, FactoryUpdateParameters factoryUpdateParameters) {
+    private Mono<Response<FactoryInner>> updateWithResponseAsync(String resourceGroupName, String factoryName,
+        FactoryUpdateParameters factoryUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -876,32 +704,21 @@ public final class FactoriesClientImpl implements FactoriesClient {
             return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (factoryUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter factoryUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter factoryUpdateParameters is required and cannot be null."));
         } else {
             factoryUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            this.client.getApiVersion(),
-                            factoryUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, factoryName, this.client.getApiVersion(), factoryUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param factoryUpdateParameters The parameters for updating a factory.
@@ -912,22 +729,15 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return factory resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FactoryInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String factoryName,
-        FactoryUpdateParameters factoryUpdateParameters,
-        Context context) {
+    private Mono<Response<FactoryInner>> updateWithResponseAsync(String resourceGroupName, String factoryName,
+        FactoryUpdateParameters factoryUpdateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -937,29 +747,20 @@ public final class FactoriesClientImpl implements FactoriesClient {
             return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (factoryUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter factoryUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter factoryUpdateParameters is required and cannot be null."));
         } else {
             factoryUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                this.client.getApiVersion(),
-                factoryUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, this.client.getApiVersion(), factoryUpdateParameters, accept, context);
     }
 
     /**
      * Updates a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param factoryUpdateParameters The parameters for updating a factory.
@@ -969,15 +770,15 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return factory resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FactoryInner> updateAsync(
-        String resourceGroupName, String factoryName, FactoryUpdateParameters factoryUpdateParameters) {
+    private Mono<FactoryInner> updateAsync(String resourceGroupName, String factoryName,
+        FactoryUpdateParameters factoryUpdateParameters) {
         return updateWithResponseAsync(resourceGroupName, factoryName, factoryUpdateParameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param factoryUpdateParameters The parameters for updating a factory.
@@ -988,17 +789,14 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return factory resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FactoryInner> updateWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        FactoryUpdateParameters factoryUpdateParameters,
-        Context context) {
+    public Response<FactoryInner> updateWithResponse(String resourceGroupName, String factoryName,
+        FactoryUpdateParameters factoryUpdateParameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, factoryName, factoryUpdateParameters, context).block();
     }
 
     /**
      * Updates a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param factoryUpdateParameters The parameters for updating a factory.
@@ -1008,37 +806,33 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return factory resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FactoryInner update(
-        String resourceGroupName, String factoryName, FactoryUpdateParameters factoryUpdateParameters) {
+    public FactoryInner update(String resourceGroupName, String factoryName,
+        FactoryUpdateParameters factoryUpdateParameters) {
         return updateWithResponse(resourceGroupName, factoryName, factoryUpdateParameters, Context.NONE).getValue();
     }
 
     /**
      * Gets a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param ifNoneMatch ETag of the factory entity. Should only be specified for get. If the ETag matches the existing
-     *     entity tag, or if * was provided, then no content will be returned.
+     * entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a factory along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FactoryInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String factoryName, String ifNoneMatch) {
+    private Mono<Response<FactoryInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String factoryName, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1050,27 +844,18 @@ public final class FactoriesClientImpl implements FactoriesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            this.client.getApiVersion(),
-                            ifNoneMatch,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, factoryName, this.client.getApiVersion(), ifNoneMatch, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param ifNoneMatch ETag of the factory entity. Should only be specified for get. If the ETag matches the existing
-     *     entity tag, or if * was provided, then no content will be returned.
+     * entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1078,19 +863,15 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return a factory along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FactoryInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String factoryName, String ifNoneMatch, Context context) {
+    private Mono<Response<FactoryInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String factoryName, String ifNoneMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1101,21 +882,13 @@ public final class FactoriesClientImpl implements FactoriesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                this.client.getApiVersion(),
-                ifNoneMatch,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, this.client.getApiVersion(), ifNoneMatch, accept, context);
     }
 
     /**
      * Gets a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1132,11 +905,11 @@ public final class FactoriesClientImpl implements FactoriesClient {
 
     /**
      * Gets a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param ifNoneMatch ETag of the factory entity. Should only be specified for get. If the ETag matches the existing
-     *     entity tag, or if * was provided, then no content will be returned.
+     * entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1144,14 +917,14 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return a factory along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FactoryInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String factoryName, String ifNoneMatch, Context context) {
+    public Response<FactoryInner> getByResourceGroupWithResponse(String resourceGroupName, String factoryName,
+        String ifNoneMatch, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, factoryName, ifNoneMatch, context).block();
     }
 
     /**
      * Gets a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1167,7 +940,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
 
     /**
      * Deletes a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1178,16 +951,12 @@ public final class FactoriesClientImpl implements FactoriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String factoryName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1198,23 +967,14 @@ public final class FactoriesClientImpl implements FactoriesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, factoryName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -1224,19 +984,15 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String factoryName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String factoryName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1247,20 +1003,13 @@ public final class FactoriesClientImpl implements FactoriesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1275,7 +1024,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
 
     /**
      * Deletes a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -1291,7 +1040,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
 
     /**
      * Deletes a factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1305,7 +1054,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
 
     /**
      * Get GitHub Access Token.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param gitHubAccessTokenRequest Get GitHub access token request definition.
@@ -1318,16 +1067,12 @@ public final class FactoriesClientImpl implements FactoriesClient {
     private Mono<Response<GitHubAccessTokenResponseInner>> getGitHubAccessTokenWithResponseAsync(
         String resourceGroupName, String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1337,32 +1082,22 @@ public final class FactoriesClientImpl implements FactoriesClient {
             return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (gitHubAccessTokenRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter gitHubAccessTokenRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter gitHubAccessTokenRequest is required and cannot be null."));
         } else {
             gitHubAccessTokenRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getGitHubAccessToken(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            this.client.getApiVersion(),
-                            gitHubAccessTokenRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.getGitHubAccessToken(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, factoryName, this.client.getApiVersion(),
+                gitHubAccessTokenRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get GitHub Access Token.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param gitHubAccessTokenRequest Get GitHub access token request definition.
@@ -1374,21 +1109,15 @@ public final class FactoriesClientImpl implements FactoriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GitHubAccessTokenResponseInner>> getGitHubAccessTokenWithResponseAsync(
-        String resourceGroupName,
-        String factoryName,
-        GitHubAccessTokenRequest gitHubAccessTokenRequest,
+        String resourceGroupName, String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1398,29 +1127,20 @@ public final class FactoriesClientImpl implements FactoriesClient {
             return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (gitHubAccessTokenRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter gitHubAccessTokenRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter gitHubAccessTokenRequest is required and cannot be null."));
         } else {
             gitHubAccessTokenRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getGitHubAccessToken(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                this.client.getApiVersion(),
-                gitHubAccessTokenRequest,
-                accept,
-                context);
+        return service.getGitHubAccessToken(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, factoryName, this.client.getApiVersion(), gitHubAccessTokenRequest, accept, context);
     }
 
     /**
      * Get GitHub Access Token.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param gitHubAccessTokenRequest Get GitHub access token request definition.
@@ -1430,15 +1150,15 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return gitHub Access Token on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GitHubAccessTokenResponseInner> getGitHubAccessTokenAsync(
-        String resourceGroupName, String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest) {
+    private Mono<GitHubAccessTokenResponseInner> getGitHubAccessTokenAsync(String resourceGroupName, String factoryName,
+        GitHubAccessTokenRequest gitHubAccessTokenRequest) {
         return getGitHubAccessTokenWithResponseAsync(resourceGroupName, factoryName, gitHubAccessTokenRequest)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get GitHub Access Token.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param gitHubAccessTokenRequest Get GitHub access token request definition.
@@ -1449,18 +1169,15 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return gitHub Access Token along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GitHubAccessTokenResponseInner> getGitHubAccessTokenWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        GitHubAccessTokenRequest gitHubAccessTokenRequest,
-        Context context) {
+    public Response<GitHubAccessTokenResponseInner> getGitHubAccessTokenWithResponse(String resourceGroupName,
+        String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest, Context context) {
         return getGitHubAccessTokenWithResponseAsync(resourceGroupName, factoryName, gitHubAccessTokenRequest, context)
             .block();
     }
 
     /**
      * Get GitHub Access Token.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param gitHubAccessTokenRequest Get GitHub access token request definition.
@@ -1470,15 +1187,15 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return gitHub Access Token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GitHubAccessTokenResponseInner getGitHubAccessToken(
-        String resourceGroupName, String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest) {
+    public GitHubAccessTokenResponseInner getGitHubAccessToken(String resourceGroupName, String factoryName,
+        GitHubAccessTokenRequest gitHubAccessTokenRequest) {
         return getGitHubAccessTokenWithResponse(resourceGroupName, factoryName, gitHubAccessTokenRequest, Context.NONE)
             .getValue();
     }
 
     /**
      * Get Data Plane access.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param policy Data Plane user access policy definition.
@@ -1488,19 +1205,15 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return data Plane access along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessPolicyResponseInner>> getDataPlaneAccessWithResponseAsync(
-        String resourceGroupName, String factoryName, UserAccessPolicy policy) {
+    private Mono<Response<AccessPolicyResponseInner>> getDataPlaneAccessWithResponseAsync(String resourceGroupName,
+        String factoryName, UserAccessPolicy policy) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1517,23 +1230,14 @@ public final class FactoriesClientImpl implements FactoriesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getDataPlaneAccess(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            this.client.getApiVersion(),
-                            policy,
-                            accept,
-                            context))
+                context -> service.getDataPlaneAccess(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, factoryName, this.client.getApiVersion(), policy, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get Data Plane access.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param policy Data Plane user access policy definition.
@@ -1544,19 +1248,15 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return data Plane access along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessPolicyResponseInner>> getDataPlaneAccessWithResponseAsync(
-        String resourceGroupName, String factoryName, UserAccessPolicy policy, Context context) {
+    private Mono<Response<AccessPolicyResponseInner>> getDataPlaneAccessWithResponseAsync(String resourceGroupName,
+        String factoryName, UserAccessPolicy policy, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1572,21 +1272,13 @@ public final class FactoriesClientImpl implements FactoriesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getDataPlaneAccess(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                this.client.getApiVersion(),
-                policy,
-                accept,
-                context);
+        return service.getDataPlaneAccess(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, this.client.getApiVersion(), policy, accept, context);
     }
 
     /**
      * Get Data Plane access.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param policy Data Plane user access policy definition.
@@ -1596,15 +1288,15 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return data Plane access on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AccessPolicyResponseInner> getDataPlaneAccessAsync(
-        String resourceGroupName, String factoryName, UserAccessPolicy policy) {
+    private Mono<AccessPolicyResponseInner> getDataPlaneAccessAsync(String resourceGroupName, String factoryName,
+        UserAccessPolicy policy) {
         return getDataPlaneAccessWithResponseAsync(resourceGroupName, factoryName, policy)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get Data Plane access.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param policy Data Plane user access policy definition.
@@ -1615,14 +1307,14 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return data Plane access along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessPolicyResponseInner> getDataPlaneAccessWithResponse(
-        String resourceGroupName, String factoryName, UserAccessPolicy policy, Context context) {
+    public Response<AccessPolicyResponseInner> getDataPlaneAccessWithResponse(String resourceGroupName,
+        String factoryName, UserAccessPolicy policy, Context context) {
         return getDataPlaneAccessWithResponseAsync(resourceGroupName, factoryName, policy, context).block();
     }
 
     /**
      * Get Data Plane access.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param policy Data Plane user access policy definition.
@@ -1632,16 +1324,17 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @return data Plane access.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessPolicyResponseInner getDataPlaneAccess(
-        String resourceGroupName, String factoryName, UserAccessPolicy policy) {
+    public AccessPolicyResponseInner getDataPlaneAccess(String resourceGroupName, String factoryName,
+        UserAccessPolicy policy) {
         return getDataPlaneAccessWithResponse(resourceGroupName, factoryName, policy, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1653,31 +1346,22 @@ public final class FactoriesClientImpl implements FactoriesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FactoryInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<FactoryInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1690,31 +1374,22 @@ public final class FactoriesClientImpl implements FactoriesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1726,32 +1401,24 @@ public final class FactoriesClientImpl implements FactoriesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FactoryInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<FactoryInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1764,23 +1431,13 @@ public final class FactoriesClientImpl implements FactoriesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

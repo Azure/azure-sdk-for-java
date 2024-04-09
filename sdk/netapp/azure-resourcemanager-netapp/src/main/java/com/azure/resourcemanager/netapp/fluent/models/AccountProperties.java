@@ -10,7 +10,9 @@ import com.azure.resourcemanager.netapp.models.ActiveDirectory;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** NetApp account properties. */
+/**
+ * NetApp account properties.
+ */
 @Fluent
 public final class AccountProperties {
     /*
@@ -37,13 +39,15 @@ public final class AccountProperties {
     @JsonProperty(value = "disableShowmount", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean disableShowmount;
 
-    /** Creates an instance of AccountProperties class. */
+    /**
+     * Creates an instance of AccountProperties class.
+     */
     public AccountProperties() {
     }
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -52,7 +56,7 @@ public final class AccountProperties {
 
     /**
      * Get the activeDirectories property: Active Directories.
-     *
+     * 
      * @return the activeDirectories value.
      */
     public List<ActiveDirectory> activeDirectories() {
@@ -61,7 +65,7 @@ public final class AccountProperties {
 
     /**
      * Set the activeDirectories property: Active Directories.
-     *
+     * 
      * @param activeDirectories the activeDirectories value to set.
      * @return the AccountProperties object itself.
      */
@@ -72,7 +76,7 @@ public final class AccountProperties {
 
     /**
      * Get the encryption property: Encryption settings.
-     *
+     * 
      * @return the encryption value.
      */
     public AccountEncryption encryption() {
@@ -81,7 +85,7 @@ public final class AccountProperties {
 
     /**
      * Set the encryption property: Encryption settings.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the AccountProperties object itself.
      */
@@ -93,7 +97,7 @@ public final class AccountProperties {
     /**
      * Get the disableShowmount property: Shows the status of disableShowmount for all volumes under the subscription,
      * null equals false.
-     *
+     * 
      * @return the disableShowmount value.
      */
     public Boolean disableShowmount() {
@@ -102,7 +106,7 @@ public final class AccountProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

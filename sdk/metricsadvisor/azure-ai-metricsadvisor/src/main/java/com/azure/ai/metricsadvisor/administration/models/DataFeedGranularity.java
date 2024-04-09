@@ -14,6 +14,12 @@ public final class DataFeedGranularity {
     private Integer customGranularityValue;
 
     /**
+     * Create a new instance of DataFeedGranularity.
+     */
+    public DataFeedGranularity() {
+    }
+
+    /**
      * Get the granularity of the time series.
      *
      * @return the granularity type of the time series.

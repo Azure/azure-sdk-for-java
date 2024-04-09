@@ -58,6 +58,6 @@ public final class PrivateEndpointConnectionsDeleteMockTests {
 
         manager
             .privateEndpointConnections()
-            .delete("unygaeqid", "qfatpxllrxcyjm", "a", com.azure.core.util.Context.NONE);
+            .delete("hdenxaulk", "akdkifmjnnawtqab", "xuckpggqoweyir", com.azure.core.util.Context.NONE);
     }
 }

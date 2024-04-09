@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The request history. */
+/**
+ * The request history.
+ */
 @Fluent
 public final class RequestHistoryProperties {
     /*
@@ -35,13 +37,15 @@ public final class RequestHistoryProperties {
     @JsonProperty(value = "response")
     private Response response;
 
-    /** Creates an instance of RequestHistoryProperties class. */
+    /**
+     * Creates an instance of RequestHistoryProperties class.
+     */
     public RequestHistoryProperties() {
     }
 
     /**
      * Get the startTime property: The time the request started.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -50,7 +54,7 @@ public final class RequestHistoryProperties {
 
     /**
      * Set the startTime property: The time the request started.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the RequestHistoryProperties object itself.
      */
@@ -61,7 +65,7 @@ public final class RequestHistoryProperties {
 
     /**
      * Get the endTime property: The time the request ended.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -70,7 +74,7 @@ public final class RequestHistoryProperties {
 
     /**
      * Set the endTime property: The time the request ended.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the RequestHistoryProperties object itself.
      */
@@ -81,7 +85,7 @@ public final class RequestHistoryProperties {
 
     /**
      * Get the request property: The request.
-     *
+     * 
      * @return the request value.
      */
     public Request request() {
@@ -90,7 +94,7 @@ public final class RequestHistoryProperties {
 
     /**
      * Set the request property: The request.
-     *
+     * 
      * @param request the request value to set.
      * @return the RequestHistoryProperties object itself.
      */
@@ -101,7 +105,7 @@ public final class RequestHistoryProperties {
 
     /**
      * Get the response property: The response.
-     *
+     * 
      * @return the response value.
      */
     public Response response() {
@@ -110,7 +114,7 @@ public final class RequestHistoryProperties {
 
     /**
      * Set the response property: The response.
-     *
+     * 
      * @param response the response value to set.
      * @return the RequestHistoryProperties object itself.
      */
@@ -121,7 +125,7 @@ public final class RequestHistoryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

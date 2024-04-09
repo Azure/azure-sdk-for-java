@@ -9,7 +9,9 @@ import com.azure.resourcemanager.eventgrid.fluent.models.PrivateLinkResourceInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the List private link resources operation. */
+/**
+ * Result of the List private link resources operation.
+ */
 @Fluent
 public final class PrivateLinkResourcesListResult {
     /*
@@ -24,13 +26,15 @@ public final class PrivateLinkResourcesListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PrivateLinkResourcesListResult class. */
+    /**
+     * Creates an instance of PrivateLinkResourcesListResult class.
+     */
     public PrivateLinkResourcesListResult() {
     }
 
     /**
      * Get the value property: A collection of private link resources.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateLinkResourceInner> value() {
@@ -39,7 +43,7 @@ public final class PrivateLinkResourcesListResult {
 
     /**
      * Set the value property: A collection of private link resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateLinkResourcesListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class PrivateLinkResourcesListResult {
 
     /**
      * Get the nextLink property: A link for the next page of private link resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class PrivateLinkResourcesListResult {
 
     /**
      * Set the nextLink property: A link for the next page of private link resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PrivateLinkResourcesListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class PrivateLinkResourcesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import java.util.Locale;
 
 /**
- * The {@link DetectLanguageInput} model.
+ * The {@code DetectLanguageInput} model.
  */
 @Immutable
 public final class DetectLanguageInput {

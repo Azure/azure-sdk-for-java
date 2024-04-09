@@ -30,7 +30,7 @@ public class WorkflowTest {
     private Database database;
     private DocumentCollection collection;
 
-    @Test(groups = "simple", timeOut = TIMEOUT)
+    @Test(groups = "fast", timeOut = TIMEOUT)
     public void readMyWritesCLI() throws Exception {
         String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
                 " -databaseId %s -collectionId %s" +
@@ -45,7 +45,7 @@ public class WorkflowTest {
         Main.main(StringUtils.split(cmd));
     }
 
-    @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "simple", timeOut = TIMEOUT)
+    @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
     public void readMyWrites(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
         String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
@@ -86,7 +86,7 @@ public class WorkflowTest {
         assertThat(success).hasValue(numberOfOperations);
     }
 
-    @Test(groups = "simple", timeOut = TIMEOUT)
+    @Test(groups = "fast", timeOut = TIMEOUT)
     public void writeLatencyCLI() throws Exception {
         String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
                 " -databaseId %s -collectionId %s" +
@@ -101,7 +101,7 @@ public class WorkflowTest {
         Main.main(StringUtils.split(cmd));
     }
 
-    @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "simple", timeOut = TIMEOUT)
+    @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
     public void writeLatency(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
         String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
@@ -142,7 +142,7 @@ public class WorkflowTest {
         assertThat(success).hasValue(numberOfOperations);
     }
 
-    @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "simple", timeOut = TIMEOUT)
+    @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
     public void writeThroughput(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
         String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
@@ -183,7 +183,7 @@ public class WorkflowTest {
         assertThat(success).hasValue(numberOfOperations);
     }
 
-    @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "simple", timeOut = TIMEOUT)
+    @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
     public void readLatency(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
         String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
@@ -224,7 +224,7 @@ public class WorkflowTest {
         assertThat(success).hasValue(numberOfOperations);
     }
 
-    @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "simple", timeOut = TIMEOUT)
+    @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
     public void readThroughput(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
         String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
@@ -265,7 +265,7 @@ public class WorkflowTest {
         assertThat(success).hasValue(numberOfOperations);
     }
 
-    @BeforeClass(groups = "simple", timeOut = TIMEOUT)
+    @BeforeClass(groups = "fast", timeOut = TIMEOUT)
     public void before_WorkflowTest() {
         RequestOptions options = new RequestOptions();
         options.setOfferThroughput(10000);
@@ -286,7 +286,7 @@ public class WorkflowTest {
         };
     }
 
-    @AfterClass(groups = "simple", timeOut = TIMEOUT)
+    @AfterClass(groups = "fast", timeOut = TIMEOUT)
     public void afterClass() {
         AsyncDocumentClient housekeepingClient = Utils.housekeepingClient();
         Utils.safeCleanDatabases(housekeepingClient);

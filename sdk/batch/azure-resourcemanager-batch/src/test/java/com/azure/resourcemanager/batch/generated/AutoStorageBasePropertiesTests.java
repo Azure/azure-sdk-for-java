@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AutoStorageBasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutoStorageBaseProperties model =
-            BinaryData
-                .fromString(
-                    "{\"storageAccountId\":\"btcqq\",\"authenticationMode\":\"StorageKeys\",\"nodeIdentityReference\":{\"resourceId\":\"hqgnufooojywif\"}}")
-                .toObject(AutoStorageBaseProperties.class);
+        AutoStorageBaseProperties model = BinaryData.fromString(
+            "{\"storageAccountId\":\"btcqq\",\"authenticationMode\":\"StorageKeys\",\"nodeIdentityReference\":{\"resourceId\":\"hqgnufooojywif\"}}")
+            .toObject(AutoStorageBaseProperties.class);
         Assertions.assertEquals("btcqq", model.storageAccountId());
         Assertions.assertEquals(AutoStorageAuthenticationMode.STORAGE_KEYS, model.authenticationMode());
         Assertions.assertEquals("hqgnufooojywif", model.nodeIdentityReference().resourceId());
@@ -25,11 +23,9 @@ public final class AutoStorageBasePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoStorageBaseProperties model =
-            new AutoStorageBaseProperties()
-                .withStorageAccountId("btcqq")
-                .withAuthenticationMode(AutoStorageAuthenticationMode.STORAGE_KEYS)
-                .withNodeIdentityReference(new ComputeNodeIdentityReference().withResourceId("hqgnufooojywif"));
+        AutoStorageBaseProperties model = new AutoStorageBaseProperties().withStorageAccountId("btcqq")
+            .withAuthenticationMode(AutoStorageAuthenticationMode.STORAGE_KEYS)
+            .withNodeIdentityReference(new ComputeNodeIdentityReference().withResourceId("hqgnufooojywif"));
         model = BinaryData.fromObject(model).toObject(AutoStorageBaseProperties.class);
         Assertions.assertEquals("btcqq", model.storageAccountId());
         Assertions.assertEquals(AutoStorageAuthenticationMode.STORAGE_KEYS, model.authenticationMode());

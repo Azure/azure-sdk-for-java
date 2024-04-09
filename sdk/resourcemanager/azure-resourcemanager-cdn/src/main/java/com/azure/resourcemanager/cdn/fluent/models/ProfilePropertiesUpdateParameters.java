@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.cdn.models.ProfileLogScrubbing;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JSON object containing profile update parameters. */
+/**
+ * The JSON object containing profile update parameters.
+ */
 @Fluent
 public final class ProfilePropertiesUpdateParameters {
     /*
@@ -17,10 +20,22 @@ public final class ProfilePropertiesUpdateParameters {
     @JsonProperty(value = "originResponseTimeoutSeconds")
     private Integer originResponseTimeoutSeconds;
 
+    /*
+     * Defines rules to scrub sensitive fields in logs
+     */
+    @JsonProperty(value = "logScrubbing")
+    private ProfileLogScrubbing logScrubbing;
+
     /**
-     * Get the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin. When
-     * timeout is reached, the request fails and returns.
-     *
+     * Creates an instance of ProfilePropertiesUpdateParameters class.
+     */
+    public ProfilePropertiesUpdateParameters() {
+    }
+
+    /**
+     * Get the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin.
+     * When timeout is reached, the request fails and returns.
+     * 
      * @return the originResponseTimeoutSeconds value.
      */
     public Integer originResponseTimeoutSeconds() {
@@ -28,9 +43,9 @@ public final class ProfilePropertiesUpdateParameters {
     }
 
     /**
-     * Set the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin. When
-     * timeout is reached, the request fails and returns.
-     *
+     * Set the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin.
+     * When timeout is reached, the request fails and returns.
+     * 
      * @param originResponseTimeoutSeconds the originResponseTimeoutSeconds value to set.
      * @return the ProfilePropertiesUpdateParameters object itself.
      */
@@ -40,10 +55,33 @@ public final class ProfilePropertiesUpdateParameters {
     }
 
     /**
+     * Get the logScrubbing property: Defines rules to scrub sensitive fields in logs.
+     * 
+     * @return the logScrubbing value.
+     */
+    public ProfileLogScrubbing logScrubbing() {
+        return this.logScrubbing;
+    }
+
+    /**
+     * Set the logScrubbing property: Defines rules to scrub sensitive fields in logs.
+     * 
+     * @param logScrubbing the logScrubbing value to set.
+     * @return the ProfilePropertiesUpdateParameters object itself.
+     */
+    public ProfilePropertiesUpdateParameters withLogScrubbing(ProfileLogScrubbing logScrubbing) {
+        this.logScrubbing = logScrubbing;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (logScrubbing() != null) {
+            logScrubbing().validate();
+        }
     }
 }

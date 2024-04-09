@@ -19,13 +19,13 @@ public final class UserSessionListTests {
         UserSessionList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"objectId\":\"obyu\",\"userPrincipalName\":\"rpqlp\",\"applicationType\":\"Desktop\",\"sessionState\":\"Disconnected\",\"activeDirectoryUserName\":\"qgbdbuta\",\"createTime\":\"2021-06-13T06:16:01Z\"},\"id\":\"btkuwhh\",\"name\":\"hykojoxafnndlpic\",\"type\":\"koymkcd\"},{\"properties\":{\"objectId\":\"kkpwdreqnovvq\",\"userPrincipalName\":\"vljxywsu\",\"applicationType\":\"RemoteApp\",\"sessionState\":\"Active\",\"activeDirectoryUserName\":\"dsytgadgvr\",\"createTime\":\"2021-05-05T10:23:30Z\"},\"id\":\"en\",\"name\":\"qnzarrwl\",\"type\":\"uu\"},{\"properties\":{\"objectId\":\"kacewiipfp\",\"userPrincipalName\":\"ji\",\"applicationType\":\"RemoteApp\",\"sessionState\":\"Disconnected\",\"activeDirectoryUserName\":\"ohqkvpuvksgpls\",\"createTime\":\"2021-01-28T10:41:26Z\"},\"id\":\"ynfs\",\"name\":\"n\",\"type\":\"jphuopxodlqi\"}],\"nextLink\":\"torzih\"}")
+                    "{\"value\":[{\"properties\":{\"objectId\":\"p\",\"userPrincipalName\":\"cstwity\",\"applicationType\":\"Desktop\",\"sessionState\":\"UserProfileDiskMounted\",\"activeDirectoryUserName\":\"cedcpnmdy\",\"createTime\":\"2021-08-04T00:15:47Z\"},\"id\":\"wzxltjc\",\"name\":\"nhltiugcxn\",\"type\":\"vvwxqi\"},{\"properties\":{\"objectId\":\"nyowxwlmdjrkvfg\",\"userPrincipalName\":\"fvpdbo\",\"applicationType\":\"Desktop\",\"sessionState\":\"Disconnected\",\"activeDirectoryUserName\":\"j\",\"createTime\":\"2021-03-04T03:48:03Z\"},\"id\":\"krribdeibqi\",\"name\":\"qkgh\",\"type\":\"xndzwm\"},{\"properties\":{\"objectId\":\"ajpjo\",\"userPrincipalName\":\"kqnyh\",\"applicationType\":\"RemoteApp\",\"sessionState\":\"Active\",\"activeDirectoryUserName\":\"ivfxzsjabibsyst\",\"createTime\":\"2021-05-13T21:12:04Z\"},\"id\":\"sdjpvkvp\",\"name\":\"jxbkzbzkdvn\",\"type\":\"jabudurgkakmo\"},{\"properties\":{\"objectId\":\"jk\",\"userPrincipalName\":\"fhmouwq\",\"applicationType\":\"RemoteApp\",\"sessionState\":\"Active\",\"activeDirectoryUserName\":\"eeyebi\",\"createTime\":\"2021-05-17T10:43:36Z\"},\"id\":\"ayuhqlbjbsy\",\"name\":\"bqwrvtldgm\",\"type\":\"pgvmpipaslthaqfx\"}],\"nextLink\":\"mwutwbdsre\"}")
                 .toObject(UserSessionList.class);
-        Assertions.assertEquals("rpqlp", model.value().get(0).userPrincipalName());
+        Assertions.assertEquals("cstwity", model.value().get(0).userPrincipalName());
         Assertions.assertEquals(ApplicationType.DESKTOP, model.value().get(0).applicationType());
-        Assertions.assertEquals(SessionState.DISCONNECTED, model.value().get(0).sessionState());
-        Assertions.assertEquals("qgbdbuta", model.value().get(0).activeDirectoryUsername());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-13T06:16:01Z"), model.value().get(0).createTime());
+        Assertions.assertEquals(SessionState.USER_PROFILE_DISK_MOUNTED, model.value().get(0).sessionState());
+        Assertions.assertEquals("cedcpnmdy", model.value().get(0).activeDirectoryUsername());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-04T00:15:47Z"), model.value().get(0).createTime());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,28 +36,34 @@ public final class UserSessionListTests {
                     Arrays
                         .asList(
                             new UserSessionInner()
-                                .withUserPrincipalName("rpqlp")
+                                .withUserPrincipalName("cstwity")
+                                .withApplicationType(ApplicationType.DESKTOP)
+                                .withSessionState(SessionState.USER_PROFILE_DISK_MOUNTED)
+                                .withActiveDirectoryUsername("cedcpnmdy")
+                                .withCreateTime(OffsetDateTime.parse("2021-08-04T00:15:47Z")),
+                            new UserSessionInner()
+                                .withUserPrincipalName("fvpdbo")
                                 .withApplicationType(ApplicationType.DESKTOP)
                                 .withSessionState(SessionState.DISCONNECTED)
-                                .withActiveDirectoryUsername("qgbdbuta")
-                                .withCreateTime(OffsetDateTime.parse("2021-06-13T06:16:01Z")),
+                                .withActiveDirectoryUsername("j")
+                                .withCreateTime(OffsetDateTime.parse("2021-03-04T03:48:03Z")),
                             new UserSessionInner()
-                                .withUserPrincipalName("vljxywsu")
+                                .withUserPrincipalName("kqnyh")
                                 .withApplicationType(ApplicationType.REMOTE_APP)
                                 .withSessionState(SessionState.ACTIVE)
-                                .withActiveDirectoryUsername("dsytgadgvr")
-                                .withCreateTime(OffsetDateTime.parse("2021-05-05T10:23:30Z")),
+                                .withActiveDirectoryUsername("ivfxzsjabibsyst")
+                                .withCreateTime(OffsetDateTime.parse("2021-05-13T21:12:04Z")),
                             new UserSessionInner()
-                                .withUserPrincipalName("ji")
+                                .withUserPrincipalName("fhmouwq")
                                 .withApplicationType(ApplicationType.REMOTE_APP)
-                                .withSessionState(SessionState.DISCONNECTED)
-                                .withActiveDirectoryUsername("ohqkvpuvksgpls")
-                                .withCreateTime(OffsetDateTime.parse("2021-01-28T10:41:26Z"))));
+                                .withSessionState(SessionState.ACTIVE)
+                                .withActiveDirectoryUsername("eeyebi")
+                                .withCreateTime(OffsetDateTime.parse("2021-05-17T10:43:36Z"))));
         model = BinaryData.fromObject(model).toObject(UserSessionList.class);
-        Assertions.assertEquals("rpqlp", model.value().get(0).userPrincipalName());
+        Assertions.assertEquals("cstwity", model.value().get(0).userPrincipalName());
         Assertions.assertEquals(ApplicationType.DESKTOP, model.value().get(0).applicationType());
-        Assertions.assertEquals(SessionState.DISCONNECTED, model.value().get(0).sessionState());
-        Assertions.assertEquals("qgbdbuta", model.value().get(0).activeDirectoryUsername());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-13T06:16:01Z"), model.value().get(0).createTime());
+        Assertions.assertEquals(SessionState.USER_PROFILE_DISK_MOUNTED, model.value().get(0).sessionState());
+        Assertions.assertEquals("cedcpnmdy", model.value().get(0).activeDirectoryUsername());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-04T00:15:47Z"), model.value().get(0).createTime());
     }
 }

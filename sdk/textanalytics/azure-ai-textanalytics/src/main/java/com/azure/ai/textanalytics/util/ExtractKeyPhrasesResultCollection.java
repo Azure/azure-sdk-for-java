@@ -15,7 +15,7 @@ public class ExtractKeyPhrasesResultCollection extends IterableStream<ExtractKey
     private final String modelVersion;
     private final TextDocumentBatchStatistics statistics;
     /**
-     * Creates a {@link ExtractKeyPhrasesResultCollection} model that maintains a list of {@link ExtractKeyPhraseResult}
+     * Creates a {@code ExtractKeyPhrasesResultCollection} model that maintains a list of {@link ExtractKeyPhraseResult}
      * along with model version and batch's statistics.
      *
      * @param documentResults A list of {@link ExtractKeyPhraseResult}.

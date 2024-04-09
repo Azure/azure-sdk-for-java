@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
 import java.time.OffsetDateTime;
 
 /**
- * The {@link ClassifyDocumentOperationDetail} model.
+ * The {@code ClassifyDocumentOperationDetail} model.
  */
 @Immutable
 public final class ClassifyDocumentOperationDetail {
@@ -55,18 +55,24 @@ public final class ClassifyDocumentOperationDetail {
     }
 
     /**
-     * Gets the operationId property of the {@link ClassifyDocumentOperationDetail}.
+     * Constructs a {@code ClassifyDocumentOperationDetail} model.
+     */
+    public ClassifyDocumentOperationDetail() {
+    }
+
+    /**
+     * Gets the operationId property of the {@code ClassifyDocumentOperationDetail}.
      *
-     * @return The operationId property of the {@link ClassifyDocumentOperationDetail}.
+     * @return The operationId property of the {@code ClassifyDocumentOperationDetail}.
      */
     public String getOperationId() {
         return operationId;
     }
 
     /**
-     * Gets the displayName property of the {@link ClassifyDocumentOperationDetail}.
+     * Gets the displayName property of the {@code ClassifyDocumentOperationDetail}.
      *
-     * @return The displayName property of the {@link ClassifyDocumentOperationDetail}.
+     * @return The displayName property of the {@code ClassifyDocumentOperationDetail}.
      */
     public String getDisplayName() {
         return displayName;

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a connection monitor output destination. */
+/**
+ * Describes a connection monitor output destination.
+ */
 @Fluent
 public final class ConnectionMonitorOutput {
     /*
@@ -22,13 +24,15 @@ public final class ConnectionMonitorOutput {
     @JsonProperty(value = "workspaceSettings")
     private ConnectionMonitorWorkspaceSettings workspaceSettings;
 
-    /** Creates an instance of ConnectionMonitorOutput class. */
+    /**
+     * Creates an instance of ConnectionMonitorOutput class.
+     */
     public ConnectionMonitorOutput() {
     }
 
     /**
      * Get the type property: Connection monitor output destination type. Currently, only "Workspace" is supported.
-     *
+     * 
      * @return the type value.
      */
     public OutputType type() {
@@ -37,7 +41,7 @@ public final class ConnectionMonitorOutput {
 
     /**
      * Set the type property: Connection monitor output destination type. Currently, only "Workspace" is supported.
-     *
+     * 
      * @param type the type value to set.
      * @return the ConnectionMonitorOutput object itself.
      */
@@ -48,7 +52,7 @@ public final class ConnectionMonitorOutput {
 
     /**
      * Get the workspaceSettings property: Describes the settings for producing output into a log analytics workspace.
-     *
+     * 
      * @return the workspaceSettings value.
      */
     public ConnectionMonitorWorkspaceSettings workspaceSettings() {
@@ -57,7 +61,7 @@ public final class ConnectionMonitorOutput {
 
     /**
      * Set the workspaceSettings property: Describes the settings for producing output into a log analytics workspace.
-     *
+     * 
      * @param workspaceSettings the workspaceSettings value to set.
      * @return the ConnectionMonitorOutput object itself.
      */
@@ -68,7 +72,7 @@ public final class ConnectionMonitorOutput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

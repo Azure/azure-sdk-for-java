@@ -4,10 +4,13 @@
 
 package com.azure.resourcemanager.dashboard.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.dashboard.fluent.models.ManagedGrafanaInner;
+import com.azure.resourcemanager.dashboard.models.EnterpriseDetails;
+import com.azure.resourcemanager.dashboard.models.GrafanaAvailablePluginListResponse;
 import com.azure.resourcemanager.dashboard.models.ManagedGrafana;
 import com.azure.resourcemanager.dashboard.models.ManagedGrafanaProperties;
 import com.azure.resourcemanager.dashboard.models.ManagedGrafanaPropertiesUpdateParameters;
@@ -95,20 +98,14 @@ public final class ManagedGrafanaImpl implements ManagedGrafana, ManagedGrafana.
     }
 
     public ManagedGrafana create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGrafanas()
-                .create(resourceGroupName, workspaceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getGrafanas().create(resourceGroupName, workspaceName,
+            this.innerModel(), Context.NONE);
         return this;
     }
 
     public ManagedGrafana create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGrafanas()
-                .create(resourceGroupName, workspaceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getGrafanas().create(resourceGroupName, workspaceName,
+            this.innerModel(), context);
         return this;
     }
 
@@ -124,27 +121,19 @@ public final class ManagedGrafanaImpl implements ManagedGrafana, ManagedGrafana.
     }
 
     public ManagedGrafana apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGrafanas()
-                .updateWithResponse(resourceGroupName, workspaceName, updateRequestBodyParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getGrafanas()
+            .updateWithResponse(resourceGroupName, workspaceName, updateRequestBodyParameters, Context.NONE).getValue();
         return this;
     }
 
     public ManagedGrafana apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGrafanas()
-                .updateWithResponse(resourceGroupName, workspaceName, updateRequestBodyParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getGrafanas()
+            .updateWithResponse(resourceGroupName, workspaceName, updateRequestBodyParameters, context).getValue();
         return this;
     }
 
-    ManagedGrafanaImpl(
-        ManagedGrafanaInner innerObject, com.azure.resourcemanager.dashboard.DashboardManager serviceManager) {
+    ManagedGrafanaImpl(ManagedGrafanaInner innerObject,
+        com.azure.resourcemanager.dashboard.DashboardManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -152,23 +141,31 @@ public final class ManagedGrafanaImpl implements ManagedGrafana, ManagedGrafana.
     }
 
     public ManagedGrafana refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGrafanas()
-                .getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getGrafanas()
+            .getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();
         return this;
     }
 
     public ManagedGrafana refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGrafanas()
-                .getByResourceGroupWithResponse(resourceGroupName, workspaceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getGrafanas()
+            .getByResourceGroupWithResponse(resourceGroupName, workspaceName, context).getValue();
         return this;
+    }
+
+    public Response<EnterpriseDetails> checkEnterpriseDetailsWithResponse(Context context) {
+        return serviceManager.grafanas().checkEnterpriseDetailsWithResponse(resourceGroupName, workspaceName, context);
+    }
+
+    public EnterpriseDetails checkEnterpriseDetails() {
+        return serviceManager.grafanas().checkEnterpriseDetails(resourceGroupName, workspaceName);
+    }
+
+    public Response<GrafanaAvailablePluginListResponse> fetchAvailablePluginsWithResponse(Context context) {
+        return serviceManager.grafanas().fetchAvailablePluginsWithResponse(resourceGroupName, workspaceName, context);
+    }
+
+    public GrafanaAvailablePluginListResponse fetchAvailablePlugins() {
+        return serviceManager.grafanas().fetchAvailablePlugins(resourceGroupName, workspaceName);
     }
 
     public ManagedGrafanaImpl withRegion(Region location) {
@@ -192,8 +189,13 @@ public final class ManagedGrafanaImpl implements ManagedGrafana, ManagedGrafana.
     }
 
     public ManagedGrafanaImpl withSku(ResourceSku sku) {
-        this.innerModel().withSku(sku);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withSku(sku);
+            return this;
+        } else {
+            this.updateRequestBodyParameters.withSku(sku);
+            return this;
+        }
     }
 
     public ManagedGrafanaImpl withProperties(ManagedGrafanaProperties properties) {

@@ -7,15 +7,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SingleIndexUtilizationEntity {
 
-    @JsonProperty(value = "FilterExpression", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "FilterExpression", access = JsonProperty.Access.READ_WRITE)
     private String filterExpression;
-    @JsonProperty(value = "IndexSpec", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "IndexSpec", access = JsonProperty.Access.READ_WRITE)
     private String indexDocumentExpression;
-    @JsonProperty(value = "FilterPreciseSet", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "FilterPreciseSet", access = JsonProperty.Access.READ_WRITE)
     private boolean filterExpressionPrecision;
-    @JsonProperty(value = "IndexPreciseSet", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "IndexPreciseSet", access = JsonProperty.Access.READ_WRITE)
     private boolean indexPlanFullFidelity;
-    @JsonProperty(value = "IndexImpactScore", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "IndexImpactScore", access = JsonProperty.Access.READ_WRITE)
     private String indexImpactScore;
 
     SingleIndexUtilizationEntity() {}

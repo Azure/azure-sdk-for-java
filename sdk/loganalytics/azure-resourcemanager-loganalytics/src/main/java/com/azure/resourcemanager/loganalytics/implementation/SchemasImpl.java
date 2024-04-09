@@ -26,15 +26,6 @@ public final class SchemasImpl implements Schemas {
         this.serviceManager = serviceManager;
     }
 
-    public SearchGetSchemaResponse get(String resourceGroupName, String workspaceName) {
-        SearchGetSchemaResponseInner inner = this.serviceClient().get(resourceGroupName, workspaceName);
-        if (inner != null) {
-            return new SearchGetSchemaResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SearchGetSchemaResponse> getWithResponse(
         String resourceGroupName, String workspaceName, Context context) {
         Response<SearchGetSchemaResponseInner> inner =
@@ -45,6 +36,15 @@ public final class SchemasImpl implements Schemas {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SearchGetSchemaResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SearchGetSchemaResponse get(String resourceGroupName, String workspaceName) {
+        SearchGetSchemaResponseInner inner = this.serviceClient().get(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return new SearchGetSchemaResponseImpl(inner, this.manager());
         } else {
             return null;
         }

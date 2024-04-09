@@ -11,7 +11,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.LogOption;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.LogType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Log Settings for Firewall. */
+/**
+ * Log Settings for Firewall.
+ */
 @Fluent
 public final class LogSettingsInner {
     /*
@@ -56,13 +58,15 @@ public final class LogSettingsInner {
     @JsonProperty(value = "decryptLogDestination")
     private LogDestination decryptLogDestination;
 
-    /** Creates an instance of LogSettingsInner class. */
+    /**
+     * Creates an instance of LogSettingsInner class.
+     */
     public LogSettingsInner() {
     }
 
     /**
      * Get the logType property: One of possible log type.
-     *
+     * 
      * @return the logType value.
      */
     public LogType logType() {
@@ -71,7 +75,7 @@ public final class LogSettingsInner {
 
     /**
      * Set the logType property: One of possible log type.
-     *
+     * 
      * @param logType the logType value to set.
      * @return the LogSettingsInner object itself.
      */
@@ -82,7 +86,7 @@ public final class LogSettingsInner {
 
     /**
      * Get the logOption property: Log option SAME/INDIVIDUAL.
-     *
+     * 
      * @return the logOption value.
      */
     public LogOption logOption() {
@@ -91,7 +95,7 @@ public final class LogSettingsInner {
 
     /**
      * Set the logOption property: Log option SAME/INDIVIDUAL.
-     *
+     * 
      * @param logOption the logOption value to set.
      * @return the LogSettingsInner object itself.
      */
@@ -102,7 +106,7 @@ public final class LogSettingsInner {
 
     /**
      * Get the applicationInsights property: Application Insight details.
-     *
+     * 
      * @return the applicationInsights value.
      */
     public ApplicationInsights applicationInsights() {
@@ -111,7 +115,7 @@ public final class LogSettingsInner {
 
     /**
      * Set the applicationInsights property: Application Insight details.
-     *
+     * 
      * @param applicationInsights the applicationInsights value to set.
      * @return the LogSettingsInner object itself.
      */
@@ -122,7 +126,7 @@ public final class LogSettingsInner {
 
     /**
      * Get the commonDestination property: Common destination configurations.
-     *
+     * 
      * @return the commonDestination value.
      */
     public LogDestination commonDestination() {
@@ -131,7 +135,7 @@ public final class LogSettingsInner {
 
     /**
      * Set the commonDestination property: Common destination configurations.
-     *
+     * 
      * @param commonDestination the commonDestination value to set.
      * @return the LogSettingsInner object itself.
      */
@@ -142,7 +146,7 @@ public final class LogSettingsInner {
 
     /**
      * Get the trafficLogDestination property: Traffic destination configurations.
-     *
+     * 
      * @return the trafficLogDestination value.
      */
     public LogDestination trafficLogDestination() {
@@ -151,7 +155,7 @@ public final class LogSettingsInner {
 
     /**
      * Set the trafficLogDestination property: Traffic destination configurations.
-     *
+     * 
      * @param trafficLogDestination the trafficLogDestination value to set.
      * @return the LogSettingsInner object itself.
      */
@@ -162,7 +166,7 @@ public final class LogSettingsInner {
 
     /**
      * Get the threatLogDestination property: Threat destination configurations.
-     *
+     * 
      * @return the threatLogDestination value.
      */
     public LogDestination threatLogDestination() {
@@ -171,7 +175,7 @@ public final class LogSettingsInner {
 
     /**
      * Set the threatLogDestination property: Threat destination configurations.
-     *
+     * 
      * @param threatLogDestination the threatLogDestination value to set.
      * @return the LogSettingsInner object itself.
      */
@@ -182,7 +186,7 @@ public final class LogSettingsInner {
 
     /**
      * Get the decryptLogDestination property: Decrypt destination configurations.
-     *
+     * 
      * @return the decryptLogDestination value.
      */
     public LogDestination decryptLogDestination() {
@@ -191,7 +195,7 @@ public final class LogSettingsInner {
 
     /**
      * Set the decryptLogDestination property: Decrypt destination configurations.
-     *
+     * 
      * @param decryptLogDestination the decryptLogDestination value to set.
      * @return the LogSettingsInner object itself.
      */
@@ -202,7 +206,7 @@ public final class LogSettingsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

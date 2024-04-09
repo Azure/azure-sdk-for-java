@@ -15,8 +15,8 @@ import com.azure.core.util.HttpClientOptions;
  * introduced.
  */
 public final class JdkHttpClientProvider implements HttpClientProvider {
-    private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING =
-        Configuration.getGlobalConfiguration().get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
+    private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING
+        = Configuration.getGlobalConfiguration().get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
     private final boolean enableHttpClientSharing;
 
     // Enum Singleton Pattern
@@ -63,7 +63,10 @@ public final class JdkHttpClientProvider implements HttpClientProvider {
         JdkHttpClientBuilder builder = new JdkHttpClientBuilder();
         builder = builder.proxy(clientOptions.getProxyOptions())
             .configuration(clientOptions.getConfiguration())
-            .connectionTimeout(clientOptions.getConnectTimeout());
+            .connectionTimeout(clientOptions.getConnectTimeout())
+            .writeTimeout(clientOptions.getWriteTimeout())
+            .responseTimeout(clientOptions.getResponseTimeout())
+            .readTimeout(clientOptions.getReadTimeout());
 
         return builder.build();
     }

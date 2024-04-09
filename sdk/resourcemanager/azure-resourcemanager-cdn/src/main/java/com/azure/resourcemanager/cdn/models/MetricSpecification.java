@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Metric specification of operation. */
+/**
+ * Metric specification of operation.
+ */
 @Fluent
 public final class MetricSpecification {
     /*
@@ -78,8 +80,14 @@ public final class MetricSpecification {
     private Boolean isInternal;
 
     /**
+     * Creates an instance of MetricSpecification class.
+     */
+    public MetricSpecification() {
+    }
+
+    /**
      * Get the name property: Name of metric specification.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -88,7 +96,7 @@ public final class MetricSpecification {
 
     /**
      * Set the name property: Name of metric specification.
-     *
+     * 
      * @param name the name value to set.
      * @return the MetricSpecification object itself.
      */
@@ -99,7 +107,7 @@ public final class MetricSpecification {
 
     /**
      * Get the displayName property: Display name of metric specification.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -108,7 +116,7 @@ public final class MetricSpecification {
 
     /**
      * Set the displayName property: Display name of metric specification.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MetricSpecification object itself.
      */
@@ -119,7 +127,7 @@ public final class MetricSpecification {
 
     /**
      * Get the displayDescription property: Display description of metric specification.
-     *
+     * 
      * @return the displayDescription value.
      */
     public String displayDescription() {
@@ -128,7 +136,7 @@ public final class MetricSpecification {
 
     /**
      * Set the displayDescription property: Display description of metric specification.
-     *
+     * 
      * @param displayDescription the displayDescription value to set.
      * @return the MetricSpecification object itself.
      */
@@ -139,7 +147,7 @@ public final class MetricSpecification {
 
     /**
      * Get the unit property: The metric unit. Possible values include: 'Bytes', 'Count', 'Milliseconds'.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -148,7 +156,7 @@ public final class MetricSpecification {
 
     /**
      * Set the unit property: The metric unit. Possible values include: 'Bytes', 'Count', 'Milliseconds'.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the MetricSpecification object itself.
      */
@@ -160,7 +168,7 @@ public final class MetricSpecification {
     /**
      * Get the aggregationType property: The metric aggregation type. Possible values include: 'Average', 'Count',
      * 'Total'.
-     *
+     * 
      * @return the aggregationType value.
      */
     public String aggregationType() {
@@ -170,7 +178,7 @@ public final class MetricSpecification {
     /**
      * Set the aggregationType property: The metric aggregation type. Possible values include: 'Average', 'Count',
      * 'Total'.
-     *
+     * 
      * @param aggregationType the aggregationType value to set.
      * @return the MetricSpecification object itself.
      */
@@ -181,7 +189,7 @@ public final class MetricSpecification {
 
     /**
      * Get the availabilities property: Retention policies of a resource metric.
-     *
+     * 
      * @return the availabilities value.
      */
     public List<MetricAvailability> availabilities() {
@@ -190,7 +198,7 @@ public final class MetricSpecification {
 
     /**
      * Set the availabilities property: Retention policies of a resource metric.
-     *
+     * 
      * @param availabilities the availabilities value to set.
      * @return the MetricSpecification object itself.
      */
@@ -201,7 +209,7 @@ public final class MetricSpecification {
 
     /**
      * Get the supportedTimeGrainTypes property: The supported time grain types for the metrics.
-     *
+     * 
      * @return the supportedTimeGrainTypes value.
      */
     public List<String> supportedTimeGrainTypes() {
@@ -210,7 +218,7 @@ public final class MetricSpecification {
 
     /**
      * Set the supportedTimeGrainTypes property: The supported time grain types for the metrics.
-     *
+     * 
      * @param supportedTimeGrainTypes the supportedTimeGrainTypes value to set.
      * @return the MetricSpecification object itself.
      */
@@ -221,7 +229,7 @@ public final class MetricSpecification {
 
     /**
      * Get the dimensions property: The dimensions of metric.
-     *
+     * 
      * @return the dimensions value.
      */
     public List<DimensionProperties> dimensions() {
@@ -230,7 +238,7 @@ public final class MetricSpecification {
 
     /**
      * Set the dimensions property: The dimensions of metric.
-     *
+     * 
      * @param dimensions the dimensions value to set.
      * @return the MetricSpecification object itself.
      */
@@ -241,7 +249,7 @@ public final class MetricSpecification {
 
     /**
      * Get the fillGapWithZero property: Property to specify whether to fill gap with zero.
-     *
+     * 
      * @return the fillGapWithZero value.
      */
     public Boolean fillGapWithZero() {
@@ -250,7 +258,7 @@ public final class MetricSpecification {
 
     /**
      * Set the fillGapWithZero property: Property to specify whether to fill gap with zero.
-     *
+     * 
      * @param fillGapWithZero the fillGapWithZero value to set.
      * @return the MetricSpecification object itself.
      */
@@ -261,7 +269,7 @@ public final class MetricSpecification {
 
     /**
      * Get the metricFilterPattern property: Pattern to filter based on name.
-     *
+     * 
      * @return the metricFilterPattern value.
      */
     public String metricFilterPattern() {
@@ -270,7 +278,7 @@ public final class MetricSpecification {
 
     /**
      * Set the metricFilterPattern property: Pattern to filter based on name.
-     *
+     * 
      * @param metricFilterPattern the metricFilterPattern value to set.
      * @return the MetricSpecification object itself.
      */
@@ -281,7 +289,7 @@ public final class MetricSpecification {
 
     /**
      * Get the isInternal property: Property to specify metric is internal or not.
-     *
+     * 
      * @return the isInternal value.
      */
     public Boolean isInternal() {
@@ -290,7 +298,7 @@ public final class MetricSpecification {
 
     /**
      * Set the isInternal property: Property to specify metric is internal or not.
-     *
+     * 
      * @param isInternal the isInternal value to set.
      * @return the MetricSpecification object itself.
      */
@@ -301,7 +309,7 @@ public final class MetricSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,6 +11,15 @@ import java.util.Collection;
  * Defines values for DataFeedRollupType.
  */
 public final class DataFeedRollupType extends ExpandableStringEnum<DataFeedRollupType> {
+
+    /**
+     * Constructs a DataFeedRollupType object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataFeedRollupType() {
+    }
+
     /**
      * Enum value NoRollup.
      */
@@ -28,9 +37,7 @@ public final class DataFeedRollupType extends ExpandableStringEnum<DataFeedRollu
 
     /**
      * Creates or finds a DataFeedRollupType from its string representation.
-     *
      * @param name a name to look for.
-     *
      * @return the corresponding DataFeedRollupType.
      */
     public static DataFeedRollupType fromString(String name) {
@@ -38,6 +45,7 @@ public final class DataFeedRollupType extends ExpandableStringEnum<DataFeedRollu
     }
 
     /**
+     * Returns the known DataFeedRollupType values.
      * @return known DataFeedRollupType values.
      */
     public static Collection<DataFeedRollupType> values() {

@@ -10,10 +10,8 @@ import com.azure.resourcemanager.dataprotection.models.AzureBackupRecoveryPoint;
 public final class AzureBackupRecoveryPointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureBackupRecoveryPoint model =
-            BinaryData
-                .fromString("{\"objectType\":\"AzureBackupRecoveryPoint\"}")
-                .toObject(AzureBackupRecoveryPoint.class);
+        AzureBackupRecoveryPoint model = BinaryData.fromString("{\"objectType\":\"AzureBackupRecoveryPoint\"}")
+            .toObject(AzureBackupRecoveryPoint.class);
     }
 
     @org.junit.jupiter.api.Test

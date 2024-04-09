@@ -10,7 +10,9 @@ import com.azure.resourcemanager.datafactory.fluent.models.FactoryInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of factory resources. */
+/**
+ * A list of factory resources.
+ */
 @Fluent
 public final class FactoryListResponse {
     /*
@@ -25,13 +27,15 @@ public final class FactoryListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of FactoryListResponse class. */
+    /**
+     * Creates an instance of FactoryListResponse class.
+     */
     public FactoryListResponse() {
     }
 
     /**
      * Get the value property: List of factories.
-     *
+     * 
      * @return the value value.
      */
     public List<FactoryInner> value() {
@@ -40,7 +44,7 @@ public final class FactoryListResponse {
 
     /**
      * Set the value property: List of factories.
-     *
+     * 
      * @param value the value value to set.
      * @return the FactoryListResponse object itself.
      */
@@ -51,7 +55,7 @@ public final class FactoryListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class FactoryListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the FactoryListResponse object itself.
      */
@@ -71,14 +75,13 @@ public final class FactoryListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model FactoryListResponse"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model FactoryListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }

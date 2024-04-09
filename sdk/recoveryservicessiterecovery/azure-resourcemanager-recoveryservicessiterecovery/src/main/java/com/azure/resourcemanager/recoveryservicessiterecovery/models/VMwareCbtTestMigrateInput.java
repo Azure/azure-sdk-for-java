@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** VMwareCbt specific test migrate input. */
+/**
+ * VMwareCbt specific test migrate input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VMwareCbt")
 @Fluent
@@ -34,13 +36,21 @@ public final class VMwareCbtTestMigrateInput extends TestMigrateProviderSpecific
     @JsonProperty(value = "vmNics")
     private List<VMwareCbtNicInput> vmNics;
 
-    /** Creates an instance of VMwareCbtTestMigrateInput class. */
+    /*
+     * A value indicating the inplace OS Upgrade version.
+     */
+    @JsonProperty(value = "osUpgradeVersion")
+    private String osUpgradeVersion;
+
+    /**
+     * Creates an instance of VMwareCbtTestMigrateInput class.
+     */
     public VMwareCbtTestMigrateInput() {
     }
 
     /**
      * Get the recoveryPointId property: The recovery point Id.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -49,7 +59,7 @@ public final class VMwareCbtTestMigrateInput extends TestMigrateProviderSpecific
 
     /**
      * Set the recoveryPointId property: The recovery point Id.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the VMwareCbtTestMigrateInput object itself.
      */
@@ -60,7 +70,7 @@ public final class VMwareCbtTestMigrateInput extends TestMigrateProviderSpecific
 
     /**
      * Get the networkId property: The test network Id.
-     *
+     * 
      * @return the networkId value.
      */
     public String networkId() {
@@ -69,7 +79,7 @@ public final class VMwareCbtTestMigrateInput extends TestMigrateProviderSpecific
 
     /**
      * Set the networkId property: The test network Id.
-     *
+     * 
      * @param networkId the networkId value to set.
      * @return the VMwareCbtTestMigrateInput object itself.
      */
@@ -80,7 +90,7 @@ public final class VMwareCbtTestMigrateInput extends TestMigrateProviderSpecific
 
     /**
      * Get the vmNics property: The list of NIC details.
-     *
+     * 
      * @return the vmNics value.
      */
     public List<VMwareCbtNicInput> vmNics() {
@@ -89,7 +99,7 @@ public final class VMwareCbtTestMigrateInput extends TestMigrateProviderSpecific
 
     /**
      * Set the vmNics property: The list of NIC details.
-     *
+     * 
      * @param vmNics the vmNics value to set.
      * @return the VMwareCbtTestMigrateInput object itself.
      */
@@ -99,24 +109,40 @@ public final class VMwareCbtTestMigrateInput extends TestMigrateProviderSpecific
     }
 
     /**
+     * Get the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     * 
+     * @return the osUpgradeVersion value.
+     */
+    public String osUpgradeVersion() {
+        return this.osUpgradeVersion;
+    }
+
+    /**
+     * Set the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     * 
+     * @param osUpgradeVersion the osUpgradeVersion value to set.
+     * @return the VMwareCbtTestMigrateInput object itself.
+     */
+    public VMwareCbtTestMigrateInput withOsUpgradeVersion(String osUpgradeVersion) {
+        this.osUpgradeVersion = osUpgradeVersion;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (recoveryPointId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryPointId in model VMwareCbtTestMigrateInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoveryPointId in model VMwareCbtTestMigrateInput"));
         }
         if (networkId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkId in model VMwareCbtTestMigrateInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property networkId in model VMwareCbtTestMigrateInput"));
         }
         if (vmNics() != null) {
             vmNics().forEach(e -> e.validate());

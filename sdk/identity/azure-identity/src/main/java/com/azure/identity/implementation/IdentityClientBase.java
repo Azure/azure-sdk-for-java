@@ -6,11 +6,11 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -32,21 +32,41 @@ import com.azure.identity.BrowserCustomizationOptions;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.TokenCachePersistenceOptions;
+import com.azure.identity.implementation.models.AzureCliToken;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
-import com.microsoft.aad.msal4j.*;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.microsoft.aad.msal4j.AppTokenProviderParameters;
+import com.microsoft.aad.msal4j.ClaimsRequest;
+import com.microsoft.aad.msal4j.ClientCredentialFactory;
+import com.microsoft.aad.msal4j.ConfidentialClientApplication;
+import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.IBroker;
+import com.microsoft.aad.msal4j.IClientCredential;
+import com.microsoft.aad.msal4j.InteractiveRequestParameters;
+import com.microsoft.aad.msal4j.ManagedIdentityId;
+import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.OnBehalfOfParameters;
+import com.microsoft.aad.msal4j.Prompt;
+import com.microsoft.aad.msal4j.PublicClientApplication;
+import com.microsoft.aad.msal4j.SystemBrowserOptions;
+import com.microsoft.aad.msal4j.TokenProviderResult;
+import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
@@ -67,6 +87,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -104,6 +125,8 @@ public abstract class IdentityClientBase {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
+
+
     private final Map<String, String> properties;
 
 
@@ -113,12 +136,14 @@ public abstract class IdentityClientBase {
     final String resourceId;
     final String clientSecret;
     final String clientAssertionFilePath;
-    final InputStream certificate;
+    final byte[] certificate;
     final String certificatePath;
     final Supplier<String> clientAssertionSupplier;
     final String certificatePassword;
     HttpPipelineAdapter httpPipelineAdapter;
     String userAgent = UserAgentUtil.DEFAULT_USER_AGENT_HEADER;
+    private Class<?> interactiveBrowserBroker;
+    private Method getMsalRuntimeBroker;
 
     /**
      * Creates an IdentityClient with the given options.
@@ -137,7 +162,7 @@ public abstract class IdentityClientBase {
      */
     IdentityClientBase(String tenantId, String clientId, String clientSecret, String certificatePath,
                    String clientAssertionFilePath, String resourceId, Supplier<String> clientAssertionSupplier,
-                   InputStream certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
+                   byte[] certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
                    Duration clientAssertionTimeout, IdentityClientOptions options) {
         if (tenantId == null) {
             tenantId = IdentityUtil.DEFAULT_TENANT;
@@ -304,6 +329,37 @@ public abstract class IdentityClientBase {
             Set<String> set = new HashSet<>(1);
             set.add("CP1");
             builder.clientCapabilities(set);
+        }
+
+        if (options.isBrokerEnabled()) {
+            if (interactiveBrowserBroker == null) {
+                try {
+                    interactiveBrowserBroker = Class.forName("com.azure.identity.broker.implementation.InteractiveBrowserBroker");
+                } catch (ClassNotFoundException e) {
+                    throw LOGGER.logExceptionAsError(new IllegalStateException("Could not load the brokered authentication library. "
+                        + "Ensure that the azure-identity-broker library is on the classpath.", e));
+                }
+                getMsalRuntimeBroker = null;
+                try {
+                    getMsalRuntimeBroker = interactiveBrowserBroker.getMethod("getMsalRuntimeBroker");
+                } catch (NoSuchMethodException e) {
+                    throw LOGGER.logExceptionAsError(new IllegalStateException("Could not obtain the InteractiveBrowserBroker. "
+                        + "Ensure that the azure-identity-broker library is on the classpath.", e));
+                }
+            }
+
+            try {
+                if (getMsalRuntimeBroker != null) {
+                    builder.broker((IBroker) getMsalRuntimeBroker.invoke(null));
+
+                } else {
+                    throw LOGGER.logExceptionAsError(new IllegalStateException("Could not obtain the MSAL Broker. "
+                        + "Ensure that the azure-identity-broker library is on the classpath.", null));
+                }
+            } catch (InvocationTargetException | IllegalAccessException e) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException("Could not invoke the MSAL Broker. "
+                    + "Ensure that the azure-identity-broker library is on the classpath.", e));
+            }
         }
 
         TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
@@ -510,6 +566,15 @@ public abstract class IdentityClientBase {
             builder.systemBrowserOptions(browserOptionsBuilder.build());
         }
 
+        if (options.isBrokerEnabled()) {
+            builder.windowHandle(options.getBrokerWindowHandle());
+            if (options.isMsaPassthroughEnabled()) {
+                Map<String, String> extraQueryParameters = new HashMap<>();
+                extraQueryParameters.put("msal_request_type", "consumer_passthrough");
+                builder.extraQueryParameters(extraQueryParameters);
+            }
+        }
+
         if (loginHint != null) {
             builder.loginHint(loginHint);
         }
@@ -545,6 +610,8 @@ public abstract class IdentityClientBase {
             }
 
             ProcessBuilder builder = new ProcessBuilder(starter, switcher, azCommand.toString());
+            // Redirects stdin to dev null, helps to avoid messages sent in by the cmd process to upgrade etc.
+            builder.redirectInput(ProcessBuilder.Redirect.from(IdentityUtil.NULL_FILE));
 
             String workingDirectory = getSafeWorkingDirectory();
             if (workingDirectory != null) {
@@ -602,16 +669,13 @@ public abstract class IdentityClientBase {
 
             LOGGER.verbose("Azure CLI Authentication => A token response was received from Azure CLI, deserializing the"
                 + " response into an Access Token.");
-            Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(processOutput, Map.class,
-                SerializerEncoding.JSON);
-            String accessToken = objectMap.get("accessToken");
-            String time = objectMap.get("expiresOn");
-            String timeToSecond = time.substring(0, time.indexOf("."));
-            String timeJoinedWithT = String.join("T", timeToSecond.split(" "));
-            OffsetDateTime expiresOn = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-                .atZone(ZoneId.systemDefault())
-                .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
-            token = new AccessToken(accessToken, expiresOn);
+            try (JsonReader reader = JsonProviders.createReader(processOutput)) {
+                AzureCliToken tokenHolder = AzureCliToken.fromJson(reader);
+                String accessToken = tokenHolder.getAccessToken();
+                OffsetDateTime tokenExpiration = tokenHolder.getTokenExpiration();
+                token = new AccessToken(accessToken, tokenExpiration);
+            }
+
         } catch (IOException | InterruptedException e) {
             IllegalStateException ex = new IllegalStateException(redactInfo(e.getMessage()));
             ex.setStackTrace(e.getStackTrace());
@@ -634,6 +698,8 @@ public abstract class IdentityClientBase {
             }
 
             ProcessBuilder builder = new ProcessBuilder(starter, switcher, azdCommand.toString());
+            // Redirects stdin to dev null, helps to avoid messages sent in by the cmd process to upgrade etc.
+            builder.redirectInput(ProcessBuilder.Redirect.from(IdentityUtil.NULL_FILE));
 
             String workingDirectory = getSafeWorkingDirectory();
             if (workingDirectory != null) {
@@ -840,14 +906,7 @@ public abstract class IdentityClientBase {
         if (certificatePath != null) {
             return Files.readAllBytes(Paths.get(certificatePath));
         } else if (certificate != null) {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            byte[] buffer = new byte[4096];
-            int read = certificate.read(buffer, 0, buffer.length);
-            while (read != -1) {
-                outputStream.write(buffer, 0, read);
-                read = certificate.read(buffer, 0, buffer.length);
-            }
-            return outputStream.toByteArray();
+            return certificate;
         } else {
             return new byte[0];
         }
@@ -857,7 +916,7 @@ public abstract class IdentityClientBase {
         if (certificatePath != null) {
             return new BufferedInputStream(new FileInputStream(certificatePath));
         } else {
-            return certificate;
+            return new ByteArrayInputStream(certificate);
         }
     }
 

@@ -124,11 +124,13 @@ public interface DtlEnvironment {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The DtlEnvironment definition stages. */
     interface DefinitionStages {
         /** The first stage of the DtlEnvironment definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the DtlEnvironment definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -147,6 +149,7 @@ public interface DtlEnvironment {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the DtlEnvironment definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -159,6 +162,7 @@ public interface DtlEnvironment {
              */
             WithCreate withExistingUser(String resourceGroupName, String labName, String username);
         }
+
         /**
          * The stage of the DtlEnvironment definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -182,6 +186,7 @@ public interface DtlEnvironment {
              */
             DtlEnvironment create(Context context);
         }
+
         /** The stage of the DtlEnvironment definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -192,6 +197,7 @@ public interface DtlEnvironment {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the DtlEnvironment definition allowing to specify deploymentProperties. */
         interface WithDeploymentProperties {
             /**
@@ -202,6 +208,7 @@ public interface DtlEnvironment {
              */
             WithCreate withDeploymentProperties(EnvironmentDeploymentProperties deploymentProperties);
         }
+
         /** The stage of the DtlEnvironment definition allowing to specify armTemplateDisplayName. */
         interface WithArmTemplateDisplayName {
             /**
@@ -215,6 +222,7 @@ public interface DtlEnvironment {
             WithCreate withArmTemplateDisplayName(String armTemplateDisplayName);
         }
     }
+
     /**
      * Begins update for the DtlEnvironment resource.
      *
@@ -239,6 +247,7 @@ public interface DtlEnvironment {
          */
         DtlEnvironment apply(Context context);
     }
+
     /** The DtlEnvironment update stages. */
     interface UpdateStages {
         /** The stage of the DtlEnvironment update allowing to specify tags. */
@@ -252,6 +261,7 @@ public interface DtlEnvironment {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -30,44 +30,33 @@ public final class PacketCoreControlPlanesReinstallMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"id\":\"ldpuviy\",\"name\":\"aabeolhbhlvbmxuq\",\"status\":\"bsxtkcudfbsfarfs\",\"resourceId\":\"wlkjxn\",\"startTime\":\"2021-11-12T06:14:41Z\",\"endTime\":\"2021-09-14T22:57:22Z\",\"percentComplete\":68.21263647311004,\"properties\":\"datahqykizmdk\"}";
+        String responseStr
+            = "{\"id\":\"vidttgepuslvyjt\",\"name\":\"uwkasiz\",\"status\":\"esfuught\",\"resourceId\":\"fecjxeygtuhx\",\"startTime\":\"2021-01-12T18:06:14Z\",\"endTime\":\"2021-07-12T08:32:17Z\",\"percentComplete\":80.28171521825273,\"properties\":\"datas\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MobileNetworkManager manager = MobileNetworkManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AsyncOperationStatus response =
-            manager.packetCoreControlPlanes().reinstall("ri", "krsrrmoucs", com.azure.core.util.Context.NONE);
+        AsyncOperationStatus response
+            = manager.packetCoreControlPlanes().reinstall("fnrdtjxtxr", "cq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ldpuviy", response.id());
-        Assertions.assertEquals("aabeolhbhlvbmxuq", response.name());
-        Assertions.assertEquals("bsxtkcudfbsfarfs", response.status());
-        Assertions.assertEquals("wlkjxn", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-12T06:14:41Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T22:57:22Z"), response.endTime());
-        Assertions.assertEquals(68.21263647311004D, response.percentComplete());
+        Assertions.assertEquals("vidttgepuslvyjt", response.id());
+        Assertions.assertEquals("uwkasiz", response.name());
+        Assertions.assertEquals("esfuught", response.status());
+        Assertions.assertEquals("fecjxeygtuhx", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-12T18:06:14Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-12T08:32:17Z"), response.endTime());
+        Assertions.assertEquals(80.28171521825273D, response.percentComplete());
     }
 }

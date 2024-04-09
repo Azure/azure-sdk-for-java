@@ -25,6 +25,12 @@ public class ManagedHsmResource extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /*
+     * Managed service identity (system assigned and/or user assigned identities)
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
+
     /** Creates an instance of ManagedHsmResource class. */
     public ManagedHsmResource() {
     }
@@ -58,6 +64,26 @@ public class ManagedHsmResource extends Resource {
         return this.systemData;
     }
 
+    /**
+     * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @param identity the identity value to set.
+     * @return the ManagedHsmResource object itself.
+     */
+    public ManagedHsmResource withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public ManagedHsmResource withLocation(String location) {
@@ -80,6 +106,9 @@ public class ManagedHsmResource extends Resource {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

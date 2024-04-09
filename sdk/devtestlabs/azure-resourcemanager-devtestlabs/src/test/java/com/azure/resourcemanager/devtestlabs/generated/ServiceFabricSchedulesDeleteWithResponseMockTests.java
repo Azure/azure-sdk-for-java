@@ -59,6 +59,11 @@ public final class ServiceFabricSchedulesDeleteWithResponseMockTests {
         manager
             .serviceFabricSchedules()
             .deleteWithResponse(
-                "d", "ewuyqa", "ohpjhgejkbv", "hdaurghooxaexb", "hxjxjoezlqxrkdkn", com.azure.core.util.Context.NONE);
+                "eqbbewfcuqfpy",
+                "xmzrmtmvwitu",
+                "eyyjshcybwfuppox",
+                "rcmvouujx",
+                "iikmoxrezsvavlrx",
+                com.azure.core.util.Context.NONE);
     }
 }

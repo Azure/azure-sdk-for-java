@@ -25,6 +25,8 @@ import java.util.UUID;
  */
 @Fluent
 public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirectoryObjectInner {
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
     /*
      * Defines custom behavior that a consuming service can use to call an app in specific contexts. For example,
      * applications that can render file streams may set the addIns property for its 'FileHandler' functionality. This
@@ -578,7 +580,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      */
     public byte[] logo() {
         if (this.logo == null) {
-            return new byte[0];
+            return EMPTY_BYTE_ARRAY;
         }
         return this.logo.decodedBytes();
     }

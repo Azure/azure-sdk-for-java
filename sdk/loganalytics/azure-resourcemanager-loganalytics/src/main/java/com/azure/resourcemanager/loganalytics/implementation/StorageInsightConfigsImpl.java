@@ -28,15 +28,6 @@ public final class StorageInsightConfigsImpl implements StorageInsightConfigs {
         this.serviceManager = serviceManager;
     }
 
-    public StorageInsight get(String resourceGroupName, String workspaceName, String storageInsightName) {
-        StorageInsightInner inner = this.serviceClient().get(resourceGroupName, workspaceName, storageInsightName);
-        if (inner != null) {
-            return new StorageInsightImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<StorageInsight> getWithResponse(
         String resourceGroupName, String workspaceName, String storageInsightName, Context context) {
         Response<StorageInsightInner> inner =
@@ -52,13 +43,22 @@ public final class StorageInsightConfigsImpl implements StorageInsightConfigs {
         }
     }
 
-    public void delete(String resourceGroupName, String workspaceName, String storageInsightName) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, storageInsightName);
+    public StorageInsight get(String resourceGroupName, String workspaceName, String storageInsightName) {
+        StorageInsightInner inner = this.serviceClient().get(resourceGroupName, workspaceName, storageInsightName);
+        if (inner != null) {
+            return new StorageInsightImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String workspaceName, String storageInsightName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, storageInsightName, context);
+    }
+
+    public void delete(String resourceGroupName, String workspaceName, String storageInsightName) {
+        this.serviceClient().delete(resourceGroupName, workspaceName, storageInsightName);
     }
 
     public PagedIterable<StorageInsight> listByWorkspace(String resourceGroupName, String workspaceName) {

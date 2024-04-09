@@ -28,6 +28,10 @@ public final class NicIpAddressSettings {
     @JsonProperty(value = "subnetMask", access = JsonProperty.Access.WRITE_ONLY)
     private String subnetMask;
 
+    /** Creates an instance of NicIpAddressSettings class. */
+    public NicIpAddressSettings() {
+    }
+
     /**
      * Get the allocationMethod property: Gets the ip address allocation method.
      *

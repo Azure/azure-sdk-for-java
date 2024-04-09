@@ -13,7 +13,9 @@ import com.azure.resourcemanager.cdn.models.ResponseBasedOriginErrorDetectionPar
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The JSON object that contains the properties of the origin group. */
+/**
+ * The JSON object that contains the properties of the origin group.
+ */
 @Fluent
 public final class OriginGroupProperties extends OriginGroupUpdatePropertiesParameters {
     /*
@@ -29,8 +31,14 @@ public final class OriginGroupProperties extends OriginGroupUpdatePropertiesPara
     private OriginGroupProvisioningState provisioningState;
 
     /**
+     * Creates an instance of OriginGroupProperties class.
+     */
+    public OriginGroupProperties() {
+    }
+
+    /**
      * Get the resourceState property: Resource status of the origin group.
-     *
+     * 
      * @return the resourceState value.
      */
     public OriginGroupResourceState resourceState() {
@@ -39,38 +47,45 @@ public final class OriginGroupProperties extends OriginGroupUpdatePropertiesPara
 
     /**
      * Get the provisioningState property: Provisioning status of the origin group.
-     *
+     * 
      * @return the provisioningState value.
      */
     public OriginGroupProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OriginGroupProperties withHealthProbeSettings(HealthProbeParameters healthProbeSettings) {
         super.withHealthProbeSettings(healthProbeSettings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OriginGroupProperties withOrigins(List<ResourceReference> origins) {
         super.withOrigins(origins);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OriginGroupProperties withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
         Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes) {
-        super
-            .withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
-                trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
+        super.withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
+            trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OriginGroupProperties withResponseBasedOriginErrorDetectionSettings(
         ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings) {
@@ -80,7 +95,7 @@ public final class OriginGroupProperties extends OriginGroupUpdatePropertiesPara
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

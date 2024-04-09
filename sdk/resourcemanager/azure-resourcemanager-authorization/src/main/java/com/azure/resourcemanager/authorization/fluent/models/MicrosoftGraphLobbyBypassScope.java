@@ -27,6 +27,15 @@ public final class MicrosoftGraphLobbyBypassScope extends ExpandableStringEnum<M
     public static final MicrosoftGraphLobbyBypassScope UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphLobbyBypassScope value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphLobbyBypassScope() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphLobbyBypassScope from its string representation.
      *
      * @param name a name to look for.

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.fluent.models.MigrateMySqlRequestProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** MySQL migration request. */
+/**
+ * MySQL migration request.
+ */
 @Fluent
 public final class MigrateMySqlRequest extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class MigrateMySqlRequest extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private MigrateMySqlRequestProperties innerProperties;
 
-    /** Creates an instance of MigrateMySqlRequest class. */
+    /**
+     * Creates an instance of MigrateMySqlRequest class.
+     */
     public MigrateMySqlRequest() {
     }
 
     /**
      * Get the innerProperties property: MigrateMySqlRequest resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MigrateMySqlRequestProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MigrateMySqlRequest withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class MigrateMySqlRequest extends ProxyOnlyResource {
 
     /**
      * Get the connectionString property: Connection string to the remote MySQL database.
-     *
+     * 
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -48,7 +54,7 @@ public final class MigrateMySqlRequest extends ProxyOnlyResource {
 
     /**
      * Set the connectionString property: Connection string to the remote MySQL database.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the MigrateMySqlRequest object itself.
      */
@@ -62,7 +68,7 @@ public final class MigrateMySqlRequest extends ProxyOnlyResource {
 
     /**
      * Get the migrationType property: The type of migration operation to be done.
-     *
+     * 
      * @return the migrationType value.
      */
     public MySqlMigrationType migrationType() {
@@ -71,7 +77,7 @@ public final class MigrateMySqlRequest extends ProxyOnlyResource {
 
     /**
      * Set the migrationType property: The type of migration operation to be done.
-     *
+     * 
      * @param migrationType the migrationType value to set.
      * @return the MigrateMySqlRequest object itself.
      */
@@ -85,7 +91,7 @@ public final class MigrateMySqlRequest extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

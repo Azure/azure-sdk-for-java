@@ -7,15 +7,23 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The allocation mode for creating pools in the Batch account. */
+/**
+ * The allocation mode for creating pools in the Batch account.
+ */
 public enum PoolAllocationMode {
-    /** Enum value BatchService. */
+    /**
+     * Enum value BatchService.
+     */
     BATCH_SERVICE("BatchService"),
 
-    /** Enum value UserSubscription. */
+    /**
+     * Enum value UserSubscription.
+     */
     USER_SUBSCRIPTION("UserSubscription");
 
-    /** The actual serialized value for a PoolAllocationMode instance. */
+    /**
+     * The actual serialized value for a PoolAllocationMode instance.
+     */
     private final String value;
 
     PoolAllocationMode(String value) {
@@ -24,7 +32,7 @@ public enum PoolAllocationMode {
 
     /**
      * Parses a serialized value to a PoolAllocationMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed PoolAllocationMode object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum PoolAllocationMode {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

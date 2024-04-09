@@ -10,7 +10,9 @@ import com.azure.resourcemanager.compute.fluent.models.SnapshotInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Snapshots operation response. */
+/**
+ * The List Snapshots operation response.
+ */
 @Fluent
 public final class SnapshotList {
     /*
@@ -25,13 +27,15 @@ public final class SnapshotList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SnapshotList class. */
+    /**
+     * Creates an instance of SnapshotList class.
+     */
     public SnapshotList() {
     }
 
     /**
      * Get the value property: A list of snapshots.
-     *
+     * 
      * @return the value value.
      */
     public List<SnapshotInner> value() {
@@ -40,7 +44,7 @@ public final class SnapshotList {
 
     /**
      * Set the value property: A list of snapshots.
-     *
+     * 
      * @param value the value value to set.
      * @return the SnapshotList object itself.
      */
@@ -52,7 +56,7 @@ public final class SnapshotList {
     /**
      * Get the nextLink property: The uri to fetch the next page of snapshots. Call ListNext() with this to fetch the
      * next page of snapshots.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +66,7 @@ public final class SnapshotList {
     /**
      * Set the nextLink property: The uri to fetch the next page of snapshots. Call ListNext() with this to fetch the
      * next page of snapshots.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SnapshotList object itself.
      */
@@ -73,14 +77,13 @@ public final class SnapshotList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model SnapshotList"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model SnapshotList"));
         } else {
             value().forEach(e -> e.validate());
         }

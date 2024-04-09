@@ -31,38 +31,27 @@ public final class PrivateLinkResourcesListByClusterMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"groupId\":\"zapvhelx\",\"requiredMembers\":[\"lya\",\"dd\",\"kcbcue\",\"rjxgciqib\"],\"requiredZoneNames\":[\"sxsdqrhzoymibm\"]},\"id\":\"yiba\",\"name\":\"wfluszdt\",\"type\":\"hrkwo\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"groupId\":\"oduhp\",\"requiredMembers\":[\"gymare\",\"n\",\"jxqugjhky\",\"ubeddg\"],\"requiredZoneNames\":[\"fwqmzqalkrmn\"]},\"id\":\"jpxac\",\"name\":\"qudf\",\"type\":\"byxbaaabjy\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CosmosDBForPostgreSqlManager manager =
-            CosmosDBForPostgreSqlManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CosmosDBForPostgreSqlManager manager = CosmosDBForPostgreSqlManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<PrivateLinkResource> response =
-            manager.privateLinkResources().listByCluster("qgxy", "mocmbqfqvmk", com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateLinkResource> response
+            = manager.privateLinkResources().listByCluster("wdmjsjqbjhhyx", "rw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sxsdqrhzoymibm", response.iterator().next().requiredZoneNames().get(0));
+        Assertions.assertEquals("fwqmzqalkrmn", response.iterator().next().requiredZoneNames().get(0));
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response body structure for starting data flow debug session. */
+/**
+ * Response body structure for starting data flow debug session.
+ */
 @Fluent
 public final class AddDataFlowToDebugSessionResponseInner {
     /*
@@ -16,13 +18,15 @@ public final class AddDataFlowToDebugSessionResponseInner {
     @JsonProperty(value = "jobVersion")
     private String jobVersion;
 
-    /** Creates an instance of AddDataFlowToDebugSessionResponseInner class. */
+    /**
+     * Creates an instance of AddDataFlowToDebugSessionResponseInner class.
+     */
     public AddDataFlowToDebugSessionResponseInner() {
     }
 
     /**
      * Get the jobVersion property: The ID of data flow debug job version.
-     *
+     * 
      * @return the jobVersion value.
      */
     public String jobVersion() {
@@ -31,7 +35,7 @@ public final class AddDataFlowToDebugSessionResponseInner {
 
     /**
      * Set the jobVersion property: The ID of data flow debug job version.
-     *
+     * 
      * @param jobVersion the jobVersion value to set.
      * @return the AddDataFlowToDebugSessionResponseInner object itself.
      */
@@ -42,7 +46,7 @@ public final class AddDataFlowToDebugSessionResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

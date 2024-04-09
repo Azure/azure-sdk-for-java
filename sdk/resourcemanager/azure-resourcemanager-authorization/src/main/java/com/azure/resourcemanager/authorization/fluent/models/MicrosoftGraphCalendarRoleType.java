@@ -37,6 +37,15 @@ public final class MicrosoftGraphCalendarRoleType extends ExpandableStringEnum<M
     public static final MicrosoftGraphCalendarRoleType CUSTOM = fromString("custom");
 
     /**
+     * Creates a new instance of MicrosoftGraphCalendarRoleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphCalendarRoleType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphCalendarRoleType from its string representation.
      *
      * @param name a name to look for.

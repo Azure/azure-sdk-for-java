@@ -60,8 +60,7 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
     public interface UnresolvedDependenciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate"
-                + "/moveCollections/{moveCollectionName}/unresolvedDependencies")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/unresolvedDependencies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<UnresolvedDependencyCollection>> get(

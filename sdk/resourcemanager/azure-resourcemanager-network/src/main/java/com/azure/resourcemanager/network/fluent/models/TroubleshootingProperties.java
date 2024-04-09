@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Storage location provided for troubleshoot. */
+/**
+ * Storage location provided for troubleshoot.
+ */
 @Fluent
 public final class TroubleshootingProperties {
     /*
@@ -23,13 +25,15 @@ public final class TroubleshootingProperties {
     @JsonProperty(value = "storagePath", required = true)
     private String storagePath;
 
-    /** Creates an instance of TroubleshootingProperties class. */
+    /**
+     * Creates an instance of TroubleshootingProperties class.
+     */
     public TroubleshootingProperties() {
     }
 
     /**
      * Get the storageId property: The ID for the storage account to save the troubleshoot result.
-     *
+     * 
      * @return the storageId value.
      */
     public String storageId() {
@@ -38,7 +42,7 @@ public final class TroubleshootingProperties {
 
     /**
      * Set the storageId property: The ID for the storage account to save the troubleshoot result.
-     *
+     * 
      * @param storageId the storageId value to set.
      * @return the TroubleshootingProperties object itself.
      */
@@ -49,7 +53,7 @@ public final class TroubleshootingProperties {
 
     /**
      * Get the storagePath property: The path to the blob to save the troubleshoot result in.
-     *
+     * 
      * @return the storagePath value.
      */
     public String storagePath() {
@@ -58,7 +62,7 @@ public final class TroubleshootingProperties {
 
     /**
      * Set the storagePath property: The path to the blob to save the troubleshoot result in.
-     *
+     * 
      * @param storagePath the storagePath value to set.
      * @return the TroubleshootingProperties object itself.
      */
@@ -69,21 +73,17 @@ public final class TroubleshootingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storageId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageId in model TroubleshootingProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property storageId in model TroubleshootingProperties"));
         }
         if (storagePath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storagePath in model TroubleshootingProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storagePath in model TroubleshootingProperties"));
         }
     }
 

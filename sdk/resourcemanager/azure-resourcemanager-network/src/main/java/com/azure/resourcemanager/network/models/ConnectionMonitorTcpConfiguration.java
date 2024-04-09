@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the TCP configuration. */
+/**
+ * Describes the TCP configuration.
+ */
 @Fluent
 public final class ConnectionMonitorTcpConfiguration {
     /*
@@ -28,13 +30,15 @@ public final class ConnectionMonitorTcpConfiguration {
     @JsonProperty(value = "destinationPortBehavior")
     private DestinationPortBehavior destinationPortBehavior;
 
-    /** Creates an instance of ConnectionMonitorTcpConfiguration class. */
+    /**
+     * Creates an instance of ConnectionMonitorTcpConfiguration class.
+     */
     public ConnectionMonitorTcpConfiguration() {
     }
 
     /**
      * Get the port property: The port to connect to.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -43,7 +47,7 @@ public final class ConnectionMonitorTcpConfiguration {
 
     /**
      * Set the port property: The port to connect to.
-     *
+     * 
      * @param port the port value to set.
      * @return the ConnectionMonitorTcpConfiguration object itself.
      */
@@ -53,8 +57,9 @@ public final class ConnectionMonitorTcpConfiguration {
     }
 
     /**
-     * Get the disableTraceRoute property: Value indicating whether path evaluation with trace route should be disabled.
-     *
+     * Get the disableTraceRoute property: Value indicating whether path evaluation with trace route should be
+     * disabled.
+     * 
      * @return the disableTraceRoute value.
      */
     public Boolean disableTraceRoute() {
@@ -62,8 +67,9 @@ public final class ConnectionMonitorTcpConfiguration {
     }
 
     /**
-     * Set the disableTraceRoute property: Value indicating whether path evaluation with trace route should be disabled.
-     *
+     * Set the disableTraceRoute property: Value indicating whether path evaluation with trace route should be
+     * disabled.
+     * 
      * @param disableTraceRoute the disableTraceRoute value to set.
      * @return the ConnectionMonitorTcpConfiguration object itself.
      */
@@ -74,7 +80,7 @@ public final class ConnectionMonitorTcpConfiguration {
 
     /**
      * Get the destinationPortBehavior property: Destination port behavior.
-     *
+     * 
      * @return the destinationPortBehavior value.
      */
     public DestinationPortBehavior destinationPortBehavior() {
@@ -83,19 +89,19 @@ public final class ConnectionMonitorTcpConfiguration {
 
     /**
      * Set the destinationPortBehavior property: Destination port behavior.
-     *
+     * 
      * @param destinationPortBehavior the destinationPortBehavior value to set.
      * @return the ConnectionMonitorTcpConfiguration object itself.
      */
-    public ConnectionMonitorTcpConfiguration withDestinationPortBehavior(
-        DestinationPortBehavior destinationPortBehavior) {
+    public ConnectionMonitorTcpConfiguration
+        withDestinationPortBehavior(DestinationPortBehavior destinationPortBehavior) {
         this.destinationPortBehavior = destinationPortBehavior;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

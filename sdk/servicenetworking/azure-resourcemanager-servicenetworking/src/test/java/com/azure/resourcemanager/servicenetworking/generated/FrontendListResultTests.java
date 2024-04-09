@@ -7,6 +7,7 @@ package com.azure.resourcemanager.servicenetworking.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicenetworking.fluent.models.FrontendInner;
 import com.azure.resourcemanager.servicenetworking.models.FrontendListResult;
+import com.azure.resourcemanager.servicenetworking.models.FrontendProperties;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,48 +16,27 @@ import org.junit.jupiter.api.Assertions;
 public final class FrontendListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FrontendListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"fqdn\":\"nohjt\",\"provisioningState\":\"Accepted\"},\"location\":\"dsoifiyipj\",\"tags\":{\"cjxvsnbyxqab\":\"wpgrjbzno\",\"shurzafbljjgpbto\":\"mocpc\",\"mkljavb\":\"c\"},\"id\":\"idtqajzyu\",\"name\":\"pku\",\"type\":\"jkrlkhbzhfepg\"},{\"properties\":{\"fqdn\":\"e\",\"provisioningState\":\"Provisioning\"},\"location\":\"c\",\"tags\":{\"bcsglumma\":\"paierh\"},\"id\":\"tjaodxobnb\",\"name\":\"xkqpxo\",\"type\":\"ajionpimexgstxg\"},{\"properties\":{\"fqdn\":\"dg\",\"provisioningState\":\"Succeeded\"},\"location\":\"r\",\"tags\":{\"vmclw\":\"jwzrl\",\"aqsqsycbkbfk\":\"ijcoejctb\"},\"id\":\"ukdkexxppofmxa\",\"name\":\"c\",\"type\":\"jpgd\"},{\"properties\":{\"fqdn\":\"c\",\"provisioningState\":\"Failed\"},\"location\":\"vpmouexhdzxib\",\"tags\":{\"eic\":\"jnxqbzvddntwn\",\"cyddglmjthjqk\":\"twnpzaoqvuhrhcf\",\"ciwqvhk\":\"pyeicxm\"},\"id\":\"ixuigdtopbobj\",\"name\":\"ghmewuam\",\"type\":\"uhrzayvvt\"}],\"nextLink\":\"vdfgiotk\"}")
-                .toObject(FrontendListResult.class);
-        Assertions.assertEquals("dsoifiyipj", model.value().get(0).location());
-        Assertions.assertEquals("wpgrjbzno", model.value().get(0).tags().get("cjxvsnbyxqab"));
-        Assertions.assertEquals("vdfgiotk", model.nextLink());
+        FrontendListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"fqdn\":\"ewmdw\",\"provisioningState\":\"Provisioning\"},\"location\":\"ac\",\"tags\":{\"osfqpteehzzv\":\"osfln\",\"mzinpvswjdk\":\"pyqr\"},\"id\":\"rsoodqxhcrmnoh\",\"name\":\"t\",\"type\":\"kwh\"}],\"nextLink\":\"oifiyipjxsqwpgr\"}")
+            .toObject(FrontendListResult.class);
+        Assertions.assertEquals("ac", model.value().get(0).location());
+        Assertions.assertEquals("osfln", model.value().get(0).tags().get("osfqpteehzzv"));
+        Assertions.assertEquals("oifiyipjxsqwpgr", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FrontendListResult model =
-            new FrontendListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new FrontendInner()
-                                .withLocation("dsoifiyipj")
-                                .withTags(
-                                    mapOf("cjxvsnbyxqab", "wpgrjbzno", "shurzafbljjgpbto", "mocpc", "mkljavb", "c")),
-                            new FrontendInner().withLocation("c").withTags(mapOf("bcsglumma", "paierh")),
-                            new FrontendInner()
-                                .withLocation("r")
-                                .withTags(mapOf("vmclw", "jwzrl", "aqsqsycbkbfk", "ijcoejctb")),
-                            new FrontendInner()
-                                .withLocation("vpmouexhdzxib")
-                                .withTags(
-                                    mapOf(
-                                        "eic",
-                                        "jnxqbzvddntwn",
-                                        "cyddglmjthjqk",
-                                        "twnpzaoqvuhrhcf",
-                                        "ciwqvhk",
-                                        "pyeicxm"))))
-                .withNextLink("vdfgiotk");
+        FrontendListResult model = new FrontendListResult().withValue(Arrays.asList(
+            new FrontendInner().withLocation("ac").withTags(mapOf("osfqpteehzzv", "osfln", "mzinpvswjdk", "pyqr"))
+                .withProperties(new FrontendProperties())))
+            .withNextLink("oifiyipjxsqwpgr");
         model = BinaryData.fromObject(model).toObject(FrontendListResult.class);
-        Assertions.assertEquals("dsoifiyipj", model.value().get(0).location());
-        Assertions.assertEquals("wpgrjbzno", model.value().get(0).tags().get("cjxvsnbyxqab"));
-        Assertions.assertEquals("vdfgiotk", model.nextLink());
+        Assertions.assertEquals("ac", model.value().get(0).location());
+        Assertions.assertEquals("osfln", model.value().get(0).tags().get("osfqpteehzzv"));
+        Assertions.assertEquals("oifiyipjxsqwpgr", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -44,11 +44,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 /**
@@ -545,15 +545,15 @@ public class OrderByDocumentQueryExecutionContext
 
     @Override
     protected OrderByDocumentProducer createDocumentProducer(
-            String collectionRid,
-            String continuationToken,
-            int initialPageSize,
-            CosmosQueryRequestOptions cosmosQueryRequestOptions,
-            SqlQuerySpec querySpecForInit,
-            Map<String, String> commonRequestHeaders,
-            TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeFunc,
-            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc, FeedRangeEpkImpl feedRange) {
+        String collectionRid,
+        String continuationToken,
+        int initialPageSize,
+        CosmosQueryRequestOptions cosmosQueryRequestOptions,
+        SqlQuerySpec querySpecForInit,
+        Map<String, String> commonRequestHeaders,
+        TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeFunc,
+        Supplier<DocumentClientRetryPolicy> createRetryPolicyFunc, FeedRangeEpkImpl feedRange) {
         return new OrderByDocumentProducer(consumeComparer,
                 client,
                 collectionRid,

@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The custom setup of installing 3rd party components. */
+/**
+ * The custom setup of installing 3rd party components.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ComponentSetup")
 @Fluent
@@ -22,13 +24,15 @@ public final class ComponentSetup extends CustomSetupBase {
     @JsonProperty(value = "typeProperties", required = true)
     private LicensedComponentSetupTypeProperties innerTypeProperties = new LicensedComponentSetupTypeProperties();
 
-    /** Creates an instance of ComponentSetup class. */
+    /**
+     * Creates an instance of ComponentSetup class.
+     */
     public ComponentSetup() {
     }
 
     /**
      * Get the innerTypeProperties property: Install 3rd party component type properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private LicensedComponentSetupTypeProperties innerTypeProperties() {
@@ -37,7 +41,7 @@ public final class ComponentSetup extends CustomSetupBase {
 
     /**
      * Get the componentName property: The name of the 3rd party component.
-     *
+     * 
      * @return the componentName value.
      */
     public String componentName() {
@@ -46,7 +50,7 @@ public final class ComponentSetup extends CustomSetupBase {
 
     /**
      * Set the componentName property: The name of the 3rd party component.
-     *
+     * 
      * @param componentName the componentName value to set.
      * @return the ComponentSetup object itself.
      */
@@ -60,7 +64,7 @@ public final class ComponentSetup extends CustomSetupBase {
 
     /**
      * Get the licenseKey property: The license key to activate the component.
-     *
+     * 
      * @return the licenseKey value.
      */
     public SecretBase licenseKey() {
@@ -69,7 +73,7 @@ public final class ComponentSetup extends CustomSetupBase {
 
     /**
      * Set the licenseKey property: The license key to activate the component.
-     *
+     * 
      * @param licenseKey the licenseKey value to set.
      * @return the ComponentSetup object itself.
      */
@@ -83,17 +87,15 @@ public final class ComponentSetup extends CustomSetupBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model ComponentSetup"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerTypeProperties in model ComponentSetup"));
         } else {
             innerTypeProperties().validate();
         }

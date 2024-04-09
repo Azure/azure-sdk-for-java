@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JSON schema. */
+/**
+ * The JSON schema.
+ */
 @Fluent
 public final class JsonSchemaInner {
     /*
@@ -22,13 +24,15 @@ public final class JsonSchemaInner {
     @JsonProperty(value = "content")
     private String content;
 
-    /** Creates an instance of JsonSchemaInner class. */
+    /**
+     * Creates an instance of JsonSchemaInner class.
+     */
     public JsonSchemaInner() {
     }
 
     /**
      * Get the title property: The JSON title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -37,7 +41,7 @@ public final class JsonSchemaInner {
 
     /**
      * Set the title property: The JSON title.
-     *
+     * 
      * @param title the title value to set.
      * @return the JsonSchemaInner object itself.
      */
@@ -48,7 +52,7 @@ public final class JsonSchemaInner {
 
     /**
      * Get the content property: The JSON content.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -57,7 +61,7 @@ public final class JsonSchemaInner {
 
     /**
      * Set the content property: The JSON content.
-     *
+     * 
      * @param content the content value to set.
      * @return the JsonSchemaInner object itself.
      */
@@ -68,7 +72,7 @@ public final class JsonSchemaInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -16,10 +16,10 @@ public final class DatadogSingleSignOnResourceInnerTests {
         DatadogSingleSignOnResourceInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Failed\",\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"zlfbxzpuzycispnq\",\"singleSignOnUrl\":\"hmgkbrpyy\"},\"id\":\"ibnuqqkpik\",\"name\":\"drgvtqagn\",\"type\":\"uynhijg\"}")
+                    "{\"properties\":{\"provisioningState\":\"Canceled\",\"singleSignOnState\":\"Existing\",\"enterpriseAppId\":\"jmflbvvnch\",\"singleSignOnUrl\":\"cciw\"},\"id\":\"juqk\",\"name\":\"rsa\",\"type\":\"iwkuofos\"}")
                 .toObject(DatadogSingleSignOnResourceInner.class);
-        Assertions.assertEquals(SingleSignOnStates.INITIAL, model.properties().singleSignOnState());
-        Assertions.assertEquals("zlfbxzpuzycispnq", model.properties().enterpriseAppId());
+        Assertions.assertEquals(SingleSignOnStates.EXISTING, model.properties().singleSignOnState());
+        Assertions.assertEquals("jmflbvvnch", model.properties().enterpriseAppId());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,10 +28,10 @@ public final class DatadogSingleSignOnResourceInnerTests {
             new DatadogSingleSignOnResourceInner()
                 .withProperties(
                     new DatadogSingleSignOnProperties()
-                        .withSingleSignOnState(SingleSignOnStates.INITIAL)
-                        .withEnterpriseAppId("zlfbxzpuzycispnq"));
+                        .withSingleSignOnState(SingleSignOnStates.EXISTING)
+                        .withEnterpriseAppId("jmflbvvnch"));
         model = BinaryData.fromObject(model).toObject(DatadogSingleSignOnResourceInner.class);
-        Assertions.assertEquals(SingleSignOnStates.INITIAL, model.properties().singleSignOnState());
-        Assertions.assertEquals("zlfbxzpuzycispnq", model.properties().enterpriseAppId());
+        Assertions.assertEquals(SingleSignOnStates.EXISTING, model.properties().singleSignOnState());
+        Assertions.assertEquals("jmflbvvnch", model.properties().enterpriseAppId());
     }
 }
