@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Updated `api-version` of ComputeRP to `2024-03-01`.
+
 ## 2.37.0 (2024-03-22)
 
 ### Other Changes
