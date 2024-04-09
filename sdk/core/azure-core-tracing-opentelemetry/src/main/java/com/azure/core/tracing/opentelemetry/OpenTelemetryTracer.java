@@ -82,7 +82,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             // it's expected if we're not running in the agent
             LOGGER.verbose("Failed to resolve AgentContextStorage.getAgentContext or one of its dependencies", t);
         } catch (RuntimeException t) {
-            throw LOGGER.logThrowableAsError(t);
+            throw LOGGER.logExceptionAsError(t);
         }
     }
 
