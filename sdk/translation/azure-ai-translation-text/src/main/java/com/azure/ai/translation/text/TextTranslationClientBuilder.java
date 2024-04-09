@@ -331,6 +331,16 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         } else {
             serviceEndpoint = endpoint;
         }
+        if (tokenCredential != null && (this.region != null || this.resourceId != null)) {
+            Objects.requireNonNull(this.region, "'region' cannot be null.");
+            Objects.requireNonNull(this.resourceId, "'resourceId' cannot be null.");
+        }
+        if (this.credential != null && !CoreUtils.isNullOrEmpty(this.resourceId)) {
+            throw new IllegalStateException("Resource Id cannot be used with key credential. Set resourceId to null.");
+        }
+        if(tokenCredential != null && this.credential != null) {
+            throw new IllegalStateException("Both token credential and key credential cannot be set.");
+        }
         TextTranslationClientImpl client = new TextTranslationClientImpl(localPipeline,
             JacksonAdapter.createDefaultSerializerAdapter(), serviceEndpoint, localServiceVersion);
         return client;
