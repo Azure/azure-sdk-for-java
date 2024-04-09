@@ -338,7 +338,7 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         if (this.credential != null && !CoreUtils.isNullOrEmpty(this.resourceId)) {
             throw new IllegalStateException("Resource Id cannot be used with key credential. Set resourceId to null.");
         }
-        if(tokenCredential != null && this.credential != null) {
+        if (tokenCredential != null && this.credential != null) {
             throw new IllegalStateException("Both token credential and key credential cannot be set.");
         }
         TextTranslationClientImpl client = new TextTranslationClientImpl(localPipeline,
