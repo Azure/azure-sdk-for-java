@@ -34,6 +34,8 @@ import com.azure.spring.data.cosmos.domain.BasicItem;
 import com.azure.spring.data.cosmos.domain.GenIdEntity;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import com.azure.spring.data.cosmos.repository.StubAuditorProvider;
+import com.azure.spring.data.cosmos.repository.StubDateTimeProvider;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -48,6 +50,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScanner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.annotation.Persistent;
+import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -59,6 +62,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -106,6 +112,14 @@ public class CosmosTemplateIT {
     private static final Person TEST_PERSON_3 = new Person(ID_3, NEW_FIRST_NAME, NEW_LAST_NAME, HOBBIES,
         ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
+    private static final AuditableEntity TEST_AUDITABLE_ENTITY_1 = new AuditableEntity();
+
+    private static final String UUID_1 = UUID.randomUUID().toString();
+
+    private static final AuditableEntity TEST_AUDITABLE_ENTITY_2 = new AuditableEntity();
+
+    private static final String UUID_2 = UUID.randomUUID().toString();
+
     private static final BasicItem BASIC_ITEM = new BasicItem(ID_1);
 
     private static final String PRECONDITION_IS_NOT_MET = "is not met";
@@ -138,6 +152,7 @@ public class CosmosTemplateIT {
     private static CosmosAsyncClient client;
     private static CosmosTemplate cosmosTemplate;
     private static CosmosEntityInformation<Person, String> personInfo;
+    private static CosmosEntityInformation<AuditableEntity, String> auditableEntityInfo;
     private static String containerName;
 
     private MappingCosmosConverter cosmosConverter;
@@ -153,6 +168,12 @@ public class CosmosTemplateIT {
     private CosmosConfig cosmosConfig;
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
+    @Autowired
+    private IsNewAwareAuditingHandler inah;
+    @Autowired
+    private StubAuditorProvider stubAuditorProvider;
+    @Autowired
+    private StubDateTimeProvider stubDateTimeProvider;
 
     public CosmosTemplateIT() throws JsonProcessingException {
     }
@@ -162,6 +183,9 @@ public class CosmosTemplateIT {
         if (cosmosTemplate == null) {
             client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
             personInfo = new CosmosEntityInformation<>(Person.class);
+            TEST_AUDITABLE_ENTITY_1.setId(UUID_1);
+            TEST_AUDITABLE_ENTITY_2.setId(UUID_2);
+            auditableEntityInfo = new CosmosEntityInformation<>(AuditableEntity.class);
             containerName = personInfo.getContainerName();
             cosmosTemplate = createCosmosTemplate(cosmosConfig, TestConstants.DB_NAME);
         }
@@ -179,7 +203,7 @@ public class CosmosTemplateIT {
         final CosmosMappingContext mappingContext = new CosmosMappingContext();
         mappingContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
         cosmosConverter = new MappingCosmosConverter(mappingContext, null);
-        return new CosmosTemplate(cosmosFactory, config, cosmosConverter);
+        return new CosmosTemplate(cosmosFactory, config, cosmosConverter, inah);
     }
 
     private void insertPerson(Person person) {
@@ -293,6 +317,52 @@ public class CosmosTemplateIT {
         final List<Person> expected = Lists.newArrayList(TEST_PERSON, TEST_PERSON_2, TEST_PERSON_3);
         assertThat(result.size()).isEqualTo(expected.size());
         assertThat(result).containsAll(expected);
+    }
+
+    @Test
+    public void testSaveSetsAuditData() {
+        stubAuditorProvider.setCurrentAuditor("test-auditor");
+        final OffsetDateTime now = OffsetDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.MICROS);
+        stubDateTimeProvider.setNow(now);
+        cosmosTemplate.insert(auditableEntityInfo.getContainerName(), TEST_AUDITABLE_ENTITY_1);
+        cosmosTemplate.insert(auditableEntityInfo.getContainerName(), TEST_AUDITABLE_ENTITY_2);
+
+        final List<AuditableEntity> result = TestUtils.toList(cosmosTemplate.findAll(AuditableEntity.class));
+
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result.get(0).getId()).isEqualTo(UUID_1);
+        assertThat(result.get(0).getCreatedBy()).isEqualTo("test-auditor");
+        assertThat(result.get(0).getLastModifiedBy()).isEqualTo("test-auditor");
+        assertThat(result.get(0).getCreatedDate()).isEqualTo(now);
+        assertThat(result.get(0).getLastModifiedByDate()).isEqualTo(now);
+        assertThat(result.get(1).getId()).isEqualTo(UUID_2);
+        assertThat(result.get(1).getCreatedBy()).isEqualTo("test-auditor");
+        assertThat(result.get(1).getLastModifiedBy()).isEqualTo("test-auditor");
+        assertThat(result.get(1).getCreatedDate()).isEqualTo(now);
+        assertThat(result.get(1).getLastModifiedByDate()).isEqualTo(now);
+    }
+
+    @Test
+    public void testSaveAllSetsAuditData() {
+        stubAuditorProvider.setCurrentAuditor("test-auditor-2");
+        final OffsetDateTime now = OffsetDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.MICROS);
+        stubDateTimeProvider.setNow(now);
+        cosmosTemplate.insertAll(auditableEntityInfo, Lists.newArrayList(TEST_AUDITABLE_ENTITY_1,
+            TEST_AUDITABLE_ENTITY_2));
+
+        final List<AuditableEntity> result = TestUtils.toList(cosmosTemplate.findAll(AuditableEntity.class));
+
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result.get(0).getId()).isEqualTo(UUID_1);
+        assertThat(result.get(0).getCreatedBy()).isEqualTo("test-auditor-2");
+        assertThat(result.get(0).getLastModifiedBy()).isEqualTo("test-auditor-2");
+        assertThat(result.get(0).getCreatedDate()).isEqualTo(now);
+        assertThat(result.get(0).getLastModifiedByDate()).isEqualTo(now);
+        assertThat(result.get(1).getId()).isEqualTo(UUID_2);
+        assertThat(result.get(1).getCreatedBy()).isEqualTo("test-auditor-2");
+        assertThat(result.get(1).getLastModifiedBy()).isEqualTo("test-auditor-2");
+        assertThat(result.get(1).getCreatedDate()).isEqualTo(now);
+        assertThat(result.get(1).getLastModifiedByDate()).isEqualTo(now);
     }
 
     @Test
