@@ -6,11 +6,11 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.kafka.connect.InMemoryStorageReader;
 import com.azure.cosmos.kafka.connect.KafkaCosmosTestSuiteBase;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAccountConfig;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.CosmosMasterKeyAuthConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.FeedRange;
 import org.apache.kafka.connect.source.SourceConnectorContext;
@@ -34,7 +34,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
     public void before_MetadataMonitorThreadTest() {
         CosmosAccountConfig accountConfig = new CosmosAccountConfig(
             TestConfigurations.HOST,
-            TestConfigurations.MASTER_KEY,
+            new CosmosMasterKeyAuthConfig(TestConfigurations.MASTER_KEY),
             "requestTaskReconfigurationTest",
             false,
             new ArrayList<String>());
@@ -56,7 +56,8 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                 databaseName,
                 true,
                 new ArrayList<String>(),
-                new HashMap<String, String>());
+                new ArrayList<String>());
+
         CosmosMetadataConfig metadataConfig =
             new CosmosMetadataConfig(500, "_cosmos.metadata.topic");
         SourceConnectorContext sourceConnectorContext = Mockito.mock(SourceConnectorContext.class);
@@ -105,7 +106,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                 databaseName,
                 false,
                 Arrays.asList(multiPartitionContainerName),
-                new HashMap<String, String>());
+                new ArrayList<String>());
         CosmosMetadataConfig metadataConfig =
             new CosmosMetadataConfig(500, "_cosmos.metadata.topic");
         SourceConnectorContext sourceConnectorContext = Mockito.mock(SourceConnectorContext.class);
@@ -152,7 +153,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
         FeedRangesMetadataTopicPartition feedRangesMetadataTopicPartition =
             new FeedRangesMetadataTopicPartition(databaseName, multiPartitionContainer.getResourceId());
         FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
-            new FeedRangesMetadataTopicOffset(Arrays.asList(FeedRangeEpkImpl.forFullRange().getRange()));
+            new FeedRangesMetadataTopicOffset(Arrays.asList(FeedRange.forFullRange()));
 
         Map<Map<String, Object>, Map<String, Object>> feedRangesOffSetMap = new HashMap<>();
         feedRangesOffSetMap.put(
@@ -176,7 +177,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                 databaseName,
                 false,
                 Arrays.asList(singlePartitionContainerName),
-                new HashMap<String, String>());
+                new ArrayList<String>());
         CosmosMetadataConfig metadataConfig =
             new CosmosMetadataConfig(500, "_cosmos.metadata.topic");
         SourceConnectorContext sourceConnectorContext = Mockito.mock(SourceConnectorContext.class);
@@ -220,7 +221,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                 .block();
         assertThat(feedRanges.size()).isEqualTo(1);
 
-        List<FeedRangeEpkImpl> childRanges =
+        List<FeedRange> childRanges =
             ImplementationBridgeHelpers
                 .CosmosAsyncContainerHelper
                 .getCosmosAsyncContainerAccessor()
@@ -236,7 +237,6 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
             new FeedRangesMetadataTopicOffset(
                 childRanges
                     .stream()
-                    .map(FeedRangeEpkImpl::getRange)
                     .collect(Collectors.toList()));
 
         Map<Map<String, Object>, Map<String, Object>> feedRangesOffSetMap = new HashMap<>();

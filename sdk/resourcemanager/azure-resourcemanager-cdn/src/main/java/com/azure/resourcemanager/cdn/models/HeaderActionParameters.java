@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the parameters for the request header action. */
+/**
+ * Defines the parameters for the request header action.
+ */
 @Fluent
 public final class HeaderActionParameters {
     /*
@@ -35,14 +37,15 @@ public final class HeaderActionParameters {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of HeaderActionParameters class. */
+    /**
+     * Creates an instance of HeaderActionParameters class.
+     */
     public HeaderActionParameters() {
-        typeName = "DeliveryRuleHeaderActionParameters";
     }
 
     /**
      * Get the typeName property: The typeName property.
-     *
+     * 
      * @return the typeName value.
      */
     public String typeName() {
@@ -51,7 +54,7 @@ public final class HeaderActionParameters {
 
     /**
      * Set the typeName property: The typeName property.
-     *
+     * 
      * @param typeName the typeName value to set.
      * @return the HeaderActionParameters object itself.
      */
@@ -62,7 +65,7 @@ public final class HeaderActionParameters {
 
     /**
      * Get the headerAction property: Action to perform.
-     *
+     * 
      * @return the headerAction value.
      */
     public HeaderAction headerAction() {
@@ -71,7 +74,7 @@ public final class HeaderActionParameters {
 
     /**
      * Set the headerAction property: Action to perform.
-     *
+     * 
      * @param headerAction the headerAction value to set.
      * @return the HeaderActionParameters object itself.
      */
@@ -82,7 +85,7 @@ public final class HeaderActionParameters {
 
     /**
      * Get the headerName property: Name of the header to modify.
-     *
+     * 
      * @return the headerName value.
      */
     public String headerName() {
@@ -91,7 +94,7 @@ public final class HeaderActionParameters {
 
     /**
      * Set the headerName property: Name of the header to modify.
-     *
+     * 
      * @param headerName the headerName value to set.
      * @return the HeaderActionParameters object itself.
      */
@@ -102,7 +105,7 @@ public final class HeaderActionParameters {
 
     /**
      * Get the value property: Value for the specified action.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -111,7 +114,7 @@ public final class HeaderActionParameters {
 
     /**
      * Set the value property: Value for the specified action.
-     *
+     * 
      * @param value the value value to set.
      * @return the HeaderActionParameters object itself.
      */
@@ -122,21 +125,17 @@ public final class HeaderActionParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (headerAction() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property headerAction in model HeaderActionParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property headerAction in model HeaderActionParameters"));
         }
         if (headerName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property headerName in model HeaderActionParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property headerName in model HeaderActionParameters"));
         }
     }
 

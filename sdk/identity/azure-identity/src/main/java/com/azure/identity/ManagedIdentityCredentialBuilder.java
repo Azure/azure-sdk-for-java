@@ -8,9 +8,9 @@ import com.azure.core.util.logging.ClientLogger;
 /**
  * <p>Fluent credential builder for instantiating a {@link ManagedIdentityCredential}.</p>
  *
- * <p><a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">Azure
+ * <p><a href="https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/">Azure
  * Managed Identity</a> is a feature in
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>
  * that provides a way for applications running on Azure to authenticate themselves with Azure resources without
  * needing to manage or store any secrets like passwords or keys.
  * The {@link ManagedIdentityCredential} authenticates the configured managed identity (system or user assigned) of an
@@ -36,7 +36,7 @@ import com.azure.core.util.logging.ClientLogger;
  * <p><strong>Sample: Construct a User Assigned ManagedIdentityCredential</strong></p>
  *
  * <p>User-Assigned Managed Identity (UAMI) in Azure is a feature that allows you to create an identity in
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>
  * that is associated with one or more Azure resources. This identity can then be used to authenticate and
  * authorize access to various Azure services and resources. The following code sample demonstrates the creation of a
  * {@link ManagedIdentityCredential} to target a user assigned managed identity, using the

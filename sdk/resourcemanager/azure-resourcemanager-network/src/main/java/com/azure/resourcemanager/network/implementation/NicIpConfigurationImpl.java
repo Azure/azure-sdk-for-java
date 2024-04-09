@@ -9,6 +9,7 @@ import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupI
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
+import com.azure.resourcemanager.network.models.DeleteOptions;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.LoadBalancer;
@@ -28,6 +29,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /** Implementation for NicIPConfiguration and its create and update interfaces. */
@@ -257,11 +259,11 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
         return natRefs;
     }
 
-    protected static void ensureConfigurations(Collection<NicIpConfiguration> nicIPConfigurations) {
+    protected static void ensureConfigurations(Collection<NicIpConfiguration> nicIPConfigurations, Map<String, DeleteOptions> specifiedIpConfigNames) {
         for (NicIpConfiguration nicIPConfiguration : nicIPConfigurations) {
             NicIpConfigurationImpl config = (NicIpConfigurationImpl) nicIPConfiguration;
             config.innerModel().withSubnet(config.subnetToAssociate());
-            config.innerModel().withPublicIpAddress(config.publicIPToAssociate());
+            config.innerModel().withPublicIpAddress(config.publicIPToAssociate(specifiedIpConfigNames.getOrDefault(config.name(), null)));
         }
     }
 
@@ -331,9 +333,10 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
      * public IP in create fluent chain. In case of update chain, if withoutPublicIP(..) is not specified then existing
      * associated (if any) public IP will be returned.
      *
+     * @param deleteOptions what happens to the public IP address when the VM using it is deleted
      * @return public IP SubResource
      */
-    private PublicIpAddressInner publicIPToAssociate() {
+    private PublicIpAddressInner publicIPToAssociate(DeleteOptions deleteOptions) {
         String pipId = null;
         if (this.removePrimaryPublicIPAssociation) {
             return null;
@@ -344,8 +347,14 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
         }
 
         if (pipId != null) {
+            if (Objects.nonNull(deleteOptions)) {
+                return new PublicIpAddressInner().withId(pipId).withDeleteOption(deleteOptions);
+            }
             return new PublicIpAddressInner().withId(pipId);
         } else if (!this.isInCreateMode) {
+            if (Objects.nonNull(this.innerModel().publicIpAddress()) && Objects.nonNull(deleteOptions)) {
+                return this.innerModel().publicIpAddress().withDeleteOption(deleteOptions);
+            }
             return this.innerModel().publicIpAddress();
         } else {
             return null;
@@ -398,6 +407,12 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
                 return Objects.equals(name, asgName);
             });
         }
+        return this;
+    }
+
+    @Override
+    public NicIpConfigurationImpl withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions) {
+        this.parent().ensureDeleteOptions(deleteOptions, this.innerModel().name());
         return this;
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The cpu and memory requirement definition. */
+/**
+ * The cpu and memory requirement definition.
+ */
 @Fluent
 public final class ComputeResourceDefinition {
     /*
@@ -22,13 +24,15 @@ public final class ComputeResourceDefinition {
     @JsonProperty(value = "memory", required = true)
     private long memory;
 
-    /** Creates an instance of ComputeResourceDefinition class. */
+    /**
+     * Creates an instance of ComputeResourceDefinition class.
+     */
     public ComputeResourceDefinition() {
     }
 
     /**
      * Get the cpu property: The required CPU.
-     *
+     * 
      * @return the cpu value.
      */
     public float cpu() {
@@ -37,7 +41,7 @@ public final class ComputeResourceDefinition {
 
     /**
      * Set the cpu property: The required CPU.
-     *
+     * 
      * @param cpu the cpu value to set.
      * @return the ComputeResourceDefinition object itself.
      */
@@ -48,7 +52,7 @@ public final class ComputeResourceDefinition {
 
     /**
      * Get the memory property: The required memory in MB, Container memory will be 110 percentile.
-     *
+     * 
      * @return the memory value.
      */
     public long memory() {
@@ -57,7 +61,7 @@ public final class ComputeResourceDefinition {
 
     /**
      * Set the memory property: The required memory in MB, Container memory will be 110 percentile.
-     *
+     * 
      * @param memory the memory value to set.
      * @return the ComputeResourceDefinition object itself.
      */
@@ -68,7 +72,7 @@ public final class ComputeResourceDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

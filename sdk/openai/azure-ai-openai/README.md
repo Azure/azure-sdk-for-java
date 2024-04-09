@@ -105,7 +105,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.11.2</version>
+    <version>1.11.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -262,7 +262,7 @@ Embeddings embeddings = client.getEmbeddings("{deploymentOrModelName}", embeddin
 
 for (EmbeddingItem item : embeddings.getData()) {
     System.out.printf("Index: %d.%n", item.getPromptIndex());
-    for (Double embedding : item.getEmbedding()) {
+    for (Float embedding : item.getEmbedding()) {
         System.out.printf("%f;", embedding);
     }
 }

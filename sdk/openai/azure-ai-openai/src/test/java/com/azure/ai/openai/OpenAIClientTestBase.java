@@ -152,7 +152,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     protected String getAzureCognitiveSearchKey() {
-        String azureCognitiveSearchKey = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_API_KEY");
+        String azureCognitiveSearchKey = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_API_KEY");
         if (getTestMode() == TestMode.PLAYBACK) {
             return FAKE_API_KEY;
         } else if (azureCognitiveSearchKey != null) {
@@ -178,6 +178,9 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     @Test
     public abstract void testGetEmbeddings(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    @Test
+    public abstract void getEmbeddingsWithSmallerDimensions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
     @Test
     public abstract void testGetEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
@@ -234,6 +237,12 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     void getEmbeddingRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
         testRunner.accept("text-embedding-ada-002", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
+    }
+
+    void getEmbeddingWithSmallerDimensionsRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
+        testRunner.accept("text-embedding-3-large",
+                new EmbeddingsOptions(Arrays.asList("Your text string goes here")).setDimensions(20)
+        );
     }
 
     void getEmbeddingRunnerForNonAzure(BiConsumer<String, EmbeddingsOptions> testRunner) {
@@ -538,9 +547,14 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertFalse(data.isEmpty());
 
         for (EmbeddingItem item : data) {
-            List<Double> embedding = item.getEmbedding();
+            List<Float> embedding = item.getEmbedding();
             assertNotNull(embedding);
             assertFalse(embedding.isEmpty());
+
+            String base64Embedding = item.getEmbeddingAsString();
+            assertNotNull(base64Embedding);
+            String firstFloatValue = String.valueOf(embedding.get(0).floatValue());
+            assertTrue(!base64Embedding.contains(firstFloatValue));
         }
         assertNotNull(actual.getUsage());
     }

@@ -6,7 +6,6 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class StatusAtlasRelationship extends ExpandableStringEnum<StatusAt
      * @return the corresponding StatusAtlasRelationship.
      */
     @Generated
-    @JsonCreator
     public static StatusAtlasRelationship fromString(String name) {
         return fromString(name, StatusAtlasRelationship.class);
     }

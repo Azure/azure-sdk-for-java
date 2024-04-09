@@ -22,7 +22,6 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RequestOptions;
@@ -36,9 +35,13 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the IngestionUsingDataCollectionRulesClient type. */
+/**
+ * Initializes a new instance of the IngestionUsingDataCollectionRulesClient type.
+ */
 public final class IngestionUsingDataCollectionRulesClientImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final IngestionUsingDataCollectionRulesClientService service;
 
     /**
@@ -50,43 +53,49 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
     /**
      * Gets The Data Collection Endpoint for the Data Collection Rule, for example
      * https://dce-name.eastus-2.ingest.monitor.azure.com.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Service version. */
+    /**
+     * Service version.
+     */
     private final IngestionUsingDataCollectionRulesServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public IngestionUsingDataCollectionRulesServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -95,60 +104,47 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
 
     /**
      * Initializes an instance of IngestionUsingDataCollectionRulesClient client.
-     *
+     * 
      * @param endpoint The Data Collection Endpoint for the Data Collection Rule, for example
-     *     https://dce-name.eastus-2.ingest.monitor.azure.com.
+     * https://dce-name.eastus-2.ingest.monitor.azure.com.
      * @param serviceVersion Service version.
      */
-    public IngestionUsingDataCollectionRulesClientImpl(
-        String endpoint, IngestionUsingDataCollectionRulesServiceVersion serviceVersion) {
-        this(
-            new HttpPipelineBuilder()
-                .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                .build(),
-            JacksonAdapter.createDefaultSerializerAdapter(),
-            endpoint,
-            serviceVersion);
+    IngestionUsingDataCollectionRulesClientImpl(String endpoint,
+        IngestionUsingDataCollectionRulesServiceVersion serviceVersion) {
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of IngestionUsingDataCollectionRulesClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The Data Collection Endpoint for the Data Collection Rule, for example
-     *     https://dce-name.eastus-2.ingest.monitor.azure.com.
+     * https://dce-name.eastus-2.ingest.monitor.azure.com.
      * @param serviceVersion Service version.
      */
-    public IngestionUsingDataCollectionRulesClientImpl(
-        HttpPipeline httpPipeline,
-        String endpoint,
+    IngestionUsingDataCollectionRulesClientImpl(HttpPipeline httpPipeline, String endpoint,
         IngestionUsingDataCollectionRulesServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of IngestionUsingDataCollectionRulesClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The Data Collection Endpoint for the Data Collection Rule, for example
-     *     https://dce-name.eastus-2.ingest.monitor.azure.com.
+     * https://dce-name.eastus-2.ingest.monitor.azure.com.
      * @param serviceVersion Service version.
      */
-    public IngestionUsingDataCollectionRulesClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        String endpoint,
-        IngestionUsingDataCollectionRulesServiceVersion serviceVersion) {
+    IngestionUsingDataCollectionRulesClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        String endpoint, IngestionUsingDataCollectionRulesServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
-        this.service =
-            RestProxy.create(
-                IngestionUsingDataCollectionRulesClientService.class,
-                this.httpPipeline,
-                this.getSerializerAdapter());
+        this.service = RestProxy.create(IngestionUsingDataCollectionRulesClientService.class, this.httpPipeline,
+            this.getSerializerAdapter());
     }
 
     /**
@@ -159,74 +155,66 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
     @ServiceInterface(name = "IngestionUsingDataCo")
     public interface IngestionUsingDataCollectionRulesClientService {
         @Post("/dataCollectionRules/{ruleId}/streams/{stream}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-            value = ClientAuthenticationException.class,
-            code = {401})
-        @UnexpectedResponseExceptionType(
-            value = ResourceNotFoundException.class,
-            code = {404})
-        @UnexpectedResponseExceptionType(
-            value = ResourceModifiedException.class,
-            code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> upload(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("ruleId") String ruleId,
-            @PathParam("stream") String stream,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") BinaryData body,
-            @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions,
-            Context context);
+        Mono<Response<Void>> upload(@HostParam("endpoint") String endpoint, @PathParam("ruleId") String ruleId,
+            @PathParam("stream") String stream, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData body, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/dataCollectionRules/{ruleId}/streams/{stream}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-            value = ClientAuthenticationException.class,
-            code = {401})
-        @UnexpectedResponseExceptionType(
-            value = ResourceNotFoundException.class,
-            code = {404})
-        @UnexpectedResponseExceptionType(
-            value = ResourceModifiedException.class,
-            code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> uploadSync(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("ruleId") String ruleId,
-            @PathParam("stream") String stream,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") BinaryData body,
-            @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions,
-            Context context);
+        Response<Void> uploadSync(@HostParam("endpoint") String endpoint, @PathParam("ruleId") String ruleId,
+            @PathParam("stream") String stream, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData body, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
      * Ingestion API used to directly ingest data using Data Collection Rules
-     *
-     * <p>See error response code and error response message for more detail.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
+     * 
+     * See error response code and error response message for more detail.
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Encoding</td><td>String</td><td>No</td><td>gzip</td></tr>
-     *     <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Client request Id</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>Content-Encoding</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>gzip</td>
+     * </tr>
+     * <tr>
+     * <td>x-ms-client-request-id</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Client request Id</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * [
      *     Object (Required)
      * ]
      * }</pre>
-     *
+     * 
      * @param ruleId The immutable Id of the Data Collection Rule resource.
      * @param stream The streamDeclaration name as defined in the Data Collection Rule.
      * @param body An array of objects matching the schema defined by the provided stream.
@@ -238,58 +226,63 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> uploadWithResponseAsync(
-        String ruleId, String stream, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<Void>> uploadWithResponseAsync(String ruleId, String stream, BinaryData body,
+        RequestOptions requestOptions) {
         if (ruleId == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Parameter ruleId is required and cannot be null."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Parameter ruleId is required and cannot be null."));
         }
         if (stream == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Parameter stream is required and cannot be null."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Parameter stream is required and cannot be null."));
         }
         if (body == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Parameter body is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context ->
-                service.upload(
-                    this.getEndpoint(),
-                    ruleId,
-                    stream,
-                    this.getServiceVersion().getVersion(),
-                    body,
-                    accept,
-                    requestOptions,
-                    context));
+        return FluxUtil.withContext(context -> service.upload(this.getEndpoint(), ruleId, stream,
+            this.getServiceVersion().getVersion(), body, accept, requestOptions, context));
     }
 
     /**
      * Ingestion API used to directly ingest data using Data Collection Rules
-     *
-     * <p>See error response code and error response message for more detail.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
+     * 
+     * See error response code and error response message for more detail.
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Encoding</td><td>String</td><td>No</td><td>gzip</td></tr>
-     *     <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Client request Id</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>Content-Encoding</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>gzip</td>
+     * </tr>
+     * <tr>
+     * <td>x-ms-client-request-id</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Client request Id</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * [
      *     Object (Required)
      * ]
      * }</pre>
-     *
+     * 
      * @param ruleId The immutable Id of the Data Collection Rule resource.
      * @param stream The streamDeclaration name as defined in the Data Collection Rule.
      * @param body An array of objects matching the schema defined by the provided stream.
@@ -301,30 +294,23 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> uploadWithResponse(
-        String ruleId, String stream, BinaryData body, RequestOptions requestOptions) {
+    public Response<Void> uploadWithResponse(String ruleId, String stream, BinaryData body,
+        RequestOptions requestOptions) {
         if (ruleId == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Parameter ruleId is required and cannot be null."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Parameter ruleId is required and cannot be null."));
         }
         if (stream == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Parameter stream is required and cannot be null."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Parameter stream is required and cannot be null."));
         }
         if (body == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Parameter body is required and cannot be null."));
         }
         final String accept = "application/json";
-        return service.uploadSync(
-            this.getEndpoint(),
-            ruleId,
-            stream,
-            this.getServiceVersion().getVersion(),
-            body,
-            accept,
-            requestOptions,
-            requestOptions.getContext());
+        return service.uploadSync(this.getEndpoint(), ruleId, stream, this.getServiceVersion().getVersion(), body,
+            accept, requestOptions, Context.NONE);
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IngestionUsingDataCollectionRulesClientImpl.class);

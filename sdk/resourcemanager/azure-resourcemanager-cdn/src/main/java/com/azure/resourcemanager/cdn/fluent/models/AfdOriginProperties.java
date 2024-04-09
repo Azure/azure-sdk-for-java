@@ -12,7 +12,9 @@ import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.SharedPrivateLinkResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JSON object that contains the properties of the origin. */
+/**
+ * The JSON object that contains the properties of the origin.
+ */
 @Fluent
 public final class AfdOriginProperties extends AfdOriginUpdatePropertiesParameters {
     /*
@@ -27,13 +29,15 @@ public final class AfdOriginProperties extends AfdOriginUpdatePropertiesParamete
     @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentStatus deploymentStatus;
 
-    /** Creates an instance of AfdOriginProperties class. */
+    /**
+     * Creates an instance of AfdOriginProperties class.
+     */
     public AfdOriginProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AfdProvisioningState provisioningState() {
@@ -42,78 +46,98 @@ public final class AfdOriginProperties extends AfdOriginUpdatePropertiesParamete
 
     /**
      * Get the deploymentStatus property: The deploymentStatus property.
-     *
+     * 
      * @return the deploymentStatus value.
      */
     public DeploymentStatus deploymentStatus() {
         return this.deploymentStatus;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginProperties withAzureOrigin(ResourceReference azureOrigin) {
         super.withAzureOrigin(azureOrigin);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginProperties withHostname(String hostname) {
         super.withHostname(hostname);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginProperties withHttpPort(Integer httpPort) {
         super.withHttpPort(httpPort);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginProperties withHttpsPort(Integer httpsPort) {
         super.withHttpsPort(httpsPort);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginProperties withOriginHostHeader(String originHostHeader) {
         super.withOriginHostHeader(originHostHeader);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginProperties withPriority(Integer priority) {
         super.withPriority(priority);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginProperties withWeight(Integer weight) {
         super.withWeight(weight);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AfdOriginProperties withSharedPrivateLinkResource(
-        SharedPrivateLinkResourceProperties sharedPrivateLinkResource) {
+    public AfdOriginProperties
+        withSharedPrivateLinkResource(SharedPrivateLinkResourceProperties sharedPrivateLinkResource) {
         super.withSharedPrivateLinkResource(sharedPrivateLinkResource);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginProperties withEnabledState(EnabledState enabledState) {
         super.withEnabledState(enabledState);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginProperties withEnforceCertificateNameCheck(Boolean enforceCertificateNameCheck) {
         super.withEnforceCertificateNameCheck(enforceCertificateNameCheck);
@@ -122,7 +146,7 @@ public final class AfdOriginProperties extends AfdOriginUpdatePropertiesParamete
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

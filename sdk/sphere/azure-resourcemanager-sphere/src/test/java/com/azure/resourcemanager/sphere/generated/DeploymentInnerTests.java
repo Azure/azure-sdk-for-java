@@ -7,6 +7,8 @@ package com.azure.resourcemanager.sphere.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sphere.fluent.models.DeploymentInner;
 import com.azure.resourcemanager.sphere.fluent.models.ImageInner;
+import com.azure.resourcemanager.sphere.models.DeploymentProperties;
+import com.azure.resourcemanager.sphere.models.ImageProperties;
 import com.azure.resourcemanager.sphere.models.RegionalDataBoundary;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -14,45 +16,34 @@ import org.junit.jupiter.api.Assertions;
 public final class DeploymentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeploymentInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"deploymentId\":\"jrmvdjwzrlo\",\"deployedImages\":[{\"properties\":{\"image\":\"hijco\",\"imageId\":\"ctbzaq\",\"imageName\":\"sycbkbfk\",\"regionalDataBoundary\":\"None\",\"uri\":\"kexxppof\",\"description\":\"axcfjpgddtocjjx\",\"componentId\":\"pmouexhdz\",\"imageType\":\"InvalidImageType\",\"provisioningState\":\"Accepted\"},\"id\":\"ojnxqbzvdd\",\"name\":\"t\",\"type\":\"ndei\"},{\"properties\":{\"image\":\"w\",\"imageId\":\"zao\",\"imageName\":\"uhrhcffcyddgl\",\"regionalDataBoundary\":\"None\",\"uri\":\"jqkwpyeicx\",\"description\":\"ciwqvhk\",\"componentId\":\"xuigdtopbobj\",\"imageType\":\"ManifestSet\",\"provisioningState\":\"Deleting\"},\"id\":\"w\",\"name\":\"a\",\"type\":\"a\"},{\"properties\":{\"image\":\"z\",\"imageId\":\"vvtpgvdfgio\",\"imageName\":\"ftutqxlngxlefgu\",\"regionalDataBoundary\":\"None\",\"uri\":\"rxdq\",\"description\":\"dt\",\"componentId\":\"zrvqdr\",\"imageType\":\"NormalWorldKernel\",\"provisioningState\":\"Provisioning\"},\"id\":\"big\",\"name\":\"h\",\"type\":\"qfbow\"},{\"properties\":{\"image\":\"nyktzlcuiy\",\"imageId\":\"qyw\",\"imageName\":\"drvyn\",\"regionalDataBoundary\":\"EU\",\"uri\":\"phrcgyncoc\",\"description\":\"cfvmmco\",\"componentId\":\"sxlzevgbmqj\",\"imageType\":\"PlutonRuntime\",\"provisioningState\":\"Deleting\"},\"id\":\"pmivkwlzu\",\"name\":\"ccfwnfnbacfion\",\"type\":\"ebxetqgtzxdp\"}],\"deploymentDateUtc\":\"2021-04-08T18:16:48Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"wxrjfeallnwsub\",\"name\":\"snjampmng\",\"type\":\"zscxaqwo\"}")
-                .toObject(DeploymentInner.class);
-        Assertions.assertEquals("jrmvdjwzrlo", model.deploymentId());
-        Assertions.assertEquals("hijco", model.deployedImages().get(0).image());
-        Assertions.assertEquals("ctbzaq", model.deployedImages().get(0).imageId());
-        Assertions.assertEquals(RegionalDataBoundary.NONE, model.deployedImages().get(0).regionalDataBoundary());
+        DeploymentInner model = BinaryData.fromString(
+            "{\"properties\":{\"deploymentId\":\"jrmvdjwzrlo\",\"deployedImages\":[{\"properties\":{\"image\":\"hijco\",\"imageId\":\"ctbzaq\",\"imageName\":\"sycbkbfk\",\"regionalDataBoundary\":\"None\",\"uri\":\"kexxppof\",\"description\":\"axcfjpgddtocjjx\",\"componentId\":\"pmouexhdz\",\"imageType\":\"InvalidImageType\",\"provisioningState\":\"Accepted\"},\"id\":\"jnxqbzvddntwn\",\"name\":\"eic\",\"type\":\"twnpzaoqvuhrhcf\"},{\"properties\":{\"image\":\"ddglm\",\"imageId\":\"hjq\",\"imageName\":\"pyeicxm\",\"regionalDataBoundary\":\"None\",\"uri\":\"q\",\"description\":\"khixuigdtopbo\",\"componentId\":\"og\",\"imageType\":\"InvalidImageType\",\"provisioningState\":\"Deleting\"},\"id\":\"m\",\"name\":\"uhrzayvvt\",\"type\":\"gvdfgiotkftutq\"},{\"properties\":{\"image\":\"gxlefgugnxkrxd\",\"imageId\":\"i\",\"imageName\":\"thz\",\"regionalDataBoundary\":\"EU\",\"uri\":\"rabhjybigeho\",\"description\":\"bowsk\",\"componentId\":\"yktz\",\"imageType\":\"SecurityMonitor\",\"provisioningState\":\"Provisioning\"},\"id\":\"gqywgndrv\",\"name\":\"nhzgpphrcgyn\",\"type\":\"ocpecfvmmco\"},{\"properties\":{\"image\":\"xlzevgbmqjqabcy\",\"imageId\":\"ivkwlzuvccfwnfnb\",\"imageName\":\"fionl\",\"regionalDataBoundary\":\"None\",\"uri\":\"tqgtzxdpnqbqq\",\"description\":\"rjfeallnwsubisnj\",\"componentId\":\"pmng\",\"imageType\":\"FwConfig\",\"provisioningState\":\"Provisioning\"},\"id\":\"qwoochcbon\",\"name\":\"vpk\",\"type\":\"lrxnjeaseiphe\"}],\"deploymentDateUtc\":\"2021-04-05T14:36:27Z\",\"provisioningState\":\"Failed\"},\"id\":\"yyien\",\"name\":\"bdlwtgrhpdjpj\",\"type\":\"masxazjpqyegu\"}")
+            .toObject(DeploymentInner.class);
+        Assertions.assertEquals("jrmvdjwzrlo", model.properties().deploymentId());
+        Assertions.assertEquals("hijco", model.properties().deployedImages().get(0).properties().image());
+        Assertions.assertEquals("ctbzaq", model.properties().deployedImages().get(0).properties().imageId());
+        Assertions.assertEquals(RegionalDataBoundary.NONE,
+            model.properties().deployedImages().get(0).properties().regionalDataBoundary());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentInner model =
-            new DeploymentInner()
-                .withDeploymentId("jrmvdjwzrlo")
-                .withDeployedImages(
-                    Arrays
-                        .asList(
-                            new ImageInner()
-                                .withImage("hijco")
-                                .withImageId("ctbzaq")
-                                .withRegionalDataBoundary(RegionalDataBoundary.NONE),
-                            new ImageInner()
-                                .withImage("w")
-                                .withImageId("zao")
-                                .withRegionalDataBoundary(RegionalDataBoundary.NONE),
-                            new ImageInner()
-                                .withImage("z")
-                                .withImageId("vvtpgvdfgio")
-                                .withRegionalDataBoundary(RegionalDataBoundary.NONE),
-                            new ImageInner()
-                                .withImage("nyktzlcuiy")
-                                .withImageId("qyw")
-                                .withRegionalDataBoundary(RegionalDataBoundary.EU)));
+        DeploymentInner model
+            = new DeploymentInner().withProperties(new DeploymentProperties().withDeploymentId("jrmvdjwzrlo")
+                .withDeployedImages(Arrays.asList(
+                    new ImageInner().withProperties(new ImageProperties().withImage("hijco").withImageId("ctbzaq")
+                        .withRegionalDataBoundary(RegionalDataBoundary.NONE)),
+                    new ImageInner().withProperties(new ImageProperties().withImage("ddglm").withImageId("hjq")
+                        .withRegionalDataBoundary(RegionalDataBoundary.NONE)),
+                    new ImageInner().withProperties(new ImageProperties().withImage("gxlefgugnxkrxd").withImageId("i")
+                        .withRegionalDataBoundary(RegionalDataBoundary.EU)),
+                    new ImageInner().withProperties(new ImageProperties().withImage("xlzevgbmqjqabcy")
+                        .withImageId("ivkwlzuvccfwnfnb").withRegionalDataBoundary(RegionalDataBoundary.NONE)))));
         model = BinaryData.fromObject(model).toObject(DeploymentInner.class);
-        Assertions.assertEquals("jrmvdjwzrlo", model.deploymentId());
-        Assertions.assertEquals("hijco", model.deployedImages().get(0).image());
-        Assertions.assertEquals("ctbzaq", model.deployedImages().get(0).imageId());
-        Assertions.assertEquals(RegionalDataBoundary.NONE, model.deployedImages().get(0).regionalDataBoundary());
+        Assertions.assertEquals("jrmvdjwzrlo", model.properties().deploymentId());
+        Assertions.assertEquals("hijco", model.properties().deployedImages().get(0).properties().image());
+        Assertions.assertEquals("ctbzaq", model.properties().deployedImages().get(0).properties().imageId());
+        Assertions.assertEquals(RegionalDataBoundary.NONE,
+            model.properties().deployedImages().get(0).properties().regionalDataBoundary());
     }
 }

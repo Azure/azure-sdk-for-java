@@ -77,23 +77,18 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       cosmosPartitioningConfig.partitioningStrategy match {
         case PartitioningStrategies.Restrictive =>
           applyRestrictiveStrategy(planningInfo)
+        case PartitioningStrategies.Default =>
+          applyRestrictiveStrategy(planningInfo)
         case PartitioningStrategies.Custom =>
           applyCustomStrategy(
             container,
             planningInfo,
             cosmosPartitioningConfig.targetedPartitionCount.get)
-        case PartitioningStrategies.Default =>
-          applyStorageAlignedStrategy(
-            container,
-            planningInfo,
-            1 / defaultMaxPartitionSizeInMB.toDouble,
-            defaultMinimalPartitionCount
-          )
         case PartitioningStrategies.Aggressive =>
           applyStorageAlignedStrategy(
             container,
             planningInfo,
-            5 / defaultMaxPartitionSizeInMB.toDouble,
+            1 / defaultMaxPartitionSizeInMB.toDouble,
             defaultMinimalPartitionCount
           )
       }
