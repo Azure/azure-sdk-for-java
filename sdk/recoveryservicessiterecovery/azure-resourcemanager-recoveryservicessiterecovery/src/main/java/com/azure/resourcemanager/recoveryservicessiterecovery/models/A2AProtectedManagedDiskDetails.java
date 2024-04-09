@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A2A protected managed disk details. */
+/**
+ * A2A protected managed disk details.
+ */
 @Fluent
 public final class A2AProtectedManagedDiskDetails {
     /*
@@ -180,13 +182,15 @@ public final class A2AProtectedManagedDiskDetails {
     @JsonProperty(value = "tfoDiskName")
     private String tfoDiskName;
 
-    /** Creates an instance of A2AProtectedManagedDiskDetails class. */
+    /**
+     * Creates an instance of A2AProtectedManagedDiskDetails class.
+     */
     public A2AProtectedManagedDiskDetails() {
     }
 
     /**
      * Get the diskId property: The managed disk Arm id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -195,7 +199,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the diskId property: The managed disk Arm id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -206,7 +210,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the recoveryResourceGroupId property: The recovery disk resource group Arm Id.
-     *
+     * 
      * @return the recoveryResourceGroupId value.
      */
     public String recoveryResourceGroupId() {
@@ -215,7 +219,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the recoveryResourceGroupId property: The recovery disk resource group Arm Id.
-     *
+     * 
      * @param recoveryResourceGroupId the recoveryResourceGroupId value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -226,7 +230,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the recoveryTargetDiskId property: Recovery target disk Arm Id.
-     *
+     * 
      * @return the recoveryTargetDiskId value.
      */
     public String recoveryTargetDiskId() {
@@ -235,7 +239,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the recoveryTargetDiskId property: Recovery target disk Arm Id.
-     *
+     * 
      * @param recoveryTargetDiskId the recoveryTargetDiskId value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -246,7 +250,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the recoveryReplicaDiskId property: Recovery replica disk Arm Id.
-     *
+     * 
      * @return the recoveryReplicaDiskId value.
      */
     public String recoveryReplicaDiskId() {
@@ -255,7 +259,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the recoveryReplicaDiskId property: Recovery replica disk Arm Id.
-     *
+     * 
      * @param recoveryReplicaDiskId the recoveryReplicaDiskId value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -266,7 +270,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the recoveryOrignalTargetDiskId property: Recovery original target disk Arm Id.
-     *
+     * 
      * @return the recoveryOrignalTargetDiskId value.
      */
     public String recoveryOrignalTargetDiskId() {
@@ -275,7 +279,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the recoveryOrignalTargetDiskId property: Recovery original target disk Arm Id.
-     *
+     * 
      * @param recoveryOrignalTargetDiskId the recoveryOrignalTargetDiskId value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -285,9 +289,9 @@ public final class A2AProtectedManagedDiskDetails {
     }
 
     /**
-     * Get the recoveryReplicaDiskAccountType property: The replica disk type. Its an optional value and will be same as
-     * source disk type if not user provided.
-     *
+     * Get the recoveryReplicaDiskAccountType property: The replica disk type. Its an optional value and will be same
+     * as source disk type if not user provided.
+     * 
      * @return the recoveryReplicaDiskAccountType value.
      */
     public String recoveryReplicaDiskAccountType() {
@@ -295,9 +299,9 @@ public final class A2AProtectedManagedDiskDetails {
     }
 
     /**
-     * Set the recoveryReplicaDiskAccountType property: The replica disk type. Its an optional value and will be same as
-     * source disk type if not user provided.
-     *
+     * Set the recoveryReplicaDiskAccountType property: The replica disk type. Its an optional value and will be same
+     * as source disk type if not user provided.
+     * 
      * @param recoveryReplicaDiskAccountType the recoveryReplicaDiskAccountType value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -309,7 +313,7 @@ public final class A2AProtectedManagedDiskDetails {
     /**
      * Get the recoveryTargetDiskAccountType property: The target disk type after failover. Its an optional value and
      * will be same as source disk type if not user provided.
-     *
+     * 
      * @return the recoveryTargetDiskAccountType value.
      */
     public String recoveryTargetDiskAccountType() {
@@ -319,7 +323,7 @@ public final class A2AProtectedManagedDiskDetails {
     /**
      * Set the recoveryTargetDiskAccountType property: The target disk type after failover. Its an optional value and
      * will be same as source disk type if not user provided.
-     *
+     * 
      * @param recoveryTargetDiskAccountType the recoveryTargetDiskAccountType value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -330,7 +334,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the recoveryDiskEncryptionSetId property: The recovery disk encryption set Id.
-     *
+     * 
      * @return the recoveryDiskEncryptionSetId value.
      */
     public String recoveryDiskEncryptionSetId() {
@@ -339,7 +343,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the recoveryDiskEncryptionSetId property: The recovery disk encryption set Id.
-     *
+     * 
      * @param recoveryDiskEncryptionSetId the recoveryDiskEncryptionSetId value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -350,7 +354,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the primaryDiskEncryptionSetId property: The primary disk encryption set Id.
-     *
+     * 
      * @return the primaryDiskEncryptionSetId value.
      */
     public String primaryDiskEncryptionSetId() {
@@ -359,7 +363,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the primaryDiskEncryptionSetId property: The primary disk encryption set Id.
-     *
+     * 
      * @param primaryDiskEncryptionSetId the primaryDiskEncryptionSetId value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -370,7 +374,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the diskName property: The disk name.
-     *
+     * 
      * @return the diskName value.
      */
     public String diskName() {
@@ -379,7 +383,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the diskName property: The disk name.
-     *
+     * 
      * @param diskName the diskName value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -390,7 +394,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the diskCapacityInBytes property: The disk capacity in bytes.
-     *
+     * 
      * @return the diskCapacityInBytes value.
      */
     public Long diskCapacityInBytes() {
@@ -399,7 +403,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the diskCapacityInBytes property: The disk capacity in bytes.
-     *
+     * 
      * @param diskCapacityInBytes the diskCapacityInBytes value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -410,7 +414,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the primaryStagingAzureStorageAccountId property: The primary staging storage account.
-     *
+     * 
      * @return the primaryStagingAzureStorageAccountId value.
      */
     public String primaryStagingAzureStorageAccountId() {
@@ -419,19 +423,19 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the primaryStagingAzureStorageAccountId property: The primary staging storage account.
-     *
+     * 
      * @param primaryStagingAzureStorageAccountId the primaryStagingAzureStorageAccountId value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
-    public A2AProtectedManagedDiskDetails withPrimaryStagingAzureStorageAccountId(
-        String primaryStagingAzureStorageAccountId) {
+    public A2AProtectedManagedDiskDetails
+        withPrimaryStagingAzureStorageAccountId(String primaryStagingAzureStorageAccountId) {
         this.primaryStagingAzureStorageAccountId = primaryStagingAzureStorageAccountId;
         return this;
     }
 
     /**
      * Get the diskType property: The type of disk.
-     *
+     * 
      * @return the diskType value.
      */
     public String diskType() {
@@ -440,7 +444,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the diskType property: The type of disk.
-     *
+     * 
      * @param diskType the diskType value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -451,7 +455,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the resyncRequired property: A value indicating whether resync is required for this disk.
-     *
+     * 
      * @return the resyncRequired value.
      */
     public Boolean resyncRequired() {
@@ -460,7 +464,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the resyncRequired property: A value indicating whether resync is required for this disk.
-     *
+     * 
      * @param resyncRequired the resyncRequired value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -470,9 +474,9 @@ public final class A2AProtectedManagedDiskDetails {
     }
 
     /**
-     * Get the monitoringPercentageCompletion property: The percentage of the monitoring job. The type of the monitoring
-     * job is defined by MonitoringJobType property.
-     *
+     * Get the monitoringPercentageCompletion property: The percentage of the monitoring job. The type of the
+     * monitoring job is defined by MonitoringJobType property.
+     * 
      * @return the monitoringPercentageCompletion value.
      */
     public Integer monitoringPercentageCompletion() {
@@ -480,9 +484,9 @@ public final class A2AProtectedManagedDiskDetails {
     }
 
     /**
-     * Set the monitoringPercentageCompletion property: The percentage of the monitoring job. The type of the monitoring
-     * job is defined by MonitoringJobType property.
-     *
+     * Set the monitoringPercentageCompletion property: The percentage of the monitoring job. The type of the
+     * monitoring job is defined by MonitoringJobType property.
+     * 
      * @param monitoringPercentageCompletion the monitoringPercentageCompletion value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -494,7 +498,7 @@ public final class A2AProtectedManagedDiskDetails {
     /**
      * Get the monitoringJobType property: The type of the monitoring job. The progress is contained in
      * MonitoringPercentageCompletion property.
-     *
+     * 
      * @return the monitoringJobType value.
      */
     public String monitoringJobType() {
@@ -504,7 +508,7 @@ public final class A2AProtectedManagedDiskDetails {
     /**
      * Set the monitoringJobType property: The type of the monitoring job. The progress is contained in
      * MonitoringPercentageCompletion property.
-     *
+     * 
      * @param monitoringJobType the monitoringJobType value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -516,7 +520,7 @@ public final class A2AProtectedManagedDiskDetails {
     /**
      * Get the dataPendingInStagingStorageAccountInMB property: The data pending for replication in MB at staging
      * account.
-     *
+     * 
      * @return the dataPendingInStagingStorageAccountInMB value.
      */
     public Double dataPendingInStagingStorageAccountInMB() {
@@ -526,19 +530,19 @@ public final class A2AProtectedManagedDiskDetails {
     /**
      * Set the dataPendingInStagingStorageAccountInMB property: The data pending for replication in MB at staging
      * account.
-     *
+     * 
      * @param dataPendingInStagingStorageAccountInMB the dataPendingInStagingStorageAccountInMB value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
-    public A2AProtectedManagedDiskDetails withDataPendingInStagingStorageAccountInMB(
-        Double dataPendingInStagingStorageAccountInMB) {
+    public A2AProtectedManagedDiskDetails
+        withDataPendingInStagingStorageAccountInMB(Double dataPendingInStagingStorageAccountInMB) {
         this.dataPendingInStagingStorageAccountInMB = dataPendingInStagingStorageAccountInMB;
         return this;
     }
 
     /**
      * Get the dataPendingAtSourceAgentInMB property: The data pending at source virtual machine in MB.
-     *
+     * 
      * @return the dataPendingAtSourceAgentInMB value.
      */
     public Double dataPendingAtSourceAgentInMB() {
@@ -547,7 +551,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the dataPendingAtSourceAgentInMB property: The data pending at source virtual machine in MB.
-     *
+     * 
      * @param dataPendingAtSourceAgentInMB the dataPendingAtSourceAgentInMB value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -558,7 +562,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the diskState property: The disk state.
-     *
+     * 
      * @return the diskState value.
      */
     public String diskState() {
@@ -567,7 +571,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the diskState property: The disk state.
-     *
+     * 
      * @param diskState the diskState value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -578,7 +582,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the allowedDiskLevelOperation property: The disk level operations list.
-     *
+     * 
      * @return the allowedDiskLevelOperation value.
      */
     public List<String> allowedDiskLevelOperation() {
@@ -587,7 +591,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the allowedDiskLevelOperation property: The disk level operations list.
-     *
+     * 
      * @param allowedDiskLevelOperation the allowedDiskLevelOperation value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -598,7 +602,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the isDiskEncrypted property: A value indicating whether vm has encrypted os disk or not.
-     *
+     * 
      * @return the isDiskEncrypted value.
      */
     public Boolean isDiskEncrypted() {
@@ -607,7 +611,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the isDiskEncrypted property: A value indicating whether vm has encrypted os disk or not.
-     *
+     * 
      * @param isDiskEncrypted the isDiskEncrypted value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -618,7 +622,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the secretIdentifier property: The secret URL / identifier (BEK).
-     *
+     * 
      * @return the secretIdentifier value.
      */
     public String secretIdentifier() {
@@ -627,7 +631,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the secretIdentifier property: The secret URL / identifier (BEK).
-     *
+     * 
      * @param secretIdentifier the secretIdentifier value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -638,7 +642,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the dekKeyVaultArmId property: The KeyVault resource id for secret (BEK).
-     *
+     * 
      * @return the dekKeyVaultArmId value.
      */
     public String dekKeyVaultArmId() {
@@ -647,7 +651,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the dekKeyVaultArmId property: The KeyVault resource id for secret (BEK).
-     *
+     * 
      * @param dekKeyVaultArmId the dekKeyVaultArmId value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -658,7 +662,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the isDiskKeyEncrypted property: A value indicating whether disk key got encrypted or not.
-     *
+     * 
      * @return the isDiskKeyEncrypted value.
      */
     public Boolean isDiskKeyEncrypted() {
@@ -667,7 +671,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the isDiskKeyEncrypted property: A value indicating whether disk key got encrypted or not.
-     *
+     * 
      * @param isDiskKeyEncrypted the isDiskKeyEncrypted value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -678,7 +682,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the keyIdentifier property: The key URL / identifier (KEK).
-     *
+     * 
      * @return the keyIdentifier value.
      */
     public String keyIdentifier() {
@@ -687,7 +691,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the keyIdentifier property: The key URL / identifier (KEK).
-     *
+     * 
      * @param keyIdentifier the keyIdentifier value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -698,7 +702,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the kekKeyVaultArmId property: The KeyVault resource id for key (KEK).
-     *
+     * 
      * @return the kekKeyVaultArmId value.
      */
     public String kekKeyVaultArmId() {
@@ -707,7 +711,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the kekKeyVaultArmId property: The KeyVault resource id for key (KEK).
-     *
+     * 
      * @param kekKeyVaultArmId the kekKeyVaultArmId value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -718,7 +722,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the failoverDiskName property: The failover name for the managed disk.
-     *
+     * 
      * @return the failoverDiskName value.
      */
     public String failoverDiskName() {
@@ -727,7 +731,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the failoverDiskName property: The failover name for the managed disk.
-     *
+     * 
      * @param failoverDiskName the failoverDiskName value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -738,7 +742,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Get the tfoDiskName property: The test failover name for the managed disk.
-     *
+     * 
      * @return the tfoDiskName value.
      */
     public String tfoDiskName() {
@@ -747,7 +751,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Set the tfoDiskName property: The test failover name for the managed disk.
-     *
+     * 
      * @param tfoDiskName the tfoDiskName value to set.
      * @return the A2AProtectedManagedDiskDetails object itself.
      */
@@ -758,7 +762,7 @@ public final class A2AProtectedManagedDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

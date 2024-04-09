@@ -94,6 +94,7 @@ public final class DiagnosticsProvider {
     private final CosmosTracer cosmosTracer;
 
     private final CosmosClientTelemetryConfig telemetryConfig;
+    private final boolean shouldSystemExitOnError;
 
 
     public DiagnosticsProvider(
@@ -139,6 +140,7 @@ public final class DiagnosticsProvider {
 
         this.propagatingMono = new PropagatingMono();
         this.propagatingFlux = new PropagatingFlux();
+        this.shouldSystemExitOnError = Configs.shouldDiagnosticsProviderSystemExitOnError();
     }
 
     public boolean isEnabled() {
@@ -213,7 +215,8 @@ public final class DiagnosticsProvider {
     public Context startSpan(
         String spanName,
         CosmosDiagnosticsContext cosmosCtx,
-        Context context) {
+        Context context,
+        boolean isSampledOut) {
 
         checkNotNull(spanName, "Argument 'spanName' must not be null.");
         checkNotNull(cosmosCtx, "Argument 'cosmosCtx' must not be null.");
@@ -223,7 +226,7 @@ public final class DiagnosticsProvider {
             .requireNonNull(context, "'context' cannot be null.")
             .addData(COSMOS_DIAGNOSTICS_CONTEXT_KEY, cosmosCtx);
 
-        if (this.cosmosTracer == null) {
+        if (this.cosmosTracer == null || isSampledOut) {
             return local;
         }
 
@@ -243,14 +246,14 @@ public final class DiagnosticsProvider {
         int statusCode,
         Integer actualItemCount,
         Double requestCharge,
-        CosmosDiagnostics diagnostics
+        CosmosDiagnostics diagnostics,
+        boolean isSampledOut
     ) {
         // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
         try {
-            this.endSpanCore(signal, cosmosCtx, statusCode, actualItemCount, requestCharge, diagnostics);
+            this.endSpanCore(signal, cosmosCtx, statusCode, actualItemCount, requestCharge, diagnostics, isSampledOut);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
-            System.exit(9901);
+            this.handleErrors(error, 9901);
         }
     }
 
@@ -260,7 +263,8 @@ public final class DiagnosticsProvider {
         int statusCode,
         Integer actualItemCount,
         Double requestCharge,
-        CosmosDiagnostics diagnostics
+        CosmosDiagnostics diagnostics,
+        boolean isSampledOut
     ) {
         Objects.requireNonNull(signal, "'signal' cannot be null.");
 
@@ -280,7 +284,8 @@ public final class DiagnosticsProvider {
                     diagnostics,
                     null,
                     context,
-                    ctxAccessor.isEmptyCompletion(cosmosCtx));
+                    ctxAccessor.isEmptyCompletion(cosmosCtx),
+                    isSampledOut);
                 break;
             case ON_NEXT:
                 end(
@@ -292,7 +297,8 @@ public final class DiagnosticsProvider {
                     diagnostics,
                     null,
                     context,
-                    false);
+                    false,
+                    isSampledOut);
                 break;
             case ON_ERROR:
                 Throwable throwable = null;
@@ -327,7 +333,8 @@ public final class DiagnosticsProvider {
                     effectiveDiagnostics,
                     throwable,
                     context,
-                    false);
+                    false,
+                    isSampledOut);
                 break;
             default:
                 // ON_SUBSCRIBE isn't the right state to end span
@@ -335,7 +342,7 @@ public final class DiagnosticsProvider {
         }
     }
 
-    public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context, Throwable throwable) {
+    public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context, Throwable throwable, boolean isSampledOut) {
         // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
         try {
             int statusCode = DiagnosticsProvider.ERROR_CODE;
@@ -361,14 +368,14 @@ public final class DiagnosticsProvider {
                 effectiveDiagnostics,
                 throwable,
                 context,
-                false);
+                false,
+                isSampledOut);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
-            System.exit(9905);
+            this.handleErrors(error, 9905);
         }
     }
 
-    public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context, boolean isForcedEmptyCompletion) {
+    public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context, boolean isForcedEmptyCompletion, boolean isSampledOut) {
         // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
         try {
             end(
@@ -380,10 +387,10 @@ public final class DiagnosticsProvider {
                 null,
                 null,
                 context,
-                isForcedEmptyCompletion);
+                isForcedEmptyCompletion,
+                isSampledOut);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
-            System.exit(9904);
+            this.handleErrors(error, 9904);
         }
     }
 
@@ -397,8 +404,7 @@ public final class DiagnosticsProvider {
         try {
             this.recordPageCore(cosmosCtx, diagnostics, actualItemCount, requestCharge);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.recordPage. ", error);
-            System.exit(9902);
+            this.handleErrors(error, 9902);
         }
     }
 
@@ -433,8 +439,7 @@ public final class DiagnosticsProvider {
             this.recordFeedResponseConsumerLatencyCore(
                 context, cosmosCtx, feedResponseConsumerLatency);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.recordFeedResponseConsumerLatency. ", error);
-            System.exit(9902);
+            this.handleErrors(error, 9903);
         }
     }
 
@@ -486,7 +491,11 @@ public final class DiagnosticsProvider {
         // but there is some risk given that diagnostic handlers are custom code of course
         if (this.diagnosticHandlers != null && this.diagnosticHandlers.size() > 0) {
             for (CosmosDiagnosticsHandler handler: this.diagnosticHandlers) {
-                handler.handleDiagnostics(cosmosCtx, context);
+                try {
+                    handler.handleDiagnostics(cosmosCtx, context);
+                } catch (Exception e) {
+                    LOGGER.error("HandledDiagnostics failed. ", e);
+                }
             }
         }
     }
@@ -637,8 +646,9 @@ public final class DiagnosticsProvider {
 
     public boolean shouldSampleOutOperation(CosmosPagedFluxOptions options) {
         final double samplingRateSnapshot = clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig);
-        options.setSamplingRateSnapshot(samplingRateSnapshot);
-        return shouldSampleOutOperation(samplingRateSnapshot);
+        boolean result = shouldSampleOutOperation(samplingRateSnapshot);
+        options.setSamplingRateSnapshot(samplingRateSnapshot, result);
+        return result;
     }
 
     private boolean shouldSampleOutOperation(double samplingRate) {
@@ -663,18 +673,10 @@ public final class DiagnosticsProvider {
       Function<T, Double> requestChargeFunc,
       BiFunction<T, Double, CosmosDiagnostics> diagnosticsFunc
     ) {
-
-        if (!isEnabled()) {
-            return resultPublisher;
-        }
-
-        final double samplingRateSnapshot = clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig);
+        final double samplingRateSnapshot =  isEnabled() ? clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig) : 0;
+        final boolean isSampledOut = this.shouldSampleOutOperation(samplingRateSnapshot);
         if (cosmosCtx != null) {
-            ctxAccessor.setSamplingRateSnapshot(cosmosCtx, samplingRateSnapshot);
-        }
-
-        if (shouldSampleOutOperation(samplingRateSnapshot)) {
-            return resultPublisher;
+            ctxAccessor.setSamplingRateSnapshot(cosmosCtx, samplingRateSnapshot, isSampledOut);
         }
 
         Optional<Object> callDepth = context.getData(COSMOS_CALL_DEPTH);
@@ -699,7 +701,8 @@ public final class DiagnosticsProvider {
                             statusCodeFunc.apply(response),
                             actualItemCountFunc.apply(response),
                             requestChargeFunc.apply(response),
-                            diagnosticsFunc.apply(response, samplingRateSnapshot));
+                            diagnosticsFunc.apply(response, samplingRateSnapshot),
+                            isSampledOut);
                         break;
                     case ON_ERROR:
                         // not adding diagnostics on trace event for exception as this information is already there as
@@ -710,12 +713,13 @@ public final class DiagnosticsProvider {
                             ERROR_CODE,
                             null,
                             null,
-                            null);
+                            null,
+                            isSampledOut);
                         break;
                     default:
                         break;
                 }})
-            .contextWrite(setContextInReactor(this.startSpan(spanName, cosmosCtx, context)));
+            .contextWrite(setContextInReactor(this.startSpan(spanName, cosmosCtx, context, isSampledOut)));
     }
 
     private <T> Mono<T> publisherWithDiagnostics(Mono<T> resultPublisher,
@@ -781,11 +785,12 @@ public final class DiagnosticsProvider {
         CosmosDiagnostics diagnostics,
         Throwable throwable,
         Context context,
-        boolean isForcedEmptyCompletion) {
+        boolean isForcedEmptyCompletion,
+        boolean isSampledOut) {
 
         checkNotNull(cosmosCtx, "Argument 'cosmosCtx' must not be null.");
 
-        // endOperation can be called form two places in Reactor - making sure we process completion only once
+        // endOperation can be called from two places in Reactor - making sure we process completion only once
         if (ctxAccessor.endOperation(
             cosmosCtx,
             statusCode,
@@ -795,12 +800,14 @@ public final class DiagnosticsProvider {
             diagnostics,
             throwable)) {
 
-            if (!isForcedEmptyCompletion) {
-                this.handleDiagnostics(context, cosmosCtx);
-            }
+            if (!isSampledOut) {
+                if (!isForcedEmptyCompletion) {
+                    this.handleDiagnostics(context, cosmosCtx);
+                }
 
-            if (this.cosmosTracer != null) {
-                this.cosmosTracer.endSpan(cosmosCtx, context, isForcedEmptyCompletion);
+                if (this.cosmosTracer != null) {
+                    this.cosmosTracer.endSpan(cosmosCtx, context, isForcedEmptyCompletion);
+                }
             }
         }
     }
@@ -1451,6 +1458,39 @@ public final class DiagnosticsProvider {
         }
 
         return prettifiedCallstack;
+    }
+
+    private void handleErrors(Throwable throwable, int systemExitCode) {
+        if (throwable instanceof Error) {
+            handleFatalError((Error) throwable, systemExitCode);
+        } else {
+            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ",  throwable);
+            throw new RuntimeException(throwable);
+        }
+    }
+
+    private void handleFatalError(Error error, int systemExitCode) {
+        Exception exception = DiagnosticsProviderJvmFatalErrorMapper.getMapper().mapFatalError(error);
+        if (exception != null) {
+            String errorMessage = "Runtime exception mapped from fatal error " + error;
+            throw new RuntimeException(errorMessage, exception);
+        }
+
+        // there is no mapping, handle error
+        if (this.shouldSystemExitOnError) {
+            LOGGER.error("Unexpected error in DiagnosticsProvider.endSpan. Calling System.exit({})...", systemExitCode, error);
+            System.err.println(
+                String.format(
+                    "Unexpected error in DiagnosticsProvider.endSpan. Calling System.exit(%d)... %s",
+                    systemExitCode,
+                    error)
+            );
+
+            System.exit(systemExitCode);
+        } else {
+            // bubble up the error
+            throw error;
+        }
     }
 
     private static final class EnabledNoOpTracer implements Tracer {

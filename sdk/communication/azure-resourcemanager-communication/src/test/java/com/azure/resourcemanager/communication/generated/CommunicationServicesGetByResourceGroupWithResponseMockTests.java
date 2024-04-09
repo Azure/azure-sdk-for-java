@@ -32,7 +32,7 @@ public final class CommunicationServicesGetByResourceGroupWithResponseMockTests 
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Unknown\",\"hostName\":\"zvlvqhjkbegib\",\"dataLocation\":\"nmxiebwwaloayqc\",\"notificationHubId\":\"rtzju\",\"version\":\"wyzmhtxon\",\"immutableResourceId\":\"ts\",\"linkedDomains\":[\"cbpwxqpsrknft\",\"uvriuhprwm\",\"yvxqtayriwwroy\",\"bexrmcq\"]},\"identity\":{\"principalId\":\"0d7ca64b-8a60-40d3-b8a4-0fb239e8b065\",\"tenantId\":\"704faab2-1e7c-4462-83e3-6c11b6771823\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"nmefqsgzvahapj\":{\"principalId\":\"720a123b-41c3-43db-a217-e374a01ddf7b\",\"clientId\":\"db121949-3483-4c70-87bf-9e3eec546ade\"}}},\"location\":\"hpvgqz\",\"tags\":{\"zovawjvz\":\"vxdjzlmwlxkvugf\",\"nxipeil\":\"nluthnnp\",\"dzumveekg\":\"jzuaejxdultskzbb\"},\"id\":\"wozuhkf\",\"name\":\"bsjyofdx\",\"type\":\"uusdttouwa\"}";
+            = "{\"properties\":{\"provisioningState\":\"Running\",\"hostName\":\"vmkfssxqu\",\"dataLocation\":\"kfplgmgsxnk\",\"notificationHubId\":\"kde\",\"version\":\"pvlopwiyighxpkd\",\"immutableResourceId\":\"baiuebbaumny\",\"linkedDomains\":[\"edeojnabc\"]},\"identity\":{\"principalId\":\"90fdda1a-2423-45b5-b479-d2875d87c96a\",\"tenantId\":\"90b43a81-6830-43c7-95fa-530d23bbd8e2\",\"type\":\"None\",\"userAssignedIdentities\":{\"ebtfhvpesap\":{\"principalId\":\"36b69f17-8df3-4d27-87c9-5b344e36ea49\",\"clientId\":\"a6beacf0-a8b3-42d5-b5e2-90c549cec587\"},\"dqmh\":{\"principalId\":\"639a2178-e33d-4939-8fa0-52a5a9c226aa\",\"clientId\":\"1944f363-64fc-450c-8df0-f000f6bca8df\"},\"htldwk\":{\"principalId\":\"94579b49-d73c-4fef-b4b8-87e7d6301a16\",\"clientId\":\"9af4da14-ac33-4e0a-877a-d9a295dc0d35\"}}},\"location\":\"xuutkncwscwsv\",\"tags\":{\"rupqsxvnmicy\":\"togt\",\"vei\":\"vce\",\"dhbt\":\"ovnotyfjfcnjbkcn\"},\"id\":\"kphywpnvjto\",\"name\":\"nermcl\",\"type\":\"plpho\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,12 +50,12 @@ public final class CommunicationServicesGetByResourceGroupWithResponseMockTests 
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CommunicationServiceResource response = manager.communicationServices()
-            .getByResourceGroupWithResponse("riplrbpbewtg", "fgb", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("ovplw", "bhvgy", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("hpvgqz", response.location());
-        Assertions.assertEquals("vxdjzlmwlxkvugf", response.tags().get("zovawjvz"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("nmxiebwwaloayqc", response.dataLocation());
-        Assertions.assertEquals("cbpwxqpsrknft", response.linkedDomains().get(0));
+        Assertions.assertEquals("xuutkncwscwsv", response.location());
+        Assertions.assertEquals("togt", response.tags().get("rupqsxvnmicy"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("kfplgmgsxnk", response.dataLocation());
+        Assertions.assertEquals("edeojnabc", response.linkedDomains().get(0));
     }
 }

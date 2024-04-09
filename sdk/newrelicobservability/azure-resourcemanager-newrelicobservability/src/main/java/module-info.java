@@ -4,16 +4,10 @@
 
 module com.azure.resourcemanager.newrelicobservability {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.newrelicobservability;
     exports com.azure.resourcemanager.newrelicobservability.fluent;
     exports com.azure.resourcemanager.newrelicobservability.fluent.models;
     exports com.azure.resourcemanager.newrelicobservability.models;
-
-    opens com.azure.resourcemanager.newrelicobservability.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.newrelicobservability.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.newrelicobservability.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.newrelicobservability.models to com.azure.core, com.fasterxml.jackson.databind;
 }

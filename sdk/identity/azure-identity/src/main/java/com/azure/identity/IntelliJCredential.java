@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * for IntelliJ plugin</a> for the IntelliJ IDEA development environment. It
  * enables developers to create, test, and deploy Java applications to the Azure cloud platform. In order to
  * use the plugin authentication as a user or service principal against
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a> is required.
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a> is required.
  * The IntelliJCredential authenticates in a development environment and acquires a token on behalf of the
  * logged-in account in Azure Toolkit for IntelliJ. It uses the logged in user information on the IntelliJ IDE and uses
  * it to authenticate the application against Microsoft Entra ID.</p>

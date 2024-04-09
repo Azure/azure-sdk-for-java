@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cross-Origin-Resource-Sharing policy. */
+/**
+ * Cross-Origin-Resource-Sharing policy.
+ */
 @Fluent
 public final class CorsPolicy {
     /*
@@ -48,13 +50,15 @@ public final class CorsPolicy {
     @JsonProperty(value = "allowCredentials")
     private Boolean allowCredentials;
 
-    /** Creates an instance of CorsPolicy class. */
+    /**
+     * Creates an instance of CorsPolicy class.
+     */
     public CorsPolicy() {
     }
 
     /**
      * Get the allowedOrigins property: Specifies the content for the access-control-allow-origins header.
-     *
+     * 
      * @return the allowedOrigins value.
      */
     public List<String> allowedOrigins() {
@@ -63,7 +67,7 @@ public final class CorsPolicy {
 
     /**
      * Set the allowedOrigins property: Specifies the content for the access-control-allow-origins header.
-     *
+     * 
      * @param allowedOrigins the allowedOrigins value to set.
      * @return the CorsPolicy object itself.
      */
@@ -74,7 +78,7 @@ public final class CorsPolicy {
 
     /**
      * Get the allowedMethods property: Specifies the content for the access-control-allow-methods header.
-     *
+     * 
      * @return the allowedMethods value.
      */
     public List<String> allowedMethods() {
@@ -83,7 +87,7 @@ public final class CorsPolicy {
 
     /**
      * Set the allowedMethods property: Specifies the content for the access-control-allow-methods header.
-     *
+     * 
      * @param allowedMethods the allowedMethods value to set.
      * @return the CorsPolicy object itself.
      */
@@ -94,7 +98,7 @@ public final class CorsPolicy {
 
     /**
      * Get the allowedHeaders property: Specifies the content for the access-control-allow-headers header.
-     *
+     * 
      * @return the allowedHeaders value.
      */
     public List<String> allowedHeaders() {
@@ -103,7 +107,7 @@ public final class CorsPolicy {
 
     /**
      * Set the allowedHeaders property: Specifies the content for the access-control-allow-headers header.
-     *
+     * 
      * @param allowedHeaders the allowedHeaders value to set.
      * @return the CorsPolicy object itself.
      */
@@ -114,7 +118,7 @@ public final class CorsPolicy {
 
     /**
      * Get the exposeHeaders property: Specifies the content for the access-control-expose-headers header.
-     *
+     * 
      * @return the exposeHeaders value.
      */
     public List<String> exposeHeaders() {
@@ -123,7 +127,7 @@ public final class CorsPolicy {
 
     /**
      * Set the exposeHeaders property: Specifies the content for the access-control-expose-headers header.
-     *
+     * 
      * @param exposeHeaders the exposeHeaders value to set.
      * @return the CorsPolicy object itself.
      */
@@ -134,7 +138,7 @@ public final class CorsPolicy {
 
     /**
      * Get the maxAge property: Specifies the content for the access-control-max-age header.
-     *
+     * 
      * @return the maxAge value.
      */
     public Integer maxAge() {
@@ -143,7 +147,7 @@ public final class CorsPolicy {
 
     /**
      * Set the maxAge property: Specifies the content for the access-control-max-age header.
-     *
+     * 
      * @param maxAge the maxAge value to set.
      * @return the CorsPolicy object itself.
      */
@@ -154,7 +158,7 @@ public final class CorsPolicy {
 
     /**
      * Get the allowCredentials property: Specifies whether the resource allows credentials.
-     *
+     * 
      * @return the allowCredentials value.
      */
     public Boolean allowCredentials() {
@@ -163,7 +167,7 @@ public final class CorsPolicy {
 
     /**
      * Set the allowCredentials property: Specifies whether the resource allows credentials.
-     *
+     * 
      * @param allowCredentials the allowCredentials value to set.
      * @return the CorsPolicy object itself.
      */
@@ -174,14 +178,13 @@ public final class CorsPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (allowedOrigins() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property allowedOrigins in model CorsPolicy"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property allowedOrigins in model CorsPolicy"));
         }
     }
 

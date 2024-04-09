@@ -15,11 +15,14 @@ import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.fluent.models.AlertsSuppressionRuleInner;
 import com.azure.resourcemanager.security.models.AlertsSuppressionRule;
 import com.azure.resourcemanager.security.models.RuleState;
+import com.azure.resourcemanager.security.models.ScopeElement;
 import com.azure.resourcemanager.security.models.SuppressionAlertsScope;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -34,54 +37,53 @@ public final class AlertsSuppressionRulesUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"alertType\":\"kgd\",\"lastModifiedUtc\":\"2021-11-26T23:11:17Z\",\"expirationDateUtc\":\"2021-10-12T17:44:39Z\",\"reason\":\"k\",\"state\":\"Disabled\",\"comment\":\"hgsqtnqsktxq\",\"suppressionAlertsScope\":{\"allOf\":[]}},\"id\":\"jbqggweeiwdhdm\",\"name\":\"cgbfzuscstun\",\"type\":\"lhxd\"}";
+        String responseStr
+            = "{\"properties\":{\"alertType\":\"fjihvfjcqrttjfuq\",\"lastModifiedUtc\":\"2021-03-30T00:40:58Z\",\"expirationDateUtc\":\"2021-03-17T20:01:27Z\",\"reason\":\"wfeqbavd\",\"state\":\"Expired\",\"comment\":\"wy\",\"suppressionAlertsScope\":{\"allOf\":[{\"field\":\"wel\",\"\":{\"wdtlcjgpvc\":\"datawzz\"}}]}},\"id\":\"zvzrbvgwxhlx\",\"name\":\"mxvmdrwynbgovazo\",\"type\":\"mdvhhplkhwwdkatv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AlertsSuppressionRule response =
-            manager
-                .alertsSuppressionRules()
-                .updateWithResponse(
-                    "lfmsibzoyrfg",
-                    new AlertsSuppressionRuleInner()
-                        .withAlertType("ydpmypgfqvmt")
-                        .withExpirationDateUtc(OffsetDateTime.parse("2021-08-23T13:21:07Z"))
-                        .withReason("kxp")
-                        .withState(RuleState.ENABLED)
-                        .withComment("ewp")
-                        .withSuppressionAlertsScope(new SuppressionAlertsScope().withAllOf(Arrays.asList())),
+        AlertsSuppressionRule response
+            = manager.alertsSuppressionRules()
+                .updateWithResponse("ekekzouyvewwpz",
+                    new AlertsSuppressionRuleInner().withAlertType("wcgldohgcandx")
+                        .withExpirationDateUtc(OffsetDateTime.parse("2021-10-24T04:56:15Z")).withReason("e")
+                        .withState(RuleState.EXPIRED).withComment("qtdn")
+                        .withSuppressionAlertsScope(new SuppressionAlertsScope().withAllOf(Arrays.asList(
+                            new ScopeElement().withField("pljdshvvfkdxcc").withAdditionalProperties(mapOf()),
+                            new ScopeElement().withField("exqwqnghxnimvy").withAdditionalProperties(mapOf())))),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("kgd", response.alertType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T17:44:39Z"), response.expirationDateUtc());
-        Assertions.assertEquals("k", response.reason());
-        Assertions.assertEquals(RuleState.DISABLED, response.state());
-        Assertions.assertEquals("hgsqtnqsktxq", response.comment());
+        Assertions.assertEquals("fjihvfjcqrttjfuq", response.alertType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-17T20:01:27Z"), response.expirationDateUtc());
+        Assertions.assertEquals("wfeqbavd", response.reason());
+        Assertions.assertEquals(RuleState.EXPIRED, response.state());
+        Assertions.assertEquals("wy", response.comment());
+        Assertions.assertEquals("wel", response.suppressionAlertsScope().allOf().get(0).field());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

@@ -45,7 +45,7 @@ public final class TriggerRunsCancelWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.triggerRuns().cancelWithResponse("gebqhbbqodyvvp", "oiaaagvaecwwdqg", "o", "bhfrg",
+        manager.triggerRuns().cancelWithResponse("rwdfo", "rdytsgypvidzo", "qzdoy", "npkjpcgtgnhzufhw",
             com.azure.core.util.Context.NONE);
 
     }

@@ -18,8 +18,10 @@ import com.azure.data.tables.implementation.models.Metrics;
 import com.azure.data.tables.implementation.models.RetentionPolicy;
 import com.azure.data.tables.implementation.models.SignedIdentifier;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
-import com.azure.data.tables.implementation.models.TableServiceErrorOdataError;
-import com.azure.data.tables.implementation.models.TableServiceErrorOdataErrorMessage;
+import com.azure.data.tables.implementation.models.TableServiceJsonError;
+import com.azure.data.tables.implementation.models.TableServiceJsonErrorException;
+import com.azure.data.tables.implementation.models.TableServiceOdataError;
+import com.azure.data.tables.implementation.models.TableServiceOdataErrorMessage;
 import com.azure.data.tables.implementation.models.TableServiceStats;
 import com.azure.data.tables.models.TableAccessPolicy;
 import com.azure.data.tables.models.TableServiceCorsRule;
@@ -55,6 +57,7 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.CoreUtils.getResultWithTimeout;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+
 /**
  * A class containing utility methods for the Azure Tables library.
  */
@@ -70,28 +73,23 @@ public final class TableUtils {
     }
 
     /**
-     * Convert an implementation {@link com.azure.data.tables.implementation.models.TableServiceError} to a public
-     * {@link TableServiceError}. This function maps the service returned
-     * {@link com.azure.data.tables.implementation.models.TableServiceErrorOdataError inner OData error} and its
-     * contents to the top level {@link TableServiceError error}.
+     * Convert an implementation {@link TableServiceJsonError} to a public {@link TableServiceError}. This function maps
+     * the service returned {@link TableServiceJsonError inner OData error} and its contents to the top level
+     * {@link TableServiceError error}.
      *
-     * @param tableServiceError The {@link com.azure.data.tables.implementation.models.TableServiceError} returned by
-     * the service.
-     *
+     * @param tableServiceJsonError The {@link TableServiceJsonError} returned by the service.
      * @return The {@link TableServiceError} returned by the SDK.
      */
-    public static TableServiceError toTableServiceError(
-        com.azure.data.tables.implementation.models.TableServiceError tableServiceError) {
-
+    public static TableServiceError toTableServiceError(TableServiceJsonError tableServiceJsonError) {
         String errorCode = null;
         String errorMessage = null;
 
-        if (tableServiceError != null) {
-            final TableServiceErrorOdataError odataError = tableServiceError.getOdataError();
+        if (tableServiceJsonError != null) {
+            final TableServiceOdataError odataError = tableServiceJsonError.getOdataError();
 
             if (odataError != null) {
                 errorCode = odataError.getCode();
-                TableServiceErrorOdataErrorMessage odataErrorMessage = odataError.getMessage();
+                TableServiceOdataErrorMessage odataErrorMessage = odataError.getMessage();
 
                 if (odataErrorMessage != null) {
                     errorMessage = odataErrorMessage.getValue();
@@ -106,29 +104,27 @@ public final class TableUtils {
      * Convert an implementation {@link TableServiceErrorException} to a public {@link TableServiceException}.
      *
      * @param exception The {@link TableServiceErrorException}.
-     *
      * @return The {@link TableServiceException} to be thrown.
      */
-    public static TableServiceException toTableServiceException(TableServiceErrorException exception) {
+    public static TableServiceException toTableServiceException(TableServiceJsonErrorException exception) {
         return new TableServiceException(exception.getMessage(), exception.getResponse(),
             toTableServiceError(exception.getValue()));
     }
 
     /**
      * Map a {@link Throwable} to {@link TableServiceException} if it's an instance of
-     * {@link TableServiceErrorException}, else it returns the original throwable.
+     * {@link TableServiceJsonErrorException}, else it returns the original throwable.
      *
      * @param throwable A throwable.
-     *
      * @return A Throwable that is either an instance of {@link TableServiceException} or the original throwable.
      */
     public static Throwable mapThrowableToTableServiceException(Throwable throwable) {
-        if (throwable instanceof TableServiceErrorException) {
-            return toTableServiceException((TableServiceErrorException) throwable);
+        if (throwable instanceof TableServiceJsonErrorException) {
+            return toTableServiceException((TableServiceJsonErrorException) throwable);
         } else if (throwable.getCause() instanceof Exception) {
             Throwable cause = throwable.getCause();
-            if (cause instanceof TableServiceErrorException) {
-                return toTableServiceException((TableServiceErrorException) cause);
+            if (cause instanceof TableServiceJsonErrorException) {
+                return toTableServiceException((TableServiceJsonErrorException) cause);
             }
         }
         return throwable;
@@ -182,7 +178,6 @@ public final class TableUtils {
      * @param httpResponseException The {@link HttpResponseException} to be swallowed.
      * @param logger {@link ClientLogger} that will be used to record the exception.
      * @param <E> The class of the exception to swallow.
-     *
      * @return A {@link Mono} that contains the deserialized response.
      */
     public static <E extends HttpResponseException> Mono<Response<Void>> swallowExceptionForStatusCode(int statusCode, E httpResponseException, ClientLogger logger) {
@@ -222,7 +217,6 @@ public final class TableUtils {
      * stored as a parsed array (ex. key=[val1, val2, val3] instead of key=val1,val2,val3).
      *
      * @param queryString Query string to parse
-     *
      * @return a mapping of query string pieces as key-value pairs.
      */
     public static Map<String, String[]> parseQueryStringSplitValues(final String queryString) {
@@ -243,7 +237,7 @@ public final class TableUtils {
     }
 
     private static <T> Map<String, T> parseQueryStringHelper(final String queryString,
-                                                             Function<String, T> valueParser) {
+        Function<String, T> valueParser) {
         TreeMap<String, T> pieces = new TreeMap<>();
 
         if (CoreUtils.isNullOrEmpty(queryString)) {
@@ -380,9 +374,7 @@ public final class TableUtils {
             .setLogging(toTableServiceLogging(tableServiceProperties.getLogging()))
             .setHourMetrics(toTableServiceMetrics(tableServiceProperties.getHourMetrics()))
             .setMinuteMetrics(toTableServiceMetrics(tableServiceProperties.getMinuteMetrics()))
-            .setCorsRules(tableServiceProperties.getCors() == null ? null
-                : tableServiceProperties.getCors().stream()
-                .map(TableUtils::toTablesServiceCorsRule)
+            .setCorsRules(tableServiceProperties.getCors().stream().map(TableUtils::toTablesServiceCorsRule)
                 .collect(Collectors.toList()));
     }
 
@@ -571,8 +563,7 @@ public final class TableUtils {
         }
         Throwable cause = exception.getCause();
         if (cause instanceof TableTransactionFailedException) {
-            TableTransactionFailedException failedException = (TableTransactionFailedException) cause;
-            return failedException;
+            return (TableTransactionFailedException) cause;
         } else {
             return (Exception) mapThrowableToTableServiceException(exception);
         }
@@ -591,10 +582,6 @@ public final class TableUtils {
             keys[1] = null;
         }
         return keys;
-    }
-
-    public static Context skip409Logging(Context context) {
-        return context.addData("skip409logging", true);
     }
 
     public static <T> Response<T> callWithOptionalTimeout(Supplier<Response<T>> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger) {

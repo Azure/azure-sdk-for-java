@@ -4,30 +4,30 @@
 
 package com.azure.resourcemanager.playwrighttesting.generated;
 
+import com.azure.resourcemanager.playwrighttesting.models.AccountProperties;
 import com.azure.resourcemanager.playwrighttesting.models.EnablementStatus;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Accounts CreateOrUpdate. */
+/**
+ * Samples for Accounts CreateOrUpdate.
+ */
 public final class AccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/playwrighttesting/resource-manager/Microsoft.AzurePlaywrightService/preview/2023-10-01-preview/examples/Accounts_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/playwrighttesting/resource-manager/Microsoft.AzurePlaywrightService/preview/2023-10-01-preview/
+     * examples/Accounts_CreateOrUpdate.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to PlaywrightTestingManager.
      */
-    public static void accountsCreateOrUpdate(
-        com.azure.resourcemanager.playwrighttesting.PlaywrightTestingManager manager) {
-        manager
-            .accounts()
-            .define("myPlaywrightAccount")
-            .withRegion("westus")
-            .withExistingResourceGroup("dummyrg")
+    public static void
+        accountsCreateOrUpdate(com.azure.resourcemanager.playwrighttesting.PlaywrightTestingManager manager) {
+        manager.accounts().define("myPlaywrightAccount").withRegion("westus").withExistingResourceGroup("dummyrg")
             .withTags(mapOf("Team", "Dev Exp"))
-            .withRegionalAffinity(EnablementStatus.ENABLED)
-            .create();
+            .withProperties(new AccountProperties().withRegionalAffinity(EnablementStatus.ENABLED)).create();
     }
 
     // Use "Map.of" if available

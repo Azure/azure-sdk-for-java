@@ -38,7 +38,7 @@ public final class LinkedServicesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"sf\",\"parameters\":{\"neqmjodvknxjtttk\":\"datafrtaufrxxvzq\",\"s\":\"datamhquc\"}},\"description\":\"odcxvdqfk\",\"parameters\":{\"bxfrliyikcnlbe\":{\"type\":\"Bool\",\"defaultValue\":\"datafoaabltvlttopl\"},\"diogwckvoxlih\":{\"type\":\"Int\",\"defaultValue\":\"datayoxjqysfej\"},\"nchrouvtbptdeum\":{\"type\":\"Int\",\"defaultValue\":\"datafznzemisqunxwos\"},\"b\":{\"type\":\"Array\",\"defaultValue\":\"datazxqr\"}},\"annotations\":[\"dataeodgpqdcrn\"],\"\":{\"wsnccmunh\":\"datatowohtu\",\"rngney\":\"datawcsgczvui\",\"nelmim\":\"dataxzdayzfuv\",\"gjmznptevafczg\":\"dataccevbprecgeregft\"}},\"name\":\"egdeiynlcdqx\",\"type\":\"nbjkwgk\",\"etag\":\"wkazmw\",\"id\":\"sfejkrcgcfjnozi\"}";
+            = "{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"kwqavxljaybgxxm\",\"parameters\":{\"bfjhvkttusyx\":\"datagxhrtansjboiyqi\",\"tjjmtkwg\":\"datayvfwyoqjttrivi\"}},\"description\":\"fjv\",\"parameters\":{\"s\":{\"type\":\"Object\",\"defaultValue\":\"datayoesxnmvslhnc\"},\"qhatwxq\":{\"type\":\"SecureString\",\"defaultValue\":\"dataglaxvn\"},\"huudtiecnpka\":{\"type\":\"Float\",\"defaultValue\":\"databirzjhaicyuplm\"},\"c\":{\"type\":\"Array\",\"defaultValue\":\"dataqjtoeaugwosrywp\"}},\"annotations\":[\"datania\"],\"\":{\"xrrjudgnphgsdq\":\"datazdecgiomdcolwq\",\"gnl\":\"datawfmvpsvwwtncvnoq\",\"obfnbdpaoijxqgf\":\"dataicovvd\"}},\"name\":\"trvvhxjfkpu\",\"type\":\"sjayrlk\",\"etag\":\"nircmodwslhzla\",\"id\":\"qgavcwxwkjambfs\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -56,26 +56,23 @@ public final class LinkedServicesCreateOrUpdateWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         LinkedServiceResource response
-            = manager
-                .linkedServices().define(
-                    "kuxphbwmbgwgmyg")
-                .withExistingFactory("zpxlyabjrz", "ssjfwur")
+            = manager.linkedServices().define("sqtrtc").withExistingFactory("yhodtugrw", "wxfkgzgveudmidt")
                 .withProperties(new LinkedService()
-                    .withConnectVia(new IntegrationRuntimeReference().withReferenceName("snkylqd").withParameters(
-                        mapOf("frjewqwdglmfsjp", "datadzz", "lt", "datafdh", "qtzghtjx", "dataywykfuovk")))
-                    .withDescription("ywoq")
-                    .withParameters(mapOf("vykthx",
-                        new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataiioa"),
-                        "egqzqdcohsqufsy",
-                        new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datawjwl")))
-                    .withAnnotations(Arrays.asList("datanzsjoxuogyak", "dataxjzalhun", "datamngstvn"))
+                    .withConnectVia(new IntegrationRuntimeReference().withReferenceName("domzfwh")
+                        .withParameters(mapOf("zt", "dataox", "icznotggy", "dataa", "udmiutzuriqlksba",
+                            "datanssghafzdzdf", "lqheqzd", "datayxtiqzjrxh")))
+                    .withDescription("a")
+                    .withParameters(mapOf("kgrxhpx",
+                        new ParameterSpecification().withType(ParameterType.STRING)
+                            .withDefaultValue("datagymdywjzqmbeipxd")))
+                    .withAnnotations(Arrays.asList("datauair", "dataxquoweamnxzdu"))
                     .withAdditionalProperties(mapOf("type", "LinkedService")))
-                .withIfMatch("kv").create();
+                .withIfMatch("qqak").create();
 
-        Assertions.assertEquals("sfejkrcgcfjnozi", response.id());
-        Assertions.assertEquals("sf", response.properties().connectVia().referenceName());
-        Assertions.assertEquals("odcxvdqfk", response.properties().description());
-        Assertions.assertEquals(ParameterType.BOOL, response.properties().parameters().get("bxfrliyikcnlbe").type());
+        Assertions.assertEquals("qgavcwxwkjambfs", response.id());
+        Assertions.assertEquals("kwqavxljaybgxxm", response.properties().connectVia().referenceName());
+        Assertions.assertEquals("fjv", response.properties().description());
+        Assertions.assertEquals(ParameterType.OBJECT, response.properties().parameters().get("s").type());
     }
 
     // Use "Map.of" if available

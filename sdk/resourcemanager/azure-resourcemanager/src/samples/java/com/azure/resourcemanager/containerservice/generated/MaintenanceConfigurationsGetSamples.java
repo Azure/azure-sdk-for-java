@@ -10,7 +10,7 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class MaintenanceConfigurationsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-11-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-02-01/examples/
      * MaintenanceConfigurationsGet.json
      */
     /**
@@ -25,7 +25,7 @@ public final class MaintenanceConfigurationsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-11-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-02-01/examples/
      * MaintenanceConfigurationsGet_MaintenanceWindow.json
      */
     /**

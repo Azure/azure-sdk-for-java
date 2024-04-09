@@ -1,16 +1,38 @@
 # Release History
 
-## 1.12.0-beta.1 (Unreleased)
+## 1.14.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added new Azure region `Region.ITALY_NORTH`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.13.0 (2024-04-05)
+
+### Features Added
+
+- Added support for `azure-json` by having serializable models implement `JsonSerializable`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
+
+## 1.12.0 (2024-03-01)
+
+### Features Added
+
+- Added new Azure region `Region.ITALY_NORTH`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to `1.47.0`.
 
 ## 1.11.10 (2024-02-02)
 

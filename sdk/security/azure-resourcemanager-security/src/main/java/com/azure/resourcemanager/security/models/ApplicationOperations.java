@@ -7,11 +7,13 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ApplicationOperations. */
+/**
+ * Resource collection API of ApplicationOperations.
+ */
 public interface ApplicationOperations {
     /**
      * Get a specific application for the requested scope by applicationId.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface ApplicationOperations {
 
     /**
      * Get a specific application for the requested scope by applicationId.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -34,7 +36,7 @@ public interface ApplicationOperations {
 
     /**
      * Delete an Application over a given scope.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,7 +48,7 @@ public interface ApplicationOperations {
 
     /**
      * Delete an Application over a given scope.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -56,7 +58,7 @@ public interface ApplicationOperations {
 
     /**
      * Get a specific application for the requested scope by applicationId.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -67,7 +69,7 @@ public interface ApplicationOperations {
 
     /**
      * Get a specific application for the requested scope by applicationId.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -79,7 +81,7 @@ public interface ApplicationOperations {
 
     /**
      * Delete an Application over a given scope.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -89,7 +91,7 @@ public interface ApplicationOperations {
 
     /**
      * Delete an Application over a given scope.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -101,7 +103,7 @@ public interface ApplicationOperations {
 
     /**
      * Begins definition for a new Application resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Application definition.
      */

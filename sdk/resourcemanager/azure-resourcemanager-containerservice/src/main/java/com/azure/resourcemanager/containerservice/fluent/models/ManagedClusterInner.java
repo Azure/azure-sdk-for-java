@@ -20,6 +20,8 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgra
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterMetricsProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterOidcIssuerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
@@ -929,6 +931,29 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
+     * Get the ingressProfile property: Ingress profile for the managed cluster.
+     * 
+     * @return the ingressProfile value.
+     */
+    public ManagedClusterIngressProfile ingressProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().ingressProfile();
+    }
+
+    /**
+     * Set the ingressProfile property: Ingress profile for the managed cluster.
+     * 
+     * @param ingressProfile the ingressProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withIngressProfile(ManagedClusterIngressProfile ingressProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withIngressProfile(ingressProfile);
+        return this;
+    }
+
+    /**
      * Get the publicNetworkAccess property: PublicNetworkAccess of the managedCluster
      * 
      * Allow or deny public network access for AKS.
@@ -1033,6 +1058,29 @@ public final class ManagedClusterInner extends Resource {
      */
     public String resourceUid() {
         return this.innerProperties() == null ? null : this.innerProperties().resourceUid();
+    }
+
+    /**
+     * Get the metricsProfile property: Optional cluster metrics configuration.
+     * 
+     * @return the metricsProfile value.
+     */
+    public ManagedClusterMetricsProfile metricsProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().metricsProfile();
+    }
+
+    /**
+     * Set the metricsProfile property: Optional cluster metrics configuration.
+     * 
+     * @param metricsProfile the metricsProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withMetricsProfile(ManagedClusterMetricsProfile metricsProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withMetricsProfile(metricsProfile);
+        return this;
     }
 
     /**

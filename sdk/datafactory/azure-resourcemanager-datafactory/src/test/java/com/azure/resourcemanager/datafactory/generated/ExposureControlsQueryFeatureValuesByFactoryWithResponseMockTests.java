@@ -33,7 +33,7 @@ public final class ExposureControlsQueryFeatureValuesByFactoryWithResponseMockTe
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"exposureControlResponses\":[{\"featureName\":\"zcikhcpdohvw\",\"value\":\"tcgybuuubtfxjpg\"},{\"featureName\":\"ynofwyzpn\",\"value\":\"pgwriyxyelzm\"},{\"featureName\":\"harucpkpm\",\"value\":\"nnwob\"}]}";
+            = "{\"exposureControlResponses\":[{\"featureName\":\"dgzfqs\",\"value\":\"yuillrrqw\"},{\"featureName\":\"hiqjegea\",\"value\":\"oqg\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,11 +51,11 @@ public final class ExposureControlsQueryFeatureValuesByFactoryWithResponseMockTe
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ExposureControlBatchResponse response = manager.exposureControls()
-            .queryFeatureValuesByFactoryWithResponse("kfdlhytckpfgj", "rd",
+            .queryFeatureValuesByFactoryWithResponse("vvbsilahskesea", "g",
                 new ExposureControlBatchRequest().withExposureControlRequests(Arrays.asList(
-                    new ExposureControlRequest().withFeatureName("snmzlsgalavx").withFeatureType("vwuhvpipaafvtk"),
-                    new ExposureControlRequest().withFeatureName("ordplhwi").withFeatureType("hox"),
-                    new ExposureControlRequest().withFeatureName("yixbrsjgrjtl").withFeatureType("dcz"))),
+                    new ExposureControlRequest().withFeatureName("essiielbtge").withFeatureType("wcqeihuyrzi"),
+                    new ExposureControlRequest().withFeatureName("yvquufplmpbvzbt").withFeatureType("totpvoe"),
+                    new ExposureControlRequest().withFeatureName("fwrao").withFeatureType("r"))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

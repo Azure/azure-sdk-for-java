@@ -6,7 +6,6 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -98,6 +97,12 @@ public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldT
     public static final DocumentFieldType BOOLEAN = fromString("boolean");
 
     /**
+     * Array of selected string values.
+     */
+    @Generated
+    public static final DocumentFieldType SELECTION_GROUP = fromString("selectionGroup");
+
+    /**
      * Creates a new instance of DocumentFieldType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -114,7 +119,6 @@ public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldT
      * @return the corresponding DocumentFieldType.
      */
     @Generated
-    @JsonCreator
     public static DocumentFieldType fromString(String name) {
         return fromString(name, DocumentFieldType.class);
     }

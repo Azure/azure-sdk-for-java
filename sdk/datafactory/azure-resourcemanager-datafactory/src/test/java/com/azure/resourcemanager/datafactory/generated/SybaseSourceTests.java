@@ -11,15 +11,16 @@ public final class SybaseSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SybaseSource model = BinaryData.fromString(
-            "{\"type\":\"SybaseSource\",\"query\":\"databro\",\"queryTimeout\":\"datamufaz\",\"additionalColumns\":\"datawzbew\",\"sourceRetryCount\":\"datasspe\",\"sourceRetryWait\":\"datajhwpn\",\"maxConcurrentConnections\":\"dataoucjzbovuvmdzdqt\",\"disableMetricsCollection\":\"dataguajsrdecbowkh\",\"\":{\"sujx\":\"datafllpdn\",\"aeykueat\":\"dataueqljzkhn\",\"ahvlzgsqwiubgb\":\"datatnprnshln\",\"cuxuxaihheg\":\"datatjyisjscuwylukt\"}}")
+            "{\"type\":\"SybaseSource\",\"query\":\"datasyszdtgwmqcutkkp\",\"queryTimeout\":\"dataurtmccdejtoypl\",\"additionalColumns\":\"datavjutckfhmdcvlb\",\"sourceRetryCount\":\"dataezvujpbmz\",\"sourceRetryWait\":\"datalgm\",\"maxConcurrentConnections\":\"dataxwkkbnhmdtj\",\"disableMetricsCollection\":\"datapfoispchhvvmvs\",\"\":{\"ggtsovozy\":\"dataqdhazmc\",\"ugubob\":\"datapkrncjrq\"}}")
             .toObject(SybaseSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SybaseSource model = new SybaseSource().withSourceRetryCount("datasspe").withSourceRetryWait("datajhwpn")
-            .withMaxConcurrentConnections("dataoucjzbovuvmdzdqt").withDisableMetricsCollection("dataguajsrdecbowkh")
-            .withQueryTimeout("datamufaz").withAdditionalColumns("datawzbew").withQuery("databro");
+        SybaseSource model = new SybaseSource().withSourceRetryCount("dataezvujpbmz").withSourceRetryWait("datalgm")
+            .withMaxConcurrentConnections("dataxwkkbnhmdtj").withDisableMetricsCollection("datapfoispchhvvmvs")
+            .withQueryTimeout("dataurtmccdejtoypl").withAdditionalColumns("datavjutckfhmdcvlb")
+            .withQuery("datasyszdtgwmqcutkkp");
         model = BinaryData.fromObject(model).toObject(SybaseSource.class);
     }
 }

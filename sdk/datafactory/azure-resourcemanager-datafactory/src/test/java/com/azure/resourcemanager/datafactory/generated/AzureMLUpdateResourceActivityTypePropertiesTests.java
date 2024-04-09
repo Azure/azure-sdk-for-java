@@ -15,20 +15,21 @@ public final class AzureMLUpdateResourceActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMLUpdateResourceActivityTypeProperties model = BinaryData.fromString(
-            "{\"trainedModelName\":\"datamtahnimkndujyw\",\"trainedModelLinkedServiceName\":{\"referenceName\":\"xf\",\"parameters\":{\"wafslytmttjduco\":\"datam\",\"ovtnfwpmpap\":\"dataxcdh\"}},\"trainedModelFilePath\":\"datampdsvki\"}")
+            "{\"trainedModelName\":\"datazsxjrafhdf\",\"trainedModelLinkedServiceName\":{\"referenceName\":\"ukaaw\",\"parameters\":{\"qhefeasmkdguodo\":\"dataijphhuvflgw\",\"vcp\":\"datajpwqbot\",\"qruympov\":\"dataxxpyrtajlydefqfv\",\"fo\":\"dataxbqdwbjhgjzvceyx\"}},\"trainedModelFilePath\":\"datauyk\"}")
             .toObject(AzureMLUpdateResourceActivityTypeProperties.class);
-        Assertions.assertEquals("xf", model.trainedModelLinkedServiceName().referenceName());
+        Assertions.assertEquals("ukaaw", model.trainedModelLinkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureMLUpdateResourceActivityTypeProperties model
-            = new AzureMLUpdateResourceActivityTypeProperties().withTrainedModelName("datamtahnimkndujyw")
-                .withTrainedModelLinkedServiceName(new LinkedServiceReference().withReferenceName("xf")
-                    .withParameters(mapOf("wafslytmttjduco", "datam", "ovtnfwpmpap", "dataxcdh")))
-                .withTrainedModelFilePath("datampdsvki");
+            = new AzureMLUpdateResourceActivityTypeProperties().withTrainedModelName("datazsxjrafhdf")
+                .withTrainedModelLinkedServiceName(new LinkedServiceReference().withReferenceName("ukaaw")
+                    .withParameters(mapOf("qhefeasmkdguodo", "dataijphhuvflgw", "vcp", "datajpwqbot", "qruympov",
+                        "dataxxpyrtajlydefqfv", "fo", "dataxbqdwbjhgjzvceyx")))
+                .withTrainedModelFilePath("datauyk");
         model = BinaryData.fromObject(model).toObject(AzureMLUpdateResourceActivityTypeProperties.class);
-        Assertions.assertEquals("xf", model.trainedModelLinkedServiceName().referenceName());
+        Assertions.assertEquals("ukaaw", model.trainedModelLinkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

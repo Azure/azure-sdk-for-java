@@ -69,7 +69,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.15.1</version>
+    <version>7.15.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -89,7 +89,7 @@ First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.11.2</version>
+    <version>1.11.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -434,14 +434,14 @@ try {
 }
 ```
 ### When to use 'ServiceBusProcessorClient'.
- When to use 'ServiceBusProcessorClient', 'ServiceBusReceiverClient' or ServiceBusReceiverAsyncClient? The processor 
- is built using 'ServiceBusReceiverAsyncClient', it provides a convenient way of receiving messages with default 
- auto complete and auto-renew of message locks in 'PEEK_LOCK' mode. The processor is appropriate where the 
- applications have not made complete move to async receiver client and want to process message in synchronous mode. 
- The processor receives messages forever because it recovers from the network errors internally. 
- 'ServiceBusProcessorClient:processMessage()' function call is made for each message. Alternatively, You can also use 
- 'ServiceBusReceiverClient', it is a lower level client and provides a wider range of APIs. If async processing is  
- suitable for your application, you can use 'ServiceBusReceiverAsyncClient'. 
+
+When to use 'ServiceBusProcessorClient', 'ServiceBusReceiverClient' or ServiceBusReceiverAsyncClient? 
+ 
+The best option for receiving messages in most common cases is 'ServiceBusProcessorClient'. The processor can handle errors automatically and is designed to receive messages continuously. The processor has a simple API to set concurrency for processing messages in parallel.
+
+The low-level client, 'ServiceBusReceiverAsyncClient', is for advanced users who want more control and flexibility over their Reactive application at the expense of more complexity in the application. Unlike the processor, the low-level 'ServiceBusReceiverAsyncClient' does not have automatic recovery built into it. The reactive application using this client needs to deal with terminal events and choose the operators (to add recovery, manage backpressure, threading) in the Reactor chain. As stated earlier, for common asynchronous receive situations, the 'ServiceBusProcessorClient' should be the first choice.
+
+'ServiceBusReceiverClient' usage is discouraged unless you want to have pull semantics or want to migrate existing code base that uses synchronous receiver approach. For high-throughput and parallel message processing use cases, use 'ServiceBusProcessorClient'.
 
 ## Troubleshooting
 

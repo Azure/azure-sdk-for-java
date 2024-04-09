@@ -2,15 +2,15 @@ trigger: none
 
 pr: none
 
-stages:
-  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-    parameters:
-      ServiceDirectory: deviceupdate
-      Artifacts:
-        - name: azure-resourcemanager-deviceupdate
-          groupId: com.azure.resourcemanager
-          safeName: azureresourcemanagerdeviceupdate
-      Clouds: 'Public'
-      # Only run tests on Windows to save cost.
-      MatrixFilters:
-        - pool=.*(win).*
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: deviceupdate
+    Artifacts:
+      - name: azure-resourcemanager-deviceupdate
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerdeviceupdate
+    Clouds: 'Public'
+    # Only run tests on Windows to save cost.
+    MatrixFilters:
+      - pool=.*(win).*

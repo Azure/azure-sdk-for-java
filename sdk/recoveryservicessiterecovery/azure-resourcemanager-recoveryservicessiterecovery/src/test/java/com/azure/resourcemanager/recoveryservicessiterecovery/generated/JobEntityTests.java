@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class JobEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobEntity model =
-            BinaryData
-                .fromString(
-                    "{\"jobId\":\"xpno\",\"jobFriendlyName\":\"oanfbcswqagyw\",\"targetObjectId\":\"xigvjrktpgaeuk\",\"targetObjectName\":\"wohpmwhqnucs\",\"targetInstanceType\":\"hsidsjtdlpbnin\",\"jobScenarioName\":\"azlsvbzfcpuo\"}")
-                .toObject(JobEntity.class);
+        JobEntity model = BinaryData.fromString(
+            "{\"jobId\":\"xpno\",\"jobFriendlyName\":\"oanfbcswqagyw\",\"targetObjectId\":\"xigvjrktpgaeuk\",\"targetObjectName\":\"wohpmwhqnucs\",\"targetInstanceType\":\"hsidsjtdlpbnin\",\"jobScenarioName\":\"azlsvbzfcpuo\"}")
+            .toObject(JobEntity.class);
         Assertions.assertEquals("xpno", model.jobId());
         Assertions.assertEquals("oanfbcswqagyw", model.jobFriendlyName());
         Assertions.assertEquals("xigvjrktpgaeuk", model.targetObjectId());
@@ -26,14 +24,9 @@ public final class JobEntityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobEntity model =
-            new JobEntity()
-                .withJobId("xpno")
-                .withJobFriendlyName("oanfbcswqagyw")
-                .withTargetObjectId("xigvjrktpgaeuk")
-                .withTargetObjectName("wohpmwhqnucs")
-                .withTargetInstanceType("hsidsjtdlpbnin")
-                .withJobScenarioName("azlsvbzfcpuo");
+        JobEntity model = new JobEntity().withJobId("xpno").withJobFriendlyName("oanfbcswqagyw")
+            .withTargetObjectId("xigvjrktpgaeuk").withTargetObjectName("wohpmwhqnucs")
+            .withTargetInstanceType("hsidsjtdlpbnin").withJobScenarioName("azlsvbzfcpuo");
         model = BinaryData.fromObject(model).toObject(JobEntity.class);
         Assertions.assertEquals("xpno", model.jobId());
         Assertions.assertEquals("oanfbcswqagyw", model.jobFriendlyName());

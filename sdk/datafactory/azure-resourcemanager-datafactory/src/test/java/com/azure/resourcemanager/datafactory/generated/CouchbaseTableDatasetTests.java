@@ -19,30 +19,31 @@ public final class CouchbaseTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CouchbaseTableDataset model = BinaryData.fromString(
-            "{\"type\":\"CouchbaseTable\",\"typeProperties\":{\"tableName\":\"datarrsguogk\"},\"description\":\"rotpyabensjflw\",\"structure\":\"datatvvqtmvifgcvsim\",\"schema\":\"databmticxgosnxajp\",\"linkedServiceName\":{\"referenceName\":\"cdfmzxaoxlhmvjc\",\"parameters\":{\"xh\":\"datasbnuc\",\"nkleldk\":\"dataaqoqbvejoysoxovl\",\"qrykkxakruupti\":\"datadlqqhn\"}},\"parameters\":{\"tjekxsnnb\":{\"type\":\"Object\",\"defaultValue\":\"datazgyxccnpxiemacm\"},\"mocnqbbl\":{\"type\":\"Int\",\"defaultValue\":\"datagkt\"}},\"annotations\":[\"dataofzghfuifwxu\",\"dataynohocqxug\"],\"folder\":{\"name\":\"gdcrrfbpl\"},\"\":{\"qe\":\"datahurosdjlzbdmddg\",\"orservpvesors\":\"datay\",\"zydyvtuqvir\":\"dataegclmexafjqzy\",\"igtvjxsocsvjekej\":\"dataunssky\"}}")
+            "{\"type\":\"CouchbaseTable\",\"typeProperties\":{\"tableName\":\"datafybxmmrvn\"},\"description\":\"qkrrsguogkcb\",\"structure\":\"datatpyabensjflwp\",\"schema\":\"datavvqtmvif\",\"linkedServiceName\":{\"referenceName\":\"cv\",\"parameters\":{\"t\":\"dataalb\"}},\"parameters\":{\"hmvjcnnlsb\":{\"type\":\"Int\",\"defaultValue\":\"datasnxajptcdfmzxaox\"},\"ovlznklel\":{\"type\":\"Float\",\"defaultValue\":\"dataqxhpaqoqbvejoyso\"}},\"annotations\":[\"datadlqqhn\",\"dataqrykkxakruupti\",\"datacg\",\"datapz\"],\"folder\":{\"name\":\"ccnpxiemacmzt\"},\"\":{\"ocnqbblr\":\"dataxsnnbrysgktf\",\"fwxud\":\"databofzghfu\",\"cqxu\":\"datanoh\"}}")
             .toObject(CouchbaseTableDataset.class);
-        Assertions.assertEquals("rotpyabensjflw", model.description());
-        Assertions.assertEquals("cdfmzxaoxlhmvjc", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("tjekxsnnb").type());
-        Assertions.assertEquals("gdcrrfbpl", model.folder().name());
+        Assertions.assertEquals("qkrrsguogkcb", model.description());
+        Assertions.assertEquals("cv", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("hmvjcnnlsb").type());
+        Assertions.assertEquals("ccnpxiemacmzt", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CouchbaseTableDataset model = new CouchbaseTableDataset().withDescription("rotpyabensjflw")
-            .withStructure("datatvvqtmvifgcvsim").withSchema("databmticxgosnxajp")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("cdfmzxaoxlhmvjc").withParameters(
-                mapOf("xh", "datasbnuc", "nkleldk", "dataaqoqbvejoysoxovl", "qrykkxakruupti", "datadlqqhn")))
-            .withParameters(mapOf("tjekxsnnb",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datazgyxccnpxiemacm"),
-                "mocnqbbl", new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datagkt")))
-            .withAnnotations(Arrays.asList("dataofzghfuifwxu", "dataynohocqxug"))
-            .withFolder(new DatasetFolder().withName("gdcrrfbpl")).withTableName("datarrsguogk");
+        CouchbaseTableDataset model = new CouchbaseTableDataset().withDescription("qkrrsguogkcb")
+            .withStructure("datatpyabensjflwp").withSchema("datavvqtmvif")
+            .withLinkedServiceName(
+                new LinkedServiceReference().withReferenceName("cv").withParameters(mapOf("t", "dataalb")))
+            .withParameters(mapOf("hmvjcnnlsb",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datasnxajptcdfmzxaox"),
+                "ovlznklel",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataqxhpaqoqbvejoyso")))
+            .withAnnotations(Arrays.asList("datadlqqhn", "dataqrykkxakruupti", "datacg", "datapz"))
+            .withFolder(new DatasetFolder().withName("ccnpxiemacmzt")).withTableName("datafybxmmrvn");
         model = BinaryData.fromObject(model).toObject(CouchbaseTableDataset.class);
-        Assertions.assertEquals("rotpyabensjflw", model.description());
-        Assertions.assertEquals("cdfmzxaoxlhmvjc", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("tjekxsnnb").type());
-        Assertions.assertEquals("gdcrrfbpl", model.folder().name());
+        Assertions.assertEquals("qkrrsguogkcb", model.description());
+        Assertions.assertEquals("cv", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("hmvjcnnlsb").type());
+        Assertions.assertEquals("ccnpxiemacmzt", model.folder().name());
     }
 
     // Use "Map.of" if available

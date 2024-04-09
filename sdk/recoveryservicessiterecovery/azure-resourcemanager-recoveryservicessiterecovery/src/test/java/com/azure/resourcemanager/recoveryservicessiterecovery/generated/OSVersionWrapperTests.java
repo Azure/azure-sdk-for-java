@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class OSVersionWrapperTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OSVersionWrapper model =
-            BinaryData.fromString("{\"version\":\"wjh\",\"servicePack\":\"biwetpo\"}").toObject(OSVersionWrapper.class);
+        OSVersionWrapper model = BinaryData.fromString("{\"version\":\"wjh\",\"servicePack\":\"biwetpo\"}")
+            .toObject(OSVersionWrapper.class);
         Assertions.assertEquals("wjh", model.version());
         Assertions.assertEquals("biwetpo", model.servicePack());
     }

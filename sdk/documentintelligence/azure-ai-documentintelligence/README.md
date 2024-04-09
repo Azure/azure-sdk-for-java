@@ -32,22 +32,23 @@ It includes the following main features:
 ```
 [//]: # ({x-version-update-end})
 
-> Note: This version of the client library defaults to the `"2023-10-31-preview"` version of the service.
+> Note: This version of the client library defaults to the `"2024-02-29-preview"` version of the service.
 
 This table shows the relationship between SDK versions and supported API versions of the service:
 
 | SDK version  | Supported API version of service |
 |--------------|----------------------------------|
 | 1.0.0-beta.1 | 2023-10-31-preview               |
+| 1.0.0-beta.2 | 2024-02-29-preview               |
 
 > Note: Please rely on the older `azure-ai-formrecognizer` library through the older service API versions for retired
 > models, such as `"prebuilt-businessCard"` and `"prebuilt-document"`. For more information, see [Changelog][changelog].
 > The below table describes the relationship of each client and its supported API version(s):
 
-| API version        | Supported clients                                                                             |
-|--------------------|-----------------------------------------------------------------------------------------------|
-| 2023-10-31-preview | DocumentIntelligenceClient and DocumentIntelligenceAsyncClient                                |
-| 2023-07-31         | DocumentAnalysisClient and DocumentModelAdministrationClient in `azure-ai-formrecognizer` SDK |
+| API version                            | Supported clients                                                                             |
+|----------------------------------------|-----------------------------------------------------------------------------------------------|
+| 2023-10-31-preview, 2024-02-29-preview | DocumentIntelligenceClient and DocumentIntelligenceAsyncClient                                |
+| 2023-07-31                             | DocumentAnalysisClient and DocumentModelAdministrationClient in `azure-ai-formrecognizer` SDK |
 
 Please see the [Migration Guide][migration_guide] for more information about migrating from `azure-ai-formrecognizer` to `azure-ai-documentintelligence`.
 
@@ -89,7 +90,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.11.2</version>
+    <version>1.11.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -443,7 +444,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [aad_authorization]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
 [azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java
 [key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
-[api_reference_doc]: https://azure.github.io/azure-sdk-for-java
+[api_reference_doc]: https://learn.microsoft.com/java/api/overview/azure/ai-documentintelligence-readme?view=azure-java-preview
 [form_recognizer_doc]: https://aka.ms/azsdk-java-documentintelligence-ref-doc
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
 [azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows

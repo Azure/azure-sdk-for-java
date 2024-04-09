@@ -31,7 +31,7 @@ public final class SnapshotsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"location\":\"ap\",\"properties\":{\"snapshotId\":\"ferr\",\"created\":\"2021-05-25T15:13:52Z\",\"provisioningState\":\"jkmfxapjwo\"},\"id\":\"qnobp\",\"name\":\"dcdab\",\"type\":\"qwpwyawbzasqbuc\"}";
+            = "{\"location\":\"ti\",\"properties\":{\"snapshotId\":\"pwpgclrci\",\"created\":\"2021-07-05T16:33:25Z\",\"provisioningState\":\"xfrk\"},\"id\":\"xpmyyefrpmpdnq\",\"name\":\"skawaoqvmmb\",\"type\":\"pqfrtqlkz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -48,9 +48,9 @@ public final class SnapshotsGetWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Snapshot response = manager.snapshots()
-            .getWithResponse("a", "zv", "chndbnwie", "olewjwi", "ubwefqs", com.azure.core.util.Context.NONE).getValue();
+        Snapshot response = manager.snapshots().getWithResponse("ttymsjny", "qdnfwqzdz", "tilaxh", "fhqlyvi",
+            "ouwivkxoyzunbixx", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("ap", response.location());
+        Assertions.assertEquals("ti", response.location());
     }
 }

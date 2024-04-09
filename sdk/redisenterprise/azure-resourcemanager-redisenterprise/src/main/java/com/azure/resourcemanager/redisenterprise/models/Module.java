@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Module settings
- *
- * <p>Specifies configuration of a redis module.
+ * 
+ * Specifies configuration of a redis module.
  */
 @Fluent
 public final class Module {
@@ -33,13 +33,15 @@ public final class Module {
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
-    /** Creates an instance of Module class. */
+    /**
+     * Creates an instance of Module class.
+     */
     public Module() {
     }
 
     /**
      * Get the name property: The name of the module, e.g. 'RedisBloom', 'RediSearch', 'RedisTimeSeries'.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -48,7 +50,7 @@ public final class Module {
 
     /**
      * Set the name property: The name of the module, e.g. 'RedisBloom', 'RediSearch', 'RedisTimeSeries'.
-     *
+     * 
      * @param name the name value to set.
      * @return the Module object itself.
      */
@@ -59,7 +61,7 @@ public final class Module {
 
     /**
      * Get the args property: Configuration options for the module, e.g. 'ERROR_RATE 0.01 INITIAL_SIZE 400'.
-     *
+     * 
      * @return the args value.
      */
     public String args() {
@@ -68,7 +70,7 @@ public final class Module {
 
     /**
      * Set the args property: Configuration options for the module, e.g. 'ERROR_RATE 0.01 INITIAL_SIZE 400'.
-     *
+     * 
      * @param args the args value to set.
      * @return the Module object itself.
      */
@@ -79,7 +81,7 @@ public final class Module {
 
     /**
      * Get the version property: The version of the module, e.g. '1.0'.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -88,7 +90,7 @@ public final class Module {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -14,15 +14,19 @@ import java.util.Collection;
  * smaller than 1 byte or larger than 1 MB.
  */
 public final class RuleIsCompressionEnabled extends ExpandableStringEnum<RuleIsCompressionEnabled> {
-    /** Static value Enabled for RuleIsCompressionEnabled. */
+    /**
+     * Static value Enabled for RuleIsCompressionEnabled.
+     */
     public static final RuleIsCompressionEnabled ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for RuleIsCompressionEnabled. */
+    /**
+     * Static value Disabled for RuleIsCompressionEnabled.
+     */
     public static final RuleIsCompressionEnabled DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of RuleIsCompressionEnabled value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,7 +35,7 @@ public final class RuleIsCompressionEnabled extends ExpandableStringEnum<RuleIsC
 
     /**
      * Creates or finds a RuleIsCompressionEnabled from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RuleIsCompressionEnabled.
      */
@@ -42,7 +46,7 @@ public final class RuleIsCompressionEnabled extends ExpandableStringEnum<RuleIsC
 
     /**
      * Gets known RuleIsCompressionEnabled values.
-     *
+     * 
      * @return known RuleIsCompressionEnabled values.
      */
     public static Collection<RuleIsCompressionEnabled> values() {

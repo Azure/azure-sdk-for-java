@@ -14,12 +14,14 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.quantum.fluent.models.QuantumWorkspaceInner;
 import com.azure.resourcemanager.quantum.models.TagsObject;
 
-/** An instance of this class provides access to all the operations defined in WorkspacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkspacesClient.
+ */
 public interface WorkspacesClient {
     /**
      * Returns the Workspace resource associated with the given name.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the quantum workspace resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,13 +30,13 @@ public interface WorkspacesClient {
      * @return the resource proxy definition object for quantum workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QuantumWorkspaceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<QuantumWorkspaceInner> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Returns the Workspace resource associated with the given name.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the quantum workspace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,8 +48,8 @@ public interface WorkspacesClient {
 
     /**
      * Creates or updates a workspace resource.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the quantum workspace resource.
      * @param quantumWorkspace Workspace details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -56,13 +58,13 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of the resource proxy definition object for quantum workspace.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<QuantumWorkspaceInner>, QuantumWorkspaceInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, QuantumWorkspaceInner quantumWorkspace);
+    SyncPoller<PollResult<QuantumWorkspaceInner>, QuantumWorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, QuantumWorkspaceInner quantumWorkspace);
 
     /**
      * Creates or updates a workspace resource.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the quantum workspace resource.
      * @param quantumWorkspace Workspace details.
      * @param context The context to associate with this operation.
@@ -72,13 +74,13 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of the resource proxy definition object for quantum workspace.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<QuantumWorkspaceInner>, QuantumWorkspaceInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, QuantumWorkspaceInner quantumWorkspace, Context context);
+    SyncPoller<PollResult<QuantumWorkspaceInner>, QuantumWorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, QuantumWorkspaceInner quantumWorkspace, Context context);
 
     /**
      * Creates or updates a workspace resource.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the quantum workspace resource.
      * @param quantumWorkspace Workspace details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,13 +89,13 @@ public interface WorkspacesClient {
      * @return the resource proxy definition object for quantum workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    QuantumWorkspaceInner createOrUpdate(
-        String resourceGroupName, String workspaceName, QuantumWorkspaceInner quantumWorkspace);
+    QuantumWorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName,
+        QuantumWorkspaceInner quantumWorkspace);
 
     /**
      * Creates or updates a workspace resource.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the quantum workspace resource.
      * @param quantumWorkspace Workspace details.
      * @param context The context to associate with this operation.
@@ -103,13 +105,13 @@ public interface WorkspacesClient {
      * @return the resource proxy definition object for quantum workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    QuantumWorkspaceInner createOrUpdate(
-        String resourceGroupName, String workspaceName, QuantumWorkspaceInner quantumWorkspace, Context context);
+    QuantumWorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName,
+        QuantumWorkspaceInner quantumWorkspace, Context context);
 
     /**
      * Updates an existing workspace's tags.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the quantum workspace resource.
      * @param workspaceTags Parameters supplied to update tags.
      * @param context The context to associate with this operation.
@@ -119,13 +121,13 @@ public interface WorkspacesClient {
      * @return the resource proxy definition object for quantum workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QuantumWorkspaceInner> updateTagsWithResponse(
-        String resourceGroupName, String workspaceName, TagsObject workspaceTags, Context context);
+    Response<QuantumWorkspaceInner> updateTagsWithResponse(String resourceGroupName, String workspaceName,
+        TagsObject workspaceTags, Context context);
 
     /**
      * Updates an existing workspace's tags.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the quantum workspace resource.
      * @param workspaceTags Parameters supplied to update tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -138,8 +140,8 @@ public interface WorkspacesClient {
 
     /**
      * Deletes a Workspace resource.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the quantum workspace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -151,8 +153,8 @@ public interface WorkspacesClient {
 
     /**
      * Deletes a Workspace resource.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the quantum workspace resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -165,8 +167,8 @@ public interface WorkspacesClient {
 
     /**
      * Deletes a Workspace resource.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the quantum workspace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -177,8 +179,8 @@ public interface WorkspacesClient {
 
     /**
      * Deletes a Workspace resource.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the quantum workspace resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -190,7 +192,7 @@ public interface WorkspacesClient {
 
     /**
      * Gets the list of Workspaces within a Subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Workspaces within a Subscription as paginated response with {@link PagedIterable}.
@@ -200,7 +202,7 @@ public interface WorkspacesClient {
 
     /**
      * Gets the list of Workspaces within a Subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -212,8 +214,8 @@ public interface WorkspacesClient {
 
     /**
      * Gets the list of Workspaces within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -224,8 +226,8 @@ public interface WorkspacesClient {
 
     /**
      * Gets the list of Workspaces within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

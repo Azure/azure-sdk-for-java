@@ -96,6 +96,9 @@ public interface KubernetesCluster
     /** @return the power state */
     PowerState powerState();
 
+    /** @return the SKU of a Managed Cluster */
+    ManagedClusterSku sku();
+
     /**
      * @return the System Assigned Managed Service Identity specific Active Directory service principal ID
      *     assigned to the Kubernetes cluster.
@@ -120,6 +123,13 @@ public interface KubernetesCluster
      * @return The resource group containing agent pool nodes.
      */
     String agentPoolResourceGroup();
+
+    /**
+     * Whether the kubernetes cluster can be accessed from public network.
+     *
+     * @return whether the kubernetes cluster can be accessed from public network.
+     */
+    PublicNetworkAccess publicNetworkAccess();
 
     // Actions
 
@@ -171,6 +181,8 @@ public interface KubernetesCluster
             DefinitionStages.WithAgentPool,
             DefinitionStages.WithNetworkProfile,
             DefinitionStages.WithAddOnProfiles,
+            DefinitionStages.WithManagedClusterSku,
+            DefinitionStages.WithPublicNetworkAccess,
             KubernetesCluster.DefinitionStages.WithCreate {
     }
 
@@ -186,6 +198,35 @@ public interface KubernetesCluster
          * The stage of the Kubernetes cluster definition allowing to specify the resource group.
          */
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithVersion> {
+        }
+
+        /**
+         * The stage of the Kubernetes cluster definition allowing to specify the managed cluster SKU.
+         * LongTermSupport and Premium tier should be enabled/disabled together.
+         * For more information, please see https://learn.microsoft.com/azure/aks/long-term-support
+         */
+        interface WithManagedClusterSku {
+
+            /**
+             * Specifies the managed cluster SKU is free.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withFreeSku();
+
+            /**
+             * Specifies the managed cluster SKU is standard.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withStandardSku();
+
+            /**
+             * Specifies the managed cluster SKU is premium.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withPremiumSku();
         }
 
         /**
@@ -407,6 +448,52 @@ public interface KubernetesCluster
             }
 
             /**
+             * The stage of a network profile definition allowing to specify the network plugin mode.
+             *
+             * @param <ParentT> the stage of the network plugin mode definition to return to after attaching this definition
+             */
+            interface WithNetworkPluginMode<ParentT> {
+                /**
+                 * Specifies the network plugin mode to be used for building the Kubernetes network.
+                 *
+                 * @param networkPluginMode the network plugin mode to be used for building the Kubernetes network
+                 * @return the next stage of the definition
+                 */
+                WithAttach<ParentT> withNetworkPluginMode(NetworkPluginMode networkPluginMode);
+            }
+
+            /**
+             * The stage of a network profile definition allowing to specify the network mode.
+             *
+             * @param <ParentT> the stage of the network mode definition to return to after attaching this definition
+             */
+            interface WithNetworkMode<ParentT> {
+                /**
+                 * Specifies the network plugin mode to be used for building the Kubernetes network.
+                 *
+                 * @param networkMode the network mode to be used for building the Kubernetes network
+                 * @return the next stage of the definition
+                 */
+                WithAttach<ParentT> withNetworkMode(NetworkMode networkMode);
+            }
+
+            /**
+             * The stage of a network profile definition allowing to specify the network data plan.
+             *
+             * @param <ParentT> the stage of the network mode definition to return to after attaching this definition
+             */
+            interface WithNetworkDataPlan<ParentT> {
+                /**
+                 * Specifies the network data plan to be used for building the Kubernetes network.
+                 *
+                 * @param networkDataPlan the network data plan to be used for building the Kubernetes network
+                 * @return the next stage of the definition
+                 */
+                WithAttach<ParentT> withNetworkDataPlan(NetworkDataplane networkDataPlan);
+            }
+
+
+            /**
              * The final stage of a network profile definition. At this stage, any remaining optional settings can be
              * specified, or the container service agent pool can be attached to the parent container service
              * definition.
@@ -421,6 +508,9 @@ public interface KubernetesCluster
                     NetworkProfileDefinitionStages.WithDnsServiceIP<ParentT>,
                     NetworkProfileDefinitionStages.WithDockerBridgeCidr<ParentT>,
                     NetworkProfileDefinitionStages.WithLoadBalancerProfile<ParentT>,
+                    NetworkProfileDefinitionStages.WithNetworkMode<ParentT>,
+                    NetworkProfileDefinitionStages.WithNetworkDataPlan<ParentT>,
+                    NetworkProfileDefinitionStages.WithNetworkPluginMode<ParentT>,
                     Attachable.InDefinition<ParentT> {
             }
         }
@@ -438,6 +528,9 @@ public interface KubernetesCluster
                 NetworkProfileDefinitionStages.WithServiceCidr<ParentT>,
                 NetworkProfileDefinitionStages.WithDnsServiceIP<ParentT>,
                 NetworkProfileDefinitionStages.WithDockerBridgeCidr<ParentT>,
+                NetworkProfileDefinitionStages.WithNetworkMode<ParentT>,
+                NetworkProfileDefinitionStages.WithNetworkDataPlan<ParentT>,
+                NetworkProfileDefinitionStages.WithNetworkPluginMode<ParentT>,
                 NetworkProfileDefinitionStages.WithAttach<ParentT> {
         }
 
@@ -563,6 +656,16 @@ public interface KubernetesCluster
             WithCreate withAgentPoolResourceGroup(String resourceGroupName);
         }
 
+        /** The stage of Kubernetes cluster  definition allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Disables public network access for the kubernetes cluster.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -581,6 +684,8 @@ public interface KubernetesCluster
                 WithLocalAccounts,
                 WithDiskEncryption,
                 WithAgentPoolResourceGroup,
+                WithManagedClusterSku,
+                WithPublicNetworkAccess,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }
@@ -594,6 +699,9 @@ public interface KubernetesCluster
             UpdateStages.WithAutoScalerProfile,
             UpdateStages.WithAAD,
             UpdateStages.WithLocalAccounts,
+            UpdateStages.WithVersion,
+            UpdateStages.WithManagedClusterSku,
+            UpdateStages.WithPublicNetworkAccess,
             Resource.UpdateWithTags<KubernetesCluster.Update>,
             Appliable<KubernetesCluster> {
     }
@@ -726,6 +834,67 @@ public interface KubernetesCluster
              * @return the next stage
              */
             Update disableLocalAccounts();
+        }
+
+        /**
+         * The stage of the Kubernetes cluster definition allowing to specify the managed cluster SKU.
+         * LongTermSupport and Premium tier should be enabled/disabled together.
+         * For more information, please see https://learn.microsoft.com/azure/aks/long-term-support
+         */
+        interface WithManagedClusterSku {
+
+            /**
+             * Specifies the managed cluster SKU is free.
+             *
+             * @return the next stage
+             */
+            Update withFreeSku();
+
+            /**
+             * Specifies the managed cluster SKU is standard.
+             *
+             * @return the next stage
+             */
+            Update withStandardSku();
+
+            /**
+             * Specifies the managed cluster SKU is premium.
+             *
+             * @return the next stage
+             */
+            Update withPremiumSku();
+        }
+
+        /**
+         * The stage of the Kubernetes cluster update allowing to specify orchestration type.
+         */
+        interface WithVersion {
+            /**
+             * Specifies the version for the Kubernetes cluster.
+             * Could retrieve from {@link KubernetesClusters#listOrchestrators(Region, ContainerServiceResourceTypes)}
+             * To prevent version conflicts, specify a higher version than the initial version.
+             *
+             * @param kubernetesVersion the kubernetes version
+             * @return the next stage
+             */
+            Update withVersion(String kubernetesVersion);
+        }
+
+
+        /** The stage of kubernetes cluster update allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Enables public network access for the kubernetes cluster.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+            /**
+             * Disables public network access for the kubernetes cluster.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
         }
     }
 }

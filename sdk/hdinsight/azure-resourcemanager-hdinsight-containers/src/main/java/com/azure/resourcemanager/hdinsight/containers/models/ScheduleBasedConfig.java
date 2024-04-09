@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Profile of schedule based Autoscale. */
+/**
+ * Profile of schedule based Autoscale.
+ */
 @Fluent
 public final class ScheduleBasedConfig {
     /*
@@ -32,14 +34,16 @@ public final class ScheduleBasedConfig {
     @JsonProperty(value = "schedules", required = true)
     private List<Schedule> schedules;
 
-    /** Creates an instance of ScheduleBasedConfig class. */
+    /**
+     * Creates an instance of ScheduleBasedConfig class.
+     */
     public ScheduleBasedConfig() {
     }
 
     /**
      * Get the timeZone property: User has to specify the timezone on which the schedule has to be set for schedule
      * based autoscale configuration.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -49,7 +53,7 @@ public final class ScheduleBasedConfig {
     /**
      * Set the timeZone property: User has to specify the timezone on which the schedule has to be set for schedule
      * based autoscale configuration.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the ScheduleBasedConfig object itself.
      */
@@ -62,7 +66,7 @@ public final class ScheduleBasedConfig {
      * Get the defaultCount property: Setting default node count of current schedule configuration. Default node count
      * specifies the number of nodes which are default when an specified scaling operation is executed (scale up/scale
      * down).
-     *
+     * 
      * @return the defaultCount value.
      */
     public int defaultCount() {
@@ -73,7 +77,7 @@ public final class ScheduleBasedConfig {
      * Set the defaultCount property: Setting default node count of current schedule configuration. Default node count
      * specifies the number of nodes which are default when an specified scaling operation is executed (scale up/scale
      * down).
-     *
+     * 
      * @param defaultCount the defaultCount value to set.
      * @return the ScheduleBasedConfig object itself.
      */
@@ -85,7 +89,7 @@ public final class ScheduleBasedConfig {
     /**
      * Get the schedules property: This specifies the schedules where scheduled based Autoscale to be enabled, the user
      * has a choice to set multiple rules within the schedule across days and times (start/end).
-     *
+     * 
      * @return the schedules value.
      */
     public List<Schedule> schedules() {
@@ -95,7 +99,7 @@ public final class ScheduleBasedConfig {
     /**
      * Set the schedules property: This specifies the schedules where scheduled based Autoscale to be enabled, the user
      * has a choice to set multiple rules within the schedule across days and times (start/end).
-     *
+     * 
      * @param schedules the schedules value to set.
      * @return the ScheduleBasedConfig object itself.
      */
@@ -106,19 +110,17 @@ public final class ScheduleBasedConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (timeZone() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timeZone in model ScheduleBasedConfig"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property timeZone in model ScheduleBasedConfig"));
         }
         if (schedules() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property schedules in model ScheduleBasedConfig"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property schedules in model ScheduleBasedConfig"));
         } else {
             schedules().forEach(e -> e.validate());
         }

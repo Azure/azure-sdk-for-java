@@ -8,33 +8,49 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RequestMethodMatchConditionParametersMatchValuesItem. */
+/**
+ * Defines values for RequestMethodMatchConditionParametersMatchValuesItem.
+ */
 public final class RequestMethodMatchConditionParametersMatchValuesItem
     extends ExpandableStringEnum<RequestMethodMatchConditionParametersMatchValuesItem> {
-    /** Static value GET for RequestMethodMatchConditionParametersMatchValuesItem. */
+    /**
+     * Static value GET for RequestMethodMatchConditionParametersMatchValuesItem.
+     */
     public static final RequestMethodMatchConditionParametersMatchValuesItem GET = fromString("GET");
 
-    /** Static value HEAD for RequestMethodMatchConditionParametersMatchValuesItem. */
+    /**
+     * Static value HEAD for RequestMethodMatchConditionParametersMatchValuesItem.
+     */
     public static final RequestMethodMatchConditionParametersMatchValuesItem HEAD = fromString("HEAD");
 
-    /** Static value POST for RequestMethodMatchConditionParametersMatchValuesItem. */
+    /**
+     * Static value POST for RequestMethodMatchConditionParametersMatchValuesItem.
+     */
     public static final RequestMethodMatchConditionParametersMatchValuesItem POST = fromString("POST");
 
-    /** Static value PUT for RequestMethodMatchConditionParametersMatchValuesItem. */
+    /**
+     * Static value PUT for RequestMethodMatchConditionParametersMatchValuesItem.
+     */
     public static final RequestMethodMatchConditionParametersMatchValuesItem PUT = fromString("PUT");
 
-    /** Static value DELETE for RequestMethodMatchConditionParametersMatchValuesItem. */
+    /**
+     * Static value DELETE for RequestMethodMatchConditionParametersMatchValuesItem.
+     */
     public static final RequestMethodMatchConditionParametersMatchValuesItem DELETE = fromString("DELETE");
 
-    /** Static value OPTIONS for RequestMethodMatchConditionParametersMatchValuesItem. */
+    /**
+     * Static value OPTIONS for RequestMethodMatchConditionParametersMatchValuesItem.
+     */
     public static final RequestMethodMatchConditionParametersMatchValuesItem OPTIONS = fromString("OPTIONS");
 
-    /** Static value TRACE for RequestMethodMatchConditionParametersMatchValuesItem. */
+    /**
+     * Static value TRACE for RequestMethodMatchConditionParametersMatchValuesItem.
+     */
     public static final RequestMethodMatchConditionParametersMatchValuesItem TRACE = fromString("TRACE");
 
     /**
      * Creates a new instance of RequestMethodMatchConditionParametersMatchValuesItem value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -43,7 +59,7 @@ public final class RequestMethodMatchConditionParametersMatchValuesItem
 
     /**
      * Creates or finds a RequestMethodMatchConditionParametersMatchValuesItem from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RequestMethodMatchConditionParametersMatchValuesItem.
      */
@@ -54,7 +70,7 @@ public final class RequestMethodMatchConditionParametersMatchValuesItem
 
     /**
      * Gets known RequestMethodMatchConditionParametersMatchValuesItem values.
-     *
+     * 
      * @return known RequestMethodMatchConditionParametersMatchValuesItem values.
      */
     public static Collection<RequestMethodMatchConditionParametersMatchValuesItem> values() {

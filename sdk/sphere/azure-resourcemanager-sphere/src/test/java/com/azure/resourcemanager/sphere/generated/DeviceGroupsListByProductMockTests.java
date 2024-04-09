@@ -35,53 +35,34 @@ public final class DeviceGroupsListByProductMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"ggxkallatmelwuip\",\"osFeedType\":\"RetailEval\",\"updatePolicy\":\"No3rdPartyAppUpdates\",\"allowCrashDumpsCollection\":\"Enabled\",\"regionalDataBoundary\":\"None\",\"hasDeployment\":false,\"provisioningState\":\"Accepted\"},\"id\":\"nayrhyrnxxmueedn\",\"name\":\"rdvstkwqqtch\",\"type\":\"alm\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"description\":\"mqg\",\"osFeedType\":\"Retail\",\"updatePolicy\":\"No3rdPartyAppUpdates\",\"allowCrashDumpsCollection\":\"Enabled\",\"regionalDataBoundary\":\"None\",\"hasDeployment\":true,\"provisioningState\":\"Provisioning\"},\"id\":\"allatmelwuipic\",\"name\":\"jzkzi\",\"type\":\"gvvcnayrhyr\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureSphereManager manager =
-            AzureSphereManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DeviceGroup> response =
-            manager
-                .deviceGroups()
-                .listByProduct(
-                    "tdtbnnhadooc",
-                    "kvci",
-                    "hnvpamqgxq",
-                    "u",
-                    1862318440,
-                    443622503,
-                    1817330156,
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<DeviceGroup> response = manager.deviceGroups().listByProduct("lxdy", "gsyocogj", "tdtbnnhadooc",
+            "kvci", 464313768, 1515797519, 600474862, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ggxkallatmelwuip", response.iterator().next().description());
-        Assertions.assertEquals(OSFeedType.RETAIL_EVAL, response.iterator().next().osFeedType());
-        Assertions.assertEquals(UpdatePolicy.NO3RD_PARTY_APP_UPDATES, response.iterator().next().updatePolicy());
-        Assertions
-            .assertEquals(AllowCrashDumpCollection.ENABLED, response.iterator().next().allowCrashDumpsCollection());
-        Assertions.assertEquals(RegionalDataBoundary.NONE, response.iterator().next().regionalDataBoundary());
+        Assertions.assertEquals("mqg", response.iterator().next().properties().description());
+        Assertions.assertEquals(OSFeedType.RETAIL, response.iterator().next().properties().osFeedType());
+        Assertions.assertEquals(UpdatePolicy.NO3RD_PARTY_APP_UPDATES,
+            response.iterator().next().properties().updatePolicy());
+        Assertions.assertEquals(AllowCrashDumpCollection.ENABLED,
+            response.iterator().next().properties().allowCrashDumpsCollection());
+        Assertions.assertEquals(RegionalDataBoundary.NONE,
+            response.iterator().next().properties().regionalDataBoundary());
     }
 }

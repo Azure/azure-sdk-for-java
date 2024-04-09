@@ -6,74 +6,69 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Address field value.
  */
 @Immutable
-public final class AddressValue {
+public final class AddressValue implements JsonSerializable<AddressValue> {
     /*
      * House or building number.
      */
     @Generated
-    @JsonProperty(value = "houseNumber")
     private String houseNumber;
 
     /*
      * Post office box number.
      */
     @Generated
-    @JsonProperty(value = "poBox")
     private String poBox;
 
     /*
      * Street name.
      */
     @Generated
-    @JsonProperty(value = "road")
     private String road;
 
     /*
      * Name of city, town, village, etc.
      */
     @Generated
-    @JsonProperty(value = "city")
     private String city;
 
     /*
      * First-level administrative division.
      */
     @Generated
-    @JsonProperty(value = "state")
     private String state;
 
     /*
      * Postal code used for mail sorting.
      */
     @Generated
-    @JsonProperty(value = "postalCode")
     private String postalCode;
 
     /*
      * Country/region.
      */
     @Generated
-    @JsonProperty(value = "countryRegion")
     private String countryRegion;
 
     /*
      * Street-level address, excluding city, state, countryRegion, and postalCode.
      */
     @Generated
-    @JsonProperty(value = "streetAddress")
     private String streetAddress;
 
     /*
      * Apartment or office number
      */
     @Generated
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
@@ -81,35 +76,30 @@ public final class AddressValue {
      * of Westminster in London.
      */
     @Generated
-    @JsonProperty(value = "cityDistrict")
     private String cityDistrict;
 
     /*
      * Second-level administrative division used in certain locales.
      */
     @Generated
-    @JsonProperty(value = "stateDistrict")
     private String stateDistrict;
 
     /*
      * Unofficial neighborhood name, like Chinatown.
      */
     @Generated
-    @JsonProperty(value = "suburb")
     private String suburb;
 
     /*
      * Build name, such as World Trade Center.
      */
     @Generated
-    @JsonProperty(value = "house")
     private String house;
 
     /*
      * Floor number, such as 3F.
      */
     @Generated
-    @JsonProperty(value = "level")
     private String level;
 
     /**
@@ -258,5 +248,82 @@ public final class AddressValue {
     @Generated
     public String getLevel() {
         return this.level;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("houseNumber", this.houseNumber);
+        jsonWriter.writeStringField("poBox", this.poBox);
+        jsonWriter.writeStringField("road", this.road);
+        jsonWriter.writeStringField("city", this.city);
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeStringField("postalCode", this.postalCode);
+        jsonWriter.writeStringField("countryRegion", this.countryRegion);
+        jsonWriter.writeStringField("streetAddress", this.streetAddress);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeStringField("cityDistrict", this.cityDistrict);
+        jsonWriter.writeStringField("stateDistrict", this.stateDistrict);
+        jsonWriter.writeStringField("suburb", this.suburb);
+        jsonWriter.writeStringField("house", this.house);
+        jsonWriter.writeStringField("level", this.level);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddressValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddressValue if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AddressValue.
+     */
+    @Generated
+    public static AddressValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddressValue deserializedAddressValue = new AddressValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("houseNumber".equals(fieldName)) {
+                    deserializedAddressValue.houseNumber = reader.getString();
+                } else if ("poBox".equals(fieldName)) {
+                    deserializedAddressValue.poBox = reader.getString();
+                } else if ("road".equals(fieldName)) {
+                    deserializedAddressValue.road = reader.getString();
+                } else if ("city".equals(fieldName)) {
+                    deserializedAddressValue.city = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedAddressValue.state = reader.getString();
+                } else if ("postalCode".equals(fieldName)) {
+                    deserializedAddressValue.postalCode = reader.getString();
+                } else if ("countryRegion".equals(fieldName)) {
+                    deserializedAddressValue.countryRegion = reader.getString();
+                } else if ("streetAddress".equals(fieldName)) {
+                    deserializedAddressValue.streetAddress = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedAddressValue.unit = reader.getString();
+                } else if ("cityDistrict".equals(fieldName)) {
+                    deserializedAddressValue.cityDistrict = reader.getString();
+                } else if ("stateDistrict".equals(fieldName)) {
+                    deserializedAddressValue.stateDistrict = reader.getString();
+                } else if ("suburb".equals(fieldName)) {
+                    deserializedAddressValue.suburb = reader.getString();
+                } else if ("house".equals(fieldName)) {
+                    deserializedAddressValue.house = reader.getString();
+                } else if ("level".equals(fieldName)) {
+                    deserializedAddressValue.level = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddressValue;
+        });
     }
 }

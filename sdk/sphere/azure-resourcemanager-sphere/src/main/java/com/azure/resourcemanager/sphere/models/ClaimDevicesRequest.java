@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Request to the action call to bulk claim devices. */
+/**
+ * Request to the action call to bulk claim devices.
+ */
 @Fluent
 public final class ClaimDevicesRequest {
     /*
@@ -18,13 +20,15 @@ public final class ClaimDevicesRequest {
     @JsonProperty(value = "deviceIdentifiers", required = true)
     private List<String> deviceIdentifiers;
 
-    /** Creates an instance of ClaimDevicesRequest class. */
+    /**
+     * Creates an instance of ClaimDevicesRequest class.
+     */
     public ClaimDevicesRequest() {
     }
 
     /**
      * Get the deviceIdentifiers property: Device identifiers of the devices to be claimed.
-     *
+     * 
      * @return the deviceIdentifiers value.
      */
     public List<String> deviceIdentifiers() {
@@ -33,7 +37,7 @@ public final class ClaimDevicesRequest {
 
     /**
      * Set the deviceIdentifiers property: Device identifiers of the devices to be claimed.
-     *
+     * 
      * @param deviceIdentifiers the deviceIdentifiers value to set.
      * @return the ClaimDevicesRequest object itself.
      */
@@ -44,15 +48,13 @@ public final class ClaimDevicesRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (deviceIdentifiers() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deviceIdentifiers in model ClaimDevicesRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property deviceIdentifiers in model ClaimDevicesRequest"));
         }
     }
 

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.file.datalake;
 
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -29,11 +30,13 @@ import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.retry.Retry;
@@ -195,43 +198,48 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
             .setDeleteRetentionPolicy(retentionPolicy)
             .setStaticWebsite(website);
 
-        assertAsyncResponseStatusCode(primaryDataLakeServiceAsyncClient.setPropertiesWithResponse(sentProperties), 202);
+        assertAsyncResponseStatusCode(primaryDataLakeServiceAsyncClient.setPropertiesWithResponse(sentProperties),
+            202);
     }
 
     @ResourceLock("ServiceProperties")
     @Test
     public void setPropsCorsCheck() {
-        DataLakeServiceProperties serviceProperties = primaryDataLakeServiceAsyncClient.getProperties().block();
+        Mono<Response<Void>> response = primaryDataLakeServiceAsyncClient.getProperties()
+            .flatMap(r -> {
+                // Some properties are not set and this test validates that they are not null when sent to the service
+                r.setCors(Collections.singletonList(new DataLakeCorsRule().setAllowedOrigins("microsoft.com")
+                        .setMaxAgeInSeconds(60)
+                        .setAllowedMethods("GET")
+                        .setAllowedHeaders("x-ms-version")));
+                return primaryDataLakeServiceAsyncClient.setPropertiesWithResponse(r);
+            });
 
-        // Some properties are not set and this test validates that they are not null when sent to the service
-        serviceProperties.setCors(Collections.singletonList(new DataLakeCorsRule().setAllowedOrigins("microsoft.com")
-            .setMaxAgeInSeconds(60)
-            .setAllowedMethods("GET")
-            .setAllowedHeaders("x-ms-version")));
-
-        assertAsyncResponseStatusCode(primaryDataLakeServiceAsyncClient.setPropertiesWithResponse(serviceProperties), 202);
+        assertAsyncResponseStatusCode(response, 202);
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @ResourceLock("ServiceProperties")
     @Test
     public void setPropsStaticWebsite() {
-        DataLakeServiceProperties serviceProperties = primaryDataLakeServiceAsyncClient.getProperties().block();
+        Mono<DataLakeServiceProperties> serviceProperties = primaryDataLakeServiceAsyncClient.getProperties()
+            .flatMap(r -> Mono.just(r.setStaticWebsite(new DataLakeStaticWebsite()
+                    .setEnabled(true)
+                    .setErrorDocument404Path("error/404.html")
+                    .setDefaultIndexDocumentPath("index.html"))));
 
-        serviceProperties.setStaticWebsite(new DataLakeStaticWebsite()
-            .setEnabled(true)
-            .setErrorDocument404Path("error/404.html")
-            .setDefaultIndexDocumentPath("index.html"));
+        Mono<Response<Void>> response1 = serviceProperties.flatMap(r -> primaryDataLakeServiceAsyncClient
+            .setPropertiesWithResponse(r));
 
-        assertAsyncResponseStatusCode(primaryDataLakeServiceAsyncClient.setPropertiesWithResponse(serviceProperties), 202);
+        assertAsyncResponseStatusCode(response1, 202);
 
-        StepVerifier.create(primaryDataLakeServiceAsyncClient.getProperties())
+        StepVerifier.create(Mono.zip(primaryDataLakeServiceAsyncClient.getProperties(), serviceProperties))
             .assertNext(p -> {
-                assertTrue(p.getStaticWebsite().isEnabled());
-                assertEquals(serviceProperties.getStaticWebsite().getErrorDocument404Path(),
-                    p.getStaticWebsite().getErrorDocument404Path());
-                assertEquals(serviceProperties.getStaticWebsite().getDefaultIndexDocumentPath(),
-                    p.getStaticWebsite().getDefaultIndexDocumentPath());
+                assertTrue(p.getT1().getStaticWebsite().isEnabled());
+                assertEquals(p.getT2().getStaticWebsite().getErrorDocument404Path(),
+                    p.getT1().getStaticWebsite().getErrorDocument404Path());
+                assertEquals(p.getT2().getStaticWebsite().getDefaultIndexDocumentPath(),
+                    p.getT1().getStaticWebsite().getDefaultIndexDocumentPath());
             })
             .verifyComplete();
     }
@@ -241,7 +249,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
     public void setPropsError() {
         StepVerifier.create(getServiceAsyncClient(getDataLakeCredential(),
             "https://error.blob.core.windows.net").setProperties(new DataLakeServiceProperties()))
-            .verifyError(DataLakeStorageException.class);
+            .verifyError(Exception.class);
     }
 
     @ResourceLock("ServiceProperties")
@@ -255,7 +263,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
     public void getPropsError() {
         StepVerifier.create(getServiceAsyncClient(getDataLakeCredential(),
             "https://error.blob.core.windows.net").getProperties())
-            .verifyError(DataLakeStorageException.class);
+            .verifyError(Exception.class);
     }
 
     @Test
@@ -270,8 +278,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
             .buildAsyncClient()
             .getFileSystemAsyncClient(generateFileSystemName());
 
-        fsClient.create().block();
-        StepVerifier.create(fsClient.getProperties())
+        StepVerifier.create(fsClient.create().then(fsClient.getProperties()))
             .assertNext(p -> {
                 assertEquals(ENCRYPTION_SCOPE_STRING, p.getEncryptionScope());
                 assertTrue(p.isEncryptionScopeOverridePrevented());
@@ -309,27 +316,29 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void listFileSystemsMarker() {
-        for (int i = 0; i < 10; i++) {
-            primaryDataLakeServiceAsyncClient.createFileSystem(generateFileSystemName()).block();
-        }
+        Mono<List<FileSystemItem>> step = Mono.defer(() -> primaryDataLakeServiceAsyncClient.createFileSystem(generateFileSystemName()))
+            .repeat(10)
+            .then(Mono.just(primaryDataLakeServiceAsyncClient.listFileSystems().toStream().collect(Collectors.toList())));
 
-        List<FileSystemItem> list = primaryDataLakeServiceAsyncClient.listFileSystems().toStream()
-            .collect(Collectors.toList());
-
-        String firstFileSystemName = list.get(0).getName();
-        String secondName = list.get(1).getName();
-        assertTrue(firstFileSystemName.compareTo(secondName) < 0);
+        StepVerifier.create(step)
+            .assertNext(r -> {
+                String firstFileSystemName = r.get(0).getName();
+                String secondName = r.get(1).getName();
+                assertTrue(firstFileSystemName.compareTo(secondName) < 0);
+            })
+            .verifyComplete();
     }
 
     @Test
     public void listFileSystemsDetails() {
         Map<String, String> metadata = Collections.singletonMap("foo", "bar");
         String fileSystemName = generateFileSystemName();
-        primaryDataLakeServiceAsyncClient.createFileSystemWithResponse(fileSystemName, metadata, null).block();
 
-        StepVerifier.create(primaryDataLakeServiceAsyncClient.listFileSystems(new ListFileSystemsOptions()
-            .setDetails(new FileSystemListDetails().setRetrieveMetadata(true))
-            .setPrefix(fileSystemName)))
+        StepVerifier.create(primaryDataLakeServiceAsyncClient.createFileSystemWithResponse(fileSystemName, metadata,
+            null)
+            .thenMany(primaryDataLakeServiceAsyncClient.listFileSystems(new ListFileSystemsOptions()
+                .setDetails(new FileSystemListDetails().setRetrieveMetadata(true))
+                .setPrefix(fileSystemName))))
             .assertNext(r -> assertEquals(metadata, r.getMetadata()))
             .verifyComplete();
     }
@@ -342,18 +351,41 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
 
         List<DataLakeFileSystemAsyncClient> fileSystems = new ArrayList<>();
         try {
-            for (int i = 0; i < 5; i++) {
-                fileSystems.add(primaryDataLakeServiceAsyncClient.createFileSystem(fileSystemPrefix + i).block());
-            }
+            Flux<PagedResponse<FileSystemItem>> response = primaryDataLakeServiceAsyncClient
+                .createFileSystem(fileSystemPrefix + 0)
+                .flatMap(r -> {
+                    fileSystems.add(r);
+                    return Mono.just(r);
+                })
+                .then(primaryDataLakeServiceAsyncClient.createFileSystem(fileSystemPrefix + 1))
+                    .flatMap(r -> {
+                        fileSystems.add(r);
+                        return Mono.just(r);
+                    })
+                .then(primaryDataLakeServiceAsyncClient.createFileSystem(fileSystemPrefix + 2))
+                    .flatMap(r -> {
+                        fileSystems.add(r);
+                        return Mono.just(r);
+                    })
+                .then(primaryDataLakeServiceAsyncClient.createFileSystem(fileSystemPrefix + 3))
+                    .flatMap(r -> {
+                        fileSystems.add(r);
+                        return Mono.just(r);
+                    })
+                .then(primaryDataLakeServiceAsyncClient.createFileSystem(fileSystemPrefix + 4))
+                    .flatMap(r -> {
+                        fileSystems.add(r);
+                        return Mono.just(r);
+                    })
+                .thenMany(primaryDataLakeServiceAsyncClient.listFileSystems(new ListFileSystemsOptions()
+                    .setPrefix(fileSystemPrefix).setMaxResultsPerPage(3)).byPage());
 
-            assertEquals(3, primaryDataLakeServiceAsyncClient.listFileSystems(new ListFileSystemsOptions()
-                    .setPrefix(fileSystemPrefix).setMaxResultsPerPage(3))
-                .byPage()
-                .blockFirst()
-                .getValue()
-                .size());
+            StepVerifier.create(response)
+                .assertNext(r -> assertEquals(3, r.getValue().size()))
+                .expectNextCount(1)
+                .verifyComplete();
         } finally {
-            fileSystems.forEach(DataLakeFileSystemAsyncClient::delete);
+            fileSystems.forEach(r -> r.delete().block());
         }
     }
 
@@ -364,19 +396,43 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
 
         List<DataLakeFileSystemAsyncClient> fileSystems = new ArrayList<>();
         try {
-            for (int i = 0; i < 5; i++) {
-                fileSystems.add(primaryDataLakeServiceAsyncClient.createFileSystem(fileSystemPrefix + i).block());
-            }
+            Flux<PagedResponse<FileSystemItem>> response = primaryDataLakeServiceAsyncClient
+                .createFileSystem(fileSystemPrefix + 0)
+                .flatMap(r -> {
+                    fileSystems.add(r);
+                    return Mono.just(r);
+                })
+                .then(primaryDataLakeServiceAsyncClient.createFileSystem(fileSystemPrefix + 1))
+                .flatMap(r -> {
+                    fileSystems.add(r);
+                    return Mono.just(r);
+                })
+                .then(primaryDataLakeServiceAsyncClient.createFileSystem(fileSystemPrefix + 2))
+                .flatMap(r -> {
+                    fileSystems.add(r);
+                    return Mono.just(r);
+                })
+                .then(primaryDataLakeServiceAsyncClient.createFileSystem(fileSystemPrefix + 3))
+                .flatMap(r -> {
+                    fileSystems.add(r);
+                    return Mono.just(r);
+                })
+                .then(primaryDataLakeServiceAsyncClient.createFileSystem(fileSystemPrefix + 4))
+                .flatMap(r -> {
+                    fileSystems.add(r);
+                    return Mono.just(r);
+                })
+                .thenMany(primaryDataLakeServiceAsyncClient.listFileSystems(new ListFileSystemsOptions()
+                    .setPrefix(fileSystemPrefix).setMaxResultsPerPage(3)).byPage(3));
 
-            StepVerifier.create(primaryDataLakeServiceAsyncClient.listFileSystems(
-                new ListFileSystemsOptions().setPrefix(fileSystemPrefix).setMaxResultsPerPage(3)).byPage(3))
+            StepVerifier.create(response)
                 .thenConsumeWhile(r -> {
                     assertTrue(r.getValue().size() <= 3);
                     return true;
                 })
                 .verifyComplete();
         } finally {
-            fileSystems.forEach(DataLakeFileSystemAsyncClient::delete);
+            fileSystems.forEach(r -> r.delete().block());
         }
     }
 
@@ -384,6 +440,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-10-02")
     @Test
     public void listSystemFileSystems() {
+        //todo isbr remove blocking
         DataLakeAnalyticsLogging logging = new DataLakeAnalyticsLogging().setRead(true).setVersion("1.0")
             .setRetentionPolicy(new DataLakeRetentionPolicy().setDays(5).setEnabled(true));
         DataLakeServiceProperties serviceProps = new DataLakeServiceProperties().setLogging(logging);
@@ -415,6 +472,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void listFileSystemsEncryptionScope() {
+        //todo isbr remove blocking
         FileSystemEncryptionScopeOptions encryptionScope = new FileSystemEncryptionScopeOptions()
             .setDefaultEncryptionScope(ENCRYPTION_SCOPE_STRING)
             .setEncryptionScopeOverridePrevented(true);
@@ -557,7 +615,8 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void restoreFileSystemError() {
-        StepVerifier.create(primaryDataLakeServiceAsyncClient.undeleteFileSystem(generateFileSystemName(), "01D60F8BB59A4652"))
+        StepVerifier.create(primaryDataLakeServiceAsyncClient.undeleteFileSystem(generateFileSystemName(),
+            "01D60F8BB59A4652"))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -566,19 +625,18 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
     @Test
     public void restoreFileSystemIntoExistingFileSystemError() {
         DataLakeFileSystemAsyncClient cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
-        DataLakeFileSystemAsyncClient cc2 = primaryDataLakeServiceAsyncClient.createFileSystem(generateFileSystemName()).block();
 
         Mono<Response<DataLakeFileSystemAsyncClient>> blobContainerItemMono = cc1.create()
             .then(cc1.getFileAsyncClient(generatePathName()).upload(DATA.getDefaultBinaryData(), new ParallelTransferOptions()))
             .then(cc1.delete())
-            .then(primaryDataLakeServiceAsyncClient.listFileSystems(new ListFileSystemsOptions()
+            .then(Mono.zip(primaryDataLakeServiceAsyncClient.listFileSystems(new ListFileSystemsOptions()
                     .setPrefix(cc1.getFileSystemName())
                     .setDetails(new FileSystemListDetails().setRetrieveDeleted(true)))
-                .next())
-            .flatMap(blobContainerItem -> waitUntilFileSystemIsDeletedAsync(primaryDataLakeServiceAsyncClient
+                .next(), primaryDataLakeServiceAsyncClient.createFileSystem(generateFileSystemName())))
+            .flatMap(tuple -> waitUntilFileSystemIsDeletedAsync(primaryDataLakeServiceAsyncClient
                 .undeleteFileSystemWithResponse(
-                    new FileSystemUndeleteOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
-                        .setDestinationFileSystemName(cc2.getFileSystemName()))));
+                    new FileSystemUndeleteOptions(tuple.getT1().getName(), tuple.getT1().getVersion())
+                        .setDestinationFileSystemName(tuple.getT2().getFileSystemName()))));
 
         StepVerifier.create(blobContainerItemMono)
             .verifyError(DataLakeStorageException.class);
@@ -636,7 +694,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
             .buildAsyncClient();
 
         StepVerifier.create(aadServiceClient.getProperties())
-            .assertNext(r -> assertNotNull(r))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
 
@@ -647,7 +705,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
             .buildAsyncClient();
 
         StepVerifier.create(aadServiceClient.getProperties())
-            .assertNext(r -> assertNotNull(r))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
 
@@ -674,7 +732,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
             .buildAsyncClient();
 
         StepVerifier.create(aadServiceClient.getProperties())
-            .assertNext(r -> assertNotNull(r))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
 

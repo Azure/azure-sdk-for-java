@@ -16,7 +16,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Model that represents a selector in the Experiment resource. */
+/**
+ * Model that represents a selector in the Experiment resource.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -25,8 +27,7 @@ import java.util.Map;
 @JsonTypeName("ChaosTargetSelector")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "List", value = ChaosTargetListSelector.class),
-    @JsonSubTypes.Type(name = "Query", value = ChaosTargetQuerySelector.class)
-})
+    @JsonSubTypes.Type(name = "Query", value = ChaosTargetQuerySelector.class) })
 @Fluent
 public class ChaosTargetSelector {
     /*
@@ -44,15 +45,18 @@ public class ChaosTargetSelector {
     /*
      * Model that represents a selector in the Experiment resource.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ChaosTargetSelector class. */
+    /**
+     * Creates an instance of ChaosTargetSelector class.
+     */
     public ChaosTargetSelector() {
     }
 
     /**
      * Get the id property: String of the selector ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -61,7 +65,7 @@ public class ChaosTargetSelector {
 
     /**
      * Set the id property: String of the selector ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the ChaosTargetSelector object itself.
      */
@@ -72,7 +76,7 @@ public class ChaosTargetSelector {
 
     /**
      * Get the filter property: Model that represents available filter types that can be applied to a targets list.
-     *
+     * 
      * @return the filter value.
      */
     public ChaosTargetFilter filter() {
@@ -81,7 +85,7 @@ public class ChaosTargetSelector {
 
     /**
      * Set the filter property: Model that represents available filter types that can be applied to a targets list.
-     *
+     * 
      * @param filter the filter value to set.
      * @return the ChaosTargetSelector object itself.
      */
@@ -92,7 +96,7 @@ public class ChaosTargetSelector {
 
     /**
      * Get the additionalProperties property: Model that represents a selector in the Experiment resource.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -102,7 +106,7 @@ public class ChaosTargetSelector {
 
     /**
      * Set the additionalProperties property: Model that represents a selector in the Experiment resource.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ChaosTargetSelector object itself.
      */
@@ -121,14 +125,13 @@ public class ChaosTargetSelector {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model ChaosTargetSelector"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model ChaosTargetSelector"));
         }
         if (filter() != null) {
             filter().validate();

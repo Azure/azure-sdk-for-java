@@ -10,7 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.EndOfSupportStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents a software data. */
+/**
+ * Represents a software data.
+ */
 @Fluent
 public final class SoftwareInner extends ProxyResource {
     /*
@@ -19,13 +21,15 @@ public final class SoftwareInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private SoftwareProperties innerProperties = new SoftwareProperties();
 
-    /** Creates an instance of SoftwareInner class. */
+    /**
+     * Creates an instance of SoftwareInner class.
+     */
     public SoftwareInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Software Inventory resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SoftwareProperties innerProperties() {
@@ -34,7 +38,7 @@ public final class SoftwareInner extends ProxyResource {
 
     /**
      * Get the deviceId property: Unique identifier for the virtual machine in the service.
-     *
+     * 
      * @return the deviceId value.
      */
     public String deviceId() {
@@ -43,7 +47,7 @@ public final class SoftwareInner extends ProxyResource {
 
     /**
      * Set the deviceId property: Unique identifier for the virtual machine in the service.
-     *
+     * 
      * @param deviceId the deviceId value to set.
      * @return the SoftwareInner object itself.
      */
@@ -57,7 +61,7 @@ public final class SoftwareInner extends ProxyResource {
 
     /**
      * Get the osPlatform property: Platform of the operating system running on the device.
-     *
+     * 
      * @return the osPlatform value.
      */
     public String osPlatform() {
@@ -66,7 +70,7 @@ public final class SoftwareInner extends ProxyResource {
 
     /**
      * Set the osPlatform property: Platform of the operating system running on the device.
-     *
+     * 
      * @param osPlatform the osPlatform value to set.
      * @return the SoftwareInner object itself.
      */
@@ -80,7 +84,7 @@ public final class SoftwareInner extends ProxyResource {
 
     /**
      * Get the vendor property: Name of the software vendor.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -89,7 +93,7 @@ public final class SoftwareInner extends ProxyResource {
 
     /**
      * Set the vendor property: Name of the software vendor.
-     *
+     * 
      * @param vendor the vendor value to set.
      * @return the SoftwareInner object itself.
      */
@@ -103,7 +107,7 @@ public final class SoftwareInner extends ProxyResource {
 
     /**
      * Get the softwareName property: Name of the software product.
-     *
+     * 
      * @return the softwareName value.
      */
     public String softwareName() {
@@ -112,7 +116,7 @@ public final class SoftwareInner extends ProxyResource {
 
     /**
      * Set the softwareName property: Name of the software product.
-     *
+     * 
      * @param softwareName the softwareName value to set.
      * @return the SoftwareInner object itself.
      */
@@ -126,7 +130,7 @@ public final class SoftwareInner extends ProxyResource {
 
     /**
      * Get the version property: Version number of the software product.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -135,7 +139,7 @@ public final class SoftwareInner extends ProxyResource {
 
     /**
      * Set the version property: Version number of the software product.
-     *
+     * 
      * @param version the version value to set.
      * @return the SoftwareInner object itself.
      */
@@ -149,7 +153,7 @@ public final class SoftwareInner extends ProxyResource {
 
     /**
      * Get the endOfSupportStatus property: End of support status.
-     *
+     * 
      * @return the endOfSupportStatus value.
      */
     public EndOfSupportStatus endOfSupportStatus() {
@@ -158,7 +162,7 @@ public final class SoftwareInner extends ProxyResource {
 
     /**
      * Set the endOfSupportStatus property: End of support status.
-     *
+     * 
      * @param endOfSupportStatus the endOfSupportStatus value to set.
      * @return the SoftwareInner object itself.
      */
@@ -172,7 +176,7 @@ public final class SoftwareInner extends ProxyResource {
 
     /**
      * Get the endOfSupportDate property: The end of support date in case the product is upcoming end of support.
-     *
+     * 
      * @return the endOfSupportDate value.
      */
     public String endOfSupportDate() {
@@ -181,7 +185,7 @@ public final class SoftwareInner extends ProxyResource {
 
     /**
      * Set the endOfSupportDate property: The end of support date in case the product is upcoming end of support.
-     *
+     * 
      * @param endOfSupportDate the endOfSupportDate value to set.
      * @return the SoftwareInner object itself.
      */
@@ -195,7 +199,7 @@ public final class SoftwareInner extends ProxyResource {
 
     /**
      * Get the numberOfKnownVulnerabilities property: Number of weaknesses.
-     *
+     * 
      * @return the numberOfKnownVulnerabilities value.
      */
     public Integer numberOfKnownVulnerabilities() {
@@ -204,7 +208,7 @@ public final class SoftwareInner extends ProxyResource {
 
     /**
      * Set the numberOfKnownVulnerabilities property: Number of weaknesses.
-     *
+     * 
      * @param numberOfKnownVulnerabilities the numberOfKnownVulnerabilities value to set.
      * @return the SoftwareInner object itself.
      */
@@ -218,7 +222,7 @@ public final class SoftwareInner extends ProxyResource {
 
     /**
      * Get the firstSeenAt property: First time that the software was seen in the device.
-     *
+     * 
      * @return the firstSeenAt value.
      */
     public String firstSeenAt() {
@@ -227,7 +231,7 @@ public final class SoftwareInner extends ProxyResource {
 
     /**
      * Set the firstSeenAt property: First time that the software was seen in the device.
-     *
+     * 
      * @param firstSeenAt the firstSeenAt value to set.
      * @return the SoftwareInner object itself.
      */
@@ -241,14 +245,13 @@ public final class SoftwareInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model SoftwareInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model SoftwareInner"));
         } else {
             innerProperties().validate();
         }

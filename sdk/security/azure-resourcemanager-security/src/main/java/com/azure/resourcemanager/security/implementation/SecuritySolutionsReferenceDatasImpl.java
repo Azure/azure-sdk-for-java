@@ -20,8 +20,7 @@ public final class SecuritySolutionsReferenceDatasImpl implements SecuritySoluti
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public SecuritySolutionsReferenceDatasImpl(
-        SecuritySolutionsReferenceDatasClient innerClient,
+    public SecuritySolutionsReferenceDatasImpl(SecuritySolutionsReferenceDatasClient innerClient,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,10 +29,7 @@ public final class SecuritySolutionsReferenceDatasImpl implements SecuritySoluti
     public Response<SecuritySolutionsReferenceDataList> listWithResponse(Context context) {
         Response<SecuritySolutionsReferenceDataListInner> inner = this.serviceClient().listWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SecuritySolutionsReferenceDataListImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -49,15 +45,12 @@ public final class SecuritySolutionsReferenceDatasImpl implements SecuritySoluti
         }
     }
 
-    public Response<SecuritySolutionsReferenceDataList> listByHomeRegionWithResponse(
-        String ascLocation, Context context) {
-        Response<SecuritySolutionsReferenceDataListInner> inner =
-            this.serviceClient().listByHomeRegionWithResponse(ascLocation, context);
+    public Response<SecuritySolutionsReferenceDataList> listByHomeRegionWithResponse(String ascLocation,
+        Context context) {
+        Response<SecuritySolutionsReferenceDataListInner> inner
+            = this.serviceClient().listByHomeRegionWithResponse(ascLocation, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SecuritySolutionsReferenceDataListImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -7,6 +7,8 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
+import java.util.List;
+
 /**
  * Represents a partition key value in the Azure Cosmos DB database service. A
  * partition key identifies the partition where the item is stored in.
@@ -94,6 +96,12 @@ public class PartitionKey {
             new ImplementationBridgeHelpers.PartitionKeyHelper.PartitionKeyAccessor() {
                 @Override
                 public PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal) {
+                    return new PartitionKey(partitionKeyInternal);
+                }
+
+                @Override
+                public PartitionKey toPartitionKey(List<Object> values, boolean strict) {
+                    PartitionKeyInternal partitionKeyInternal = PartitionKeyInternal.fromObjectArray(values, strict);
                     return new PartitionKey(partitionKeyInternal);
                 }
             }

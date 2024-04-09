@@ -7,7 +7,9 @@ package com.azure.resourcemanager.newrelicobservability.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** User Info of NewRelic Monitor resource. */
+/**
+ * User Info of NewRelic Monitor resource.
+ */
 @Fluent
 public final class UserInfo {
     /*
@@ -40,13 +42,15 @@ public final class UserInfo {
     @JsonProperty(value = "country")
     private String country;
 
-    /** Creates an instance of UserInfo class. */
+    /**
+     * Creates an instance of UserInfo class.
+     */
     public UserInfo() {
     }
 
     /**
      * Get the firstName property: First name.
-     *
+     * 
      * @return the firstName value.
      */
     public String firstName() {
@@ -55,7 +59,7 @@ public final class UserInfo {
 
     /**
      * Set the firstName property: First name.
-     *
+     * 
      * @param firstName the firstName value to set.
      * @return the UserInfo object itself.
      */
@@ -66,7 +70,7 @@ public final class UserInfo {
 
     /**
      * Get the lastName property: Last name.
-     *
+     * 
      * @return the lastName value.
      */
     public String lastName() {
@@ -75,7 +79,7 @@ public final class UserInfo {
 
     /**
      * Set the lastName property: Last name.
-     *
+     * 
      * @param lastName the lastName value to set.
      * @return the UserInfo object itself.
      */
@@ -86,7 +90,7 @@ public final class UserInfo {
 
     /**
      * Get the emailAddress property: User Email.
-     *
+     * 
      * @return the emailAddress value.
      */
     public String emailAddress() {
@@ -95,7 +99,7 @@ public final class UserInfo {
 
     /**
      * Set the emailAddress property: User Email.
-     *
+     * 
      * @param emailAddress the emailAddress value to set.
      * @return the UserInfo object itself.
      */
@@ -106,7 +110,7 @@ public final class UserInfo {
 
     /**
      * Get the phoneNumber property: Contact phone number.
-     *
+     * 
      * @return the phoneNumber value.
      */
     public String phoneNumber() {
@@ -115,7 +119,7 @@ public final class UserInfo {
 
     /**
      * Set the phoneNumber property: Contact phone number.
-     *
+     * 
      * @param phoneNumber the phoneNumber value to set.
      * @return the UserInfo object itself.
      */
@@ -126,7 +130,7 @@ public final class UserInfo {
 
     /**
      * Get the country property: country if user.
-     *
+     * 
      * @return the country value.
      */
     public String country() {
@@ -135,7 +139,7 @@ public final class UserInfo {
 
     /**
      * Set the country property: country if user.
-     *
+     * 
      * @param country the country value to set.
      * @return the UserInfo object itself.
      */
@@ -146,7 +150,7 @@ public final class UserInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

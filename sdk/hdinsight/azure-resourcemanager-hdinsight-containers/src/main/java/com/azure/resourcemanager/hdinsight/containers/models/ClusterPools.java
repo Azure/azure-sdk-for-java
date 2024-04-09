@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ClusterPools. */
+/**
+ * Resource collection API of ClusterPools.
+ */
 public interface ClusterPools {
     /**
      * Gets a cluster pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param context The context to associate with this operation.
@@ -21,12 +23,12 @@ public interface ClusterPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a cluster pool along with {@link Response}.
      */
-    Response<ClusterPool> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterPoolName, Context context);
+    Response<ClusterPool> getByResourceGroupWithResponse(String resourceGroupName, String clusterPoolName,
+        Context context);
 
     /**
      * Gets a cluster pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,7 +40,7 @@ public interface ClusterPools {
 
     /**
      * Deletes a Cluster Pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -49,7 +51,7 @@ public interface ClusterPools {
 
     /**
      * Deletes a Cluster Pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param context The context to associate with this operation.
@@ -61,7 +63,7 @@ public interface ClusterPools {
 
     /**
      * Gets the list of Cluster Pools within a Subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Cluster Pools within a Subscription as paginated response with {@link PagedIterable}.
@@ -70,7 +72,7 @@ public interface ClusterPools {
 
     /**
      * Gets the list of Cluster Pools within a Subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -81,7 +83,7 @@ public interface ClusterPools {
 
     /**
      * Lists the HDInsight cluster pools under a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -92,7 +94,7 @@ public interface ClusterPools {
 
     /**
      * Lists the HDInsight cluster pools under a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -103,8 +105,36 @@ public interface ClusterPools {
     PagedIterable<ClusterPool> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
+     * Upgrade a cluster pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterPoolUpgradeRequest Upgrade a cluster pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster pool.
+     */
+    ClusterPool upgrade(String resourceGroupName, String clusterPoolName, ClusterPoolUpgrade clusterPoolUpgradeRequest);
+
+    /**
+     * Upgrade a cluster pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterPoolUpgradeRequest Upgrade a cluster pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster pool.
+     */
+    ClusterPool upgrade(String resourceGroupName, String clusterPoolName, ClusterPoolUpgrade clusterPoolUpgradeRequest,
+        Context context);
+
+    /**
      * Gets a cluster pool.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,7 +145,7 @@ public interface ClusterPools {
 
     /**
      * Gets a cluster pool.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -127,7 +157,7 @@ public interface ClusterPools {
 
     /**
      * Deletes a Cluster Pool.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -137,7 +167,7 @@ public interface ClusterPools {
 
     /**
      * Deletes a Cluster Pool.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +178,7 @@ public interface ClusterPools {
 
     /**
      * Begins definition for a new ClusterPool resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ClusterPool definition.
      */

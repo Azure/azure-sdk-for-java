@@ -69,6 +69,15 @@ public final class VectorizedQuery extends VectorQuery {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public VectorizedQuery setOversampling(Double oversampling) {
+        super.setOversampling(oversampling);
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -76,6 +85,7 @@ public final class VectorizedQuery extends VectorQuery {
         jsonWriter.writeNumberField("k", getKNearestNeighborsCount());
         jsonWriter.writeStringField("fields", getFields());
         jsonWriter.writeBooleanField("exhaustive", isExhaustive());
+        jsonWriter.writeNumberField("oversampling", getOversampling());
         jsonWriter.writeArrayField("vector", this.vector, (writer, element) -> writer.writeFloat(element));
         return jsonWriter.writeEndObject();
     }
@@ -95,6 +105,7 @@ public final class VectorizedQuery extends VectorQuery {
             Integer kNearestNeighborsCount = null;
             String fields = null;
             Boolean exhaustive = null;
+            Double oversampling = null;
             boolean vectorFound = false;
             List<Float> vector = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -113,6 +124,8 @@ public final class VectorizedQuery extends VectorQuery {
                     fields = reader.getString();
                 } else if ("exhaustive".equals(fieldName)) {
                     exhaustive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("oversampling".equals(fieldName)) {
+                    oversampling = reader.getNullable(JsonReader::getDouble);
                 } else if ("vector".equals(fieldName)) {
                     vector = reader.readArray(reader1 -> reader1.getFloat());
                     vectorFound = true;
@@ -125,6 +138,7 @@ public final class VectorizedQuery extends VectorQuery {
                 deserializedVectorizedQuery.setKNearestNeighborsCount(kNearestNeighborsCount);
                 deserializedVectorizedQuery.setFields(fields);
                 deserializedVectorizedQuery.setExhaustive(exhaustive);
+                deserializedVectorizedQuery.setOversampling(oversampling);
                 return deserializedVectorizedQuery;
             }
             throw new IllegalStateException("Missing required property: vector");

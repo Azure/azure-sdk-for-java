@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Netw
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of networks. */
+/**
+ * List of networks.
+ */
 @Fluent
 public final class NetworkCollection {
     /*
@@ -24,13 +26,15 @@ public final class NetworkCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of NetworkCollection class. */
+    /**
+     * Creates an instance of NetworkCollection class.
+     */
     public NetworkCollection() {
     }
 
     /**
      * Get the value property: The Networks list details.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkInner> value() {
@@ -39,7 +43,7 @@ public final class NetworkCollection {
 
     /**
      * Set the value property: The Networks list details.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class NetworkCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class NetworkCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NetworkCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class NetworkCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

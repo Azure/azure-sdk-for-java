@@ -29,36 +29,26 @@ public final class SecureScoresGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"displayName\":\"trvrkpsab\",\"score\":{\"max\":690664463,\"current\":1.6527198888620198,\"percentage\":57.52426811501905},\"weight\":3311361133230112709},\"id\":\"lpyeu\",\"name\":\"kppdi\",\"type\":\"qb\"}";
+        String responseStr
+            = "{\"properties\":{\"displayName\":\"wrsjumlkjsvk\",\"score\":{\"max\":1015393989,\"current\":29.989337486818002,\"percentage\":86.23538266512375},\"weight\":3960661162741538100},\"id\":\"inhecj\",\"name\":\"djdjmsngmluy\",\"type\":\"lkpism\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SecureScoreItem response =
-            manager.secureScores().getWithResponse("qutibhl", com.azure.core.util.Context.NONE).getValue();
+        SecureScoreItem response
+            = manager.secureScores().getWithResponse("wxiavwmixaqgfpu", com.azure.core.util.Context.NONE).getValue();
+
     }
 }

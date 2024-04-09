@@ -27,11 +27,11 @@ jobs:
           Repositories:
             - Name: $(DocRepoOwner)/$(DocRepoName)
               WorkingDirectory: $(DocRepoLocation)
+            - Name: azure-sdk/$(DocRepoName)
+              WorkingDirectory: $(DailyDocRepoLocation)
       # Pull and build the docker image.
       - template: /eng/common/pipelines/templates/steps/docker-pull-image.yml
         parameters:
-          ContainerRegistryClientId: $(azuresdkimages-cr-clientid)
-          ContainerRegistryClientSecret: $(azuresdkimages-cr-clientsecret)
           ImageId: "$(DocValidationImageId)"
 
       - task: Powershell@2
@@ -94,17 +94,6 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/set-daily-docs-branch-name.yml
         parameters:
           DailyBranchVariableName: DailyDocsBranchName
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-        parameters:
-          SkipCheckoutNone: true
-          Paths:
-            - package.json
-            - metadata/
-            - docs-ref-mapping/reference-unified.yml
-            - docs-ref-services/
-          Repositories:
-            - Name: azure-sdk/$(DocRepoName)
-              WorkingDirectory: $(DailyDocRepoLocation)
 
       # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
       # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html

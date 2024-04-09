@@ -12,7 +12,9 @@ import com.azure.resourcemanager.security.models.SubAssessmentStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Security sub-assessment on a resource. */
+/**
+ * Security sub-assessment on a resource.
+ */
 @Fluent
 public final class SecuritySubAssessmentInner extends ProxyResource {
     /*
@@ -21,13 +23,15 @@ public final class SecuritySubAssessmentInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SecuritySubAssessmentProperties innerProperties;
 
-    /** Creates an instance of SecuritySubAssessmentInner class. */
+    /**
+     * Creates an instance of SecuritySubAssessmentInner class.
+     */
     public SecuritySubAssessmentInner() {
     }
 
     /**
      * Get the innerProperties property: Describes properties of an sub-assessment.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecuritySubAssessmentProperties innerProperties() {
@@ -36,7 +40,7 @@ public final class SecuritySubAssessmentInner extends ProxyResource {
 
     /**
      * Get the id property: Vulnerability ID.
-     *
+     * 
      * @return the id value.
      */
     public String idPropertiesId() {
@@ -45,7 +49,7 @@ public final class SecuritySubAssessmentInner extends ProxyResource {
 
     /**
      * Get the displayName property: User friendly display name of the sub-assessment.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -54,7 +58,7 @@ public final class SecuritySubAssessmentInner extends ProxyResource {
 
     /**
      * Get the status property: Status of the sub-assessment.
-     *
+     * 
      * @return the status value.
      */
     public SubAssessmentStatus status() {
@@ -63,7 +67,7 @@ public final class SecuritySubAssessmentInner extends ProxyResource {
 
     /**
      * Set the status property: Status of the sub-assessment.
-     *
+     * 
      * @param status the status value to set.
      * @return the SecuritySubAssessmentInner object itself.
      */
@@ -77,7 +81,7 @@ public final class SecuritySubAssessmentInner extends ProxyResource {
 
     /**
      * Get the remediation property: Information on how to remediate this sub-assessment.
-     *
+     * 
      * @return the remediation value.
      */
     public String remediation() {
@@ -86,7 +90,7 @@ public final class SecuritySubAssessmentInner extends ProxyResource {
 
     /**
      * Get the impact property: Description of the impact of this sub-assessment.
-     *
+     * 
      * @return the impact value.
      */
     public String impact() {
@@ -95,7 +99,7 @@ public final class SecuritySubAssessmentInner extends ProxyResource {
 
     /**
      * Get the category property: Category of the sub-assessment.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -104,7 +108,7 @@ public final class SecuritySubAssessmentInner extends ProxyResource {
 
     /**
      * Get the description property: Human readable description of the assessment status.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -113,7 +117,7 @@ public final class SecuritySubAssessmentInner extends ProxyResource {
 
     /**
      * Get the timeGenerated property: The date and time the sub-assessment was generated.
-     *
+     * 
      * @return the timeGenerated value.
      */
     public OffsetDateTime timeGenerated() {
@@ -122,7 +126,7 @@ public final class SecuritySubAssessmentInner extends ProxyResource {
 
     /**
      * Get the resourceDetails property: Details of the resource that was assessed.
-     *
+     * 
      * @return the resourceDetails value.
      */
     public ResourceDetails resourceDetails() {
@@ -131,7 +135,7 @@ public final class SecuritySubAssessmentInner extends ProxyResource {
 
     /**
      * Set the resourceDetails property: Details of the resource that was assessed.
-     *
+     * 
      * @param resourceDetails the resourceDetails value to set.
      * @return the SecuritySubAssessmentInner object itself.
      */
@@ -145,7 +149,7 @@ public final class SecuritySubAssessmentInner extends ProxyResource {
 
     /**
      * Get the additionalData property: Details of the sub-assessment.
-     *
+     * 
      * @return the additionalData value.
      */
     public AdditionalData additionalData() {
@@ -154,7 +158,7 @@ public final class SecuritySubAssessmentInner extends ProxyResource {
 
     /**
      * Set the additionalData property: Details of the sub-assessment.
-     *
+     * 
      * @param additionalData the additionalData value to set.
      * @return the SecuritySubAssessmentInner object itself.
      */
@@ -168,7 +172,7 @@ public final class SecuritySubAssessmentInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

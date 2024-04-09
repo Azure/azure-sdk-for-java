@@ -1,15 +1,80 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.0.0-beta.8 (2024-04-09)
 
 ### Features Added
 
+- Added support for service API version, `2024-03-01-preview`.
+- Added a new property to `EmbeddingOptions`:
+  - `dimensions`, which is only supported in models `text-embedding-3-*` and above.
+- Added a new method to get base64 encoded string in `EmbeddingItem` class:
+  - `getEmbeddingAsString` method returns the embedding as a base64 encoded string.
+- Added a new overload `getChatCompletionsStreamWithResponse` that takes `RequestOptions` to provide the flexibility to
+  modify the HTTP request.
+
 ### Breaking Changes
 
+- Replace return type `List<Double>` with `List<Float>` of `getEmbedding` method in `EmbeddingItem` class.
+
 ### Bugs Fixed
-- Made the `getContent` method in `ChatRequestUserMessage` class public.
+
+- A bugs fixed in Azure Core SDK that solves where text/event-stream content type wasn't being handled correctly.
+  Replaced content type exact match equal by 'startwith'. ([#39204](https://github.com/Azure/azure-sdk-for-java/pull/39204))
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
+
+## 1.0.0-beta.7 (2024-03-04)
+
+### Features Added
+
+- Text-to-speech using OpenAI TTS models is now supported. See [OpenAI's API reference](https://platform.openai.com/docs/api-reference/audio/createSpeech) 
+  or the [Azure OpenAI quickstart](https://learn.microsoft.com/azure/ai-services/openai/text-to-speech-quickstart)
+  for detailed overview and background information. The new method `generateSpeechFromText` exposes this capability on 
+  `OpenAIClient` and `OpenAIAsyncClient`. Text-to-speech converts text into lifelike spoken audio in a chosen voice, together with other optional
+  configurations. This method works for both Azure OpenAI and non-Azure `api.openai.com` client configurations.
+- Added two new authentication options, `OnYourDataEncodedApiKeyAuthenticationOptions` and `OnYourDataAccessTokenAuthenticationOptions`
+  to support the new authentication mechanism for "On Your Data" feature.
+
+### Breaking Changes
+
+- Introduced a new type `AzureChatExtensionDataSourceResponseCitation` for a more structured representation of citation data.
+- Correspondingly, updated `AzureChatExtensionsMessageContext`:
+  - Replaced `messages` with `citations` of type `AzureChatExtensionDataSourceResponseCitation`.
+  - Added `intent` as a string type.
+- Renamed "AzureCognitiveSearch" to "AzureSearch":
+  - `AzureCognitiveSearchChatExtensionConfiguration` is now `AzureSearchChatExtensionConfiguration`.
+  - `AzureCognitiveSearchIndexFieldMappingOptions` is now `AzureSearchIndexFieldMappingOptions`.
+  - `AzureCognitiveSearchQueryType` is now `AzureSearchQueryType`.
+- Replaced `String` property `name` by `ChatCompletionsFunctionToolSelection` property `function` in `ChatCompletionsNamedFunctionToolSelection`
+- Made `embeddingDependency` as a required parameter in `AzureCosmosDBChatExtensionParameters` and `PineconeChatExtensionParameters` class, and removed setter method.
+- Removed `vectorFields` and `imageVectorFields` from `PineconeFieldMappingOptions` class, and made `contentField` as required parameter.
+- Removed `getAudioTranscriptionAsPlainTextWithResponse` and `getAudioTranslationAsPlainTextWithResponse` methods from `OpenAIClient` and `OpenAIAsyncClient` classes.
+- Made `ImageGeneration` constructor as private.
+- Made `ImageGenerationData` constructor as private and removed setter methods.
+
+### Bugs Fixed
+
+- Fixed `ChatRequestUserMessage` deserialization issue. [#38183](https://github.com/Azure/azure-sdk-for-java/issues/38183)
+
+### Other Changes
+
+- Dropped service API version support for `2023-08-01-preview`, `2023-09-01-preview` and `2023-12-01-preview`.
+- Made the `getContent` a public method in `ChatRequestUserMessage` class. ([#38805](https://github.com/Azure/azure-sdk-for-java/pull/38805))
+- Added a new property `logprobs` in `ChatChoice` class to support log probabilities for this chat choice.
+- Added new properties `logprobs` and `topLogprobs` in `ChatCompletionsOptions` class to support log probabilities for chat completions.
+- Added a new property `inputType` in `EmbeddingsOptions` class to support embeddings for different input types 
+  when using Azure OpenAI, specifies the input type to use for embedding search.
+- Added more properties to `AzureCosmosDBFieldMappingOptions` class to support more field mapping options, including
+  `titleField`, `urlField`, `filepathField`, `contentFields`, and `contentFieldsSeparator`. Made `contentField` as required parameter.
+- Added new properties `ImageGenerationContentFilterResults contentFilterResults` and `ImageGenerationPromptFilterResults promptFilterResults`
+  in `ImageGenerationData` class to support filtering results.
+- Added new property `suffix` in `CompletionsOptions` class to support suffix for completions.
 
 ## 1.0.0-beta.6 (2023-12-11)
 
@@ -48,7 +113,9 @@ Use `getAudioTranslation` or `getAudioTranslationWithResponse` convenience metho
 
 ### Other Changes
 
-- Audio transcription and translation (via `getAudioTranscription()` and `getAudioTranslation()` now allow specification of an optional `fileName` in addition to the binary audio data. This is used purely as an identifier and does not functionally alter the transcription/translation behavior in any way.
+- Audio transcription and translation (via `getAudioTranscription()` and `getAudioTranslation()` now allow specification  
+  of an optional `fileName` in addition to the binary audio data. This is used purely as an identifier and does not 
+  functionally alter the transcription/translation behavior in any way.
 
 ## 1.0.0-beta.5 (2023-09-22)
 

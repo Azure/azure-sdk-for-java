@@ -14,28 +14,33 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Describes properties of an alert simulation request. */
+/**
+ * Describes properties of an alert simulation request.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "kind",
     defaultImpl = AlertSimulatorRequestProperties.class)
 @JsonTypeName("AlertSimulatorRequestProperties")
-@JsonSubTypes({@JsonSubTypes.Type(name = "Bundles", value = AlertSimulatorBundlesRequestProperties.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "Bundles", value = AlertSimulatorBundlesRequestProperties.class) })
 @Fluent
 public class AlertSimulatorRequestProperties {
     /*
      * Describes properties of an alert simulation request
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of AlertSimulatorRequestProperties class. */
+    /**
+     * Creates an instance of AlertSimulatorRequestProperties class.
+     */
     public AlertSimulatorRequestProperties() {
     }
 
     /**
      * Get the additionalProperties property: Describes properties of an alert simulation request.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -45,7 +50,7 @@ public class AlertSimulatorRequestProperties {
 
     /**
      * Set the additionalProperties property: Describes properties of an alert simulation request.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the AlertSimulatorRequestProperties object itself.
      */
@@ -64,7 +69,7 @@ public class AlertSimulatorRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

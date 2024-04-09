@@ -34,24 +34,28 @@ import com.azure.resourcemanager.security.models.CustomAssessmentAutomationReque
 import com.azure.resourcemanager.security.models.CustomAssessmentAutomationsListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CustomAssessmentAutomationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CustomAssessmentAutomationsClient.
+ */
 public final class CustomAssessmentAutomationsClientImpl implements CustomAssessmentAutomationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CustomAssessmentAutomationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityCenterImpl client;
 
     /**
      * Initializes an instance of CustomAssessmentAutomationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CustomAssessmentAutomationsClientImpl(SecurityCenterImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    CustomAssessmentAutomationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(CustomAssessmentAutomationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,253 +66,202 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterCustom")
     public interface CustomAssessmentAutomationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customAssessmentAutomations/{customAssessmentAutomationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customAssessmentAutomations/{customAssessmentAutomationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomAssessmentAutomationInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<CustomAssessmentAutomationInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("customAssessmentAutomationName") String customAssessmentAutomationName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customAssessmentAutomations/{customAssessmentAutomationName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customAssessmentAutomations/{customAssessmentAutomationName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomAssessmentAutomationInner>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<CustomAssessmentAutomationInner>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("customAssessmentAutomationName") String customAssessmentAutomationName,
             @BodyParam("application/json") CustomAssessmentAutomationRequest customAssessmentAutomationBody,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customAssessmentAutomations/{customAssessmentAutomationName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customAssessmentAutomations/{customAssessmentAutomationName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("customAssessmentAutomationName") String customAssessmentAutomationName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customAssessmentAutomations")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customAssessmentAutomations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomAssessmentAutomationsListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<CustomAssessmentAutomationsListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/customAssessmentAutomations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomAssessmentAutomationsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CustomAssessmentAutomationsListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomAssessmentAutomationsListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomAssessmentAutomationsListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a custom assessment automation
-     *
-     * <p>Gets a single custom assessment automation by name for the provided subscription and resource group.
-     *
+     * 
+     * Gets a single custom assessment automation by name for the provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single custom assessment automation by name for the provided subscription and resource group along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CustomAssessmentAutomationInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String customAssessmentAutomationName) {
+    private Mono<Response<CustomAssessmentAutomationInner>>
+        getByResourceGroupWithResponseAsync(String resourceGroupName, String customAssessmentAutomationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customAssessmentAutomationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter customAssessmentAutomationName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter customAssessmentAutomationName is required and cannot be null."));
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            customAssessmentAutomationName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, customAssessmentAutomationName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a custom assessment automation
-     *
-     * <p>Gets a single custom assessment automation by name for the provided subscription and resource group.
-     *
+     * 
+     * Gets a single custom assessment automation by name for the provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single custom assessment automation by name for the provided subscription and resource group along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomAssessmentAutomationInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String customAssessmentAutomationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customAssessmentAutomationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter customAssessmentAutomationName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter customAssessmentAutomationName is required and cannot be null."));
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                customAssessmentAutomationName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, customAssessmentAutomationName, accept, context);
     }
 
     /**
      * Gets a custom assessment automation
-     *
-     * <p>Gets a single custom assessment automation by name for the provided subscription and resource group.
-     *
+     * 
+     * Gets a single custom assessment automation by name for the provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single custom assessment automation by name for the provided subscription and resource group on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CustomAssessmentAutomationInner> getByResourceGroupAsync(
-        String resourceGroupName, String customAssessmentAutomationName) {
+    private Mono<CustomAssessmentAutomationInner> getByResourceGroupAsync(String resourceGroupName,
+        String customAssessmentAutomationName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, customAssessmentAutomationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a custom assessment automation
-     *
-     * <p>Gets a single custom assessment automation by name for the provided subscription and resource group.
-     *
+     * 
+     * Gets a single custom assessment automation by name for the provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single custom assessment automation by name for the provided subscription and resource group along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CustomAssessmentAutomationInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String customAssessmentAutomationName, Context context) {
+    public Response<CustomAssessmentAutomationInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String customAssessmentAutomationName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, customAssessmentAutomationName, context).block();
     }
 
     /**
      * Gets a custom assessment automation
-     *
-     * <p>Gets a single custom assessment automation by name for the provided subscription and resource group.
-     *
+     * 
+     * Gets a single custom assessment automation by name for the provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -316,20 +269,20 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
      * @return a single custom assessment automation by name for the provided subscription and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomAssessmentAutomationInner getByResourceGroup(
-        String resourceGroupName, String customAssessmentAutomationName) {
+    public CustomAssessmentAutomationInner getByResourceGroup(String resourceGroupName,
+        String customAssessmentAutomationName) {
         return getByResourceGroupWithResponse(resourceGroupName, customAssessmentAutomationName, Context.NONE)
             .getValue();
     }
 
     /**
      * Creates a custom assessment automation
-     *
-     * <p>Creates or updates a custom assessment automation for the provided subscription. Please note that providing an
+     * 
+     * Creates or updates a custom assessment automation for the provided subscription. Please note that providing an
      * existing custom assessment automation will replace the existing record.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
      * @param customAssessmentAutomationBody Custom Assessment Automation body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -338,37 +291,27 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
      * @return custom Assessment Automation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CustomAssessmentAutomationInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String customAssessmentAutomationName,
-        CustomAssessmentAutomationRequest customAssessmentAutomationBody) {
+    private Mono<Response<CustomAssessmentAutomationInner>> createWithResponseAsync(String resourceGroupName,
+        String customAssessmentAutomationName, CustomAssessmentAutomationRequest customAssessmentAutomationBody) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customAssessmentAutomationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter customAssessmentAutomationName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter customAssessmentAutomationName is required and cannot be null."));
         }
         if (customAssessmentAutomationBody == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter customAssessmentAutomationBody is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter customAssessmentAutomationBody is required and cannot be null."));
         } else {
             customAssessmentAutomationBody.validate();
         }
@@ -376,28 +319,19 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            customAssessmentAutomationName,
-                            customAssessmentAutomationBody,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, customAssessmentAutomationName, customAssessmentAutomationBody, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a custom assessment automation
-     *
-     * <p>Creates or updates a custom assessment automation for the provided subscription. Please note that providing an
+     * 
+     * Creates or updates a custom assessment automation for the provided subscription. Please note that providing an
      * existing custom assessment automation will replace the existing record.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
      * @param customAssessmentAutomationBody Custom Assessment Automation body.
      * @param context The context to associate with this operation.
@@ -407,64 +341,46 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
      * @return custom Assessment Automation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CustomAssessmentAutomationInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String customAssessmentAutomationName,
-        CustomAssessmentAutomationRequest customAssessmentAutomationBody,
+    private Mono<Response<CustomAssessmentAutomationInner>> createWithResponseAsync(String resourceGroupName,
+        String customAssessmentAutomationName, CustomAssessmentAutomationRequest customAssessmentAutomationBody,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customAssessmentAutomationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter customAssessmentAutomationName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter customAssessmentAutomationName is required and cannot be null."));
         }
         if (customAssessmentAutomationBody == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter customAssessmentAutomationBody is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter customAssessmentAutomationBody is required and cannot be null."));
         } else {
             customAssessmentAutomationBody.validate();
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                customAssessmentAutomationName,
-                customAssessmentAutomationBody,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            customAssessmentAutomationName, customAssessmentAutomationBody, accept, context);
     }
 
     /**
      * Creates a custom assessment automation
-     *
-     * <p>Creates or updates a custom assessment automation for the provided subscription. Please note that providing an
+     * 
+     * Creates or updates a custom assessment automation for the provided subscription. Please note that providing an
      * existing custom assessment automation will replace the existing record.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
      * @param customAssessmentAutomationBody Custom Assessment Automation body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -473,23 +389,20 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
      * @return custom Assessment Automation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CustomAssessmentAutomationInner> createAsync(
-        String resourceGroupName,
-        String customAssessmentAutomationName,
-        CustomAssessmentAutomationRequest customAssessmentAutomationBody) {
-        return createWithResponseAsync(
-                resourceGroupName, customAssessmentAutomationName, customAssessmentAutomationBody)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<CustomAssessmentAutomationInner> createAsync(String resourceGroupName,
+        String customAssessmentAutomationName, CustomAssessmentAutomationRequest customAssessmentAutomationBody) {
+        return createWithResponseAsync(resourceGroupName, customAssessmentAutomationName,
+            customAssessmentAutomationBody).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a custom assessment automation
-     *
-     * <p>Creates or updates a custom assessment automation for the provided subscription. Please note that providing an
+     * 
+     * Creates or updates a custom assessment automation for the provided subscription. Please note that providing an
      * existing custom assessment automation will replace the existing record.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
      * @param customAssessmentAutomationBody Custom Assessment Automation body.
      * @param context The context to associate with this operation.
@@ -499,24 +412,21 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
      * @return custom Assessment Automation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CustomAssessmentAutomationInner> createWithResponse(
-        String resourceGroupName,
-        String customAssessmentAutomationName,
-        CustomAssessmentAutomationRequest customAssessmentAutomationBody,
+    public Response<CustomAssessmentAutomationInner> createWithResponse(String resourceGroupName,
+        String customAssessmentAutomationName, CustomAssessmentAutomationRequest customAssessmentAutomationBody,
         Context context) {
-        return createWithResponseAsync(
-                resourceGroupName, customAssessmentAutomationName, customAssessmentAutomationBody, context)
-            .block();
+        return createWithResponseAsync(resourceGroupName, customAssessmentAutomationName,
+            customAssessmentAutomationBody, context).block();
     }
 
     /**
      * Creates a custom assessment automation
-     *
-     * <p>Creates or updates a custom assessment automation for the provided subscription. Please note that providing an
+     * 
+     * Creates or updates a custom assessment automation for the provided subscription. Please note that providing an
      * existing custom assessment automation will replace the existing record.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
      * @param customAssessmentAutomationBody Custom Assessment Automation body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -525,22 +435,19 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
      * @return custom Assessment Automation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomAssessmentAutomationInner create(
-        String resourceGroupName,
-        String customAssessmentAutomationName,
+    public CustomAssessmentAutomationInner create(String resourceGroupName, String customAssessmentAutomationName,
         CustomAssessmentAutomationRequest customAssessmentAutomationBody) {
-        return createWithResponse(
-                resourceGroupName, customAssessmentAutomationName, customAssessmentAutomationBody, Context.NONE)
-            .getValue();
+        return createWithResponse(resourceGroupName, customAssessmentAutomationName, customAssessmentAutomationBody,
+            Context.NONE).getValue();
     }
 
     /**
      * Deletes a custom assessment automation
-     *
-     * <p>Deletes a custom assessment automation by name for a provided subscription.
-     *
+     * 
+     * Deletes a custom assessment automation by name for a provided subscription.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -548,54 +455,39 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String customAssessmentAutomationName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName,
+        String customAssessmentAutomationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customAssessmentAutomationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter customAssessmentAutomationName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter customAssessmentAutomationName is required and cannot be null."));
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            customAssessmentAutomationName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, customAssessmentAutomationName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a custom assessment automation
-     *
-     * <p>Deletes a custom assessment automation by name for a provided subscription.
-     *
+     * 
+     * Deletes a custom assessment automation by name for a provided subscription.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -604,51 +496,38 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String customAssessmentAutomationName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName,
+        String customAssessmentAutomationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (customAssessmentAutomationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter customAssessmentAutomationName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter customAssessmentAutomationName is required and cannot be null."));
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                customAssessmentAutomationName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            customAssessmentAutomationName, accept, context);
     }
 
     /**
      * Deletes a custom assessment automation
-     *
-     * <p>Deletes a custom assessment automation by name for a provided subscription.
-     *
+     * 
+     * Deletes a custom assessment automation by name for a provided subscription.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -663,11 +542,11 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
 
     /**
      * Deletes a custom assessment automation
-     *
-     * <p>Deletes a custom assessment automation by name for a provided subscription.
-     *
+     * 
+     * Deletes a custom assessment automation by name for a provided subscription.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -676,18 +555,18 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String customAssessmentAutomationName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String customAssessmentAutomationName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, customAssessmentAutomationName, context).block();
     }
 
     /**
      * Deletes a custom assessment automation
-     *
-     * <p>Deletes a custom assessment automation by name for a provided subscription.
-     *
+     * 
+     * Deletes a custom assessment automation by name for a provided subscription.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param customAssessmentAutomationName Name of the Custom Assessment Automation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -700,31 +579,27 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
 
     /**
      * List custom assessment automations in a subscription and a resource group
-     *
-     * <p>List custom assessment automations by provided subscription and resource group.
-     *
+     * 
+     * List custom assessment automations by provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Custom Assessment Automations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomAssessmentAutomationInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
+    private Mono<PagedResponse<CustomAssessmentAutomationInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -733,56 +608,37 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accept,
-                            context))
-            .<PagedResponse<CustomAssessmentAutomationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+            .<PagedResponse<CustomAssessmentAutomationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List custom assessment automations in a subscription and a resource group
-     *
-     * <p>List custom assessment automations by provided subscription and resource group.
-     *
+     * 
+     * List custom assessment automations by provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Custom Assessment Automations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomAssessmentAutomationInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<CustomAssessmentAutomationInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -792,31 +648,19 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List custom assessment automations in a subscription and a resource group
-     *
-     * <p>List custom assessment automations by provided subscription and resource group.
-     *
+     * 
+     * List custom assessment automations by provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -824,18 +668,17 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomAssessmentAutomationInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List custom assessment automations in a subscription and a resource group
-     *
-     * <p>List custom assessment automations by provided subscription and resource group.
-     *
+     * 
+     * List custom assessment automations by provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -843,20 +686,19 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
      * @return a list of Custom Assessment Automations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CustomAssessmentAutomationInner> listByResourceGroupAsync(
-        String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+    private PagedFlux<CustomAssessmentAutomationInner> listByResourceGroupAsync(String resourceGroupName,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List custom assessment automations in a subscription and a resource group
-     *
-     * <p>List custom assessment automations by provided subscription and resource group.
-     *
+     * 
+     * List custom assessment automations by provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -869,11 +711,11 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
 
     /**
      * List custom assessment automations in a subscription and a resource group
-     *
-     * <p>List custom assessment automations by provided subscription and resource group.
-     *
+     * 
+     * List custom assessment automations by provided subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -881,116 +723,91 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
      * @return a list of Custom Assessment Automations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CustomAssessmentAutomationInner> listByResourceGroup(
-        String resourceGroupName, Context context) {
+    public PagedIterable<CustomAssessmentAutomationInner> listByResourceGroup(String resourceGroupName,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
     }
 
     /**
      * List custom assessment automations in a subscription
-     *
-     * <p>List custom assessment automations by provided subscription.
-     *
+     * 
+     * List custom assessment automations by provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Custom Assessment Automations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomAssessmentAutomationInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
-            .<PagedResponse<CustomAssessmentAutomationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                accept, context))
+            .<PagedResponse<CustomAssessmentAutomationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List custom assessment automations in a subscription
-     *
-     * <p>List custom assessment automations by provided subscription.
-     *
+     * 
+     * List custom assessment automations by provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Custom Assessment Automations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomAssessmentAutomationInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List custom assessment automations in a subscription
-     *
-     * <p>List custom assessment automations by provided subscription.
-     *
+     * 
+     * List custom assessment automations by provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Custom Assessment Automations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomAssessmentAutomationInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List custom assessment automations in a subscription
-     *
-     * <p>List custom assessment automations by provided subscription.
-     *
+     * 
+     * List custom assessment automations by provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -999,15 +816,15 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomAssessmentAutomationInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List custom assessment automations in a subscription
-     *
-     * <p>List custom assessment automations by provided subscription.
-     *
+     * 
+     * List custom assessment automations by provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Custom Assessment Automations as paginated response with {@link PagedIterable}.
@@ -1019,9 +836,9 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
 
     /**
      * List custom assessment automations in a subscription
-     *
-     * <p>List custom assessment automations by provided subscription.
-     *
+     * 
+     * List custom assessment automations by provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1035,157 +852,123 @@ public final class CustomAssessmentAutomationsClientImpl implements CustomAssess
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Custom Assessment Automations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomAssessmentAutomationInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<CustomAssessmentAutomationInner>>
+        listByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CustomAssessmentAutomationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<CustomAssessmentAutomationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Custom Assessment Automations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomAssessmentAutomationInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<CustomAssessmentAutomationInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Custom Assessment Automations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomAssessmentAutomationInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<CustomAssessmentAutomationInner>>
+        listBySubscriptionNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CustomAssessmentAutomationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<CustomAssessmentAutomationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Custom Assessment Automations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomAssessmentAutomationInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<CustomAssessmentAutomationInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

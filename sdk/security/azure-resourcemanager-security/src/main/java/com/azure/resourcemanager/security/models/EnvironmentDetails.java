@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The environment details of the resource. */
+/**
+ * The environment details of the resource.
+ */
 @Fluent
 public final class EnvironmentDetails {
     /*
@@ -42,14 +44,16 @@ public final class EnvironmentDetails {
     @JsonProperty(value = "tenantId")
     private String tenantId;
 
-    /** Creates an instance of EnvironmentDetails class. */
+    /**
+     * Creates an instance of EnvironmentDetails class.
+     */
     public EnvironmentDetails() {
     }
 
     /**
-     * Get the nativeResourceId property: The native resource id of the resource (in case of Azure - the resource Id, in
-     * case of MC - the native resource id).
-     *
+     * Get the nativeResourceId property: The native resource id of the resource (in case of Azure - the resource Id,
+     * in case of MC - the native resource id).
+     * 
      * @return the nativeResourceId value.
      */
     public String nativeResourceId() {
@@ -57,9 +61,9 @@ public final class EnvironmentDetails {
     }
 
     /**
-     * Set the nativeResourceId property: The native resource id of the resource (in case of Azure - the resource Id, in
-     * case of MC - the native resource id).
-     *
+     * Set the nativeResourceId property: The native resource id of the resource (in case of Azure - the resource Id,
+     * in case of MC - the native resource id).
+     * 
      * @param nativeResourceId the nativeResourceId value to set.
      * @return the EnvironmentDetails object itself.
      */
@@ -71,7 +75,7 @@ public final class EnvironmentDetails {
     /**
      * Get the environmentHierarchyId property: The hierarchy id of the connector (in case of Azure - the subscription
      * Id, in case of MC - the hierarchyId id).
-     *
+     * 
      * @return the environmentHierarchyId value.
      */
     public String environmentHierarchyId() {
@@ -81,7 +85,7 @@ public final class EnvironmentDetails {
     /**
      * Set the environmentHierarchyId property: The hierarchy id of the connector (in case of Azure - the subscription
      * Id, in case of MC - the hierarchyId id).
-     *
+     * 
      * @param environmentHierarchyId the environmentHierarchyId value to set.
      * @return the EnvironmentDetails object itself.
      */
@@ -93,7 +97,7 @@ public final class EnvironmentDetails {
     /**
      * Get the organizationalHierarchyId property: The organizational hierarchy id of the connector (in case of Azure -
      * the subscription Id, in case of MC - the organizational hierarchyId id).
-     *
+     * 
      * @return the organizationalHierarchyId value.
      */
     public String organizationalHierarchyId() {
@@ -103,7 +107,7 @@ public final class EnvironmentDetails {
     /**
      * Set the organizationalHierarchyId property: The organizational hierarchy id of the connector (in case of Azure -
      * the subscription Id, in case of MC - the organizational hierarchyId id).
-     *
+     * 
      * @param organizationalHierarchyId the organizationalHierarchyId value to set.
      * @return the EnvironmentDetails object itself.
      */
@@ -114,7 +118,7 @@ public final class EnvironmentDetails {
 
     /**
      * Get the subscriptionId property: The subscription Id.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -123,7 +127,7 @@ public final class EnvironmentDetails {
 
     /**
      * Set the subscriptionId property: The subscription Id.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the EnvironmentDetails object itself.
      */
@@ -134,7 +138,7 @@ public final class EnvironmentDetails {
 
     /**
      * Get the tenantId property: The tenant Id.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -143,7 +147,7 @@ public final class EnvironmentDetails {
 
     /**
      * Set the tenantId property: The tenant Id.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the EnvironmentDetails object itself.
      */
@@ -154,7 +158,7 @@ public final class EnvironmentDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

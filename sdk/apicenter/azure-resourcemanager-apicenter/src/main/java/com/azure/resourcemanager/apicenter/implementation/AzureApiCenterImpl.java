@@ -22,9 +22,16 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.apicenter.fluent.ApiDefinitionsClient;
+import com.azure.resourcemanager.apicenter.fluent.ApiVersionsClient;
+import com.azure.resourcemanager.apicenter.fluent.ApisClient;
 import com.azure.resourcemanager.apicenter.fluent.AzureApiCenter;
+import com.azure.resourcemanager.apicenter.fluent.DeploymentsClient;
+import com.azure.resourcemanager.apicenter.fluent.EnvironmentsClient;
+import com.azure.resourcemanager.apicenter.fluent.MetadataSchemasClient;
 import com.azure.resourcemanager.apicenter.fluent.OperationsClient;
 import com.azure.resourcemanager.apicenter.fluent.ServicesClient;
+import com.azure.resourcemanager.apicenter.fluent.WorkspacesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -34,99 +41,117 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the AzureApiCenterImpl type. */
+/**
+ * Initializes a new instance of the AzureApiCenterImpl type.
+ */
 @ServiceClient(builder = AzureApiCenterBuilder.class)
 public final class AzureApiCenterImpl implements AzureApiCenter {
-    /** The ID of the target subscription. */
+    /**
+     * The ID of the target subscription. The value must be an UUID.
+     */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
-     *
+     * Gets The ID of the target subscription. The value must be an UUID.
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The ServicesClient object to access its operations. */
+    /**
+     * The ServicesClient object to access its operations.
+     */
     private final ServicesClient services;
 
     /**
      * Gets the ServicesClient object to access its operations.
-     *
+     * 
      * @return the ServicesClient object.
      */
     public ServicesClient getServices() {
@@ -134,35 +159,135 @@ public final class AzureApiCenterImpl implements AzureApiCenter {
     }
 
     /**
+     * The MetadataSchemasClient object to access its operations.
+     */
+    private final MetadataSchemasClient metadataSchemas;
+
+    /**
+     * Gets the MetadataSchemasClient object to access its operations.
+     * 
+     * @return the MetadataSchemasClient object.
+     */
+    public MetadataSchemasClient getMetadataSchemas() {
+        return this.metadataSchemas;
+    }
+
+    /**
+     * The WorkspacesClient object to access its operations.
+     */
+    private final WorkspacesClient workspaces;
+
+    /**
+     * Gets the WorkspacesClient object to access its operations.
+     * 
+     * @return the WorkspacesClient object.
+     */
+    public WorkspacesClient getWorkspaces() {
+        return this.workspaces;
+    }
+
+    /**
+     * The ApisClient object to access its operations.
+     */
+    private final ApisClient apis;
+
+    /**
+     * Gets the ApisClient object to access its operations.
+     * 
+     * @return the ApisClient object.
+     */
+    public ApisClient getApis() {
+        return this.apis;
+    }
+
+    /**
+     * The DeploymentsClient object to access its operations.
+     */
+    private final DeploymentsClient deployments;
+
+    /**
+     * Gets the DeploymentsClient object to access its operations.
+     * 
+     * @return the DeploymentsClient object.
+     */
+    public DeploymentsClient getDeployments() {
+        return this.deployments;
+    }
+
+    /**
+     * The ApiVersionsClient object to access its operations.
+     */
+    private final ApiVersionsClient apiVersions;
+
+    /**
+     * Gets the ApiVersionsClient object to access its operations.
+     * 
+     * @return the ApiVersionsClient object.
+     */
+    public ApiVersionsClient getApiVersions() {
+        return this.apiVersions;
+    }
+
+    /**
+     * The ApiDefinitionsClient object to access its operations.
+     */
+    private final ApiDefinitionsClient apiDefinitions;
+
+    /**
+     * Gets the ApiDefinitionsClient object to access its operations.
+     * 
+     * @return the ApiDefinitionsClient object.
+     */
+    public ApiDefinitionsClient getApiDefinitions() {
+        return this.apiDefinitions;
+    }
+
+    /**
+     * The EnvironmentsClient object to access its operations.
+     */
+    private final EnvironmentsClient environments;
+
+    /**
+     * Gets the EnvironmentsClient object to access its operations.
+     * 
+     * @return the EnvironmentsClient object.
+     */
+    public EnvironmentsClient getEnvironments() {
+        return this.environments;
+    }
+
+    /**
      * Initializes an instance of AzureApiCenter client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
-    AzureApiCenterImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    AzureApiCenterImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
+        AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-07-01-preview";
+        this.apiVersion = "2024-03-01";
         this.operations = new OperationsClientImpl(this);
         this.services = new ServicesClientImpl(this);
+        this.metadataSchemas = new MetadataSchemasClientImpl(this);
+        this.workspaces = new WorkspacesClientImpl(this);
+        this.apis = new ApisClientImpl(this);
+        this.deployments = new DeploymentsClientImpl(this);
+        this.apiVersions = new ApiVersionsClientImpl(this);
+        this.apiDefinitions = new ApiDefinitionsClientImpl(this);
+        this.environments = new EnvironmentsClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -171,7 +296,7 @@ public final class AzureApiCenterImpl implements AzureApiCenter {
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -181,7 +306,7 @@ public final class AzureApiCenterImpl implements AzureApiCenter {
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -191,26 +316,15 @@ public final class AzureApiCenterImpl implements AzureApiCenter {
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -223,19 +337,16 @@ public final class AzureApiCenterImpl implements AzureApiCenter {
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
+                            SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }

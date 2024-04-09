@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The governance email weekly notification configuration. */
+/**
+ * The governance email weekly notification configuration.
+ */
 @Fluent
 public final class GovernanceRuleEmailNotification {
     /*
@@ -22,13 +24,15 @@ public final class GovernanceRuleEmailNotification {
     @JsonProperty(value = "disableOwnerEmailNotification")
     private Boolean disableOwnerEmailNotification;
 
-    /** Creates an instance of GovernanceRuleEmailNotification class. */
+    /**
+     * Creates an instance of GovernanceRuleEmailNotification class.
+     */
     public GovernanceRuleEmailNotification() {
     }
 
     /**
      * Get the disableManagerEmailNotification property: Defines whether manager email notifications are disabled.
-     *
+     * 
      * @return the disableManagerEmailNotification value.
      */
     public Boolean disableManagerEmailNotification() {
@@ -37,19 +41,19 @@ public final class GovernanceRuleEmailNotification {
 
     /**
      * Set the disableManagerEmailNotification property: Defines whether manager email notifications are disabled.
-     *
+     * 
      * @param disableManagerEmailNotification the disableManagerEmailNotification value to set.
      * @return the GovernanceRuleEmailNotification object itself.
      */
-    public GovernanceRuleEmailNotification withDisableManagerEmailNotification(
-        Boolean disableManagerEmailNotification) {
+    public GovernanceRuleEmailNotification
+        withDisableManagerEmailNotification(Boolean disableManagerEmailNotification) {
         this.disableManagerEmailNotification = disableManagerEmailNotification;
         return this;
     }
 
     /**
      * Get the disableOwnerEmailNotification property: Defines whether owner email notifications are disabled.
-     *
+     * 
      * @return the disableOwnerEmailNotification value.
      */
     public Boolean disableOwnerEmailNotification() {
@@ -58,7 +62,7 @@ public final class GovernanceRuleEmailNotification {
 
     /**
      * Set the disableOwnerEmailNotification property: Defines whether owner email notifications are disabled.
-     *
+     * 
      * @param disableOwnerEmailNotification the disableOwnerEmailNotification value to set.
      * @return the GovernanceRuleEmailNotification object itself.
      */
@@ -69,7 +73,7 @@ public final class GovernanceRuleEmailNotification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The certificate's provisioning state. */
+/**
+ * The certificate's provisioning state.
+ */
 public final class CertificateProvisioningState extends ExpandableStringEnum<CertificateProvisioningState> {
-    /** Static value NotProvisioned for CertificateProvisioningState. */
+    /**
+     * Static value NotProvisioned for CertificateProvisioningState.
+     */
     public static final CertificateProvisioningState NOT_PROVISIONED = fromString("NotProvisioned");
 
-    /** Static value Provisioned for CertificateProvisioningState. */
+    /**
+     * Static value Provisioned for CertificateProvisioningState.
+     */
     public static final CertificateProvisioningState PROVISIONED = fromString("Provisioned");
 
-    /** Static value Failed for CertificateProvisioningState. */
+    /**
+     * Static value Failed for CertificateProvisioningState.
+     */
     public static final CertificateProvisioningState FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of CertificateProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class CertificateProvisioningState extends ExpandableStringEnum<Cer
 
     /**
      * Creates or finds a CertificateProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CertificateProvisioningState.
      */
@@ -41,7 +49,7 @@ public final class CertificateProvisioningState extends ExpandableStringEnum<Cer
 
     /**
      * Gets known CertificateProvisioningState values.
-     *
+     * 
      * @return known CertificateProvisioningState values.
      */
     public static Collection<CertificateProvisioningState> values() {

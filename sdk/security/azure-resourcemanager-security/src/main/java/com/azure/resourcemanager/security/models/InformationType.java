@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
 
-/** The information type. */
+/**
+ * The information type.
+ */
 @Fluent
 public final class InformationType {
     /*
@@ -54,13 +56,15 @@ public final class InformationType {
     @JsonProperty(value = "keywords")
     private List<InformationProtectionKeyword> keywords;
 
-    /** Creates an instance of InformationType class. */
+    /**
+     * Creates an instance of InformationType class.
+     */
     public InformationType() {
     }
 
     /**
      * Get the displayName property: The name of the information type.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -69,7 +73,7 @@ public final class InformationType {
 
     /**
      * Set the displayName property: The name of the information type.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the InformationType object itself.
      */
@@ -80,7 +84,7 @@ public final class InformationType {
 
     /**
      * Get the description property: The description of the information type.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -89,7 +93,7 @@ public final class InformationType {
 
     /**
      * Set the description property: The description of the information type.
-     *
+     * 
      * @param description the description value to set.
      * @return the InformationType object itself.
      */
@@ -100,7 +104,7 @@ public final class InformationType {
 
     /**
      * Get the order property: The order of the information type.
-     *
+     * 
      * @return the order value.
      */
     public Integer order() {
@@ -109,7 +113,7 @@ public final class InformationType {
 
     /**
      * Set the order property: The order of the information type.
-     *
+     * 
      * @param order the order value to set.
      * @return the InformationType object itself.
      */
@@ -120,7 +124,7 @@ public final class InformationType {
 
     /**
      * Get the recommendedLabelId property: The recommended label id to be associated with this information type.
-     *
+     * 
      * @return the recommendedLabelId value.
      */
     public UUID recommendedLabelId() {
@@ -129,7 +133,7 @@ public final class InformationType {
 
     /**
      * Set the recommendedLabelId property: The recommended label id to be associated with this information type.
-     *
+     * 
      * @param recommendedLabelId the recommendedLabelId value to set.
      * @return the InformationType object itself.
      */
@@ -140,7 +144,7 @@ public final class InformationType {
 
     /**
      * Get the enabled property: Indicates whether the information type is enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -149,7 +153,7 @@ public final class InformationType {
 
     /**
      * Set the enabled property: Indicates whether the information type is enabled or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the InformationType object itself.
      */
@@ -160,7 +164,7 @@ public final class InformationType {
 
     /**
      * Get the custom property: Indicates whether the information type is custom or not.
-     *
+     * 
      * @return the custom value.
      */
     public Boolean custom() {
@@ -169,7 +173,7 @@ public final class InformationType {
 
     /**
      * Set the custom property: Indicates whether the information type is custom or not.
-     *
+     * 
      * @param custom the custom value to set.
      * @return the InformationType object itself.
      */
@@ -180,7 +184,7 @@ public final class InformationType {
 
     /**
      * Get the keywords property: The information type keywords.
-     *
+     * 
      * @return the keywords value.
      */
     public List<InformationProtectionKeyword> keywords() {
@@ -189,7 +193,7 @@ public final class InformationType {
 
     /**
      * Set the keywords property: The information type keywords.
-     *
+     * 
      * @param keywords the keywords value to set.
      * @return the InformationType object itself.
      */
@@ -200,7 +204,7 @@ public final class InformationType {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

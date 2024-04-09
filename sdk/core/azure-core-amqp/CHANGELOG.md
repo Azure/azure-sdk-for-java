@@ -10,6 +10,24 @@
 
 ### Other Changes
 
+## 2.9.3 (2024-04-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
+- Upgraded `proton-j` from `0.33.8` to `0.34.1`.
+- Upgraded Reactor Core from `3.4.34` to `3.4.36`.
+
+## 2.9.2 (2024-03-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to `1.47.0`.
+
 ## 2.9.1 (2024-02-02)
 
 ### Other Changes
@@ -256,7 +274,7 @@
 
 ### Features Added
 
-- Added AMQP-level metrics to reporting number of sent batches, duration of network call, number of received message and consumer lag as well as 
+- Added AMQP-level metrics to reporting number of sent batches, duration of network call, number of received message and consumer lag as well as
   error counters. Metrics are off by default and can be enabled with [azure-core-metrics-opentelemetry](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-metrics-opentelemetry/README.md)
   plugin. ([#30583](https://github.com/Azure/azure-sdk-for-java/pull/30583))
 
@@ -287,7 +305,7 @@
 ### Bugs Fixed
 
 - Ensure ReactorReceiver EndpointStates terminates if there is no remote-close acknowledgment ([#29212](https://github.com/Azure/azure-sdk-for-java/issues/29212))
-- Fixed issue that when connection is closed, the `AmqpChannelProcessor` repeatedly requests and closes `RequestResponseChannel`. ([#24582](https://github.com/Azure/azure-sdk-for-java/issues/24582)) 
+- Fixed issue that when connection is closed, the `AmqpChannelProcessor` repeatedly requests and closes `RequestResponseChannel`. ([#24582](https://github.com/Azure/azure-sdk-for-java/issues/24582))
 
 ### Other Changes
 
@@ -311,13 +329,13 @@
 
 - Upgraded `azure-core` from `1.28.0` to `1.29.0`.
 
-- Added "entityPath" context to logger for ReceiveLinkHandlers, SendLinkHandler, LinkHandler, and ReactorReceiver. 
+- Added "entityPath" context to logger for ReceiveLinkHandlers, SendLinkHandler, LinkHandler, and ReactorReceiver.
 
 ## 2.5.0 (2022-05-06)
 
 ### Features Added
 
-- Added `ProxyOptions.fromConfiguration(Configuration)` to enable creation of `ProxyOptions` from an environment 
+- Added `ProxyOptions.fromConfiguration(Configuration)` to enable creation of `ProxyOptions` from an environment
   configuration.
 
 ### Bugs Fixed
@@ -335,9 +353,9 @@
 
 ### Bugs Fixed
 
-- Fixed an issue where error from one receiver bypassed to parent connection that resulted in taking down rest of the 
+- Fixed an issue where error from one receiver bypassed to parent connection that resulted in taking down rest of the
   receivers. ([#27716](https://github.com/Azure/azure-sdk-for-java/issues/27716))
-- Downgraded the level of a log entry in RequestResponseChannel from error to warn, the sender and receiver often 
+- Downgraded the level of a log entry in RequestResponseChannel from error to warn, the sender and receiver often
   recover from this error, but due to the log level, it generates false alerts in monitoring systems. ([26968](https://github.com/Azure/azure-sdk-for-java/issues/26968))
 
 ### Other Changes

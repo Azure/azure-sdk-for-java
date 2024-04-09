@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPla
 public final class RecoveryPlanProviderSpecificInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPlanProviderSpecificInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"RecoveryPlanProviderSpecificInput\"}")
+        RecoveryPlanProviderSpecificInput model
+            = BinaryData.fromString("{\"instanceType\":\"RecoveryPlanProviderSpecificInput\"}")
                 .toObject(RecoveryPlanProviderSpecificInput.class);
     }
 

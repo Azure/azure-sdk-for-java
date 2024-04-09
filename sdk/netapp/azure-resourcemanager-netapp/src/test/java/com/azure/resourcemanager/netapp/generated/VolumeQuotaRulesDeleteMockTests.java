@@ -45,7 +45,7 @@ public final class VolumeQuotaRulesDeleteMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.volumeQuotaRules().delete("owlkjxnqpv", "gf", "tmhqykiz", "d", "saoafcluqvox",
+        manager.volumeQuotaRules().delete("awjutifd", "fmvigorqjbttzh", "aglkafhon", "juj", "ickpz",
             com.azure.core.util.Context.NONE);
 
     }

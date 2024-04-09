@@ -12,17 +12,19 @@ import com.azure.resourcemanager.storagecache.fluent.models.RequiredAmlFilesyste
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemSubnetInfo;
 import com.azure.resourcemanager.storagecache.models.RequiredAmlFilesystemSubnetsSizeInfo;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public interface ResourceProvidersClient {
     /**
      * Check that subnets will be valid for AML file system create calls.
-     *
+     * 
      * @param amlFilesystemSubnetInfo Information about the subnets to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws com.azure.resourcemanager.storagecache.models.AmlFilesystemCheckSubnetErrorException thrown if the
-     *     request is rejected by server on status code 400.
+     * request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -31,10 +33,10 @@ public interface ResourceProvidersClient {
 
     /**
      * Check that subnets will be valid for AML file system create calls.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws com.azure.resourcemanager.storagecache.models.AmlFilesystemCheckSubnetErrorException thrown if the
-     *     request is rejected by server on status code 400.
+     * request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -42,15 +44,15 @@ public interface ResourceProvidersClient {
 
     /**
      * Get the number of available IP addresses needed for the AML file system information provided.
-     *
+     * 
      * @param requiredAmlFilesystemSubnetsSizeInfo Information to determine the number of available IPs a subnet will
-     *     need to host the AML file system.
+     * need to host the AML file system.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the number of available IP addresses needed for the AML file system information provided along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RequiredAmlFilesystemSubnetsSizeInner> getRequiredAmlFSSubnetsSizeWithResponse(
@@ -58,7 +60,7 @@ public interface ResourceProvidersClient {
 
     /**
      * Get the number of available IP addresses needed for the AML file system information provided.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the number of available IP addresses needed for the AML file system information provided.

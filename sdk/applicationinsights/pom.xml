@@ -11,6 +11,5 @@
 
   <modules>
       <module>azure-resourcemanager-applicationinsights</module>
-      <module>microsoft-azure-applicationinsights-query</module>
   </modules>
 </project>
