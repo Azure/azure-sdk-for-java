@@ -168,6 +168,27 @@ Write-Host $kubeConfig
 # Apply the config
 kubectl apply -f "$livetestappsRoot/kubeconfig.yaml" --overwrite=true
 Write-Host "Applied kubeconfig.yaml"
+
+# Define a list of root directories
+$rootDirs = @(
+    $azSerRootPom,
+    $azCoreRootPom,
+    $azStorageRootPom,
+    $azIdentityRootPom
+)
+
+foreach ($rootDir in $rootDirs) {
+    Get-ChildItem -Path $rootDir -Directory | ForEach-Object {
+        $targetDir = Join-Path -Path $_.FullName -ChildPath "target"
+        Write-Host "Removing $targetDir"
+        if (Test-Path -Path $targetDir) {
+            Write-Host "Removing $targetDir"
+            Remove-Item -Path $targetDir -Recurse -Force
+        }
+    }
+}
+
+
 az logout
 
 
