@@ -14,6 +14,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Helper class to build a multipart HTTP request.
+ */
 public final class MultipartFormDataBuilder {
     /**
      * Line separator for the multipart HTTP request.
@@ -69,7 +72,7 @@ public final class MultipartFormDataBuilder {
      *
      * @param fieldName the field name
      * @param value the value of the text/plain field
-     * @return the MultipartFormDataHelper instance
+     * @return the MultipartFormDataBuilder instance
      */
     public MultipartFormDataBuilder appendText(String fieldName, String value) {
         if (value != null) {
@@ -87,7 +90,7 @@ public final class MultipartFormDataBuilder {
      *
      * @param fieldName the field name
      * @param jsonObject the object of the application/json field
-     * @return the MultipartFormDataHelper instance
+     * @return the MultipartFormDataBuilder instance
      */
     public MultipartFormDataBuilder appendJson(String fieldName, Object jsonObject) {
         if (jsonObject != null) {
@@ -108,7 +111,7 @@ public final class MultipartFormDataBuilder {
      * @param file the BinaryData of the file
      * @param contentType the content-type of the file
      * @param filename Optional. The filename
-     * @return the MultipartFormDataHelper instance
+     * @return the MultipartFormDataBuilder instance
      */
     public MultipartFormDataBuilder appendFile(String fieldName, BinaryData file, String contentType, String filename) {
         if (file != null) {
@@ -127,7 +130,7 @@ public final class MultipartFormDataBuilder {
      * @param files the List of BinaryData of the files
      * @param contentTypes the List of content-type of the files
      * @param filenames the List of filenames
-     * @return the MultipartFormDataHelper instance
+     * @return the MultipartFormDataBuilder instance
      */
     public MultipartFormDataBuilder appendFiles(String fieldName, List<BinaryData> files, List<String> contentTypes,
         List<String> filenames) {
@@ -146,7 +149,7 @@ public final class MultipartFormDataBuilder {
     /**
      * Ends the serialization of the multipart HTTP request.
      *
-     * @return the MultipartFormDataHelper instance
+     * @return the MultipartFormDataBuilder instance
      */
     public MultipartFormData build() {
         byte[] data = boundaryCloseDelimiter.getBytes(encoderCharset);
