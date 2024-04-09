@@ -7,7 +7,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.context.properties.Az
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
-import com.azure.spring.jms.ServiceBusJmsConnectionFactory;
+import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import jakarta.jms.ConnectionFactory;
 import jakarta.jms.Session;
 import org.apache.qpid.jms.JmsConnectionFactory;
@@ -43,7 +43,7 @@ class ServiceBusJmsAutoConfigurationTests {
         + "SharedAccessKey=sasKey";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withBean(AzureGlobalProperties.class, () -> new AzureGlobalProperties())
+        .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
         .withConfiguration(AutoConfigurations.of(JmsAutoConfiguration.class, ServiceBusJmsAutoConfiguration.class));
 
     private void testQueueJmsListenerContainerFactoryWithCustomSettings(AssertableApplicationContext loaded) {
@@ -117,8 +117,8 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "standard" })
-    void autoconfigurationEnabledAndContextSuccessWithStandardTier(String pricingTier) {
+    @ValueSource(strings = { "premium" })
+    void autoconfigurationEnabledAndContextSuccessWithPremiumTier(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
@@ -136,8 +136,8 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "premium" })
-    void autoconfigurationEnabledAndContextSuccessWithPremiumTier(String pricingTier) {
+    @ValueSource(strings = { "standard" })
+    void autoconfigurationEnabledAndContextSuccessWithStandardTier(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
