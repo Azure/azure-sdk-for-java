@@ -129,7 +129,7 @@ public class LiveManagedIdentityTests extends TestBase {
 
 
         String vmBlob = String.format("https://%s.blob.core.windows.net/vmcontainer/testfile.jar?%s", storageAcccountName, sasToken);
-        String script = String.format("curl '%s' -o ./testfile.jar && java -jar ./testfile.jar", vmBlob);
+        String script = String.format("\"curl '%s' -o ./testfile.jar && java -jar ./testfile.jar\"", vmBlob);
 
 
         System.out.println("Script: " + script);
