@@ -73,7 +73,6 @@ public class RadiologyInsightsAgeMismatchTest extends RadiologyInsightsClientTes
 
                 AgeMismatchInference ageMismatchInference = (AgeMismatchInference) inference;
                 List<FhirR4Extension> extensions = ageMismatchInference.getExtension();
-                System.out.println("Evidence: " + extractEvidence(extensions));
                 assertEquals("20 - year - old ", extractEvidence(extensions));
 
             });
