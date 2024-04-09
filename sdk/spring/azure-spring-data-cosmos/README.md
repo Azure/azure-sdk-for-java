@@ -118,8 +118,9 @@ SLF4J is only needed if you plan to use logging, please also download an SLF4J b
 ### Setup Configuration Class
 - In order to set up configuration class, you'll need to extend `AbstractCosmosConfiguration`
 
-- Azure-spring-data-cosmos also supports `Response Diagnostics String`, `Query Metrics` and `Max Degree of Parallelism`.
+- Azure-spring-data-cosmos also supports `Response Diagnostics String`, `Query Metrics`, `Index Metrics` and `Max Degree of Parallelism`.
 Set `queryMetricsEnabled` flag to true in application.properties to enable query metrics.
+Set `indexMetricsEnabled` flag to true in application.properties to enable index metrics.
 In addition to setting the flag, implement `ResponseDiagnosticsProcessor` to log diagnostics information.
 Set `maxDegreeOfParallelism` flag to an integer in application.properties to allow parallel processing; setting the value to -1 will lead to the SDK deciding the optimal value.
 Set `maxBufferedItemCount` flag to an integer in application.properties to allow the user to set the max number of items that can be buffered during parallel query execution; if set to less than 0, the system automatically decides the number of items to buffer.
@@ -148,6 +149,9 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
     @Value("${azure.cosmos.queryMetricsEnabled}")
     private boolean queryMetricsEnabled;
+
+    @Value("${azure.cosmos.indexMetricsEnabled}")
+    private boolean indexMetricsEnabled;
 
     @Value("${azure.cosmos.maxDegreeOfParallelism}")
     private int maxDegreeOfParallelism;
@@ -198,6 +202,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
     public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
                            .enableQueryMetrics(queryMetricsEnabled)
+                           .enableIndexMetrics(indexMetricsEnabled)
                            .maxDegreeOfParallelism(maxDegreeOfParallelism)
                            .maxBufferedItemCount(maxBufferedItemCount)
                            .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
@@ -253,6 +258,7 @@ public CosmosClientBuilder getCosmosClientBuilder() {
 public CosmosConfig cosmosConfig() {
     return CosmosConfig.builder()
                        .enableQueryMetrics(queryMetricsEnabled)
+                       .enableIndexMetrics(indexMetricsEnabled)
                        .maxDegreeOfParallelism(maxDegreeOfParallelism)
                        .maxBufferedItemCount(maxBufferedItemCount)
                        .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
@@ -701,6 +707,7 @@ azure.cosmos.primary.key=your-primary-cosmosDb-key
 azure.cosmos.primary.secondaryKey=your-primary-cosmosDb-secondary-key
 azure.cosmos.primary.database=your-primary-cosmosDb-dbName
 azure.cosmos.primary.populateQueryMetrics=if-populate-query-metrics
+azure.cosmos.primary.populateIndexMetrics=if-populate-index-metrics
 
 # secondary account cosmos config
 azure.cosmos.secondary.uri=your-secondary-cosmosDb-uri
@@ -708,6 +715,7 @@ azure.cosmos.secondary.key=your-secondary-cosmosDb-key
 azure.cosmos.secondary.secondaryKey=your-secondary-cosmosDb-secondary-key
 azure.cosmos.secondary.database=your-secondary-cosmosDb-dbName
 azure.cosmos.secondary.populateQueryMetrics=if-populate-query-metrics
+azure.cosmos.secondary.populateIndexMetrics=if-populate-index-metrics
 ```
 
 - The [Entity](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-data-cosmos#define-an-entity) and [Repository](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-data-cosmos#create-repositories) definition is similar as above. You can put different database entities into different packages.
@@ -775,6 +783,7 @@ public class SecondaryDatasourceConfiguration {
     public CosmosConfig getCosmosConfig() {
         return CosmosConfig.builder()
             .enableQueryMetrics(true)
+            .enableIndexMetrics(true)
             .maxDegreeOfParallelism(0)
             .maxBufferedItemCount(0)
             .responseContinuationTokenLimitInKb(0)
@@ -813,6 +822,7 @@ public CosmosAsyncClient getCosmosAsyncClient(@Qualifier("secondary") CosmosProp
 public CosmosConfig getCosmosConfig() {
     return CosmosConfig.builder()
         .enableQueryMetrics(true)
+        .enableIndexMetrics(true)
         .maxDegreeOfParallelism(0)
         .maxBufferedItemCount(0)
         .responseContinuationTokenLimitInKb(0)
@@ -821,13 +831,14 @@ public CosmosConfig getCosmosConfig() {
 }
 ```
 
-- Besides, if you want to define `queryMetricsEnabled`, `ResponseDiagnosticsProcessor`, `maxDegreeOfParallelism`, `maxBufferedItemCount` or `responseContinuationTokenLimitInKb` , you can create the `CosmosConfig` for your cosmos template.
+- Besides, if you want to define `queryMetricsEnabled`, `indexMetricsEnabled`, `ResponseDiagnosticsProcessor`, `maxDegreeOfParallelism`, `maxBufferedItemCount` or `responseContinuationTokenLimitInKb` , you can create the `CosmosConfig` for your cosmos template.
 
 ```java
 @Bean("secondaryCosmosConfig")
 public CosmosConfig getCosmosConfig() {
     return CosmosConfig.builder()
         .enableQueryMetrics(true)
+        .enableIndexMetrics(true)
         .maxDegreeOfParallelism(0)
         .maxBufferedItemCount(0)
         .responseContinuationTokenLimitInKb(0)
