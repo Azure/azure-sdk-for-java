@@ -361,7 +361,9 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         policies.add(new AddDatePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
-            if (this.region != null && this.resourceId != null) {
+            if (this.region != null || this.resourceId != null) {
+                Objects.requireNonNull(this.region, "'region' cannot be null.");
+                Objects.requireNonNull(this.resourceId, "'resourceId' cannot be null.");
                 HttpHeaders aadHeaders = new HttpHeaders();
                 aadHeaders.put(OCP_APIM_RESOURCE_ID_KEY, this.resourceId);
                 aadHeaders.put(OCP_APIM_SUBSCRIPTION_REGION, this.region);
