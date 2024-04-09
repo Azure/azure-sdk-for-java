@@ -125,16 +125,26 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>org.apache.qpid</groupId>
-      <artifactId>qpid-jms-client</artifactId>
-      <version>2.0.0</version> <!-- {x-version-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
-      <optional>true</optional>
-    </dependency>
-    <dependency>
       <groupId>org.messaginghub</groupId>
       <artifactId>pooled-jms</artifactId>
       <version>3.1.5</version> <!-- {x-version-update;org.messaginghub:pooled-jms;external_dependency} -->
       <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-servicebus-jms</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-servicebus-jms;external_dependency} -->
+      <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-identity</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- Azure SDKs-->
@@ -542,6 +552,7 @@
           <rules>
             <bannedDependencies>
               <includes>
+                <include>com.azure:azure-servicebus-jms:[2.0.0-beta.1]</include> <!-- {x-include-update;com.azure:azure-servicebus-jms;external_dependency} -->
                 <include>com.mysql:mysql-connector-j:[8.3.0]</include> <!-- {x-include-update;com.mysql:mysql-connector-j;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.15.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-core:[2.15.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
@@ -551,7 +562,6 @@
                 <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.15.4]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
                 <include>jakarta.servlet:jakarta.servlet-api:[6.0.0]</include> <!-- {x-include-update;jakarta.servlet:jakarta.servlet-api;external_dependency} -->
                 <include>jakarta.validation:jakarta.validation-api:[3.0.2]</include> <!-- {x-include-update;jakarta.validation:jakarta.validation-api;external_dependency} -->
-                <include>org.apache.qpid:qpid-jms-client:[2.0.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[8.0.1.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
                 <include>org.messaginghub:pooled-jms:[3.1.5]</include> <!-- {x-include-update;org.messaginghub:pooled-jms;external_dependency} -->
                 <include>org.postgresql:postgresql:[42.6.2]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->

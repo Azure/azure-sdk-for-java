@@ -57,7 +57,6 @@ class ServiceBusJmsPasswordlessConfigurationTest {
             .withBean(AzureGlobalProperties.class, () -> azureProperties)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusJmsCredentialSupplier.class);
-                assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactoryCustomizer.class);
             });
     }
 
@@ -91,7 +90,6 @@ class ServiceBusJmsPasswordlessConfigurationTest {
             .withBean(AzureGlobalProperties.class, () -> azureProperties)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusJmsCredentialSupplier.class);
-                assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactoryCustomizer.class);
                 AzureServiceBusJmsProperties properties = context.getBean(AzureServiceBusJmsProperties.class);
                 assertThat(properties.getScopes()).isEqualTo("scopes");
                 assertThat(properties.getProfile().getTenantId()).isEqualTo("tenant-id");
@@ -136,7 +134,7 @@ class ServiceBusJmsPasswordlessConfigurationTest {
     }
 
     @EnableConfigurationProperties
-    @Import({ServiceBusJmsPasswordlessConfiguration.class})
+    @Import({ ServiceBusJmsPasswordlessConfiguration.class})
     static class ServiceBusJmsPasswordlessTestConfig {
 
         @Bean
