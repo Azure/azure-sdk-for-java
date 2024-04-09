@@ -1,5 +1,15 @@
 # Release History
 
+## 11.2.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 11.1.1 (2024-04-09)
 
 ### Features Added
