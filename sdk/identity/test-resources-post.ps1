@@ -31,6 +31,8 @@ $azSerRootPom = "$PSScriptRoot/../serialization" | Resolve-Path
 
 $azStorageRootPom = "$PSScriptRoot/../storage" | Resolve-Path
 
+$azIdentityRoot = "$PSScriptRoot/azure-identity" | Resolve-Path
+
 $azIdentityRootPom = "$PSScriptRoot/azure-identity/pom.xml" | Resolve-Path
 
 $azBuildToolsRootPom = "$PSScriptRoot/../../eng/code-quality-reports/pom.xml" | Resolve-Path
@@ -193,7 +195,7 @@ $rootDirs = @(
     $azSerRootPom,
     $azCoreRootPom,
     $azStorageRootPom,
-    $azIdentityRootPom
+    $azIdentityRoot
 )
 
 foreach ($rootDir in $rootDirs) {
