@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** settings for security policy patterns to match. */
+/**
+ * settings for security policy patterns to match.
+ */
 @Fluent
 public final class SecurityPolicyWebApplicationFirewallAssociation {
     /*
@@ -23,13 +25,15 @@ public final class SecurityPolicyWebApplicationFirewallAssociation {
     @JsonProperty(value = "patternsToMatch")
     private List<String> patternsToMatch;
 
-    /** Creates an instance of SecurityPolicyWebApplicationFirewallAssociation class. */
+    /**
+     * Creates an instance of SecurityPolicyWebApplicationFirewallAssociation class.
+     */
     public SecurityPolicyWebApplicationFirewallAssociation() {
     }
 
     /**
      * Get the domains property: List of domains.
-     *
+     * 
      * @return the domains value.
      */
     public List<ActivatedResourceReference> domains() {
@@ -38,7 +42,7 @@ public final class SecurityPolicyWebApplicationFirewallAssociation {
 
     /**
      * Set the domains property: List of domains.
-     *
+     * 
      * @param domains the domains value to set.
      * @return the SecurityPolicyWebApplicationFirewallAssociation object itself.
      */
@@ -49,7 +53,7 @@ public final class SecurityPolicyWebApplicationFirewallAssociation {
 
     /**
      * Get the patternsToMatch property: List of paths.
-     *
+     * 
      * @return the patternsToMatch value.
      */
     public List<String> patternsToMatch() {
@@ -58,7 +62,7 @@ public final class SecurityPolicyWebApplicationFirewallAssociation {
 
     /**
      * Set the patternsToMatch property: List of paths.
-     *
+     * 
      * @param patternsToMatch the patternsToMatch value to set.
      * @return the SecurityPolicyWebApplicationFirewallAssociation object itself.
      */
@@ -69,7 +73,7 @@ public final class SecurityPolicyWebApplicationFirewallAssociation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
