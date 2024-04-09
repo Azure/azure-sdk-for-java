@@ -2,6 +2,14 @@
 
 ## 1.6.0 (2024-04-09)
 
+### Features Added
+
+- Added Page ETag support in listing configuration setting, which returns empty body and status code `304 not modified`
+  if settings in the page and ETag of the page are not changed. If status code `200` returns in the page response,
+  which means page's settings and ETag have changed. A full page of settings and a new page ETag will be returned in
+  response.
+  Use the new parameter `matchConditions` in the `SettingSelector` to assign the page ETags in the request to service.
+
 ### Other Changes
 
 #### Dependency Updates
