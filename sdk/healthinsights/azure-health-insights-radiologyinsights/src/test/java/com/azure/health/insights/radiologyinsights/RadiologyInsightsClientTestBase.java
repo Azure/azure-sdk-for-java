@@ -8,7 +8,9 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import com.azure.core.credential.AzureKeyCredential;
@@ -210,19 +212,17 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         return evidence; 
     }
 
-    public void displayCodes(FhirR4CodeableConcept codeableConcept, int indentation) {
-        String initialBlank = "";
-        for (int i = 0; i < indentation; i++) {
-            initialBlank += "   ";
-        }
+    public static Set<String> getCodeStrings(FhirR4CodeableConcept codeableConcept) {
+        Set<String> rv = new HashSet<>();
         if (codeableConcept != null) {
             List<FhirR4Coding> codingList = codeableConcept.getCoding();
             if (codingList != null) {
                 for (FhirR4Coding fhirR4Coding : codingList) {
-                    System.out.println(initialBlank + "Coding: " + fhirR4Coding.getCode() + ", " + fhirR4Coding.getDisplay() + " (" + fhirR4Coding.getSystem() + ")");
+                    rv.add("Coding: " + fhirR4Coding.getCode() + ", " + fhirR4Coding.getDisplay() + " (" + fhirR4Coding.getSystem() + ")");
                 }
             }
         }
+        return rv;
     }
     
     public String getDocumentContent() {
