@@ -13,10 +13,10 @@ For those new to the Purview Data Map library for Java, please refer to the [`az
 
 ## Migration benefits
 
-> Note: `azure-analytics-purview-catalog` has been [deprecated]. Please upgrade to `azure-analytics-purview-datamap` for continued support.
+> Note: `azure-analytics-purview-catalog` has been <b>deprecated</b>. Please upgrade to `azure-analytics-purview-datamap` for continued support.
 
 
-The new Purview DataMap library `azure-analytics-purview-datamap` includes the service models together with the GA DataMap APIs [API Document](https://learn.microsoft.com/rest/api/purview/datamapdataplane/operation-groups?view=rest-purview-datamapdataplane-2023-09-01). The client name and the operation names have slightly changed but the main functionality remains the same.
+The new Purview DataMap library `azure-analytics-purview-datamap` includes the service models together with the DataMap APIs [API Document](https://learn.microsoft.com/rest/api/purview/datamapdataplane/operation-groups). The client name and the operation names have slightly changed but the main functionality remains the same.
 
 ## General changes
 
@@ -34,16 +34,33 @@ GlossaryClient client = new GlossaryClientBuilder()
 Now in `azure-analytics-purview-datamap`, users should create a DataMapClient first and then build the client for each operation groups.
 
 ```java
-ClientSecretCredential cred = new ClientSecretCredentialBuilder()
-    .tenantId(Configuration.getGlobalConfiguration().get("TENANT_ID"))
-    .authorityHost(Configuration.getGlobalConfiguration().get("AUTHORITY_HOST"))
-    .clientId(Configuration.getGlobalConfiguration().get("CLIENT_ID"))
-    .clientSecret(Configuration.getGlobalConfiguration().get("CLIENT_SECRET"))
-    .build();
 DataMapClientBuilder clientBuilder = new DataMapClientBuilder()
     .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-    .credential(cred);
+    .credential(new DefaultAzureCredentialBuilder().build());
 GlossaryClient client = clientBuilder.buildGlossaryClient();
+```
+
+### Operation name
+
+The operation names have slightly changed but the main functionality remains the same. Please check the below examples.
+
+#### Get type by name
+
+Using `azure-analytics-purview-catalog`
+
+```java
+TypesClient typesClient = new TypesClientBuilder()
+    .endpoint(endPoint)
+    .credential(cred)
+    .buildClient();
+Response<BinaryData> response = typesClient.getEntityDefinitionByNameWithResponse("AtlasGlossary", null);
+```
+
+Using `azure-analytics-purview-datamap`
+
+```java
+TypeDefinitionClient typeDefinitionClient = clientBuilder.buildTypeDefinitionClient();
+AtlasEntityDef type = typeDefinitionClient.getEntityByName("AtlasGlossary");
 ```
 
 ## Additional samples
