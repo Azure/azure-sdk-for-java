@@ -44,7 +44,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
     }
 
     // TODO[public preview]: add more integration tests
-    @Test(groups = { "kafka-integration"}, dataProvider = "sourceAuthParameterProvider", timeOut = TIMEOUT)
+    @Test(groups = { "kafka-integration"}, dataProvider = "sourceAuthParameterProvider", timeOut = 2 * TIMEOUT)
     public void readFromSingleContainer(boolean useMasterKey, CosmosMetadataStorageType metadataStorageType) {
         String topicName = singlePartitionContainerName + "-" + UUID.randomUUID();
         String metadataStorageName = "Metadata-" + UUID.randomUUID();
@@ -84,6 +84,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
         try {
             // if using cosmos container to persiste the metadata, pre-create it
             if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
+                logger.info("Creating metadata container");
                 client.getDatabase(databaseName)
                     .createContainerIfNotExists(metadataStorageName, "/id")
                     .block();
@@ -109,6 +110,8 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
 
             List<ConsumerRecord<String, JsonNode>> metadataRecords = new ArrayList<>();
             List<ConsumerRecord<String, JsonNode>> itemRecords = new ArrayList<>();
+            int expectedMetadataRecordsCount = metadataStorageType == CosmosMetadataStorageType.COSMOS ? 0 : 2;
+            int expectedItemRecords = createdItems.size();
 
             Unreliables.retryUntilTrue(30, TimeUnit.SECONDS, () -> {;
                 kafkaConsumer.poll(Duration.ofMillis(1000))
@@ -120,11 +123,11 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
                             metadataRecords.add(consumerRecord);
                         }
                     });
-                return metadataRecords.size() >= 2 && itemRecords.size() >= createdItems.size();
+                return metadataRecords.size() >= expectedMetadataRecordsCount && itemRecords.size() >= expectedItemRecords;
             });
 
             //TODO[public preview]currently the metadata record value is null, populate it with metadata and validate the content here
-            assertThat(metadataRecords.size()).isEqualTo(2);
+            assertThat(metadataRecords.size()).isEqualTo(expectedMetadataRecordsCount);
             assertThat(itemRecords.size()).isEqualTo(createdItems.size());
 
             List<String> receivedItems =

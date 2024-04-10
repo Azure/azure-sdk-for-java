@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosMetadataStorageType;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.IMetadataReader;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataKafkaStorageManager;
@@ -79,21 +80,6 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
         this.monitorThread.start();
     }
 
-    private IMetadataReader getMetadataReader() {
-        switch (this.config.getMetadataConfig().getStorageType()) {
-            case KAFKA:
-                return this.kafkaOffsetStorageReader;
-            case COSMOS:
-                CosmosAsyncContainer metadataContainer =
-                    this.cosmosClient
-                        .getDatabase(this.config.getContainersConfig().getDatabaseName())
-                        .getContainer(this.config.getMetadataConfig().getStorageName());
-                return new MetadataCosmosStorageManager(metadataContainer);
-            default:
-                throw new IllegalArgumentException("Metadata storage type " + this.config.getMetadataConfig().getStorageType() + " is not supported");
-        }
-    }
-
     @Override
     public Class<? extends Task> taskClass() {
         return CosmosSourceTask.class;
@@ -115,7 +101,7 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
             case KAFKA:
                 // Else if using kafka topic as the storage type, then we are going to allocate the metadata records creation to one of the task. - Two issues/limitations exists:
                 //   - a. The metadata topic can only be created on the same cluster as the other topics
-                //   - b. As the metadata records are not created before all the feedRange tasks started, there is a rare edge cases that data from CosmosDB can be read twice (split/merge happens when writing the metadat records and the records failed to be persisted)
+                //   - b. As the metadata records are not created before all the feedRange tasks started, there is a rare edge cases that data from CosmosDB can be read twice (split/merge happens when writing the metadata records failed so the connector restarted)
                 //
                 // NOTE: we choose the current approach to avoid maintaining a producer by ourselves and also #b only happen for very rare cases.
                 //
@@ -132,15 +118,6 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
 
 
         return taskConfigs;
-    }
-
-    private void updateMetadataRecordsInCosmos(MetadataTaskUnit metadataTaskUnit) {
-        CosmosAsyncContainer container =
-            this.cosmosClient
-                .getDatabase(metadataTaskUnit.getDatabaseName())
-                .getContainer(metadataTaskUnit.getStorageName());
-        MetadataCosmosStorageManager cosmosProducer = new MetadataCosmosStorageManager(container);
-        cosmosProducer.executeMetadataTask(metadataTaskUnit);
     }
 
     @Override
@@ -165,6 +142,30 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
     @Override
     public String version() {
         return KafkaCosmosConstants.CURRENT_VERSION;
+    }
+
+    private IMetadataReader getMetadataReader() {
+        switch (this.config.getMetadataConfig().getStorageType()) {
+            case KAFKA:
+                return this.kafkaOffsetStorageReader;
+            case COSMOS:
+                CosmosAsyncContainer metadataContainer =
+                    this.cosmosClient
+                        .getDatabase(this.config.getContainersConfig().getDatabaseName())
+                        .getContainer(this.config.getMetadataConfig().getStorageName());
+                return new MetadataCosmosStorageManager(metadataContainer);
+            default:
+                throw new IllegalArgumentException("Metadata storage type " + this.config.getMetadataConfig().getStorageType() + " is not supported");
+        }
+    }
+
+    private void updateMetadataRecordsInCosmos(MetadataTaskUnit metadataTaskUnit) {
+        if (metadataTaskUnit.getStorageType() != CosmosMetadataStorageType.COSMOS) {
+            throw new IllegalStateException("updateMetadataRecordsInCosmos should not be called when metadata storage type is not cosmos");
+        }
+
+        MetadataCosmosStorageManager cosmosProducer = (MetadataCosmosStorageManager) this.metadataReader;
+        cosmosProducer.createMetadataItems(metadataTaskUnit);
     }
 
     private List<Map<String, String>> getFeedRangeTaskConfigs(List<FeedRangeTaskUnit> taskUnits, int maxTasks) {

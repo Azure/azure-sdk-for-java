@@ -23,16 +23,16 @@ public class MetadataCosmosStorageManager implements IMetadataReader {
         this.metadataContainer = metadataContainer;
     }
 
-    public void executeMetadataTask(MetadataTaskUnit metadataTaskUnit) {
+    public void createMetadataItems(MetadataTaskUnit metadataTaskUnit) {
         // To be as consistent as what will be persisted to kafka topic if kafka being the storage type
         // we created the cosmos metadata item from the kafka topic records
 
-        // add the containers metadata record - it tracks the databaseName -> List[containerRid] mapping
+        // add the containers metadata items - it tracks the databaseName -> List[containerRid] mapping
         this.createContainersMetadataItem(
             metadataTaskUnit.getContainersMetadata().getLeft(),
             metadataTaskUnit.getContainersMetadata().getRight());
 
-        // add the container feedRanges metadata record - it tracks the containerRid -> List[FeedRange] mapping
+        // add the container feedRanges metadata item - it tracks the containerRid -> List[FeedRange] mapping
         for (Pair<FeedRangesMetadataTopicPartition, FeedRangesMetadataTopicOffset> feedRangesMetadata : metadataTaskUnit.getFeedRangesMetadataList()) {
             this.createFeedRangesMetadataItem(feedRangesMetadata.getLeft(), feedRangesMetadata.getRight());
         }

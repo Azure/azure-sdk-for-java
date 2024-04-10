@@ -75,8 +75,7 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
     private static final int DEFAULT_METADATA_POLL_DELAY_MS = 5 * 60 * 1000; // default is every 5 minutes
 
     private static final String METADATA_STORAGE_TYPE = SOURCE_CONFIG_PREFIX + "metadata.storage.type";
-    private static final String METADATA_STORAGE_TYPE_DOC = "The storage type of the metadata. Two types are supported: Cosmos, Kafka. " +
-        "For ";
+    private static final String METADATA_STORAGE_TYPE_DOC = "The storage type of the metadata. Two types are supported: Cosmos, Kafka.";
     private static final String METADATA_STORAGE_TYPE_DISPLAY = "The storage source of the metadata.";
     private static final String DEFAULT_METADATA_STORAGE_TYPE = CosmosMetadataStorageType.KAFKA.getName();
 

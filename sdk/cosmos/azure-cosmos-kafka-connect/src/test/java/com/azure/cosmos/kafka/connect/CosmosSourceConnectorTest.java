@@ -819,7 +819,11 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                 .readItem(expectedMetadataTaskUnit.getDatabaseName(), new PartitionKey(expectedMetadataTaskUnit.getDatabaseName()), JsonNode.class)
                 .block()
                 .getItem();
-        Map<String, Object> metadataMap = Utils.getSimpleObjectMapper().convertValue(containersMetadata.get("metadata"), Map.class);
+        Map<String, Object> metadataMap =
+            Utils
+                .getSimpleObjectMapper()
+                .convertValue(containersMetadata.get("metadata"), new TypeReference<Map<String, Object>>(){});
+
         assertThat(metadataMap.containsKey("cosmos.source.metadata.containerRids")).isTrue();
         List<String> persistedContainerRids =
             Utils
@@ -845,7 +849,10 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                     .readItem(cosmosItemId, new PartitionKey(cosmosItemId), JsonNode.class)
                     .block()
                     .getItem();
-            Map<String, Object> feedRangesMetadataMap = Utils.getSimpleObjectMapper().convertValue(persistedFeedRangesMetadata.get("metadata"), Map.class);
+            Map<String, Object> feedRangesMetadataMap =
+                Utils
+                    .getSimpleObjectMapper()
+                    .convertValue(persistedFeedRangesMetadata.get("metadata"), new TypeReference<Map<String, Object>>() {});
             assertThat(feedRangesMetadataMap.containsKey("cosmos.source.metadata.container.feedRanges")).isTrue();
             List<String> persistedFeedRanges =
                 Utils
