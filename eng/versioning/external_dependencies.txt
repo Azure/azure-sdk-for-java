@@ -392,7 +392,7 @@ cosmos_com.globalmentor:hadoop-bare-naked-local-fs;0.1.0
 cosmos_org.mockito:mockito-core;4.8.1
 
 # Maven Tools for Cosmos Spark connector only
-cosmos_org.scalatest:scalatest-maven-plugin;2.0.2
+cosmos_org.scalatest:scalatest-maven-plugin;2.1.0
 cosmos_net.alchim31.maven:scala-maven-plugin;4.8.1
 cosmos_org.scalastyle:scalastyle-maven-plugin;1.0.0
 
