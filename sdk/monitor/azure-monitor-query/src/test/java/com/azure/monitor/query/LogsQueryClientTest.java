@@ -393,7 +393,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
 
         try ( JsonReader reader = JsonProviders.createReader(visualization.toStream());) {
             Map<String, Object> map = reader.readMap(innerReader -> {
-               return reader.readUntyped();
+                return reader.readUntyped();
             });
             String title = map.get("title").toString();
             String xTitle = map.get("xTitle").toString();
