@@ -154,8 +154,12 @@ function Fetch-Namespaces-From-Javadoc($package, $groupId, $version) {
     try {
         # Download the Jar file
         Write-Host "mvn dependency:copy -Dartifact=""$artifact"" -DoutputDirectory=""$tempDirectory"""
-        $mvnResults = mvn dependency:copy -Dartifact="$artifact" -DoutputDirectory="$tempDirectory"
-        if ($LASTEXITCODE) {
+        $mvnResults = mvn `
+          dependency:copy `
+          -Dartifact="$artifact" `
+          -DoutputDirectory="$tempDirectory"
+
+          if ($LASTEXITCODE -ne 0) {
             LogWarning "Could not download javadoc artifact: $artifact"
             $mvnResults | Write-Host
             return $namespaces
