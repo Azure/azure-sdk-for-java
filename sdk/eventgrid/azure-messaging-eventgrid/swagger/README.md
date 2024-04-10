@@ -77,7 +77,7 @@ directive:
           to: MicrosoftTeamsAppIdentifier
 
 custom-types-subpackage: implementation.models
-custom-types: CloudEvent,EventGridEvent,AcsRouterCommunicationError,AcsAdvancedMessageChannelEventError
+custom-types: CloudEvent,EventGridEvent,AcsRouterCommunicationError,AcsMessageChannelEventError
 model-override-setter-from-superclass: true
 
 input-file:
