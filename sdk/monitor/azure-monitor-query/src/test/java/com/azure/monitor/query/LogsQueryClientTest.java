@@ -391,7 +391,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
 
         BinaryData visualization = queryResults.getVisualization();
 
-        try ( JsonReader reader = JsonProviders.createReader(visualization.toStream());) {
+        try (JsonReader reader = JsonProviders.createReader(visualization.toStream())) {
             Map<String, Object> map = reader.readMap(innerReader -> {
                 return reader.readUntyped();
             });
