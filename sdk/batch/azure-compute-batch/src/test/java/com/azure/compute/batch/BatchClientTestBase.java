@@ -65,7 +65,7 @@ class BatchClientTestBase extends TestProxyTestBase {
         super.beforeTest();
         batchClientBuilder =
             new BatchClientBuilder()
-                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_BATCH_ENDPOINT", "https://playback.batch.windows.net"))
+                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_BATCH_ENDPOINT", "https://fakeaccount.batch.windows.net"))
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -87,7 +87,7 @@ class BatchClientTestBase extends TestProxyTestBase {
     public void addTestRulesOnPlayback(InterceptorManager interceptorManager) {
         List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
         customMatchers.add(new CustomMatcher().setComparingBodies(false));
-        customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("ocp-date")));
+        customMatchers.add(new CustomMatcher().setExcludedHeaders(Arrays.asList("ocp-date", "client-request-id")));
         interceptorManager.addMatchers(customMatchers);
     }
 
@@ -111,8 +111,8 @@ class BatchClientTestBase extends TestProxyTestBase {
 
     static AzureNamedKeyCredential getSharedKeyCredentials() {
         Configuration localConfig = Configuration.getGlobalConfiguration();
-        String accountName = localConfig.get("AZURE_BATCH_ACCOUNT");
-        String accountKey = localConfig.get("AZURE_BATCH_ACCESS_KEY");
+        String accountName = localConfig.get("AZURE_BATCH_ACCOUNT", "fakeaccount");
+        String accountKey = localConfig.get("AZURE_BATCH_ACCESS_KEY", "fakekey");
         return new AzureNamedKeyCredential(accountName, accountKey);
     }
 
