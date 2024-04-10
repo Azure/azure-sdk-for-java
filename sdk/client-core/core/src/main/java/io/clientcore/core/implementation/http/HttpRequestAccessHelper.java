@@ -16,6 +16,15 @@ public final class HttpRequestAccessHelper {
      */
     public interface HttpRequestAccessor {
         /**
+         * Gets the number of times the request has been retried.
+         *
+         * @param httpRequest The {@link HttpRequest} to set the retry count of.
+         *
+         * @return The {@link HttpRequest} retry count.
+         */
+        int getRetryCount(HttpRequest httpRequest);
+
+        /**
          * Sets the number of times the request has been retried.
          *
          * @param httpRequest The {@link HttpRequest} to set the retry count of.
@@ -24,6 +33,17 @@ public final class HttpRequestAccessHelper {
          * @return The modified {@link HttpRequest}.
          */
         HttpRequest setRetryCount(HttpRequest httpRequest, int retryCount);
+    }
+
+    /**
+     * Gets the number of times the request has been retried.
+     *
+     * @param httpRequest The {@link HttpRequest} to set the retry count of.
+     *
+     * @return The {@link HttpRequest} retry count.
+     */
+    public static int getRetryCount(HttpRequest httpRequest) {
+        return accessor.getRetryCount(httpRequest);
     }
 
     /**

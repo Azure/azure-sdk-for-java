@@ -24,7 +24,17 @@ public class HttpRequest {
     private static final ClientLogger LOGGER = new ClientLogger(HttpRequest.class);
 
     static {
-        HttpRequestAccessHelper.setAccessor(HttpRequest::setRetryCount);
+        HttpRequestAccessHelper.setAccessor(new HttpRequestAccessHelper.HttpRequestAccessor() {
+            @Override
+            public int getRetryCount(HttpRequest httpRequest) {
+                return httpRequest.getRetryCount();
+            }
+
+            @Override
+            public HttpRequest setRetryCount(HttpRequest httpRequest, int retryCount) {
+                return httpRequest.setRetryCount(retryCount);
+            }
+        });
     }
 
     private HttpMethod httpMethod;
@@ -81,8 +91,12 @@ public class HttpRequest {
      * @param httpMethod The request {@link HttpMethod}.
      *
      * @return The updated {@link HttpRequest}.
+     *
+     * @throws NullPointerException if {@code httpMethod} is {@code null}.
      */
     public HttpRequest setHttpMethod(HttpMethod httpMethod) {
+        Objects.requireNonNull(httpMethod, "'httpMethod' cannot be null");
+
         this.httpMethod = httpMethod;
 
         return this;
@@ -241,7 +255,7 @@ public class HttpRequest {
      *
      * @return The number of times the request has been retried.
      */
-    public int getRetryCount() {
+    private int getRetryCount() {
         return retryCount;
     }
 

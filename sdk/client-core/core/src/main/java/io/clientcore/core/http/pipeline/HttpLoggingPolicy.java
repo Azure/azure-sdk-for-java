@@ -10,6 +10,7 @@ import io.clientcore.core.http.models.HttpLogOptions;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
 import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.implementation.util.LoggingKeys;
@@ -349,7 +350,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * Gets the request retry count to include in logging.
      */
     private static int getRequestRetryCount(HttpRequest request) {
-        return request.getRetryCount();
+        return HttpRequestAccessHelper.getRetryCount(request);
     }
 
     private static ClientLogger.LoggingEventBuilder getLogBuilder(ClientLogger.LogLevel logLevel, ClientLogger logger) {

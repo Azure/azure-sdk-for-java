@@ -143,7 +143,9 @@ public class DefaultHttpClientTest {
 
         try (Response<?> response = doRequest(client, "/error")) {
             assertEquals(500, response.getStatusCode());
+
             String responseBodyAsString = response.getBody().toString();
+
             assertTrue(responseBodyAsString.contains("error"));
         }
 
