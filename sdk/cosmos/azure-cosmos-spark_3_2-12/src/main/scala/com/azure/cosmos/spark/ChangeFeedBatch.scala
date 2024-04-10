@@ -158,9 +158,20 @@ private class ChangeFeedBatch
             val msg = s"Cannot update latest offset at location '$latestOffsetLocation' for batchId: $batchId " +
               s"-> existing latestOffset: '$existingLatestOffset' failed to persist " +
               s"new latestOffset: '$latestOffsetJson'- will continue with existing latest offset."
-            log.logWarning(msg)
 
-            latestOffset = ChangeFeedOffset.fromJson(existingLatestOffset)
+            val parsedExistingLatestOffset = ChangeFeedOffset.fromJson(existingLatestOffset)
+
+            if (SparkBridgeImplementationInternal
+              .validateCollectionRidOfChangeFeedStates(
+                parsedExistingLatestOffset.changeFeedState,
+                latestOffset.changeFeedState)) {
+
+              log.logWarning(msg)
+              latestOffset = parsedExistingLatestOffset
+            } else {
+              log.logError(msg)
+              throw new IllegalStateException(msg)
+            }
           } else {
             val msg = s"Cannot update latest offset at location '$latestOffsetLocation' for batchId: $batchId " +
               s"-> existing latestOffset: '$existingLatestOffset' failed to persist " +
