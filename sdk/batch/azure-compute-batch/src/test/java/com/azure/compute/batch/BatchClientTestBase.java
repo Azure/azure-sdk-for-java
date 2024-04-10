@@ -65,7 +65,7 @@ class BatchClientTestBase extends TestProxyTestBase {
         super.beforeTest();
         batchClientBuilder =
             new BatchClientBuilder()
-                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_BATCH_ENDPOINT", "endpoint"))
+                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_BATCH_ENDPOINT", "https://playback.batch.windows.net"))
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
