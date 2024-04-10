@@ -24,21 +24,22 @@ import com.azure.health.insights.radiologyinsights.models.DocumentAuthor;
 import com.azure.health.insights.radiologyinsights.models.DocumentContent;
 import com.azure.health.insights.radiologyinsights.models.DocumentContentSourceType;
 import com.azure.health.insights.radiologyinsights.models.DocumentType;
-import com.azure.health.insights.radiologyinsights.models.Encounter;
 import com.azure.health.insights.radiologyinsights.models.EncounterClass;
 import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
-import com.azure.health.insights.radiologyinsights.models.FhirR4Extendible;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Extension;
 import com.azure.health.insights.radiologyinsights.models.FindingOptions;
 import com.azure.health.insights.radiologyinsights.models.FollowupRecommendationOptions;
+import com.azure.health.insights.radiologyinsights.models.OrderedProcedure;
 import com.azure.health.insights.radiologyinsights.models.PatientDetails;
 import com.azure.health.insights.radiologyinsights.models.PatientDocument;
+import com.azure.health.insights.radiologyinsights.models.PatientEncounter;
 import com.azure.health.insights.radiologyinsights.models.PatientRecord;
 import com.azure.health.insights.radiologyinsights.models.PatientSex;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceOptions;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsModelConfiguration;
 import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
@@ -55,8 +56,8 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
     private String orderCode;
     private String orderDescription;
 
-    void testRadiologyInsightsWithResponse(Consumer<RadiologyInsightsData> testRunner) {
-        testRunner.accept(createRadiologyInsightsRequest());
+    void testRadiologyInsightsWithResponse(Consumer<RadiologyInsightsJob> testRunner) {
+        testRunner.accept(createRadiologyInsightsJob());
     }
 
     RadiologyInsightsClientBuilder getClientBuilder() {
@@ -77,13 +78,15 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         }
         return builder;
     }
-
-    private RadiologyInsightsData createRadiologyInsightsRequest() {
+    
+    private RadiologyInsightsJob createRadiologyInsightsJob() {
         List<PatientRecord> patientRecords = createPatientRecords();
         RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
         RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
         radiologyInsightsData.setConfiguration(modelConfiguration);
-        return radiologyInsightsData;
+        RadiologyInsightsJob radiologyInsightsJob = new RadiologyInsightsJob();
+        radiologyInsightsJob.setJobData(radiologyInsightsData);
+        return radiologyInsightsJob;
     }
     
     private List<PatientRecord> createPatientRecords() {
@@ -96,9 +99,9 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
 
         patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
         
-        patientRecord.setInfo(patientDetails);
+        patientRecord.setDetails(patientDetails);
 
-        Encounter encounter = new Encounter("encounterid1");
+        PatientEncounter encounter = new PatientEncounter("encounterid1");
 
         TimePeriod period = new TimePeriod();
 
@@ -125,7 +128,7 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         patientDocument.setSpecialtyType(SpecialtyType.RADIOLOGY);
 
         DocumentAdministrativeMetadata adminMetadata = new DocumentAdministrativeMetadata();
-        FhirR4Extendible orderedProcedure = new FhirR4Extendible();
+        OrderedProcedure orderedProcedure = new OrderedProcedure();
 
         FhirR4CodeableConcept procedureCode = new FhirR4CodeableConcept();
         FhirR4Coding procedureCoding = new FhirR4Coding();
@@ -146,7 +149,7 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
         OffsetDateTime createdDateTime = OffsetDateTime.parse("2021-06-01T00:00:00.000" + "+00:00", formatter);
-        patientDocument.setCreatedDateTime(createdDateTime);
+        patientDocument.setCreatedAt(createdDateTime);
 
         patientRecord.setPatientDocuments(Arrays.asList(patientDocument));
         patientRecords.add(patientRecord);

@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("finding")
 @Immutable
-public final class FindingInference extends FhirR4Extendible1 {
+public final class FindingInference extends RadiologyInsightsInference {
 
     /*
      * Finding data : contains extensions, fields and components linked with the finding.

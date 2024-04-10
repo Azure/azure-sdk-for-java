@@ -19,14 +19,7 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("followupCommunication")
 @Immutable
-public final class FollowupCommunicationInference extends FhirR4Extendible1 {
-
-    /*
-     * Communication date and time.
-     */
-    @Generated
-    @JsonProperty(value = "dateTime")
-    private List<OffsetDateTime> dateTime;
+public final class FollowupCommunicationInference extends RadiologyInsightsInference {
 
     /*
      * Recipient of the communication.
@@ -54,16 +47,6 @@ public final class FollowupCommunicationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the dateTime property: Communication date and time.
-     *
-     * @return the dateTime value.
-     */
-    @Generated
-    public List<OffsetDateTime> getDateTime() {
-        return this.dateTime;
-    }
-
-    /**
      * Get the recipient property: Recipient of the communication.
      *
      * @return the recipient value.
@@ -81,5 +64,22 @@ public final class FollowupCommunicationInference extends FhirR4Extendible1 {
     @Generated
     public boolean isWasAcknowledged() {
         return this.wasAcknowledged;
+    }
+
+    /*
+     * Communication date and time.
+     */
+    @Generated
+    @JsonProperty(value = "communicatedAt")
+    private List<OffsetDateTime> communicatedAt;
+
+    /**
+     * Get the communicatedAt property: Communication date and time.
+     *
+     * @return the communicatedAt value.
+     */
+    @Generated
+    public List<OffsetDateTime> getCommunicatedAt() {
+        return this.communicatedAt;
     }
 }

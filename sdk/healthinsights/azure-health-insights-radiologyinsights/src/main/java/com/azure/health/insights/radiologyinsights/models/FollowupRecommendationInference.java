@@ -18,14 +18,7 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("followupRecommendation")
 @Immutable
-public final class FollowupRecommendationInference extends FhirR4Extendible1 {
-
-    /*
-     * Date and time are displayed when the procedure is recommended to be done at a specific point in time.
-     */
-    @Generated
-    @JsonProperty(value = "effectiveDateTime")
-    private String effectiveDateTime;
+public final class FollowupRecommendationInference extends RadiologyInsightsInference {
 
     /*
      * The period is shown if a specific period is mentioned, with a start and end date-time.
@@ -39,7 +32,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
      */
     @Generated
     @JsonProperty(value = "findings")
-    private List<FhirR4Extendible2> findings;
+    private List<RecommendationFinding> findings;
 
     /*
      * The conditional value indicates whether or not the sentence containing the recommendation includes a conditional
@@ -103,17 +96,6 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the effectiveDateTime property: Date and time are displayed when the procedure is recommended to be done at
-     * a specific point in time.
-     *
-     * @return the effectiveDateTime value.
-     */
-    @Generated
-    public String getEffectiveDateTime() {
-        return this.effectiveDateTime;
-    }
-
-    /**
      * Get the effectivePeriod property: The period is shown if a specific period is mentioned, with a start and end
      * date-time.
      *
@@ -130,7 +112,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
      * @return the findings value.
      */
     @Generated
-    public List<FhirR4Extendible2> getFindings() {
+    public List<RecommendationFinding> getFindings() {
         return this.findings;
     }
 
@@ -188,5 +170,23 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     @Generated
     public ProcedureRecommendation getRecommendedProcedure() {
         return this.recommendedProcedure;
+    }
+
+    /*
+     * Date and time are displayed when the procedure is recommended to be done at a specific point in time.
+     */
+    @Generated
+    @JsonProperty(value = "effectiveAt")
+    private String effectiveAt;
+
+    /**
+     * Get the effectiveAt property: Date and time are displayed when the procedure is recommended to be done at a
+     * specific point in time.
+     *
+     * @return the effectiveAt value.
+     */
+    @Generated
+    public String getEffectiveAt() {
+        return this.effectiveAt;
     }
 }

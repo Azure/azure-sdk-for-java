@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("sexMismatch")
 @Immutable
-public final class SexMismatchInference extends FhirR4Extendible1 {
+public final class SexMismatchInference extends RadiologyInsightsInference {
 
     /*
      * Sex indication : SNOMED CT code for gender finding.

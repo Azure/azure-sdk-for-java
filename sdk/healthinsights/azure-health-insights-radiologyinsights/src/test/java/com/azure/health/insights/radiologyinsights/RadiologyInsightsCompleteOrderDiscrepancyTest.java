@@ -17,9 +17,9 @@ import org.junit.jupiter.api.Test;
 import com.azure.health.insights.radiologyinsights.models.CompleteOrderDiscrepancyInference;
 import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
-import com.azure.health.insights.radiologyinsights.models.FhirR4Extendible1;
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInference;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
 
 /**
@@ -61,16 +61,16 @@ public class RadiologyInsightsCompleteOrderDiscrepancyTest extends RadiologyInsi
         
         try {
             testRadiologyInsightsWithResponse(request -> {
-                RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
-                        getClient().beginInferRadiologyInsights(request)).getFinalResult();
+                RadiologyInsightsJob riResponse = setPlaybackSyncPollerPollInterval(
+                        getClient().beginInferRadiologyInsights("jobJava3", request)).getFinalResult();
                 
-                List<RadiologyInsightsPatientResult> patients = riResponse.getPatientResults();
+                List<RadiologyInsightsPatientResult> patients = riResponse.getResult().getPatientResults();
                 assertEquals(1, patients.size());
                 RadiologyInsightsPatientResult patient = patients.get(0);
                 
-                List<FhirR4Extendible1> inferences = patient.getInferences();
+                List<RadiologyInsightsInference> inferences = patient.getInferences();
                 assertEquals(1, inferences.size());
-                FhirR4Extendible1 inference = inferences.get(0);
+                RadiologyInsightsInference inference = inferences.get(0);
                 
                 if (inference instanceof CompleteOrderDiscrepancyInference) {
                     CompleteOrderDiscrepancyInference completeOrderDiscrepancyInference = (CompleteOrderDiscrepancyInference) inference;

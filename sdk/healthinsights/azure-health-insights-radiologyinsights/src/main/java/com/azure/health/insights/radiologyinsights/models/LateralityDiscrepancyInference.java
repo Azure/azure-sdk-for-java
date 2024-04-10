@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("lateralityDiscrepancy")
 @Immutable
-public final class LateralityDiscrepancyInference extends FhirR4Extendible1 {
+public final class LateralityDiscrepancyInference extends RadiologyInsightsInference {
 
     /*
      * Laterality indication : SNOMED CT code for laterality qualifier value.
