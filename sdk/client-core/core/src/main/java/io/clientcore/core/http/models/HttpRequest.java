@@ -128,9 +128,7 @@ public class HttpRequest {
         Objects.requireNonNull(url, "'url' cannot be null");
 
         try {
-            if (url != null) {
-                this.url = new URL(url);
-            }
+            this.url = new URL(url);
         } catch (MalformedURLException ex) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("'url' must be a valid URL.", ex));
         }
@@ -229,7 +227,7 @@ public class HttpRequest {
         return new HttpRequest(httpMethod, url)
             .setHeaders(new HttpHeaders(headers))
             .setBody(body)
-            .setOptions(options.copy())
+            .setOptions(options)
             .setRetryCount(retryCount);
     }
 

@@ -113,7 +113,6 @@ import java.util.function.Consumer;
  * <!-- end io.clientcore.core.http.rest.requestoptions.postrequest -->
  */
 public final class RequestOptions {
-    private boolean eagerlyConvertHeaders;
     private ClientLogger requestLogger;
     private Consumer<HttpRequest> requestCallback = request -> {
     };
@@ -153,15 +152,6 @@ public final class RequestOptions {
      */
     public ResponseBodyMode getResponseBodyMode() {
         return responseBodyMode;
-    }
-
-    /**
-     * Whether the response headers should be eagerly converted.
-     *
-     * @return Whether the response headers should be eagerly converted.
-     */
-    public boolean isEagerlyConvertHeaders() {
-        return eagerlyConvertHeaders;
     }
 
     /**
@@ -306,19 +296,6 @@ public final class RequestOptions {
     }
 
     /**
-     * Sets whether the response headers should be eagerly converted.
-     *
-     * @param eagerlyConvertHeaders Whether the response headers should be eagerly converted.
-     *
-     * @return The updated {@link RequestOptions} object.
-     */
-    public RequestOptions setEagerlyConvertHeaders(boolean eagerlyConvertHeaders) {
-        this.eagerlyConvertHeaders = eagerlyConvertHeaders;
-
-        return this;
-    }
-
-    /**
      * Sets the {@link ClientLogger} used to log during the request and response.
      *
      * @param requestLogger The {@link ClientLogger} used to log during the request and response.
@@ -329,21 +306,5 @@ public final class RequestOptions {
         this.requestLogger = requestLogger;
 
         return this;
-    }
-
-    /**
-     * Creates a copy of the request options.
-     *
-     * @return A new {@link RequestOptions} instance with the same values as the current instance.
-     */
-    public RequestOptions copy() {
-        RequestOptions copy = new RequestOptions();
-
-        copy.context = context;
-        copy.requestLogger = requestLogger;
-        copy.eagerlyConvertHeaders = eagerlyConvertHeaders;
-        copy.responseBodyMode = responseBodyMode;
-
-        return copy;
     }
 }

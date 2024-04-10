@@ -308,22 +308,6 @@ public abstract class HttpClientTests {
     }
 
     /**
-     * Tests that eagerly converting implementation HTTP headers to azure-core Headers is done.
-     */
-    @Test
-    public void eagerlyConvertedHeadersAreHeaders() throws IOException {
-        BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE))
-            .setBody(requestBody)
-            .setOptions(new RequestOptions().setEagerlyConvertHeaders(true));
-
-        try (Response<?> response = getHttpClient().send(request)) {
-            // Validate getHeaders type is Headers (not instanceof)
-            assertEquals(HttpHeaders.class, response.getHeaders().getClass());
-        }
-    }
-
-    /**
      * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
      *
      * @param requestBody The BinaryData that contains random bytes.
@@ -1771,8 +1755,7 @@ public abstract class HttpClientTests {
     public void canRecognizeServerSentEvent() {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(HttpMethod.POST, getRequestUrl(SSE_RESPONSE))
-            .setBody(requestBody)
-            .setOptions(new RequestOptions().setEagerlyConvertHeaders(false));
+            .setBody(requestBody);
 
         List<String> expected = Arrays.asList("YHOO", "+2", "10");
 

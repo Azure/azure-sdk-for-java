@@ -20,14 +20,9 @@ public class OkHttpResponse extends HttpResponse<BinaryData> {
     private final ResponseBody responseBody;
     private BinaryData body;
 
-    public OkHttpResponse(okhttp3.Response response, HttpRequest request, boolean eagerlyConvertHeaders,
-                          BinaryData body) {
-        super(request,
-            response.code(),
-            eagerlyConvertHeaders
-                ? fromOkHttpHeaders(response.headers())
-                : new OkHttpToCoreHttpHeadersWrapper(response.headers()),
-            null);
+    public OkHttpResponse(okhttp3.Response response, HttpRequest request, BinaryData body) {
+        super(request, response.code(), new OkHttpToCoreHttpHeadersWrapper(response.headers()), null);
+
         // innerResponse.body() getter will not return null for server returned responses.
         // It can be null:
         // [a]. if response is built manually with null body (e.g. for mocking)
