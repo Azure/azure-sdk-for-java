@@ -10,32 +10,23 @@ import com.azure.resourcemanager.cdn.models.WafMetric;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
-/** Samples for LogAnalytics GetWafLogAnalyticsMetrics. */
+/**
+ * Samples for LogAnalytics GetWafLogAnalyticsMetrics.
+ */
 public final class LogAnalyticsGetWafLogAnalyticsMetricsSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/LogAnalytics_GetWafLogAnalyticsMetrics.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/
+     * LogAnalytics_GetWafLogAnalyticsMetrics.json
      */
     /**
      * Sample code: LogAnalytics_GetWafLogAnalyticsMetrics.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void logAnalyticsGetWafLogAnalyticsMetrics(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cdnProfiles()
-            .manager()
-            .serviceClient()
-            .getLogAnalytics()
-            .getWafLogAnalyticsMetricsWithResponse(
-                "RG",
-                "profile1",
-                Arrays.asList(WafMetric.CLIENT_REQUEST_COUNT),
-                OffsetDateTime.parse("2020-11-04T06:49:27.554Z"),
-                OffsetDateTime.parse("2020-11-04T09:49:27.554Z"),
-                WafGranularity.PT5M,
-                Arrays.asList(WafAction.BLOCK, WafAction.LOG),
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
+        azure.cdnProfiles().manager().serviceClient().getLogAnalytics().getWafLogAnalyticsMetricsWithResponse("RG",
+            "profile1", Arrays.asList(WafMetric.CLIENT_REQUEST_COUNT), OffsetDateTime.parse("2020-11-04T06:49:27.554Z"),
+            OffsetDateTime.parse("2020-11-04T09:49:27.554Z"), WafGranularity.PT5M,
+            Arrays.asList(WafAction.BLOCK, WafAction.LOG), null, null, com.azure.core.util.Context.NONE);
     }
 }

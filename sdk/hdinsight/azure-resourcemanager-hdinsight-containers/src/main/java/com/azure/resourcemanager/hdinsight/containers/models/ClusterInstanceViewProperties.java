@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cluster Instance View Properties. */
+/**
+ * Cluster Instance View Properties.
+ */
 @Fluent
 public class ClusterInstanceViewProperties {
     /*
@@ -19,18 +21,20 @@ public class ClusterInstanceViewProperties {
     private ClusterInstanceViewPropertiesStatus status;
 
     /*
-     * List of statuses of relevant services that make up the HDInsight on aks cluster to surface to the customer.
+     * List of statuses of relevant services that make up the HDInsight on AKS cluster to surface to the customer.
      */
     @JsonProperty(value = "serviceStatuses", required = true)
     private List<ServiceStatus> serviceStatuses;
 
-    /** Creates an instance of ClusterInstanceViewProperties class. */
+    /**
+     * Creates an instance of ClusterInstanceViewProperties class.
+     */
     public ClusterInstanceViewProperties() {
     }
 
     /**
      * Get the status property: Status of the instance view.
-     *
+     * 
      * @return the status value.
      */
     public ClusterInstanceViewPropertiesStatus status() {
@@ -39,7 +43,7 @@ public class ClusterInstanceViewProperties {
 
     /**
      * Set the status property: Status of the instance view.
-     *
+     * 
      * @param status the status value to set.
      * @return the ClusterInstanceViewProperties object itself.
      */
@@ -49,9 +53,9 @@ public class ClusterInstanceViewProperties {
     }
 
     /**
-     * Get the serviceStatuses property: List of statuses of relevant services that make up the HDInsight on aks cluster
-     * to surface to the customer.
-     *
+     * Get the serviceStatuses property: List of statuses of relevant services that make up the HDInsight on AKS
+     * cluster to surface to the customer.
+     * 
      * @return the serviceStatuses value.
      */
     public List<ServiceStatus> serviceStatuses() {
@@ -59,9 +63,9 @@ public class ClusterInstanceViewProperties {
     }
 
     /**
-     * Set the serviceStatuses property: List of statuses of relevant services that make up the HDInsight on aks cluster
-     * to surface to the customer.
-     *
+     * Set the serviceStatuses property: List of statuses of relevant services that make up the HDInsight on AKS
+     * cluster to surface to the customer.
+     * 
      * @param serviceStatuses the serviceStatuses value to set.
      * @return the ClusterInstanceViewProperties object itself.
      */
@@ -72,23 +76,19 @@ public class ClusterInstanceViewProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model ClusterInstanceViewProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property status in model ClusterInstanceViewProperties"));
         } else {
             status().validate();
         }
         if (serviceStatuses() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serviceStatuses in model ClusterInstanceViewProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property serviceStatuses in model ClusterInstanceViewProperties"));
         } else {
             serviceStatuses().forEach(e -> e.validate());
         }

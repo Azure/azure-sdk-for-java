@@ -37,6 +37,7 @@ import com.azure.resourcemanager.storage.models.PrivateEndpointServiceConnection
 import com.azure.resourcemanager.storage.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.storage.models.ProvisioningState;
 import com.azure.resourcemanager.storage.models.PublicEndpoints;
+import com.azure.resourcemanager.storage.models.PublicNetworkAccess;
 import com.azure.resourcemanager.storage.models.Sku;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountCreateParameters;
@@ -278,6 +279,11 @@ class StorageAccountImpl
     @Override
     public String userAssignedIdentityIdForCustomerEncryptionKey() {
         return this.encryptionHelper.userAssignedIdentityIdForKeyVault(this.innerModel());
+    }
+
+    @Override
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
     }
 
     @Override
@@ -663,6 +669,26 @@ class StorageAccountImpl
             createParameters.withDefaultToOAuthAuthentication(false);
         } else {
             updateParameters.withDefaultToOAuthAuthentication(false);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl enablePublicNetworkAccess() {
+        if (isInCreateMode()) {
+            createParameters.withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        } else {
+            updateParameters.withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl disablePublicNetworkAccess() {
+        if (isInCreateMode()) {
+            createParameters.withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        } else {
+            updateParameters.withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         }
         return this;
     }

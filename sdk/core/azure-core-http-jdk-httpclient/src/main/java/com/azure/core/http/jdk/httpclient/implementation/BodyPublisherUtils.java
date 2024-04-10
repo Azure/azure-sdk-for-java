@@ -13,17 +13,19 @@ import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
 import reactor.adapter.JdkFlowAdapter;
+import reactor.core.publisher.Flux;
 
 import java.net.http.HttpRequest;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.concurrent.Flow;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.net.http.HttpRequest.BodyPublishers.fromPublisher;
 import static java.net.http.HttpRequest.BodyPublishers.noBody;
-import static java.net.http.HttpRequest.BodyPublishers.ofByteArray;
-import static java.net.http.HttpRequest.BodyPublishers.ofInputStream;
 
 /**
  * Utility class for BodyPublisher.
@@ -37,11 +39,12 @@ public final class BodyPublisherUtils {
      * If progress reporter is not null, configures it to track request body upload.
      *
      * @param request {@link com.azure.core.http.HttpRequest} instance
+     * @param writeTimeout write timeout
      * @param progressReporter optional progress reporter.
      * @return the request BodyPublisher
      */
     public static HttpRequest.BodyPublisher toBodyPublisher(com.azure.core.http.HttpRequest request,
-        ProgressReporter progressReporter) {
+        Duration writeTimeout, ProgressReporter progressReporter) {
         BinaryData body = request.getBodyAsBinaryData();
         if (body == null) {
             return noBody();
@@ -49,22 +52,49 @@ public final class BodyPublisherUtils {
 
         HttpRequest.BodyPublisher publisher;
         BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
+        Flux<ByteBuffer> fluxBody;
         if (bodyContent instanceof ByteArrayContent
             || bodyContent instanceof StringContent
             || bodyContent instanceof SerializableContent) {
             // String and serializable content also uses ofByteArray as ofString is just a wrapper for this,
             // so we might as well own the handling.
-            publisher = ofByteArray(bodyContent.toBytes());
+            byte[] bytes = bodyContent.toBytes();
+            fluxBody = Flux.defer(() -> {
+                AtomicInteger position = new AtomicInteger(0);
+
+                // This is used over the built-in JDK HttpClient method to send a byte array body as that performs a
+                // deep duplication of data, whereas this creates read-only ByteBuffers over the byte array content.
+                return Flux.generate(sink -> {
+                    int remaining = bytes.length - position.get();
+                    if (remaining == 0) {
+                        sink.complete();
+                    } else {
+                        int chunkSize = Math.min(remaining, 8192);
+                        sink.next(ByteBuffer.wrap(bytes, position.getAndAdd(chunkSize), chunkSize));
+                    }
+                });
+            });
         } else {
             if (bodyContent instanceof FileContent || bodyContent instanceof InputStreamContent) {
-                publisher = ofInputStream(bodyContent::toStream);
+                fluxBody = FluxUtil.toFluxByteBuffer(bodyContent.toStream());
             } else {
-                publisher = fromPublisher(JdkFlowAdapter.publisherToFlowPublisher(request.getBody()));
+                fluxBody = request.getBody();
             }
-
-            publisher
-                = toBodyPublisherWithLength(publisher, request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
         }
+
+        // Only apply the timeout if it exists and is positive.
+        if (writeTimeout != null && !writeTimeout.isNegative() && !writeTimeout.isZero()) {
+            fluxBody = fluxBody.timeout(writeTimeout);
+        }
+
+        // Further investigation into the factory methods in 'RequestBodyPublishers' shows that they buffer internally.
+        // Using those methods don't net us much in terms of performance and makes the write timeout story more
+        // difficult to implement.
+        //
+        // Use 'fromPublisher' to create a BodyPublisher from the Flux<ByteBuffer> that has a timeout applied if
+        // elements aren't request fast enough.
+        publisher = toBodyPublisherWithLength(fromPublisher(JdkFlowAdapter.publisherToFlowPublisher(fluxBody)),
+            request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
 
         return getPublisherWithReporter(publisher, progressReporter);
     }

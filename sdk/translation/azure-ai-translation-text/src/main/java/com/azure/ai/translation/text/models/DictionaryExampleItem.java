@@ -21,7 +21,7 @@ public final class DictionaryExampleItem {
      */
     @Generated
     @JsonProperty(value = "normalizedSource")
-    private String normalizedSource;
+    private final String normalizedSource;
 
     /*
      * A string giving the normalized form of the target term. Generally, this should be identical
@@ -29,14 +29,14 @@ public final class DictionaryExampleItem {
      */
     @Generated
     @JsonProperty(value = "normalizedTarget")
-    private String normalizedTarget;
+    private final String normalizedTarget;
 
     /*
      * A list of examples for the (source term, target term) pair.
      */
     @Generated
     @JsonProperty(value = "examples")
-    private List<DictionaryExample> examples;
+    private final List<DictionaryExample> examples;
 
     /**
      * Creates an instance of DictionaryExampleItem class.
@@ -56,8 +56,8 @@ public final class DictionaryExampleItem {
     }
 
     /**
-     * Get the normalizedSource property: A string giving the normalized form of the source term. Generally, this
-     * should be identical
+     * Get the normalizedSource property: A string giving the normalized form of the source term. Generally, this should
+     * be identical
      * to the value of the Text field at the matching list index in the body of the request.
      *
      * @return the normalizedSource value.
@@ -68,8 +68,8 @@ public final class DictionaryExampleItem {
     }
 
     /**
-     * Get the normalizedTarget property: A string giving the normalized form of the target term. Generally, this
-     * should be identical
+     * Get the normalizedTarget property: A string giving the normalized form of the target term. Generally, this should
+     * be identical
      * to the value of the Translation field at the matching list index in the body of the request.
      *
      * @return the normalizedTarget value.

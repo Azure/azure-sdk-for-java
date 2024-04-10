@@ -90,7 +90,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.11.3</version>
+    <version>1.11.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

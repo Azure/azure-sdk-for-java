@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.apachecommons.math.exception.NullArgumentException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -20,10 +21,13 @@ import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import io.reactivex.subscribers.TestSubscriber;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -31,7 +35,9 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -484,6 +490,67 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         feedResponseIterator = createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
         assertThat(feedResponseIterator.stream().toArray().length).isEqualTo(0);
         deleteAllItems();
+    }
+
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
+    private void fromObjectArrayTests() {
+        CityItem cityItem = new CityItem(UUID.randomUUID().toString(), "Redmond", "98052", 1);
+
+        // Test functionality
+        Object[] values = new Object[3];
+        values[0] = cityItem.getCity();
+        values[1] = cityItem.getZipcode();
+        values[2] = cityItem.getAreaCode();
+        PartitionKey test = PartitionKeyBuilder.fromObjectArray(values, false);
+        assertThat(test.toString()).isEqualTo("[\"Redmond\",\"98052\",1.0]");
+
+        // Test invalid input for values
+        try {
+            PartitionKey testError = PartitionKeyBuilder.fromObjectArray(null, false);
+            Assert.fail();
+        } catch (NullPointerException e) {
+            assertThat(e.getMessage()).isEqualTo("Argument 'values' must not be null.");
+        }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    private void extractPartitionKeyFromDocumentTests() throws JsonProcessingException {
+        CityItem cityItem = new CityItem(UUID.randomUUID().toString(), "Redmond", "98052", 1);
+
+        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+        partitionKeyDefinition.setKind(PartitionKind.MULTI_HASH);
+        partitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2);
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/city");
+        paths.add("/zipcode");
+        paths.add("/areaCode");
+        partitionKeyDefinition.setPaths(paths);
+
+        // Test functionality
+        ObjectMapper om = new ObjectMapper();
+        Map<String, Object> mapObject = (Map<String, Object>)om.convertValue(cityItem,
+            new ConcurrentHashMap<String, Object>().getClass());
+        PartitionKey test = PartitionKeyBuilder.extractPartitionKey(
+            mapObject, partitionKeyDefinition);
+        assertThat(test.toString()).isEqualTo("[\"Redmond\",\"98052\",1.0]");
+
+        // Test invalid input for item
+        try {
+            PartitionKey testDocumentError = PartitionKeyBuilder.extractPartitionKey(
+                null, partitionKeyDefinition);
+            Assert.fail();
+        } catch (NullPointerException e) {
+            assertThat(e.getMessage()).isEqualTo("Argument 'item' must not be null.");
+        }
+
+        // Test invalid input for partitionKeyDefinition
+        try {
+            PartitionKey testDocumentError = PartitionKeyBuilder.extractPartitionKey(
+                mapObject, null);
+            Assert.fail();
+        } catch (NullPointerException e) {
+            assertThat(e.getMessage()).isEqualTo("Argument 'partitionKeyDefinition' must not be null.");
+        }
     }
 
     private ArrayList<CityItem> createItems() {

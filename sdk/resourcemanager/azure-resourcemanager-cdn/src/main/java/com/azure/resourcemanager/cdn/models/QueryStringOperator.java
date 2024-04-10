@@ -8,41 +8,63 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes operator to be matched. */
+/**
+ * Describes operator to be matched.
+ */
 public final class QueryStringOperator extends ExpandableStringEnum<QueryStringOperator> {
-    /** Static value Any for QueryStringOperator. */
+    /**
+     * Static value Any for QueryStringOperator.
+     */
     public static final QueryStringOperator ANY = fromString("Any");
 
-    /** Static value Equal for QueryStringOperator. */
+    /**
+     * Static value Equal for QueryStringOperator.
+     */
     public static final QueryStringOperator EQUAL = fromString("Equal");
 
-    /** Static value Contains for QueryStringOperator. */
+    /**
+     * Static value Contains for QueryStringOperator.
+     */
     public static final QueryStringOperator CONTAINS = fromString("Contains");
 
-    /** Static value BeginsWith for QueryStringOperator. */
+    /**
+     * Static value BeginsWith for QueryStringOperator.
+     */
     public static final QueryStringOperator BEGINS_WITH = fromString("BeginsWith");
 
-    /** Static value EndsWith for QueryStringOperator. */
+    /**
+     * Static value EndsWith for QueryStringOperator.
+     */
     public static final QueryStringOperator ENDS_WITH = fromString("EndsWith");
 
-    /** Static value LessThan for QueryStringOperator. */
+    /**
+     * Static value LessThan for QueryStringOperator.
+     */
     public static final QueryStringOperator LESS_THAN = fromString("LessThan");
 
-    /** Static value LessThanOrEqual for QueryStringOperator. */
+    /**
+     * Static value LessThanOrEqual for QueryStringOperator.
+     */
     public static final QueryStringOperator LESS_THAN_OR_EQUAL = fromString("LessThanOrEqual");
 
-    /** Static value GreaterThan for QueryStringOperator. */
+    /**
+     * Static value GreaterThan for QueryStringOperator.
+     */
     public static final QueryStringOperator GREATER_THAN = fromString("GreaterThan");
 
-    /** Static value GreaterThanOrEqual for QueryStringOperator. */
+    /**
+     * Static value GreaterThanOrEqual for QueryStringOperator.
+     */
     public static final QueryStringOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
-    /** Static value RegEx for QueryStringOperator. */
+    /**
+     * Static value RegEx for QueryStringOperator.
+     */
     public static final QueryStringOperator REG_EX = fromString("RegEx");
 
     /**
      * Creates a new instance of QueryStringOperator value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -51,7 +73,7 @@ public final class QueryStringOperator extends ExpandableStringEnum<QueryStringO
 
     /**
      * Creates or finds a QueryStringOperator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding QueryStringOperator.
      */
@@ -62,7 +84,7 @@ public final class QueryStringOperator extends ExpandableStringEnum<QueryStringO
 
     /**
      * Gets known QueryStringOperator values.
-     *
+     * 
      * @return known QueryStringOperator values.
      */
     public static Collection<QueryStringOperator> values() {
