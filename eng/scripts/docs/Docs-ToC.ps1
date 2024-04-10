@@ -162,9 +162,6 @@ function Fetch-Namespaces-From-Javadoc($package, $groupId, $version) {
         if ($LASTEXITCODE -ne 0) {
             LogWarning "Could not download javadoc artifact: $artifact"
             $mvnResults | Write-Host
-            # JRS-Remove, done to ensure the output we're seeing is from
-            # the maven command
-            Write-Host "Testing...1,2,3"
         } else {
             # Unpack the Jar file
             $javadocLocation = "$tempDirectory/$package-$version-javadoc.jar"
@@ -174,7 +171,7 @@ function Fetch-Namespaces-From-Javadoc($package, $groupId, $version) {
             [System.IO.Compression.ZipFile]::ExtractToDirectory($javadocLocation, $unpackDirectory)
             if (Test-Path "$unpackDirectory/element-list") {
                 # Grab the namespaces from the element-list.
-                Write-Host "processing element-list"
+                Write-Host "Fetching Namespaces: processing element-list"
                 foreach($line in [System.IO.File]::ReadLines("$unpackDirectory/element-list")) {
                     if (-not [string]::IsNullOrWhiteSpace($line)) {
                         $namespaces += $line
@@ -183,12 +180,14 @@ function Fetch-Namespaces-From-Javadoc($package, $groupId, $version) {
             }
             elseif (Test-Path "$unpackDirectory/overview-frame.html") {
                 # Grab the namespaces from the overview-frame.html's package elements
+                Write-Host "Fetching Namespaces: processing overview-frame.html"
                 $htmlBody = Get-Content "$unpackDirectory/overview-frame.html"
                 $packages = [RegEx]::Matches($htmlBody, "<li><a.*?>(?<package>.*?)<\/a><\/li>")
                 $namespaces = $packages | ForEach-Object { $_.Groups["package"].Value }
             }
             elseif (Test-Path "$unpackDirectory/com") {
                 # If all else fails, scrape the namespaces from the directories
+                Write-Host "Fetching Namespaces: searching the /com directores"
                 $originLocation = Get-Location
                 try {
                     Set-Location $unpackDirectory
