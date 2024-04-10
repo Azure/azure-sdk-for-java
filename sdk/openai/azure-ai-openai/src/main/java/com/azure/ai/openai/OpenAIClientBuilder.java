@@ -358,6 +358,6 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
      * "https://api.openai.com/"
      */
     private boolean useNonAzureOpenAIService() {
-        return endpoint == null || endpoint.startsWith(OPEN_AI_ENDPOINT);
+        return endpoint == null || ! endpoint.contains("azure.com");
     }
 }
