@@ -4,8 +4,6 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.models.CloudEvent;
-import com.azure.messaging.eventgrid.systemevents.AcsAdvancedMessageDeliveryStatusUpdatedEventData;
-import com.azure.messaging.eventgrid.systemevents.AcsAdvancedMessageReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMessageDeletedEventData;
@@ -27,6 +25,8 @@ import com.azure.messaging.eventgrid.systemevents.AcsChatThreadWithUserDeletedEv
 import com.azure.messaging.eventgrid.systemevents.AcsEmailDeliveryReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsEmailEngagementTrackingReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsIncomingCallEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsMessageDeliveryStatusUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsMessageReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsRecordingFileStatusUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsRouterJobCancelledEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsRouterJobClassificationFailedEventData;
@@ -239,19 +239,6 @@ import java.util.Map;
  */
 public final class SystemEventNames {
     /**
-     * Schema of the Data property of an EventGridEvent for a
-     * Microsoft.Communication.AdvancedMessageDeliveryStatusUpdated event.
-     */
-    public static final String COMMUNICATION_ADVANCED_MESSAGE_DELIVERY_STATUS_UPDATED
-        = "Microsoft.Communication.AdvancedMessageDeliveryStatusUpdated";
-
-    /**
-     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.AdvancedMessageReceived event.
-     */
-    public static final String COMMUNICATION_ADVANCED_MESSAGE_RECEIVED
-        = "Microsoft.Communication.AdvancedMessageReceived";
-
-    /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageDeleted event.
      */
     public static final String COMMUNICATION_CHAT_MESSAGE_DELETED = "Microsoft.Communication.ChatMessageDeleted";
@@ -363,6 +350,18 @@ public final class SystemEventNames {
      * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.IncomingCall event.
      */
     public static final String COMMUNICATION_INCOMING_CALL = "Microsoft.Communication.IncomingCall";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.Communication.AdvancedMessageDeliveryStatusUpdated event.
+     */
+    public static final String COMMUNICATION_MESSAGE_DELIVERY_STATUS_UPDATED
+        = "Microsoft.Communication.AdvancedMessageDeliveryStatusUpdated";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.AdvancedMessageReceived event.
+     */
+    public static final String COMMUNICATION_MESSAGE_RECEIVED = "Microsoft.Communication.AdvancedMessageReceived";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RecordingFileStatusUpdated event.
@@ -1475,9 +1474,6 @@ public final class SystemEventNames {
         = "Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser";
     private static final Map<String, Class<?>> SYSTEM_EVENT_MAPPINGS = new HashMap<String, Class<?>>() {
         {
-            put(COMMUNICATION_ADVANCED_MESSAGE_DELIVERY_STATUS_UPDATED,
-                AcsAdvancedMessageDeliveryStatusUpdatedEventData.class);
-            put(COMMUNICATION_ADVANCED_MESSAGE_RECEIVED, AcsAdvancedMessageReceivedEventData.class);
             put(COMMUNICATION_CHAT_MESSAGE_DELETED, AcsChatMessageDeletedEventData.class);
             put(COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD, AcsChatMessageDeletedInThreadEventData.class);
             put(COMMUNICATION_CHAT_MESSAGE_EDITED, AcsChatMessageEditedEventData.class);
@@ -1501,6 +1497,8 @@ public final class SystemEventNames {
             put(COMMUNICATION_EMAIL_ENGAGEMENT_TRACKING_REPORT_RECEIVED,
                 AcsEmailEngagementTrackingReportReceivedEventData.class);
             put(COMMUNICATION_INCOMING_CALL, AcsIncomingCallEventData.class);
+            put(COMMUNICATION_MESSAGE_DELIVERY_STATUS_UPDATED, AcsMessageDeliveryStatusUpdatedEventData.class);
+            put(COMMUNICATION_MESSAGE_RECEIVED, AcsMessageReceivedEventData.class);
             put(COMMUNICATION_RECORDING_FILE_STATUS_UPDATED, AcsRecordingFileStatusUpdatedEventData.class);
             put(COMMUNICATION_ROUTER_JOB_CANCELLED, AcsRouterJobCancelledEventData.class);
             put(COMMUNICATION_ROUTER_JOB_CLASSIFICATION_FAILED, AcsRouterJobClassificationFailedEventData.class);

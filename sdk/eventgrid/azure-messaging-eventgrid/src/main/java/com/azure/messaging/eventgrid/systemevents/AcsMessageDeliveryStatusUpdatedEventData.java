@@ -8,7 +8,6 @@ import com.azure.core.models.ResponseError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.messaging.eventgrid.implementation.models.AcsAdvancedMessageChannelEventError;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,7 +17,7 @@ import java.time.format.DateTimeFormatter;
  * event.
  */
 @Fluent
-public final class AcsAdvancedMessageDeliveryStatusUpdatedEventData extends AcsAdvancedMessageEventData {
+public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEventData {
 
     /*
      * The message id
@@ -28,7 +27,7 @@ public final class AcsAdvancedMessageDeliveryStatusUpdatedEventData extends AcsA
     /*
      * The updated message status
      */
-    private AcsAdvancedMessageDeliveryStatus status;
+    private AcsMessageDeliveryStatus status;
 
     /*
      * The updated message channel type
@@ -36,9 +35,9 @@ public final class AcsAdvancedMessageDeliveryStatusUpdatedEventData extends AcsA
     private AcsMessageChannelKind channelKind;
 
     /**
-     * Creates an instance of AcsAdvancedMessageDeliveryStatusUpdatedEventData class.
+     * Creates an instance of AcsMessageDeliveryStatusUpdatedEventData class.
      */
-    public AcsAdvancedMessageDeliveryStatusUpdatedEventData() {
+    public AcsMessageDeliveryStatusUpdatedEventData() {
     }
 
     /**
@@ -54,9 +53,9 @@ public final class AcsAdvancedMessageDeliveryStatusUpdatedEventData extends AcsA
      * Set the messageId property: The message id.
      *
      * @param messageId the messageId value to set.
-     * @return the AcsAdvancedMessageDeliveryStatusUpdatedEventData object itself.
+     * @return the AcsMessageDeliveryStatusUpdatedEventData object itself.
      */
-    public AcsAdvancedMessageDeliveryStatusUpdatedEventData setMessageId(String messageId) {
+    public AcsMessageDeliveryStatusUpdatedEventData setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
     }
@@ -66,7 +65,7 @@ public final class AcsAdvancedMessageDeliveryStatusUpdatedEventData extends AcsA
      *
      * @return the status value.
      */
-    public AcsAdvancedMessageDeliveryStatus getStatus() {
+    public AcsMessageDeliveryStatus getStatus() {
         return this.status;
     }
 
@@ -74,9 +73,9 @@ public final class AcsAdvancedMessageDeliveryStatusUpdatedEventData extends AcsA
      * Set the status property: The updated message status.
      *
      * @param status the status value to set.
-     * @return the AcsAdvancedMessageDeliveryStatusUpdatedEventData object itself.
+     * @return the AcsMessageDeliveryStatusUpdatedEventData object itself.
      */
-    public AcsAdvancedMessageDeliveryStatusUpdatedEventData setStatus(AcsAdvancedMessageDeliveryStatus status) {
+    public AcsMessageDeliveryStatusUpdatedEventData setStatus(AcsMessageDeliveryStatus status) {
         this.status = status;
         return this;
     }
@@ -94,9 +93,9 @@ public final class AcsAdvancedMessageDeliveryStatusUpdatedEventData extends AcsA
      * Set the channelKind property: The updated message channel type.
      *
      * @param channelKind the channelKind value to set.
-     * @return the AcsAdvancedMessageDeliveryStatusUpdatedEventData object itself.
+     * @return the AcsMessageDeliveryStatusUpdatedEventData object itself.
      */
-    public AcsAdvancedMessageDeliveryStatusUpdatedEventData setChannelKind(AcsMessageChannelKind channelKind) {
+    public AcsMessageDeliveryStatusUpdatedEventData setChannelKind(AcsMessageChannelKind channelKind) {
         this.channelKind = channelKind;
         return this;
     }
@@ -105,7 +104,7 @@ public final class AcsAdvancedMessageDeliveryStatusUpdatedEventData extends AcsA
      * {@inheritDoc}
      */
     @Override
-    public AcsAdvancedMessageDeliveryStatusUpdatedEventData setFrom(String from) {
+    public AcsMessageDeliveryStatusUpdatedEventData setFrom(String from) {
         super.setFrom(from);
         return this;
     }
@@ -114,7 +113,7 @@ public final class AcsAdvancedMessageDeliveryStatusUpdatedEventData extends AcsA
      * {@inheritDoc}
      */
     @Override
-    public AcsAdvancedMessageDeliveryStatusUpdatedEventData setTo(String to) {
+    public AcsMessageDeliveryStatusUpdatedEventData setTo(String to) {
         super.setTo(to);
         return this;
     }
@@ -123,7 +122,7 @@ public final class AcsAdvancedMessageDeliveryStatusUpdatedEventData extends AcsA
      * {@inheritDoc}
      */
     @Override
-    public AcsAdvancedMessageDeliveryStatusUpdatedEventData setReceivedTimestamp(OffsetDateTime receivedTimestamp) {
+    public AcsMessageDeliveryStatusUpdatedEventData setReceivedTimestamp(OffsetDateTime receivedTimestamp) {
         super.setReceivedTimestamp(receivedTimestamp);
         return this;
     }
@@ -143,43 +142,43 @@ public final class AcsAdvancedMessageDeliveryStatusUpdatedEventData extends AcsA
     }
 
     /**
-     * Reads an instance of AcsAdvancedMessageDeliveryStatusUpdatedEventData from the JsonReader.
+     * Reads an instance of AcsMessageDeliveryStatusUpdatedEventData from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsAdvancedMessageDeliveryStatusUpdatedEventData if the JsonReader was pointing to an
-     * instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AcsAdvancedMessageDeliveryStatusUpdatedEventData.
+     * @return An instance of AcsMessageDeliveryStatusUpdatedEventData if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsMessageDeliveryStatusUpdatedEventData.
      */
-    public static AcsAdvancedMessageDeliveryStatusUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
+    public static AcsMessageDeliveryStatusUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsAdvancedMessageDeliveryStatusUpdatedEventData deserializedAcsAdvancedMessageDeliveryStatusUpdatedEventData
-                = new AcsAdvancedMessageDeliveryStatusUpdatedEventData();
+            AcsMessageDeliveryStatusUpdatedEventData deserializedAcsMessageDeliveryStatusUpdatedEventData
+                = new AcsMessageDeliveryStatusUpdatedEventData();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("from".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageDeliveryStatusUpdatedEventData.setFrom(reader.getString());
+                    deserializedAcsMessageDeliveryStatusUpdatedEventData.setFrom(reader.getString());
                 } else if ("to".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageDeliveryStatusUpdatedEventData.setTo(reader.getString());
+                    deserializedAcsMessageDeliveryStatusUpdatedEventData.setTo(reader.getString());
                 } else if ("receivedTimestamp".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageDeliveryStatusUpdatedEventData.setReceivedTimestamp(
+                    deserializedAcsMessageDeliveryStatusUpdatedEventData.setReceivedTimestamp(
                         reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("error".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageDeliveryStatusUpdatedEventData
-                        .setError(AcsAdvancedMessageChannelEventError.fromJson(reader));
+                    deserializedAcsMessageDeliveryStatusUpdatedEventData
+                        .setError(AcsMessageChannelEventError.fromJson(reader));
                 } else if ("messageId".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageDeliveryStatusUpdatedEventData.messageId = reader.getString();
+                    deserializedAcsMessageDeliveryStatusUpdatedEventData.messageId = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageDeliveryStatusUpdatedEventData.status
-                        = AcsAdvancedMessageDeliveryStatus.fromString(reader.getString());
+                    deserializedAcsMessageDeliveryStatusUpdatedEventData.status
+                        = AcsMessageDeliveryStatus.fromString(reader.getString());
                 } else if ("channelType".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageDeliveryStatusUpdatedEventData.channelKind
+                    deserializedAcsMessageDeliveryStatusUpdatedEventData.channelKind
                         = AcsMessageChannelKind.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedAcsAdvancedMessageDeliveryStatusUpdatedEventData;
+            return deserializedAcsMessageDeliveryStatusUpdatedEventData;
         });
     }
 
@@ -187,9 +186,9 @@ public final class AcsAdvancedMessageDeliveryStatusUpdatedEventData extends AcsA
      * Set the error property: The channel error code and message.
      *
      * @param error The ResponseError object containing error code and message.
-     * @return the AcsAdvancedMessageDeliveryStatusUpdatedEventData object itself.
+     * @return the AcsMessageDeliveryStatusUpdatedEventData object itself.
      */
-    public AcsAdvancedMessageDeliveryStatusUpdatedEventData setError(ResponseError error) {
+    public AcsMessageDeliveryStatusUpdatedEventData setError(ResponseError error) {
         super.setError(error);
         return this;
     }

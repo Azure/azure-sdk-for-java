@@ -246,7 +246,16 @@ public class EventGridCustomization extends Customization {
         customizeAcsRouterEvents(customization);
         customizeResourceNotificationEvents(customization);
         customizeCommunicationIdentifierModelKind(customization);
-        customizeAcsAdvancedMessageChannelEventError(customization);
+        customizeAcsMessageChannelEventError(customization);
+        customizeCentralCommuicationEvents(customization);
+    }
+
+    public void customizeCentralCommuicationEvents(LibraryCustomization customization) {
+        // these events come from a json outside of EventGrid so we can't change the swagger
+        Arrays.asList("MicrosoftTeamsAppIdentifier", "CommunicationIdentifierKind").forEach(name -> {
+            ClassCustomization classCustomization = customization.getPackage("com.azure.messaging.eventgrid.systemevents").getClass(name);
+            classCustomization.rename("Acs" + name);
+        });
     }
 
     public void customizeResourceEvents(LibraryCustomization customization, Logger logger) {
@@ -342,13 +351,13 @@ public class EventGridCustomization extends Customization {
     }
 
 
-    public void customizeAcsAdvancedMessageChannelEventError(LibraryCustomization customization) {
+    public void customizeAcsMessageChannelEventError(LibraryCustomization customization) {
         PackageCustomization packageCustomization = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
 
-        ClassCustomization classCustomization = packageCustomization.getClass("AcsAdvancedMessageEventData");
+        ClassCustomization classCustomization = packageCustomization.getClass("AcsMessageEventData");
         classCustomization.addImports("com.azure.core.models.ResponseError");
         classCustomization.customizeAst(comp -> {
-           ClassOrInterfaceDeclaration clazz = comp.getClassByName("AcsAdvancedMessageEventData").get();
+           ClassOrInterfaceDeclaration clazz = comp.getClassByName("AcsMessageEventData").get();
            // Fix up the getError method to always return a ResponseError.
            clazz.getMethodsByName("getError").forEach(m -> {
                m.setType("ResponseError")
@@ -367,15 +376,15 @@ public class EventGridCustomization extends Customization {
            });
            // Add the new setError method that takes a ResonseError.
            MethodDeclaration m = clazz.addMethod("setError", Keyword.PUBLIC);
-           m.setType("AcsAdvancedMessageEventData");
+           m.setType("AcsMessageEventData");
            m.addParameter("ResponseError", "error");
-           m.setBody(parseBlock("{ this.error = new AcsAdvancedMessageChannelEventError().setChannelCode(error.getCode()).setChannelMessage(error.getMessage()); return this; }"))
+           m.setBody(parseBlock("{ this.error = new AcsMessageChannelEventError().setChannelCode(error.getCode()).setChannelMessage(error.getMessage()); return this; }"))
                .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Set the error property: The channel error code and message."))))
                    .addBlockTag("param", "error The ResponseError object containing error code and message.")
-                   .addBlockTag("return", "the AcsAdvancedMessageEventData object itself."));
+                   .addBlockTag("return", "the AcsMessageEventData object itself."));
         });
 
-        Arrays.asList("AcsAdvancedMessageDeliveryStatusUpdatedEventData", "AcsAdvancedMessageReceivedEventData").forEach(name -> {
+        Arrays.asList("AcsMessageDeliveryStatusUpdatedEventData", "AcsMessageReceivedEventData").forEach(name -> {
             ClassCustomization localClass = packageCustomization.getClass(name);
             localClass.addImports("com.azure.core.models.ResponseError");
             localClass.customizeAst(comp -> {

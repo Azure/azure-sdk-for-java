@@ -10,31 +10,31 @@ import java.util.Collection;
 /**
  * The identifier kind, for example 'communicationUser' or 'phoneNumber'.
  */
-public final class CommunicationIdentifierKind extends ExpandableStringEnum<CommunicationIdentifierKind> {
+public final class AcsCommunicationIdentifierKind extends ExpandableStringEnum<AcsCommunicationIdentifierKind> {
     /**
      * Static value unknown for CommunicationIdentifierModelKind.
      */
-    public static final CommunicationIdentifierKind UNKNOWN = fromString("unknown");
+    public static final AcsCommunicationIdentifierKind UNKNOWN = fromString("unknown");
 
     /**
      * Static value communicationUser for CommunicationIdentifierModelKind.
      */
-    public static final CommunicationIdentifierKind COMMUNICATION_USER = fromString("communicationUser");
+    public static final AcsCommunicationIdentifierKind COMMUNICATION_USER = fromString("communicationUser");
 
     /**
      * Static value phoneNumber for CommunicationIdentifierModelKind.
      */
-    public static final CommunicationIdentifierKind PHONE_NUMBER = fromString("phoneNumber");
+    public static final AcsCommunicationIdentifierKind PHONE_NUMBER = fromString("phoneNumber");
 
     /**
      * Static value microsoftTeamsUser for CommunicationIdentifierModelKind.
      */
-    public static final CommunicationIdentifierKind MICROSOFT_TEAMS_USER = fromString("microsoftTeamsUser");
+    public static final AcsCommunicationIdentifierKind MICROSOFT_TEAMS_USER = fromString("microsoftTeamsUser");
 
     /**
      * Static value microsoftTeamsApp for CommunicationIdentifierModelKind.
      */
-    public static final CommunicationIdentifierKind MICROSOFT_TEAMS_APP = fromString("microsoftTeamsApp");
+    public static final AcsCommunicationIdentifierKind MICROSOFT_TEAMS_APP = fromString("microsoftTeamsApp");
 
     /**
      * Creates a new instance of CommunicationIdentifierModelKind value.
@@ -42,7 +42,7 @@ public final class CommunicationIdentifierKind extends ExpandableStringEnum<Comm
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public CommunicationIdentifierKind() {
+    public AcsCommunicationIdentifierKind() {
     }
 
     /**
@@ -51,8 +51,8 @@ public final class CommunicationIdentifierKind extends ExpandableStringEnum<Comm
      * @param name a name to look for.
      * @return the corresponding CommunicationIdentifierModelKind.
      */
-    public static CommunicationIdentifierKind fromString(String name) {
-        return fromString(name, CommunicationIdentifierKind.class);
+    public static AcsCommunicationIdentifierKind fromString(String name) {
+        return fromString(name, AcsCommunicationIdentifierKind.class);
     }
 
     /**
@@ -60,7 +60,7 @@ public final class CommunicationIdentifierKind extends ExpandableStringEnum<Comm
      * 
      * @return known CommunicationIdentifierModelKind values.
      */
-    public static Collection<CommunicationIdentifierKind> values() {
-        return values(CommunicationIdentifierKind.class);
+    public static Collection<AcsCommunicationIdentifierKind> values() {
+        return values(AcsCommunicationIdentifierKind.class);
     }
 }

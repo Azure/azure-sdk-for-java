@@ -12,11 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Advanced Message Interactive Content.
+ * Message Interactive Content.
  */
 @Fluent
-public final class AcsAdvancedMessageInteractiveContent
-    implements JsonSerializable<AcsAdvancedMessageInteractiveContent> {
+public final class AcsMessageInteractiveContent implements JsonSerializable<AcsMessageInteractiveContent> {
     /*
      * The Message interactive reply type
      */
@@ -25,17 +24,17 @@ public final class AcsAdvancedMessageInteractiveContent
     /*
      * The Message Sent when a customer clicks a button
      */
-    private AcsAdvancedMessageInteractiveButtonReplyContent buttonReply;
+    private AcsMessageInteractiveButtonReplyContent buttonReply;
 
     /*
      * The Message Sent when a customer selects an item from a list
      */
-    private AcsAdvancedMessageInteractiveListReplyContent listReply;
+    private AcsMessageInteractiveListReplyContent listReply;
 
     /**
-     * Creates an instance of AcsAdvancedMessageInteractiveContent class.
+     * Creates an instance of AcsMessageInteractiveContent class.
      */
-    public AcsAdvancedMessageInteractiveContent() {
+    public AcsMessageInteractiveContent() {
     }
 
     /**
@@ -51,9 +50,9 @@ public final class AcsAdvancedMessageInteractiveContent
      * Set the replyKind property: The Message interactive reply type.
      * 
      * @param replyKind the replyKind value to set.
-     * @return the AcsAdvancedMessageInteractiveContent object itself.
+     * @return the AcsMessageInteractiveContent object itself.
      */
-    public AcsAdvancedMessageInteractiveContent setReplyKind(AcsInteractiveReplyKind replyKind) {
+    public AcsMessageInteractiveContent setReplyKind(AcsInteractiveReplyKind replyKind) {
         this.replyKind = replyKind;
         return this;
     }
@@ -63,7 +62,7 @@ public final class AcsAdvancedMessageInteractiveContent
      * 
      * @return the buttonReply value.
      */
-    public AcsAdvancedMessageInteractiveButtonReplyContent getButtonReply() {
+    public AcsMessageInteractiveButtonReplyContent getButtonReply() {
         return this.buttonReply;
     }
 
@@ -71,10 +70,9 @@ public final class AcsAdvancedMessageInteractiveContent
      * Set the buttonReply property: The Message Sent when a customer clicks a button.
      * 
      * @param buttonReply the buttonReply value to set.
-     * @return the AcsAdvancedMessageInteractiveContent object itself.
+     * @return the AcsMessageInteractiveContent object itself.
      */
-    public AcsAdvancedMessageInteractiveContent
-        setButtonReply(AcsAdvancedMessageInteractiveButtonReplyContent buttonReply) {
+    public AcsMessageInteractiveContent setButtonReply(AcsMessageInteractiveButtonReplyContent buttonReply) {
         this.buttonReply = buttonReply;
         return this;
     }
@@ -84,7 +82,7 @@ public final class AcsAdvancedMessageInteractiveContent
      * 
      * @return the listReply value.
      */
-    public AcsAdvancedMessageInteractiveListReplyContent getListReply() {
+    public AcsMessageInteractiveListReplyContent getListReply() {
         return this.listReply;
     }
 
@@ -92,9 +90,9 @@ public final class AcsAdvancedMessageInteractiveContent
      * Set the listReply property: The Message Sent when a customer selects an item from a list.
      * 
      * @param listReply the listReply value to set.
-     * @return the AcsAdvancedMessageInteractiveContent object itself.
+     * @return the AcsMessageInteractiveContent object itself.
      */
-    public AcsAdvancedMessageInteractiveContent setListReply(AcsAdvancedMessageInteractiveListReplyContent listReply) {
+    public AcsMessageInteractiveContent setListReply(AcsMessageInteractiveListReplyContent listReply) {
         this.listReply = listReply;
         return this;
     }
@@ -109,36 +107,35 @@ public final class AcsAdvancedMessageInteractiveContent
     }
 
     /**
-     * Reads an instance of AcsAdvancedMessageInteractiveContent from the JsonReader.
+     * Reads an instance of AcsMessageInteractiveContent from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsAdvancedMessageInteractiveContent if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AcsAdvancedMessageInteractiveContent.
+     * @return An instance of AcsMessageInteractiveContent if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsMessageInteractiveContent.
      */
-    public static AcsAdvancedMessageInteractiveContent fromJson(JsonReader jsonReader) throws IOException {
+    public static AcsMessageInteractiveContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsAdvancedMessageInteractiveContent deserializedAcsAdvancedMessageInteractiveContent
-                = new AcsAdvancedMessageInteractiveContent();
+            AcsMessageInteractiveContent deserializedAcsMessageInteractiveContent = new AcsMessageInteractiveContent();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("type".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageInteractiveContent.replyKind
+                    deserializedAcsMessageInteractiveContent.replyKind
                         = AcsInteractiveReplyKind.fromString(reader.getString());
                 } else if ("buttonReply".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageInteractiveContent.buttonReply
-                        = AcsAdvancedMessageInteractiveButtonReplyContent.fromJson(reader);
+                    deserializedAcsMessageInteractiveContent.buttonReply
+                        = AcsMessageInteractiveButtonReplyContent.fromJson(reader);
                 } else if ("listReply".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageInteractiveContent.listReply
-                        = AcsAdvancedMessageInteractiveListReplyContent.fromJson(reader);
+                    deserializedAcsMessageInteractiveContent.listReply
+                        = AcsMessageInteractiveListReplyContent.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedAcsAdvancedMessageInteractiveContent;
+            return deserializedAcsMessageInteractiveContent;
         });
     }
 }

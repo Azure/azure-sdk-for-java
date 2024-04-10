@@ -21,7 +21,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
     /*
      * The identifier kind. Only required in responses.
      */
-    private CommunicationIdentifierKind kind;
+    private AcsCommunicationIdentifierKind kind;
 
     /*
      * Raw Id of the identifier. Optional in requests, required in responses.
@@ -46,7 +46,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
     /*
      * The Microsoft Teams application.
      */
-    private MicrosoftTeamsAppIdentifier microsoftTeamsApp;
+    private AcsMicrosoftTeamsAppIdentifier microsoftTeamsApp;
 
     /**
      * Creates an instance of CommunicationIdentifierModel class.
@@ -59,7 +59,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * 
      * @return the kind value.
      */
-    public CommunicationIdentifierKind getKind() {
+    public AcsCommunicationIdentifierKind getKind() {
         return this.kind;
     }
 
@@ -69,7 +69,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * @param kind the kind value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
-    public CommunicationIdentifierModel setKind(CommunicationIdentifierKind kind) {
+    public CommunicationIdentifierModel setKind(AcsCommunicationIdentifierKind kind) {
         this.kind = kind;
         return this;
     }
@@ -159,7 +159,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * 
      * @return the microsoftTeamsApp value.
      */
-    public MicrosoftTeamsAppIdentifier getMicrosoftTeamsApp() {
+    public AcsMicrosoftTeamsAppIdentifier getMicrosoftTeamsApp() {
         return this.microsoftTeamsApp;
     }
 
@@ -169,7 +169,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * @param microsoftTeamsApp the microsoftTeamsApp value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
-    public CommunicationIdentifierModel setMicrosoftTeamsApp(MicrosoftTeamsAppIdentifier microsoftTeamsApp) {
+    public CommunicationIdentifierModel setMicrosoftTeamsApp(AcsMicrosoftTeamsAppIdentifier microsoftTeamsApp) {
         this.microsoftTeamsApp = microsoftTeamsApp;
         return this;
     }
@@ -203,7 +203,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
 
                 if ("kind".equals(fieldName)) {
                     deserializedCommunicationIdentifierModel.kind
-                        = CommunicationIdentifierKind.fromString(reader.getString());
+                        = AcsCommunicationIdentifierKind.fromString(reader.getString());
                 } else if ("rawId".equals(fieldName)) {
                     deserializedCommunicationIdentifierModel.rawId = reader.getString();
                 } else if ("communicationUser".equals(fieldName)) {
@@ -216,7 +216,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
                         = MicrosoftTeamsUserIdentifierModel.fromJson(reader);
                 } else if ("microsoftTeamsApp".equals(fieldName)) {
                     deserializedCommunicationIdentifierModel.microsoftTeamsApp
-                        = MicrosoftTeamsAppIdentifier.fromJson(reader);
+                        = AcsMicrosoftTeamsAppIdentifier.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -12,10 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Advanced Message Media Content.
+ * Message Media Content.
  */
 @Fluent
-public final class AcsAdvancedMessageMediaContent implements JsonSerializable<AcsAdvancedMessageMediaContent> {
+public final class AcsMessageMediaContent implements JsonSerializable<AcsMessageMediaContent> {
     /*
      * The MIME type of the file this media represents
      */
@@ -37,9 +37,9 @@ public final class AcsAdvancedMessageMediaContent implements JsonSerializable<Ac
     private String caption;
 
     /**
-     * Creates an instance of AcsAdvancedMessageMediaContent class.
+     * Creates an instance of AcsMessageMediaContent class.
      */
-    public AcsAdvancedMessageMediaContent() {
+    public AcsMessageMediaContent() {
     }
 
     /**
@@ -55,9 +55,9 @@ public final class AcsAdvancedMessageMediaContent implements JsonSerializable<Ac
      * Set the mimeType property: The MIME type of the file this media represents.
      * 
      * @param mimeType the mimeType value to set.
-     * @return the AcsAdvancedMessageMediaContent object itself.
+     * @return the AcsMessageMediaContent object itself.
      */
-    public AcsAdvancedMessageMediaContent setMimeType(String mimeType) {
+    public AcsMessageMediaContent setMimeType(String mimeType) {
         this.mimeType = mimeType;
         return this;
     }
@@ -75,9 +75,9 @@ public final class AcsAdvancedMessageMediaContent implements JsonSerializable<Ac
      * Set the mediaId property: The media identifier.
      * 
      * @param mediaId the mediaId value to set.
-     * @return the AcsAdvancedMessageMediaContent object itself.
+     * @return the AcsMessageMediaContent object itself.
      */
-    public AcsAdvancedMessageMediaContent setMediaId(String mediaId) {
+    public AcsMessageMediaContent setMediaId(String mediaId) {
         this.mediaId = mediaId;
         return this;
     }
@@ -95,9 +95,9 @@ public final class AcsAdvancedMessageMediaContent implements JsonSerializable<Ac
      * Set the fileName property: The filename of the underlying media file as specified when uploaded.
      * 
      * @param fileName the fileName value to set.
-     * @return the AcsAdvancedMessageMediaContent object itself.
+     * @return the AcsMessageMediaContent object itself.
      */
-    public AcsAdvancedMessageMediaContent setFileName(String fileName) {
+    public AcsMessageMediaContent setFileName(String fileName) {
         this.fileName = fileName;
         return this;
     }
@@ -115,9 +115,9 @@ public final class AcsAdvancedMessageMediaContent implements JsonSerializable<Ac
      * Set the caption property: The caption for the media object, if supported and provided.
      * 
      * @param caption the caption value to set.
-     * @return the AcsAdvancedMessageMediaContent object itself.
+     * @return the AcsMessageMediaContent object itself.
      */
-    public AcsAdvancedMessageMediaContent setCaption(String caption) {
+    public AcsMessageMediaContent setCaption(String caption) {
         this.caption = caption;
         return this;
     }
@@ -133,35 +133,34 @@ public final class AcsAdvancedMessageMediaContent implements JsonSerializable<Ac
     }
 
     /**
-     * Reads an instance of AcsAdvancedMessageMediaContent from the JsonReader.
+     * Reads an instance of AcsMessageMediaContent from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsAdvancedMessageMediaContent if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AcsAdvancedMessageMediaContent.
+     * @return An instance of AcsMessageMediaContent if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsMessageMediaContent.
      */
-    public static AcsAdvancedMessageMediaContent fromJson(JsonReader jsonReader) throws IOException {
+    public static AcsMessageMediaContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsAdvancedMessageMediaContent deserializedAcsAdvancedMessageMediaContent
-                = new AcsAdvancedMessageMediaContent();
+            AcsMessageMediaContent deserializedAcsMessageMediaContent = new AcsMessageMediaContent();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("mimeType".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageMediaContent.mimeType = reader.getString();
+                    deserializedAcsMessageMediaContent.mimeType = reader.getString();
                 } else if ("id".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageMediaContent.mediaId = reader.getString();
+                    deserializedAcsMessageMediaContent.mediaId = reader.getString();
                 } else if ("fileName".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageMediaContent.fileName = reader.getString();
+                    deserializedAcsMessageMediaContent.fileName = reader.getString();
                 } else if ("caption".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageMediaContent.caption = reader.getString();
+                    deserializedAcsMessageMediaContent.caption = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedAcsAdvancedMessageMediaContent;
+            return deserializedAcsMessageMediaContent;
         });
     }
 }

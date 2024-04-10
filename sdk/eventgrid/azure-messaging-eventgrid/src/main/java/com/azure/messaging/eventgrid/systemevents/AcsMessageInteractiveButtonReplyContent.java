@@ -12,11 +12,11 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Advanced Message Interactive button reply content for a user to business message.
+ * Message Interactive button reply content for a user to business message.
  */
 @Fluent
-public final class AcsAdvancedMessageInteractiveButtonReplyContent
-    implements JsonSerializable<AcsAdvancedMessageInteractiveButtonReplyContent> {
+public final class AcsMessageInteractiveButtonReplyContent
+    implements JsonSerializable<AcsMessageInteractiveButtonReplyContent> {
     /*
      * The ID of the button
      */
@@ -28,9 +28,9 @@ public final class AcsAdvancedMessageInteractiveButtonReplyContent
     private String title;
 
     /**
-     * Creates an instance of AcsAdvancedMessageInteractiveButtonReplyContent class.
+     * Creates an instance of AcsMessageInteractiveButtonReplyContent class.
      */
-    public AcsAdvancedMessageInteractiveButtonReplyContent() {
+    public AcsMessageInteractiveButtonReplyContent() {
     }
 
     /**
@@ -46,9 +46,9 @@ public final class AcsAdvancedMessageInteractiveButtonReplyContent
      * Set the buttonId property: The ID of the button.
      * 
      * @param buttonId the buttonId value to set.
-     * @return the AcsAdvancedMessageInteractiveButtonReplyContent object itself.
+     * @return the AcsMessageInteractiveButtonReplyContent object itself.
      */
-    public AcsAdvancedMessageInteractiveButtonReplyContent setButtonId(String buttonId) {
+    public AcsMessageInteractiveButtonReplyContent setButtonId(String buttonId) {
         this.buttonId = buttonId;
         return this;
     }
@@ -66,9 +66,9 @@ public final class AcsAdvancedMessageInteractiveButtonReplyContent
      * Set the title property: The title of the button.
      * 
      * @param title the title value to set.
-     * @return the AcsAdvancedMessageInteractiveButtonReplyContent object itself.
+     * @return the AcsMessageInteractiveButtonReplyContent object itself.
      */
-    public AcsAdvancedMessageInteractiveButtonReplyContent setTitle(String title) {
+    public AcsMessageInteractiveButtonReplyContent setTitle(String title) {
         this.title = title;
         return this;
     }
@@ -82,31 +82,31 @@ public final class AcsAdvancedMessageInteractiveButtonReplyContent
     }
 
     /**
-     * Reads an instance of AcsAdvancedMessageInteractiveButtonReplyContent from the JsonReader.
+     * Reads an instance of AcsMessageInteractiveButtonReplyContent from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsAdvancedMessageInteractiveButtonReplyContent if the JsonReader was pointing to an
-     * instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AcsAdvancedMessageInteractiveButtonReplyContent.
+     * @return An instance of AcsMessageInteractiveButtonReplyContent if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsMessageInteractiveButtonReplyContent.
      */
-    public static AcsAdvancedMessageInteractiveButtonReplyContent fromJson(JsonReader jsonReader) throws IOException {
+    public static AcsMessageInteractiveButtonReplyContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsAdvancedMessageInteractiveButtonReplyContent deserializedAcsAdvancedMessageInteractiveButtonReplyContent
-                = new AcsAdvancedMessageInteractiveButtonReplyContent();
+            AcsMessageInteractiveButtonReplyContent deserializedAcsMessageInteractiveButtonReplyContent
+                = new AcsMessageInteractiveButtonReplyContent();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageInteractiveButtonReplyContent.buttonId = reader.getString();
+                    deserializedAcsMessageInteractiveButtonReplyContent.buttonId = reader.getString();
                 } else if ("title".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageInteractiveButtonReplyContent.title = reader.getString();
+                    deserializedAcsMessageInteractiveButtonReplyContent.title = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedAcsAdvancedMessageInteractiveButtonReplyContent;
+            return deserializedAcsMessageInteractiveButtonReplyContent;
         });
     }
 }

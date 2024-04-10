@@ -15,7 +15,7 @@ import java.io.IOException;
  * A Microsoft Teams application.
  */
 @Fluent
-public final class MicrosoftTeamsAppIdentifier implements JsonSerializable<MicrosoftTeamsAppIdentifier> {
+public final class AcsMicrosoftTeamsAppIdentifier implements JsonSerializable<AcsMicrosoftTeamsAppIdentifier> {
     /*
      * The Id of the Microsoft Teams application.
      */
@@ -29,7 +29,7 @@ public final class MicrosoftTeamsAppIdentifier implements JsonSerializable<Micro
     /**
      * Creates an instance of MicrosoftTeamsAppIdentifier class.
      */
-    public MicrosoftTeamsAppIdentifier() {
+    public AcsMicrosoftTeamsAppIdentifier() {
     }
 
     /**
@@ -47,7 +47,7 @@ public final class MicrosoftTeamsAppIdentifier implements JsonSerializable<Micro
      * @param appId the appId value to set.
      * @return the MicrosoftTeamsAppIdentifier object itself.
      */
-    public MicrosoftTeamsAppIdentifier setAppId(String appId) {
+    public AcsMicrosoftTeamsAppIdentifier setAppId(String appId) {
         this.appId = appId;
         return this;
     }
@@ -69,7 +69,7 @@ public final class MicrosoftTeamsAppIdentifier implements JsonSerializable<Micro
      * @param cloud the cloud value to set.
      * @return the MicrosoftTeamsAppIdentifier object itself.
      */
-    public MicrosoftTeamsAppIdentifier setCloud(CommunicationCloudEnvironmentModel cloud) {
+    public AcsMicrosoftTeamsAppIdentifier setCloud(CommunicationCloudEnvironmentModel cloud) {
         this.cloud = cloud;
         return this;
     }
@@ -91,9 +91,10 @@ public final class MicrosoftTeamsAppIdentifier implements JsonSerializable<Micro
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MicrosoftTeamsAppIdentifier.
      */
-    public static MicrosoftTeamsAppIdentifier fromJson(JsonReader jsonReader) throws IOException {
+    public static AcsMicrosoftTeamsAppIdentifier fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            MicrosoftTeamsAppIdentifier deserializedMicrosoftTeamsAppIdentifier = new MicrosoftTeamsAppIdentifier();
+            AcsMicrosoftTeamsAppIdentifier deserializedMicrosoftTeamsAppIdentifier
+                = new AcsMicrosoftTeamsAppIdentifier();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();

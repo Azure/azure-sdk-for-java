@@ -8,7 +8,6 @@ import com.azure.core.models.ResponseError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.messaging.eventgrid.implementation.models.AcsAdvancedMessageChannelEventError;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,7 +16,7 @@ import java.time.format.DateTimeFormatter;
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.AdvancedMessageReceived event.
  */
 @Fluent
-public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessageEventData {
+public final class AcsMessageReceivedEventData extends AcsMessageEventData {
 
     /*
      * The received message content
@@ -32,27 +31,27 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
     /*
      * The received message media content
      */
-    private AcsAdvancedMessageMediaContent mediaContent;
+    private AcsMessageMediaContent mediaContent;
 
     /*
      * The received message context
      */
-    private AcsAdvancedMessageContext context;
+    private AcsMessageContext context;
 
     /*
      * The received message button content
      */
-    private AcsAdvancedMessageButtonContent button;
+    private AcsMessageButtonContent button;
 
     /*
      * The received message interactive content
      */
-    private AcsAdvancedMessageInteractiveContent interactiveContent;
+    private AcsMessageInteractiveContent interactiveContent;
 
     /**
-     * Creates an instance of AcsAdvancedMessageReceivedEventData class.
+     * Creates an instance of AcsMessageReceivedEventData class.
      */
-    public AcsAdvancedMessageReceivedEventData() {
+    public AcsMessageReceivedEventData() {
     }
 
     /**
@@ -68,9 +67,9 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
      * Set the content property: The received message content.
      *
      * @param content the content value to set.
-     * @return the AcsAdvancedMessageReceivedEventData object itself.
+     * @return the AcsMessageReceivedEventData object itself.
      */
-    public AcsAdvancedMessageReceivedEventData setContent(String content) {
+    public AcsMessageReceivedEventData setContent(String content) {
         this.content = content;
         return this;
     }
@@ -88,9 +87,9 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
      * Set the channelKind property: The received message channel Kind.
      *
      * @param channelKind the channelKind value to set.
-     * @return the AcsAdvancedMessageReceivedEventData object itself.
+     * @return the AcsMessageReceivedEventData object itself.
      */
-    public AcsAdvancedMessageReceivedEventData setChannelKind(AcsMessageChannelKind channelKind) {
+    public AcsMessageReceivedEventData setChannelKind(AcsMessageChannelKind channelKind) {
         this.channelKind = channelKind;
         return this;
     }
@@ -100,7 +99,7 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
      *
      * @return the mediaContent value.
      */
-    public AcsAdvancedMessageMediaContent getMediaContent() {
+    public AcsMessageMediaContent getMediaContent() {
         return this.mediaContent;
     }
 
@@ -108,9 +107,9 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
      * Set the mediaContent property: The received message media content.
      *
      * @param mediaContent the mediaContent value to set.
-     * @return the AcsAdvancedMessageReceivedEventData object itself.
+     * @return the AcsMessageReceivedEventData object itself.
      */
-    public AcsAdvancedMessageReceivedEventData setMediaContent(AcsAdvancedMessageMediaContent mediaContent) {
+    public AcsMessageReceivedEventData setMediaContent(AcsMessageMediaContent mediaContent) {
         this.mediaContent = mediaContent;
         return this;
     }
@@ -120,7 +119,7 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
      *
      * @return the context value.
      */
-    public AcsAdvancedMessageContext getContext() {
+    public AcsMessageContext getContext() {
         return this.context;
     }
 
@@ -128,9 +127,9 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
      * Set the context property: The received message context.
      *
      * @param context the context value to set.
-     * @return the AcsAdvancedMessageReceivedEventData object itself.
+     * @return the AcsMessageReceivedEventData object itself.
      */
-    public AcsAdvancedMessageReceivedEventData setContext(AcsAdvancedMessageContext context) {
+    public AcsMessageReceivedEventData setContext(AcsMessageContext context) {
         this.context = context;
         return this;
     }
@@ -140,7 +139,7 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
      *
      * @return the button value.
      */
-    public AcsAdvancedMessageButtonContent getButton() {
+    public AcsMessageButtonContent getButton() {
         return this.button;
     }
 
@@ -148,9 +147,9 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
      * Set the button property: The received message button content.
      *
      * @param button the button value to set.
-     * @return the AcsAdvancedMessageReceivedEventData object itself.
+     * @return the AcsMessageReceivedEventData object itself.
      */
-    public AcsAdvancedMessageReceivedEventData setButton(AcsAdvancedMessageButtonContent button) {
+    public AcsMessageReceivedEventData setButton(AcsMessageButtonContent button) {
         this.button = button;
         return this;
     }
@@ -160,7 +159,7 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
      *
      * @return the interactiveContent value.
      */
-    public AcsAdvancedMessageInteractiveContent getInteractiveContent() {
+    public AcsMessageInteractiveContent getInteractiveContent() {
         return this.interactiveContent;
     }
 
@@ -168,10 +167,9 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
      * Set the interactiveContent property: The received message interactive content.
      *
      * @param interactiveContent the interactiveContent value to set.
-     * @return the AcsAdvancedMessageReceivedEventData object itself.
+     * @return the AcsMessageReceivedEventData object itself.
      */
-    public AcsAdvancedMessageReceivedEventData
-        setInteractiveContent(AcsAdvancedMessageInteractiveContent interactiveContent) {
+    public AcsMessageReceivedEventData setInteractiveContent(AcsMessageInteractiveContent interactiveContent) {
         this.interactiveContent = interactiveContent;
         return this;
     }
@@ -180,7 +178,7 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
      * {@inheritDoc}
      */
     @Override
-    public AcsAdvancedMessageReceivedEventData setFrom(String from) {
+    public AcsMessageReceivedEventData setFrom(String from) {
         super.setFrom(from);
         return this;
     }
@@ -189,7 +187,7 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
      * {@inheritDoc}
      */
     @Override
-    public AcsAdvancedMessageReceivedEventData setTo(String to) {
+    public AcsMessageReceivedEventData setTo(String to) {
         super.setTo(to);
         return this;
     }
@@ -198,7 +196,7 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
      * {@inheritDoc}
      */
     @Override
-    public AcsAdvancedMessageReceivedEventData setReceivedTimestamp(OffsetDateTime receivedTimestamp) {
+    public AcsMessageReceivedEventData setReceivedTimestamp(OffsetDateTime receivedTimestamp) {
         super.setReceivedTimestamp(receivedTimestamp);
         return this;
     }
@@ -221,52 +219,47 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
     }
 
     /**
-     * Reads an instance of AcsAdvancedMessageReceivedEventData from the JsonReader.
+     * Reads an instance of AcsMessageReceivedEventData from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsAdvancedMessageReceivedEventData if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AcsAdvancedMessageReceivedEventData.
+     * @return An instance of AcsMessageReceivedEventData if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsMessageReceivedEventData.
      */
-    public static AcsAdvancedMessageReceivedEventData fromJson(JsonReader jsonReader) throws IOException {
+    public static AcsMessageReceivedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsAdvancedMessageReceivedEventData deserializedAcsAdvancedMessageReceivedEventData
-                = new AcsAdvancedMessageReceivedEventData();
+            AcsMessageReceivedEventData deserializedAcsMessageReceivedEventData = new AcsMessageReceivedEventData();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("from".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageReceivedEventData.setFrom(reader.getString());
+                    deserializedAcsMessageReceivedEventData.setFrom(reader.getString());
                 } else if ("to".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageReceivedEventData.setTo(reader.getString());
+                    deserializedAcsMessageReceivedEventData.setTo(reader.getString());
                 } else if ("receivedTimestamp".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageReceivedEventData.setReceivedTimestamp(
+                    deserializedAcsMessageReceivedEventData.setReceivedTimestamp(
                         reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("error".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageReceivedEventData
-                        .setError(AcsAdvancedMessageChannelEventError.fromJson(reader));
+                    deserializedAcsMessageReceivedEventData.setError(AcsMessageChannelEventError.fromJson(reader));
                 } else if ("content".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageReceivedEventData.content = reader.getString();
+                    deserializedAcsMessageReceivedEventData.content = reader.getString();
                 } else if ("channelType".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageReceivedEventData.channelKind
+                    deserializedAcsMessageReceivedEventData.channelKind
                         = AcsMessageChannelKind.fromString(reader.getString());
                 } else if ("media".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageReceivedEventData.mediaContent
-                        = AcsAdvancedMessageMediaContent.fromJson(reader);
+                    deserializedAcsMessageReceivedEventData.mediaContent = AcsMessageMediaContent.fromJson(reader);
                 } else if ("context".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageReceivedEventData.context
-                        = AcsAdvancedMessageContext.fromJson(reader);
+                    deserializedAcsMessageReceivedEventData.context = AcsMessageContext.fromJson(reader);
                 } else if ("button".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageReceivedEventData.button
-                        = AcsAdvancedMessageButtonContent.fromJson(reader);
+                    deserializedAcsMessageReceivedEventData.button = AcsMessageButtonContent.fromJson(reader);
                 } else if ("interactive".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageReceivedEventData.interactiveContent
-                        = AcsAdvancedMessageInteractiveContent.fromJson(reader);
+                    deserializedAcsMessageReceivedEventData.interactiveContent
+                        = AcsMessageInteractiveContent.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedAcsAdvancedMessageReceivedEventData;
+            return deserializedAcsMessageReceivedEventData;
         });
     }
 
@@ -274,9 +267,9 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
      * Set the error property: The channel error code and message.
      *
      * @param error The ResponseError object containing error code and message.
-     * @return the AcsAdvancedMessageReceivedEventData object itself.
+     * @return the AcsMessageReceivedEventData object itself.
      */
-    public AcsAdvancedMessageReceivedEventData setError(ResponseError error) {
+    public AcsMessageReceivedEventData setError(ResponseError error) {
         super.setError(error);
         return this;
     }

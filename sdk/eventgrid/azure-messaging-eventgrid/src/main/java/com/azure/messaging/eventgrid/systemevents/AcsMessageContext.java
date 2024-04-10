@@ -12,10 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Advanced Message Context.
+ * Message Context.
  */
 @Fluent
-public final class AcsAdvancedMessageContext implements JsonSerializable<AcsAdvancedMessageContext> {
+public final class AcsMessageContext implements JsonSerializable<AcsMessageContext> {
     /*
      * The WhatsApp ID for the customer who replied to an inbound message.
      */
@@ -27,9 +27,9 @@ public final class AcsAdvancedMessageContext implements JsonSerializable<AcsAdva
     private String messageId;
 
     /**
-     * Creates an instance of AcsAdvancedMessageContext class.
+     * Creates an instance of AcsMessageContext class.
      */
-    public AcsAdvancedMessageContext() {
+    public AcsMessageContext() {
     }
 
     /**
@@ -45,9 +45,9 @@ public final class AcsAdvancedMessageContext implements JsonSerializable<AcsAdva
      * Set the from property: The WhatsApp ID for the customer who replied to an inbound message.
      * 
      * @param from the from value to set.
-     * @return the AcsAdvancedMessageContext object itself.
+     * @return the AcsMessageContext object itself.
      */
-    public AcsAdvancedMessageContext setFrom(String from) {
+    public AcsMessageContext setFrom(String from) {
         this.from = from;
         return this;
     }
@@ -65,9 +65,9 @@ public final class AcsAdvancedMessageContext implements JsonSerializable<AcsAdva
      * Set the messageId property: The message ID for the sent message for an inbound reply.
      * 
      * @param messageId the messageId value to set.
-     * @return the AcsAdvancedMessageContext object itself.
+     * @return the AcsMessageContext object itself.
      */
-    public AcsAdvancedMessageContext setMessageId(String messageId) {
+    public AcsMessageContext setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
     }
@@ -81,30 +81,30 @@ public final class AcsAdvancedMessageContext implements JsonSerializable<AcsAdva
     }
 
     /**
-     * Reads an instance of AcsAdvancedMessageContext from the JsonReader.
+     * Reads an instance of AcsMessageContext from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsAdvancedMessageContext if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AcsAdvancedMessageContext.
+     * @return An instance of AcsMessageContext if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsMessageContext.
      */
-    public static AcsAdvancedMessageContext fromJson(JsonReader jsonReader) throws IOException {
+    public static AcsMessageContext fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsAdvancedMessageContext deserializedAcsAdvancedMessageContext = new AcsAdvancedMessageContext();
+            AcsMessageContext deserializedAcsMessageContext = new AcsMessageContext();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("from".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageContext.from = reader.getString();
+                    deserializedAcsMessageContext.from = reader.getString();
                 } else if ("id".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageContext.messageId = reader.getString();
+                    deserializedAcsMessageContext.messageId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedAcsAdvancedMessageContext;
+            return deserializedAcsMessageContext;
         });
     }
 }

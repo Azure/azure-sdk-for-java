@@ -12,10 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Advanced Message Button Content.
+ * Message Button Content.
  */
 @Fluent
-public final class AcsAdvancedMessageButtonContent implements JsonSerializable<AcsAdvancedMessageButtonContent> {
+public final class AcsMessageButtonContent implements JsonSerializable<AcsMessageButtonContent> {
     /*
      * The Text of the button
      */
@@ -27,9 +27,9 @@ public final class AcsAdvancedMessageButtonContent implements JsonSerializable<A
     private String payload;
 
     /**
-     * Creates an instance of AcsAdvancedMessageButtonContent class.
+     * Creates an instance of AcsMessageButtonContent class.
      */
-    public AcsAdvancedMessageButtonContent() {
+    public AcsMessageButtonContent() {
     }
 
     /**
@@ -45,9 +45,9 @@ public final class AcsAdvancedMessageButtonContent implements JsonSerializable<A
      * Set the text property: The Text of the button.
      * 
      * @param text the text value to set.
-     * @return the AcsAdvancedMessageButtonContent object itself.
+     * @return the AcsMessageButtonContent object itself.
      */
-    public AcsAdvancedMessageButtonContent setText(String text) {
+    public AcsMessageButtonContent setText(String text) {
         this.text = text;
         return this;
     }
@@ -65,9 +65,9 @@ public final class AcsAdvancedMessageButtonContent implements JsonSerializable<A
      * Set the payload property: The Payload of the button which was clicked by the user, setup by the business.
      * 
      * @param payload the payload value to set.
-     * @return the AcsAdvancedMessageButtonContent object itself.
+     * @return the AcsMessageButtonContent object itself.
      */
-    public AcsAdvancedMessageButtonContent setPayload(String payload) {
+    public AcsMessageButtonContent setPayload(String payload) {
         this.payload = payload;
         return this;
     }
@@ -81,31 +81,30 @@ public final class AcsAdvancedMessageButtonContent implements JsonSerializable<A
     }
 
     /**
-     * Reads an instance of AcsAdvancedMessageButtonContent from the JsonReader.
+     * Reads an instance of AcsMessageButtonContent from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsAdvancedMessageButtonContent if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AcsAdvancedMessageButtonContent.
+     * @return An instance of AcsMessageButtonContent if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsMessageButtonContent.
      */
-    public static AcsAdvancedMessageButtonContent fromJson(JsonReader jsonReader) throws IOException {
+    public static AcsMessageButtonContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsAdvancedMessageButtonContent deserializedAcsAdvancedMessageButtonContent
-                = new AcsAdvancedMessageButtonContent();
+            AcsMessageButtonContent deserializedAcsMessageButtonContent = new AcsMessageButtonContent();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("text".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageButtonContent.text = reader.getString();
+                    deserializedAcsMessageButtonContent.text = reader.getString();
                 } else if ("payload".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageButtonContent.payload = reader.getString();
+                    deserializedAcsMessageButtonContent.payload = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedAcsAdvancedMessageButtonContent;
+            return deserializedAcsMessageButtonContent;
         });
     }
 }

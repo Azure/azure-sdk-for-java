@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.messaging.eventgrid.implementation.models.AcsAdvancedMessageChannelEventError;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,7 +17,7 @@ import java.time.format.DateTimeFormatter;
  * Schema of common properties of all chat thread events.
  */
 @Fluent
-public class AcsAdvancedMessageEventData implements JsonSerializable<AcsAdvancedMessageEventData> {
+public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData> {
 
     /*
      * The message sender
@@ -38,12 +37,12 @@ public class AcsAdvancedMessageEventData implements JsonSerializable<AcsAdvanced
     /*
      * The channel event error
      */
-    private AcsAdvancedMessageChannelEventError error;
+    private AcsMessageChannelEventError error;
 
     /**
-     * Creates an instance of AcsAdvancedMessageEventData class.
+     * Creates an instance of AcsMessageEventData class.
      */
-    public AcsAdvancedMessageEventData() {
+    public AcsMessageEventData() {
     }
 
     /**
@@ -59,9 +58,9 @@ public class AcsAdvancedMessageEventData implements JsonSerializable<AcsAdvanced
      * Set the from property: The message sender.
      *
      * @param from the from value to set.
-     * @return the AcsAdvancedMessageEventData object itself.
+     * @return the AcsMessageEventData object itself.
      */
-    public AcsAdvancedMessageEventData setFrom(String from) {
+    public AcsMessageEventData setFrom(String from) {
         this.from = from;
         return this;
     }
@@ -79,9 +78,9 @@ public class AcsAdvancedMessageEventData implements JsonSerializable<AcsAdvanced
      * Set the to property: The message recipient.
      *
      * @param to the to value to set.
-     * @return the AcsAdvancedMessageEventData object itself.
+     * @return the AcsMessageEventData object itself.
      */
-    public AcsAdvancedMessageEventData setTo(String to) {
+    public AcsMessageEventData setTo(String to) {
         this.to = to;
         return this;
     }
@@ -99,9 +98,9 @@ public class AcsAdvancedMessageEventData implements JsonSerializable<AcsAdvanced
      * Set the receivedTimestamp property: The time message was received.
      *
      * @param receivedTimestamp the receivedTimestamp value to set.
-     * @return the AcsAdvancedMessageEventData object itself.
+     * @return the AcsMessageEventData object itself.
      */
-    public AcsAdvancedMessageEventData setReceivedTimestamp(OffsetDateTime receivedTimestamp) {
+    public AcsMessageEventData setReceivedTimestamp(OffsetDateTime receivedTimestamp) {
         this.receivedTimestamp = receivedTimestamp;
         return this;
     }
@@ -120,7 +119,7 @@ public class AcsAdvancedMessageEventData implements JsonSerializable<AcsAdvanced
      *
      * @param error The error value to set
      */
-    void setError(AcsAdvancedMessageChannelEventError error) {
+    void setError(AcsMessageChannelEventError error) {
         this.error = error;
     }
 
@@ -136,34 +135,33 @@ public class AcsAdvancedMessageEventData implements JsonSerializable<AcsAdvanced
     }
 
     /**
-     * Reads an instance of AcsAdvancedMessageEventData from the JsonReader.
+     * Reads an instance of AcsMessageEventData from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsAdvancedMessageEventData if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AcsAdvancedMessageEventData.
+     * @return An instance of AcsMessageEventData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsMessageEventData.
      */
-    public static AcsAdvancedMessageEventData fromJson(JsonReader jsonReader) throws IOException {
+    public static AcsMessageEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsAdvancedMessageEventData deserializedAcsAdvancedMessageEventData = new AcsAdvancedMessageEventData();
+            AcsMessageEventData deserializedAcsMessageEventData = new AcsMessageEventData();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("from".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageEventData.from = reader.getString();
+                    deserializedAcsMessageEventData.from = reader.getString();
                 } else if ("to".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageEventData.to = reader.getString();
+                    deserializedAcsMessageEventData.to = reader.getString();
                 } else if ("receivedTimestamp".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageEventData.receivedTimestamp
+                    deserializedAcsMessageEventData.receivedTimestamp
                         = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("error".equals(fieldName)) {
-                    deserializedAcsAdvancedMessageEventData.error
-                        = AcsAdvancedMessageChannelEventError.fromJson(reader);
+                    deserializedAcsMessageEventData.error = AcsMessageChannelEventError.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedAcsAdvancedMessageEventData;
+            return deserializedAcsMessageEventData;
         });
     }
 
@@ -171,11 +169,11 @@ public class AcsAdvancedMessageEventData implements JsonSerializable<AcsAdvanced
      * Set the error property: The channel error code and message.
      *
      * @param error The ResponseError object containing error code and message.
-     * @return the AcsAdvancedMessageEventData object itself.
+     * @return the AcsMessageEventData object itself.
      */
-    public AcsAdvancedMessageEventData setError(ResponseError error) {
-        this.error = new AcsAdvancedMessageChannelEventError().setChannelCode(error.getCode())
-            .setChannelMessage(error.getMessage());
+    public AcsMessageEventData setError(ResponseError error) {
+        this.error
+            = new AcsMessageChannelEventError().setChannelCode(error.getCode()).setChannelMessage(error.getMessage());
         return this;
     }
 }
