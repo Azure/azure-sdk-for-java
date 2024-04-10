@@ -284,6 +284,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
         try (JsonReader jsonReader = JsonProviders.createReader(statisticsData.toBytes())) {
             Map<String, Object> statisticsMap = jsonReader.readMap(JsonReader::readUntyped);
             assertNotNull(statisticsMap);
+
             Object query = statisticsMap.get("query");
             if (query instanceof Map<?, ?>) {
                 Map<?, ?> queryMap = (Map<?, ?>) query;
