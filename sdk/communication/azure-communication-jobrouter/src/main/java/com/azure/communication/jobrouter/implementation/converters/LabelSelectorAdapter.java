@@ -3,7 +3,6 @@
 
 package com.azure.communication.jobrouter.implementation.converters;
 
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterValueConstructorProxy;
 import com.azure.communication.jobrouter.implementation.models.ConditionalQueueSelectorAttachmentInternal;
 import com.azure.communication.jobrouter.implementation.models.ConditionalWorkerSelectorAttachmentInternal;
 import com.azure.communication.jobrouter.implementation.models.PassThroughQueueSelectorAttachmentInternal;
@@ -22,11 +21,9 @@ import com.azure.communication.jobrouter.implementation.models.WorkerSelectorAtt
 import com.azure.communication.jobrouter.implementation.models.WorkerWeightedAllocationInternal;
 import com.azure.communication.jobrouter.models.ConditionalQueueSelectorAttachment;
 import com.azure.communication.jobrouter.models.ConditionalWorkerSelectorAttachment;
-import com.azure.communication.jobrouter.models.LabelOperator;
 import com.azure.communication.jobrouter.models.PassThroughQueueSelectorAttachment;
 import com.azure.communication.jobrouter.models.PassThroughWorkerSelectorAttachment;
 import com.azure.communication.jobrouter.models.QueueSelectorAttachment;
-import com.azure.communication.jobrouter.models.QueueWeightedAllocation;
 import com.azure.communication.jobrouter.models.RouterQueueSelector;
 import com.azure.communication.jobrouter.models.RouterWorkerSelector;
 import com.azure.communication.jobrouter.models.RuleEngineQueueSelectorAttachment;
@@ -36,9 +33,7 @@ import com.azure.communication.jobrouter.models.StaticWorkerSelectorAttachment;
 import com.azure.communication.jobrouter.models.WeightedAllocationQueueSelectorAttachment;
 import com.azure.communication.jobrouter.models.WeightedAllocationWorkerSelectorAttachment;
 import com.azure.communication.jobrouter.models.WorkerSelectorAttachment;
-import com.azure.communication.jobrouter.models.WorkerWeightedAllocation;
 
-import java.time.Duration;
 import java.util.stream.Collectors;
 
 import static com.azure.communication.jobrouter.implementation.converters.RouterRuleAdapter.getRouterRuleInternal;
@@ -140,78 +135,4 @@ public class LabelSelectorAdapter {
         return null;
     }
 
-    public static RouterWorkerSelector convertWorkerSelectorToPublic(RouterWorkerSelectorInternal ws) {
-        RouterWorkerSelector workerSelector = new RouterWorkerSelector(ws.getKey(),
-            LabelOperator.fromString(ws.getLabelOperator().toString()), RouterValueConstructorProxy.create(ws.getValue()))
-            .setExpedite(ws.isExpedite())
-            .setExpiresAfter(ws.getExpiresAfterSeconds() != null
-                ? Duration.ofSeconds(ws.getExpiresAfterSeconds().longValue()) : null);
-
-        return workerSelector;
-    }
-
-    public static RouterQueueSelector convertQueueSelectorToPublic(RouterQueueSelectorInternal qs) {
-        return new RouterQueueSelector(qs.getKey(), LabelOperator.fromString(qs.getLabelOperator().toString()),
-            RouterValueConstructorProxy.create(qs.getValue()));
-    }
-
-    public static QueueSelectorAttachment convertQueueSelectorAttachmentToPublic(QueueSelectorAttachmentInternal attachment) {
-        if (attachment instanceof StaticQueueSelectorAttachmentInternal) {
-            StaticQueueSelectorAttachmentInternal staticAttach = (StaticQueueSelectorAttachmentInternal) attachment;
-            return new StaticQueueSelectorAttachment(LabelSelectorAdapter.convertQueueSelectorToPublic(staticAttach.getQueueSelector()));
-        } else if (attachment instanceof ConditionalQueueSelectorAttachmentInternal) {
-            ConditionalQueueSelectorAttachmentInternal conditional = (ConditionalQueueSelectorAttachmentInternal) attachment;
-            return new ConditionalQueueSelectorAttachment(RouterRuleAdapter.convertRouterRuleToPublic(conditional.getCondition()),
-                conditional.getQueueSelectors() != null ? conditional.getQueueSelectors().stream()
-                    .map(LabelSelectorAdapter::convertQueueSelectorToPublic).collect(Collectors.toList()) : null);
-        } else if (attachment instanceof PassThroughQueueSelectorAttachmentInternal) {
-            PassThroughQueueSelectorAttachmentInternal passThrough = (PassThroughQueueSelectorAttachmentInternal) attachment;
-            return new PassThroughQueueSelectorAttachment(passThrough.getKey(),
-                LabelOperator.fromString(passThrough.getLabelOperator().toString()));
-        } else if (attachment instanceof RuleEngineQueueSelectorAttachmentInternal) {
-            RuleEngineQueueSelectorAttachmentInternal rule = (RuleEngineQueueSelectorAttachmentInternal) attachment;
-            return new RuleEngineQueueSelectorAttachment(RouterRuleAdapter.convertRouterRuleToPublic(rule.getRule()));
-        } else if (attachment instanceof WeightedAllocationQueueSelectorAttachmentInternal) {
-            WeightedAllocationQueueSelectorAttachmentInternal weighted = (WeightedAllocationQueueSelectorAttachmentInternal) attachment;
-            return new WeightedAllocationQueueSelectorAttachment(
-                weighted.getAllocations() != null ? weighted.getAllocations().stream()
-                .map(a -> new QueueWeightedAllocation(a.getWeight(),
-                    a.getQueueSelectors() != null ? a.getQueueSelectors().stream()
-                    .map(qs -> LabelSelectorAdapter.convertQueueSelectorToPublic(qs))
-                    .collect(Collectors.toList()) : null))
-                .collect(Collectors.toList()) : null);
-        }
-
-        return null;
-    }
-
-    public static WorkerSelectorAttachment convertWorkerSelectorAttachmentToPublic(WorkerSelectorAttachmentInternal attachment) {
-        if (attachment instanceof StaticWorkerSelectorAttachmentInternal) {
-            StaticWorkerSelectorAttachmentInternal staticAttach = (StaticWorkerSelectorAttachmentInternal) attachment;
-            return new StaticWorkerSelectorAttachment(LabelSelectorAdapter.convertWorkerSelectorToPublic(staticAttach.getWorkerSelector()));
-        } else if (attachment instanceof ConditionalWorkerSelectorAttachmentInternal) {
-            ConditionalWorkerSelectorAttachmentInternal conditional = (ConditionalWorkerSelectorAttachmentInternal) attachment;
-            return new ConditionalWorkerSelectorAttachment(RouterRuleAdapter.convertRouterRuleToPublic(conditional.getCondition()),
-                conditional.getWorkerSelectors() != null ? conditional.getWorkerSelectors().stream()
-                    .map(LabelSelectorAdapter::convertWorkerSelectorToPublic).collect(Collectors.toList()) : null);
-        } else if (attachment instanceof PassThroughWorkerSelectorAttachmentInternal) {
-            PassThroughWorkerSelectorAttachmentInternal passThrough = (PassThroughWorkerSelectorAttachmentInternal) attachment;
-            return new PassThroughWorkerSelectorAttachment(passThrough.getKey(), LabelOperator.fromString(passThrough.getLabelOperator().toString()))
-                .setExpiresAfter(Duration.ofSeconds(passThrough.getExpiresAfterSeconds().longValue()));
-        } else if (attachment instanceof RuleEngineWorkerSelectorAttachmentInternal) {
-            RuleEngineWorkerSelectorAttachmentInternal rule = (RuleEngineWorkerSelectorAttachmentInternal) attachment;
-            return new RuleEngineWorkerSelectorAttachment(RouterRuleAdapter.convertRouterRuleToPublic(rule.getRule()));
-        } else if (attachment instanceof WeightedAllocationWorkerSelectorAttachmentInternal) {
-            WeightedAllocationWorkerSelectorAttachmentInternal weighted = (WeightedAllocationWorkerSelectorAttachmentInternal) attachment;
-            return new WeightedAllocationWorkerSelectorAttachment(
-                weighted.getAllocations() != null ? weighted.getAllocations().stream()
-                .map(a -> new WorkerWeightedAllocation(a.getWeight(),
-                    a.getWorkerSelectors() != null ? a.getWorkerSelectors().stream()
-                    .map(qs -> LabelSelectorAdapter.convertWorkerSelectorToPublic(qs))
-                    .collect(Collectors.toList()) : null))
-                .collect(Collectors.toList()) : null);
-        }
-
-        return null;
-    }
 }

@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.time.Duration;
 
@@ -33,6 +35,8 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
      * Describes how long the attached label selector is valid in seconds.
      */
     @JsonProperty(value = "expiresAfterSeconds")
+    @JsonDeserialize(using = DurationDeserializer.class)
+    @JsonSerialize(using = DurationSerializer.class)
     private Duration expiresAfter;
 
     /**

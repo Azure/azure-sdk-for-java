@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.time.Duration;
 
@@ -21,6 +23,8 @@ public final class WaitTimeExceptionTrigger extends ExceptionTrigger {
      * Threshold for wait time for this trigger.
      */
     @JsonProperty(value = "thresholdSeconds")
+    @JsonDeserialize(using = DurationDeserializer.class)
+    @JsonSerialize(using = DurationSerializer.class)
     private Duration threshold;
 
     /**

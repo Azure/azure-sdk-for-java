@@ -4,8 +4,6 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterClientImpl;
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterJobConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWorkerConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
 import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
 import com.azure.communication.jobrouter.implementation.models.CancelJobOptionsInternal;
@@ -530,11 +528,12 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterJob> createJobWithResponse(CreateJobOptions createJobOptions, RequestOptions requestOptions) {
-        RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
+        RouterJobInternal routerJob
+            = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobOptions);
         Response<BinaryData> response = this.serviceClient.upsertJobWithResponse(createJobOptions.getJobId(),
             BinaryData.fromObject(routerJob), requestOptions);
         return new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            RouterJobConstructorProxy.create(response.getValue().toObject(RouterJobInternal.class)));
+            response.getValue().toObject(RouterJob.class));
     }
 
     /**
@@ -567,12 +566,12 @@ public final class JobRouterClient {
         CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions,
         RequestOptions requestOptions) {
         // Note: Update return type to Response<RouterJob> in version 2.
-        RouterJobInternal routerJob
-            = JobAdapter.convertCreateJobOptionsToRouterJob(createJobWithClassificationPolicyOptions);
+        RouterJobInternal routerJob = JobAdapter
+            .convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
         Response<BinaryData> response = this.serviceClient.upsertJobWithResponse(
             createJobWithClassificationPolicyOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions);
         return new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            RouterJobConstructorProxy.create(response.getValue().toObject(RouterJobInternal.class)));
+            response.getValue().toObject(RouterJob.class));
     }
 
     /**
@@ -1552,7 +1551,7 @@ public final class JobRouterClient {
         Response<BinaryData> response = this.serviceClient.upsertWorkerWithResponse(createWorkerOptions.getWorkerId(),
             BinaryData.fromObject(routerWorker), requestOptions);
         return new SimpleResponse<RouterWorker>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            RouterWorkerConstructorProxy.create(response.getValue().toObject(RouterWorkerInternal.class)));
+            response.getValue().toObject(RouterWorker.class));
     }
 
     /**
@@ -1771,7 +1770,6 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterJob getJob(String jobId) {
-        // Generated convenience method for getJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getJobWithResponse(jobId, requestOptions).getValue().toObject(RouterJob.class);
     }
@@ -1836,7 +1834,6 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RouterJob> listJobs(RouterJobStatusSelector status, String queueId, String channelId,
         String classificationPolicyId, OffsetDateTime scheduledBefore, OffsetDateTime scheduledAfter) {
-        // Generated convenience method for listJobs
         RequestOptions requestOptions = new RequestOptions();
         if (status != null) {
             requestOptions.addQueryParam("status", status.toString(), false);
@@ -1871,7 +1868,6 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RouterJob> listJobs() {
-        // Generated convenience method for listJobs
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listJobs(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(RouterJob.class));
     }
@@ -1997,8 +1993,7 @@ public final class JobRouterClient {
     public RouterWorker getWorker(String workerId) {
         // Generated convenience method for getWorkerWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return RouterWorkerConstructorProxy
-            .create(getWorkerWithResponse(workerId, requestOptions).getValue().toObject(RouterWorkerInternal.class));
+        return getWorkerWithResponse(workerId, requestOptions).getValue().toObject(RouterWorker.class);
     }
 
     /**

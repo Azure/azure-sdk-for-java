@@ -4,8 +4,6 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterClientImpl;
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterJobConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWorkerConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
 import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
 import com.azure.communication.jobrouter.implementation.models.CancelJobOptionsInternal;
@@ -532,11 +530,11 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterJob>> createJobWithResponse(CreateJobOptions createJobOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
+        RouterJobInternal routerJob
+            = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobOptions);
         return upsertJobWithResponse(createJobOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions)
             .map(response -> new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(),
-                RouterJobConstructorProxy.create(response.getValue().toObject(RouterJobInternal.class))));
+                response.getHeaders(), response.getValue().toObject(RouterJob.class)));
     }
 
     /**
@@ -568,13 +566,12 @@ public final class JobRouterAsyncClient {
         CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions,
         RequestOptions requestOptions) {
         // Note: Update return type to Response<RouterJob> in version 2.
-        RouterJobInternal routerJob
-            = JobAdapter.convertCreateJobOptionsToRouterJob(createJobWithClassificationPolicyOptions);
+        RouterJobInternal routerJob = JobAdapter
+            .convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
         return upsertJobWithResponse(createJobWithClassificationPolicyOptions.getJobId(),
             BinaryData.fromObject(routerJob), requestOptions)
             .map(response -> new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(),
-                RouterJobConstructorProxy.create(response.getValue().toObject(RouterJobInternal.class))));
+                response.getHeaders(), response.getValue().toObject(RouterJob.class)));
     }
 
     /**
@@ -1546,8 +1543,7 @@ public final class JobRouterAsyncClient {
         return upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), BinaryData.fromObject(routerWorker),
             requestOptions)
             .map(response -> new SimpleResponse<RouterWorker>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(),
-                RouterWorkerConstructorProxy.create(response.getValue().toObject(RouterWorkerInternal.class))));
+                response.getHeaders(), response.getValue().toObject(RouterWorker.class)));
     }
 
     /**
@@ -2019,8 +2015,7 @@ public final class JobRouterAsyncClient {
         // Generated convenience method for getWorkerWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getWorkerWithResponse(workerId, requestOptions)
-            .map(response -> response.getValue().toObject(RouterWorkerInternal.class))
-            .map(internal -> RouterWorkerConstructorProxy.create(internal));
+            .map(response -> response.getValue().toObject(RouterWorker.class));
     }
 
     /**

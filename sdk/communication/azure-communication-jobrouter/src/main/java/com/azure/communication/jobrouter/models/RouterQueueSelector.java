@@ -6,6 +6,8 @@ package com.azure.communication.jobrouter.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /** Describes a condition that must be met against a set of labels for queue selection. */
 @Fluent
@@ -28,6 +30,8 @@ public final class RouterQueueSelector {
      * The value to compare against the actual label value with the given operator
      */
     @JsonProperty(value = "value")
+    @JsonDeserialize(using = RouterValueDeserializer.class)
+    @JsonSerialize(using = RouterValueSerializer.class)
     private RouterValue value;
 
     /**

@@ -4,9 +4,16 @@
 
 ### Features Added
 
+- Added createJobWithClassificationPolicy and createJobWithClassificationPolicyWithResponse to JobRouterClient and JobRouterAsyncClient
+
 ### Breaking Changes
 
+- Added value to RouterWorkerSelector/RouterQueueSelector constructor, remove setter
+- Change return type of createJobWithResponse to RouterJob instead of BinaryData in JobRouterClient and JobRouterAsyncClient
+
 ### Bugs Fixed
+
+- Fix Jackson annotations for all models
 
 ### Other Changes
 

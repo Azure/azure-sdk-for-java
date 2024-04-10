@@ -13,6 +13,9 @@ import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -24,6 +27,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
@@ -33,7 +37,7 @@ public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createWorker(HttpClient httpClient) {
+    public void createWorker(HttpClient httpClient) throws InterruptedException {
         // Setup
         routerAsyncClient = getRouterAsyncClient(httpClient);
         administrationAsyncClient = getRouterAdministrationAsyncClient(httpClient);
@@ -114,6 +118,50 @@ public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
         assertArrayEquals(queues.toArray(), result.getQueues().toArray());
         assertEquals(channels.size(), result.getChannels().size());
         assertNotNull(result.getEtag());
+
+        Response<BinaryData> getWorker = routerAsyncClient.getWorkerWithResponse(result.getId(), null).block();
+        RouterWorker deserialized = getWorker.getValue().toObject(RouterWorker.class);
+
+        assertEquals(workerId, deserialized.getId());
+        assertEquals(deserialized.isAvailableForOffers(), false);
+        assertEquals(labels.size() + 1, deserialized.getLabels().size());
+        assertEquals(tags.size(), deserialized.getTags().size());
+        assertArrayEquals(queues.toArray(), deserialized.getQueues().toArray());
+        assertEquals(channels.size(), deserialized.getChannels().size());
+        assertEquals(deserialized.getEtag(), result.getEtag());
+
+        if (this.getTestMode() != TestMode.PLAYBACK) {
+            Thread.sleep(2000);
+        }
+
+        deserialized.setAvailableForOffers(true);
+        deserialized.setChannels(new ArrayList<RouterChannel>() {
+            {
+                add(new RouterChannel("channel1", 5));
+                add(new RouterChannel("channel2", 5));
+            }
+        });
+        RouterWorker updatedWorker = routerAsyncClient.updateWorker(workerId, BinaryData.fromObject(deserialized), null)
+            .block().toObject(RouterWorker.class);
+
+        assertEquals(workerId, updatedWorker.getId());
+        assertEquals(updatedWorker.isAvailableForOffers(), true);
+        assertEquals(labels.size() + 1, updatedWorker.getLabels().size());
+        assertEquals(tags.size(), updatedWorker.getTags().size());
+        assertArrayEquals(queues.toArray(), updatedWorker.getQueues().toArray());
+        assertEquals(deserialized.getChannels().size(), updatedWorker.getChannels().size());
+        assertNotEquals(deserialized.getEtag(), updatedWorker.getEtag());
+
+        routerAsyncClient.listWorkers(null, channel.getChannelId(), queueId, null)
+            .subscribe(listWorker -> {
+                assertEquals(workerId, listWorker.getId());
+                assertEquals(listWorker.isAvailableForOffers(), true);
+                assertEquals(labels.size() + 1, listWorker.getLabels().size());
+                assertEquals(tags.size(), listWorker.getTags().size());
+                assertArrayEquals(queues.toArray(), listWorker.getQueues().toArray());
+                assertEquals(channels.size(), listWorker.getChannels().size());
+                assertEquals(updatedWorker.getEtag(), listWorker.getEtag());
+            });
 
         // Cleanup
         routerAsyncClient.deleteWorker(workerId).block();
