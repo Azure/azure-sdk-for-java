@@ -18,7 +18,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.json.JsonOptions;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.monitor.query.models.LogsBatchQuery;
@@ -287,7 +286,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
             assertNotNull(statisticsMap);
             Object query = statisticsMap.get("query");
             if (query instanceof Map<?, ?>) {
-                Map<?,?> queryMap = (Map<?,?>) query;
+                Map<?, ?> queryMap = (Map<?, ?>) query;
                 assertNotNull(queryMap.get("executionTime"));
                 assertNotNull(queryMap.get("resourceUsage"));
             } else {
