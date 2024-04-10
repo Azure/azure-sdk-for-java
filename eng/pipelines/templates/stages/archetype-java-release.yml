@@ -449,8 +449,11 @@ stages:
           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             parameters:
               Paths:
-                - sdk/**/*.md
+                - sdk
+                - common/perf-test-core
                 - .github/CODEOWNERS
+                - '!sdk/**/test-recordings'
+                - '!sdk/**/session-records'
           - download: current
             displayName: 'Download Artifacts'
             artifact: ${{parameters.ArtifactName}}
