@@ -17,6 +17,6 @@ public class AzureCommunicationsRecordingStorage extends RecordingStorage {
      */
     @Override
     public RecordingStorageType getRecordingStorageType() {
-        return this.getRecordingStorageType();
+        return this.recordingStorageType;
     }
 }

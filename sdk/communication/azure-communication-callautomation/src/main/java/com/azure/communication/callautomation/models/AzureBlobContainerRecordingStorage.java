@@ -18,7 +18,7 @@ public class AzureBlobContainerRecordingStorage extends RecordingStorage {
      * @return the recordingDestinationContainerUrl value.
      */
     public String getRecordingDestinationContainerUrl() {
-        return this.getRecordingDestinationContainerUrl();
+        return this.recordingDestinationContainerUrl;
     }
 
     /**
@@ -28,7 +28,7 @@ public class AzureBlobContainerRecordingStorage extends RecordingStorage {
      * @return the StorageInternal object itself.
      */
     public RecordingStorage setRecordingDestinationContainerUrl(String recordingDestinationContainerUrl) {
-        this.setRecordingDestinationContainerUrl(recordingDestinationContainerUrl);
+        super.recordingDestinationContainerUrl = recordingDestinationContainerUrl;
         return this;
     }
 
@@ -39,6 +39,6 @@ public class AzureBlobContainerRecordingStorage extends RecordingStorage {
      */
     @Override
     public RecordingStorageType getRecordingStorageType() {
-        return this.getRecordingStorageType();
+        return this.recordingStorageType;
     }
 }

@@ -19,7 +19,7 @@ public abstract class RecordingStorage {
      * Uri of a container or a location within a container
      */
     @JsonProperty(value = "recordingDestinationContainerUrl")
-    private String recordingDestinationContainerUrl;
+    protected String recordingDestinationContainerUrl;
 
     /** Creates an instance of ExternalStorageInternal class. */
     public RecordingStorage() {}
