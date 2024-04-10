@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Type of operation: get, read, delete, etc. */
+/**
+ * Type of operation: get, read, delete, etc.
+ */
 @Fluent
 public final class DimensionProperties {
     /*
@@ -28,13 +30,15 @@ public final class DimensionProperties {
     @JsonProperty(value = "internalName")
     private String internalName;
 
-    /** Creates an instance of DimensionProperties class. */
+    /**
+     * Creates an instance of DimensionProperties class.
+     */
     public DimensionProperties() {
     }
 
     /**
      * Get the name property: Name of dimension.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +47,7 @@ public final class DimensionProperties {
 
     /**
      * Set the name property: Name of dimension.
-     *
+     * 
      * @param name the name value to set.
      * @return the DimensionProperties object itself.
      */
@@ -54,7 +58,7 @@ public final class DimensionProperties {
 
     /**
      * Get the displayName property: Display name of dimension.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -63,7 +67,7 @@ public final class DimensionProperties {
 
     /**
      * Set the displayName property: Display name of dimension.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the DimensionProperties object itself.
      */
@@ -74,7 +78,7 @@ public final class DimensionProperties {
 
     /**
      * Get the internalName property: Internal name of dimension.
-     *
+     * 
      * @return the internalName value.
      */
     public String internalName() {
@@ -83,7 +87,7 @@ public final class DimensionProperties {
 
     /**
      * Set the internalName property: Internal name of dimension.
-     *
+     * 
      * @param internalName the internalName value to set.
      * @return the DimensionProperties object itself.
      */
@@ -94,7 +98,7 @@ public final class DimensionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

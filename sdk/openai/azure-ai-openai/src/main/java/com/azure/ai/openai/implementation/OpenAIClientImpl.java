@@ -1685,6 +1685,8 @@ public final class OpenAIClientImpl {
      *     input (Required): [
      *         String (Required)
      *     ]
+     *     encoding_format: String(float/base64) (Optional)
+     *     dimensions: Integer (Optional)
      *     input_type: String (Optional)
      * }
      * }</pre>
@@ -1744,6 +1746,8 @@ public final class OpenAIClientImpl {
      *     input (Required): [
      *         String (Required)
      *     ]
+     *     encoding_format: String(float/base64) (Optional)
+     *     dimensions: Integer (Optional)
      *     input_type: String (Optional)
      * }
      * }</pre>

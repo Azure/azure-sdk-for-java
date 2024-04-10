@@ -27,22 +27,28 @@ import com.azure.resourcemanager.hdinsight.containers.fluent.models.NameAvailabi
 import com.azure.resourcemanager.hdinsight.containers.models.NameAvailabilityParameters;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LocationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LocationsClient.
+ */
 public final class LocationsClientImpl implements LocationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LocationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final HDInsightContainersManagementClientImpl client;
 
     /**
      * Initializes an instance of LocationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LocationsClientImpl(HDInsightContainersManagementClientImpl client) {
-        this.service =
-            RestProxy.create(LocationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(LocationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,24 +59,20 @@ public final class LocationsClientImpl implements LocationsClient {
     @Host("{$host}")
     @ServiceInterface(name = "HDInsightContainersM")
     public interface LocationsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/checkNameAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/checkNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NameAvailabilityResultInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<NameAvailabilityResultInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("location") String location,
             @BodyParam("application/json") NameAvailabilityParameters nameAvailabilityParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Check the availability of the resource name.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param nameAvailabilityParameters The name and type of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -79,50 +81,36 @@ public final class LocationsClientImpl implements LocationsClient {
      * @return result of check name availability along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
-        String location, NameAvailabilityParameters nameAvailabilityParameters) {
+    private Mono<Response<NameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(String location,
+        NameAvailabilityParameters nameAvailabilityParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (nameAvailabilityParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter nameAvailabilityParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nameAvailabilityParameters is required and cannot be null."));
         } else {
             nameAvailabilityParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            location,
-                            nameAvailabilityParameters,
-                            accept,
-                            context))
+                context -> service.checkNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), location, nameAvailabilityParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Check the availability of the resource name.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param nameAvailabilityParameters The name and type of the resource.
      * @param context The context to associate with this operation.
@@ -132,47 +120,34 @@ public final class LocationsClientImpl implements LocationsClient {
      * @return result of check name availability along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
-        String location, NameAvailabilityParameters nameAvailabilityParameters, Context context) {
+    private Mono<Response<NameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(String location,
+        NameAvailabilityParameters nameAvailabilityParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (nameAvailabilityParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter nameAvailabilityParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nameAvailabilityParameters is required and cannot be null."));
         } else {
             nameAvailabilityParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                location,
-                nameAvailabilityParameters,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), location, nameAvailabilityParameters, accept, context);
     }
 
     /**
      * Check the availability of the resource name.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param nameAvailabilityParameters The name and type of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,15 +156,15 @@ public final class LocationsClientImpl implements LocationsClient {
      * @return result of check name availability on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NameAvailabilityResultInner> checkNameAvailabilityAsync(
-        String location, NameAvailabilityParameters nameAvailabilityParameters) {
+    private Mono<NameAvailabilityResultInner> checkNameAvailabilityAsync(String location,
+        NameAvailabilityParameters nameAvailabilityParameters) {
         return checkNameAvailabilityWithResponseAsync(location, nameAvailabilityParameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Check the availability of the resource name.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param nameAvailabilityParameters The name and type of the resource.
      * @param context The context to associate with this operation.
@@ -199,14 +174,14 @@ public final class LocationsClientImpl implements LocationsClient {
      * @return result of check name availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NameAvailabilityResultInner> checkNameAvailabilityWithResponse(
-        String location, NameAvailabilityParameters nameAvailabilityParameters, Context context) {
+    public Response<NameAvailabilityResultInner> checkNameAvailabilityWithResponse(String location,
+        NameAvailabilityParameters nameAvailabilityParameters, Context context) {
         return checkNameAvailabilityWithResponseAsync(location, nameAvailabilityParameters, context).block();
     }
 
     /**
      * Check the availability of the resource name.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param nameAvailabilityParameters The name and type of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -215,8 +190,8 @@ public final class LocationsClientImpl implements LocationsClient {
      * @return result of check name availability.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NameAvailabilityResultInner checkNameAvailability(
-        String location, NameAvailabilityParameters nameAvailabilityParameters) {
+    public NameAvailabilityResultInner checkNameAvailability(String location,
+        NameAvailabilityParameters nameAvailabilityParameters) {
         return checkNameAvailabilityWithResponse(location, nameAvailabilityParameters, Context.NONE).getValue();
     }
 }

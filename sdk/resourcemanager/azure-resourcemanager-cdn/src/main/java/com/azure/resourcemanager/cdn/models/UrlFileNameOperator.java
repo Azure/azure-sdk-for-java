@@ -8,41 +8,63 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes operator to be matched. */
+/**
+ * Describes operator to be matched.
+ */
 public final class UrlFileNameOperator extends ExpandableStringEnum<UrlFileNameOperator> {
-    /** Static value Any for UrlFileNameOperator. */
+    /**
+     * Static value Any for UrlFileNameOperator.
+     */
     public static final UrlFileNameOperator ANY = fromString("Any");
 
-    /** Static value Equal for UrlFileNameOperator. */
+    /**
+     * Static value Equal for UrlFileNameOperator.
+     */
     public static final UrlFileNameOperator EQUAL = fromString("Equal");
 
-    /** Static value Contains for UrlFileNameOperator. */
+    /**
+     * Static value Contains for UrlFileNameOperator.
+     */
     public static final UrlFileNameOperator CONTAINS = fromString("Contains");
 
-    /** Static value BeginsWith for UrlFileNameOperator. */
+    /**
+     * Static value BeginsWith for UrlFileNameOperator.
+     */
     public static final UrlFileNameOperator BEGINS_WITH = fromString("BeginsWith");
 
-    /** Static value EndsWith for UrlFileNameOperator. */
+    /**
+     * Static value EndsWith for UrlFileNameOperator.
+     */
     public static final UrlFileNameOperator ENDS_WITH = fromString("EndsWith");
 
-    /** Static value LessThan for UrlFileNameOperator. */
+    /**
+     * Static value LessThan for UrlFileNameOperator.
+     */
     public static final UrlFileNameOperator LESS_THAN = fromString("LessThan");
 
-    /** Static value LessThanOrEqual for UrlFileNameOperator. */
+    /**
+     * Static value LessThanOrEqual for UrlFileNameOperator.
+     */
     public static final UrlFileNameOperator LESS_THAN_OR_EQUAL = fromString("LessThanOrEqual");
 
-    /** Static value GreaterThan for UrlFileNameOperator. */
+    /**
+     * Static value GreaterThan for UrlFileNameOperator.
+     */
     public static final UrlFileNameOperator GREATER_THAN = fromString("GreaterThan");
 
-    /** Static value GreaterThanOrEqual for UrlFileNameOperator. */
+    /**
+     * Static value GreaterThanOrEqual for UrlFileNameOperator.
+     */
     public static final UrlFileNameOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
-    /** Static value RegEx for UrlFileNameOperator. */
+    /**
+     * Static value RegEx for UrlFileNameOperator.
+     */
     public static final UrlFileNameOperator REG_EX = fromString("RegEx");
 
     /**
      * Creates a new instance of UrlFileNameOperator value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -51,7 +73,7 @@ public final class UrlFileNameOperator extends ExpandableStringEnum<UrlFileNameO
 
     /**
      * Creates or finds a UrlFileNameOperator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UrlFileNameOperator.
      */
@@ -62,7 +84,7 @@ public final class UrlFileNameOperator extends ExpandableStringEnum<UrlFileNameO
 
     /**
      * Gets known UrlFileNameOperator values.
-     *
+     * 
      * @return known UrlFileNameOperator values.
      */
     public static Collection<UrlFileNameOperator> values() {

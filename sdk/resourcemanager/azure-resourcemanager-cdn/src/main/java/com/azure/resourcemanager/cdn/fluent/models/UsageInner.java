@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cdn.models.UsageName;
 import com.azure.resourcemanager.cdn.models.UsageUnit;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes resource usage. */
+/**
+ * Describes resource usage.
+ */
 @Fluent
 public final class UsageInner {
     /*
@@ -43,13 +45,15 @@ public final class UsageInner {
     @JsonProperty(value = "name", required = true)
     private UsageName name;
 
-    /** Creates an instance of UsageInner class. */
+    /**
+     * Creates an instance of UsageInner class.
+     */
     public UsageInner() {
     }
 
     /**
      * Get the id property: Resource identifier.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -58,7 +62,7 @@ public final class UsageInner {
 
     /**
      * Get the unit property: An enum describing the unit of measurement.
-     *
+     * 
      * @return the unit value.
      */
     public UsageUnit unit() {
@@ -67,7 +71,7 @@ public final class UsageInner {
 
     /**
      * Set the unit property: An enum describing the unit of measurement.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the UsageInner object itself.
      */
@@ -78,7 +82,7 @@ public final class UsageInner {
 
     /**
      * Get the currentValue property: The current value of the usage.
-     *
+     * 
      * @return the currentValue value.
      */
     public long currentValue() {
@@ -87,7 +91,7 @@ public final class UsageInner {
 
     /**
      * Set the currentValue property: The current value of the usage.
-     *
+     * 
      * @param currentValue the currentValue value to set.
      * @return the UsageInner object itself.
      */
@@ -98,7 +102,7 @@ public final class UsageInner {
 
     /**
      * Get the limit property: The limit of usage.
-     *
+     * 
      * @return the limit value.
      */
     public long limit() {
@@ -107,7 +111,7 @@ public final class UsageInner {
 
     /**
      * Set the limit property: The limit of usage.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the UsageInner object itself.
      */
@@ -118,7 +122,7 @@ public final class UsageInner {
 
     /**
      * Get the name property: The name of the type of usage.
-     *
+     * 
      * @return the name value.
      */
     public UsageName name() {
@@ -127,7 +131,7 @@ public final class UsageInner {
 
     /**
      * Set the name property: The name of the type of usage.
-     *
+     * 
      * @param name the name value to set.
      * @return the UsageInner object itself.
      */
@@ -138,19 +142,17 @@ public final class UsageInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (unit() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property unit in model UsageInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property unit in model UsageInner"));
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model UsageInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model UsageInner"));
         } else {
             name().validate();
         }

@@ -14,6 +14,7 @@ import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 class PropertiesPostProcessor implements EnvironmentPostProcessor, Ordered {
@@ -40,7 +41,11 @@ class PropertiesPostProcessor implements EnvironmentPostProcessor, Ordered {
         if (starterHasToBeDisabled(environment)) {
             return Collections.singletonMap("otel.sdk.disabled", true); // Disable the Spring Monitor starter and the OTel starter;
         }
-        return Collections.singletonMap("otel.exporter.otlp.enabled", false); // Override the otel.exporter.otlp.enabled property
+        Map<String, Object> propertiesToOverride = new HashMap<>(3);
+        propertiesToOverride.put("otel.traces.exporter", AzureSpringMonitorAutoConfig.AZURE_EXPORTER_NAME);
+        propertiesToOverride.put("otel.metrics.exporter", AzureSpringMonitorAutoConfig.AZURE_EXPORTER_NAME);
+        propertiesToOverride.put("otel.logs.exporter", AzureSpringMonitorAutoConfig.AZURE_EXPORTER_NAME);
+        return propertiesToOverride;
     }
 
     private static boolean starterHasToBeDisabled(ConfigurableEnvironment environment) {
