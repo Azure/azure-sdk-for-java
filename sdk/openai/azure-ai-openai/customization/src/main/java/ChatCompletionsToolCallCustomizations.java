@@ -41,7 +41,7 @@ public class ChatCompletionsToolCallCustomizations extends Customization {
 
         // remove unused class (no reference to them, after partial-update)
         customization.getRawEditor().removeFile("src/main/java/com/azure/ai/openai/models/FileDetails.java");
-        customization.getRawEditor().removeFile("src/main/java/com/azure/ai/openai/implementation/MultipartFormDataContentBuilder.java");
+        customization.getRawEditor().removeFile("src/main/java/com/azure/ai/openai/implementation/MultipartFormDataHelper.java");
     }
 
     private void customizeEmbeddingEncodingFormatClass(LibraryCustomization customization, Logger logger) {
