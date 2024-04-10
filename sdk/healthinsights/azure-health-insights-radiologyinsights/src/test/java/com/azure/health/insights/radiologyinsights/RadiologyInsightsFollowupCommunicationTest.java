@@ -58,7 +58,7 @@ public class RadiologyInsightsFollowupCommunicationTest extends RadiologyInsight
         try {
             testRadiologyInsightsWithResponse(request -> {
                 RadiologyInsightsJob riResponse = setPlaybackSyncPollerPollInterval(
-                        getClient().beginInferRadiologyInsights("jobJava5", request)).getFinalResult();
+                        getClient().beginInferRadiologyInsights("job1712752481401", request)).getFinalResult();
 
                 List<RadiologyInsightsPatientResult> patients = riResponse.getResult().getPatientResults();
                 assertEquals(1, patients.size());
