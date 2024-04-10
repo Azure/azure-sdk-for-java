@@ -28,9 +28,7 @@ public class SocketTest {
 
         @Override
         public void opened(Socket socket) {
-            System.out.println("Socket opened");
             openedConnections.incrementAndGet();
-            System.out.println("Opened connections: " + openedConnections.get());
         }
 
         @Override
@@ -46,7 +44,6 @@ public class SocketTest {
         }
 
         public int openedConnections() {
-            System.out.println("Opened connections method: " + openedConnections.get());
             return openedConnections.get();
         }
     }
@@ -54,7 +51,7 @@ public class SocketTest {
     @Test
     public void useSocketConnectionPooling() {
         int initConnections = SOCKET_CONNECTION_LISTENER.openedConnections();
-        System.out.println("Connections opened: " + initConnections);
+
         // Create a WireMockServer with a NetworkTrafficListener
         WireMockServer wireMockServer = new WireMockServer(
             new WireMockConfiguration().dynamicPort().networkTrafficListener(SOCKET_CONNECTION_LISTENER));
@@ -64,7 +61,7 @@ public class SocketTest {
         WireMock.configureFor("localhost", wireMockServer.port());
         String url = "http://localhost:" + wireMockServer.port() + "/test";
 
-        WireMock.stubFor(WireMock.patch(WireMock.urlEqualTo("/test")).willReturn(WireMock.aResponse().withBody("Sam")));
+        WireMock.stubFor(WireMock.patch(WireMock.urlEqualTo("/test")).willReturn(WireMock.aResponse().withBody("test")));
 
         // Create a socket and connect it to the server
         for (int i = 0; i < 5; i++) {
@@ -72,8 +69,7 @@ public class SocketTest {
                 .send(new HttpRequest(HttpMethod.PATCH, url)
                     .setHeaders(new HttpHeaders()
                         .add(HttpHeaderName.CONTENT_TYPE, "application/json")
-                        .add(HttpHeaderName.CONTENT_LENGTH, String.valueOf("OK".length()))).setBody(BinaryData.fromString("OK")));
-            System.out.println("connection counter" + SOCKET_CONNECTION_LISTENER.openedConnections());
+                        .add(HttpHeaderName.CONTENT_LENGTH, String.valueOf("test".length()))).setBody(BinaryData.fromString("test")));
         }
 
         // should not be 6 because the connections are pooled

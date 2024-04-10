@@ -212,7 +212,7 @@ public final class HttpHeaderName implements ExpandableEnum<String> {
     public static final HttpHeaderName CONNECTION = fromString("Connection");
 
     /**
-     * {@code Connection}/{@code connection}
+     * {@code Keep-Alive}/{@code Keep-Alive}
      */
     public static final HttpHeaderName KEEP_ALIVE = fromString("Keep-Alive");
 
@@ -220,11 +220,6 @@ public final class HttpHeaderName implements ExpandableEnum<String> {
      * {@code Content-Disposition}/{@code content-disposition}
      */
     public static final HttpHeaderName CONTENT_DISPOSITION = fromString("Content-Disposition");
-
-    /**
-     * {@code Connection}/{@code connection}
-     */
-    public static final HttpHeaderName KEEP_ALIVE = fromString("Keep-Alive");
 
     /**
      * {@code Content-Encoding}/{@code content-encoding}
