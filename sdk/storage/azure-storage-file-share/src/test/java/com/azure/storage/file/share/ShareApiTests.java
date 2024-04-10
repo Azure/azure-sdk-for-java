@@ -8,6 +8,10 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.sas.AccountSasPermission;
+import com.azure.storage.common.sas.AccountSasResourceType;
+import com.azure.storage.common.sas.AccountSasService;
+import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
@@ -40,6 +44,9 @@ import com.azure.storage.file.share.options.ShareGetStatisticsOptions;
 import com.azure.storage.file.share.options.ShareSetAccessPolicyOptions;
 import com.azure.storage.file.share.options.ShareSetMetadataOptions;
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
+import com.azure.storage.file.share.sas.ShareFileSasPermission;
+import com.azure.storage.file.share.sas.ShareSasPermission;
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -152,6 +159,20 @@ public class ShareApiTests extends FileShareTestBase {
     public void createShare() {
         FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createWithResponse(null, null, null, null),
             201);
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void createShareSasError() {
+        ShareServiceClient unauthorizedServiceClient = fileServiceBuilderHelper()
+            .sasToken("sig=dummyToken")
+            .buildClient();
+
+        ShareClient share = unauthorizedServiceClient.getShareClient(generateShareName());
+
+        ShareStorageException e = assertThrows(ShareStorageException.class, share::create);
+        assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
+        assertTrue(e.getServiceMessage().contains("AuthenticationErrorDetail"));
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
