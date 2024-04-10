@@ -6,18 +6,16 @@ package com.azure.health.insights.radiologyinsights;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.azure.health.insights.radiologyinsights.models.FhirR4Extendible1;
 import com.azure.health.insights.radiologyinsights.models.FollowupCommunicationInference;
-import com.azure.health.insights.radiologyinsights.models.MedicalProfessionalType;
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInference;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
 
 /**
@@ -59,32 +57,32 @@ public class RadiologyInsightsFollowupCommunicationTest extends RadiologyInsight
         
         try {
             testRadiologyInsightsWithResponse(request -> {
-                RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
-                        getClient().beginInferRadiologyInsights(request)).getFinalResult();
+                RadiologyInsightsJob riResponse = setPlaybackSyncPollerPollInterval(
+                        getClient().beginInferRadiologyInsights("jobJava5", request)).getFinalResult();
 
-                List<RadiologyInsightsPatientResult> patients = riResponse.getPatientResults();
+                List<RadiologyInsightsPatientResult> patients = riResponse.getResult().getPatientResults();
                 assertEquals(1, patients.size());
                 
                 RadiologyInsightsPatientResult patient = patients.get(0);
-                List<FhirR4Extendible1> inferences = patient.getInferences();
+                List<RadiologyInsightsInference> inferences = patient.getInferences();
                 assertEquals(1, inferences.size());
                 
-                FhirR4Extendible1 inference = inferences.get(0);
+                RadiologyInsightsInference inference = inferences.get(0);
                 assertTrue(inference instanceof FollowupCommunicationInference, "Inference should be an instance of FollowupCommunicationInference");
                 
                 FollowupCommunicationInference followupCommunicationInference = (FollowupCommunicationInference) inference;
 
-                System.out.println("   Date/time: ");
-                List<OffsetDateTime> dateTimeList = followupCommunicationInference.getDateTime();
-                for (OffsetDateTime dateTime : dateTimeList) {
-                    System.out.println("      " + dateTime);
-                }
-                System.out.println("   Recipient: ");
-                List<MedicalProfessionalType> recipientList = followupCommunicationInference.getRecipient();
-                for (MedicalProfessionalType recipient : recipientList) {
-                    System.out.println("      " + recipient);
-                }
-                System.out.println("   Aknowledged: " + followupCommunicationInference.isWasAcknowledged());
+//                System.out.println("   Date/time: ");
+//                List<OffsetDateTime> dateTimeList = followupCommunicationInference.getCommunicatedAt();
+//                for (OffsetDateTime dateTime : dateTimeList) {
+//                    System.out.println("      " + dateTime);
+//                }
+//                System.out.println("   Recipient: ");
+//                List<MedicalProfessionalType> recipientList = followupCommunicationInference.getRecipient();
+//                for (MedicalProfessionalType recipient : recipientList) {
+//                    System.out.println("      " + recipient);
+//                }
+//                System.out.println("   Aknowledged: " + followupCommunicationInference.isWasAcknowledged());
 
 
             });

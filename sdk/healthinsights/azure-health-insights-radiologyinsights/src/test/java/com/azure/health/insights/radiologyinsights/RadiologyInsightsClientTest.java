@@ -6,15 +6,15 @@ package com.azure.health.insights.radiologyinsights;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.List;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
 
 /**
  * Unit tests for {@link RadiologyInsightsClient}.
@@ -34,10 +34,10 @@ public class RadiologyInsightsClientTest extends RadiologyInsightsClientTestBase
         try {
             testRadiologyInsightsWithResponse(request -> {
 
-                RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
-                        getClient().beginInferRadiologyInsights(request)).getFinalResult();
+                RadiologyInsightsJob riResponse = setPlaybackSyncPollerPollInterval(
+                        getClient().beginInferRadiologyInsights("jobJava2", request)).getFinalResult();
 
-                List<RadiologyInsightsPatientResult> patients = riResponse.getPatientResults();
+                List<RadiologyInsightsPatientResult> patients = riResponse.getResult().getPatientResults();
                 assertEquals(1, patients.size());
                 RadiologyInsightsPatientResult patient = patients.get(0);
                 assertTrue(patient.getInferences().size() > 0, "at least one inference should be returned");

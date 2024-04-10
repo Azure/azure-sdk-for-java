@@ -10,11 +10,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.function.Predicate;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentType;
 import com.azure.health.insights.radiologyinsights.models.DocumentAdministrativeMetadata;
@@ -22,30 +23,29 @@ import com.azure.health.insights.radiologyinsights.models.DocumentAuthor;
 import com.azure.health.insights.radiologyinsights.models.DocumentContent;
 import com.azure.health.insights.radiologyinsights.models.DocumentContentSourceType;
 import com.azure.health.insights.radiologyinsights.models.DocumentType;
-import com.azure.health.insights.radiologyinsights.models.Encounter;
 import com.azure.health.insights.radiologyinsights.models.EncounterClass;
 import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
-import com.azure.health.insights.radiologyinsights.models.FhirR4Extendible;
-import com.azure.health.insights.radiologyinsights.models.FhirR4Extendible1;
 import com.azure.health.insights.radiologyinsights.models.FindingOptions;
 import com.azure.health.insights.radiologyinsights.models.FollowupCommunicationInference;
 import com.azure.health.insights.radiologyinsights.models.FollowupRecommendationOptions;
 import com.azure.health.insights.radiologyinsights.models.MedicalProfessionalType;
+import com.azure.health.insights.radiologyinsights.models.OrderedProcedure;
 import com.azure.health.insights.radiologyinsights.models.PatientDetails;
 import com.azure.health.insights.radiologyinsights.models.PatientDocument;
+import com.azure.health.insights.radiologyinsights.models.PatientEncounter;
 import com.azure.health.insights.radiologyinsights.models.PatientRecord;
 import com.azure.health.insights.radiologyinsights.models.PatientSex;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInference;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceOptions;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsModelConfiguration;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
 import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
-
-import reactor.core.publisher.Mono;
 
 /**
  * The SampleCriticalResultInferenceAsync class processes a sample radiology document 
@@ -93,29 +93,20 @@ public class SampleFollowupCommunicationAsync {
                 .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest())
                 .credential(new AzureKeyCredential(apiKey)).buildAsyncClient();
 
-        PollerFlux<PollOperationDetails, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
-                .beginInferRadiologyInsights(createRadiologyInsightsRequest());
+        PollerFlux<RadiologyInsightsJob, RadiologyInsightsJob> asyncPoller = radiologyInsightsAsyncClient
+                .beginInferRadiologyInsights("job1", createRadiologyInsightsJob());
         
-        Mono<RadiologyInsightsInferenceResult> finalResult = asyncPoller.last().flatMap(pollResult -> {
-            if (pollResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-                return pollResult.getFinalResult();
-            } else {
-                System.out.println(
-                        "Poll Request Failed with message: " + pollResult.getValue().getError().getMessage());
-                return Mono.empty();
-            }
-        });
-
         CountDownLatch latch = new CountDownLatch(1);
         
-        finalResult.doFinally(signal -> {
-            latch.countDown();
-        }).subscribe(result -> {
-            displayFollowupCommunications(result);
-        }, error -> {
-            System.err.println(error.getMessage());
-            error.printStackTrace();
-        });
+        asyncPoller
+            .takeUntil(isComplete)
+            .subscribe(completedResult -> {
+                if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+                    System.out.println("Completed poll response, status: " + completedResult.getStatus());
+                    displayFollowupCommunications(completedResult.getValue().getResult());
+                    latch.countDown();
+                }
+            });
 
         latch.await();
     }
@@ -129,13 +120,13 @@ public class SampleFollowupCommunicationAsync {
     private static void displayFollowupCommunications(RadiologyInsightsInferenceResult radiologyInsightsResult) {
         List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
         for (RadiologyInsightsPatientResult patientResult : patientResults) {
-            List<FhirR4Extendible1> inferences = patientResult.getInferences();
-            for (FhirR4Extendible1 inference : inferences) {
+            List<RadiologyInsightsInference> inferences = patientResult.getInferences();
+            for (RadiologyInsightsInference inference : inferences) {
                 if (inference instanceof FollowupCommunicationInference) {
                     System.out.println("Followup Communication Inference found");
                     FollowupCommunicationInference followupCommunicationInference = (FollowupCommunicationInference) inference;
                     System.out.println("   Date/time: ");
-                    List<OffsetDateTime> dateTimeList = followupCommunicationInference.getDateTime();
+                    List<OffsetDateTime> dateTimeList = followupCommunicationInference.getCommunicatedAt();
                     for (OffsetDateTime dateTime : dateTimeList) {
                         System.out.println("      " + dateTime);
                     }
@@ -151,18 +142,20 @@ public class SampleFollowupCommunicationAsync {
     }
     
     /**
-     * Creates a RadiologyInsightsData object to use in the Radiology Insights
+     * Creates a RadiologyInsightsJob object to use in the Radiology Insights job
      * request.
      *
-     * @return A RadiologyInsightsData object with the created patient records and
+     * @return A RadiologyInsightsJob object with the created patient records and
      *         model configuration.
      */
-    private static RadiologyInsightsData createRadiologyInsightsRequest() {
+    private static RadiologyInsightsJob createRadiologyInsightsJob() {
         List<PatientRecord> patientRecords = createPatientRecords();
         RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
         RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
         radiologyInsightsData.setConfiguration(modelConfiguration);
-        return radiologyInsightsData;
+        RadiologyInsightsJob radiologyInsightsJob = new RadiologyInsightsJob();
+        radiologyInsightsJob.setJobData(radiologyInsightsData);
+        return radiologyInsightsJob;
     }
 
     /**
@@ -184,9 +177,9 @@ public class SampleFollowupCommunicationAsync {
         LocalDateTime dateTime = LocalDateTime.parse("1959-11-11T19:00:00+00:00", formatter);
         patientDetails.setBirthDate(dateTime.toLocalDate());
         
-        patientRecord.setInfo(patientDetails);
+        patientRecord.setDetails(patientDetails);
 
-        Encounter encounter = new Encounter("encounterid1");
+        PatientEncounter encounter = new PatientEncounter("encounterid1");
 
         TimePeriod period = new TimePeriod();
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-M-d'T'HH:mm:ssXXX");
@@ -214,7 +207,7 @@ public class SampleFollowupCommunicationAsync {
         patientDocument.setSpecialtyType(SpecialtyType.RADIOLOGY);
 
         DocumentAdministrativeMetadata adminMetadata = new DocumentAdministrativeMetadata();
-        FhirR4Extendible orderedProcedure = new FhirR4Extendible();
+        OrderedProcedure orderedProcedure = new OrderedProcedure();
 
         FhirR4CodeableConcept procedureCode = new FhirR4CodeableConcept();
         FhirR4Coding procedureCoding = new FhirR4Coding();
@@ -235,7 +228,7 @@ public class SampleFollowupCommunicationAsync {
         DateTimeFormatter formatter3 = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
         OffsetDateTime createdDateTime = OffsetDateTime.parse("2021-06-01T00:00:00.000" + "+00:00", formatter3);
-        patientDocument.setCreatedDateTime(createdDateTime);
+        patientDocument.setCreatedAt(createdDateTime);
 
         patientRecord.setPatientDocuments(Arrays.asList(patientDocument));
         patientRecords.add(patientRecord);
@@ -294,4 +287,9 @@ public class SampleFollowupCommunicationAsync {
         inferenceOptions.setFindingOptions(findingOptions);
         return inferenceOptions;
     }
+
+    private static Predicate<AsyncPollResponse<RadiologyInsightsJob, RadiologyInsightsJob>> isComplete = response -> {
+        return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
+            && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
+    };
 }

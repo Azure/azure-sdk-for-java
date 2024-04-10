@@ -45,13 +45,6 @@ public final class PatientDocument {
     private String language;
 
     /*
-     * The date and time when the document was created.
-     */
-    @Generated
-    @JsonProperty(value = "createdDateTime")
-    private OffsetDateTime createdDateTime;
-
-    /*
      * Document author(s)
      */
     @Generated
@@ -162,28 +155,6 @@ public final class PatientDocument {
     }
 
     /**
-     * Get the createdDateTime property: The date and time when the document was created.
-     *
-     * @return the createdDateTime value.
-     */
-    @Generated
-    public OffsetDateTime getCreatedDateTime() {
-        return this.createdDateTime;
-    }
-
-    /**
-     * Set the createdDateTime property: The date and time when the document was created.
-     *
-     * @param createdDateTime the createdDateTime value to set.
-     * @return the PatientDocument object itself.
-     */
-    @Generated
-    public PatientDocument setCreatedDateTime(OffsetDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
-        return this;
-    }
-
-    /**
      * Get the authors property: Document author(s).
      *
      * @return the authors value.
@@ -257,5 +228,34 @@ public final class PatientDocument {
     @Generated
     public DocumentContent getContent() {
         return this.content;
+    }
+
+    /*
+     * The date and time when the document was created.
+     */
+    @Generated
+    @JsonProperty(value = "createdAt")
+    private OffsetDateTime createdAt;
+
+    /**
+     * Get the createdAt property: The date and time when the document was created.
+     *
+     * @return the createdAt value.
+     */
+    @Generated
+    public OffsetDateTime getCreatedAt() {
+        return this.createdAt;
+    }
+
+    /**
+     * Set the createdAt property: The date and time when the document was created.
+     *
+     * @param createdAt the createdAt value to set.
+     * @return the PatientDocument object itself.
+     */
+    @Generated
+    public PatientDocument setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+        return this;
     }
 }

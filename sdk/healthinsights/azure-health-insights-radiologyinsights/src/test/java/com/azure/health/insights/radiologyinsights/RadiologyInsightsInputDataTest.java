@@ -24,15 +24,15 @@ import com.azure.health.insights.radiologyinsights.models.DocumentAuthor;
 import com.azure.health.insights.radiologyinsights.models.DocumentContent;
 import com.azure.health.insights.radiologyinsights.models.DocumentContentSourceType;
 import com.azure.health.insights.radiologyinsights.models.DocumentType;
-import com.azure.health.insights.radiologyinsights.models.Encounter;
 import com.azure.health.insights.radiologyinsights.models.EncounterClass;
 import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
-import com.azure.health.insights.radiologyinsights.models.FhirR4Extendible;
 import com.azure.health.insights.radiologyinsights.models.FindingOptions;
 import com.azure.health.insights.radiologyinsights.models.FollowupRecommendationOptions;
+import com.azure.health.insights.radiologyinsights.models.OrderedProcedure;
 import com.azure.health.insights.radiologyinsights.models.PatientDetails;
 import com.azure.health.insights.radiologyinsights.models.PatientDocument;
+import com.azure.health.insights.radiologyinsights.models.PatientEncounter;
 import com.azure.health.insights.radiologyinsights.models.PatientRecord;
 import com.azure.health.insights.radiologyinsights.models.PatientSex;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
@@ -82,15 +82,15 @@ public class RadiologyInsightsInputDataTest {
         
         assertEquals("Sharona", patientRecord.getId());
         
-        PatientDetails info = patientRecord.getInfo();
+        PatientDetails info = patientRecord.getDetails();
         assertEquals(PatientSex.FEMALE, info.getSex());
         assertNull(info.getClinicalInfo());
         assertEquals(LocalDate.of(1959, 11, 11), info.getBirthDate());
         
-        List<Encounter> encounters = patientRecord.getEncounters();
+        List<PatientEncounter> encounters = patientRecord.getEncounters();
         assertEquals(1, encounters.size());
         
-        Encounter encounter = encounters.get(0);
+        PatientEncounter encounter = encounters.get(0);
         assertEquals(EncounterClass.IN_PATIENT, encounter.getClassProperty());
         assertEquals("encounterid1", encounter.getId());
         assertEquals(OffsetDateTime.parse("2021-08-28T00:00:00Z"), encounter.getPeriod().getStart());
@@ -103,10 +103,10 @@ public class RadiologyInsightsInputDataTest {
         DocumentAdministrativeMetadata administrativeMetadata = patientDocument.getAdministrativeMetadata();
         assertEquals("encounterid1", administrativeMetadata.getEncounterId());
         
-        List<FhirR4Extendible> orderedProcedures = administrativeMetadata.getOrderedProcedures();
+        List<OrderedProcedure> orderedProcedures = administrativeMetadata.getOrderedProcedures();
         assertEquals(1, orderedProcedures.size());
         
-        FhirR4Extendible procedure = orderedProcedures.get(0);
+        OrderedProcedure procedure = orderedProcedures.get(0);
         assertEquals("IH Hip 1 View Left", procedure.getDescription());
         assertNull(procedure.getExtension());
         
@@ -137,7 +137,7 @@ public class RadiologyInsightsInputDataTest {
         assertEquals(DocumentContentSourceType.INLINE, patientDocument.getContent().getSourceType());
         assertEquals("Test", patientDocument.getContent().getValue());
         
-        assertEquals(OffsetDateTime.parse("2021-06-01T00:00:00.000" + "+00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")), patientDocument.getCreatedDateTime());
+        assertEquals(OffsetDateTime.parse("2021-06-01T00:00:00.000" + "+00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")), patientDocument.getCreatedAt());
         
         assertEquals("docid1", patientDocument.getId());
         assertEquals("EN", patientDocument.getLanguage());
@@ -172,9 +172,9 @@ public class RadiologyInsightsInputDataTest {
 
         patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
         
-        patientRecord.setInfo(patientDetails);
+        patientRecord.setDetails(patientDetails);
 
-        Encounter encounter = new Encounter("encounterid1");
+        PatientEncounter encounter = new PatientEncounter("encounterid1");
 
         TimePeriod period = new TimePeriod();
 
@@ -201,7 +201,7 @@ public class RadiologyInsightsInputDataTest {
         patientDocument.setSpecialtyType(SpecialtyType.RADIOLOGY);
 
         DocumentAdministrativeMetadata adminMetadata = new DocumentAdministrativeMetadata();
-        FhirR4Extendible orderedProcedure = new FhirR4Extendible();
+        OrderedProcedure orderedProcedure = new OrderedProcedure();
 
         FhirR4CodeableConcept procedureCode = new FhirR4CodeableConcept();
         FhirR4Coding procedureCoding = new FhirR4Coding();
@@ -222,7 +222,7 @@ public class RadiologyInsightsInputDataTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
         OffsetDateTime createdDateTime = OffsetDateTime.parse("2021-06-01T00:00:00.000" + "+00:00", formatter);
-        patientDocument.setCreatedDateTime(createdDateTime);
+        patientDocument.setCreatedAt(createdDateTime);
 
         patientRecord.setPatientDocuments(Arrays.asList(patientDocument));
         patientRecords.add(patientRecord);
