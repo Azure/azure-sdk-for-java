@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines a managed rule set. */
+/**
+ * Defines a managed rule set.
+ */
 @Fluent
 public final class ManagedRuleSet {
     /*
@@ -37,13 +39,15 @@ public final class ManagedRuleSet {
     @JsonProperty(value = "ruleGroupOverrides")
     private List<ManagedRuleGroupOverride> ruleGroupOverrides;
 
-    /** Creates an instance of ManagedRuleSet class. */
+    /**
+     * Creates an instance of ManagedRuleSet class.
+     */
     public ManagedRuleSet() {
     }
 
     /**
      * Get the ruleSetType property: Defines the rule set type to use.
-     *
+     * 
      * @return the ruleSetType value.
      */
     public String ruleSetType() {
@@ -52,7 +56,7 @@ public final class ManagedRuleSet {
 
     /**
      * Set the ruleSetType property: Defines the rule set type to use.
-     *
+     * 
      * @param ruleSetType the ruleSetType value to set.
      * @return the ManagedRuleSet object itself.
      */
@@ -63,7 +67,7 @@ public final class ManagedRuleSet {
 
     /**
      * Get the ruleSetVersion property: Defines the version of the rule set to use.
-     *
+     * 
      * @return the ruleSetVersion value.
      */
     public String ruleSetVersion() {
@@ -72,7 +76,7 @@ public final class ManagedRuleSet {
 
     /**
      * Set the ruleSetVersion property: Defines the version of the rule set to use.
-     *
+     * 
      * @param ruleSetVersion the ruleSetVersion value to set.
      * @return the ManagedRuleSet object itself.
      */
@@ -82,9 +86,9 @@ public final class ManagedRuleSet {
     }
 
     /**
-     * Get the anomalyScore property: Verizon only : If the rule set supports anomaly detection mode, this describes the
-     * threshold for blocking requests.
-     *
+     * Get the anomalyScore property: Verizon only : If the rule set supports anomaly detection mode, this describes
+     * the threshold for blocking requests.
+     * 
      * @return the anomalyScore value.
      */
     public Integer anomalyScore() {
@@ -92,9 +96,9 @@ public final class ManagedRuleSet {
     }
 
     /**
-     * Set the anomalyScore property: Verizon only : If the rule set supports anomaly detection mode, this describes the
-     * threshold for blocking requests.
-     *
+     * Set the anomalyScore property: Verizon only : If the rule set supports anomaly detection mode, this describes
+     * the threshold for blocking requests.
+     * 
      * @param anomalyScore the anomalyScore value to set.
      * @return the ManagedRuleSet object itself.
      */
@@ -105,7 +109,7 @@ public final class ManagedRuleSet {
 
     /**
      * Get the ruleGroupOverrides property: Defines the rule overrides to apply to the rule set.
-     *
+     * 
      * @return the ruleGroupOverrides value.
      */
     public List<ManagedRuleGroupOverride> ruleGroupOverrides() {
@@ -114,7 +118,7 @@ public final class ManagedRuleSet {
 
     /**
      * Set the ruleGroupOverrides property: Defines the rule overrides to apply to the rule set.
-     *
+     * 
      * @param ruleGroupOverrides the ruleGroupOverrides value to set.
      * @return the ManagedRuleSet object itself.
      */
@@ -125,19 +129,17 @@ public final class ManagedRuleSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleSetType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ruleSetType in model ManagedRuleSet"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ruleSetType in model ManagedRuleSet"));
         }
         if (ruleSetVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ruleSetVersion in model ManagedRuleSet"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ruleSetVersion in model ManagedRuleSet"));
         }
         if (ruleGroupOverrides() != null) {
             ruleGroupOverrides().forEach(e -> e.validate());

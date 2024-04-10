@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of an existing Shared Private Link Resource to use when connecting to a private origin. */
+/**
+ * Describes the properties of an existing Shared Private Link Resource to use when connecting to a private origin.
+ */
 @Fluent
 public final class SharedPrivateLinkResourceProperties {
     /*
@@ -40,13 +42,15 @@ public final class SharedPrivateLinkResourceProperties {
     @JsonProperty(value = "status")
     private SharedPrivateLinkResourceStatus status;
 
-    /** Creates an instance of SharedPrivateLinkResourceProperties class. */
+    /**
+     * Creates an instance of SharedPrivateLinkResourceProperties class.
+     */
     public SharedPrivateLinkResourceProperties() {
     }
 
     /**
      * Get the privateLink property: The resource id of the resource the shared private link resource is for.
-     *
+     * 
      * @return the privateLink value.
      */
     public ResourceReference privateLink() {
@@ -55,7 +59,7 @@ public final class SharedPrivateLinkResourceProperties {
 
     /**
      * Set the privateLink property: The resource id of the resource the shared private link resource is for.
-     *
+     * 
      * @param privateLink the privateLink value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.
      */
@@ -66,7 +70,7 @@ public final class SharedPrivateLinkResourceProperties {
 
     /**
      * Get the privateLinkLocation property: The location of the shared private link resource.
-     *
+     * 
      * @return the privateLinkLocation value.
      */
     public String privateLinkLocation() {
@@ -75,7 +79,7 @@ public final class SharedPrivateLinkResourceProperties {
 
     /**
      * Set the privateLinkLocation property: The location of the shared private link resource.
-     *
+     * 
      * @param privateLinkLocation the privateLinkLocation value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.
      */
@@ -86,7 +90,7 @@ public final class SharedPrivateLinkResourceProperties {
 
     /**
      * Get the groupId property: The group id from the provider of resource the shared private link resource is for.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -95,7 +99,7 @@ public final class SharedPrivateLinkResourceProperties {
 
     /**
      * Set the groupId property: The group id from the provider of resource the shared private link resource is for.
-     *
+     * 
      * @param groupId the groupId value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.
      */
@@ -105,8 +109,9 @@ public final class SharedPrivateLinkResourceProperties {
     }
 
     /**
-     * Get the requestMessage property: The request message for requesting approval of the shared private link resource.
-     *
+     * Get the requestMessage property: The request message for requesting approval of the shared private link
+     * resource.
+     * 
      * @return the requestMessage value.
      */
     public String requestMessage() {
@@ -114,8 +119,9 @@ public final class SharedPrivateLinkResourceProperties {
     }
 
     /**
-     * Set the requestMessage property: The request message for requesting approval of the shared private link resource.
-     *
+     * Set the requestMessage property: The request message for requesting approval of the shared private link
+     * resource.
+     * 
      * @param requestMessage the requestMessage value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.
      */
@@ -127,7 +133,7 @@ public final class SharedPrivateLinkResourceProperties {
     /**
      * Get the status property: Status of the shared private link resource. Can be Pending, Approved, Rejected,
      * Disconnected, or Timeout.
-     *
+     * 
      * @return the status value.
      */
     public SharedPrivateLinkResourceStatus status() {
@@ -137,7 +143,7 @@ public final class SharedPrivateLinkResourceProperties {
     /**
      * Set the status property: Status of the shared private link resource. Can be Pending, Approved, Rejected,
      * Disconnected, or Timeout.
-     *
+     * 
      * @param status the status value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.
      */
@@ -148,7 +154,7 @@ public final class SharedPrivateLinkResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

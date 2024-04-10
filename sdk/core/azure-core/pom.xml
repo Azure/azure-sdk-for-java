@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.48.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+  <version>1.49.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
 
   <name>Microsoft Azure Java Core Library</name>
   <description>This package contains core types for Azure Java clients.</description>
@@ -89,6 +89,8 @@
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
 
     <spotless.skip>false</spotless.skip>
+    <animal.sniffer.skip>false</animal.sniffer.skip>
+    <animal.sniffer.ignores>javax.xml.stream.XMLStreamException,java.lang.invoke.MethodHandle,java.lang.invoke.MethodHandles</animal.sniffer.ignores>
   </properties>
 
   <developers>
@@ -107,7 +109,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-xml</artifactId>
-      <version>1.0.0-beta.4</version> <!-- {x-version-update;unreleased_com.azure:azure-xml;dependency} -->
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-xml;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
