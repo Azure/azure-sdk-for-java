@@ -3,7 +3,7 @@
 ## 1.1.0-beta.3 (2024-04-11)
 
 ### Breaking Changes
-- Please note, this package has been deprecated and will no longer be maintained after 03/31/2024. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) and deprecation anouncement (https://azure.microsoft.com/en-us/updates/retirement-notice-azure-communication-services-network-traversal-turn-public-preview-is-retiring/) for more details.
+- Please note, this service is shutting down on 03/31/2024 and there is no replacement, please read our [retirement notice](https://azure.microsoft.com/updates/retirement-notice-azure-communication-services-network-traversal-turn-public-preview-is-retiring/) for more details.
 
 ## 1.1.0-beta.2 (2022-04-13)
 
