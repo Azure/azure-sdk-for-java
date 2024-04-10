@@ -75,7 +75,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     model: String (Required)
@@ -94,11 +94,11 @@ public final class AssistantsAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -185,7 +185,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -235,7 +235,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -264,17 +264,17 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     file_id: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -349,7 +349,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -389,7 +389,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -650,7 +650,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -693,7 +693,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -725,7 +725,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     messages (Optional): [
@@ -745,11 +745,11 @@ public final class AssistantsAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -782,7 +782,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -814,7 +814,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -843,7 +843,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     role: String(user/assistant) (Required)
@@ -856,11 +856,11 @@ public final class AssistantsAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -948,7 +948,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -999,7 +999,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1087,7 +1087,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1127,7 +1127,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1160,7 +1160,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     assistant_id: String (Required)
@@ -1176,11 +1176,11 @@ public final class AssistantsAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1280,7 +1280,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1343,7 +1343,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1400,7 +1400,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     tool_outputs (Required): [
@@ -1411,11 +1411,11 @@ public final class AssistantsAsyncClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1473,7 +1473,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1530,7 +1530,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     assistant_id: String (Required)
@@ -1562,11 +1562,11 @@ public final class AssistantsAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1622,7 +1622,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1714,7 +1714,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1791,7 +1791,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1826,7 +1826,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2512,7 +2512,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     model: String (Optional)
@@ -2531,11 +2531,11 @@ public final class AssistantsAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2580,7 +2580,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -2588,11 +2588,11 @@ public final class AssistantsAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2626,7 +2626,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -2634,11 +2634,11 @@ public final class AssistantsAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2684,7 +2684,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -2692,11 +2692,11 @@ public final class AssistantsAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2754,7 +2754,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2788,7 +2788,7 @@ public final class AssistantsAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
