@@ -279,6 +279,22 @@ public class LogsQueryClientTest extends TestProxyTestBase {
         LogsQueryResult queryResults = client.queryWorkspaceWithResponse(workspaceId,
                 QUERY_STRING, null, new LogsQueryOptions().setIncludeStatistics(true), Context.NONE).getValue();
 
+        BinaryData statisticsData = queryResults.getStatistics();
+
+        try (JsonReader jsonReader = JsonProviders.createReader(statisticsData.toBytes())) {
+            Map<String, Object> statisticsMap = jsonReader.readMap(JsonReader::readUntyped);
+            assertNotNull(statisticsMap);
+            Object query = statisticsMap.get("query");
+            if (query instanceof Map) {
+                Map<String, Object> queryMap = (Map<String, Object>) query;
+                assertNotNull(queryMap.get("executionTime"));
+            } else {
+                Assertions.fail("Failed to read the statistics data.");
+            }
+        } catch (Exception e) {
+            Assertions.fail("Failed to read the statistics data.");
+        }
+
         assertEquals(1, queryResults.getAllTables().size());
         assertNotNull(queryResults.getStatistics());
     }
