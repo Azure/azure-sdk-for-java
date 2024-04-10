@@ -51,7 +51,7 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
     }
 
     private static void setupDockerContainers() throws IOException, InterruptedException {
-        createConnectorJar();
+      //  createConnectorJar();
 
         logger.info("Setting up docker containers...");
 

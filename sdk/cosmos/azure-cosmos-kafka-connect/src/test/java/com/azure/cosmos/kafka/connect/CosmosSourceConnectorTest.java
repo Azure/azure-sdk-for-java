@@ -824,11 +824,11 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                 .getSimpleObjectMapper()
                 .convertValue(containersMetadata.get("metadata"), new TypeReference<Map<String, Object>>(){});
 
-        assertThat(metadataMap.containsKey("cosmos.source.metadata.containerRids")).isTrue();
+        assertThat(metadataMap.containsKey("containerRids")).isTrue();
         List<String> persistedContainerRids =
             Utils
                 .getSimpleObjectMapper()
-                .readValue(metadataMap.get("cosmos.source.metadata.containerRids").toString(), new TypeReference<List<String>>() {
+                .readValue(metadataMap.get("containerRids").toString(), new TypeReference<List<String>>() {
                 });
         assertThat(persistedContainerRids.size()).isEqualTo(expectedMetadataTaskUnit.getContainerRids().size());
         assertThat(persistedContainerRids.containsAll(expectedMetadataTaskUnit.getContainerRids())).isTrue();
@@ -853,11 +853,11 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                 Utils
                     .getSimpleObjectMapper()
                     .convertValue(persistedFeedRangesMetadata.get("metadata"), new TypeReference<Map<String, Object>>() {});
-            assertThat(feedRangesMetadataMap.containsKey("cosmos.source.metadata.container.feedRanges")).isTrue();
+            assertThat(feedRangesMetadataMap.containsKey("feedRanges")).isTrue();
             List<String> persistedFeedRanges =
                 Utils
                     .getSimpleObjectMapper()
-                    .readValue(feedRangesMetadataMap.get("cosmos.source.metadata.container.feedRanges").toString(), new TypeReference<List<String>>() {
+                    .readValue(feedRangesMetadataMap.get("feedRanges").toString(), new TypeReference<List<String>>() {
                     });
             assertThat(expectedFeedRanges.size()).isEqualTo(persistedFeedRanges.size());
             assertThat(expectedFeedRanges.containsAll(persistedFeedRanges)).isTrue();
