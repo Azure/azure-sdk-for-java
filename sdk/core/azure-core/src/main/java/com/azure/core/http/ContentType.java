@@ -27,7 +27,6 @@ public final class ContentType {
 
     /**
      * The default multipart form data Content-Type header.
-    
      */
     public static final String MULTIPART_FORM_DATA = "multipart/form-data";
 
