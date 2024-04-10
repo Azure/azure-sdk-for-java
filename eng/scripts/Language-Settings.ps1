@@ -288,7 +288,6 @@ $PackageExclusions = @{
   "azure-cosmos-spark_3-2_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-spark_3-3_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-spark_3-4_2-12" = "Javadoc dependency issue.";
-  "azure-cosmos-spark_3-5_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-test" = "Don't want to include the test framework package.";
   "azure-aot-graalvm-support-netty" = "No Javadocs for the package.";
   "azure-aot-graalvm-support" = "No Javadocs for the package.";
