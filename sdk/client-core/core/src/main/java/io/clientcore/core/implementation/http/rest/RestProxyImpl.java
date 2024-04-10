@@ -6,7 +6,6 @@ package io.clientcore.core.implementation.http.rest;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponse;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -122,9 +121,7 @@ public class RestProxyImpl extends RestProxyBase {
 
                 return createResponseIfNecessary(response, entityType, null);
             } else {
-                RequestOptions requestOptions = response.getRequest().getOptions();
-                ResponseBodyMode responseBodyMode =
-                    requestOptions == null ? null : requestOptions.getResponseBodyMode();
+                ResponseBodyMode responseBodyMode = response.getRequest().getRequestOptions().getResponseBodyMode();
 
                 if (responseBodyMode == DESERIALIZE) {
                     HttpResponseAccessHelper.setValue((HttpResponse<?>) response,

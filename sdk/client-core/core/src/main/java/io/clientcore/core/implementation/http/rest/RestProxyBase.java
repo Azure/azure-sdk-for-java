@@ -75,7 +75,7 @@ public abstract class RestProxyBase {
             if (options == null) {
                 options = new RequestOptions()
                     .setContext(Context.EMPTY)
-                    .setRequestLogger(methodParser.getMethodLogger());
+                    .setLogger(methodParser.getMethodLogger());
             }
 
             ResponseBodyMode responseBodyMode = options.getResponseBodyMode();
@@ -103,7 +103,7 @@ public abstract class RestProxyBase {
             // If responseBodyHandling is still null, we'll use the response's Content-Type to determine how to read its
             // body: 'application/octet-stream' will use STREAM and everything else will use BUFFER.
             options.setResponseBodyMode(responseBodyMode);
-            request.setOptions(options);
+            request.setRequestOptions(options);
 
             return invoke(proxy, method, requestCallback, methodParser, request);
         } catch (IOException e) {

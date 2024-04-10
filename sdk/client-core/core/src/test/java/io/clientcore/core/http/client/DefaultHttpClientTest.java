@@ -237,7 +237,7 @@ public class DefaultHttpClientTest {
     private static Response<?> getResponse(HttpClient client, String path, Context context) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
 
-        request.getOptions().setContext(context);
+        request.getRequestOptions().setContext(context);
 
         return client.send(request);
     }

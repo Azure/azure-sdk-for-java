@@ -9,7 +9,6 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
@@ -159,11 +158,7 @@ class OkHttpHttpClient implements HttpClient {
     }
 
     private Response<?> processResponse(HttpRequest request, okhttp3.Response response) throws IOException {
-        if (request.getOptions() == null) {
-            request.setOptions(new RequestOptions());
-        }
-
-        ResponseBodyMode responseBodyMode = request.getOptions().getResponseBodyMode();
+        ResponseBodyMode responseBodyMode = request.getRequestOptions().getResponseBodyMode();
 
         if (responseBodyMode == null) {
             String contentType = response.headers().get(CONTENT_TYPE.getCaseInsensitiveName());
@@ -176,7 +171,7 @@ class OkHttpHttpClient implements HttpClient {
                 responseBodyMode = BUFFER;
             }
 
-            request.getOptions().setResponseBodyMode(responseBodyMode); // We only change this if it was null.
+            request.getRequestOptions().setResponseBodyMode(responseBodyMode); // We only change this if it was null.
         }
 
         BinaryData body = null;

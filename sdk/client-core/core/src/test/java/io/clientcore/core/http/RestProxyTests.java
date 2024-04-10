@@ -184,7 +184,7 @@ public class RestProxyTests {
 
         testInterface.testHeadMethod();
 
-        assertEquals(IGNORE, client.getLastHttpRequest().getOptions().getResponseBodyMode());
+        assertEquals(IGNORE, client.getLastHttpRequest().getRequestOptions().getResponseBodyMode());
     }
 
     @Test
@@ -198,7 +198,7 @@ public class RestProxyTests {
 
         testInterface.testMethodReturnsResponseVoid();
 
-        assertEquals(BUFFER, client.getLastHttpRequest().getOptions().getResponseBodyMode());
+        assertEquals(BUFFER, client.getLastHttpRequest().getRequestOptions().getResponseBodyMode());
     }
 
     @Test
@@ -212,7 +212,7 @@ public class RestProxyTests {
 
         testInterface.testDownload();
 
-        assertEquals(STREAM, client.getLastHttpRequest().getOptions().getResponseBodyMode());
+        assertEquals(STREAM, client.getLastHttpRequest().getRequestOptions().getResponseBodyMode());
     }
 
     private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {

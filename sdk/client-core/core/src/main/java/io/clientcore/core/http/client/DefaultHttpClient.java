@@ -226,19 +226,20 @@ class DefaultHttpClient implements HttpClient {
                 connection.disconnect();
             }
         } else {
-            ResponseBodyMode responseBodyMode = httpRequest.getOptions().getResponseBodyMode();
+            ResponseBodyMode responseBodyMode = httpRequest.getRequestOptions().getResponseBodyMode();
 
             if (responseBodyMode == null) {
                 HttpHeader contentType = httpResponse.getHeaders().get(CONTENT_TYPE);
-                String contentTypeString = contentType == null ? null : contentType.getValue();
 
-                if (APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentTypeString)) {
+                if (contentType != null && APPLICATION_OCTET_STREAM.regionMatches(true, 0, contentType.getValue(), 0,
+                    APPLICATION_OCTET_STREAM.length())) {
+
                     responseBodyMode = STREAM;
                 } else {
                     responseBodyMode = BUFFER;
                 }
 
-                httpRequest.getOptions().setResponseBodyMode(responseBodyMode); // We only change this if it was null.
+                httpRequest.getRequestOptions().setResponseBodyMode(responseBodyMode); // We only change this if it was null.
             }
 
             switch (responseBodyMode) {

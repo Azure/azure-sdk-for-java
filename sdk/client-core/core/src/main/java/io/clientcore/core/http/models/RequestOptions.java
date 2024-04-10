@@ -113,7 +113,9 @@ import java.util.function.Consumer;
  * <!-- end io.clientcore.core.http.rest.requestoptions.postrequest -->
  */
 public final class RequestOptions {
-    private ClientLogger requestLogger;
+    public static final RequestOptions NONE = new RequestOptions();
+
+    private ClientLogger logger;
     private Consumer<HttpRequest> requestCallback = request -> {
     };
     private Context context;
@@ -159,8 +161,8 @@ public final class RequestOptions {
      *
      * @return The {@link ClientLogger} used to log during the request and response.
      */
-    public ClientLogger getRequestLogger() {
-        return requestLogger;
+    public ClientLogger getLogger() {
+        return logger;
     }
 
     /**
@@ -298,12 +300,12 @@ public final class RequestOptions {
     /**
      * Sets the {@link ClientLogger} used to log during the request and response.
      *
-     * @param requestLogger The {@link ClientLogger} used to log during the request and response.
+     * @param logger The {@link ClientLogger} used to log during the request and response.
      *
      * @return The updated {@link RequestOptions} object.
      */
-    public RequestOptions setRequestLogger(ClientLogger requestLogger) {
-        this.requestLogger = requestLogger;
+    public RequestOptions setLogger(ClientLogger logger) {
+        this.logger = logger;
 
         return this;
     }

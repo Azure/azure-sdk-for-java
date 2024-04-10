@@ -289,7 +289,7 @@ public abstract class HttpClientTests {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE))
             .setBody(requestBody)
-            .setOptions(new RequestOptions().setResponseBodyMode(DESERIALIZE));
+            .setRequestOptions(new RequestOptions().setResponseBodyMode(DESERIALIZE));
 
         try (Response<?> response = getHttpClient().send(request)) {
             // Read response twice using all accessors.

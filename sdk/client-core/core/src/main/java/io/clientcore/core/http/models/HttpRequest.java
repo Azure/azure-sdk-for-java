@@ -32,7 +32,7 @@ public class HttpRequest {
     private HttpHeaders headers;
     private BinaryData body;
     private ServerSentEventListener serverSentEventListener;
-    private RequestOptions options;
+    private RequestOptions requestOptions;
     private int retryCount;
 
     /**
@@ -45,7 +45,7 @@ public class HttpRequest {
         this.httpMethod = httpMethod;
         this.url = url;
         this.headers = new HttpHeaders();
-        this.options = new RequestOptions();
+        this.requestOptions = RequestOptions.NONE;
     }
 
     /**
@@ -63,7 +63,7 @@ public class HttpRequest {
         setUrl(url);
 
         this.headers = new HttpHeaders();
-        this.options = new RequestOptions();
+        this.requestOptions = RequestOptions.NONE;
     }
 
     /**
@@ -195,21 +195,21 @@ public class HttpRequest {
      *
      * @return The request {@link RequestOptions options}.
      */
-    public RequestOptions getOptions() {
-        return options;
+    public RequestOptions getRequestOptions() {
+        return requestOptions;
     }
 
     /**
      * Set the request {@link RequestOptions options}.
      *
-     * @param options The request {@link RequestOptions options}.
+     * @param requestOptions The request {@link RequestOptions options}.
      *
      * @return The updated {@link HttpRequest}.
      */
-    public HttpRequest setOptions(RequestOptions options) {
-        Objects.requireNonNull(options, "'options' cannot be null");
+    public HttpRequest setRequestOptions(RequestOptions requestOptions) {
+        Objects.requireNonNull(requestOptions, "'requestOptions' cannot be null");
 
-        this.options = options;
+        this.requestOptions = requestOptions;
 
         return this;
     }
