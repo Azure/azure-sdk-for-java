@@ -2639,6 +2639,33 @@ public class BlobAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    public void getAccountInfoBase() {
+        StepVerifier.create(bc.getAccountInfo())
+            .assertNext(r -> {
+                assertNotNull(r.getAccountKind());
+                assertNotNull(r.getSkuName());
+                assertFalse(r.isHierarchicalNamespaceEnabled());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void getAccountInfoBaseFail() {
+        BlobServiceAsyncClient serviceClient = instrument(new BlobServiceClientBuilder()
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .credential(new MockTokenCredential()))
+            .buildAsyncClient();
+
+        BlobAsyncClient blobClient = serviceClient.getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName());
+
+        StepVerifier.create(blobClient.getAccountInfo())
+            .verifyErrorSatisfies(r -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+                assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+            });
+    }
+
+    @Test
     public void getContainerName() {
         assertEquals(containerName, bc.getContainerName());
     }

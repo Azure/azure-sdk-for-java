@@ -2012,6 +2012,35 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    public void getAccountInfoBase() {
+        ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+
+        StepVerifier.create(ccAsync.getAccountInfo())
+            .assertNext(r -> {
+                assertNotNull(r.getAccountKind());
+                assertNotNull(r.getSkuName());
+                assertFalse(r.isHierarchicalNamespaceEnabled());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void getAccountInfoBaseFail() {
+        BlobServiceAsyncClient serviceClient = instrument(new BlobServiceClientBuilder()
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .credential(new MockTokenCredential()))
+            .buildAsyncClient();
+
+        BlobContainerAsyncClient containerClient = serviceClient.getBlobContainerAsyncClient(generateContainerName());
+
+        StepVerifier.create(containerClient.getAccountInfo())
+            .verifyErrorSatisfies(r -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+                assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+            });
+    }
+
+    @Test
     public void getContainerName() {
         String containerName = generateContainerName();
         BlobContainerAsyncClient newcc = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
