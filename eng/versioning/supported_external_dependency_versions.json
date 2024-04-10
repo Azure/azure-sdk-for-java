@@ -25,7 +25,7 @@
   ],
   "gson_2.10":
   [
-    { "com.google.code.gson:gson": "2.10.0" }
+    { "com.google.code.gson:gson": "2.10" }
   ],
   "jackson_2.10":
   [
