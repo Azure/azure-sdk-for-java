@@ -4,18 +4,12 @@
 package io.clientcore.core.http.models;
 
 import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.http.models.HttpHeader;
-import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.HttpRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
@@ -23,7 +17,6 @@ import java.util.stream.Stream;
 import static io.clientcore.core.util.TestUtils.assertArraysEqual;
 import static io.clientcore.core.util.TestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
@@ -110,35 +103,6 @@ public class HttpRequestTests {
         assertEquals(BODY_LENGTH, getContentLength(request));
         assertEquals(BODY, request.getBody().toString());
         assertArraysEqual(BODY_BYTES, request.getBody().toBytes());
-    }
-
-    @Test
-    public void testClone() throws IOException {
-        final HttpHeaders headers = new HttpHeaders()
-            .set(HttpHeaderName.fromString("my-header"), "my-value")
-            .set(HttpHeaderName.fromString("other-header"), "other-value");
-
-        final HttpRequest request = new HttpRequest(HttpMethod.PUT, createUrl("http://request.url"))
-            .setHeaders(headers);
-
-        final HttpRequest bufferedRequest = request.copy();
-
-        assertNotSame(request, bufferedRequest);
-        assertEquals(request.getHttpMethod(), bufferedRequest.getHttpMethod());
-        assertEquals(request.getUrl(), bufferedRequest.getUrl());
-        assertNotSame(request.getHeaders(), bufferedRequest.getHeaders());
-        assertEquals(request.getHeaders().getSize(), bufferedRequest.getHeaders().getSize());
-
-        for (HttpHeader clonedHeader : bufferedRequest.getHeaders()) {
-            for (HttpHeader originalHeader : request.getHeaders()) {
-                assertNotSame(clonedHeader, originalHeader);
-            }
-
-            assertEquals(clonedHeader.getValue(),
-                request.getHeaders().getValue(clonedHeader.getName()));
-        }
-
-        assertSame(request.getBody(), bufferedRequest.getBody());
     }
 
     private static Stream<Arguments> getBinaryDataBodyVariants() {

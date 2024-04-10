@@ -215,23 +215,6 @@ public class HttpRequest {
     }
 
     /**
-     * Creates a copy of this {@link HttpRequest}.
-     *
-     * <p>The main purpose of this is so that this {@link HttpRequest} can be changed and the resulting
-     * {@link HttpRequest} can be a backup. This means that the cloned {@link HttpHeaders} and body must not be able to
-     * change from side effects of this {@link HttpRequest}.</p>
-     *
-     * @return A new {@link HttpRequest} instance with cloned instances of all mutable properties.
-     */
-    public HttpRequest copy() {
-        return new HttpRequest(httpMethod, url)
-            .setHeaders(new HttpHeaders(headers))
-            .setBody(body)
-            .setOptions(options)
-            .setRetryCount(retryCount);
-    }
-
-    /**
      * Get the specified event stream {@link ServerSentEventListener listener} for this request.
      *
      * @return The {@link ServerSentEventListener listener} for this request.
