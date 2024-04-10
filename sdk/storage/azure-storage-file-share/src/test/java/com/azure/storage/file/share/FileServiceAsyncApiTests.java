@@ -15,6 +15,7 @@ import com.azure.storage.file.share.models.ShareMetrics;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareRetentionPolicy;
 import com.azure.storage.file.share.models.ShareServiceProperties;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -204,6 +206,25 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
 
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void listSharesOAuth() {
+        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+
+        Flux<ShareItem> shares = oAuthServiceClient.listShares().filter(item ->
+            Objects.equals(item.getName(), shareName));
+
+        StepVerifier.create(oAuthServiceClient.createShare(shareName).thenMany(shares))
+            .assertNext(r -> {
+                assertNotNull(r.getProperties());
+                assertNotNull(r.getProperties().getETag());
+                assertNotNull(r.getProperties().getLastModified());
+            })
+            .verifyComplete();
+    }
+
+
     @ResourceLock("ServiceProperties")
     @Test
     public void setAndGetProperties() {
@@ -251,6 +272,35 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
             Arguments.of(INVALID_ALLOWED_METHOD, 400, ShareErrorCode.INVALID_XML_NODE_VALUE));
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @ResourceLock("ServiceProperties")
+    @Test
+    public void setAndGetPropertiesOAuth() {
+        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+
+        ShareServiceProperties originalProperties = oAuthServiceClient.getProperties().block();
+        ShareRetentionPolicy retentionPolicy = new ShareRetentionPolicy().setEnabled(true).setDays(3);
+        ShareMetrics metrics = new ShareMetrics().setEnabled(true).setIncludeApis(false)
+            .setRetentionPolicy(retentionPolicy).setVersion("1.0");
+        ShareServiceProperties updatedProperties = new ShareServiceProperties().setHourMetrics(metrics)
+            .setMinuteMetrics(metrics).setCors(new ArrayList<>());
+
+        StepVerifier.create(oAuthServiceClient.getPropertiesWithResponse()).assertNext(it -> {
+            FileShareTestHelper.assertResponseStatusCode(it, 200);
+            assertTrue(FileShareTestHelper.assertFileServicePropertiesAreEqual(originalProperties, it.getValue()));
+        }).verifyComplete();
+
+        StepVerifier.create(oAuthServiceClient.setPropertiesWithResponse(updatedProperties))
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 202)).verifyComplete();
+
+        StepVerifier.create(oAuthServiceClient.getPropertiesWithResponse()).assertNext(it -> {
+            FileShareTestHelper.assertResponseStatusCode(it, 200);
+            assertTrue(FileShareTestHelper.assertFileServicePropertiesAreEqual(updatedProperties, it.getValue()));
+        }).verifyComplete();
+
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
     @Test
     public void restoreShareMin() {
@@ -267,6 +317,31 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
         assertNotNull(shareItem);
         Mono<ShareAsyncClient> restoredShareClientMono = primaryFileServiceAsyncClient.undeleteShare(
             shareItem.getName(), shareItem.getVersion());
+        StepVerifier.create(restoredShareClientMono.flatMap(it -> it.getFileClient(fileName).exists()))
+            .assertNext(Assertions::assertTrue).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void restoreShareOAuth() {
+        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareAsyncClient shareClient = oAuthServiceClient.getShareAsyncClient(generateShareName());
+
+        String fileName = generatePathName();
+        Mono<ShareAsyncClient> restoredShareClientMono = shareClient.create()
+            .then(shareClient.getFileClient(fileName).create(2))
+            .then(shareClient.delete())
+            .then(oAuthServiceClient.listShares(
+                new ListSharesOptions()
+                    .setPrefix(shareClient.getShareName())
+                    .setIncludeDeleted(true)).next())
+            .flatMap(r -> Mono.zip(Mono.just(r), Mono.delay(Duration.ofSeconds(30))))
+            .flatMap(tuple -> {
+                assertNotNull(tuple.getT1());
+                return oAuthServiceClient.undeleteShare(tuple.getT1().getName(), tuple.getT1().getVersion());
+            });
+
         StepVerifier.create(restoredShareClientMono.flatMap(it -> it.getFileClient(fileName).exists()))
             .assertNext(Assertions::assertTrue).verifyComplete();
     }
