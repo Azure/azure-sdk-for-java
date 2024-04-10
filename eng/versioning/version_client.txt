@@ -114,7 +114,7 @@ com.azure:azure-cosmos-encryption;2.9.0;2.10.0-beta.1
 com.azure:azure-cosmos-test;1.0.0-beta.6;1.0.0-beta.7
 com.azure:azure-cosmos-tests;1.0.0-beta.1;1.0.0-beta.1
 com.azure.cosmos.kafka:azure-cosmos-kafka-connect;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-data-appconfiguration;1.5.3;1.6.0
+com.azure:azure-data-appconfiguration;1.6.0;1.7.0-beta.1
 com.azure:azure-data-appconfiguration-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-schemaregistry;1.4.4;1.5.0-beta.1
 com.azure:azure-data-schemaregistry-apacheavro;1.1.15;1.2.0-beta.2
@@ -178,7 +178,7 @@ com.azure:azure-security-keyvault-administration;4.5.1;4.6.0-beta.1
 com.azure:azure-security-keyvault-certificates;4.6.1;4.7.0-beta.1
 com.azure:azure-security-keyvault-jca;2.8.1;2.9.0-beta.1
 com.azure:azure-security-test-keyvault-jca;1.0.0;1.0.0
-com.azure:azure-security-keyvault-keys;4.8.1;4.9.0-beta.1
+com.azure:azure-security-keyvault-keys;4.8.2;4.9.0-beta.1
 com.azure:azure-security-keyvault-secrets;4.8.1;4.9.0-beta.1
 com.azure:azure-security-keyvault-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-sdk-template;1.1.1234;1.2.2-beta.1
@@ -449,7 +449,7 @@ com.azure.resourcemanager:azure-resourcemanager-springappdiscovery;1.0.0-beta.1;
 com.azure.resourcemanager:azure-resourcemanager-astro;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-workloadssapvirtualinstance;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-largeinstance;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-migrationdiscoverysap;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-migrationdiscoverysap;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-storageactions;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1

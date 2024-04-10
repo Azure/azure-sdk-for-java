@@ -150,62 +150,69 @@ function Fetch-Namespaces-From-Javadoc($package, $groupId, $version) {
     # Create a temporary directory to drop the jar into
     $tempDirectory = Join-Path ([System.IO.Path]::GetTempPath()) "${groupId}-${package}-${version}"
     New-Item $tempDirectory -ItemType Directory | Out-Null
+    $artifact = "${groupId}:${package}:${version}:jar:javadoc"
     try {
         # Download the Jar file
-        $artifact = "${groupId}:${package}:${version}:jar:javadoc"
         Write-Host "mvn dependency:copy -Dartifact=""$artifact"" -DoutputDirectory=""$tempDirectory"""
-        $mvnResults = mvn dependency:copy -Dartifact="$artifact" -DoutputDirectory="$tempDirectory"
-        if ($LASTEXITCODE) {
+        $mvnResults = mvn `
+          dependency:copy `
+          -Dartifact="$artifact" `
+          -DoutputDirectory="$tempDirectory"
+
+        if ($LASTEXITCODE -ne 0) {
             LogWarning "Could not download javadoc artifact: $artifact"
             $mvnResults | Write-Host
-            return $namespaces
-        }
-
-        # Unpack the Jar file
-        $javadocLocation = "$tempDirectory/$package-$version-javadoc.jar"
-        $unpackDirectory = Join-Path $tempDirectory "unpackedJavadoc"
-        New-Item $unpackDirectory -ItemType Directory | Out-Null
-        Add-Type -AssemblyName System.IO.Compression.FileSystem
-        [System.IO.Compression.ZipFile]::ExtractToDirectory($javadocLocation, $unpackDirectory)
-        if (Test-Path "$unpackDirectory/element-list") {
-            # Grab the namespaces from the element-list.
-            Write-Host "processing element-list"
-            foreach($line in [System.IO.File]::ReadLines("$unpackDirectory/element-list")) {
-                if (-not [string]::IsNullOrWhiteSpace($line)) {
-                    $namespaces += $line
+        } else {
+            # Unpack the Jar file
+            $javadocLocation = "$tempDirectory/$package-$version-javadoc.jar"
+            $unpackDirectory = Join-Path $tempDirectory "unpackedJavadoc"
+            New-Item $unpackDirectory -ItemType Directory | Out-Null
+            Add-Type -AssemblyName System.IO.Compression.FileSystem
+            [System.IO.Compression.ZipFile]::ExtractToDirectory($javadocLocation, $unpackDirectory)
+            if (Test-Path "$unpackDirectory/element-list") {
+                # Grab the namespaces from the element-list.
+                Write-Host "Fetching Namespaces: processing element-list"
+                foreach($line in [System.IO.File]::ReadLines("$unpackDirectory/element-list")) {
+                    if (-not [string]::IsNullOrWhiteSpace($line)) {
+                        $namespaces += $line
+                    }
                 }
             }
-        }
-        elseif (Test-Path "$unpackDirectory/overview-frame.html") {
-            # Grab the namespaces from the overview-frame.html's package elements
-            $htmlBody = Get-Content "$unpackDirectory/overview-frame.html"
-            $packages = [RegEx]::Matches($htmlBody, "<li><a.*?>(?<package>.*?)<\/a><\/li>")
-            $namespaces = $packages | ForEach-Object { $_.Groups["package"].Value }
-        }
-        elseif (Test-Path "$unpackDirectory/com") {
-            # If all else fails, scrape the namespaces from the directories
-            $originLocation = Get-Location
-            try {
-                Set-Location $unpackDirectory
-                $allFolders = Get-ChildItem "$unpackDirectory/com" -Recurse -Directory |
-                    Where-Object {$_.GetFiles().Count -gt 0 -and $_.name -notmatch "class-use"}
-                foreach ($path in $allFolders) {
-                    $path = (Resolve-Path $path -Relative) -replace "\./|\.\\"
-                    $path = $path -replace "\\|\/", "."
-                    # add the namespace to the list
-                    $namespaces += $path.Trim()
+            elseif (Test-Path "$unpackDirectory/overview-frame.html") {
+                # Grab the namespaces from the overview-frame.html's package elements
+                Write-Host "Fetching Namespaces: processing overview-frame.html"
+                $htmlBody = Get-Content "$unpackDirectory/overview-frame.html"
+                $packages = [RegEx]::Matches($htmlBody, "<li><a.*?>(?<package>.*?)<\/a><\/li>")
+                $namespaces = $packages | ForEach-Object { $_.Groups["package"].Value }
+            }
+            elseif (Test-Path "$unpackDirectory/com") {
+                # If all else fails, scrape the namespaces from the directories
+                Write-Host "Fetching Namespaces: searching the /com directores"
+                $originLocation = Get-Location
+                try {
+                    Set-Location $unpackDirectory
+                    $allFolders = Get-ChildItem "$unpackDirectory/com" -Recurse -Directory |
+                        Where-Object {$_.GetFiles().Count -gt 0 -and $_.name -notmatch "class-use"}
+                    foreach ($path in $allFolders) {
+                        $path = (Resolve-Path $path -Relative) -replace "\./|\.\\"
+                        $path = $path -replace "\\|\/", "."
+                        # add the namespace to the list
+                        $namespaces += $path.Trim()
+                    }
+                }
+                finally {
+                    Set-Location $originLocation
                 }
             }
-            finally {
-                Set-Location $originLocation
+            else {
+                LogWarning "Unable to determine namespaces from $artifact."
             }
-        }
-        else {
-            Write-Error "Can't find namespaces from javadoc jar $javadocLocation."
         }
     }
     catch {
-        Write-Error "Exception=$($_.Exception.Message)"
+        LogError "Exception while trying to download: $artifact"
+        LogError $_
+        LogError $_.ScriptStackTrace
     }
     finally {
         # everything is contained within the temp directory, clean it up every time
@@ -214,9 +221,9 @@ function Fetch-Namespaces-From-Javadoc($package, $groupId, $version) {
         }
     }
 
-  $namespaces = $namespaces | Sort-Object -Unique
-  # Make sure this always returns an array
-  Write-Output -NoEnumerate $namespaces
+    $namespaces = $namespaces | Sort-Object -Unique
+    # Make sure this always returns an array
+    Write-Output -NoEnumerate $namespaces
 }
 
 function Get-java-RepositoryLink ($packageInfo) {
