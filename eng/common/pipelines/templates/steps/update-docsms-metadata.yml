@@ -33,6 +33,10 @@ parameters:
     type: string
     default: ''
 steps:
+  - pwsh: |
+      Start-Sleep -Seconds 60
+    displayName: Delay for 60 seconds to let the DevFeed catch up
+
   - ${{ if eq(length(parameters.PackageInfoLocations), 0) }}:
     - pwsh: |
         Write-Host "Skipping DocsMS Update because package list was empty."

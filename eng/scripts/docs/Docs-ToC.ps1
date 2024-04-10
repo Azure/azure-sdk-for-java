@@ -150,9 +150,9 @@ function Fetch-Namespaces-From-Javadoc($package, $groupId, $version) {
     # Create a temporary directory to drop the jar into
     $tempDirectory = Join-Path ([System.IO.Path]::GetTempPath()) "${groupId}-${package}-${version}"
     New-Item $tempDirectory -ItemType Directory | Out-Null
+    $artifact = "${groupId}:${package}:${version}:jar:javadoc"
     try {
         # Download the Jar file
-        $artifact = "${groupId}:${package}:${version}:jar:javadoc"
         Write-Host "mvn dependency:copy -Dartifact=""$artifact"" -DoutputDirectory=""$tempDirectory"""
         $mvnResults = mvn dependency:copy -Dartifact="$artifact" -DoutputDirectory="$tempDirectory"
         if ($LASTEXITCODE) {
@@ -201,11 +201,13 @@ function Fetch-Namespaces-From-Javadoc($package, $groupId, $version) {
             }
         }
         else {
-            Write-Error "Can't find namespaces from javadoc jar $javadocLocation."
+            LogWarning "Unable to determine namespaces from $artifact."
         }
     }
     catch {
-        Write-Error "Exception=$($_.Exception.Message)"
+        LogError "Exception while trying to download: $artifact"
+        LogError $_
+        LogError $_.ScriptStackTrace
     }
     finally {
         # everything is contained within the temp directory, clean it up every time
