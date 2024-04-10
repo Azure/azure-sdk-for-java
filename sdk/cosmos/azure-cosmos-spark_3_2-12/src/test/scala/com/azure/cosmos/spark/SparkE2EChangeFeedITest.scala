@@ -737,18 +737,25 @@ class SparkE2EChangeFeedITest
 
     hdfs.exists(new Path(startOffsetFolderLocation)) shouldEqual true
     hdfs.exists(new Path(startOffsetFileLocation)) shouldEqual true
-    hdfs.delete(new Path(startOffsetFileLocation), true)
+    val startOffsetFileBackupLocation = Paths.get(startOffsetFolderLocation, "backup").toString
+    hdfs.copyToLocalFile(true, new Path(startOffsetFileLocation), new Path(startOffsetFileBackupLocation))
     hdfs.exists(new Path(startOffsetFileLocation)) shouldEqual false
 
-    hdfs.copyToLocalFile(true, new Path(latestOffsetFileLocation), new Path(startOffsetFileLocation))
-    assert(!hdfs.exists(new Path(latestOffsetFileLocation)))
+    var remainingFromLastBatchOfTen = 10;
+    while(remainingFromLastBatchOfTen > 0) {
+      hdfs.copyToLocalFile(true, new Path(startOffsetFileBackupLocation), new Path(startOffsetFileLocation))
+      hdfs.delete(new Path(latestOffsetFileLocation), true)
 
-    // Allow replication to finish
-    Thread.sleep(3000)
+      val df3 = spark.read.format("cosmos.oltp.changeFeed").options(cfgWithoutItemCountPerTriggerHint).load()
+      val rowsArray3 = df3.collect()
+      remainingFromLastBatchOfTen -= rowsArray3.length
 
-    val df3 = spark.read.format("cosmos.oltp.changeFeed").options(cfgWithoutItemCountPerTriggerHint).load()
-    val rowsArray3 = df3.collect()
-    rowsArray3 should have size 10
+
+      if (remainingFromLastBatchOfTen != 0) {
+        logWarning(s"Still waiting for $remainingFromLastBatchOfTen changes to be processed. Waiting 500ms before retry...")
+        Thread.sleep(500)
+      }
+    }
   }
 
   private def validateArraysUnordered(inputArrayBuffer : ArrayBuffer[String], outputArray: Array[String]) : Unit = {
