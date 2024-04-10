@@ -8,6 +8,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Predicate;
@@ -88,7 +89,7 @@ public class SampleLimitedOrderDiscrepancyInferenceAsync {
                 .credential(new AzureKeyCredential(apiKey)).buildAsyncClient();
 
         PollerFlux<RadiologyInsightsJob, RadiologyInsightsJob> asyncPoller = radiologyInsightsAsyncClient
-                .beginInferRadiologyInsights("job1", createRadiologyInsightsJob());
+                .beginInferRadiologyInsights("job" + new Date().getTime(), createRadiologyInsightsJob());
         
         CountDownLatch latch = new CountDownLatch(1);
         

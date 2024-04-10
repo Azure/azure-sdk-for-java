@@ -61,7 +61,7 @@ public class RadiologyInsightsFindingTest extends RadiologyInsightsClientTestBas
         try {
             testRadiologyInsightsWithResponse(request -> {
                 RadiologyInsightsJob riResponse = setPlaybackSyncPollerPollInterval(
-                        getClient().beginInferRadiologyInsights("jobJava4", request)).getFinalResult();
+                        getClient().beginInferRadiologyInsights("job1712752452461", request)).getFinalResult();
 
                 List<RadiologyInsightsPatientResult> patients = riResponse.getResult().getPatientResults();
                 assertEquals(1, patients.size());
@@ -96,7 +96,6 @@ public class RadiologyInsightsFindingTest extends RadiologyInsightsClientTestBas
 //                    displayCodes(valueCodeableConcept, 4);
                 }
 //                displaySectionInfo(findingInference);
-
             });
 
         } catch (Throwable t) {

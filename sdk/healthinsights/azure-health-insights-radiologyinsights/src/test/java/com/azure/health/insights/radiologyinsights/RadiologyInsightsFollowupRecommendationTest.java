@@ -56,14 +56,15 @@ public class RadiologyInsightsFollowupRecommendationTest extends RadiologyInsigh
         try {
             testRadiologyInsightsWithResponse(request -> {
                 RadiologyInsightsJob riResponse = setPlaybackSyncPollerPollInterval(
-                        getClient().beginInferRadiologyInsights("jobJava6", request)).getFinalResult();
+                        getClient().beginInferRadiologyInsights("job1712752528097", request)).getFinalResult();
 
                 List<RadiologyInsightsPatientResult> patients = riResponse.getResult().getPatientResults();
                 assertEquals(1, patients.size());
                 
                 RadiologyInsightsPatientResult patient = patients.get(0);
                 List<RadiologyInsightsInference> inferences = patient.getInferences();
-                //TODO (hvanhoe) Followup recommendations aren't returned any more (?)
+                assertEquals(1, inferences.size());
+
             });
 
         } catch (Throwable t) {

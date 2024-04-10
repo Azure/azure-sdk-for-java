@@ -8,6 +8,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import com.azure.core.credential.AzureKeyCredential;
@@ -89,7 +90,7 @@ public class SampleCriticalResultInferenceSync {
         // END: com.azure.health.insights.radiologyinsights.buildsyncclient
         
         // BEGIN: com.azure.health.insights.radiologyinsights.inferradiologyinsightssync
-        RadiologyInsightsJob riJobResponse = radiologyInsightsClient.beginInferRadiologyInsights("job1", createRadiologyInsightsJob()).getFinalResult();
+        RadiologyInsightsJob riJobResponse = radiologyInsightsClient.beginInferRadiologyInsights("job" + new Date().getTime(), createRadiologyInsightsJob()).getFinalResult();
         // END: com.azure.health.insights.radiologyinsights.inferradiologyinsightssync
 
         displayCriticalResults(riJobResponse.getResult());
