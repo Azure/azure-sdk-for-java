@@ -5,22 +5,24 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The grounding enhancement that returns the bounding box of the objects detected in the image.
  */
 @Immutable
-public final class AzureGroundingEnhancement {
+public final class AzureGroundingEnhancement implements JsonSerializable<AzureGroundingEnhancement> {
 
     /*
      * The lines of text detected by the grounding enhancement.
      */
     @Generated
-    @JsonProperty(value = "lines")
-    private List<AzureGroundingEnhancementLine> lines;
+    private final List<AzureGroundingEnhancementLine> lines;
 
     /**
      * Creates an instance of AzureGroundingEnhancement class.
@@ -28,8 +30,7 @@ public final class AzureGroundingEnhancement {
      * @param lines the lines value to set.
      */
     @Generated
-    @JsonCreator
-    private AzureGroundingEnhancement(@JsonProperty(value = "lines") List<AzureGroundingEnhancementLine> lines) {
+    private AzureGroundingEnhancement(List<AzureGroundingEnhancementLine> lines) {
         this.lines = lines;
     }
 
@@ -41,5 +42,42 @@ public final class AzureGroundingEnhancement {
     @Generated
     public List<AzureGroundingEnhancementLine> getLines() {
         return this.lines;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("lines", this.lines, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureGroundingEnhancement from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureGroundingEnhancement if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureGroundingEnhancement.
+     */
+    @Generated
+    public static AzureGroundingEnhancement fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<AzureGroundingEnhancementLine> lines = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("lines".equals(fieldName)) {
+                    lines = reader.readArray(reader1 -> AzureGroundingEnhancementLine.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new AzureGroundingEnhancement(lines);
+        });
     }
 }

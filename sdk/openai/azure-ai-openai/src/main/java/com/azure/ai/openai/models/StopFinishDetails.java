@@ -5,16 +5,14 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A structured representation of a stop reason that signifies natural termination by the model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("stop")
 @Immutable
 public final class StopFinishDetails extends ChatFinishDetails {
 
@@ -22,8 +20,7 @@ public final class StopFinishDetails extends ChatFinishDetails {
      * The token sequence that the model terminated with.
      */
     @Generated
-    @JsonProperty(value = "stop")
-    private String stop;
+    private final String stop;
 
     /**
      * Creates an instance of StopFinishDetails class.
@@ -31,8 +28,7 @@ public final class StopFinishDetails extends ChatFinishDetails {
      * @param stop the stop value to set.
      */
     @Generated
-    @JsonCreator
-    private StopFinishDetails(@JsonProperty(value = "stop") String stop) {
+    private StopFinishDetails(String stop) {
         this.stop = stop;
     }
 
@@ -44,5 +40,65 @@ public final class StopFinishDetails extends ChatFinishDetails {
     @Generated
     public String getStop() {
         return this.stop;
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "stop";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("stop", this.stop);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StopFinishDetails from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StopFinishDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StopFinishDetails.
+     */
+    @Generated
+    public static StopFinishDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String stop = null;
+            String type = "stop";
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("stop".equals(fieldName)) {
+                    stop = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            StopFinishDetails deserializedStopFinishDetails = new StopFinishDetails(stop);
+            deserializedStopFinishDetails.type = type;
+            return deserializedStopFinishDetails;
+        });
     }
 }

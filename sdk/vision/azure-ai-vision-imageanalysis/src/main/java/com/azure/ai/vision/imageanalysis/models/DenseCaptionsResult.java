@@ -5,8 +5,11 @@ package com.azure.ai.vision.imageanalysis.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,14 +17,13 @@ import java.util.List;
  * The first caption always applies to the whole image.
  */
 @Immutable
-public final class DenseCaptionsResult {
+public final class DenseCaptionsResult implements JsonSerializable<DenseCaptionsResult> {
 
     /*
      * The list of image captions.
      */
     @Generated
-    @JsonProperty(value = "values")
-    private List<DenseCaption> values;
+    private final List<DenseCaption> values;
 
     /**
      * Creates an instance of DenseCaptionsResult class.
@@ -29,8 +31,7 @@ public final class DenseCaptionsResult {
      * @param values the values value to set.
      */
     @Generated
-    @JsonCreator
-    private DenseCaptionsResult(@JsonProperty(value = "values") List<DenseCaption> values) {
+    private DenseCaptionsResult(List<DenseCaption> values) {
         this.values = values;
     }
 
@@ -42,5 +43,42 @@ public final class DenseCaptionsResult {
     @Generated
     public List<DenseCaption> getValues() {
         return this.values;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DenseCaptionsResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DenseCaptionsResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DenseCaptionsResult.
+     */
+    @Generated
+    public static DenseCaptionsResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<DenseCaption> values = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("values".equals(fieldName)) {
+                    values = reader.readArray(reader1 -> DenseCaption.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new DenseCaptionsResult(values);
+        });
     }
 }

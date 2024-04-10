@@ -5,7 +5,12 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The ObservedPortState model.
@@ -17,14 +22,12 @@ public final class ObservedPortState extends ObservedValue {
      * The value property.
      */
     @Generated
-    @JsonProperty(value = "value")
     private ObservedPortStateValue value;
 
     /*
      * The port property.
      */
     @Generated
-    @JsonProperty(value = "port")
     private Integer port;
 
     /**
@@ -52,5 +55,60 @@ public final class ObservedPortState extends ObservedValue {
     @Generated
     public Integer getPort() {
         return this.port;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("firstSeen",
+            getFirstSeen() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getFirstSeen()));
+        jsonWriter.writeStringField("lastSeen",
+            getLastSeen() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastSeen()));
+        jsonWriter.writeNumberField("count", getCount());
+        jsonWriter.writeBooleanField("recent", isRecent());
+        jsonWriter.writeStringField("value", this.value == null ? null : this.value.toString());
+        jsonWriter.writeNumberField("port", this.port);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ObservedPortState from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ObservedPortState if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ObservedPortState.
+     */
+    @Generated
+    public static ObservedPortState fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ObservedPortState deserializedObservedPortState = new ObservedPortState();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("firstSeen".equals(fieldName)) {
+                    deserializedObservedPortState.setFirstSeen(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                } else if ("lastSeen".equals(fieldName)) {
+                    deserializedObservedPortState.setLastSeen(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                } else if ("count".equals(fieldName)) {
+                    deserializedObservedPortState.setCount(reader.getNullable(JsonReader::getLong));
+                } else if ("recent".equals(fieldName)) {
+                    deserializedObservedPortState.setRecent(reader.getNullable(JsonReader::getBoolean));
+                } else if ("value".equals(fieldName)) {
+                    deserializedObservedPortState.value = ObservedPortStateValue.fromString(reader.getString());
+                } else if ("port".equals(fieldName)) {
+                    deserializedObservedPortState.port = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedObservedPortState;
+        });
     }
 }

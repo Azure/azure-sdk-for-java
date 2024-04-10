@@ -5,40 +5,40 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A request body used to retrieve an asset report snapshot.
  */
 @Fluent
-public final class ReportAssetSnapshotRequest {
+public final class ReportAssetSnapshotRequest implements JsonSerializable<ReportAssetSnapshotRequest> {
 
     /*
      * The metric to retrieve a snapshot for.
      */
     @Generated
-    @JsonProperty(value = "metric")
     private String metric;
 
     /*
      * The name of the label to retrieve a snapshot for.
      */
     @Generated
-    @JsonProperty(value = "labelName")
     private String labelName;
 
     /*
      * The number of assets per page.
      */
     @Generated
-    @JsonProperty(value = "size")
     private Integer size;
 
     /*
      * The page to retrieve.
      */
     @Generated
-    @JsonProperty(value = "page")
     private Integer page;
 
     /**
@@ -134,5 +134,50 @@ public final class ReportAssetSnapshotRequest {
     public ReportAssetSnapshotRequest setPage(Integer page) {
         this.page = page;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("metric", this.metric);
+        jsonWriter.writeStringField("labelName", this.labelName);
+        jsonWriter.writeNumberField("size", this.size);
+        jsonWriter.writeNumberField("page", this.page);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReportAssetSnapshotRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReportAssetSnapshotRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReportAssetSnapshotRequest.
+     */
+    @Generated
+    public static ReportAssetSnapshotRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReportAssetSnapshotRequest deserializedReportAssetSnapshotRequest = new ReportAssetSnapshotRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("metric".equals(fieldName)) {
+                    deserializedReportAssetSnapshotRequest.metric = reader.getString();
+                } else if ("labelName".equals(fieldName)) {
+                    deserializedReportAssetSnapshotRequest.labelName = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedReportAssetSnapshotRequest.size = reader.getNullable(JsonReader::getInt);
+                } else if ("page".equals(fieldName)) {
+                    deserializedReportAssetSnapshotRequest.page = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedReportAssetSnapshotRequest;
+        });
     }
 }

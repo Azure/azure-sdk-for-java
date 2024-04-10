@@ -5,28 +5,29 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A request body used to create a saved filter.
  */
 @Immutable
-public final class SavedFilterData {
+public final class SavedFilterData implements JsonSerializable<SavedFilterData> {
 
     /*
      * An expression on the resource type that selects the resources to be returned.
      */
     @Generated
-    @JsonProperty(value = "filter")
-    private String filter;
+    private final String filter;
 
     /*
      * A human readable description of the saved filter.
      */
     @Generated
-    @JsonProperty(value = "description")
-    private String description;
+    private final String description;
 
     /**
      * Creates an instance of SavedFilterData class.
@@ -35,9 +36,7 @@ public final class SavedFilterData {
      * @param description the description value to set.
      */
     @Generated
-    @JsonCreator
-    public SavedFilterData(@JsonProperty(value = "filter") String filter,
-        @JsonProperty(value = "description") String description) {
+    public SavedFilterData(String filter, String description) {
         this.filter = filter;
         this.description = description;
     }
@@ -60,5 +59,46 @@ public final class SavedFilterData {
     @Generated
     public String getDescription() {
         return this.description;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("filter", this.filter);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SavedFilterData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SavedFilterData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SavedFilterData.
+     */
+    @Generated
+    public static SavedFilterData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String filter = null;
+            String description = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("filter".equals(fieldName)) {
+                    filter = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new SavedFilterData(filter, description);
+        });
     }
 }

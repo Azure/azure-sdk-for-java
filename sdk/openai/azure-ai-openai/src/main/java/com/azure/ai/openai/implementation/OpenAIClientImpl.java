@@ -368,9 +368,8 @@ public final class OpenAIClientImpl {
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * String
      * }</pre>
@@ -399,9 +398,8 @@ public final class OpenAIClientImpl {
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * String
      * }</pre>
@@ -428,9 +426,8 @@ public final class OpenAIClientImpl {
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -480,9 +477,8 @@ public final class OpenAIClientImpl {
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -530,9 +526,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * String
      * }</pre>
@@ -560,9 +555,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * String
      * }</pre>
@@ -589,9 +583,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -640,9 +633,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -693,9 +685,8 @@ public final class OpenAIClientImpl {
      * Gets completions for the provided input prompts.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     prompt (Required): [
@@ -722,9 +713,9 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -842,9 +833,8 @@ public final class OpenAIClientImpl {
      * Gets completions for the provided input prompts.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     prompt (Required): [
@@ -871,9 +861,9 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -990,13 +980,13 @@ public final class OpenAIClientImpl {
      * Gets chat completions for the provided chat messages.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     messages (Required): [
      *          (Required){
+     *             role: String(system/assistant/user/function/tool) (Required)
      *         }
      *     ]
      *     functions (Optional): [
@@ -1024,6 +1014,7 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      *     data_sources (Optional): [
      *          (Optional){
+     *             type: String(azure_search/azure_ml_index/azure_cosmos_db/elasticsearch/pinecone) (Required)
      *         }
      *     ]
      *     enhancements (Optional): {
@@ -1038,17 +1029,19 @@ public final class OpenAIClientImpl {
      *     logprobs: Boolean (Optional)
      *     top_logprobs: Integer (Optional)
      *     response_format (Optional): {
+     *         type: String (Required)
      *     }
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     tool_choice: BinaryData (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1060,6 +1053,7 @@ public final class OpenAIClientImpl {
      *                 content: String (Required)
      *                 tool_calls (Optional): [
      *                      (Optional){
+     *                         type: String (Required)
      *                         id: String (Required)
      *                     }
      *                 ]
@@ -1103,6 +1097,7 @@ public final class OpenAIClientImpl {
      *             index: int (Required)
      *             finish_reason: String(stop/length/content_filter/function_call/tool_calls) (Required)
      *             finish_details (Optional): {
+     *                 type: String (Required)
      *             }
      *             delta (Optional): (recursive schema, see delta above)
      *             content_filter_results (Optional): {
@@ -1220,13 +1215,13 @@ public final class OpenAIClientImpl {
      * Gets chat completions for the provided chat messages.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     messages (Required): [
      *          (Required){
+     *             role: String(system/assistant/user/function/tool) (Required)
      *         }
      *     ]
      *     functions (Optional): [
@@ -1254,6 +1249,7 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      *     data_sources (Optional): [
      *          (Optional){
+     *             type: String(azure_search/azure_ml_index/azure_cosmos_db/elasticsearch/pinecone) (Required)
      *         }
      *     ]
      *     enhancements (Optional): {
@@ -1268,17 +1264,19 @@ public final class OpenAIClientImpl {
      *     logprobs: Boolean (Optional)
      *     top_logprobs: Integer (Optional)
      *     response_format (Optional): {
+     *         type: String (Required)
      *     }
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     tool_choice: BinaryData (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1290,6 +1288,7 @@ public final class OpenAIClientImpl {
      *                 content: String (Required)
      *                 tool_calls (Optional): [
      *                      (Optional){
+     *                         type: String (Required)
      *                         id: String (Required)
      *                     }
      *                 ]
@@ -1333,6 +1332,7 @@ public final class OpenAIClientImpl {
      *             index: int (Required)
      *             finish_reason: String(stop/length/content_filter/function_call/tool_calls) (Required)
      *             finish_details (Optional): {
+     *                 type: String (Required)
      *             }
      *             delta (Optional): (recursive schema, see delta above)
      *             content_filter_results (Optional): {
@@ -1447,9 +1447,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Creates an image given a prompt.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     model: String (Optional)
@@ -1462,9 +1461,9 @@ public final class OpenAIClientImpl {
      *     user: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     created: long (Required)
@@ -1520,9 +1519,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Creates an image given a prompt.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     model: String (Optional)
@@ -1535,9 +1533,9 @@ public final class OpenAIClientImpl {
      *     user: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     created: long (Required)
@@ -1591,9 +1589,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Generates text-to-speech audio from the input text.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     input: String (Required)
@@ -1603,9 +1600,9 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * BinaryData
      * }</pre>
@@ -1632,9 +1629,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Generates text-to-speech audio from the input text.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     input: String (Required)
@@ -1644,9 +1640,9 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * BinaryData
      * }</pre>
@@ -1672,9 +1668,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Return the embeddings for a given prompt.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     user: String (Optional)
@@ -1687,9 +1682,9 @@ public final class OpenAIClientImpl {
      *     input_type: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     data (Required): [
@@ -1733,9 +1728,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Return the embeddings for a given prompt.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     user: String (Optional)
@@ -1748,9 +1742,9 @@ public final class OpenAIClientImpl {
      *     input_type: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     data (Required): [

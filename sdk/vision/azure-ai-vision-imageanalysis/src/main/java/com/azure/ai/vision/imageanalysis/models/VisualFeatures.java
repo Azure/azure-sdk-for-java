@@ -5,7 +5,6 @@ package com.azure.ai.vision.imageanalysis.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -76,7 +75,6 @@ public final class VisualFeatures extends ExpandableStringEnum<VisualFeatures> {
      * @return the corresponding VisualFeatures.
      */
     @Generated
-    @JsonCreator
     public static VisualFeatures fromString(String name) {
         return fromString(name, VisualFeatures.class);
     }
