@@ -15,8 +15,8 @@ import java.util.Objects;
 import static io.clientcore.core.annotation.TypeConditions.FLUENT;
 
 /**
- * The outgoing {@link HttpRequest}. It provides ways to construct {@link HttpRequest} with {@link HttpMethod},
- * {@link URL}, {@link HttpHeader} and request body.
+ * The outgoing HTTP request. This class provides ways to construct it with an {@link HttpMethod}, {@link URL},
+ * {@link HttpHeader} and request body.
  */
 @Metadata(conditions = FLUENT)
 public class HttpRequest {
@@ -54,7 +54,8 @@ public class HttpRequest {
      * @param httpMethod The request {@link HttpMethod}.
      * @param url The target address to send the request to.
      *
-     * @throws IllegalArgumentException If {@code url} is {@code null} or it cannot be parsed into a valid {@link URL}.
+     * @throws NullPointerException if {@code url} is {@code null}.
+     * @throws IllegalArgumentException If {@code url} cannot be parsed into a valid {@link URL}.
      */
     public HttpRequest(HttpMethod httpMethod, String url) {
         this.httpMethod = httpMethod;
@@ -102,8 +103,12 @@ public class HttpRequest {
      * @param url The target address as a {@link URL}.
      *
      * @return The updated {@link HttpRequest}.
+     *
+     * @throws NullPointerException if {@code url} is {@code null}.
      */
     public HttpRequest setUrl(URL url) {
+        Objects.requireNonNull(url, "'url' cannot be null");
+
         this.url = url;
 
         return this;
@@ -115,9 +120,13 @@ public class HttpRequest {
      * @param url The target address as a {@link URL}.
      *
      * @return The updated {@link HttpRequest}.
+     *
+     * @throws NullPointerException if {@code url} is {@code null}.
      */
     @SuppressWarnings("deprecation")
     public HttpRequest setUrl(String url) {
+        Objects.requireNonNull(url, "'url' cannot be null");
+
         try {
             if (url != null) {
                 this.url = new URL(url);
@@ -220,7 +229,8 @@ public class HttpRequest {
         return new HttpRequest(httpMethod, url)
             .setHeaders(new HttpHeaders(headers))
             .setBody(body)
-            .setOptions(options.copy());
+            .setOptions(options.copy())
+            .setRetryCount(retryCount);
     }
 
     /**
