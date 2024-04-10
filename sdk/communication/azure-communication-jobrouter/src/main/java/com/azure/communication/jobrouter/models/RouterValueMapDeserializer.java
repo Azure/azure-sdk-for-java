@@ -3,29 +3,23 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 /**
- * This class provides logic to deserialize Map<String, RouterValue>
+ * This class provides logic to deserialize Map(String, RouterValue)
  */
 final class RouterValueMapDeserializer extends JsonDeserializer<Map<String, RouterValue>> {
 
     @Override
-    public Map<String, RouterValue> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
+    public Map<String, RouterValue> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         Map<String, RouterValue> result = new HashMap<>();
         JsonNode root = p.getCodec().readTree(p);
         Iterator<Map.Entry<String, JsonNode>> iter = root.fields();

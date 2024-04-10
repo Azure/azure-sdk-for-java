@@ -12,24 +12,20 @@ import java.time.Duration;
 import java.util.Map;
 
 /**
- * This class provides logic to serialize Map<Integer, Duration>
+ * This class provides logic to serialize Map(Integer, Duration)
  */
 final class DurationMapSerializer extends JsonSerializer<Map<Integer, Duration>> {
     @Override
     public void serialize(Map<Integer, Duration> map, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeStartObject();
 
-        map.forEach((key, value) -> {
-            try {
-                if (value != null) {
-                    gen.writeNumberField(String.valueOf(key), value.getSeconds() / 60);
-                } else {
-                    gen.writeNullField(String.valueOf(key));
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        for (Map.Entry<Integer, Duration> entry : map.entrySet()) {
+            if (entry.getValue() != null) {
+                gen.writeNumberField(String.valueOf(entry.getKey()), entry.getValue().getSeconds() / 60);
+            } else {
+                gen.writeNullField(String.valueOf(entry.getKey()));
             }
-        });
+        }
 
         gen.writeEndObject();
     }

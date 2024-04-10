@@ -12,7 +12,6 @@ import com.azure.communication.jobrouter.models.LabelOperator;
 import com.azure.communication.jobrouter.models.ManualReclassifyExceptionAction;
 import com.azure.communication.jobrouter.models.QueueLengthExceptionTrigger;
 import com.azure.communication.jobrouter.models.ReclassifyExceptionAction;
-import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.RouterWorkerSelector;
 import com.azure.communication.jobrouter.models.WaitTimeExceptionTrigger;

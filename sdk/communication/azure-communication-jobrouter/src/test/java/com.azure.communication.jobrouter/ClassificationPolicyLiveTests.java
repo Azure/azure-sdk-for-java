@@ -33,7 +33,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ClassificationPolicyLiveTests extends JobRouterTestBase {
     private JobRouterAdministrationClient routerAdminClient;
@@ -102,9 +101,9 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
         assertEquals(classificationPolicyName, policy.getName());
         assertEquals(StaticRouterRule.class, policy.getPrioritizationRule().getClass());
         assertNotNull(policy.getEtag());
-        assertEquals(1, ((StaticRouterRule)policy.getPrioritizationRule()).getValue().getIntValue());
+        assertEquals(1, ((StaticRouterRule) policy.getPrioritizationRule()).getValue().getIntValue());
         assertEquals(1, policy.getWorkerSelectorAttachments().size());
-        assertEquals(Duration.ofSeconds(10), ((StaticWorkerSelectorAttachment)policy.getWorkerSelectorAttachments().get(0)).getWorkerSelector().getExpiresAfter());
+        assertEquals(Duration.ofSeconds(10), ((StaticWorkerSelectorAttachment) policy.getWorkerSelectorAttachments().get(0)).getWorkerSelector().getExpiresAfter());
         assertEquals(1, policy.getQueueSelectorAttachments().size());
         assertEquals(fallbackQueueId, policy.getFallbackQueueId());
 
@@ -115,9 +114,9 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
         assertEquals(classificationPolicyName, deserialized.getName());
         assertEquals(StaticRouterRule.class, deserialized.getPrioritizationRule().getClass());
         assertEquals(policy.getEtag(), deserialized.getEtag());
-        assertEquals(1, ((StaticRouterRule)deserialized.getPrioritizationRule()).getValue().getIntValue());
+        assertEquals(1, ((StaticRouterRule) deserialized.getPrioritizationRule()).getValue().getIntValue());
         assertEquals(1, deserialized.getWorkerSelectorAttachments().size());
-        assertEquals(Duration.ofSeconds(10), ((StaticWorkerSelectorAttachment)deserialized.getWorkerSelectorAttachments().get(0)).getWorkerSelector().getExpiresAfter());
+        assertEquals(Duration.ofSeconds(10), ((StaticWorkerSelectorAttachment) deserialized.getWorkerSelectorAttachments().get(0)).getWorkerSelector().getExpiresAfter());
         assertEquals(1, deserialized.getQueueSelectorAttachments().size());
         assertEquals(fallbackQueueId, deserialized.getFallbackQueueId());
 
@@ -139,9 +138,9 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
         assertEquals(classificationPolicyName, updatedPolicy.getName());
         assertEquals(StaticRouterRule.class, updatedPolicy.getPrioritizationRule().getClass());
         assertNotEquals(policy.getEtag(), updatedPolicy.getEtag());
-        assertEquals(1, ((StaticRouterRule)updatedPolicy.getPrioritizationRule()).getValue().getIntValue());
+        assertEquals(1, ((StaticRouterRule) updatedPolicy.getPrioritizationRule()).getValue().getIntValue());
         assertEquals(1, updatedPolicy.getWorkerSelectorAttachments().size());
-        assertEquals(Duration.ofSeconds(10), ((StaticWorkerSelectorAttachment)updatedPolicy.getWorkerSelectorAttachments().get(0)).getWorkerSelector().getExpiresAfter());
+        assertEquals(Duration.ofSeconds(10), ((StaticWorkerSelectorAttachment) updatedPolicy.getWorkerSelectorAttachments().get(0)).getWorkerSelector().getExpiresAfter());
         assertEquals(0, updatedPolicy.getQueueSelectorAttachments().size());
         assertEquals(fallbackQueueId, updatedPolicy.getFallbackQueueId());
 

@@ -63,7 +63,7 @@ public final class JobRouterClientImpl {
 
     /**
      * Gets Uri of your Communication resource.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -77,7 +77,7 @@ public final class JobRouterClientImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public JobRouterServiceVersion getServiceVersion() {
@@ -91,7 +91,7 @@ public final class JobRouterClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -105,7 +105,7 @@ public final class JobRouterClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -114,7 +114,7 @@ public final class JobRouterClientImpl {
 
     /**
      * Initializes an instance of JobRouterClient client.
-     *
+     * 
      * @param endpoint Uri of your Communication resource.
      * @param serviceVersion Service version.
      */
@@ -125,7 +125,7 @@ public final class JobRouterClientImpl {
 
     /**
      * Initializes an instance of JobRouterClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Uri of your Communication resource.
      * @param serviceVersion Service version.
@@ -136,7 +136,7 @@ public final class JobRouterClientImpl {
 
     /**
      * Initializes an instance of JobRouterClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Uri of your Communication resource.
@@ -694,7 +694,7 @@ public final class JobRouterClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param jobId Id of a job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -850,7 +850,7 @@ public final class JobRouterClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param jobId Id of a job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -926,7 +926,7 @@ public final class JobRouterClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -999,7 +999,7 @@ public final class JobRouterClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1017,7 +1017,7 @@ public final class JobRouterClientImpl {
 
     /**
      * Deletes a job and all of its traces.
-     *
+     * 
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1035,7 +1035,7 @@ public final class JobRouterClientImpl {
 
     /**
      * Deletes a job and all of its traces.
-     *
+     * 
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1067,7 +1067,7 @@ public final class JobRouterClientImpl {
      * {
      * }
      * }</pre>
-     *
+     * 
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1106,7 +1106,7 @@ public final class JobRouterClientImpl {
      * {
      * }
      * }</pre>
-     *
+     * 
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1146,7 +1146,7 @@ public final class JobRouterClientImpl {
      * {
      * }
      * }</pre>
-     *
+     * 
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1187,7 +1187,7 @@ public final class JobRouterClientImpl {
      * {
      * }
      * }</pre>
-     *
+     * 
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1226,7 +1226,7 @@ public final class JobRouterClientImpl {
      * {
      * }
      * }</pre>
-     *
+     * 
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1268,7 +1268,7 @@ public final class JobRouterClientImpl {
      * {
      * }
      * }</pre>
-     *
+     * 
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1311,7 +1311,7 @@ public final class JobRouterClientImpl {
      * {
      * }
      * }</pre>
-     *
+     * 
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1354,7 +1354,7 @@ public final class JobRouterClientImpl {
      * {
      * }
      * }</pre>
-     *
+     * 
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1492,7 +1492,7 @@ public final class JobRouterClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1626,7 +1626,7 @@ public final class JobRouterClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1778,7 +1778,7 @@ public final class JobRouterClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1910,7 +1910,7 @@ public final class JobRouterClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1961,7 +1961,7 @@ public final class JobRouterClientImpl {
      *     estimatedWaitTimeMinutes: double (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param jobId Id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1991,7 +1991,7 @@ public final class JobRouterClientImpl {
      *     estimatedWaitTimeMinutes: double (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param jobId Id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2026,7 +2026,7 @@ public final class JobRouterClientImpl {
      *     unassignmentCount: int (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2070,7 +2070,7 @@ public final class JobRouterClientImpl {
      *     unassignmentCount: int (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2106,7 +2106,7 @@ public final class JobRouterClientImpl {
      *     workerId: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param workerId Id of a worker.
      * @param offerId Id of an offer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2137,7 +2137,7 @@ public final class JobRouterClientImpl {
      *     workerId: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param workerId Id of a worker.
      * @param offerId Id of an offer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2173,7 +2173,7 @@ public final class JobRouterClientImpl {
      * {
      * }
      * }</pre>
-     *
+     * 
      * @param workerId Id of a worker.
      * @param offerId Id of an offer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2215,7 +2215,7 @@ public final class JobRouterClientImpl {
      * {
      * }
      * }</pre>
-     *
+     * 
      * @param workerId Id of a worker.
      * @param offerId Id of an offer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2254,7 +2254,7 @@ public final class JobRouterClientImpl {
      *     longestJobWaitTimeMinutes: Double (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param queueId Id of the queue to retrieve statistics.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2286,7 +2286,7 @@ public final class JobRouterClientImpl {
      *     longestJobWaitTimeMinutes: Double (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param queueId Id of the queue to retrieve statistics.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2421,7 +2421,7 @@ public final class JobRouterClientImpl {
      *     availableForOffers: Boolean (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param workerId Id of a worker.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2559,7 +2559,7 @@ public final class JobRouterClientImpl {
      *     availableForOffers: Boolean (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param workerId Id of a worker.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2626,7 +2626,7 @@ public final class JobRouterClientImpl {
      *     availableForOffers: Boolean (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param workerId Id of a worker.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2690,7 +2690,7 @@ public final class JobRouterClientImpl {
      *     availableForOffers: Boolean (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param workerId Id of a worker.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2708,7 +2708,7 @@ public final class JobRouterClientImpl {
 
     /**
      * Deletes a worker and all of its traces.
-     *
+     * 
      * @param workerId Id of a worker.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2726,7 +2726,7 @@ public final class JobRouterClientImpl {
 
     /**
      * Deletes a worker and all of its traces.
-     *
+     * 
      * @param workerId Id of a worker.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2835,7 +2835,7 @@ public final class JobRouterClientImpl {
      *     availableForOffers: Boolean (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2947,7 +2947,7 @@ public final class JobRouterClientImpl {
      *     availableForOffers: Boolean (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3077,7 +3077,7 @@ public final class JobRouterClientImpl {
      *     availableForOffers: Boolean (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3187,7 +3187,7 @@ public final class JobRouterClientImpl {
      *     availableForOffers: Boolean (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3226,7 +3226,7 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves list of jobs based on filter parameters.
-     *
+     * 
      * Get the next page of items.
      * <p>
      * <strong>Response Body Schema</strong>
@@ -3283,9 +3283,9 @@ public final class JobRouterClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *
+     * 
      * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3307,7 +3307,7 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves list of jobs based on filter parameters.
-     *
+     * 
      * Get the next page of items.
      * <p>
      * <strong>Response Body Schema</strong>
@@ -3364,9 +3364,9 @@ public final class JobRouterClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *
+     * 
      * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3386,7 +3386,7 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves existing workers.
-     *
+     * 
      * Get the next page of items.
      * <p>
      * <strong>Response Body Schema</strong>
@@ -3434,9 +3434,9 @@ public final class JobRouterClientImpl {
      *     availableForOffers: Boolean (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *
+     * 
      * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3459,7 +3459,7 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves existing workers.
-     *
+     * 
      * Get the next page of items.
      * <p>
      * <strong>Response Body Schema</strong>
@@ -3507,9 +3507,9 @@ public final class JobRouterClientImpl {
      *     availableForOffers: Boolean (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *
+     * 
      * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

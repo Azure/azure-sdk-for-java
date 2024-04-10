@@ -161,7 +161,7 @@ public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
                 assertArrayEquals(queues.toArray(), listWorker.getQueues().toArray());
                 assertEquals(channels.size(), listWorker.getChannels().size());
                 assertEquals(updatedWorker.getEtag(), listWorker.getEtag());
-        });
+            });
 
         // Cleanup
         routerAsyncClient.deleteWorker(workerId).block();

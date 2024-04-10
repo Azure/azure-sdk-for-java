@@ -528,7 +528,8 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterJob> createJobWithResponse(CreateJobOptions createJobOptions, RequestOptions requestOptions) {
-        RouterJobInternal routerJob = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobOptions);
+        RouterJobInternal routerJob
+            = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobOptions);
         Response<BinaryData> response = this.serviceClient.upsertJobWithResponse(createJobOptions.getJobId(),
             BinaryData.fromObject(routerJob), requestOptions);
         return new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -565,8 +566,8 @@ public final class JobRouterClient {
         CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions,
         RequestOptions requestOptions) {
         // Note: Update return type to Response<RouterJob> in version 2.
-        RouterJobInternal routerJob
-            = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
+        RouterJobInternal routerJob = JobAdapter
+            .convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
         Response<BinaryData> response = this.serviceClient.upsertJobWithResponse(
             createJobWithClassificationPolicyOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions);
         return new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(), response.getHeaders(),

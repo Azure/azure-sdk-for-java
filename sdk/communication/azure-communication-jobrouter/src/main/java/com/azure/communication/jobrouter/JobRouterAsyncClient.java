@@ -530,11 +530,11 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterJob>> createJobWithResponse(CreateJobOptions createJobOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        RouterJobInternal routerJob = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobOptions);
+        RouterJobInternal routerJob
+            = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobOptions);
         return upsertJobWithResponse(createJobOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions)
             .map(response -> new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(),
-                response.getValue().toObject(RouterJob.class)));
+                response.getHeaders(), response.getValue().toObject(RouterJob.class)));
     }
 
     /**
@@ -566,8 +566,8 @@ public final class JobRouterAsyncClient {
         CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions,
         RequestOptions requestOptions) {
         // Note: Update return type to Response<RouterJob> in version 2.
-        RouterJobInternal routerJob
-            = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
+        RouterJobInternal routerJob = JobAdapter
+            .convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
         return upsertJobWithResponse(createJobWithClassificationPolicyOptions.getJobId(),
             BinaryData.fromObject(routerJob), requestOptions)
             .map(response -> new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(),

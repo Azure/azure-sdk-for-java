@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * This class provides logic to deserialize Map<Integer, Duration>
+ * This class provides logic to deserialize Map(Integer, Duration)
  */
 final class DurationMapDeserializer extends JsonDeserializer<Map<Integer, Duration>> {
     @Override

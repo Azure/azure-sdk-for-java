@@ -6,8 +6,6 @@ package com.azure.communication.jobrouter;
 import com.azure.communication.jobrouter.models.BestWorkerMode;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.ExceptionPolicy;
-import com.azure.communication.jobrouter.models.ExpressionRouterRule;
 import com.azure.communication.jobrouter.models.FunctionRouterRule;
 import com.azure.communication.jobrouter.models.FunctionRouterRuleCredential;
 import com.azure.communication.jobrouter.models.LongestIdleMode;
@@ -72,11 +70,11 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
         assertEquals(1, result.getMode().getMinConcurrentOffers());
         assertEquals(10, result.getMode().getMaxConcurrentOffers());
         assertEquals(true, result.getMode().isBypassSelectors());
-        assertEquals(5, ((StaticRouterRule)((BestWorkerMode)result.getMode()).getScoringRule()).getValue().getIntValue());
-        assertEquals(30, ((BestWorkerMode)result.getMode()).getScoringRuleOptions().getBatchSize());
-        assertEquals(true, ((BestWorkerMode)result.getMode()).getScoringRuleOptions().isDescendingOrder());
-        assertEquals(true, ((BestWorkerMode)result.getMode()).getScoringRuleOptions().isBatchScoringEnabled());
-        assertEquals(1, ((BestWorkerMode)result.getMode()).getScoringRuleOptions().getScoringParameters().size());
+        assertEquals(5, ((StaticRouterRule) ((BestWorkerMode) result.getMode()).getScoringRule()).getValue().getIntValue());
+        assertEquals(30, ((BestWorkerMode) result.getMode()).getScoringRuleOptions().getBatchSize());
+        assertEquals(true, ((BestWorkerMode) result.getMode()).getScoringRuleOptions().isDescendingOrder());
+        assertEquals(true, ((BestWorkerMode) result.getMode()).getScoringRuleOptions().isBatchScoringEnabled());
+        assertEquals(1, ((BestWorkerMode) result.getMode()).getScoringRuleOptions().getScoringParameters().size());
 
         Response<BinaryData> binaryResponse = routerAdminClient.getDistributionPolicyWithResponse(result.getId(), null);
         DistributionPolicy deserialized = binaryResponse.getValue().toObject(DistributionPolicy.class);
@@ -89,11 +87,11 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
         assertEquals(1, deserialized.getMode().getMinConcurrentOffers());
         assertEquals(10, deserialized.getMode().getMaxConcurrentOffers());
         assertEquals(true, deserialized.getMode().isBypassSelectors());
-        assertEquals(5, ((StaticRouterRule)((BestWorkerMode)deserialized.getMode()).getScoringRule()).getValue().getIntValue());
-        assertEquals(30, ((BestWorkerMode)deserialized.getMode()).getScoringRuleOptions().getBatchSize());
-        assertEquals(true, ((BestWorkerMode)deserialized.getMode()).getScoringRuleOptions().isDescendingOrder());
-        assertEquals(true, ((BestWorkerMode)deserialized.getMode()).getScoringRuleOptions().isBatchScoringEnabled());
-        assertEquals(1, ((BestWorkerMode)deserialized.getMode()).getScoringRuleOptions().getScoringParameters().size());
+        assertEquals(5, ((StaticRouterRule) ((BestWorkerMode) deserialized.getMode()).getScoringRule()).getValue().getIntValue());
+        assertEquals(30, ((BestWorkerMode) deserialized.getMode()).getScoringRuleOptions().getBatchSize());
+        assertEquals(true, ((BestWorkerMode) deserialized.getMode()).getScoringRuleOptions().isDescendingOrder());
+        assertEquals(true, ((BestWorkerMode) deserialized.getMode()).getScoringRuleOptions().isBatchScoringEnabled());
+        assertEquals(1, ((BestWorkerMode) deserialized.getMode()).getScoringRuleOptions().getScoringParameters().size());
 
         ((BestWorkerMode) deserialized.getMode()).getScoringRuleOptions().setScoringParameters(new ArrayList<>());
         deserialized.setOfferExpiresAfter(Duration.ofMinutes(5));
@@ -108,11 +106,11 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
         assertEquals(1, updatedPolicy.getMode().getMinConcurrentOffers());
         assertEquals(10, updatedPolicy.getMode().getMaxConcurrentOffers());
         assertEquals(true, updatedPolicy.getMode().isBypassSelectors());
-        assertEquals(5, ((StaticRouterRule)((BestWorkerMode)updatedPolicy.getMode()).getScoringRule()).getValue().getIntValue());
-        assertEquals(30, ((BestWorkerMode)updatedPolicy.getMode()).getScoringRuleOptions().getBatchSize());
-        assertEquals(true, ((BestWorkerMode)updatedPolicy.getMode()).getScoringRuleOptions().isDescendingOrder());
-        assertEquals(true, ((BestWorkerMode)updatedPolicy.getMode()).getScoringRuleOptions().isBatchScoringEnabled());
-        assertEquals(0, ((BestWorkerMode)updatedPolicy.getMode()).getScoringRuleOptions().getScoringParameters().size());
+        assertEquals(5, ((StaticRouterRule) ((BestWorkerMode) updatedPolicy.getMode()).getScoringRule()).getValue().getIntValue());
+        assertEquals(30, ((BestWorkerMode) updatedPolicy.getMode()).getScoringRuleOptions().getBatchSize());
+        assertEquals(true, ((BestWorkerMode) updatedPolicy.getMode()).getScoringRuleOptions().isDescendingOrder());
+        assertEquals(true, ((BestWorkerMode) updatedPolicy.getMode()).getScoringRuleOptions().isBatchScoringEnabled());
+        assertEquals(0, ((BestWorkerMode) updatedPolicy.getMode()).getScoringRuleOptions().getScoringParameters().size());
 
         // Cleanup
         routerAdminClient.deleteDistributionPolicy(bestWorkerModeDistributionPolicyId);

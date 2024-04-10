@@ -299,8 +299,8 @@ public final class JobRouterAdministrationClient {
         Response<BinaryData> response = this.serviceClient.upsertDistributionPolicyWithResponse(
             createDistributionPolicyOptions.getDistributionPolicyId(), BinaryData.fromObject(distributionPolicy),
             requestOptions);
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-            response.getHeaders(), response.getValue().toObject(DistributionPolicy.class));
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            response.getValue().toObject(DistributionPolicy.class));
     }
 
     /**
@@ -700,8 +700,8 @@ public final class JobRouterAdministrationClient {
         Response<BinaryData> response = this.serviceClient.upsertClassificationPolicyWithResponse(
             createClassificationPolicyOptions.getClassificationPolicyId(), BinaryData.fromObject(classificationPolicy),
             requestOptions);
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-            response.getHeaders(), response.getValue().toObject(ClassificationPolicy.class));
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            response.getValue().toObject(ClassificationPolicy.class));
     }
 
     /**
@@ -1108,8 +1108,8 @@ public final class JobRouterAdministrationClient {
         Response<BinaryData> response
             = this.serviceClient.upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(),
                 BinaryData.fromObject(exceptionPolicy), requestOptions);
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue().toObject(ExceptionPolicy.class));
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            response.getValue().toObject(ExceptionPolicy.class));
     }
 
     /**
@@ -1386,7 +1386,6 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateQueueWithResponse(String queueId, BinaryData resource,
         RequestOptions requestOptions) {
-
         return this.serviceClient.upsertQueueWithResponse(queueId, resource, requestOptions);
     }
 
@@ -1477,7 +1476,7 @@ public final class JobRouterAdministrationClient {
         Response<BinaryData> response = this.serviceClient.upsertQueueWithResponse(createQueueOptions.getQueueId(),
             BinaryData.fromObject(queue), requestOptions);
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                response.getValue().toObject(RouterQueue.class));
+            response.getValue().toObject(RouterQueue.class));
     }
 
     /**
@@ -1666,7 +1665,7 @@ public final class JobRouterAdministrationClient {
     public ClassificationPolicy getClassificationPolicy(String classificationPolicyId) {
         RequestOptions requestOptions = new RequestOptions();
         return getClassificationPolicyWithResponse(classificationPolicyId, requestOptions).getValue()
-                .toObject(ClassificationPolicy.class);
+            .toObject(ClassificationPolicy.class);
     }
 
     /**
@@ -1721,7 +1720,8 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExceptionPolicy getExceptionPolicy(String exceptionPolicyId) {
         RequestOptions requestOptions = new RequestOptions();
-        return getExceptionPolicyWithResponse(exceptionPolicyId, requestOptions).getValue().toObject(ExceptionPolicy.class);
+        return getExceptionPolicyWithResponse(exceptionPolicyId, requestOptions).getValue()
+            .toObject(ExceptionPolicy.class);
     }
 
     /**

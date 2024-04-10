@@ -6,7 +6,6 @@ package com.azure.communication.jobrouter;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.RouterChannel;
-import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.RouterWorker;

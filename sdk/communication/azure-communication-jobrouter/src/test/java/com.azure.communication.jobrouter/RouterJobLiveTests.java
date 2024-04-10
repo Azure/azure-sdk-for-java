@@ -217,14 +217,14 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         assertEquals(queueId, queueStatistics.getQueueId());
         assertEquals(1, queueStatistics.getLength());
         assertTrue(queueStatistics.getLongestJobWaitTimeMinutes() > 0);
-        assertTrue(queueStatistics.getEstimatedWaitTime().get(10).isPositive());
+        assertTrue(queueStatistics.getEstimatedWaitTime().get(10).getSeconds() > 0);
 
         RouterQueueStatistics deserialized = jobRouterClient.getQueueStatisticsWithResponse(queueId, null)
             .getValue().toObject(RouterQueueStatistics.class);
         assertEquals(queueId, deserialized.getQueueId());
         assertEquals(1, deserialized.getLength());
         assertTrue(deserialized.getLongestJobWaitTimeMinutes() > 0);
-        assertTrue(deserialized.getEstimatedWaitTime().get(10).isPositive());
+        assertTrue(deserialized.getEstimatedWaitTime().get(10).getSeconds() > 0);
 
         // Cleanup
         RequestOptions requestOptions = new RequestOptions();
