@@ -18,14 +18,14 @@ public class JdkHttpClientBuilderJavaDocCodeSnippets {
      * Code snippet for simple http client instantiation.
      */
     public void simpleInstantiation() {
-        // BEGIN: com.azure.core.http.jdk.httpclient.instantiation-simple
+        // BEGIN: io.clientcore.http.jdk.httpclient.instantiation-simple
         HttpClient client = new JdkHttpClientBuilder()
             .build();
-        // END: com.azure.core.http.jdk.httpclient.instantiation-simple
+        // END: io.clientcore.http.jdk.httpclient.instantiation-simple
     }
 
     public void proxySample() {
-        // BEGIN: com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.proxy#ProxyOptions
+        // BEGIN: io.clientcore.http.jdk.httpclient.JdkHttpClientBuilder.proxy#ProxyOptions
         final String proxyHost = "<proxy-host>"; // e.g. localhost
         final int proxyPort = 9999; // Proxy port
         ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
@@ -33,12 +33,12 @@ public class JdkHttpClientBuilderJavaDocCodeSnippets {
         HttpClient client = new JdkHttpClientBuilder()
             .proxy(proxyOptions)
             .build();
-        // END: com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.proxy#ProxyOptions
+        // END: io.clientcore.http.jdk.httpclient.JdkHttpClientBuilder.proxy#ProxyOptions
     }
 
     public void proxyBasicAuthenticationSample() {
 
-        // BEGIN: com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder#setProxyAuthenticator
+        // BEGIN: io.clientcore.http.jdk.httpclient.JdkHttpClientBuilder#setProxyAuthenticator
         final String proxyHost = "<proxy-host>"; // e.g. localhost
         final int proxyPort = 9999; // Proxy port
         final String proxyUser = "<proxy-user>";
@@ -50,17 +50,17 @@ public class JdkHttpClientBuilderJavaDocCodeSnippets {
         HttpClient client = new JdkHttpClientBuilder()
                 .proxy(proxyOptions)
                 .build();
-        // END: com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder#setProxyAuthenticator
+        // END: io.clientcore.http.jdk.httpclient.JdkHttpClientBuilder#setProxyAuthenticator
 
     }
 
     public void connectionTimeoutSample() {
 
-        // BEGIN: com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.connectionTimeout#Duration
+        // BEGIN: io.clientcore.http.jdk.httpclient.JdkHttpClientBuilder.connectionTimeout#Duration
         HttpClient client = new JdkHttpClientBuilder()
                 .connectionTimeout(Duration.ofSeconds(250)) // connection timeout of 250 seconds
                 .build();
-        // END: com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.connectionTimeout#Duration
+        // END: io.clientcore.http.jdk.httpclient.JdkHttpClientBuilder.connectionTimeout#Duration
 
     }
 }

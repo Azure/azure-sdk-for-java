@@ -13,10 +13,6 @@ import io.clientcore.core.http.client.HttpClientProvider;
  * introduced.
  */
 public final class JdkHttpClientProvider extends HttpClientProvider {
-    /**
-     * For testing purpose only, assigning 'AZURE_ENABLE_HTTP_CLIENT_SHARING' to 'enableHttpClientSharing' for
-     * 'final' modifier.
-     */
     public JdkHttpClientProvider() {
     }
 

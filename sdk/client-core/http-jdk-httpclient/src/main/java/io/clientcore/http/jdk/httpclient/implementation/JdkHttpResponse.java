@@ -12,6 +12,10 @@ import io.clientcore.core.util.binarydata.BinaryData;
  * Base response class for JDK with implementations for response metadata.
  */
 public final class JdkHttpResponse extends HttpResponse<BinaryData> {
+    private static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
+
+    private final BinaryData body;
+
     /**
      * Creates an instance of {@link JdkHttpResponse}.
      *
@@ -22,5 +26,19 @@ public final class JdkHttpResponse extends HttpResponse<BinaryData> {
      */
     public JdkHttpResponse(final HttpRequest request, int statusCode, HttpHeaders headers, BinaryData body) {
         super(request, statusCode, headers, null);
+        this.body = body;
+    }
+
+    @Override
+    public BinaryData getBody() {
+        if (body == null) {
+            if (super.getValue() == null) {
+                return EMPTY_BODY;
+            } else {
+                return super.getValue();
+            }
+        }
+
+        return body;
     }
 }

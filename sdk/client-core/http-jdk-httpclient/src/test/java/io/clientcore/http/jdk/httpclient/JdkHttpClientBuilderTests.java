@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package io.clientcore.http.jdk.httpclient;
+
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;

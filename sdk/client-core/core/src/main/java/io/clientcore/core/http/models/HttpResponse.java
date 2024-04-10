@@ -164,5 +164,9 @@ public class HttpResponse<T> implements Response<T> {
 
     @Override
     public void close() throws IOException {
+        BinaryData body = getBody();
+        if (body != null) {
+            body.close();
+        }
     }
 }

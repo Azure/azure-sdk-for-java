@@ -8,7 +8,8 @@ module io.clientcore.http.jdk.httpclient {
     exports io.clientcore.http.jdk.httpclient;
     exports io.clientcore.http.jdk.httpclient.implementation;
 
-    provides io.clientcore.core.http.client.HttpClientProvider with io.clientcore.http.jdk.httpclient.JdkHttpClientProvider;
+    provides io.clientcore.core.http.client.HttpClientProvider
+        with io.clientcore.http.jdk.httpclient.JdkHttpClientProvider;
 
     uses io.clientcore.core.http.client.HttpClientProvider;
 }

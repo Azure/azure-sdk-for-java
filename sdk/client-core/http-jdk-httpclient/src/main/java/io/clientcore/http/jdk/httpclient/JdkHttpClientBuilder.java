@@ -32,7 +32,7 @@ import static io.clientcore.core.util.configuration.Configuration.PROPERTY_REQUE
 import static io.clientcore.http.jdk.httpclient.implementation.JdkHttpUtils.getDefaultTimeoutFromEnvironment;
 
 /**
- * Builder to configure and build an instance of the azure-core {@link HttpClient} type using the JDK HttpClient APIs,
+ * Builder to configure and build an instance of the client-core {@link HttpClient} type using the JDK HttpClient APIs,
  * first introduced as preview in JDK 9, but made generally available from JDK 11 onwards.
  */
 public class JdkHttpClientBuilder {
@@ -117,13 +117,13 @@ public class JdkHttpClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.connectionTimeout#Duration -->
+     * <!-- src_embed io.clientcore.http.jdk.httpclient.JdkHttpClientBuilder.connectionTimeout#Duration -->
      * <pre>
      * HttpClient client = new JdkHttpClientBuilder&#40;&#41;
      *         .connectionTimeout&#40;Duration.ofSeconds&#40;250&#41;&#41; &#47;&#47; connection timeout of 250 seconds
      *         .build&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.connectionTimeout#Duration -->
+     * <!-- end io.clientcore.http.jdk.httpclient.JdkHttpClientBuilder.connectionTimeout#Duration -->
      *
      * The default connection timeout is 10 seconds.
      *
@@ -201,17 +201,17 @@ public class JdkHttpClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.proxy#ProxyOptions -->
+     * <!-- src_embed io.clientcore.http.jdk.httpclient.JdkHttpClientBuilder.proxy#ProxyOptions -->
      * <pre>
      * final String proxyHost = &quot;&lt;proxy-host&gt;&quot;; &#47;&#47; e.g. localhost
      * final int proxyPort = 9999; &#47;&#47; Proxy port
      * ProxyOptions proxyOptions = new ProxyOptions&#40;ProxyOptions.Type.HTTP,
-     *         new InetSocketAddress&#40;proxyHost, proxyPort&#41;&#41;;
+     *     new InetSocketAddress&#40;proxyHost, proxyPort&#41;&#41;;
      * HttpClient client = new JdkHttpClientBuilder&#40;&#41;
-     *         .proxy&#40;proxyOptions&#41;
-     *         .build&#40;&#41;;
+     *     .proxy&#40;proxyOptions&#41;
+     *     .build&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.proxy#ProxyOptions -->
+     * <!-- end io.clientcore.http.jdk.httpclient.JdkHttpClientBuilder.proxy#ProxyOptions -->
      *
      * @param proxyOptions The proxy configuration to use.
      * @return the updated JdkHttpClientBuilder object
@@ -239,11 +239,10 @@ public class JdkHttpClientBuilder {
      * @return a {@link HttpClient}.
      */
     public HttpClient build() {
-        java.net.http.HttpClient.Builder httpClientBuilder = this.httpClientBuilder == null
-            ? java.net.http.HttpClient.newBuilder()
-            : this.httpClientBuilder;
+        java.net.http.HttpClient.Builder httpClientBuilder
+            = this.httpClientBuilder == null ? java.net.http.HttpClient.newBuilder() : this.httpClientBuilder;
 
-        // Azure JDK http client supports HTTP 1.1 by default.
+        // Client Core JDK http client supports HTTP 1.1 by default.
         httpClientBuilder.version(java.net.http.HttpClient.Version.HTTP_1_1);
 
         httpClientBuilder = httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, DEFAULT_CONNECTION_TIMEOUT));
@@ -252,21 +251,19 @@ public class JdkHttpClientBuilder {
         Duration responseTimeout = getTimeout(this.responseTimeout, DEFAULT_RESPONSE_TIMEOUT);
         Duration readTimeout = getTimeout(this.readTimeout, DEFAULT_READ_TIMEOUT);
 
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
-        ProxyOptions buildProxyOptions = (proxyOptions == null)
-            ? ProxyOptions.fromConfiguration(buildConfiguration)
-            : proxyOptions;
+        ProxyOptions buildProxyOptions
+            = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration) : proxyOptions;
 
         if (executor != null) {
             httpClientBuilder.executor(executor);
         }
 
         if (buildProxyOptions != null) {
-            httpClientBuilder = httpClientBuilder.proxy(
-                new JdkHttpClientProxySelector(buildProxyOptions.getType().toProxyType(),
+            httpClientBuilder
+                = httpClientBuilder.proxy(new JdkHttpClientProxySelector(buildProxyOptions.getType().toProxyType(),
                     buildProxyOptions.getAddress(), buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {
@@ -287,13 +284,13 @@ public class JdkHttpClientBuilder {
 
     private void removeAllowedHeaders(Set<String> restrictedHeaders) {
         Properties properties = getNetworkProperties();
-        String[] allowRestrictedHeadersNetProperties = properties.getProperty(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS,
-            "").split(",");
+        String[] allowRestrictedHeadersNetProperties
+            = properties.getProperty(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS, "").split(",");
 
         // Read all allowed restricted headers from configuration
         Configuration config = (this.configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        String[] allowRestrictedHeadersSystemProperties = config.get(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS, "")
-            .split(",");
+        String[] allowRestrictedHeadersSystemProperties
+            = config.get(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS, "").split(",");
 
         // Combine the set of all allowed restricted headers from both sources
         for (String header : allowRestrictedHeadersSystemProperties) {
@@ -312,8 +309,7 @@ public class JdkHttpClientBuilder {
         try (Reader reader = Files.newBufferedReader(path)) {
             properties.load(reader);
         } catch (IOException e) {
-            LOGGER.atWarning().addKeyValue("path", path).log("Cannot read net properties.", e);
-            ;
+            LOGGER.atWarning().addKeyValue("path", path).log("Cannot read net properties.", e);;
         }
         return properties;
     }

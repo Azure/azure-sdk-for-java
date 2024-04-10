@@ -20,20 +20,20 @@ import java.util.TimerTask;
 public final class JdkHttpUtils {
     // Singleton timer to schedule timeout tasks.
     // TODO (alzimmer): Make sure one thread is sufficient for all timeout tasks.
-    private static final Timer TIMER = new Timer("azure-jdk-httpclient-network-timeout-tracker", true);
+    private static final Timer TIMER = new Timer("clientcore-jdk-httpclient-network-timeout-tracker", true);
 
     /**
-     * Converts the given JDK Http headers to azure-core Http header.
+     * Converts the given JDK Http headers to client-core Http header.
      *
      * @param headers the JDK Http headers
-     * @return the azure-core Http headers
+     * @return the client-core Http headers
      */
     public static HttpHeaders fromJdkHttpHeaders(java.net.http.HttpHeaders headers) {
         final HttpHeaders httpHeaders = new HttpHeaders((int) (headers.map().size() / 0.75F));
 
         for (Map.Entry<String, List<String>> kvp : headers.map().entrySet()) {
             List<String> value = kvp.getValue();
-            if (value == null || value.isEmpty()) {
+            if (value != null && !value.isEmpty()) {
                 httpHeaders.set(HttpHeaderName.fromString(kvp.getKey()), kvp.getValue());
             }
         }

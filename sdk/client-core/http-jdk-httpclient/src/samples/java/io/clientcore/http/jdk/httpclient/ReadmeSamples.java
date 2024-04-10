@@ -3,8 +3,9 @@
 
 package io.clientcore.http.jdk.httpclient;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.ProxyOptions;
+import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.models.ProxyOptions;
+
 import java.net.InetSocketAddress;
 import java.time.Duration;
 
