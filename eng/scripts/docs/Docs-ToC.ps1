@@ -159,53 +159,55 @@ function Fetch-Namespaces-From-Javadoc($package, $groupId, $version) {
           -Dartifact="$artifact" `
           -DoutputDirectory="$tempDirectory"
 
-          if ($LASTEXITCODE -ne 0) {
+        if ($LASTEXITCODE -ne 0) {
             LogWarning "Could not download javadoc artifact: $artifact"
             $mvnResults | Write-Host
-            return $namespaces
-        }
-
-        # Unpack the Jar file
-        $javadocLocation = "$tempDirectory/$package-$version-javadoc.jar"
-        $unpackDirectory = Join-Path $tempDirectory "unpackedJavadoc"
-        New-Item $unpackDirectory -ItemType Directory | Out-Null
-        Add-Type -AssemblyName System.IO.Compression.FileSystem
-        [System.IO.Compression.ZipFile]::ExtractToDirectory($javadocLocation, $unpackDirectory)
-        if (Test-Path "$unpackDirectory/element-list") {
-            # Grab the namespaces from the element-list.
-            Write-Host "processing element-list"
-            foreach($line in [System.IO.File]::ReadLines("$unpackDirectory/element-list")) {
-                if (-not [string]::IsNullOrWhiteSpace($line)) {
-                    $namespaces += $line
+            # JRS-Remove, done to ensure the output we're seeing is from
+            # the maven command
+            Write-Host "Testing...1,2,3"
+        } else {
+            # Unpack the Jar file
+            $javadocLocation = "$tempDirectory/$package-$version-javadoc.jar"
+            $unpackDirectory = Join-Path $tempDirectory "unpackedJavadoc"
+            New-Item $unpackDirectory -ItemType Directory | Out-Null
+            Add-Type -AssemblyName System.IO.Compression.FileSystem
+            [System.IO.Compression.ZipFile]::ExtractToDirectory($javadocLocation, $unpackDirectory)
+            if (Test-Path "$unpackDirectory/element-list") {
+                # Grab the namespaces from the element-list.
+                Write-Host "processing element-list"
+                foreach($line in [System.IO.File]::ReadLines("$unpackDirectory/element-list")) {
+                    if (-not [string]::IsNullOrWhiteSpace($line)) {
+                        $namespaces += $line
+                    }
                 }
             }
-        }
-        elseif (Test-Path "$unpackDirectory/overview-frame.html") {
-            # Grab the namespaces from the overview-frame.html's package elements
-            $htmlBody = Get-Content "$unpackDirectory/overview-frame.html"
-            $packages = [RegEx]::Matches($htmlBody, "<li><a.*?>(?<package>.*?)<\/a><\/li>")
-            $namespaces = $packages | ForEach-Object { $_.Groups["package"].Value }
-        }
-        elseif (Test-Path "$unpackDirectory/com") {
-            # If all else fails, scrape the namespaces from the directories
-            $originLocation = Get-Location
-            try {
-                Set-Location $unpackDirectory
-                $allFolders = Get-ChildItem "$unpackDirectory/com" -Recurse -Directory |
-                    Where-Object {$_.GetFiles().Count -gt 0 -and $_.name -notmatch "class-use"}
-                foreach ($path in $allFolders) {
-                    $path = (Resolve-Path $path -Relative) -replace "\./|\.\\"
-                    $path = $path -replace "\\|\/", "."
-                    # add the namespace to the list
-                    $namespaces += $path.Trim()
+            elseif (Test-Path "$unpackDirectory/overview-frame.html") {
+                # Grab the namespaces from the overview-frame.html's package elements
+                $htmlBody = Get-Content "$unpackDirectory/overview-frame.html"
+                $packages = [RegEx]::Matches($htmlBody, "<li><a.*?>(?<package>.*?)<\/a><\/li>")
+                $namespaces = $packages | ForEach-Object { $_.Groups["package"].Value }
+            }
+            elseif (Test-Path "$unpackDirectory/com") {
+                # If all else fails, scrape the namespaces from the directories
+                $originLocation = Get-Location
+                try {
+                    Set-Location $unpackDirectory
+                    $allFolders = Get-ChildItem "$unpackDirectory/com" -Recurse -Directory |
+                        Where-Object {$_.GetFiles().Count -gt 0 -and $_.name -notmatch "class-use"}
+                    foreach ($path in $allFolders) {
+                        $path = (Resolve-Path $path -Relative) -replace "\./|\.\\"
+                        $path = $path -replace "\\|\/", "."
+                        # add the namespace to the list
+                        $namespaces += $path.Trim()
+                    }
+                }
+                finally {
+                    Set-Location $originLocation
                 }
             }
-            finally {
-                Set-Location $originLocation
+            else {
+                LogWarning "Unable to determine namespaces from $artifact."
             }
-        }
-        else {
-            LogWarning "Unable to determine namespaces from $artifact."
         }
     }
     catch {
@@ -220,9 +222,9 @@ function Fetch-Namespaces-From-Javadoc($package, $groupId, $version) {
         }
     }
 
-  $namespaces = $namespaces | Sort-Object -Unique
-  # Make sure this always returns an array
-  Write-Output -NoEnumerate $namespaces
+    $namespaces = $namespaces | Sort-Object -Unique
+    # Make sure this always returns an array
+    Write-Output -NoEnumerate $namespaces
 }
 
 function Get-java-RepositoryLink ($packageInfo) {
