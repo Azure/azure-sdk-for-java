@@ -78,7 +78,7 @@ class DefaultHttpClient implements HttpClient {
     private final SSLSocketFactory sslSocketFactory;
     private static int maxConnections;
     private static boolean keepConnectionAlive;
-    private final HttpConnectionCache httpConnectionCache;
+    private final SocketConnectionCache httpConnectionCache;
 
     DefaultHttpClient(Duration connectionTimeout, Duration readTimeout, ProxyOptions proxyOptions,
         SSLSocketFactory sslSocketFactory) {
@@ -94,21 +94,25 @@ class DefaultHttpClient implements HttpClient {
         maxConnections = maxConnectionsString != null
             ? Integer.parseInt(maxConnectionsString)
             : 5;
-        this.httpConnectionCache = HttpConnectionCache.getInstance(keepConnectionAlive, maxConnections);
+        this.httpConnectionCache = SocketConnectionCache.getInstance(keepConnectionAlive, maxConnections);
     }
 
     @Override
     public Response<?> send(HttpRequest httpRequest) throws IOException {
         if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
 
-            HttpConnectionCache.HttpConnection connection = httpConnectionCache.get(new HttpConnectionProperties(httpRequest, httpRequest.getUrl().getHost(), String.valueOf(httpRequest.getUrl().getPort())));
+            SocketConnectionCache.SocketConnection connection
+                = httpConnectionCache.get(new SocketConnectionProperties(httpRequest,
+                httpRequest.getUrl().getHost(),
+                String.valueOf(httpRequest.getUrl().getPort())));
 
-            Response<?> response = SocketClient.sendPatchRequest(httpRequest, connection.getSocketInputStream(), connection.getSocketOutputStream(), getSslSocketFactory());
+            Response<?> response
+                = SocketClient.sendPatchRequest(httpRequest, connection.getSocketInputStream(),
+                connection.getSocketOutputStream(), getSslSocketFactory());
 
             // Handle connection reusing
             httpConnectionCache.reuseConnection(connection);
             return response;
-
         } else {
             HttpURLConnection connection = connect(httpRequest);
             sendBody(httpRequest, connection);
@@ -402,15 +406,15 @@ class DefaultHttpClient implements HttpClient {
     }
 
     /*
-     * Inner class maintaining a cache of connections
+     * Inner class maintaining a cache of socket connections
      */
-    private static class HttpConnectionCache {
-        private static HttpConnectionCache INSTANCE;
+    private static class SocketConnectionCache {
+        private static SocketConnectionCache INSTANCE;
         private final int maxConnections;
-        private final Map<HttpConnectionProperties, List<HttpConnection>> connectionPool
-            = new HashMap<HttpConnectionProperties, List<HttpConnection>>();
+        private final Map<SocketConnectionProperties, List<SocketConnection>> connectionPool
+            = new HashMap<SocketConnectionProperties, List<SocketConnection>>();
 
-        private HttpConnectionCache(boolean connectionKeepAlive, int maximumConnections) {
+        private SocketConnectionCache(boolean connectionKeepAlive, int maximumConnections) {
             if (!connectionKeepAlive) {
                 maxConnections = 0;
             } else {
@@ -418,25 +422,23 @@ class DefaultHttpClient implements HttpClient {
             }
         }
 
-        public static synchronized HttpConnectionCache getInstance(boolean connectionKeepAlive, int maximumConnections) {
+        public static synchronized SocketConnectionCache getInstance(boolean connectionKeepAlive, int maximumConnections) {
             if (INSTANCE == null) {
-                INSTANCE = new HttpConnectionCache(connectionKeepAlive, maximumConnections);
+                INSTANCE = new SocketConnectionCache(connectionKeepAlive, maximumConnections);
             }
             return INSTANCE;
         }
 
 
-        public HttpConnection get(HttpConnectionProperties httpConnectionProperties) {
-
-            HttpConnection connection = null;
-
+        public SocketConnection get(SocketConnectionProperties socketConnectionProperties) {
+            SocketConnection connection = null;
             // Try-Get a connection from the cache
             synchronized (connectionPool) {
-                List<HttpConnection> connections = connectionPool.get(httpConnectionProperties);
+                List<SocketConnection> connections = connectionPool.get(socketConnectionProperties);
                 while (!CoreUtils.isNullOrEmpty(connections)) {
                     connection = connections.remove(connections.size() - 1);
                     if (connections.isEmpty()) {
-                        connectionPool.remove(httpConnectionProperties);
+                        connectionPool.remove(socketConnectionProperties);
                         connections = null;
                     }
                     // keep removing connections from list until we find a use-able one, disregard other connections in use
@@ -449,33 +451,36 @@ class DefaultHttpClient implements HttpClient {
             // If no connection is available, create a new one
             if (connection == null) {
                 // If the request is a PATCH request, we need to use a socket connection
-                connection = getSocketHttpConnection(httpConnectionProperties);
+                connection = getSocketSocketConnection(socketConnectionProperties);
             }
 
             synchronized (connectionPool) {
-                List<HttpConnection> connections = connectionPool.get(httpConnectionProperties);
+                List<SocketConnection> connections = connectionPool.get(socketConnectionProperties);
                 if (connections == null) {
                     connections = new ArrayList<>();
-                    connectionPool.put(httpConnectionProperties, connections);
+                    connectionPool.put(socketConnectionProperties, connections);
                 }
             }
             return connection;
         }
 
-        void reuseConnection(HttpConnection connection) {
+        void reuseConnection(SocketConnection connection) {
 
             if (maxConnections > 0 && connection.canBeReused()) {
-                HttpConnectionProperties connectionProperties = connection.getConnectionProperties();
+                SocketConnectionProperties connectionProperties = connection.getConnectionProperties();
                 synchronized (connectionPool) {
-                    List<HttpConnection> connections = connectionPool.get(connectionProperties);
+                    List<SocketConnection> connections = connectionPool.get(connectionProperties);
                     if (connections == null) {
-                        connections = new ArrayList<HttpConnection>();
+                        connections = new ArrayList<SocketConnection>();
                         connectionPool.put(connectionProperties, connections);
                     }
                     if (connections.size() < maxConnections) {
-                        connection.markAvailableForReuse();
-                        connections.add(connection);
-                        return; // keep the connection open
+                        if (keepConnectionAlive) {
+                            // mark the connection as available for reuse
+                            connection.markAvailableForReuse();
+                            connections.add(connection);
+                            return; // keep the connection open
+                        }
                     }
                 }
             }
@@ -484,9 +489,9 @@ class DefaultHttpClient implements HttpClient {
             connection.closeSocketAndStreams();
         }
 
-        private static HttpConnection getSocketHttpConnection(HttpConnectionProperties httpConnectionProperties) {
-            HttpConnection connection;
-            URL requestUrl = httpConnectionProperties.getHttpRequest().getUrl();
+        private static SocketConnection getSocketSocketConnection(SocketConnectionProperties socketConnectionProperties) {
+            SocketConnection connection;
+            URL requestUrl = socketConnectionProperties.getHttpRequest().getUrl();
             String protocol = requestUrl.getProtocol();
             String host = requestUrl.getHost();
             int port = requestUrl.getPort();
@@ -498,24 +503,24 @@ class DefaultHttpClient implements HttpClient {
             } catch (IOException e) {
                 throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
             }
-            connection = new HttpConnection(socket, httpConnectionProperties);
+            connection = new SocketConnection(socket, socketConnectionProperties);
 
             return connection;
         }
 
         /*
-         * Inner class to hold the HttpConnection and its properties
+         * Inner class to hold the SocketConnection and its properties
          */
-        private static class HttpConnection {
+        private static class SocketConnection {
             private final Socket socket;
             private OutputStream socketOutputStream;
             private InputStream socketInputStream;
-            private final HttpConnectionProperties connectionProperties;
+            private final SocketConnectionProperties connectionProperties;
             private boolean canBeReused = false;
 
-            HttpConnection(Socket socket, HttpConnectionProperties httpConnectionProperties) {
+            SocketConnection(Socket socket, SocketConnectionProperties socketConnectionProperties) {
                 this.socket = socket;
-                this.connectionProperties = httpConnectionProperties;
+                this.connectionProperties = socketConnectionProperties;
             }
 
             OutputStream getSocketOutputStream() {
@@ -542,7 +547,7 @@ class DefaultHttpClient implements HttpClient {
                 }
             }
 
-            HttpConnectionProperties getConnectionProperties() {
+            SocketConnectionProperties getConnectionProperties() {
                 return connectionProperties;
             }
 
@@ -590,22 +595,22 @@ class DefaultHttpClient implements HttpClient {
     }
 
     /*
-     * Inner class to hold the properties of the HttpConnection
+     * Inner class to hold the properties of the SocketConnection
      */
-    private static class HttpConnectionProperties {
+    private static class SocketConnectionProperties {
         private final HttpRequest httpRequest;
         private final String host;
         private final String port;
 
-        public HttpConnectionProperties(HttpRequest httpRequest, String host, String port) {
+        public SocketConnectionProperties(HttpRequest httpRequest, String host, String port) {
             this.httpRequest = httpRequest;
             this.host = host;
             this.port = port;
         }
 
         @Override public boolean equals(Object other) {
-            if (other instanceof HttpConnectionProperties) {
-                HttpConnectionProperties that = (HttpConnectionProperties) other;
+            if (other instanceof SocketConnectionProperties) {
+                SocketConnectionProperties that = (SocketConnectionProperties) other;
                 return Objects.equals(this.host, that.host)
                     && this.port.equals(that.port);
             }
@@ -629,9 +634,6 @@ class DefaultHttpClient implements HttpClient {
         private static Response<?> sendPatchRequest(HttpRequest httpRequest, InputStream inputStream,
             OutputStream outputStream, SSLSocketFactory sslSocketFactory) {
             httpRequest.getHeaders().set(HttpHeaderName.HOST, httpRequest.getUrl().getHost());
-            if (!"keep-alive".equalsIgnoreCase(httpRequest.getHeaders().getValue(HttpHeaderName.CONNECTION))) {
-                httpRequest.getHeaders().set(HttpHeaderName.CONNECTION, "close");
-            }
 
             try (BufferedReader in = new BufferedReader(
                 new InputStreamReader(inputStream, StandardCharsets.UTF_8));
@@ -685,15 +687,18 @@ class DefaultHttpClient implements HttpClient {
 
         /**
          * Reads the response from the input stream and extracts the information needed to construct an instance of
-         * HttpUrlConnectionResponse
+         * Response
          *
          * @param httpRequest The HTTP Request being sent
-         * @param reader      the input stream from the socket
-         * @return an instance of HttpUrlConnectionResponse
+         * @param reader the input stream from the socket
+         * @return an instance of Response
          * @throws IOException If an I/O error occurs
          */
         private static Response<?> buildResponse(HttpRequest httpRequest, BufferedReader reader) throws IOException {
             String statusLine = reader.readLine();
+            if (statusLine == null) {
+                throw LOGGER.logThrowableAsError(new IllegalStateException("Unexpected response from server."));
+            }
             int dotIndex = statusLine.indexOf('.');
             int statusCode = Integer.parseInt(statusLine.substring(dotIndex + 3, dotIndex + 6));
 
