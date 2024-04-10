@@ -5,7 +5,6 @@
 ### Features Added
 
 - Expanded `ChatAttachment` to include new enum `file` to enable communication users to recieve file attachments shared by Teams user in a Teams Interoperbility Chat.
-- Added support for a new communication identifier `MicrosoftTeamsAppIdentifierModel`.
 
 ## 1.4.2 (2024-03-20)
 
