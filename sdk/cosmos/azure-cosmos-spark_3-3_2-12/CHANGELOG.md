@@ -9,7 +9,6 @@
 #### Bugs Fixed
 
 #### Other Changes
-* Optimized the partitioning strategy implementation details to avoid unnecessarily high RU usage. - See [PR 39438](https://github.com/Azure/azure-sdk-for-java/pull/39438)
 
 ### 4.28.4 (2024-03-18)
 
