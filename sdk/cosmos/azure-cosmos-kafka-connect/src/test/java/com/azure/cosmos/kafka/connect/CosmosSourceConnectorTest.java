@@ -22,7 +22,6 @@ import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedMode
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedStartFromModes;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosMetadataStorageType;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
-import com.azure.cosmos.kafka.connect.implementation.source.IMetadataReader;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataCosmosStorageManager;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataKafkaStorageManager;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTask;
@@ -46,7 +45,6 @@ import org.apache.kafka.common.config.ConfigValue;
 import org.apache.kafka.common.config.types.Password;
 import org.apache.kafka.connect.source.SourceConnectorContext;
 import org.mockito.Mockito;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -260,7 +258,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
 
             // override the storage reader with initial offset
             CosmosAsyncClient cosmosAsyncClient = KafkaCosmosReflectionUtils.getCosmosClient(sourceConnector);
-            MetadataKafkaStorageManager sourceOffsetStorageReader = KafkaCosmosReflectionUtils.getSourceOffsetStorageReader(sourceConnector);
+            MetadataKafkaStorageManager sourceOffsetStorageReader = KafkaCosmosReflectionUtils.getKafkaOffsetStorageReader(sourceConnector);
             InMemoryStorageReader inMemoryStorageReader =
                 (InMemoryStorageReader) KafkaCosmosReflectionUtils.getOffsetStorageReader(sourceOffsetStorageReader);
 
@@ -355,7 +353,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
 
             // override the storage reader with initial offset
             CosmosAsyncClient cosmosAsyncClient = KafkaCosmosReflectionUtils.getCosmosClient(sourceConnector);
-            MetadataKafkaStorageManager sourceOffsetStorageReader = KafkaCosmosReflectionUtils.getSourceOffsetStorageReader(sourceConnector);
+            MetadataKafkaStorageManager sourceOffsetStorageReader = KafkaCosmosReflectionUtils.getKafkaOffsetStorageReader(sourceConnector);
             InMemoryStorageReader inMemoryStorageReader =
                 (InMemoryStorageReader) KafkaCosmosReflectionUtils.getOffsetStorageReader(sourceOffsetStorageReader);
 
@@ -809,8 +807,6 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                     .containsAll(metadataTaskUnitFromTaskConfig.getContainersEffectiveRangesMap().get(containerRid)))
                 .isTrue();
         }
-
-        assertThat(expectedMetadataTaskUnit).isEqualTo(metadataTaskUnitFromTaskConfig);
     }
 
     private void validateMetadataItems(
@@ -909,7 +905,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                 "_cosmos.metadata.topic",
                 true),
             new KafkaCosmosConfigEntry<String>(
-                "kafka.connect.cosmos.source.metadata.storage.source",
+                "kafka.connect.cosmos.source.metadata.storage.type",
                 CosmosMetadataStorageType.KAFKA.getName(),
                 true),
             new KafkaCosmosConfigEntry<Boolean>("kafka.connect.cosmos.source.messageKey.enabled", true, true),

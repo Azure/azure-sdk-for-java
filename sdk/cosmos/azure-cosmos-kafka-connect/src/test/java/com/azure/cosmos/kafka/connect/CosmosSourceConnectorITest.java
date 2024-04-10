@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAuthTypes;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosMetadataStorageType;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -35,16 +36,18 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
     @DataProvider(name = "sourceAuthParameterProvider")
     public static Object[][] sourceAuthParameterProvider() {
         return new Object[][]{
-            // use masterKey auth
-            { true },
-            { false }
+            // use masterKey auth, CosmosMetadataStorageType
+            { true, CosmosMetadataStorageType.KAFKA },
+            { true, CosmosMetadataStorageType.COSMOS },
+            { false, CosmosMetadataStorageType.KAFKA }
         };
     }
 
     // TODO[public preview]: add more integration tests
     @Test(groups = { "kafka-integration"}, dataProvider = "sourceAuthParameterProvider", timeOut = TIMEOUT)
-    public void readFromSingleContainer(boolean useMasterKey) {
+    public void readFromSingleContainer(boolean useMasterKey, CosmosMetadataStorageType metadataStorageType) {
         String topicName = singlePartitionContainerName + "-" + UUID.randomUUID();
+        String metadataStorageName = "Metadata-" + UUID.randomUUID();
 
         Map<String, String> sourceConnectorConfig = new HashMap<>();
         sourceConnectorConfig.put("connector.class", "com.azure.cosmos.kafka.connect.CosmosSourceConnector");
@@ -64,6 +67,11 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             sourceConnectorConfig.put("kafka.connect.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
         }
 
+        if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
+            sourceConnectorConfig.put("kafka.connect.cosmos.source.metadata.storage.name", metadataStorageName);
+            sourceConnectorConfig.put("kafka.connect.cosmos.source.metadata.storage.type", CosmosMetadataStorageType.COSMOS.getName());
+        }
+
         // Create topic ahead of time
         kafkaCosmosConnectContainer.createTopic(topicName, 1);
 
@@ -72,7 +80,15 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
         CosmosAsyncContainer container = client.getDatabase(databaseName).getContainer(singlePartitionContainerName);
 
         String connectorName = "simpleTest-" + UUID.randomUUID();
+
         try {
+            // if using cosmos container to persiste the metadata, pre-create it
+            if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
+                client.getDatabase(databaseName)
+                    .createContainerIfNotExists(metadataStorageName, "/id")
+                    .block();
+            }
+
             // create few items in the container
             logger.info("creating items in container {}", singlePartitionContainerName);
             List<String> createdItems = new ArrayList<>();
@@ -123,6 +139,12 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             if (client != null) {
                 logger.info("cleaning container {}", singlePartitionContainerName);
                 cleanUpContainer(client, databaseName, singlePartitionContainerName);
+
+                // delete the metadata container if created
+                if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
+                    client.getDatabase(databaseName).getContainer(metadataStorageName).delete().block();
+                }
+
                 client.close();
             }
 

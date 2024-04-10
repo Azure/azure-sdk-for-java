@@ -61,8 +61,8 @@ public class KafkaCosmosReflectionUtils {
         return get(sourceConnector,"cosmosClient");
     }
 
-    public static MetadataKafkaStorageManager getSourceOffsetStorageReader(CosmosSourceConnector sourceConnector) {
-        return get(sourceConnector,"offsetStorageReader");
+    public static MetadataKafkaStorageManager getKafkaOffsetStorageReader(CosmosSourceConnector sourceConnector) {
+        return get(sourceConnector,"kafkaOffsetStorageReader");
     }
 
     public static OffsetStorageReader getOffsetStorageReader(MetadataKafkaStorageManager sourceOffsetStorageReader) {
