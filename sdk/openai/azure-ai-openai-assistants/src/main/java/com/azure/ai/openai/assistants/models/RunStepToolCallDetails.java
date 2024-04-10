@@ -83,4 +83,21 @@ public final class RunStepToolCallDetails extends RunStepDetails {
             return new RunStepToolCallDetails(toolCalls);
         });
     }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private RunStepType type = RunStepType.TOOL_CALLS;
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public RunStepType getType() {
+        return this.type;
+    }
 }

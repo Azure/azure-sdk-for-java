@@ -82,4 +82,21 @@ public final class RunStepCodeInterpreterLogOutput extends RunStepCodeInterprete
             return new RunStepCodeInterpreterLogOutput(logs);
         });
     }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "logs";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
+    }
 }

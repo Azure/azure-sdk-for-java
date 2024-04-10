@@ -90,4 +90,21 @@ public final class RunStepFunctionToolCall extends RunStepToolCall {
             return new RunStepFunctionToolCall(id, function);
         });
     }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "function";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
+    }
 }

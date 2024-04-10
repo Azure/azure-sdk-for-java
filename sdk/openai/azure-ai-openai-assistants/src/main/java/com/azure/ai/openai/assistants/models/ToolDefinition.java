@@ -22,6 +22,7 @@ public class ToolDefinition implements JsonSerializable<ToolDefinition> {
      */
     @Generated
     public ToolDefinition() {
+        this.type = "ToolDefinition";
     }
 
     @Override
@@ -79,5 +80,21 @@ public class ToolDefinition implements JsonSerializable<ToolDefinition> {
             }
             return deserializedToolDefinition;
         });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type;
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public String getType() {
+        return this.type;
     }
 }

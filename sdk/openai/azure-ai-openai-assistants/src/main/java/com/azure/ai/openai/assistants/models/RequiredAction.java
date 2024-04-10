@@ -22,6 +22,7 @@ public class RequiredAction implements JsonSerializable<RequiredAction> {
      */
     @Generated
     protected RequiredAction() {
+        this.type = "RequiredAction";
     }
 
     @Override
@@ -75,5 +76,21 @@ public class RequiredAction implements JsonSerializable<RequiredAction> {
             }
             return deserializedRequiredAction;
         });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type;
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public String getType() {
+        return this.type;
     }
 }

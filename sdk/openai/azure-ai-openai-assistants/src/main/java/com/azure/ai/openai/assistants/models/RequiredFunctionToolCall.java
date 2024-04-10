@@ -89,4 +89,21 @@ public final class RequiredFunctionToolCall extends RequiredToolCall {
             return new RequiredFunctionToolCall(id, function);
         });
     }
+
+    /*
+     * The object type for the required tool call.
+     */
+    @Generated
+    private String type = "function";
+
+    /**
+     * Get the type property: The object type for the required tool call.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
+    }
 }

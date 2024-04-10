@@ -22,6 +22,7 @@ public class RunStepCodeInterpreterToolCallOutput implements JsonSerializable<Ru
      */
     @Generated
     protected RunStepCodeInterpreterToolCallOutput() {
+        this.type = "RunStepCodeInterpreterToolCallOutput";
     }
 
     @Override
@@ -78,5 +79,21 @@ public class RunStepCodeInterpreterToolCallOutput implements JsonSerializable<Ru
             }
             return deserializedRunStepCodeInterpreterToolCallOutput;
         });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type;
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public String getType() {
+        return this.type;
     }
 }

@@ -82,4 +82,21 @@ public final class MessageImageFileContent extends MessageContent {
             return new MessageImageFileContent(imageFile);
         });
     }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "image_file";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
+    }
 }

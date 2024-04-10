@@ -100,4 +100,21 @@ public final class MessageTextFilePathAnnotation extends MessageTextAnnotation {
             return new MessageTextFilePathAnnotation(text, startIndex, endIndex, filePath);
         });
     }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "file_path";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
+    }
 }

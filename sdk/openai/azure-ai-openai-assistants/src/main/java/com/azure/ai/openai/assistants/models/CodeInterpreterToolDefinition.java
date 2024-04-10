@@ -60,4 +60,21 @@ public final class CodeInterpreterToolDefinition extends ToolDefinition {
             return deserializedCodeInterpreterToolDefinition;
         });
     }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "code_interpreter";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
+    }
 }

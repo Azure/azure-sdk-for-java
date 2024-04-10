@@ -103,4 +103,21 @@ public final class MessageTextFileCitationAnnotation extends MessageTextAnnotati
             return new MessageTextFileCitationAnnotation(text, startIndex, endIndex, fileCitation);
         });
     }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "file_citation";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
+    }
 }

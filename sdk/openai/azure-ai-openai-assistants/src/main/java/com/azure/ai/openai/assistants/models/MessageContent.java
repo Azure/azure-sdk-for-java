@@ -22,6 +22,7 @@ public class MessageContent implements JsonSerializable<MessageContent> {
      */
     @Generated
     protected MessageContent() {
+        this.type = "MessageContent";
     }
 
     @Override
@@ -77,5 +78,21 @@ public class MessageContent implements JsonSerializable<MessageContent> {
             }
             return deserializedMessageContent;
         });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type;
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public String getType() {
+        return this.type;
     }
 }

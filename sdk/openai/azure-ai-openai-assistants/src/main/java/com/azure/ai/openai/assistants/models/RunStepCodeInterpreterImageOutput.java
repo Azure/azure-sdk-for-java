@@ -82,4 +82,21 @@ public final class RunStepCodeInterpreterImageOutput extends RunStepCodeInterpre
             return new RunStepCodeInterpreterImageOutput(image);
         });
     }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "image";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
+    }
 }

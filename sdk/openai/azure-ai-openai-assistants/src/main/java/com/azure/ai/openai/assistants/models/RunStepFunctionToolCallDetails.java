@@ -30,8 +30,7 @@ public final class RunStepFunctionToolCallDetails implements JsonSerializable<Ru
     private final String arguments;
 
     /*
-     * The output of the function, only populated for function calls that have already have had their outputs
-     * submitted.
+     * The output of the function, only populated for function calls that have already have had their outputs submitted.
      */
     @Generated
     private final String output;
@@ -71,8 +70,8 @@ public final class RunStepFunctionToolCallDetails implements JsonSerializable<Ru
     }
 
     /**
-     * Get the output property: The output of the function, only populated for function calls that have already have
-     * had their outputs submitted.
+     * Get the output property: The output of the function, only populated for function calls that have already have had
+     * their outputs submitted.
      *
      * @return the output value.
      */

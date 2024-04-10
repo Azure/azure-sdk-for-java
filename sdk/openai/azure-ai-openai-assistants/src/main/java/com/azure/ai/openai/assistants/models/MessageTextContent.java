@@ -82,4 +82,21 @@ public final class MessageTextContent extends MessageContent {
             return new MessageTextContent(text);
         });
     }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "text";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
+    }
 }

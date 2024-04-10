@@ -82,4 +82,21 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
             return new RunStepMessageCreationDetails(messageCreation);
         });
     }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private RunStepType type = RunStepType.MESSAGE_CREATION;
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public RunStepType getType() {
+        return this.type;
+    }
 }

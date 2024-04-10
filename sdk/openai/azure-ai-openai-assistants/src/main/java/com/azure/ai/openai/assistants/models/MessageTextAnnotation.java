@@ -44,6 +44,7 @@ public class MessageTextAnnotation implements JsonSerializable<MessageTextAnnota
      */
     @Generated
     protected MessageTextAnnotation(String text, int startIndex, int endIndex) {
+        this.type = "MessageTextAnnotation";
         this.text = text;
         this.startIndex = startIndex;
         this.endIndex = endIndex;
@@ -146,5 +147,21 @@ public class MessageTextAnnotation implements JsonSerializable<MessageTextAnnota
             }
             return new MessageTextAnnotation(text, startIndex, endIndex);
         });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type;
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public String getType() {
+        return this.type;
     }
 }

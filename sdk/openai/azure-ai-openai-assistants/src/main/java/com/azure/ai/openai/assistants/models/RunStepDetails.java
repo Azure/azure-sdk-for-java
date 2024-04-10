@@ -22,6 +22,7 @@ public class RunStepDetails implements JsonSerializable<RunStepDetails> {
      */
     @Generated
     protected RunStepDetails() {
+        this.type = RunStepType.fromString("RunStepDetails");
     }
 
     @Override
@@ -77,5 +78,21 @@ public class RunStepDetails implements JsonSerializable<RunStepDetails> {
             }
             return deserializedRunStepDetails;
         });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private RunStepType type;
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public RunStepType getType() {
+        return this.type;
     }
 }

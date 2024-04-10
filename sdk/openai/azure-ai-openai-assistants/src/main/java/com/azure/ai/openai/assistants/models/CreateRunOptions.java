@@ -38,8 +38,7 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
     private String instructions;
 
     /*
-     * Additional instructions to append at the end of the instructions for the run. This is useful for modifying the
-     * behavior
+     * Additional instructions to append at the end of the instructions for the run. This is useful for modifying the behavior
      * on a per-run basis without overriding other instructions.
      */
     @Generated
@@ -52,9 +51,7 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
     private List<ToolDefinition> tools;
 
     /*
-     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
-     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
-     * characters in length.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
      */
     @Generated
     private Map<String, String> metadata;
@@ -116,8 +113,8 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
     }
 
     /**
-     * Get the additionalInstructions property: Additional instructions to append at the end of the instructions for
-     * the run. This is useful for modifying the behavior
+     * Get the additionalInstructions property: Additional instructions to append at the end of the instructions for the
+     * run. This is useful for modifying the behavior
      * on a per-run basis without overriding other instructions.
      *
      * @return the additionalInstructions value.
@@ -186,8 +183,8 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
     }
 
     /**
-     * Set the additionalInstructions property: Additional instructions to append at the end of the instructions for
-     * the run. This is useful for modifying the behavior
+     * Set the additionalInstructions property: Additional instructions to append at the end of the instructions for the
+     * run. This is useful for modifying the behavior
      * on a per-run basis without overriding other instructions.
      *
      * @param additionalInstructions the additionalInstructions value to set.

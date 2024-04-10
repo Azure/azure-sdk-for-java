@@ -59,4 +59,21 @@ public final class RetrievalToolDefinition extends ToolDefinition {
             return deserializedRetrievalToolDefinition;
         });
     }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "retrieval";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
+    }
 }
