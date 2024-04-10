@@ -287,8 +287,9 @@ public abstract class HttpClientTests {
     @Test
     public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
-        request.getMetadata().setResponseBodyMode(DESERIALIZE);
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE))
+            .setBody(requestBody)
+            .setOptions(new RequestOptions().setResponseBodyMode(DESERIALIZE));
 
         try (Response<?> response = getHttpClient().send(request)) {
             // Read response twice using all accessors.
@@ -312,8 +313,9 @@ public abstract class HttpClientTests {
     @Test
     public void eagerlyConvertedHeadersAreHeaders() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
-        request.getMetadata().setEagerlyConvertHeaders(true);
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE))
+            .setBody(requestBody)
+            .setOptions(new RequestOptions().setEagerlyConvertHeaders(true));
 
         try (Response<?> response = getHttpClient().send(request)) {
             // Validate getHeaders type is Headers (not instanceof)
@@ -1768,9 +1770,12 @@ public abstract class HttpClientTests {
     @Test
     public void canRecognizeServerSentEvent() {
         BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest(HttpMethod.POST, getRequestUrl(SSE_RESPONSE)).setBody(requestBody);
-        request.getMetadata().setEagerlyConvertHeaders(false);
+        HttpRequest request = new HttpRequest(HttpMethod.POST, getRequestUrl(SSE_RESPONSE))
+            .setBody(requestBody)
+            .setOptions(new RequestOptions().setEagerlyConvertHeaders(false));
+
         List<String> expected = Arrays.asList("YHOO", "+2", "10");
+
         getHttpClient().send(request.setServerSentEventListener(sse -> assertEquals(expected, sse.getData())));
     }
 

@@ -3,8 +3,6 @@
 
 package io.clientcore.core.http.client;
 
-import io.clientcore.core.http.client.DefaultHttpClientBuilder;
-import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -238,7 +236,8 @@ public class DefaultHttpClientTest {
 
     private static Response<?> getResponse(HttpClient client, String path, Context context) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
-        request.getMetadata().setContext(context);
+
+        request.getOptions().setContext(context);
 
         return client.send(request);
     }

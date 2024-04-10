@@ -79,10 +79,12 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             return next.process();
         }
 
-        ClientLogger logger = httpRequest.getMetadata().getRequestLogger();
+        ClientLogger logger = httpRequest.getOptions().getRequestLogger();
+
         if (logger == null) {
             logger = LOGGER;
         }
+
         final long startNs = System.nanoTime();
 
         requestLogger.logRequest(logger, httpRequest);
@@ -347,7 +349,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * Gets the request retry count to include in logging.
      */
     private static int getRequestRetryCount(HttpRequest request) {
-        return request.getMetadata().getRetryCount();
+        return request.getRetryCount();
     }
 
     private static ClientLogger.LoggingEventBuilder getLogBuilder(ClientLogger.LogLevel logLevel, ClientLogger logger) {

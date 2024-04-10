@@ -226,7 +226,7 @@ class DefaultHttpClient implements HttpClient {
                 connection.disconnect();
             }
         } else {
-            ResponseBodyMode responseBodyMode = httpRequest.getMetadata().getResponseBodyMode();
+            ResponseBodyMode responseBodyMode = httpRequest.getOptions().getResponseBodyMode();
 
             if (responseBodyMode == null) {
                 HttpHeader contentType = httpResponse.getHeaders().get(CONTENT_TYPE);
@@ -238,7 +238,7 @@ class DefaultHttpClient implements HttpClient {
                     responseBodyMode = BUFFER;
                 }
 
-                httpRequest.getMetadata().setResponseBodyMode(responseBodyMode);
+                httpRequest.getOptions().setResponseBodyMode(responseBodyMode); // We only change this if it was null.
             }
 
             switch (responseBodyMode) {

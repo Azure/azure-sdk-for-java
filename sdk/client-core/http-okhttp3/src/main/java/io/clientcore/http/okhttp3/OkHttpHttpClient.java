@@ -9,17 +9,18 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
-import io.clientcore.http.okhttp3.implementation.OkHttpFileRequestBody;
-import io.clientcore.http.okhttp3.implementation.OkHttpInputStreamRequestBody;
-import io.clientcore.http.okhttp3.implementation.OkHttpResponse;
 import io.clientcore.core.implementation.util.ServerSentEventUtil;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.binarydata.FileBinaryData;
 import io.clientcore.core.util.binarydata.InputStreamBinaryData;
+import io.clientcore.http.okhttp3.implementation.OkHttpFileRequestBody;
+import io.clientcore.http.okhttp3.implementation.OkHttpInputStreamRequestBody;
+import io.clientcore.http.okhttp3.implementation.OkHttpResponse;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -49,14 +50,12 @@ class OkHttpHttpClient implements HttpClient {
 
     @Override
     public Response<?> send(HttpRequest request) {
-        boolean eagerlyConvertHeaders = request.getMetadata().isEagerlyConvertHeaders();
-        ResponseBodyMode responseBodyMode = request.getMetadata().getResponseBodyMode();
         Request okHttpRequest = toOkHttpRequest(request);
 
         try {
             okhttp3.Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
 
-            return toResponse(request, okHttpResponse, responseBodyMode, eagerlyConvertHeaders);
+            return toResponse(request, okHttpResponse);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
@@ -141,8 +140,7 @@ class OkHttpHttpClient implements HttpClient {
         return contentLength;
     }
 
-    private Response<?> toResponse(HttpRequest request, okhttp3.Response response, ResponseBodyMode responseBodyMode,
-                                   boolean eagerlyConvertHeaders) throws IOException {
+    private Response<?> toResponse(HttpRequest request, okhttp3.Response response) throws IOException {
         okhttp3.Headers responseHeaders = response.headers();
 
         if (isTextEventStream(responseHeaders) && response.body() != null) {
@@ -154,14 +152,21 @@ class OkHttpHttpClient implements HttpClient {
                 throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtil.NO_LISTENER_ERROR_MESSAGE));
             }
 
-            return new OkHttpResponse(response, request, eagerlyConvertHeaders, BinaryData.fromBytes(EMPTY_BODY));
+            return new OkHttpResponse(response, request,
+                request.getOptions() != null && request.getOptions().isEagerlyConvertHeaders(),
+                BinaryData.fromBytes(EMPTY_BODY));
         }
 
-        return processResponse(request, response, responseBodyMode, eagerlyConvertHeaders);
+        return processResponse(request, response);
     }
 
-    private Response<?> processResponse(HttpRequest request, okhttp3.Response response,
-                                        ResponseBodyMode responseBodyMode, boolean eagerlyConvertHeaders) throws IOException {
+    private Response<?> processResponse(HttpRequest request, okhttp3.Response response) throws IOException {
+        if (request.getOptions() == null) {
+            request.setOptions(new RequestOptions());
+        }
+
+        ResponseBodyMode responseBodyMode = request.getOptions().getResponseBodyMode();
+
         if (responseBodyMode == null) {
             String contentType = response.headers().get(CONTENT_TYPE.getCaseInsensitiveName());
 
@@ -173,7 +178,7 @@ class OkHttpHttpClient implements HttpClient {
                 responseBodyMode = BUFFER;
             }
 
-            request.getMetadata().setResponseBodyMode(responseBodyMode);
+            request.getOptions().setResponseBodyMode(responseBodyMode); // We only change this if it was null.
         }
 
         BinaryData body = null;
@@ -201,7 +206,7 @@ class OkHttpHttpClient implements HttpClient {
                 }
         }
 
-        return new OkHttpResponse(response, request, eagerlyConvertHeaders,
+        return new OkHttpResponse(response, request, request.getOptions().isEagerlyConvertHeaders(),
             body == null ? BinaryData.fromBytes(EMPTY_BODY) : body);
     }
 

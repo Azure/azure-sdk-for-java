@@ -4,7 +4,6 @@
 package io.clientcore.core.http;
 
 import io.clientcore.core.annotation.ServiceInterface;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotation.BodyParam;
 import io.clientcore.core.http.annotation.HeaderParam;
 import io.clientcore.core.http.annotation.HttpRequestInformation;
@@ -185,7 +184,7 @@ public class RestProxyTests {
 
         testInterface.testHeadMethod();
 
-        assertEquals(IGNORE, client.getLastHttpRequest().getMetadata().getResponseBodyMode());
+        assertEquals(IGNORE, client.getLastHttpRequest().getOptions().getResponseBodyMode());
     }
 
     @Test
@@ -199,7 +198,7 @@ public class RestProxyTests {
 
         testInterface.testMethodReturnsResponseVoid();
 
-        assertEquals(BUFFER, client.getLastHttpRequest().getMetadata().getResponseBodyMode());
+        assertEquals(BUFFER, client.getLastHttpRequest().getOptions().getResponseBodyMode());
     }
 
     @Test
@@ -213,7 +212,7 @@ public class RestProxyTests {
 
         testInterface.testDownload();
 
-        assertEquals(STREAM, client.getLastHttpRequest().getMetadata().getResponseBodyMode());
+        assertEquals(STREAM, client.getLastHttpRequest().getOptions().getResponseBodyMode());
     }
 
     private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {
