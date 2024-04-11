@@ -5,9 +5,7 @@ package io.clientcore.core.implementation.http.rest;
 
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpRequestMetadata;
 import io.clientcore.core.http.models.HttpResponse;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -56,11 +54,11 @@ public class RestProxyImpl extends RestProxyBase {
 
     @SuppressWarnings({"try", "unused"})
     @Override
-    public Object invoke(Object proxy, Method method, RequestOptions options, Consumer<HttpRequest> requestCallback,
+    public Object invoke(Object proxy, Method method, Consumer<HttpRequest> requestCallback,
                          SwaggerMethodParser methodParser, HttpRequest request) {
         // If there is 'RequestOptions' apply its request callback operations before validating the body.
         // This is because the callbacks may mutate the request body.
-        if (options != null && requestCallback != null) {
+        if (requestCallback != null) {
             requestCallback.accept(request);
         }
 
@@ -123,8 +121,7 @@ public class RestProxyImpl extends RestProxyBase {
 
                 return createResponseIfNecessary(response, entityType, null);
             } else {
-                HttpRequestMetadata metadata = response.getRequest().getMetadata();
-                ResponseBodyMode responseBodyMode = metadata == null ? null : metadata.getResponseBodyMode();
+                ResponseBodyMode responseBodyMode = response.getRequest().getRequestOptions().getResponseBodyMode();
 
                 if (responseBodyMode == DESERIALIZE) {
                     HttpResponseAccessHelper.setValue((HttpResponse<?>) response,

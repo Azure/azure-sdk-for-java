@@ -4,7 +4,9 @@
 package io.clientcore.core.http.models;
 
 import io.clientcore.core.http.annotation.QueryParam;
+import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.implementation.http.rest.UrlEscapers;
+import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;
 
@@ -12,20 +14,17 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * This class contains the options to customize an HTTP request. {@link RequestOptions} can be used to configure the
- * request headers, query params, the request body, or add a callback to modify all aspects of the HTTP request.
+ * This class contains the options to customize an {@link HttpRequest}. {@link RequestOptions} can be used to configure
+ * the request headers, query params, the request body, or add a callback to modify all aspects of the
+ * {@link HttpRequest}.
  *
- * <p>
- * An instance of fully configured {@link RequestOptions} can be passed to a service method that preconfigures known
+ * <p>An instance of fully configured {@link RequestOptions} can be passed to a service method that preconfigures known
  * components of the request like URL, path params etc, further modifying both un-configured, or preconfigured
- * components.
- * </p>
+ * components.</p>
  *
- * <p>
- * To demonstrate how this class can be used to construct a request, let's use a Pet Store service as an example. The
+ * <p>To demonstrate how this class can be used to construct a request, let's use a Pet Store service as an example. The
  * list of APIs available on this service are <a href="https://petstore.swagger.io/#/pet">documented in the swagger
- * definition.</a>
- * </p>
+ * definition.</a></p>
  *
  * <p><strong>Creating an instance of RequestOptions</strong></p>
  * <!-- src_embed io.clientcore.core.http.rest.requestoptions.instantiation -->
@@ -37,11 +36,13 @@ import java.util.function.Consumer;
  * <!-- end io.clientcore.core.http.rest.requestoptions.instantiation -->
  *
  * <p><strong>Configuring the request with JSON body and making a HTTP POST request</strong></p>
+ *
  * To <a href="https://petstore.swagger.io/#/pet/addPet">add a new pet to the pet store</a>, an HTTP POST call should be
  * made to the service with the details of the pet that is to be added. The details of the pet are included as the
  * request body in JSON format.
  *
  * The JSON structure for the request is defined as follows:
+ *
  * <pre>{@code
  * {
  *   "id": 0,
@@ -64,7 +65,7 @@ import java.util.function.Consumer;
  * }</pre>
  *
  * To create a concrete request, Json builder provided in javax package is used here for demonstration. However, any
- * other Json building library can be used to achieve similar results.
+ * other JSON building library can be used to achieve similar results.
  *
  * <!-- src_embed io.clientcore.core.http.rest.requestoptions.createjsonrequest -->
  * <pre>
@@ -97,7 +98,7 @@ import java.util.function.Consumer;
  * </pre>
  * <!-- end io.clientcore.core.http.rest.requestoptions.createjsonrequest -->
  *
- * Now, this string representation of the JSON request can be set as body of RequestOptions
+ * Now, this string representation of the JSON request can be set as body of {@link RequestOptions}.
  *
  * <!-- src_embed io.clientcore.core.http.rest.requestoptions.postrequest -->
  * <pre>
@@ -112,10 +113,10 @@ import java.util.function.Consumer;
  * <!-- end io.clientcore.core.http.rest.requestoptions.postrequest -->
  */
 public final class RequestOptions {
+    private ClientLogger logger;
     private Consumer<HttpRequest> requestCallback = request -> {
     };
     private Context context;
-
     private ResponseBodyMode responseBodyMode;
 
     /**
@@ -125,7 +126,7 @@ public final class RequestOptions {
     }
 
     /**
-     * Gets the request callback, applying all the configurations set on this RequestOptions.
+     * Gets the request callback, applying all the configurations set on this instance of {@link RequestOptions}.
      *
      * @return The request callback.
      */
@@ -154,13 +155,23 @@ public final class RequestOptions {
     }
 
     /**
-     * Adds a header to the HTTP request.
-     * <p>
-     * If a header with the given name exists the {@code value} is added to the existing header (comma-separated),
-     * otherwise a new header is created.
+     * Gets the {@link ClientLogger} used to log during the request and response.
      *
-     * @param header the header key
-     * @return the modified RequestOptions object
+     * @return The {@link ClientLogger} used to log during the request and response.
+     */
+    public ClientLogger getLogger() {
+        return logger;
+    }
+
+    /**
+     * Adds a header to the {@link HttpRequest}.
+     *
+     * <p>If a header with the given name exists, the {@code value} is added to the existing header (comma-separated),
+     * otherwise a new header will be created.</p>
+     *
+     * @param header The header key.
+     *
+     * @return The updated {@link RequestOptions} object.
      */
     public RequestOptions addHeader(HttpHeader header) {
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header));
@@ -169,14 +180,14 @@ public final class RequestOptions {
     }
 
     /**
-     * Sets a header on the HTTP request.
-     * <p>
-     * If a header with the given name exists it is overridden by the new {@code value}.
+     * Sets a header on the {@link HttpRequest}.
      *
-     * @param header the header key
-     * @param value the header value
+     * <p>If a header with the given name exists it is overridden by the new {@code value}.</p>
      *
-     * @return the modified RequestOptions object
+     * @param header The header key.
+     * @param value The header value.
+     *
+     * @return The updated {@link RequestOptions} object.
      */
     public RequestOptions setHeader(HttpHeaderName header, String value) {
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
@@ -188,25 +199,25 @@ public final class RequestOptions {
      * Adds a query parameter to the request URL. The parameter name and value will be URL encoded. To use an already
      * encoded parameter name and value, call {@code addQueryParam("name", "value", true)}.
      *
-     * @param parameterName the name of the query parameter
-     * @param value the value of the query parameter
+     * @param parameterName The name of the query parameter.
+     * @param value The value of the query parameter.
      *
-     * @return the modified RequestOptions object
+     * @return The updated {@link RequestOptions} object.
      */
     public RequestOptions addQueryParam(String parameterName, String value) {
         return addQueryParam(parameterName, value, false);
     }
 
     /**
-     * Adds a query parameter to the request URL, specifying whether the parameter is already encoded. A value true for
-     * this argument indicates that value of {@link QueryParam#value()} is already encoded hence engine should not
-     * encode it, by default value will be encoded.
+     * Adds a query parameter to the request URL, specifying whether the parameter is already encoded. A value
+     * {@code true} for this argument indicates that value of {@link QueryParam#value()} is already encoded hence the
+     * engine should not encode it. By default, the value will be encoded.
      *
-     * @param parameterName the name of the query parameter
-     * @param value the value of the query parameter
-     * @param encoded whether this query parameter is already encoded
+     * @param parameterName The name of the query parameter.
+     * @param value The value of the query parameter.
+     * @param encoded Whether this query parameter is already encoded.
      *
-     * @return the modified RequestOptions object
+     * @return The updated {@link RequestOptions} object.
      */
     public RequestOptions addQueryParam(String parameterName, String value, boolean encoded) {
         this.requestCallback = this.requestCallback.andThen(request -> {
@@ -221,14 +232,14 @@ public final class RequestOptions {
     }
 
     /**
-     * Adds a custom request callback to modify the HTTP request before it's sent by the HttpClient. The modifications
-     * made on a RequestOptions object is applied in order on the request.
+     * Adds a custom request callback to modify the {@link HttpRequest} before it's sent by the {@link HttpClient}. The
+     * modifications made on a {@link RequestOptions} object are applied in order on the request.
      *
-     * @param requestCallback the request callback
+     * @param requestCallback The request callback.
      *
-     * @return the modified RequestOptions object
+     * @return The updated {@link RequestOptions} object.
      *
-     * @throws NullPointerException If {@code requestCallback} is null.
+     * @throws NullPointerException If {@code requestCallback} is {@code null}.
      */
     public RequestOptions addRequestCallback(Consumer<HttpRequest> requestCallback) {
         Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
@@ -239,13 +250,13 @@ public final class RequestOptions {
     }
 
     /**
-     * Sets the body to send as part of the HTTP request.
+     * Sets the body to send as part of the {@link HttpRequest}.
      *
      * @param requestBody the request body data
      *
-     * @return the modified RequestOptions object
+     * @return The updated {@link RequestOptions} object.
      *
-     * @throws NullPointerException If {@code requestBody} is null.
+     * @throws NullPointerException If {@code requestBody} is {@code null}.
      */
     public RequestOptions setBody(BinaryData requestBody) {
         Objects.requireNonNull(requestBody, "'requestBody' cannot be null.");
@@ -260,7 +271,7 @@ public final class RequestOptions {
      *
      * @param context Additional context that is passed during the service call.
      *
-     * @return the modified RequestOptions object
+     * @return The updated {@link RequestOptions} object.
      */
     public RequestOptions setContext(Context context) {
         this.context = context;
@@ -280,6 +291,19 @@ public final class RequestOptions {
      */
     public RequestOptions setResponseBodyMode(ResponseBodyMode responseBodyMode) {
         this.responseBodyMode = responseBodyMode;
+
+        return this;
+    }
+
+    /**
+     * Sets the {@link ClientLogger} used to log during the request and response.
+     *
+     * @param logger The {@link ClientLogger} used to log during the request and response.
+     *
+     * @return The updated {@link RequestOptions} object.
+     */
+    public RequestOptions setLogger(ClientLogger logger) {
+        this.logger = logger;
 
         return this;
     }

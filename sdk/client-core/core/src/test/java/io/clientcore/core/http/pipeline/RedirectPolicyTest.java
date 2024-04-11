@@ -344,7 +344,8 @@ public class RedirectPolicyTest {
             .httpClient(request -> {
                 int count = attemptCount.getAndIncrement();
                 if (count == 0) {
-                    return new MockHttpResponse(request, 429);
+                    return new MockHttpResponse(request, 429,
+                        new HttpHeaders().add(HttpHeaderName.LOCATION, "http://localhost.com"));
                 } else {
                     return new MockHttpResponse(request, 200);
                 }
