@@ -293,7 +293,6 @@ public final class RunStep implements JsonSerializable<RunStep> {
      * @param failedAt the failedAt value to set.
      * @param metadata the metadata value to set.
      */
-    @Generated
     private RunStep(String id, RunStepType type, String assistantId, String threadId, String runId,
         RunStepStatus status, RunStepDetails stepDetails, RunStepError lastError, OffsetDateTime createdAt,
         OffsetDateTime expiredAt, OffsetDateTime completedAt, OffsetDateTime cancelledAt, OffsetDateTime failedAt,
@@ -307,10 +306,10 @@ public final class RunStep implements JsonSerializable<RunStep> {
         this.stepDetails = stepDetails;
         this.lastError = lastError;
         this.createdAt = createdAt.toEpochSecond();
-        this.expiredAt = expiredAt.toEpochSecond();
-        this.completedAt = completedAt.toEpochSecond();
-        this.cancelledAt = cancelledAt.toEpochSecond();
-        this.failedAt = failedAt.toEpochSecond();
+        this.expiredAt = expiredAt == null ? null : expiredAt.toEpochSecond();
+        this.completedAt = completedAt == null ? null : completedAt.toEpochSecond();
+        this.cancelledAt = cancelledAt == null ? null : cancelledAt.toEpochSecond();
+        this.failedAt = failedAt == null ? null : failedAt.toEpochSecond();
         this.metadata = metadata;
     }
 

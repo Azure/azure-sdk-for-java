@@ -347,7 +347,6 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
      * @param failedAt the failedAt value to set.
      * @param metadata the metadata value to set.
      */
-    @Generated
     private ThreadRun(String id, String threadId, String assistantId, RunStatus status, RunError lastError,
         String model, String instructions, List<ToolDefinition> tools, List<String> fileIds, OffsetDateTime createdAt,
         OffsetDateTime expiresAt, OffsetDateTime startedAt, OffsetDateTime completedAt, OffsetDateTime cancelledAt,
@@ -362,11 +361,11 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
         this.tools = tools;
         this.fileIds = fileIds;
         this.createdAt = createdAt.toEpochSecond();
-        this.expiresAt = expiresAt.toEpochSecond();
-        this.startedAt = startedAt.toEpochSecond();
-        this.completedAt = completedAt.toEpochSecond();
-        this.cancelledAt = cancelledAt.toEpochSecond();
-        this.failedAt = failedAt.toEpochSecond();
+        this.expiresAt = expiresAt == null ? null : expiresAt.toEpochSecond();
+        this.startedAt = startedAt == null ? null : startedAt.toEpochSecond();
+        this.completedAt = completedAt == null ? null : completedAt.toEpochSecond();
+        this.cancelledAt = cancelledAt == null ? null : cancelledAt.toEpochSecond();
+        this.failedAt = failedAt == null ? null : failedAt.toEpochSecond();
         this.metadata = metadata;
     }
 
