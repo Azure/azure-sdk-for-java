@@ -11,6 +11,7 @@
 
   <modules>
     <module>core</module>
+    <module>http-jdk-httpclient</module>
     <module>http-okhttp3</module>
     <module>core-json</module>
   </modules>
