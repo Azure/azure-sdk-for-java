@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.kafka.connect.KafkaCosmosReflectionUtils;
+import com.azure.cosmos.kafka.connect.KafkaCosmosTestConfigurations;
 import com.azure.cosmos.kafka.connect.KafkaCosmosTestSuiteBase;
 import com.azure.cosmos.kafka.connect.TestItem;
 import com.azure.cosmos.kafka.connect.implementation.source.JsonToStruct;
@@ -21,6 +22,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.kafka.connect.data.ConnectSchema;
 import org.apache.kafka.connect.data.Schema;
@@ -509,6 +511,103 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
+    @Test(groups = { "kafka" }, dataProvider = "bulkEnableParameterProvider", timeOut = TIMEOUT)
+    public void sinkWithItemPatch(boolean bulkEnabled) {
+        String topicName = singlePartitionContainerName;
+
+        Map<String, String> sinkConfigMap = new HashMap<>();
+        sinkConfigMap.put("kafka.connect.cosmos.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
+        sinkConfigMap.put("kafka.connect.cosmos.accountKey", KafkaCosmosTestConfigurations.MASTER_KEY);
+        sinkConfigMap.put("kafka.connect.cosmos.sink.database.name", databaseName);
+        sinkConfigMap.put("kafka.connect.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
+        sinkConfigMap.put("kafka.connect.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
+        sinkConfigMap.put("kafka.connect.cosmos.sink.write.strategy", ItemWriteStrategy.ITEM_PATCH.getName());
+        sinkConfigMap.put(
+            "kafka.connect.cosmos.sink.write.patch.property.configs",
+            "property(intProperty).op(increment),"
+                + " property(doubleProperty).op(add),"
+                + " property(arrayProperty).path(/listProperty/0).op(replace),"
+                + " property(toBeRemovedProperty).op(remove)");
+
+        CosmosSinkTask sinkTask = new CosmosSinkTask();
+        SinkTaskContext sinkTaskContext = Mockito.mock(SinkTaskContext.class);
+        Mockito.when(sinkTaskContext.errantRecordReporter()).thenReturn(null);
+        KafkaCosmosReflectionUtils.setSinkTaskContext(sinkTask, sinkTaskContext);
+        sinkTask.start(sinkConfigMap);
+
+        CosmosAsyncClient cosmosClient = KafkaCosmosReflectionUtils.getSinkTaskCosmosClient(sinkTask);
+        CosmosContainerProperties singlePartitionContainerProperties = getSinglePartitionContainer(cosmosClient);
+        CosmosAsyncContainer container = cosmosClient.getDatabase(databaseName).getContainer(singlePartitionContainerProperties.getId());
+
+        try {
+            List<SinkRecord> sinkRecordList = new ArrayList<>();
+
+            // first create few items in the container
+            List<PatchTestItem> createdItems = new ArrayList<>();
+            for (int i = 0; i < 5; i++) {
+                PatchTestItem newItem = PatchTestItem.createNewItem();
+                container.createItem(newItem).block();
+                createdItems.add(newItem);
+            }
+
+            // update the existing property with different value
+            Map<String, ObjectNode> expectedItems = new HashMap<>();
+            for (PatchTestItem patchTestItem : createdItems) {
+                ObjectNode updateItem = Utils.getSimpleObjectMapper().createObjectNode();
+                updateItem.put("id", patchTestItem.getId());
+                updateItem.put("mypk", patchTestItem.getMypk());
+                updateItem.put("stringProperty", UUID.randomUUID().toString());
+                updateItem.put("intProperty", 1);
+                updateItem.put("arrayProperty", UUID.randomUUID().toString());
+                updateItem.put("doubleProperty", 0.25);
+
+                SinkRecord sinkRecord =
+                    this.getSinkRecord(
+                        topicName,
+                        updateItem,
+                        new ConnectSchema(Schema.Type.STRING),
+                        patchTestItem.getId(),
+                        Schema.Type.MAP);
+                sinkRecordList.add(sinkRecord);
+
+                ObjectNode expectedItem = Utils.getSimpleObjectMapper().createObjectNode();
+                expectedItem.put("id", patchTestItem.getId());
+                expectedItem.put("mypk", patchTestItem.getMypk());
+                expectedItem.put("stringProperty", updateItem.get("stringProperty").asText());
+                expectedItem.put("intProperty", patchTestItem.getIntProperty() + 1);
+                ArrayNode listNode = Utils.getSimpleObjectMapper().createArrayNode();
+                listNode.add(updateItem.get("arrayProperty").asText());
+                expectedItem.put("listProperty", listNode);
+                expectedItem.put("doubleProperty", 0.25);
+
+                expectedItems.put(patchTestItem.getId(), expectedItem);
+            }
+
+            sinkTask.put(sinkRecordList);
+
+            // get all the items
+            List<ObjectNode> itemsFromContainer = this.getAllItems(container);
+            assertThat(itemsFromContainer.size()).isEqualTo(expectedItems.size());
+            for (ObjectNode itemFromContainer : itemsFromContainer) {
+                String id = itemFromContainer.get("id").asText();
+                ObjectNode expectedItem = expectedItems.get(id);
+
+                assertThat(expectedItem).isNotNull();
+                assertThat(expectedItem.get("mypk").asText()).isEqualTo(itemFromContainer.get("mypk").asText());
+                assertThat(expectedItem.get("stringProperty").asText()).isEqualTo(itemFromContainer.get("stringProperty").asText());
+                assertThat(expectedItem.get("intProperty").asInt()).isEqualTo(itemFromContainer.get("intProperty").asInt());
+                assertThat(expectedItem.get("listProperty")).isEqualTo(itemFromContainer.get("listProperty"));
+                assertThat(expectedItem.get("doubleProperty").doubleValue()).isEqualTo(itemFromContainer.get("doubleProperty").doubleValue());
+                assertThat(expectedItem.get("toBeRemovedProperty")).isNull();
+            }
+        } finally {
+            if (cosmosClient != null) {
+                cleanUpContainer(cosmosClient, databaseName, singlePartitionContainerProperties.getId());
+                sinkTask.stop();
+            }
+        }
+    }
+
     @Test(groups = { "kafka" }, dataProvider = "sinkTaskWithThroughputControlParameterProvider", timeOut = TIMEOUT)
     public void sinkWithThroughputControl(boolean bulkEnabled) {
         String topicName = singlePartitionContainerName;
@@ -656,5 +755,90 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
             .flatMapIterable(response -> response.getResults())
             .collectList()
             .block();
+    }
+
+    private static class PatchTestItem {
+        private String id;
+        private String mypk;
+        private String stringProperty;
+        private int intProperty;
+        private List<String> listProperty;
+        private String toBeRemovedProperty;
+
+        public PatchTestItem() {}
+
+        public PatchTestItem(
+            String id,
+            String mypk,
+            String stringProperty,
+            int intProperty,
+            List<String> listProperty,
+            String toBeRemovedProperty) {
+
+            this.id = id;
+            this.mypk = mypk;
+            this.stringProperty = stringProperty;
+            this.intProperty = intProperty;
+            this.listProperty = listProperty;
+            this.toBeRemovedProperty = toBeRemovedProperty;
+        }
+
+        public static PatchTestItem createNewItem() {
+            return new PatchTestItem(
+                UUID.randomUUID().toString(),
+                UUID.randomUUID().toString(),
+                UUID.randomUUID().toString(),
+                1,
+                Arrays.asList(UUID.randomUUID().toString()),
+                UUID.randomUUID().toString());
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getMypk() {
+            return mypk;
+        }
+
+        public void setMypk(String mypk) {
+            this.mypk = mypk;
+        }
+
+        public String getStringProperty() {
+            return stringProperty;
+        }
+
+        public void setStringProperty(String stringProperty) {
+            this.stringProperty = stringProperty;
+        }
+
+        public int getIntProperty() {
+            return intProperty;
+        }
+
+        public void setIntProperty(int intProperty) {
+            this.intProperty = intProperty;
+        }
+
+        public List<String> getListProperty() {
+            return listProperty;
+        }
+
+        public void setListProperty(List<String> listProperty) {
+            this.listProperty = listProperty;
+        }
+
+        public String getToBeRemovedProperty() {
+            return toBeRemovedProperty;
+        }
+
+        public void setToBeRemovedProperty(String toBeRemovedProperty) {
+            this.toBeRemovedProperty = toBeRemovedProperty;
+        }
     }
 }

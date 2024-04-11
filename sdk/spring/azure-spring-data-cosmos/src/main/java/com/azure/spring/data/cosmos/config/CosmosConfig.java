@@ -17,6 +17,8 @@ public class CosmosConfig {
 
     private final boolean queryMetricsEnabled;
 
+    private final boolean indexMetricsEnabled;
+
     private final int maxDegreeOfParallelism;
 
     private final int maxBufferedItemCount;
@@ -49,6 +51,7 @@ public class CosmosConfig {
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
         this.databaseThroughputConfig = databaseThroughputConfig;
         this.queryMetricsEnabled = queryMetricsEnabled;
+        this.indexMetricsEnabled = false;
         this.maxDegreeOfParallelism = 0;
         this.maxBufferedItemCount = 0;
         this.responseContinuationTokenLimitInKb = 0;
@@ -70,6 +73,7 @@ public class CosmosConfig {
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
         this.databaseThroughputConfig = databaseThroughputConfig;
         this.queryMetricsEnabled = queryMetricsEnabled;
+        this.indexMetricsEnabled = false;
         this.maxDegreeOfParallelism = maxDegreeOfParallelism;
         this.maxBufferedItemCount = 0;
         this.responseContinuationTokenLimitInKb = 0;
@@ -93,6 +97,7 @@ public class CosmosConfig {
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
         this.databaseThroughputConfig = databaseThroughputConfig;
         this.queryMetricsEnabled = queryMetricsEnabled;
+        this.indexMetricsEnabled = false;
         this.maxDegreeOfParallelism = maxDegreeOfParallelism;
         this.maxBufferedItemCount = maxBufferedItemCount;
         this.responseContinuationTokenLimitInKb = 0;
@@ -118,6 +123,35 @@ public class CosmosConfig {
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
         this.databaseThroughputConfig = databaseThroughputConfig;
         this.queryMetricsEnabled = queryMetricsEnabled;
+        this.indexMetricsEnabled = false;
+        this.maxDegreeOfParallelism = maxDegreeOfParallelism;
+        this.maxBufferedItemCount = maxBufferedItemCount;
+        this.responseContinuationTokenLimitInKb = responseContinuationTokenLimitInKb;
+    }
+
+    /**
+     * Initialization
+     *
+     * @param responseDiagnosticsProcessor must not be {@literal null}
+     * @param databaseThroughputConfig may be {@literal null}
+     * @param queryMetricsEnabled must not be {@literal null}
+     * @param indexMetricsEnabled must not be {@literal null}
+     * @param maxDegreeOfParallelism must not be {@literal null}
+     * @param maxBufferedItemCount must not be {@literal null}
+     * @param responseContinuationTokenLimitInKb must not be {@literal null}
+     */
+    @ConstructorProperties({"responseDiagnosticsProcessor", "databaseThroughputConfig", "queryMetricsEnabled", "indexMetricsEnabled", "maxDegreeOfParallelism", "maxBufferedItemCount", "responseContinuationTokenLimitInKb"})
+    CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
+                 DatabaseThroughputConfig databaseThroughputConfig,
+                 boolean queryMetricsEnabled,
+                 boolean indexMetricsEnabled,
+                 int maxDegreeOfParallelism,
+                 int maxBufferedItemCount,
+                 int responseContinuationTokenLimitInKb) {
+        this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
+        this.databaseThroughputConfig = databaseThroughputConfig;
+        this.queryMetricsEnabled = queryMetricsEnabled;
+        this.indexMetricsEnabled = indexMetricsEnabled;
         this.maxDegreeOfParallelism = maxDegreeOfParallelism;
         this.maxBufferedItemCount = maxBufferedItemCount;
         this.responseContinuationTokenLimitInKb = responseContinuationTokenLimitInKb;
@@ -139,6 +173,15 @@ public class CosmosConfig {
      */
     public boolean isQueryMetricsEnabled() {
         return queryMetricsEnabled;
+    }
+
+    /**
+     * Gets the option to enable query metrics
+     *
+     * @return boolean, whether to enable query metrics
+     */
+    public boolean isIndexMetricsEnabled() {
+        return indexMetricsEnabled;
     }
 
     /**
@@ -193,6 +236,7 @@ public class CosmosConfig {
         private ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
         private DatabaseThroughputConfig databaseThroughputConfig;
         private boolean queryMetricsEnabled;
+        private boolean indexMetricsEnabled;
         private int maxDegreeOfParallelism;
         private int maxBufferedItemCount;
         private int responseContinuationTokenLimitInKb;
@@ -220,6 +264,17 @@ public class CosmosConfig {
          */
         public CosmosConfigBuilder enableQueryMetrics(boolean queryMetricsEnabled) {
             this.queryMetricsEnabled = queryMetricsEnabled;
+            return this;
+        }
+
+        /**
+         * Set indexMetricsEnabled
+         *
+         * @param indexMetricsEnabled value to initialize
+         * @return CosmosConfigBuilder
+         */
+        public CosmosConfigBuilder enableIndexMetrics(boolean indexMetricsEnabled) {
+            this.indexMetricsEnabled = indexMetricsEnabled;
             return this;
         }
 
@@ -275,7 +330,7 @@ public class CosmosConfig {
          */
         public CosmosConfig build() {
             return new CosmosConfig(this.responseDiagnosticsProcessor, this.databaseThroughputConfig, this.queryMetricsEnabled,
-                this.maxDegreeOfParallelism, this.maxBufferedItemCount, this.responseContinuationTokenLimitInKb);
+                this.indexMetricsEnabled, this.maxDegreeOfParallelism, this.maxBufferedItemCount, this.responseContinuationTokenLimitInKb);
         }
 
         @Override
@@ -284,6 +339,7 @@ public class CosmosConfig {
                 + "responseDiagnosticsProcessor=" + responseDiagnosticsProcessor
                 + ", databaseThroughputConfig=" + databaseThroughputConfig
                 + ", queryMetricsEnabled=" + queryMetricsEnabled
+                + ", indexMetricsEnabled=" + indexMetricsEnabled
                 + ", maxDegreeOfParallelism=" + maxDegreeOfParallelism
                 + ", maxBufferedItemCount=" + maxBufferedItemCount
                 + ", responseContinuationTokenLimitInKb=" + responseContinuationTokenLimitInKb

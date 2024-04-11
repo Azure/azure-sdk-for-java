@@ -182,7 +182,7 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("key", this.key);
         jsonWriter.writeStringField("labelOperator", this.labelOperator == null ? null : this.labelOperator.toString());
-        jsonWriter.writeUntypedField("labelValue", this.labelValue);
+        jsonWriter.writeUntypedField("value", this.labelValue);
         jsonWriter.writeNumberField("ttlSeconds", this.ttlSeconds);
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeStringField("expirationTime",
@@ -209,7 +209,7 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
                 } else if ("labelOperator".equals(fieldName)) {
                     deserializedAcsRouterWorkerSelector.labelOperator
                         = AcsRouterLabelOperator.fromString(reader.getString());
-                } else if ("labelValue".equals(fieldName)) {
+                } else if ("value".equals(fieldName)) {
                     deserializedAcsRouterWorkerSelector.labelValue = reader.readUntyped();
                 } else if ("ttlSeconds".equals(fieldName)) {
                     deserializedAcsRouterWorkerSelector.ttlSeconds = reader.getNullable(JsonReader::getFloat);
