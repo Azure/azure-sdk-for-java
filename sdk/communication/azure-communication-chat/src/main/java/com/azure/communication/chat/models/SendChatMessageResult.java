@@ -7,7 +7,9 @@ package com.azure.communication.chat.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Result of the send message operation. */
+/**
+ * Result of the send message operation.
+ */
 @Fluent
 public final class SendChatMessageResult {
     /*
@@ -17,8 +19,14 @@ public final class SendChatMessageResult {
     private String id;
 
     /**
+     * Creates an instance of SendChatMessageResult class.
+     */
+    public SendChatMessageResult() {
+    }
+
+    /**
      * Get the id property: A server-generated message id.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -27,7 +35,7 @@ public final class SendChatMessageResult {
 
     /**
      * Set the id property: A server-generated message id.
-     *
+     * 
      * @param id the id value to set.
      * @return the SendChatMessageResult object itself.
      */

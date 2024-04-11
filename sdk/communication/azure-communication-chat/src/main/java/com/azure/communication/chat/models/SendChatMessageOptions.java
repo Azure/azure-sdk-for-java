@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Details of the message to send. */
+/**
+ * Details of the message to send.
+ */
 @Fluent
 public final class SendChatMessageOptions {
     /*
@@ -18,8 +20,8 @@ public final class SendChatMessageOptions {
     private String content;
 
     /*
-     * The display name of the chat message sender. This property is used to
-     * populate sender name for push notifications.
+     * The display name of the chat message sender. This property is used to populate sender name for push
+     * notifications.
      */
     @JsonProperty(value = "senderDisplayName")
     private String senderDisplayName;
@@ -37,8 +39,14 @@ public final class SendChatMessageOptions {
     private Map<String, String> metadata;
 
     /**
+     * Creates an instance of SendChatMessageOptions class.
+     */
+    public SendChatMessageOptions() {
+    }
+
+    /**
      * Get the content property: Chat message content.
-     *
+     * 
      * @return the content value.
      */
     public String getContent() {
@@ -47,7 +55,7 @@ public final class SendChatMessageOptions {
 
     /**
      * Set the content property: Chat message content.
-     *
+     * 
      * @param content the content value to set.
      * @return the SendChatMessageOptions object itself.
      */
@@ -59,7 +67,7 @@ public final class SendChatMessageOptions {
     /**
      * Get the senderDisplayName property: The display name of the chat message sender. This property is used to
      * populate sender name for push notifications.
-     *
+     * 
      * @return the senderDisplayName value.
      */
     public String getSenderDisplayName() {
@@ -69,7 +77,7 @@ public final class SendChatMessageOptions {
     /**
      * Set the senderDisplayName property: The display name of the chat message sender. This property is used to
      * populate sender name for push notifications.
-     *
+     * 
      * @param senderDisplayName the senderDisplayName value to set.
      * @return the SendChatMessageOptions object itself.
      */
@@ -80,7 +88,7 @@ public final class SendChatMessageOptions {
 
     /**
      * Get the type property: The chat message type.
-     *
+     * 
      * @return the type value.
      */
     public ChatMessageType getType() {
@@ -89,7 +97,7 @@ public final class SendChatMessageOptions {
 
     /**
      * Set the type property: The chat message type.
-     *
+     * 
      * @param type the type value to set.
      * @return the SendChatMessageOptions object itself.
      */
@@ -100,7 +108,7 @@ public final class SendChatMessageOptions {
 
     /**
      * Get the metadata property: Message metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> getMetadata() {
@@ -109,7 +117,7 @@ public final class SendChatMessageOptions {
 
     /**
      * Set the metadata property: Message metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the SendChatMessageOptions object itself.
      */

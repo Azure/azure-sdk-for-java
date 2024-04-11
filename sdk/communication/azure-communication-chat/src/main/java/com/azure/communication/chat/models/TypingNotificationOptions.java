@@ -7,20 +7,28 @@ package com.azure.communication.chat.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Request payload for typing notifications. */
+/**
+ * Request payload for typing notifications.
+ */
 @Fluent
 public final class TypingNotificationOptions {
     /*
-     * The display name of the typing notification sender. This property is
-     * used to populate sender name for push notifications.
+     * The display name of the typing notification sender. This property is used to populate sender name for push
+     * notifications.
      */
     @JsonProperty(value = "senderDisplayName")
     private String senderDisplayName;
 
     /**
+     * Creates an instance of TypingNotificationOptions class.
+     */
+    public TypingNotificationOptions() {
+    }
+
+    /**
      * Get the senderDisplayName property: The display name of the typing notification sender. This property is used to
      * populate sender name for push notifications.
-     *
+     * 
      * @return the senderDisplayName value.
      */
     public String getSenderDisplayName() {
@@ -30,7 +38,7 @@ public final class TypingNotificationOptions {
     /**
      * Set the senderDisplayName property: The display name of the typing notification sender. This property is used to
      * populate sender name for push notifications.
-     *
+     * 
      * @param senderDisplayName the senderDisplayName value to set.
      * @return the TypingNotificationOptions object itself.
      */
