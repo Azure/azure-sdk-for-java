@@ -81,7 +81,8 @@ public class RouterWorkerLiveTests extends JobRouterTestBase {
             .setTags(tags)
             .setAvailableForOffers(false)
             .setChannels(channels)
-            .setQueues(queues);
+            .setQueues(queues)
+            .setMaxConcurrentOffers(1);
 
         // Action
         RouterWorker result = jobRouterClient.createWorker(createWorkerOptions);
@@ -94,6 +95,7 @@ public class RouterWorkerLiveTests extends JobRouterTestBase {
         assertArrayEquals(queues.toArray(), result.getQueues().toArray());
         assertEquals(channels.size(), result.getChannels().size());
         assertNotNull(result.getEtag());
+        assertEquals(1, result.getMaxConcurrentOffers());
 
         Response<BinaryData> getWorker = jobRouterClient.getWorkerWithResponse(result.getId(), null);
         RouterWorker deserialized = getWorker.getValue().toObject(RouterWorker.class);

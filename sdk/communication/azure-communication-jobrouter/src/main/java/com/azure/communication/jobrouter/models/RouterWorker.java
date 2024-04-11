@@ -201,6 +201,12 @@ public final class RouterWorker {
     @JsonProperty(value = "channels")
     private List<RouterChannel> channels;
 
+    /*
+     * If this is set, the worker will only receive up to this many new offers at a time.
+     */
+    @JsonProperty(value = "maxConcurrentOffers")
+    private Integer maxConcurrentOffers;
+
     /**
      * Get the etag property: Concurrency Token.
      *
@@ -267,6 +273,28 @@ public final class RouterWorker {
      */
     public RouterWorker setChannels(List<RouterChannel> channels) {
         this.channels = channels;
+        return this;
+    }
+
+    /**
+     * Get the maxConcurrentOffers property: If this is set, the worker will only receive up to this many new offers at
+     * a time.
+     *
+     * @return the maxConcurrentOffers value.
+     */
+    public Integer getMaxConcurrentOffers() {
+        return this.maxConcurrentOffers;
+    }
+
+    /**
+     * Set the maxConcurrentOffers property: If this is set, the worker will only receive up to this many new offers at
+     * a time.
+     *
+     * @param maxConcurrentOffers the maxConcurrentOffers value to set.
+     * @return the RouterWorkerInternal object itself.
+     */
+    public RouterWorker setMaxConcurrentOffers(Integer maxConcurrentOffers) {
+        this.maxConcurrentOffers = maxConcurrentOffers;
         return this;
     }
 }

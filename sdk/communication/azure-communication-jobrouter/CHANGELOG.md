@@ -4,6 +4,7 @@
 
 ### Features Added
 
+- Added `MaxConcurrentOffers` to RouterWorker and CreateWorkerOptions
 - Added createJobWithClassificationPolicy and createJobWithClassificationPolicyWithResponse to JobRouterClient and JobRouterAsyncClient
 
 ### Breaking Changes
