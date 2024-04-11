@@ -77,6 +77,7 @@ public final class NonAzureOpenAIClientImpl {
     /**
      * Initializes an instance of OpenAIClient client.
      *
+     * @param endpoint The endpoint URL of the service.
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      */
