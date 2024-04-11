@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.kafka.connect.implementation.sink;
 
-public enum IdStrategies {
+public enum IdStrategyType {
     TEMPLATE_STRATEGY("TemplateStrategy"),
     FULL_KEY_STRATEGY("FullKeyStrategy"),
     KAFKA_METADATA_STRATEGY("KafkaMetadataStrategy"),
@@ -12,7 +12,7 @@ public enum IdStrategies {
 
     private final String name;
 
-    IdStrategies(String name) {
+    IdStrategyType(String name) {
         this.name = name;
     }
 
@@ -20,10 +20,10 @@ public enum IdStrategies {
         return name;
     }
 
-    public static IdStrategies fromName(String name) {
-        for (IdStrategies mode : IdStrategies.values()) {
-            if (mode.getName().equalsIgnoreCase(name)) {
-                return mode;
+    public static IdStrategyType fromName(String name) {
+        for (IdStrategyType idStrategyType : IdStrategyType.values()) {
+            if (idStrategyType.getName().equalsIgnoreCase(name)) {
+                return idStrategyType;
             }
         }
         return null;

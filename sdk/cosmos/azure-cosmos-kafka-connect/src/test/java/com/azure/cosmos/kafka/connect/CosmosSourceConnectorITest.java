@@ -9,8 +9,11 @@ import com.azure.cosmos.kafka.connect.implementation.CosmosAuthTypes;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.connect.json.JsonDeserializer;
 import org.rnorth.ducttape.unreliables.Unreliables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +26,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -85,7 +89,12 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             kafkaCosmosConnectContainer.registerConnector(connectorName, sourceConnectorConfig);
 
             logger.info("Getting consumer and subscribe to topic {}", singlePartitionContainerName);
-            KafkaConsumer<String, JsonNode> kafkaConsumer = kafkaCosmosConnectContainer.getConsumer();
+
+            Properties consumerProperties = kafkaCosmosConnectContainer.getConsumerProperties();
+            consumerProperties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+            consumerProperties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class.getName());
+            KafkaConsumer<String, JsonNode> kafkaConsumer = new KafkaConsumer<>(consumerProperties);
+
             kafkaConsumer.subscribe(
                 Arrays.asList(
                     topicName,
