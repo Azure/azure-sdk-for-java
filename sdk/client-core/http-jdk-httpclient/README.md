@@ -1,7 +1,7 @@
 # Client Core JDK HTTP plugin library for Java
 
 This is a client-core HTTP client that makes use of the asynchronous HttpClient that was made generally available as 
-part of JDK 11. 
+part of JDK 12. 
 
 ## Getting started
 
@@ -20,6 +20,12 @@ part of JDK 11.
 </dependency>
 ```
 [//]: # ({x-version-update-end})
+
+### Java 12 requirement
+
+While the JDK added `HttpClient` in JDK 11, this library requires JDK 12 or later. This is due to certain headers being
+disallowed in JDK 11 which JDK 12 allowed to be overridden using system properties. The headers disallowed are required
+for the library to function correctly.
 
 ## Key concepts
 
