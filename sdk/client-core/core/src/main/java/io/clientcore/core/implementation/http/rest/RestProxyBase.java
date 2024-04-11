@@ -20,11 +20,11 @@ import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.MalformedValueException;
 import io.clientcore.core.implementation.util.UrlBuilder;
+import io.clientcore.core.json.JsonSerializable;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
-import io.clientcore.core.json.JsonSerializable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -71,12 +71,14 @@ public abstract class RestProxyBase {
                                Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, Object[] args) {
         try {
             HttpRequest request = createHttpRequest(methodParser, serializer, args);
-            Context context = (options != null && options.getContext() != null) ? options.getContext() : Context.EMPTY;
 
-            request.getMetadata().setContext(context);
-            request.getMetadata().setRequestLogger(methodParser.getMethodLogger());
+            if (options == null) {
+                options = new RequestOptions()
+                    .setContext(Context.EMPTY)
+                    .setLogger(methodParser.getMethodLogger());
+            }
 
-            ResponseBodyMode responseBodyMode = options == null ? null : options.getResponseBodyMode();
+            ResponseBodyMode responseBodyMode = options.getResponseBodyMode();
 
             if (responseBodyMode == null) {
                 if (methodParser.getHttpMethod() == HttpMethod.HEAD) {
@@ -100,17 +102,17 @@ public abstract class RestProxyBase {
 
             // If responseBodyHandling is still null, we'll use the response's Content-Type to determine how to read its
             // body: 'application/octet-stream' will use STREAM and everything else will use BUFFER.
-            request.getMetadata().setResponseBodyMode(responseBodyMode);
+            options.setResponseBodyMode(responseBodyMode);
+            request.setRequestOptions(options);
 
-            return invoke(proxy, method, options, requestCallback, methodParser, request);
+            return invoke(proxy, method, requestCallback, methodParser, request);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
-    protected abstract Object invoke(Object proxy, Method method, RequestOptions options,
-                                     Consumer<HttpRequest> httpRequestConsumer, SwaggerMethodParser methodParser,
-                                     HttpRequest request);
+    protected abstract Object invoke(Object proxy, Method method, Consumer<HttpRequest> httpRequestConsumer,
+                                     SwaggerMethodParser methodParser, HttpRequest request);
 
     public abstract void updateRequest(RequestDataConfiguration requestDataConfiguration,
                                        ObjectSerializer objectSerializer) throws IOException;

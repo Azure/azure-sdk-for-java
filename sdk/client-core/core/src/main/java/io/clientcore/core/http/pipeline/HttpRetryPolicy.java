@@ -7,6 +7,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpRetryOptions;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.implementation.util.ImplUtils;
 import io.clientcore.core.implementation.util.LoggingKeys;
 import io.clientcore.core.util.ClientLogger;
@@ -134,7 +135,7 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
 
     private Response<?> attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next, final int tryCount,
                                 final List<Exception> suppressed) {
-        httpRequest.getMetadata().setRetryCount(tryCount + 1);
+        HttpRequestAccessHelper.setRetryCount(httpRequest, tryCount + 1);
 
         Response<?> response;
 
