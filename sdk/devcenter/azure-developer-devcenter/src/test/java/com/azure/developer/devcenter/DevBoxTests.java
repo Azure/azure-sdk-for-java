@@ -34,6 +34,7 @@ import com.azure.developer.devcenter.models.SkuName;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -318,7 +319,7 @@ class DevBoxTests extends DevCenterClientTestBase {
         // verify property "scheduleFrequency"
         Assertions.assertEquals(ScheduleFrequency.DAILY, schedule.getScheduleFrequency());
         // verify property "time"
-        Assertions.assertEquals("19:00", schedule.getTime());
+        Assertions.assertEquals(LocalTime.of(19, 00), schedule.getTime());
         // verify property "timeZone"
         Assertions.assertEquals("America/Los_Angeles", schedule.getTimeZone());
     }

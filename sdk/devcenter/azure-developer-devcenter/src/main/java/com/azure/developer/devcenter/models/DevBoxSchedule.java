@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.LocalTime;
 
 /**
  * A Schedule to execute action.
@@ -38,8 +39,7 @@ public final class DevBoxSchedule implements JsonSerializable<DevBoxSchedule> {
     /*
      * The target time to trigger the action. The format is HH:MM.
      */
-    @Generated
-    private final String time;
+    private final LocalTime time;
 
     /*
      * The IANA timezone id at which the schedule should execute.
@@ -55,8 +55,7 @@ public final class DevBoxSchedule implements JsonSerializable<DevBoxSchedule> {
      * @param time the time value to set.
      * @param timeZone the timeZone value to set.
      */
-    @Generated
-    private DevBoxSchedule(ScheduleType scheduleType, ScheduleFrequency scheduleFrequency, String time,
+    private DevBoxSchedule(ScheduleType scheduleType, ScheduleFrequency scheduleFrequency, LocalTime time,
         String timeZone) {
         this.scheduleType = scheduleType;
         this.scheduleFrequency = scheduleFrequency;
@@ -99,8 +98,7 @@ public final class DevBoxSchedule implements JsonSerializable<DevBoxSchedule> {
      *
      * @return the time value.
      */
-    @Generated
-    public String getTime() {
+    public LocalTime getTime() {
         return this.time;
     }
 
@@ -117,14 +115,13 @@ public final class DevBoxSchedule implements JsonSerializable<DevBoxSchedule> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.scheduleType == null ? null : this.scheduleType.toString());
         jsonWriter.writeStringField("frequency",
             this.scheduleFrequency == null ? null : this.scheduleFrequency.toString());
-        jsonWriter.writeStringField("time", this.time);
+        jsonWriter.writeStringField("time", this.time.toString());
         jsonWriter.writeStringField("timeZone", this.timeZone);
         return jsonWriter.writeEndObject();
     }
@@ -138,13 +135,12 @@ public final class DevBoxSchedule implements JsonSerializable<DevBoxSchedule> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DevBoxSchedule.
      */
-    @Generated
     public static DevBoxSchedule fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             ScheduleType scheduleType = null;
             ScheduleFrequency scheduleFrequency = null;
-            String time = null;
+            LocalTime time = null;
             String timeZone = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -156,7 +152,7 @@ public final class DevBoxSchedule implements JsonSerializable<DevBoxSchedule> {
                 } else if ("frequency".equals(fieldName)) {
                     scheduleFrequency = ScheduleFrequency.fromString(reader.getString());
                 } else if ("time".equals(fieldName)) {
-                    time = reader.getString();
+                    time = reader.getNullable(nonNullReader -> LocalTime.parse(nonNullReader.getString()));
                 } else if ("timeZone".equals(fieldName)) {
                     timeZone = reader.getString();
                 } else {
