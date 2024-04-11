@@ -144,7 +144,7 @@ foreach ($targetFolder in (Get-ChildItem -Path $path -Filter "target" -Directory
   }
 }
 
-if (Get-ChildItem -Path $OutputDirectory -Directory | Measure-Object).Count -eq 0) {
+if ((Get-ChildItem -Path $OutputDirectory -Directory).Count -eq 0) {
   exit 0
 }
 
