@@ -122,7 +122,7 @@ jobs:
         parameters:
           ArtifactName: linting-report
           ArtifactPath: '$(Build.ArtifactStagingDirectory)/troubleshooting/linting-report.zip'
-          CustomCondition: ne(variables['LintingGoals'], '')
+          CustomCondition: eq(variables['HAS_TROUBLESHOOTING'], 'true')
 
       - pwsh: |
           Write-Host "Linting errors have been found, download the 'linting-report.zip' artifact to see what was found."
