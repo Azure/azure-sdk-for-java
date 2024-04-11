@@ -19,6 +19,7 @@ import com.azure.resourcemanager.appservice.models.FunctionAppBasic;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
 import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
+import com.azure.resourcemanager.appservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.SkuName;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -607,6 +608,30 @@ public class FunctionAppsTests extends AppServiceTest {
             .withPrivateRegistryImage("xiaofeiacr.azurecr.io/samples/nginx:latest", "xiaofeiacr.azurecr.io")
             .withCredentials("xiaofeiacr", password)
             .apply();
+    }
+
+    @Test
+    public void canUpdatePublicNetworkAccess() {
+        webappName1 = generateRandomResourceName("java-function-", 20);
+        FunctionApp functionApp = appServiceManager.functionApps()
+            .define(webappName1)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName1)
+            .withContainerSize(512)
+            .disablePublicNetworkAccess()
+            .create();
+
+        functionApp.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, functionApp.publicNetworkAccess());
+
+        functionApp.update().enablePublicNetworkAccess().apply();
+        functionApp.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, functionApp.publicNetworkAccess());
+
+        functionApp.update().disablePublicNetworkAccess().apply();
+        functionApp.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, functionApp.publicNetworkAccess());
+
     }
 
     private String createAcaEnvironment(Region region, ResourceGroup resourceGroup) {
