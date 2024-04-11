@@ -244,7 +244,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void jobScheduling(HttpClient httpClient) {
+    public void jobScheduling(HttpClient httpClient) throws InterruptedException {
         // Setup
         jobRouterClient = getRouterClient(httpClient);
         routerAdminClient = getRouterAdministrationClient(httpClient);
@@ -263,6 +263,10 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             .setMatchingMode(new ScheduleAndSuspendMode(
                 OffsetDateTime.of(2040, 1, 1, 1, 1, 1, 1, ZoneOffset.UTC))));
         assertEquals(RouterJobStatus.PENDING_SCHEDULE, job.getStatus());
+
+        if (this.getTestMode() != TestMode.PLAYBACK) {
+            Thread.sleep(2000);
+        }
 
         // Action
         job.setMatchingMode(new QueueAndMatchMode());

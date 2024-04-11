@@ -4,8 +4,6 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterClientImpl;
-import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
-import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
 import com.azure.communication.jobrouter.implementation.models.CancelJobOptionsInternal;
 import com.azure.communication.jobrouter.implementation.models.CancelJobResultInternal;
 import com.azure.communication.jobrouter.implementation.models.CloseJobOptionsInternal;
@@ -19,10 +17,6 @@ import com.azure.communication.jobrouter.implementation.models.ReclassifyJobResu
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
-import com.azure.communication.jobrouter.models.CreateJobOptions;
-import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateWorkerOptions;
-import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
 import com.azure.communication.jobrouter.models.RouterJobStatusSelector;
 import com.azure.communication.jobrouter.models.RouterWorkerStateSelector;
@@ -48,6 +42,12 @@ import java.time.OffsetDateTime;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
+import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
+import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterQueueStatistics;
 import com.azure.communication.jobrouter.models.RouterWorker;
 
@@ -83,7 +83,7 @@ public final class JobRouterAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -137,9 +137,9 @@ public final class JobRouterAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -475,7 +475,7 @@ public final class JobRouterAsyncClient {
     /**
      * Retrieves an existing job by Id.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -708,7 +708,7 @@ public final class JobRouterAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -779,7 +779,7 @@ public final class JobRouterAsyncClient {
     /**
      * Gets a job's position details.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     jobId: String (Required)
@@ -807,15 +807,15 @@ public final class JobRouterAsyncClient {
     /**
      * Unassign a job.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     suspendMatching: Boolean (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     jobId: String (Required)
@@ -843,7 +843,7 @@ public final class JobRouterAsyncClient {
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     assignmentId: String (Required)
@@ -940,7 +940,7 @@ public final class JobRouterAsyncClient {
     /**
      * Retrieves a queue's statistics.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     queueId: String (Required)
@@ -979,7 +979,7 @@ public final class JobRouterAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1024,9 +1024,9 @@ public final class JobRouterAsyncClient {
      *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1306,7 +1306,7 @@ public final class JobRouterAsyncClient {
     /**
      * Retrieves an existing worker by Id.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1402,7 +1402,7 @@ public final class JobRouterAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)

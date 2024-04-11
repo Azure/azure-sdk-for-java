@@ -4,10 +4,6 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterAdministrationClientImpl;
-import com.azure.communication.jobrouter.implementation.converters.ClassificationPolicyAdapter;
-import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
-import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
-import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
 import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyInternal;
@@ -25,6 +21,10 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.communication.jobrouter.implementation.converters.ClassificationPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
@@ -66,7 +66,7 @@ public final class JobRouterAdministrationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -81,9 +81,9 @@ public final class JobRouterAdministrationClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -276,7 +276,7 @@ public final class JobRouterAdministrationClient {
     /**
      * Retrieves an existing distribution policy by Id.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -317,7 +317,7 @@ public final class JobRouterAdministrationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -377,7 +377,7 @@ public final class JobRouterAdministrationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -399,9 +399,9 @@ public final class JobRouterAdministrationClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -657,7 +657,7 @@ public final class JobRouterAdministrationClient {
     /**
      * Retrieves an existing classification policy by Id.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -705,7 +705,7 @@ public final class JobRouterAdministrationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -772,7 +772,7 @@ public final class JobRouterAdministrationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -794,9 +794,9 @@ public final class JobRouterAdministrationClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -959,8 +959,11 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExceptionPolicy updateExceptionPolicy(String exceptionPolicyId, ExceptionPolicy exceptionPolicy,
         RequestOptions requestOptions) {
-        return this.updateExceptionPolicyWithResponse(exceptionPolicyId, BinaryData.fromObject(exceptionPolicy),
-            requestOptions).getValue().toObject(ExceptionPolicy.class);
+        return this
+            .updateExceptionPolicyWithResponse(exceptionPolicyId, BinaryData.fromObject(exceptionPolicy),
+                requestOptions)
+            .getValue()
+            .toObject(ExceptionPolicy.class);
     }
 
     /**
@@ -1002,10 +1005,8 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Retrieves an existing exception policy by Id.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     *
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1015,9 +1016,11 @@ public final class JobRouterAdministrationClient {
      *          (Optional){
      *             id: String (Required)
      *             trigger (Required): {
+     *                 kind: String(queueLength/waitTime) (Required)
      *             }
      *             actions (Required): [
      *                  (Required){
+     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -1127,7 +1130,7 @@ public final class JobRouterAdministrationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1140,9 +1143,9 @@ public final class JobRouterAdministrationClient {
      *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1326,7 +1329,7 @@ public final class JobRouterAdministrationClient {
     /**
      * Retrieves an existing queue by Id.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1364,7 +1367,7 @@ public final class JobRouterAdministrationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)

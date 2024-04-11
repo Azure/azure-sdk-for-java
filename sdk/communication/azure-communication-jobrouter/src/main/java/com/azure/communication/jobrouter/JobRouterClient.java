@@ -4,8 +4,6 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterClientImpl;
-import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
-import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
 import com.azure.communication.jobrouter.implementation.models.CancelJobOptionsInternal;
 import com.azure.communication.jobrouter.implementation.models.CancelJobResultInternal;
 import com.azure.communication.jobrouter.implementation.models.CloseJobOptionsInternal;
@@ -19,10 +17,6 @@ import com.azure.communication.jobrouter.implementation.models.ReclassifyJobResu
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
-import com.azure.communication.jobrouter.models.CreateJobOptions;
-import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateWorkerOptions;
-import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
 import com.azure.communication.jobrouter.models.RouterJobStatusSelector;
 import com.azure.communication.jobrouter.models.RouterWorkerStateSelector;
@@ -42,6 +36,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import java.time.OffsetDateTime;
+import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
+import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
+import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterQueueStatistics;
 import com.azure.communication.jobrouter.models.RouterWorker;
 
@@ -77,7 +77,7 @@ public final class JobRouterClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -131,9 +131,9 @@ public final class JobRouterClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -394,7 +394,8 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterJob updateJob(String jobId, RouterJob job, RequestOptions requestOptions) {
-        return this.updateJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions).getValue()
+        return this.updateJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions)
+            .getValue()
             .toObject(RouterJob.class);
     }
 
@@ -475,7 +476,7 @@ public final class JobRouterClient {
     /**
      * Retrieves an existing job by Id.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -712,7 +713,7 @@ public final class JobRouterClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -783,7 +784,7 @@ public final class JobRouterClient {
     /**
      * Gets a job's position details.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     jobId: String (Required)
@@ -811,15 +812,15 @@ public final class JobRouterClient {
     /**
      * Unassign a job.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     suspendMatching: Boolean (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     jobId: String (Required)
@@ -846,7 +847,7 @@ public final class JobRouterClient {
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     assignmentId: String (Required)
@@ -944,7 +945,7 @@ public final class JobRouterClient {
     /**
      * Retrieves a queue's statistics.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     queueId: String (Required)
@@ -983,7 +984,7 @@ public final class JobRouterClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1028,9 +1029,9 @@ public final class JobRouterClient {
      *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1272,7 +1273,8 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterWorker updateWorker(String workerId, RouterWorker worker, RequestOptions requestOptions) {
-        return this.updateWorkerWithResponse(workerId, BinaryData.fromObject(worker), requestOptions).getValue()
+        return this.updateWorkerWithResponse(workerId, BinaryData.fromObject(worker), requestOptions)
+            .getValue()
             .toObject(RouterWorker.class);
     }
 
@@ -1314,7 +1316,7 @@ public final class JobRouterClient {
     /**
      * Retrieves an existing worker by Id.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1410,7 +1412,7 @@ public final class JobRouterClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
