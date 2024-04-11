@@ -427,6 +427,13 @@
           "code": "java\\.annotation\\.removed",
           "old": ".*? com\\.azure\\.storage\\.queue\\.models.*",
           "justification": "Removing Jackson annotations from Storage Queue in transition to stream-style."
+        },
+        {
+          "ignore": true,
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.communication\\.messages\\.models.*",
+          "justification": "Migrate to azure-json."
         }
       ]
     }
