@@ -8,41 +8,63 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes operator to be matched. */
+/**
+ * Describes operator to be matched.
+ */
 public final class RequestBodyOperator extends ExpandableStringEnum<RequestBodyOperator> {
-    /** Static value Any for RequestBodyOperator. */
+    /**
+     * Static value Any for RequestBodyOperator.
+     */
     public static final RequestBodyOperator ANY = fromString("Any");
 
-    /** Static value Equal for RequestBodyOperator. */
+    /**
+     * Static value Equal for RequestBodyOperator.
+     */
     public static final RequestBodyOperator EQUAL = fromString("Equal");
 
-    /** Static value Contains for RequestBodyOperator. */
+    /**
+     * Static value Contains for RequestBodyOperator.
+     */
     public static final RequestBodyOperator CONTAINS = fromString("Contains");
 
-    /** Static value BeginsWith for RequestBodyOperator. */
+    /**
+     * Static value BeginsWith for RequestBodyOperator.
+     */
     public static final RequestBodyOperator BEGINS_WITH = fromString("BeginsWith");
 
-    /** Static value EndsWith for RequestBodyOperator. */
+    /**
+     * Static value EndsWith for RequestBodyOperator.
+     */
     public static final RequestBodyOperator ENDS_WITH = fromString("EndsWith");
 
-    /** Static value LessThan for RequestBodyOperator. */
+    /**
+     * Static value LessThan for RequestBodyOperator.
+     */
     public static final RequestBodyOperator LESS_THAN = fromString("LessThan");
 
-    /** Static value LessThanOrEqual for RequestBodyOperator. */
+    /**
+     * Static value LessThanOrEqual for RequestBodyOperator.
+     */
     public static final RequestBodyOperator LESS_THAN_OR_EQUAL = fromString("LessThanOrEqual");
 
-    /** Static value GreaterThan for RequestBodyOperator. */
+    /**
+     * Static value GreaterThan for RequestBodyOperator.
+     */
     public static final RequestBodyOperator GREATER_THAN = fromString("GreaterThan");
 
-    /** Static value GreaterThanOrEqual for RequestBodyOperator. */
+    /**
+     * Static value GreaterThanOrEqual for RequestBodyOperator.
+     */
     public static final RequestBodyOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
-    /** Static value RegEx for RequestBodyOperator. */
+    /**
+     * Static value RegEx for RequestBodyOperator.
+     */
     public static final RequestBodyOperator REG_EX = fromString("RegEx");
 
     /**
      * Creates a new instance of RequestBodyOperator value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -51,7 +73,7 @@ public final class RequestBodyOperator extends ExpandableStringEnum<RequestBodyO
 
     /**
      * Creates or finds a RequestBodyOperator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RequestBodyOperator.
      */
@@ -62,7 +84,7 @@ public final class RequestBodyOperator extends ExpandableStringEnum<RequestBodyO
 
     /**
      * Gets known RequestBodyOperator values.
-     *
+     * 
      * @return known RequestBodyOperator values.
      */
     public static Collection<RequestBodyOperator> values() {

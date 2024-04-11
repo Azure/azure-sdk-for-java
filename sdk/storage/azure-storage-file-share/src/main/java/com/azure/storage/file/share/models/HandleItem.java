@@ -278,7 +278,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      *
      * @return the clientName value.
      */
-    private String getClientName() {
+    public String getClientName() {
         return this.clientName;
     }
 
@@ -288,7 +288,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * @param clientName the clientName value to set.
      * @return the HandleItem object itself.
      */
-    private HandleItem setClientName(String clientName) {
+    public HandleItem setClientName(String clientName) {
         this.clientName = clientName;
         return this;
     }

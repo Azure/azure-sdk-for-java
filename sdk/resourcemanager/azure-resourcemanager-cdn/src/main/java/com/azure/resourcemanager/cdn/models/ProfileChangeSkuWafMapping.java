@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters required for profile upgrade. */
+/**
+ * Parameters required for profile upgrade.
+ */
 @Fluent
 public final class ProfileChangeSkuWafMapping {
     /*
@@ -23,13 +25,15 @@ public final class ProfileChangeSkuWafMapping {
     @JsonProperty(value = "changeToWafPolicy", required = true)
     private ResourceReference changeToWafPolicy;
 
-    /** Creates an instance of ProfileChangeSkuWafMapping class. */
+    /**
+     * Creates an instance of ProfileChangeSkuWafMapping class.
+     */
     public ProfileChangeSkuWafMapping() {
     }
 
     /**
      * Get the securityPolicyName property: The security policy name.
-     *
+     * 
      * @return the securityPolicyName value.
      */
     public String securityPolicyName() {
@@ -38,7 +42,7 @@ public final class ProfileChangeSkuWafMapping {
 
     /**
      * Set the securityPolicyName property: The security policy name.
-     *
+     * 
      * @param securityPolicyName the securityPolicyName value to set.
      * @return the ProfileChangeSkuWafMapping object itself.
      */
@@ -49,7 +53,7 @@ public final class ProfileChangeSkuWafMapping {
 
     /**
      * Get the changeToWafPolicy property: The new waf resource for the security policy to use.
-     *
+     * 
      * @return the changeToWafPolicy value.
      */
     public ResourceReference changeToWafPolicy() {
@@ -58,7 +62,7 @@ public final class ProfileChangeSkuWafMapping {
 
     /**
      * Set the changeToWafPolicy property: The new waf resource for the security policy to use.
-     *
+     * 
      * @param changeToWafPolicy the changeToWafPolicy value to set.
      * @return the ProfileChangeSkuWafMapping object itself.
      */
@@ -69,21 +73,17 @@ public final class ProfileChangeSkuWafMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (securityPolicyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property securityPolicyName in model ProfileChangeSkuWafMapping"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property securityPolicyName in model ProfileChangeSkuWafMapping"));
         }
         if (changeToWafPolicy() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property changeToWafPolicy in model ProfileChangeSkuWafMapping"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property changeToWafPolicy in model ProfileChangeSkuWafMapping"));
         } else {
             changeToWafPolicy().validate();
         }

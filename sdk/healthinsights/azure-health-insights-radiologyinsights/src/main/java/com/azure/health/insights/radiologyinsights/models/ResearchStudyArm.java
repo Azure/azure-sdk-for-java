@@ -19,7 +19,7 @@ public final class ResearchStudyArm {
      */
     @Generated
     @JsonProperty(value = "name")
-    private String name;
+    private final String name;
 
     /*
      * Categorization of study arm

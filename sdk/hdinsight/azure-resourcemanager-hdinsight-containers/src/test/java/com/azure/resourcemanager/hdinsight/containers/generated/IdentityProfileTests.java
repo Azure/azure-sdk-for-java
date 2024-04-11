@@ -11,26 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class IdentityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IdentityProfile model =
-            BinaryData
-                .fromString(
-                    "{\"msiResourceId\":\"vcputegj\",\"msiClientId\":\"wmfdatscmdvpjhul\",\"msiObjectId\":\"uuvmkjozkrwfnd\"}")
-                .toObject(IdentityProfile.class);
-        Assertions.assertEquals("vcputegj", model.msiResourceId());
-        Assertions.assertEquals("wmfdatscmdvpjhul", model.msiClientId());
-        Assertions.assertEquals("uuvmkjozkrwfnd", model.msiObjectId());
+        IdentityProfile model = BinaryData
+            .fromString("{\"msiResourceId\":\"dphlxaolt\",\"msiClientId\":\"qtrgqjbpfzfsinzg\",\"msiObjectId\":\"f\"}")
+            .toObject(IdentityProfile.class);
+        Assertions.assertEquals("dphlxaolt", model.msiResourceId());
+        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.msiClientId());
+        Assertions.assertEquals("f", model.msiObjectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentityProfile model =
-            new IdentityProfile()
-                .withMsiResourceId("vcputegj")
-                .withMsiClientId("wmfdatscmdvpjhul")
-                .withMsiObjectId("uuvmkjozkrwfnd");
+        IdentityProfile model = new IdentityProfile().withMsiResourceId("dphlxaolt").withMsiClientId("qtrgqjbpfzfsinzg")
+            .withMsiObjectId("f");
         model = BinaryData.fromObject(model).toObject(IdentityProfile.class);
-        Assertions.assertEquals("vcputegj", model.msiResourceId());
-        Assertions.assertEquals("wmfdatscmdvpjhul", model.msiClientId());
-        Assertions.assertEquals("uuvmkjozkrwfnd", model.msiObjectId());
+        Assertions.assertEquals("dphlxaolt", model.msiResourceId());
+        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.msiClientId());
+        Assertions.assertEquals("f", model.msiObjectId());
     }
 }

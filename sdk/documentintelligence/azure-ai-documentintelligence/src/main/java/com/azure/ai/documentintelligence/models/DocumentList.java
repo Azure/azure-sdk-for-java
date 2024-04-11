@@ -6,28 +6,29 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * An object representing a list in the document.
  */
 @Immutable
-public final class DocumentList {
+public final class DocumentList implements JsonSerializable<DocumentList> {
     /*
      * Location of the list in the reading order concatenated content.
      */
     @Generated
-    @JsonProperty(value = "spans")
-    private List<DocumentSpan> spans;
+    private final List<DocumentSpan> spans;
 
     /*
      * Items in the list.
      */
     @Generated
-    @JsonProperty(value = "items")
-    private List<DocumentListItem> items;
+    private final List<DocumentListItem> items;
 
     /**
      * Creates an instance of DocumentList class.
@@ -36,9 +37,7 @@ public final class DocumentList {
      * @param items the items value to set.
      */
     @Generated
-    @JsonCreator
-    private DocumentList(@JsonProperty(value = "spans") List<DocumentSpan> spans,
-        @JsonProperty(value = "items") List<DocumentListItem> items) {
+    private DocumentList(List<DocumentSpan> spans, List<DocumentListItem> items) {
         this.spans = spans;
         this.items = items;
     }
@@ -61,5 +60,47 @@ public final class DocumentList {
     @Generated
     public List<DocumentListItem> getItems() {
         return this.items;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("spans", this.spans, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("items", this.items, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentList.
+     */
+    @Generated
+    public static DocumentList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<DocumentSpan> spans = null;
+            List<DocumentListItem> items = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("spans".equals(fieldName)) {
+                    spans = reader.readArray(reader1 -> DocumentSpan.fromJson(reader1));
+                } else if ("items".equals(fieldName)) {
+                    items = reader.readArray(reader1 -> DocumentListItem.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new DocumentList(spans, items);
+        });
     }
 }

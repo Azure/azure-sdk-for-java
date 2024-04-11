@@ -310,6 +310,11 @@ public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
     public static final ShareErrorCode SHARE_HAS_SNAPSHOTS = fromString("ShareHasSnapshots");
 
     /**
+     * Static value PreviousSnapshotNotFound for ShareErrorCode.
+     */
+    public static final ShareErrorCode PREVIOUS_SNAPSHOT_NOT_FOUND = fromString("PreviousSnapshotNotFound");
+
+    /**
      * Static value ContainerQuotaDowngradeNotAllowed for ShareErrorCode.
      */
     public static final ShareErrorCode CONTAINER_QUOTA_DOWNGRADE_NOT_ALLOWED

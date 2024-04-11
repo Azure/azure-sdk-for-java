@@ -6,7 +6,6 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -54,7 +53,6 @@ public final class ContentSourceKind extends ExpandableStringEnum<ContentSourceK
      * @return the corresponding ContentSourceKind.
      */
     @Generated
-    @JsonCreator
     public static ContentSourceKind fromString(String name) {
         return fromString(name, ContentSourceKind.class);
     }

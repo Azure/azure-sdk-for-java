@@ -106,5 +106,6 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
      */
     DefaultAzureCredential(List<TokenCredential> tokenCredentials) {
         super(tokenCredentials);
+        this.enableUseCachedWorkingCredential();
     }
 }

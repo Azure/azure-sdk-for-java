@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Status of the instance view. */
+/**
+ * Status of the instance view.
+ */
 @Fluent
 public class ClusterInstanceViewStatus {
     /*
@@ -29,13 +31,15 @@ public class ClusterInstanceViewStatus {
     @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of ClusterInstanceViewStatus class. */
+    /**
+     * Creates an instance of ClusterInstanceViewStatus class.
+     */
     public ClusterInstanceViewStatus() {
     }
 
     /**
      * Get the ready property: The cluster ready status.
-     *
+     * 
      * @return the ready value.
      */
     public String ready() {
@@ -44,7 +48,7 @@ public class ClusterInstanceViewStatus {
 
     /**
      * Set the ready property: The cluster ready status.
-     *
+     * 
      * @param ready the ready value to set.
      * @return the ClusterInstanceViewStatus object itself.
      */
@@ -55,7 +59,7 @@ public class ClusterInstanceViewStatus {
 
     /**
      * Get the reason property: The status reason.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -64,7 +68,7 @@ public class ClusterInstanceViewStatus {
 
     /**
      * Set the reason property: The status reason.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ClusterInstanceViewStatus object itself.
      */
@@ -75,7 +79,7 @@ public class ClusterInstanceViewStatus {
 
     /**
      * Get the message property: The additional message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -84,7 +88,7 @@ public class ClusterInstanceViewStatus {
 
     /**
      * Set the message property: The additional message.
-     *
+     * 
      * @param message the message value to set.
      * @return the ClusterInstanceViewStatus object itself.
      */
@@ -95,14 +99,13 @@ public class ClusterInstanceViewStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ready() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ready in model ClusterInstanceViewStatus"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ready in model ClusterInstanceViewStatus"));
         }
     }
 

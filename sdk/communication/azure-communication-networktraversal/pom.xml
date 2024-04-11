@@ -16,13 +16,12 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-networktraversal</artifactId>
   <packaging>jar</packaging>
-  <version>1.1.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-networktraversal;current} -->
+  <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-communication-networktraversal;current} -->
 
   <name>Microsoft Azure Network Traversal client library for communication</name>
   <description>
-    This package contains APIs for application Network Traversal in Microsoft Azure Communication Services.
-    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-networktraversal/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-identity/CHANGELOG.md.
-    Microsoft Azure Communication Network Traversal quickstart - https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-java
+    Please note, this package has been deprecated and will no longer be maintained after 03/31/2024. 
+    Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
   </description>
   <licenses>
     <license>
@@ -61,12 +60,18 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.47.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.48.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
       <version>1.3.1</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -95,25 +100,25 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.24.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.24.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.11.19</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.11.20</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-vertx</artifactId>
-      <version>1.0.0-beta.16</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
+      <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.11.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -173,7 +178,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-http-jdk-httpclient</artifactId>
-          <version>1.0.0-beta.11</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
+          <version>1.0.0-beta.12</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
           <scope>test</scope>
         </dependency>
       </dependencies>
