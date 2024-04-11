@@ -47,7 +47,13 @@ public class MetadataCosmosStorageManager implements IMetadataReader {
                 topicPartition.getDatabaseName(),
                 ContainersMetadataTopicOffset.toMap(topicOffset));
 
-        this.metadataContainer.upsertItem(containersMetadataItem).block();
+        this.metadataContainer
+            .upsertItem(containersMetadataItem)
+            .onErrorMap(throwable ->
+                KafkaCosmosExceptionsHelper.convertToConnectException(
+                    throwable,
+                    "createContainersMetadataItem failed for database " + topicPartition.getDatabaseName()))
+            .block();
     }
 
     public void createFeedRangesMetadataItem(
@@ -58,7 +64,13 @@ public class MetadataCosmosStorageManager implements IMetadataReader {
         FeedRangesMetadataItem feedRangesMetadataItem =
             new FeedRangesMetadataItem(itemId, FeedRangesMetadataTopicOffset.toMap(topicOffset));
 
-        this.metadataContainer.upsertItem(feedRangesMetadataItem).block();
+        this.metadataContainer
+            .upsertItem(feedRangesMetadataItem)
+            .onErrorMap(throwable ->
+                KafkaCosmosExceptionsHelper.convertToConnectException(
+                    throwable,
+                    "createFeedRangesMetadataItem failed for database " + topicPartition.getDatabaseName() + ", containerRid: " + topicPartition.getContainerRid()))
+            .block();
     }
 
     private String getFeedRangesMetadataItemId(String databaseName, String collectionRid) {
@@ -75,7 +87,10 @@ public class MetadataCosmosStorageManager implements IMetadataReader {
                     return Mono.just(new Utils.ValueHolder<>(null));
                 }
 
-                return Mono.error(throwable);
+                return Mono.error(
+                    KafkaCosmosExceptionsHelper.convertToConnectException(
+                        throwable,
+                        "getContainersMetadataOffset failed for database " + databaseName));
             });
     }
 
@@ -90,7 +105,11 @@ public class MetadataCosmosStorageManager implements IMetadataReader {
                     return Mono.just(new Utils.ValueHolder<>(null));
                 }
 
-                return Mono.error(throwable);
+                return Mono.error(
+                    KafkaCosmosExceptionsHelper.convertToConnectException(
+                        throwable,
+                        "getFeedRangesMetadataOffset failed for database " + databaseName + ", containerRid: " + collectionRid)
+                );
             });
     }
 

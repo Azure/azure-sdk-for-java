@@ -25,6 +25,7 @@ import com.azure.cosmos.kafka.connect.implementation.source.MetadataMonitorThrea
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataTaskUnit;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigValue;
@@ -153,6 +154,15 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
                     this.cosmosClient
                         .getDatabase(this.config.getContainersConfig().getDatabaseName())
                         .getContainer(this.config.getMetadataConfig().getStorageName());
+                // validate the metadata container config
+                metadataContainer.read()
+                    .doOnNext(containerResponse -> {
+                        PartitionKeyDefinition partitionKeyDefinition = containerResponse.getProperties().getPartitionKeyDefinition();
+                        if (partitionKeyDefinition.getPaths().size() != 1 || !partitionKeyDefinition.getPaths().get(0).equals("/id")) {
+                            throw new IllegalStateException("Cosmos Metadata container need to be partitioned by /id");
+                        }
+                    })
+                    .block();
                 return new MetadataCosmosStorageManager(metadataContainer);
             default:
                 throw new IllegalArgumentException("Metadata storage type " + this.config.getMetadataConfig().getStorageType() + " is not supported");
