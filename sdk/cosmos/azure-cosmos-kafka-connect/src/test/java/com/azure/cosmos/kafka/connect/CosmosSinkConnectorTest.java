@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
-import com.azure.cosmos.kafka.connect.implementation.sink.IdStrategy;
+import com.azure.cosmos.kafka.connect.implementation.sink.IdStrategyType;
 import com.azure.cosmos.kafka.connect.implementation.sink.ItemWriteStrategy;
 import com.azure.cosmos.kafka.connect.implementation.sink.patch.KafkaCosmosPatchOperationType;
 import org.apache.kafka.common.config.Config;
@@ -329,7 +329,7 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.sink.containers.topicMap", null, false),
             new KafkaCosmosConfigEntry<String>(
                 "kafka.connect.cosmos.sink.id.strategy",
-                IdStrategy.PROVIDED_IN_VALUE_STRATEGY.getName(),
+                IdStrategyType.PROVIDED_IN_VALUE_STRATEGY.getName(),
                 true)
         );
     }

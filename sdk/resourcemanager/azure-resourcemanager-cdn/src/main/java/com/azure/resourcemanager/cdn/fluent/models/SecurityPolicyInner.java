@@ -6,12 +6,15 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.SecurityPolicyPropertiesParameters;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SecurityPolicy association for AzureFrontDoor profile. */
+/**
+ * SecurityPolicy association for AzureFrontDoor profile.
+ */
 @Fluent
 public final class SecurityPolicyInner extends ProxyResource {
     /*
@@ -20,13 +23,21 @@ public final class SecurityPolicyInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SecurityPolicyProperties innerProperties;
 
-    /** Creates an instance of SecurityPolicyInner class. */
+    /*
+     * Read only system data
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of SecurityPolicyInner class.
+     */
     public SecurityPolicyInner() {
     }
 
     /**
      * Get the innerProperties property: The json object that contains properties required to create a security policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecurityPolicyProperties innerProperties() {
@@ -34,8 +45,17 @@ public final class SecurityPolicyInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Read only system data.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the profileName property: The name of the profile which holds the security policy.
-     *
+     * 
      * @return the profileName value.
      */
     public String profileName() {
@@ -44,7 +64,7 @@ public final class SecurityPolicyInner extends ProxyResource {
 
     /**
      * Get the parameters property: object which contains security policy parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public SecurityPolicyPropertiesParameters parameters() {
@@ -53,7 +73,7 @@ public final class SecurityPolicyInner extends ProxyResource {
 
     /**
      * Set the parameters property: object which contains security policy parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the SecurityPolicyInner object itself.
      */
@@ -67,7 +87,7 @@ public final class SecurityPolicyInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AfdProvisioningState provisioningState() {
@@ -76,7 +96,7 @@ public final class SecurityPolicyInner extends ProxyResource {
 
     /**
      * Get the deploymentStatus property: The deploymentStatus property.
-     *
+     * 
      * @return the deploymentStatus value.
      */
     public DeploymentStatus deploymentStatus() {
@@ -85,7 +105,7 @@ public final class SecurityPolicyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

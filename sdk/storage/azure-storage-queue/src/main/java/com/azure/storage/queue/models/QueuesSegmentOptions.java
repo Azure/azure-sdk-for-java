@@ -38,6 +38,14 @@ public final class QueuesSegmentOptions {
     private Integer maxResultsPerPage;
 
     /**
+     * Creates an instance of the QueuesSegmentOptions.
+     */
+    public QueuesSegmentOptions() {
+    }
+
+    /**
+     * Gets the status of including queue metadata when listing queues
+     *
      * @return the status of including metadata when listing queues
      */
     public boolean isIncludeMetadata() {
@@ -56,6 +64,8 @@ public final class QueuesSegmentOptions {
     }
 
     /**
+     * Gets the prefix that a queue must match to be included in the listing
+     *
      * @return the prefix the queue name must match to be included in the listing
      */
     public String getPrefix() {
@@ -74,6 +84,8 @@ public final class QueuesSegmentOptions {
     }
 
     /**
+     * Gets the maximum number of queues to include in a single response
+     *
      * @return the maximum number of queues to include in a single response
      */
     public Integer getMaxResultsPerPage() {

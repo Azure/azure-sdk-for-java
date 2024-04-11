@@ -121,7 +121,7 @@ public class CosmosSinkConfig extends KafkaCosmosConfig {
             + "the property ``id.strategy.template`` is passed through to the template strategy "
             + "and used to specify the template string to be used in constructing the ``id``.";
     public static final String ID_STRATEGY_DISPLAY = "ID Strategy";
-    public static final String DEFAULT_ID_STRATEGY = IdStrategy.PROVIDED_IN_VALUE_STRATEGY.getName();
+    public static final String DEFAULT_ID_STRATEGY = IdStrategyType.PROVIDED_IN_VALUE_STRATEGY.getName();
 
     // (?i) : The whole matching is case-insensitive
     // property[(](.*?)[)]: json property name match
@@ -133,7 +133,7 @@ public class CosmosSinkConfig extends KafkaCosmosConfig {
 
     private final CosmosSinkWriteConfig writeConfig;
     private final CosmosSinkContainersConfig containersConfig;
-    private final IdStrategy idStrategy;
+    private final IdStrategyType idStrategyType;
 
     public CosmosSinkConfig(Map<String, ?> parsedConfig) {
         this(getConfigDef(), parsedConfig);
@@ -143,7 +143,7 @@ public class CosmosSinkConfig extends KafkaCosmosConfig {
         super(config, parsedConfig);
         this.writeConfig = this.parseWriteConfig();
         this.containersConfig = this.parseContainersConfig();
-        this.idStrategy = this.parseIdStrategy();
+        this.idStrategyType = this.parseIdStrategyType();
     }
 
     public static ConfigDef getConfigDef() {
@@ -395,8 +395,8 @@ public class CosmosSinkConfig extends KafkaCosmosConfig {
         return KafkaCosmosPatchOperationType.fromName(defaultPatchOperationType);
     }
 
-    private IdStrategy parseIdStrategy() {
-        return IdStrategy.fromName(this.getString(ID_STRATEGY_CONF));
+    private IdStrategyType parseIdStrategyType() {
+        return IdStrategyType.fromName(this.getString(ID_STRATEGY_CONF));
     }
 
     public CosmosSinkWriteConfig getWriteConfig() {
@@ -407,8 +407,8 @@ public class CosmosSinkConfig extends KafkaCosmosConfig {
         return containersConfig;
     }
 
-    public IdStrategy getIdStrategy() {
-        return idStrategy;
+    public IdStrategyType getIdStrategy() {
+        return idStrategyType;
     }
 
     public static class ItemWriteStrategyValidator implements ConfigDef.Validator {
