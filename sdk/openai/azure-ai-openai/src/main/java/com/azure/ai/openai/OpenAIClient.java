@@ -692,7 +692,7 @@ public final class OpenAIClient {
      * <strong>Code Samples</strong>
      * </p>
      * <!-- src_embed com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
-     * 
+     *
      * <pre>
      * openAIClient.getChatCompletionsStream&#40;deploymentOrModelId, new ChatCompletionsOptions&#40;chatMessages&#41;&#41;
      *     .forEach&#40;chatCompletions -&gt; &#123;
@@ -709,7 +709,7 @@ public final class OpenAIClient {
      *         &#125;
      *     &#125;&#41;;
      * </pre>
-     * 
+     *
      * <!-- end com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
@@ -745,7 +745,7 @@ public final class OpenAIClient {
      * </p>
      * <!-- src_embed com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload
      * -->
-     * 
+     *
      * <pre>
      * openAIClient
      *     .getChatCompletionsStreamWithResponse&#40;deploymentOrModelId, new ChatCompletionsOptions&#40;chatMessages&#41;,
@@ -765,7 +765,7 @@ public final class OpenAIClient {
      *         &#125;
      *     &#125;&#41;;
      * </pre>
-     * 
+     *
      * <!-- end com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload -->
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
@@ -1265,7 +1265,7 @@ public final class OpenAIClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     model: String (Optional)
@@ -1278,11 +1278,11 @@ public final class OpenAIClient {
      *     user: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     created: long (Required)
@@ -1407,7 +1407,7 @@ public final class OpenAIClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     input: String (Required)
@@ -1416,11 +1416,11 @@ public final class OpenAIClient {
      *     speed: Double (Optional)
      * }
      * }</pre>
-     * 
+     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * BinaryData
      * }</pre>

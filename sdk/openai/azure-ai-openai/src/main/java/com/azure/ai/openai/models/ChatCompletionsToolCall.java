@@ -16,10 +16,14 @@ import com.fasterxml.jackson.annotation.JsonGetter;
  * An abstract representation of a tool call that must be resolved in a subsequent request to perform the requested
  * chat completion.
  */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = ChatCompletionsToolCall.class,
+    visible = true)
 @JsonTypeName("ChatCompletionsToolCall")
 @JsonSubTypes({ @JsonSubTypes.Type(name = "function", value = ChatCompletionsFunctionToolCall.class) })
 @Immutable
-@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION, defaultImpl = ChatCompletionsToolCall.class)
 public class ChatCompletionsToolCall {
 
     /*
@@ -56,12 +60,11 @@ public class ChatCompletionsToolCall {
      * Creates an instance of ChatCompletionsToolCall class.
      *
      * @param id the id value to set.
-     * @param type the type value to set.
      */
     @Generated
     @JsonCreator
-    public ChatCompletionsToolCall(@JsonProperty(value = "id") String id, @JsonProperty(value = "type") String type) {
+    public ChatCompletionsToolCall(@JsonProperty(value = "id") String id) {
+        this.type = "ChatCompletionsToolCall";
         this.id = id;
-        this.type = type;
     }
 }

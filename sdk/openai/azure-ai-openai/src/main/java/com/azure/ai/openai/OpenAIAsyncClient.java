@@ -571,7 +571,7 @@ public final class OpenAIAsyncClient {
      * </p>
      * <!-- src_embed
      * com.azure.ai.openai.OpenAIAsyncClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload -->
-     * 
+     *
      * <pre>
      * openAIAsyncClient
      *     .getChatCompletionsStreamWithResponse&#40;deploymentOrModelId, new ChatCompletionsOptions&#40;chatMessages&#41;,
@@ -580,7 +580,7 @@ public final class OpenAIAsyncClient {
      *         error -&gt; System.err.println&#40;&quot;There was an error getting chat completions.&quot; + error&#41;,
      *         &#40;&#41; -&gt; System.out.println&#40;&quot;Completed called getChatCompletionsStreamWithResponse.&quot;&#41;&#41;;
      * </pre>
-     * 
+     *
      * <!-- end com.azure.ai.openai.OpenAIAsyncClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload
      * -->
      *
@@ -702,14 +702,14 @@ public final class OpenAIAsyncClient {
      * <strong>Code Samples</strong>
      * </p>
      * <!-- src_embed com.azure.ai.openai.OpenAIAsyncClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
-     * 
+     *
      * <pre>
      * openAIAsyncClient.getChatCompletionsStream&#40;deploymentOrModelId, new ChatCompletionsOptions&#40;chatMessages&#41;&#41;
      *     .subscribe&#40;chatCompletions -&gt; System.out.print&#40;chatCompletions.getId&#40;&#41;&#41;,
      *         error -&gt; System.err.println&#40;&quot;There was an error getting chat completions.&quot; + error&#41;,
      *         &#40;&#41; -&gt; System.out.println&#40;&quot;Completed called getChatCompletionsStream.&quot;&#41;&#41;;
      * </pre>
-     * 
+     *
      * <!-- end com.azure.ai.openai.OpenAIAsyncClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
@@ -1298,7 +1298,7 @@ public final class OpenAIAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     model: String (Optional)
@@ -1311,11 +1311,11 @@ public final class OpenAIAsyncClient {
      *     user: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     created: long (Required)
@@ -1445,7 +1445,7 @@ public final class OpenAIAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     input: String (Required)
@@ -1454,11 +1454,11 @@ public final class OpenAIAsyncClient {
      *     speed: Double (Optional)
      * }
      * }</pre>
-     * 
+     *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * BinaryData
      * }</pre>

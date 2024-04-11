@@ -37,10 +37,11 @@ public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCa
      * @param id the id value to set.
      * @param function the function value to set.
      */
+    @Generated
     @JsonCreator
     public ChatCompletionsFunctionToolCall(@JsonProperty(value = "id") String id,
         @JsonProperty(value = "function") FunctionCall function) {
-        super(id, "function");
+        super(id);
         this.function = function;
     }
 
