@@ -62,6 +62,7 @@ public final class RunStepError implements JsonSerializable<RunStepError> {
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("code", this.code == null ? null : this.code.toString());
@@ -78,6 +79,7 @@ public final class RunStepError implements JsonSerializable<RunStepError> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RunStepError.
      */
+    @Generated
     public static RunStepError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RunStepErrorCode code = null;

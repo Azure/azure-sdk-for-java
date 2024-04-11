@@ -78,6 +78,7 @@ public final class AssistantDeletionStatus implements JsonSerializable<Assistant
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
@@ -95,6 +96,7 @@ public final class AssistantDeletionStatus implements JsonSerializable<Assistant
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AssistantDeletionStatus.
      */
+    @Generated
     public static AssistantDeletionStatus fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;

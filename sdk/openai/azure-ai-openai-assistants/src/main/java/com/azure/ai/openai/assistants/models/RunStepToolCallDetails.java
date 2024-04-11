@@ -44,6 +44,7 @@ public final class RunStepToolCallDetails extends RunStepDetails {
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", "tool_calls");
@@ -61,6 +62,7 @@ public final class RunStepToolCallDetails extends RunStepDetails {
      * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the RunStepToolCallDetails.
      */
+    // TODO jpalvarezl see if this is custom or not
     public static RunStepToolCallDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<RunStepToolCall> toolCalls = null;

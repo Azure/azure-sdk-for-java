@@ -43,6 +43,7 @@ public final class RunStepCodeInterpreterLogOutput extends RunStepCodeInterprete
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", "logs");
@@ -60,6 +61,7 @@ public final class RunStepCodeInterpreterLogOutput extends RunStepCodeInterprete
      * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the RunStepCodeInterpreterLogOutput.
      */
+    @Generated
     public static RunStepCodeInterpreterLogOutput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String logs = null;

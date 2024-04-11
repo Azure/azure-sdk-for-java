@@ -26,6 +26,7 @@ public class RunStepDetails implements JsonSerializable<RunStepDetails> {
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         return jsonWriter.writeEndObject();
@@ -40,6 +41,7 @@ public class RunStepDetails implements JsonSerializable<RunStepDetails> {
      * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the RunStepDetails.
      */
+    @Generated
     public static RunStepDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;

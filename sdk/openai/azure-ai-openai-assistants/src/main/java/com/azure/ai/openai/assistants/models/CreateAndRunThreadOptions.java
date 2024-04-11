@@ -190,6 +190,7 @@ public final class CreateAndRunThreadOptions implements JsonSerializable<CreateA
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("assistant_id", this.assistantId);
@@ -210,6 +211,7 @@ public final class CreateAndRunThreadOptions implements JsonSerializable<CreateA
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CreateAndRunThreadOptions.
      */
+    @Generated
     public static CreateAndRunThreadOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String assistantId = null;

@@ -131,6 +131,7 @@ public final class ThreadInitializationMessage implements JsonSerializable<Threa
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
@@ -149,6 +150,7 @@ public final class ThreadInitializationMessage implements JsonSerializable<Threa
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ThreadInitializationMessage.
      */
+    @Generated
     public static ThreadInitializationMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MessageRole role = null;

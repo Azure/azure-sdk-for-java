@@ -99,6 +99,7 @@ public class MessageTextAnnotation implements JsonSerializable<MessageTextAnnota
      * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the MessageTextAnnotation.
      */
+    // TODO jpalvarezl see if not custom code
     public static MessageTextAnnotation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;

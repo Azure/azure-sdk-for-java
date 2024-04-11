@@ -92,6 +92,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
@@ -109,6 +110,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FunctionDefinition.
      */
+    @Generated
     public static FunctionDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;

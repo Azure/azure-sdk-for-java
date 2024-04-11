@@ -65,6 +65,7 @@ public final class RunStepCodeInterpreterToolCallDetails
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("input", this.input);
@@ -81,6 +82,7 @@ public final class RunStepCodeInterpreterToolCallDetails
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RunStepCodeInterpreterToolCallDetails.
      */
+    @Generated
     public static RunStepCodeInterpreterToolCallDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String input = null;

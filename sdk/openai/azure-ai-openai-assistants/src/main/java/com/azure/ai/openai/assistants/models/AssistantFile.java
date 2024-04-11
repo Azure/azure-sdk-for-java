@@ -99,6 +99,7 @@ public final class AssistantFile implements JsonSerializable<AssistantFile> {
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
@@ -117,6 +118,7 @@ public final class AssistantFile implements JsonSerializable<AssistantFile> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AssistantFile.
      */
+    @Generated
     public static AssistantFile fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;

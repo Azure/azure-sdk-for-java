@@ -43,6 +43,7 @@ public final class MessageTextContent extends MessageContent {
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", "text");
@@ -60,6 +61,7 @@ public final class MessageTextContent extends MessageContent {
      * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the MessageTextContent.
      */
+    @Generated
     public static MessageTextContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MessageTextDetails text = null;

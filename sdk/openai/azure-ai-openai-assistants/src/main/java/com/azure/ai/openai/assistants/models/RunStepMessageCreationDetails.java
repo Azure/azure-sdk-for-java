@@ -43,6 +43,7 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", "message_creation");
@@ -60,6 +61,7 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
      * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the RunStepMessageCreationDetails.
      */
+    @Generated
     public static RunStepMessageCreationDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RunStepMessageCreationReference messageCreation = null;

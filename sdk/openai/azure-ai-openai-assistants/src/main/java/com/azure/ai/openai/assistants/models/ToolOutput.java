@@ -83,6 +83,7 @@ public final class ToolOutput implements JsonSerializable<ToolOutput> {
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("tool_call_id", this.toolCallId);
@@ -98,6 +99,7 @@ public final class ToolOutput implements JsonSerializable<ToolOutput> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the ToolOutput.
      */
+    @Generated
     public static ToolOutput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ToolOutput deserializedToolOutput = new ToolOutput();

@@ -99,6 +99,7 @@ public final class MessageFile implements JsonSerializable<MessageFile> {
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
@@ -117,6 +118,7 @@ public final class MessageFile implements JsonSerializable<MessageFile> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MessageFile.
      */
+    @Generated
     public static MessageFile fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;

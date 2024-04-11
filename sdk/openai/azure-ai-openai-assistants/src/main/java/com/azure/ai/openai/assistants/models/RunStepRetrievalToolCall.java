@@ -65,6 +65,7 @@ public final class RunStepRetrievalToolCall extends RunStepToolCall {
      * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the RunStepRetrievalToolCall.
      */
+    // TODO jpalvarezl see if this is custom or not
     public static RunStepRetrievalToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;

@@ -212,6 +212,7 @@ public final class Assistant implements JsonSerializable<Assistant> {
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
@@ -236,6 +237,7 @@ public final class Assistant implements JsonSerializable<Assistant> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Assistant.
      */
+    @Generated
     public static Assistant fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;

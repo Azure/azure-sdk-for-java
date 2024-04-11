@@ -58,6 +58,7 @@ public final class UpdateRunRequest implements JsonSerializable<UpdateRunRequest
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
@@ -72,6 +73,7 @@ public final class UpdateRunRequest implements JsonSerializable<UpdateRunRequest
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the UpdateRunRequest.
      */
+    @Generated
     public static UpdateRunRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             UpdateRunRequest deserializedUpdateRunRequest = new UpdateRunRequest();

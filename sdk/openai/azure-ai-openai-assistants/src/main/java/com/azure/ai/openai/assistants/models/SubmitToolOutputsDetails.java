@@ -46,6 +46,7 @@ public final class SubmitToolOutputsDetails implements JsonSerializable<SubmitTo
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("tool_calls", this.toolCalls, (writer, element) -> writer.writeJson(element));
@@ -61,6 +62,7 @@ public final class SubmitToolOutputsDetails implements JsonSerializable<SubmitTo
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SubmitToolOutputsDetails.
      */
+    @Generated
     public static SubmitToolOutputsDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<RequiredToolCall> toolCalls = null;

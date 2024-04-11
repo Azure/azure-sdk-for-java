@@ -60,6 +60,7 @@ public final class MessageImageFileContent extends MessageContent {
      * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the MessageImageFileContent.
      */
+    // TODO jpalvarezl verify not custom code
     public static MessageImageFileContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MessageImageFileDetails imageFile = null;

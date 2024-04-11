@@ -43,6 +43,7 @@ public final class FunctionToolDefinition extends ToolDefinition {
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", "function");
@@ -60,6 +61,7 @@ public final class FunctionToolDefinition extends ToolDefinition {
      * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the FunctionToolDefinition.
      */
+    // TODO jpalvarezl: double check how that this is in fact generated code and not a customization
     public static FunctionToolDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FunctionDefinition function = null;

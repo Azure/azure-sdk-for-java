@@ -40,6 +40,7 @@ public class MessageContent implements JsonSerializable<MessageContent> {
      * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the MessageContent.
      */
+    // TODO jpalvarezl verify this is not custom code
     public static MessageContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;

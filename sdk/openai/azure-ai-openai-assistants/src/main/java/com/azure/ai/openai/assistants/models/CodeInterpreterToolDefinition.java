@@ -39,6 +39,7 @@ public final class CodeInterpreterToolDefinition extends ToolDefinition {
      * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the CodeInterpreterToolDefinition.
      */
+    @Generated
     public static CodeInterpreterToolDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CodeInterpreterToolDefinition deserializedCodeInterpreterToolDefinition

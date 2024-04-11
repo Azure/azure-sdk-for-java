@@ -127,6 +127,7 @@ public final class CreateMessageRequest implements JsonSerializable<CreateMessag
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
@@ -145,6 +146,7 @@ public final class CreateMessageRequest implements JsonSerializable<CreateMessag
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CreateMessageRequest.
      */
+    @Generated
     public static CreateMessageRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MessageRole role = null;

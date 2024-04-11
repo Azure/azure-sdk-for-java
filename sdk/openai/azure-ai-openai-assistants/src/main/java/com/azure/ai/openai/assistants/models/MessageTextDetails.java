@@ -63,6 +63,7 @@ public final class MessageTextDetails implements JsonSerializable<MessageTextDet
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("value", this.value);
@@ -79,6 +80,7 @@ public final class MessageTextDetails implements JsonSerializable<MessageTextDet
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MessageTextDetails.
      */
+    @Generated
     public static MessageTextDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String value = null;

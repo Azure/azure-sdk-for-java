@@ -58,6 +58,7 @@ public final class UpdateThreadRequest implements JsonSerializable<UpdateThreadR
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
@@ -72,6 +73,7 @@ public final class UpdateThreadRequest implements JsonSerializable<UpdateThreadR
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the UpdateThreadRequest.
      */
+    @Generated
     public static UpdateThreadRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             UpdateThreadRequest deserializedUpdateThreadRequest = new UpdateThreadRequest();

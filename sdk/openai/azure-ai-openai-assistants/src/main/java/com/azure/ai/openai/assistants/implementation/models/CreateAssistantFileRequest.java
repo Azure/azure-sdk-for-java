@@ -44,6 +44,7 @@ public final class CreateAssistantFileRequest implements JsonSerializable<Create
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("file_id", this.fileId);
@@ -59,6 +60,7 @@ public final class CreateAssistantFileRequest implements JsonSerializable<Create
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CreateAssistantFileRequest.
      */
+    @Generated
     public static CreateAssistantFileRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String fileId = null;

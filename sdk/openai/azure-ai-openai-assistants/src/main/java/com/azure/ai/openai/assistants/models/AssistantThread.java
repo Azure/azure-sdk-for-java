@@ -102,6 +102,7 @@ public final class AssistantThread implements JsonSerializable<AssistantThread> 
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
@@ -120,6 +121,7 @@ public final class AssistantThread implements JsonSerializable<AssistantThread> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AssistantThread.
      */
+    @Generated
     public static AssistantThread fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;

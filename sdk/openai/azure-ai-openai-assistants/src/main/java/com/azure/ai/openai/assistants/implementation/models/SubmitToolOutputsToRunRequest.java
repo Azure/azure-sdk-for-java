@@ -46,6 +46,7 @@ public final class SubmitToolOutputsToRunRequest implements JsonSerializable<Sub
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("tool_outputs", this.toolOutputs, (writer, element) -> writer.writeJson(element));
@@ -61,6 +62,7 @@ public final class SubmitToolOutputsToRunRequest implements JsonSerializable<Sub
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SubmitToolOutputsToRunRequest.
      */
+    @Generated
     public static SubmitToolOutputsToRunRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<ToolOutput> toolOutputs = null;

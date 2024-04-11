@@ -87,6 +87,7 @@ public final class AssistantThreadCreationOptions implements JsonSerializable<As
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("messages", this.messages, (writer, element) -> writer.writeJson(element));
@@ -102,6 +103,7 @@ public final class AssistantThreadCreationOptions implements JsonSerializable<As
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AssistantThreadCreationOptions.
      */
+    @Generated
     public static AssistantThreadCreationOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AssistantThreadCreationOptions deserializedAssistantThreadCreationOptions

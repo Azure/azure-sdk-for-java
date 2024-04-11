@@ -44,6 +44,7 @@ public final class MessageImageFileIdDetails implements JsonSerializable<Message
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("file_id", this.fileId);
@@ -59,6 +60,7 @@ public final class MessageImageFileIdDetails implements JsonSerializable<Message
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MessageImageFileIdDetails.
      */
+    @Generated
     public static MessageImageFileIdDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String fileId = null;

@@ -47,6 +47,7 @@ public final class RunStepFunctionToolCall extends RunStepToolCall {
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", "function");
@@ -65,6 +66,7 @@ public final class RunStepFunctionToolCall extends RunStepToolCall {
      * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the RunStepFunctionToolCall.
      */
+    @Generated
     public static RunStepFunctionToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;

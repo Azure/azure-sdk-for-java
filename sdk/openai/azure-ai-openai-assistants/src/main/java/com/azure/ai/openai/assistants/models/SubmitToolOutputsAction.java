@@ -60,6 +60,7 @@ public final class SubmitToolOutputsAction extends RequiredAction {
      * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the SubmitToolOutputsAction.
      */
+    // TODO jpalvarezl see if this is custom or not
     public static SubmitToolOutputsAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SubmitToolOutputsDetails submitToolOutputs = null;

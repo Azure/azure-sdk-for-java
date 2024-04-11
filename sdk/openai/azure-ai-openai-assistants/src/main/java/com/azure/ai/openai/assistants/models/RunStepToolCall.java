@@ -61,6 +61,7 @@ public class RunStepToolCall implements JsonSerializable<RunStepToolCall> {
      * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the RunStepToolCall.
      */
+    // TODO jpalvarezl see if this is custom or not
     public static RunStepToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;

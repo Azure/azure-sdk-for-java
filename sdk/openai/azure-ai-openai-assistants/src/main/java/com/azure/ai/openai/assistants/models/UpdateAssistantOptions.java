@@ -227,6 +227,7 @@ public final class UpdateAssistantOptions implements JsonSerializable<UpdateAssi
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("model", this.model);
@@ -247,6 +248,7 @@ public final class UpdateAssistantOptions implements JsonSerializable<UpdateAssi
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the UpdateAssistantOptions.
      */
+    @Generated
     public static UpdateAssistantOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             UpdateAssistantOptions deserializedUpdateAssistantOptions = new UpdateAssistantOptions();

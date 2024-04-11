@@ -72,6 +72,7 @@ public final class MessageTextFileCitationAnnotation extends MessageTextAnnotati
      * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the MessageTextFileCitationAnnotation.
      */
+    // TODO jpalvarezl see if not custom
     public static MessageTextFileCitationAnnotation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String text = null;

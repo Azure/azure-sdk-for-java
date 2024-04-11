@@ -58,6 +58,7 @@ public final class UpdateMessageRequest implements JsonSerializable<UpdateMessag
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
@@ -72,6 +73,7 @@ public final class UpdateMessageRequest implements JsonSerializable<UpdateMessag
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the UpdateMessageRequest.
      */
+    @Generated
     public static UpdateMessageRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             UpdateMessageRequest deserializedUpdateMessageRequest = new UpdateMessageRequest();

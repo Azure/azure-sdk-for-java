@@ -81,6 +81,7 @@ public final class RunStepFunctionToolCallDetails implements JsonSerializable<Ru
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
@@ -98,6 +99,7 @@ public final class RunStepFunctionToolCallDetails implements JsonSerializable<Ru
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RunStepFunctionToolCallDetails.
      */
+    @Generated
     public static RunStepFunctionToolCallDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;

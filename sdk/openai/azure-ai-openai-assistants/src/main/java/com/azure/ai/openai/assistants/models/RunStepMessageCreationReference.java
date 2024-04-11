@@ -44,6 +44,7 @@ public final class RunStepMessageCreationReference implements JsonSerializable<R
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("message_id", this.messageId);
@@ -59,6 +60,7 @@ public final class RunStepMessageCreationReference implements JsonSerializable<R
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RunStepMessageCreationReference.
      */
+    @Generated
     public static RunStepMessageCreationReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String messageId = null;

@@ -117,6 +117,7 @@ public final class OpenAIPageableListOfMessageFile implements JsonSerializable<O
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("object", this.object);
@@ -136,6 +137,7 @@ public final class OpenAIPageableListOfMessageFile implements JsonSerializable<O
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OpenAIPageableListOfMessageFile.
      */
+    @Generated
     public static OpenAIPageableListOfMessageFile fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<MessageFile> data = null;

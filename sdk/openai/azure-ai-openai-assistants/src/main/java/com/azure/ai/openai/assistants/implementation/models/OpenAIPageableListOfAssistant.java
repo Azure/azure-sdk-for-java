@@ -117,6 +117,7 @@ public final class OpenAIPageableListOfAssistant implements JsonSerializable<Ope
     }
 
     @Override
+    @Generated
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("object", this.object);
@@ -136,6 +137,7 @@ public final class OpenAIPageableListOfAssistant implements JsonSerializable<Ope
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OpenAIPageableListOfAssistant.
      */
+    @Generated
     public static OpenAIPageableListOfAssistant fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<Assistant> data = null;
