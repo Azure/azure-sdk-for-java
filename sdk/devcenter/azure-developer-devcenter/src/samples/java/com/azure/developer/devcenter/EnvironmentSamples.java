@@ -7,21 +7,18 @@ package com.azure.developer.devcenter;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.developer.devcenter.models.DevBox;
-import com.azure.developer.devcenter.models.DevBoxPool;
 import com.azure.developer.devcenter.models.DevCenterCatalog;
 import com.azure.developer.devcenter.models.DevCenterEnvironment;
 import com.azure.developer.devcenter.models.DevCenterEnvironmentType;
 import com.azure.developer.devcenter.models.DevCenterOperationDetails;
 import com.azure.developer.devcenter.models.DevCenterProject;
 import com.azure.developer.devcenter.models.EnvironmentDefinition;
-import com.azure.developer.devcenter.models.RemoteConnection;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-public final class ReadmeSamples {
-    public void readmeSamples() {
-        // BEGIN: com.azure.developer.devcenter.readme.devboxes
-        // BEGIN: com.azure.developer.devcenter.readme.createDevCenterClient
+public final class EnvironmentSamples {
+    public void environmentSamples() {
+
+        // BEGIN: com.azure.developer.devcenter.readme.environments
         String endpoint = Configuration.getGlobalConfiguration().get("DEVCENTER_ENDPOINT");
 
         // Build our clients
@@ -30,63 +27,20 @@ public final class ReadmeSamples {
                                 .endpoint(endpoint)
                                 .credential(new DefaultAzureCredentialBuilder().build())
                                 .buildClient();
-        // END: com.azure.developer.devcenter.readme.createDevCenterClient
+       
+        // BEGIN: com.azure.developer.devcenter.readme.getEnvironmentsClient
+        DeploymentEnvironmentsClient environmentsClient = devCenterClient.getDeploymentEnvironmentsClient();
+        // END: com.azure.developer.devcenter.readme.getEnvironmentsClient
 
-        // BEGIN: com.azure.developer.devcenter.readme.createDevBoxClient
-        DevBoxesClient devBoxClient =
-                        new DevBoxesClientBuilder()
-                                .endpoint(endpoint)
-                                .credential(new DefaultAzureCredentialBuilder().build())
-                                .buildClient();
-        // END: com.azure.developer.devcenter.readme.createDevBoxClient
-
-        // BEGIN: com.azure.developer.devcenter.readme.getProjectsAndPools
-        // Find available Projects and Pools
+        // Find available Projects 
         PagedIterable<DevCenterProject> projectListResponse = devCenterClient.listProjects();
         for (DevCenterProject project: projectListResponse) {
             System.out.println(project.getName());
         }
+
+        // Use the first project in the list
         DevCenterProject project = projectListResponse.iterator().next();
         String projectName = project.getName();
-
-        PagedIterable<DevBoxPool> poolListResponse = devBoxClient.listPools(projectName);
-        for (DevBoxPool pool: poolListResponse) {
-            System.out.println(pool.getName());
-        }
-        DevBoxPool pool = poolListResponse.iterator().next();
-        String poolName = pool.getName();
-        // END: com.azure.developer.devcenter.readme.getProjectsAndPools
-
-        // BEGIN: com.azure.developer.devcenter.readme.createAndConnectToDevBox
-        // Provision a Dev Box
-        SyncPoller<DevCenterOperationDetails, DevBox> devBoxCreateResponse =
-                        devBoxClient.beginCreateDevBox(projectName, "me", new DevBox("MyDevBox", poolName));
-        devBoxCreateResponse.waitForCompletion();
-        DevBox devBox = devBoxCreateResponse.getFinalResult();
-        String devBoxName = devBox.getName();
-        System.out.println("DevBox " + devBoxName + "finished provisioning with status " + devBox.getProvisioningState());
-
-        RemoteConnection remoteConnection =
-                        devBoxClient.getRemoteConnection(projectName, "me", devBoxName);
-        System.out.println(remoteConnection.getWebUrl());
-        // END: com.azure.developer.devcenter.readme.createAndConnectToDevBox
-
-        // BEGIN: com.azure.developer.devcenter.readme.deleteDevBox
-        // Tear down the Dev Box when we're finished:
-        SyncPoller<DevCenterOperationDetails, Void> devBoxDeleteResponse =
-                        devBoxClient.beginDeleteDevBox(projectName, "me", devBoxName);
-        devBoxDeleteResponse.waitForCompletion();
-        // END: com.azure.developer.devcenter.readme.deleteDevBox
-        // END: com.azure.developer.devcenter.readme.devboxes
-
-        // BEGIN: com.azure.developer.devcenter.readme.environments
-        // BEGIN: com.azure.developer.devcenter.readme.createEnvironmentsClient
-        DeploymentEnvironmentsClient environmentsClient =
-                            new DeploymentEnvironmentsClientBuilder()
-                                    .endpoint(endpoint)
-                                    .credential(new DefaultAzureCredentialBuilder().build())
-                                    .buildClient();
-        // END: com.azure.developer.devcenter.readme.createEnvironmentsClient
 
         // BEGIN: com.azure.developer.devcenter.readme.getEnvironmentDefinitionsAndTypes
         // Fetch available environment definitions and environment types
@@ -94,20 +48,29 @@ public final class ReadmeSamples {
         for (DevCenterCatalog catalog: catalogs) {
             System.out.println(catalog.getName());
         }
+
+        // Use the first catalog in the list
         String catalogName = catalogs.iterator().next().getName();
 
         PagedIterable<EnvironmentDefinition> environmentDefinitions = environmentsClient.listEnvironmentDefinitionsByCatalog(projectName, catalogName);
         for (EnvironmentDefinition environmentDefinition: environmentDefinitions) {
             System.out.println(environmentDefinition.getName());
         }
+
+        // Use the first environment definition in the list
         String envDefinitionName = environmentDefinitions.iterator().next().getName();
 
         PagedIterable<DevCenterEnvironmentType> environmentTypes = environmentsClient.listEnvironmentTypes(projectName);
         for (DevCenterEnvironmentType envType: environmentTypes) {
             System.out.println(envType.getName());
         }
+
+        // Use the first environment type in the list
         String envTypeName = environmentTypes.iterator().next().getName();
         // END: com.azure.developer.devcenter.readme.getEnvironmentDefinitionsAndTypes
+
+        System.out.println("Starting to create environment in project " + projectName + ", with catalog " + catalogName
+            + ", environment definition " + envDefinitionName + ", environment type " + envTypeName);
 
         // BEGIN: com.azure.developer.devcenter.readme.createEnvironment
         // Create an environment
@@ -116,14 +79,18 @@ public final class ReadmeSamples {
                         new DevCenterEnvironment("myEnvironmentName", envTypeName, catalogName, envDefinitionName));
         environmentCreateResponse.waitForCompletion();
         DevCenterEnvironment environment = environmentCreateResponse.getFinalResult();
-        String environmentName = environment.getName();
         // END: com.azure.developer.devcenter.readme.createEnvironment
 
+        String environmentName = environment.getName();
+        System.out.println("Environment " + environmentName + "finished provisioning with status " + environment.getProvisioningState());
+
+        System.out.println("Start deleting environment " + environmentName);
         // BEGIN: com.azure.developer.devcenter.readme.deleteEnvironment
         // Delete the environment when we're finished:
         SyncPoller<DevCenterOperationDetails, Void> environmentDeleteResponse =
                         environmentsClient.beginDeleteEnvironment(projectName, "me", environmentName);
         environmentDeleteResponse.waitForCompletion();
+        System.out.println("Done deleting environment" + environmentName);
         // END: com.azure.developer.devcenter.readme.deleteEnvironment
         // END: com.azure.developer.devcenter.readme.environments
     }

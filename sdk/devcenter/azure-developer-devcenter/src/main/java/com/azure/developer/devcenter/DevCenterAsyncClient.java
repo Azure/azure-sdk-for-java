@@ -23,6 +23,8 @@ import com.azure.developer.devcenter.models.DevCenterProject;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import com.azure.developer.devcenter.implementation.DeploymentEnvironmentsClientImpl;
+import com.azure.developer.devcenter.implementation.DevBoxesClientImpl;
 
 /**
  * Initializes a new instance of the asynchronous DevCenterClient type.
@@ -41,6 +43,27 @@ public final class DevCenterAsyncClient {
     @Generated
     DevCenterAsyncClient(DevCenterClientImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Initializes a new instance of DevBoxesAsyncClient from DevCenterAsyncClient.
+     * 
+     * @return Dev Boxes Async Client  
+     */
+    public DevBoxesAsyncClient getDevBoxesAsyncClient() {
+        return new DevBoxesAsyncClient(new DevBoxesClientImpl(serviceClient.getHttpPipeline(),
+            serviceClient.getSerializerAdapter(), serviceClient.getEndpoint(), serviceClient.getServiceVersion()));
+    }
+
+    /**
+     * Initializes a new instance of DeploymentEnvironmentsAsyncClient from DevCenterAsyncClient.
+     * 
+     * @return Deployment Environments Async Client  
+     */
+    public DeploymentEnvironmentsAsyncClient getDeploymentEnvironmentsAsyncClient() {
+        return new DeploymentEnvironmentsAsyncClient(
+            new DeploymentEnvironmentsClientImpl(serviceClient.getHttpPipeline(), serviceClient.getSerializerAdapter(),
+                serviceClient.getEndpoint(), serviceClient.getServiceVersion()));
     }
 
     /**

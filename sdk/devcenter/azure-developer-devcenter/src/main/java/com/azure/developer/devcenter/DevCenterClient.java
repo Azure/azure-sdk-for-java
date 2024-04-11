@@ -17,6 +17,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.developer.devcenter.implementation.DevCenterClientImpl;
 import com.azure.developer.devcenter.models.DevCenterProject;
+import com.azure.developer.devcenter.implementation.DeploymentEnvironmentsClientImpl;
+import com.azure.developer.devcenter.implementation.DevBoxesClientImpl;
 
 /**
  * Initializes a new instance of the synchronous DevCenterClient type.
@@ -35,6 +37,26 @@ public final class DevCenterClient {
     @Generated
     DevCenterClient(DevCenterClientImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Initializes a new instance of DevBoxesClient from DevCenterClient.
+     * 
+     * @return Dev Boxes Client  
+     */
+    public DevBoxesClient getDevBoxesClient() {
+        return new DevBoxesClient(new DevBoxesClientImpl(serviceClient.getHttpPipeline(),
+            serviceClient.getSerializerAdapter(), serviceClient.getEndpoint(), serviceClient.getServiceVersion()));
+    }
+
+    /**
+     * Initializes a new instance of DeploymentEnvironmentsClient from DevCenterClient.
+     * * 
+     * @return Deployment Environments Client  
+     */
+    public DeploymentEnvironmentsClient getDeploymentEnvironmentsClient() {
+        return new DeploymentEnvironmentsClient(new DeploymentEnvironmentsClientImpl(serviceClient.getHttpPipeline(),
+            serviceClient.getSerializerAdapter(), serviceClient.getEndpoint(), serviceClient.getServiceVersion()));
     }
 
     /**
