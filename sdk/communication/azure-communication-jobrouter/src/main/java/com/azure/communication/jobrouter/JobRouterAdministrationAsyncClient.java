@@ -1008,7 +1008,8 @@ public final class JobRouterAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getExceptionPolicyWithResponse(String exceptionPolicyId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getExceptionPolicyWithResponse(String exceptionPolicyId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getExceptionPolicyWithResponseAsync(exceptionPolicyId, requestOptions);
     }
 
@@ -1540,7 +1541,6 @@ public final class JobRouterAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExceptionPolicy> getExceptionPolicy(String exceptionPolicyId) {
-        // Generated convenience method for getExceptionPolicyWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getExceptionPolicyWithResponse(exceptionPolicyId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ExceptionPolicy.class));

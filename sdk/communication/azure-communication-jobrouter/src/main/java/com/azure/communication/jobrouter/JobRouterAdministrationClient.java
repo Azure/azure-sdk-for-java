@@ -1039,7 +1039,8 @@ public final class JobRouterAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getExceptionPolicyWithResponse(String exceptionPolicyId, RequestOptions requestOptions) {
+    public Response<BinaryData> getExceptionPolicyWithResponse(String exceptionPolicyId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getExceptionPolicyWithResponse(exceptionPolicyId, requestOptions);
     }
 

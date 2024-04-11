@@ -424,9 +424,23 @@
 		{
           "regex": true,
           "code": "java\\.method\\.returnTypeTypeParametersChanged",
-          "old": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
           "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
-          "justification": "Return RouterJob rather than BinaryData."
+          "justification": "Return Router models rather than BinaryData."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.parameterTypeChanged",
+          "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
+          "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Accept Router models rather than BinaryData."
+        },
+		{
+          "regex": true,
+          "code": "java\\.method\\.returnTypeChanged",
+          "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
+          "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Return Router models rather than BinaryData."
         },
         {
           "ignore": true,
