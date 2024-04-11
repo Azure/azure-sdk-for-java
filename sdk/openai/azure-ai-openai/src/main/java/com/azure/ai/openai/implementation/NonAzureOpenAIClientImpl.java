@@ -67,7 +67,7 @@ public final class NonAzureOpenAIClientImpl {
     /**
      * This is the endpoint that non-azure OpenAI supports. Currently, it has only v1 version.
      */
-    public String openAiEndpoint = "https://api.openai.com/v1";
+    private String openAiEndpoint = "https://api.openai.com/v1";
 
     /**
      * Mapper used to add the `modelId` into the request body for an nonAzure OpenAI request
