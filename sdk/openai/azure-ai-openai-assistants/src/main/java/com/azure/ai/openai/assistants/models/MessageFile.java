@@ -54,7 +54,11 @@ public final class MessageFile implements JsonSerializable<MessageFile> {
     @Generated
     private MessageFile(String id, OffsetDateTime createdAt, String messageId) {
         this.id = id;
-        this.createdAt = createdAt.toEpochSecond();
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
         this.messageId = messageId;
     }
 

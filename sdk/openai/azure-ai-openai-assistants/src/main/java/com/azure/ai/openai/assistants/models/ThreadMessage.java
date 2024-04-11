@@ -202,7 +202,11 @@ public final class ThreadMessage implements JsonSerializable<ThreadMessage> {
     private ThreadMessage(String id, OffsetDateTime createdAt, String threadId, MessageRole role,
         List<MessageContent> content, List<String> fileIds, Map<String, String> metadata) {
         this.id = id;
-        this.createdAt = createdAt.toEpochSecond();
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
         this.threadId = threadId;
         this.role = role;
         this.content = content;
