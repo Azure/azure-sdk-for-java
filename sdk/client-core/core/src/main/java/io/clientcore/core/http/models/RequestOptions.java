@@ -113,8 +113,6 @@ import java.util.function.Consumer;
  * <!-- end io.clientcore.core.http.rest.requestoptions.postrequest -->
  */
 public final class RequestOptions {
-    public static final RequestOptions NONE = new RequestOptions();
-
     private ClientLogger logger;
     private Consumer<HttpRequest> requestCallback = request -> {
     };

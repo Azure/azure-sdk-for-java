@@ -55,7 +55,7 @@ public class HttpRequest {
         this.httpMethod = httpMethod;
         this.url = url;
         this.headers = new HttpHeaders();
-        this.requestOptions = RequestOptions.NONE;
+        this.requestOptions = new RequestOptions();
     }
 
     /**
@@ -73,7 +73,7 @@ public class HttpRequest {
         setUrl(url);
 
         this.headers = new HttpHeaders();
-        this.requestOptions = RequestOptions.NONE;
+        this.requestOptions = new RequestOptions();
     }
 
     /**
