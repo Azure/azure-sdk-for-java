@@ -5,12 +5,15 @@ package com.azure.cosmos.kafka.connect;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.kafka.connect.implementation.CosmosAuthTypes;
+import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.connect.json.JsonDeserializer;
 import org.rnorth.ducttape.unreliables.Unreliables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +26,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -58,7 +62,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
         if (useMasterKey) {
             sourceConnectorConfig.put("kafka.connect.cosmos.accountKey", KafkaCosmosTestConfigurations.MASTER_KEY);
         } else {
-            sourceConnectorConfig.put("kafka.connect.cosmos.auth.type", CosmosAuthTypes.SERVICE_PRINCIPAL.getName());
+            sourceConnectorConfig.put("kafka.connect.cosmos.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
             sourceConnectorConfig.put("kafka.connect.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
             sourceConnectorConfig.put("kafka.connect.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
             sourceConnectorConfig.put("kafka.connect.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
@@ -85,7 +89,12 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             kafkaCosmosConnectContainer.registerConnector(connectorName, sourceConnectorConfig);
 
             logger.info("Getting consumer and subscribe to topic {}", singlePartitionContainerName);
-            KafkaConsumer<String, JsonNode> kafkaConsumer = kafkaCosmosConnectContainer.getConsumer();
+
+            Properties consumerProperties = kafkaCosmosConnectContainer.getConsumerProperties();
+            consumerProperties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+            consumerProperties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class.getName());
+            KafkaConsumer<String, JsonNode> kafkaConsumer = new KafkaConsumer<>(consumerProperties);
+
             kafkaConsumer.subscribe(
                 Arrays.asList(
                     topicName,

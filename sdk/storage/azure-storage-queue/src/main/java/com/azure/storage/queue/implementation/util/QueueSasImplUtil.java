@@ -139,7 +139,7 @@ public class QueueSasImplUtil {
      */
     private String getCanonicalName(String account) {
         // Queue: "/queue/account/queuename"
-        return String.join("", new String[] { "/queue/", account, "/", queueName });
+        return "/queue/" + account + "/" + queueName;
     }
 
     private String stringToSign(String canonicalName) {
