@@ -31,7 +31,7 @@ public class FunctionEnumParameter implements JsonSerializable<FunctionEnumParam
     public static FunctionEnumParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<String> enumValues = null;
-            while(reader.nextToken() != JsonToken.END_OBJECT) {
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("enum".equals(fieldName)) {

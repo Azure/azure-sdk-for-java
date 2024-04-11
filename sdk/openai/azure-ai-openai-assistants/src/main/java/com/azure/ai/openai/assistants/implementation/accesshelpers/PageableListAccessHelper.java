@@ -35,7 +35,7 @@ public final class PageableListAccessHelper {
          * @return a new instance of {@link PageableList}
          * @param <T> the type of item for which a page of items is being created
          */
-         <T> PageableList<T> create(List<T> data, String firstId, String lastId, boolean hasMore);
+        <T> PageableList<T> create(List<T> data, String firstId, String lastId, boolean hasMore);
     }
 
     /**
@@ -58,7 +58,7 @@ public final class PageableListAccessHelper {
      * @param <T> the type of item for which a page of items is being created
      */
     public static <T> PageableList <T> create(List<T> data, String firstId, String lastId, boolean hasMore) {
-        if(accessor == null) {
+        if (accessor == null) {
             new PageableList<>();
         }
         assert accessor != null;
@@ -100,7 +100,7 @@ public final class PageableListAccessHelper {
         });
     }
 
-    private PageableListAccessHelper(){
+    private PageableListAccessHelper() {
     }
 
 }

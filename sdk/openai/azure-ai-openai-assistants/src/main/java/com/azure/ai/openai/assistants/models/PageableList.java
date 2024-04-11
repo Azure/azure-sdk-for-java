@@ -5,13 +5,7 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.ai.openai.assistants.implementation.accesshelpers.PageableListAccessHelper;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.http.rest.Page;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -29,7 +23,7 @@ public final class PageableList<T>  {
     /*
      * The object type, which is always list.
      */
-    private String object = "list";
+    private final String object = "list";
 
     /*
      * The requested list of items.

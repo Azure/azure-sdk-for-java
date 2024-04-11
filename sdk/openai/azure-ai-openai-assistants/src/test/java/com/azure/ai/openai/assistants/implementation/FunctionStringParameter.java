@@ -30,7 +30,7 @@ public class FunctionStringParameter implements JsonSerializable<FunctionStringP
     public static FunctionStringParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String description = null;
-            while(reader.nextToken() != JsonToken.END_OBJECT) {
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("description".equals(fieldName)) {
