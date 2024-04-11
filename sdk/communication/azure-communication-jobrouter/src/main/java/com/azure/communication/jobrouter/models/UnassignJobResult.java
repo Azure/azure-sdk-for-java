@@ -17,13 +17,13 @@ public final class UnassignJobResult {
      * Id of an unassigned job.
      */
     @JsonProperty(value = "jobId")
-    private String jobId;
+    private final String jobId;
 
     /*
      * The number of times a job is unassigned. At a maximum 3.
      */
     @JsonProperty(value = "unassignmentCount")
-    private int unassignmentCount;
+    private final int unassignmentCount;
 
     /**
      * Creates an instance of UnassignJobResult class.

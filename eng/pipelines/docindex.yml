@@ -32,8 +32,6 @@ jobs:
       # Pull and build the docker image.
       - template: /eng/common/pipelines/templates/steps/docker-pull-image.yml
         parameters:
-          ContainerRegistryClientId: $(azuresdkimages-cr-clientid)
-          ContainerRegistryClientSecret: $(azuresdkimages-cr-clientsecret)
           ImageId: "$(DocValidationImageId)"
 
       - task: Powershell@2

@@ -37,23 +37,17 @@ public final class AccountSasSignatureValues {
     }
 
     private SasProtocol protocol;
-
     private OffsetDateTime startTime;
-
     private OffsetDateTime expiryTime;
-
     private String permissions;
-
     private SasIpRange sasIpRange;
-
     private String services;
-
     private String resourceTypes;
-
     private String encryptionScope;
 
     /**
      * Initializes a new {@link AccountSasSignatureValues} object.
+     *
      * @deprecated Please use {@link #AccountSasSignatureValues(OffsetDateTime, AccountSasPermission, AccountSasService,
      * AccountSasResourceType)}
      */
@@ -63,6 +57,7 @@ public final class AccountSasSignatureValues {
 
     /**
      * Initializes a new {@link AccountSasSignatureValues} object.
+     *
      * @param expiryTime The time after which the SAS will no longer work.
      * @param permissions {@link AccountSasPermission} allowed by the SAS.
      * @param services {@link AccountSasService} targeted by the SAS.
@@ -82,6 +77,8 @@ public final class AccountSasSignatureValues {
     }
 
     /**
+     * Gets the service version that is targeted, if {@code null} or empty the latest service version targeted by the
+     * library will be used.
      *
      * @return the service version that is targeted, if {@code null} or empty the latest service version targeted by the
      * library will be used.
@@ -106,6 +103,8 @@ public final class AccountSasSignatureValues {
     }
 
     /**
+     * Gets the {@link SasProtocol} which determines the HTTP protocol that will be used.
+     *
      * @return the {@link SasProtocol} which determines the HTTP protocol that will be used.
      */
     public SasProtocol getProtocol() {
@@ -124,6 +123,8 @@ public final class AccountSasSignatureValues {
     }
 
     /**
+     * Gets when the SAS will take effect.
+     *
      * @return when the SAS will take effect.
      */
     public OffsetDateTime getStartTime() {
@@ -142,6 +143,8 @@ public final class AccountSasSignatureValues {
     }
 
     /**
+     * Gets the time after which the SAS will no longer work.
+     *
      * @return the time after which the SAS will no longer work.
      */
     public OffsetDateTime getExpiryTime() {
@@ -190,6 +193,7 @@ public final class AccountSasSignatureValues {
     }
 
     /**
+     * Gets the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      * @return the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      */
     public SasIpRange getSasIpRange() {
@@ -199,9 +203,9 @@ public final class AccountSasSignatureValues {
     /**
      * Sets the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      *
-     * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-service-sas#specifying-ip-address-or-ip-range>Specifying IP Address or IP range</a>
      * @param sasIpRange Allowed IP range to set
      * @return the updated AccountSasSignatureValues object.
+     * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-service-sas#specifying-ip-address-or-ip-range>Specifying IP Address or IP range</a>
      */
     public AccountSasSignatureValues setSasIpRange(SasIpRange sasIpRange) {
         this.sasIpRange = sasIpRange;
@@ -209,6 +213,9 @@ public final class AccountSasSignatureValues {
     }
 
     /**
+     * Gets the services accessible with this SAS. Please refer to {@link AccountSasService} to help determine which
+     * services are accessible.
+     *
      * @return the services accessible with this SAS. Please refer to {@link AccountSasService} to help determine which
      * services are accessible.
      */
@@ -231,6 +238,9 @@ public final class AccountSasSignatureValues {
     }
 
     /**
+     * Gets the resource types accessible with this SAS. Please refer to {@link AccountSasResourceType} to help
+     * determine the resource types that are accessible.
+     *
      * @return the resource types accessible with this SAS. Please refer to {@link AccountSasResourceType} to help
      * determine the resource types that are accessible.
      */
@@ -254,6 +264,8 @@ public final class AccountSasSignatureValues {
     }
 
     /**
+     * Gets the encryption scope that will be applied to any write operations performed with the sas
+     *
      * @return An encryption scope that will be applied to any write operations performed with the sas
      */
     public String getEncryptionScope() {
@@ -290,14 +302,12 @@ public final class AccountSasSignatureValues {
      *
      * <p>For samples, see class level JavaDocs.</p>
      *
-     * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-account-sas>Create an account SAS</a>
-     *
      * @param storageSharedKeyCredentials Credentials for the storage account.
      * @return A new {@link AccountSasQueryParameters} used for authenticating requests.
-     *
      * @throws RuntimeException If the HMAC-SHA256 signature for {@code storageSharedKeyCredentials} fails to generate.
      * @throws NullPointerException If any of {@code storageSharedKeyCredentials}, {@code services},
      * {@code resourceTypes}, {@code expiryTime}, or {@code permissions} is null.
+     * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-account-sas>Create an account SAS</a>
      * @deprecated Please use the generateAccountSas(AccountSasSignatureValues) method on the desired service client
      * after initializing {@link AccountSasSignatureValues}.
      */
@@ -313,22 +323,20 @@ public final class AccountSasSignatureValues {
         // Signature is generated on the un-url-encoded values.
         String signature = storageSharedKeyCredentials.computeHmac256(stringToSign(storageSharedKeyCredentials));
 
-        return new AccountSasQueryParameters(VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN, this.services, resourceTypes,
-            this.protocol, this.startTime, this.expiryTime, this.sasIpRange, this.permissions, signature);
+        return new AccountSasQueryParameters(VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN, this.services,
+            resourceTypes, this.protocol, this.startTime, this.expiryTime, this.sasIpRange, this.permissions,
+            signature);
     }
 
     private String stringToSign(final StorageSharedKeyCredential storageSharedKeyCredentials) {
-        return String.join("\n",
-            storageSharedKeyCredentials.getAccountName(),
+        return String.join("\n", storageSharedKeyCredentials.getAccountName(),
             AccountSasPermission.parse(this.permissions).toString(), // guarantees ordering
-            this.services,
-            resourceTypes,
+            this.services, resourceTypes,
             this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
             Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-            this.protocol == null ? "" : this.protocol.toString(),
-            VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN,
-            "" // Account SAS requires an additional newline character
+            this.protocol == null ? "" : this.protocol.toString(), VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN, ""
+            // Account SAS requires an additional newline character
         );
     }
 }

@@ -17,19 +17,19 @@ public final class AcceptJobOfferResult {
      * Id of job assignment that assigns a worker that has accepted an offer to a job.
      */
     @JsonProperty(value = "assignmentId")
-    private String assignmentId;
+    private final String assignmentId;
 
     /*
      * Id of the job assigned.
      */
     @JsonProperty(value = "jobId")
-    private String jobId;
+    private final String jobId;
 
     /*
      * Id of the worker that has been assigned this job.
      */
     @JsonProperty(value = "workerId")
-    private String workerId;
+    private final String workerId;
 
     /**
      * Creates an instance of AcceptJobOfferResult class.

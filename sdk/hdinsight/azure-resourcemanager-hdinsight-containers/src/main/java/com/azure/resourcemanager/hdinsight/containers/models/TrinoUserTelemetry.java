@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** User telemetry. */
+/**
+ * User telemetry.
+ */
 @Fluent
 public final class TrinoUserTelemetry {
     /*
@@ -16,13 +18,15 @@ public final class TrinoUserTelemetry {
     @JsonProperty(value = "storage")
     private TrinoTelemetryConfig storage;
 
-    /** Creates an instance of TrinoUserTelemetry class. */
+    /**
+     * Creates an instance of TrinoUserTelemetry class.
+     */
     public TrinoUserTelemetry() {
     }
 
     /**
      * Get the storage property: Trino user telemetry definition.
-     *
+     * 
      * @return the storage value.
      */
     public TrinoTelemetryConfig storage() {
@@ -31,7 +35,7 @@ public final class TrinoUserTelemetry {
 
     /**
      * Set the storage property: Trino user telemetry definition.
-     *
+     * 
      * @param storage the storage value to set.
      * @return the TrinoUserTelemetry object itself.
      */
@@ -42,7 +46,7 @@ public final class TrinoUserTelemetry {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,18 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterPoolResourcePropertiesClusterPoolProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPoolResourcePropertiesClusterPoolProfile model =
-            BinaryData
-                .fromString("{\"clusterPoolVersion\":\"a\"}")
+        ClusterPoolResourcePropertiesClusterPoolProfile model
+            = BinaryData.fromString("{\"clusterPoolVersion\":\"dcc\"}")
                 .toObject(ClusterPoolResourcePropertiesClusterPoolProfile.class);
-        Assertions.assertEquals("a", model.clusterPoolVersion());
+        Assertions.assertEquals("dcc", model.clusterPoolVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPoolResourcePropertiesClusterPoolProfile model =
-            new ClusterPoolResourcePropertiesClusterPoolProfile().withClusterPoolVersion("a");
+        ClusterPoolResourcePropertiesClusterPoolProfile model
+            = new ClusterPoolResourcePropertiesClusterPoolProfile().withClusterPoolVersion("dcc");
         model = BinaryData.fromObject(model).toObject(ClusterPoolResourcePropertiesClusterPoolProfile.class);
-        Assertions.assertEquals("a", model.clusterPoolVersion());
+        Assertions.assertEquals("dcc", model.clusterPoolVersion());
     }
 }

@@ -18,25 +18,25 @@ public final class RouterWorkerAssignment {
      * Id of the assignment.
      */
     @JsonProperty(value = "assignmentId")
-    private String assignmentId;
+    private final String assignmentId;
 
     /*
      * Id of the job assigned.
      */
     @JsonProperty(value = "jobId")
-    private String jobId;
+    private final String jobId;
 
     /*
      * The amount of capacity this assignment has consumed on the worker.
      */
     @JsonProperty(value = "capacityCost")
-    private int capacityCost;
+    private final int capacityCost;
 
     /*
      * The assignment time of the job in UTC.
      */
     @JsonProperty(value = "assignedAt")
-    private OffsetDateTime assignedAt;
+    private final OffsetDateTime assignedAt;
 
     /**
      * Creates an instance of RouterWorkerAssignment class.

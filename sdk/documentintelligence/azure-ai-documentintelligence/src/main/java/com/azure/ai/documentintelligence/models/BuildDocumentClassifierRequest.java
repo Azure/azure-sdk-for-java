@@ -6,42 +6,41 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Request body to build a new custom document classifier.
  */
 @Fluent
-public final class BuildDocumentClassifierRequest {
+public final class BuildDocumentClassifierRequest implements JsonSerializable<BuildDocumentClassifierRequest> {
     /*
      * Unique document classifier name.
      */
     @Generated
-    @JsonProperty(value = "classifierId")
-    private String classifierId;
+    private final String classifierId;
 
     /*
      * Document classifier description.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Base classifierId on top of which to train the classifier.
      */
     @Generated
-    @JsonProperty(value = "baseClassifierId")
     private String baseClassifierId;
 
     /*
      * List of document types to classify against.
      */
     @Generated
-    @JsonProperty(value = "docTypes")
-    private Map<String, ClassifierDocumentTypeDetails> docTypes;
+    private final Map<String, ClassifierDocumentTypeDetails> docTypes;
 
     /**
      * Creates an instance of BuildDocumentClassifierRequest class.
@@ -50,9 +49,7 @@ public final class BuildDocumentClassifierRequest {
      * @param docTypes the docTypes value to set.
      */
     @Generated
-    @JsonCreator
-    public BuildDocumentClassifierRequest(@JsonProperty(value = "classifierId") String classifierId,
-        @JsonProperty(value = "docTypes") Map<String, ClassifierDocumentTypeDetails> docTypes) {
+    public BuildDocumentClassifierRequest(String classifierId, Map<String, ClassifierDocumentTypeDetails> docTypes) {
         this.classifierId = classifierId;
         this.docTypes = docTypes;
     }
@@ -119,5 +116,60 @@ public final class BuildDocumentClassifierRequest {
     @Generated
     public Map<String, ClassifierDocumentTypeDetails> getDocTypes() {
         return this.docTypes;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("classifierId", this.classifierId);
+        jsonWriter.writeMapField("docTypes", this.docTypes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("baseClassifierId", this.baseClassifierId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BuildDocumentClassifierRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BuildDocumentClassifierRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BuildDocumentClassifierRequest.
+     */
+    @Generated
+    public static BuildDocumentClassifierRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String classifierId = null;
+            Map<String, ClassifierDocumentTypeDetails> docTypes = null;
+            String description = null;
+            String baseClassifierId = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("classifierId".equals(fieldName)) {
+                    classifierId = reader.getString();
+                } else if ("docTypes".equals(fieldName)) {
+                    docTypes = reader.readMap(reader1 -> ClassifierDocumentTypeDetails.fromJson(reader1));
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("baseClassifierId".equals(fieldName)) {
+                    baseClassifierId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BuildDocumentClassifierRequest deserializedBuildDocumentClassifierRequest
+                = new BuildDocumentClassifierRequest(classifierId, docTypes);
+            deserializedBuildDocumentClassifierRequest.description = description;
+            deserializedBuildDocumentClassifierRequest.baseClassifierId = baseClassifierId;
+
+            return deserializedBuildDocumentClassifierRequest;
+        });
     }
 }

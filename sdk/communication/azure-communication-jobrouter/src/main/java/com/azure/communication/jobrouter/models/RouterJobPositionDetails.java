@@ -17,31 +17,31 @@ public final class RouterJobPositionDetails {
      * Id of the job these details are about.
      */
     @JsonProperty(value = "jobId")
-    private String jobId;
+    private final String jobId;
 
     /*
      * Position of the job in question within that queue.
      */
     @JsonProperty(value = "position")
-    private int position;
+    private final int position;
 
     /*
      * Id of the queue this job is enqueued in.
      */
     @JsonProperty(value = "queueId")
-    private String queueId;
+    private final String queueId;
 
     /*
      * Length of the queue: total number of enqueued jobs.
      */
     @JsonProperty(value = "queueLength")
-    private int queueLength;
+    private final int queueLength;
 
     /*
      * Estimated wait time of the job rounded up to the nearest minute.
      */
     @JsonProperty(value = "estimatedWaitTimeMinutes")
-    private double estimatedWaitTimeMinutes;
+    private final double estimatedWaitTimeMinutes;
 
     /**
      * Creates an instance of RouterJobPositionDetails class.

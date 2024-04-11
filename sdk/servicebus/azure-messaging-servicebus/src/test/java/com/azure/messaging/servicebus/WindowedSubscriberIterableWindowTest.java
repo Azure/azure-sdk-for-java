@@ -655,7 +655,8 @@ public final class WindowedSubscriberIterableWindowTest {
         final IterableStream<Integer> window0Iterable = r0.getWindowIterable();
         final IterableStream<Integer> window1Iterable = r1.getWindowIterable();
 
-
+        // When time out triggers, it will close the window0Iterable stream, which will end the blocking collect() call
+        // by returning "empty" list since "no events were received" within the timeout.
         final List<Integer> list0 = window0Iterable.stream().collect(Collectors.toList());
         Assertions.assertEquals(0, list0.size());
 
@@ -694,6 +695,8 @@ public final class WindowedSubscriberIterableWindowTest {
         upstream.next(1);
         upstream.next(2);
 
+        // When time out triggers, it will close the window0Iterable stream, which will end the blocking collect() call
+        // and return the list, list0, with events received so far (which is less than demanded).
         final List<Integer> list0 = window0Iterable.stream().collect(Collectors.toList());
         Assertions.assertEquals(Arrays.asList(1, 2), list0);
 

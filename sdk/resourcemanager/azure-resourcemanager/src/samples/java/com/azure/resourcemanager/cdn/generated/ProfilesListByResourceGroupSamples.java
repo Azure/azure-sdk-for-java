@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-/** Samples for Profiles ListByResourceGroup. */
+/**
+ * Samples for Profiles ListByResourceGroup.
+ */
 public final class ProfilesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Profiles_ListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/Profiles_ListByResourceGroup.json
      */
     /**
      * Sample code: Profiles_ListByResourceGroup.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void profilesListByResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cdnProfiles()
-            .manager()
-            .serviceClient()
-            .getProfiles()
-            .listByResourceGroup("RG", com.azure.core.util.Context.NONE);
+        azure.cdnProfiles().manager().serviceClient().getProfiles().listByResourceGroup("RG",
+            com.azure.core.util.Context.NONE);
     }
 }

@@ -24,13 +24,13 @@ public final class RouterJobOffer {
      * Id of the job.
      */
     @JsonProperty(value = "jobId")
-    private String jobId;
+    private final String jobId;
 
     /*
      * The capacity cost consumed by the job offer.
      */
     @JsonProperty(value = "capacityCost")
-    private int capacityCost;
+    private final int capacityCost;
 
     /*
      * Timestamp when the offer was created in UTC.

@@ -30,7 +30,7 @@ public final class RouterJobAssignment {
      * Timestamp when the job was assigned to a worker in UTC.
      */
     @JsonProperty(value = "assignedAt")
-    private OffsetDateTime assignedAt;
+    private final OffsetDateTime assignedAt;
 
     /*
      * Timestamp when the job was marked as completed after being assigned in UTC.
