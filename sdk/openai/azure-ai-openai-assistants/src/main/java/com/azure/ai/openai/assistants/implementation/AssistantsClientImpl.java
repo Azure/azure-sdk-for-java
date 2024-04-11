@@ -2619,11 +2619,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -2696,11 +2696,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -2773,11 +2773,11 @@ public final class AssistantsClientImpl {
      *                 String (Required)
      *             ]
      *             created_at: long (Required)
-     *             expires_at: OffsetDateTime (Required)
-     *             started_at: OffsetDateTime (Required)
-     *             completed_at: OffsetDateTime (Required)
-     *             cancelled_at: OffsetDateTime (Required)
-     *             failed_at: OffsetDateTime (Required)
+     *             expires_at: Long (Required)
+     *             started_at: Long (Required)
+     *             completed_at: Long (Required)
+     *             cancelled_at: Long (Required)
+     *             failed_at: Long (Required)
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
@@ -2854,11 +2854,11 @@ public final class AssistantsClientImpl {
      *                 String (Required)
      *             ]
      *             created_at: long (Required)
-     *             expires_at: OffsetDateTime (Required)
-     *             started_at: OffsetDateTime (Required)
-     *             completed_at: OffsetDateTime (Required)
-     *             cancelled_at: OffsetDateTime (Required)
-     *             failed_at: OffsetDateTime (Required)
+     *             expires_at: Long (Required)
+     *             started_at: Long (Required)
+     *             completed_at: Long (Required)
+     *             cancelled_at: Long (Required)
+     *             failed_at: Long (Required)
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
@@ -2913,11 +2913,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -2971,11 +2971,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3036,11 +3036,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3105,11 +3105,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3177,11 +3177,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3250,11 +3250,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3308,11 +3308,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3366,11 +3366,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3456,11 +3456,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3548,11 +3548,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3596,10 +3596,10 @@ public final class AssistantsClientImpl {
      *         message: String (Required)
      *     }
      *     created_at: long (Required)
-     *     expired_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expired_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3645,10 +3645,10 @@ public final class AssistantsClientImpl {
      *         message: String (Required)
      *     }
      *     created_at: long (Required)
-     *     expired_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expired_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3714,10 +3714,10 @@ public final class AssistantsClientImpl {
      *                 message: String (Required)
      *             }
      *             created_at: long (Required)
-     *             expired_at: OffsetDateTime (Required)
-     *             completed_at: OffsetDateTime (Required)
-     *             cancelled_at: OffsetDateTime (Required)
-     *             failed_at: OffsetDateTime (Required)
+     *             expired_at: Long (Required)
+     *             completed_at: Long (Required)
+     *             cancelled_at: Long (Required)
+     *             failed_at: Long (Required)
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
@@ -3788,10 +3788,10 @@ public final class AssistantsClientImpl {
      *                 message: String (Required)
      *             }
      *             created_at: long (Required)
-     *             expired_at: OffsetDateTime (Required)
-     *             completed_at: OffsetDateTime (Required)
-     *             cancelled_at: OffsetDateTime (Required)
-     *             failed_at: OffsetDateTime (Required)
+     *             expired_at: Long (Required)
+     *             completed_at: Long (Required)
+     *             cancelled_at: Long (Required)
+     *             failed_at: Long (Required)
      *             metadata (Required): {
      *                 String: String (Required)
      *             }

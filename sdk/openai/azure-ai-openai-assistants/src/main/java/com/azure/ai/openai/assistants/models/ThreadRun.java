@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -99,31 +98,31 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
      * The Unix timestamp, in seconds, representing when this item expires.
      */
     @Generated
-    private final OffsetDateTime expiresAt;
+    private final Long expiresAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this item was started.
      */
     @Generated
-    private final OffsetDateTime startedAt;
+    private final Long startedAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this completed.
      */
     @Generated
-    private final OffsetDateTime completedAt;
+    private final Long completedAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this was cancelled.
      */
     @Generated
-    private final OffsetDateTime cancelledAt;
+    private final Long cancelledAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this failed.
      */
     @Generated
-    private final OffsetDateTime failedAt;
+    private final Long failedAt;
 
     /*
      * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
@@ -258,7 +257,10 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
      */
     @Generated
     public OffsetDateTime getExpiresAt() {
-        return this.expiresAt;
+        if (this.expiresAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.expiresAt), ZoneOffset.UTC);
     }
 
     /**
@@ -268,7 +270,10 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
      */
     @Generated
     public OffsetDateTime getStartedAt() {
-        return this.startedAt;
+        if (this.startedAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.startedAt), ZoneOffset.UTC);
     }
 
     /**
@@ -278,7 +283,10 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
      */
     @Generated
     public OffsetDateTime getCompletedAt() {
-        return this.completedAt;
+        if (this.completedAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.completedAt), ZoneOffset.UTC);
     }
 
     /**
@@ -288,7 +296,10 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
      */
     @Generated
     public OffsetDateTime getCancelledAt() {
-        return this.cancelledAt;
+        if (this.cancelledAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.cancelledAt), ZoneOffset.UTC);
     }
 
     /**
@@ -298,7 +309,10 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
      */
     @Generated
     public OffsetDateTime getFailedAt() {
-        return this.failedAt;
+        if (this.failedAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.failedAt), ZoneOffset.UTC);
     }
 
     /**
@@ -348,14 +362,18 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
         this.tools = tools;
         this.fileIds = fileIds;
         this.createdAt = createdAt.toEpochSecond();
-        this.expiresAt = expiresAt;
-        this.startedAt = startedAt;
-        this.completedAt = completedAt;
-        this.cancelledAt = cancelledAt;
-        this.failedAt = failedAt;
+        this.expiresAt = expiresAt.toEpochSecond();
+        this.startedAt = startedAt.toEpochSecond();
+        this.completedAt = completedAt.toEpochSecond();
+        this.cancelledAt = cancelledAt.toEpochSecond();
+        this.failedAt = failedAt.toEpochSecond();
         this.metadata = metadata;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -370,16 +388,11 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("file_ids", this.fileIds, (writer, element) -> writer.writeString(element));
         jsonWriter.writeLongField("created_at", this.createdAt);
-        jsonWriter.writeStringField("expires_at",
-            this.expiresAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiresAt));
-        jsonWriter.writeStringField("started_at",
-            this.startedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startedAt));
-        jsonWriter.writeStringField("completed_at",
-            this.completedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.completedAt));
-        jsonWriter.writeStringField("cancelled_at",
-            this.cancelledAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.cancelledAt));
-        jsonWriter.writeStringField("failed_at",
-            this.failedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.failedAt));
+        jsonWriter.writeNumberField("expires_at", this.expiresAt);
+        jsonWriter.writeNumberField("started_at", this.startedAt);
+        jsonWriter.writeNumberField("completed_at", this.completedAt);
+        jsonWriter.writeNumberField("cancelled_at", this.cancelledAt);
+        jsonWriter.writeNumberField("failed_at", this.failedAt);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("required_action", this.requiredAction);
         return jsonWriter.writeEndObject();
@@ -394,6 +407,7 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ThreadRun.
      */
+    @Generated
     public static ThreadRun fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
@@ -437,15 +451,32 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
                 } else if ("created_at".equals(fieldName)) {
                     createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
                 } else if ("expires_at".equals(fieldName)) {
-                    expiresAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    Long expiresAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (expiresAtHolder != null) {
+                        expiresAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(expiresAtHolder), ZoneOffset.UTC);
+                    }
                 } else if ("started_at".equals(fieldName)) {
-                    startedAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    Long startedAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (startedAtHolder != null) {
+                        startedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(startedAtHolder), ZoneOffset.UTC);
+                    }
                 } else if ("completed_at".equals(fieldName)) {
-                    completedAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    Long completedAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (completedAtHolder != null) {
+                        completedAt
+                            = OffsetDateTime.ofInstant(Instant.ofEpochSecond(completedAtHolder), ZoneOffset.UTC);
+                    }
                 } else if ("cancelled_at".equals(fieldName)) {
-                    cancelledAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    Long cancelledAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (cancelledAtHolder != null) {
+                        cancelledAt
+                            = OffsetDateTime.ofInstant(Instant.ofEpochSecond(cancelledAtHolder), ZoneOffset.UTC);
+                    }
                 } else if ("failed_at".equals(fieldName)) {
-                    failedAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    Long failedAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (failedAtHolder != null) {
+                        failedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(failedAtHolder), ZoneOffset.UTC);
+                    }
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
                 } else if ("required_action".equals(fieldName)) {
