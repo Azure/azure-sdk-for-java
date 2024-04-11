@@ -42,35 +42,46 @@ public final class MessageImageFileContent extends MessageContent {
         return this.imageFile;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", "image_file");
         jsonWriter.writeJsonField("image_file", this.imageFile);
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
-    // TODO jpalvarezl verify not custom code
+    /**
+     * Reads an instance of MessageImageFileContent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MessageImageFileContent if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MessageImageFileContent.
+     */
+    @Generated
     public static MessageImageFileContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MessageImageFileDetails imageFile = null;
+            String type = "image_file";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    String type = reader.getString();
-                    if (!"image_file".equals(type)) {
-                        throw new IllegalStateException(
-                            "'type' was expected to be non-null and equal to 'image_file'. The found 'type' was '"
-                                + type + "'.");
-                    }
-                } else if ("image_file".equals(fieldName)) {
+                if ("image_file".equals(fieldName)) {
                     imageFile = MessageImageFileDetails.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new MessageImageFileContent(imageFile);
+            MessageImageFileContent deserializedMessageImageFileContent = new MessageImageFileContent(imageFile);
+            deserializedMessageImageFileContent.type = type;
+            return deserializedMessageImageFileContent;
         });
     }
 

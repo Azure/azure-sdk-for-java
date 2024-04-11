@@ -46,39 +46,50 @@ public final class RunStepRetrievalToolCall extends RunStepToolCall {
         return this.retrieval;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", "retrieval");
         jsonWriter.writeStringField("id", getId());
         jsonWriter.writeMapField("retrieval", this.retrieval, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
-    // TODO jpalvarezl see if this is custom or not
+    /**
+     * Reads an instance of RunStepRetrievalToolCall from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunStepRetrievalToolCall if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunStepRetrievalToolCall.
+     */
+    @Generated
     public static RunStepRetrievalToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             Map<String, String> retrieval = null;
+            String type = "retrieval";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    String type = reader.getString();
-                    if (!"retrieval".equals(type)) {
-                        throw new IllegalStateException(
-                            "'type' was expected to be non-null and equal to 'retrieval'. The found 'type' was '" + type
-                                + "'.");
-                    }
-                } else if ("id".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("retrieval".equals(fieldName)) {
                     retrieval = reader.readMap(reader1 -> reader1.getString());
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new RunStepRetrievalToolCall(id, retrieval);
+            RunStepRetrievalToolCall deserializedRunStepRetrievalToolCall = new RunStepRetrievalToolCall(id, retrieval);
+            deserializedRunStepRetrievalToolCall.type = type;
+            return deserializedRunStepRetrievalToolCall;
         });
     }
 

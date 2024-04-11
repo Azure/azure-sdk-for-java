@@ -43,27 +43,34 @@ public final class RunStepToolCallDetails extends RunStepDetails {
         return this.toolCalls;
     }
 
-    // TODO jpalvarezl see if this is custom or not
+    /**
+     * Reads an instance of RunStepToolCallDetails from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunStepToolCallDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunStepToolCallDetails.
+     */
+    @Generated
     public static RunStepToolCallDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<RunStepToolCall> toolCalls = null;
+            RunStepType type = RunStepType.TOOL_CALLS;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    String type = reader.getString();
-                    if (!"tool_calls".equals(type)) {
-                        throw new IllegalStateException(
-                            "'type' was expected to be non-null and equal to 'tool_calls'. The found 'type' was '"
-                                + type + "'.");
-                    }
-                } else if ("tool_calls".equals(fieldName)) {
+                if ("tool_calls".equals(fieldName)) {
                     toolCalls = reader.readArray(reader1 -> RunStepToolCall.fromJson(reader1));
+                } else if ("type".equals(fieldName)) {
+                    type = RunStepType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new RunStepToolCallDetails(toolCalls);
+            RunStepToolCallDetails deserializedRunStepToolCallDetails = new RunStepToolCallDetails(toolCalls);
+            deserializedRunStepToolCallDetails.type = type;
+            return deserializedRunStepToolCallDetails;
         });
     }
 

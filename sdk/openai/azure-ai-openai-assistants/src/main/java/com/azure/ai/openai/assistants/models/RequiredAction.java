@@ -25,13 +25,26 @@ public class RequiredAction implements JsonSerializable<RequiredAction> {
         this.type = "RequiredAction";
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
-    // TODO jpalvarezl see if this is custom or not
+    /**
+     * Reads an instance of RequiredAction from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RequiredAction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RequiredAction.
+     */
+    @Generated
     public static RequiredAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
