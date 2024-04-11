@@ -25,7 +25,7 @@ public final class ChatCompletions {
      */
     @Generated
     @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
      * The collection of completions choices associated with this completions response.
@@ -34,14 +34,14 @@ public final class ChatCompletions {
      */
     @Generated
     @JsonProperty(value = "choices")
-    private List<ChatChoice> choices;
+    private final List<ChatChoice> choices;
 
     /*
      * Usage information for tokens processed and generated as part of this completions operation.
      */
     @Generated
     @JsonProperty(value = "usage")
-    private CompletionsUsage usage;
+    private final CompletionsUsage usage;
 
     /**
      * Get the id property: A unique identifier associated with this chat completions response.
@@ -82,7 +82,7 @@ public final class ChatCompletions {
      */
     @Generated
     @JsonProperty(value = "created")
-    private long createdAt;
+    private final long createdAt;
 
     /**
      * Get the createdAt property: The first timestamp associated with generation activity for this completions
@@ -129,8 +129,7 @@ public final class ChatCompletions {
     }
 
     /*
-     * Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made
-     * that
+     * Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made that
      * might impact determinism.
      */
     @Generated
@@ -171,5 +170,22 @@ public final class ChatCompletions {
         @JsonProperty(value = "choices") List<ChatChoice> choices,
         @JsonProperty(value = "usage") CompletionsUsage usage) {
         this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), choices, usage);
+    }
+
+    /*
+     * The model name used for this completions request.
+     */
+    @Generated
+    @JsonProperty(value = "model")
+    private String model;
+
+    /**
+     * Get the model property: The model name used for this completions request.
+     *
+     * @return the model value.
+     */
+    @Generated
+    public String getModel() {
+        return this.model;
     }
 }
