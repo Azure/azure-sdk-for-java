@@ -19,6 +19,9 @@ import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.ComponentNames;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
+import com.azure.resourcemanager.compute.models.DiffDiskOptions;
+import com.azure.resourcemanager.compute.models.DiffDiskPlacement;
+import com.azure.resourcemanager.compute.models.DiffDiskSettings;
 import com.azure.resourcemanager.compute.models.DiskCreateOptionTypes;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetParameters;
 import com.azure.resourcemanager.compute.models.ImageReference;
@@ -85,7 +88,7 @@ import java.util.Map;
 public final class VirtualMachineScaleSetsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Update_MinimumSet_Gen.json
      */
     /**
@@ -100,7 +103,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Update_MaximumSet_Gen.json
      */
     /**
@@ -173,7 +176,10 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                                 .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest")
                                 .withSharedGalleryImageId("aaaaaa"))
                             .withOsDisk(new VirtualMachineScaleSetUpdateOSDisk().withCaching(CachingTypes.READ_WRITE)
-                                .withWriteAcceleratorEnabled(true).withDiskSizeGB(6)
+                                .withWriteAcceleratorEnabled(true)
+                                .withDiffDiskSettings(new DiffDiskSettings()
+                                    .withOption(DiffDiskOptions.LOCAL).withPlacement(DiffDiskPlacement.CACHE_DISK))
+                                .withDiskSizeGB(6)
                                 .withImage(new VirtualHardDisk().withUri(
                                     "http://{existing-storage-account-name}.blob.core.windows.net/{existing-container-name}/myDisk.vhd"))
                                 .withVhdContainers(Arrays.asList("aa"))

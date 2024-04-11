@@ -319,6 +319,7 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withHostGroupId(innerModel().hostGroupId());
         agentPoolInner.withCapacityReservationGroupId(innerModel().capacityReservationGroupId());
         agentPoolInner.withNetworkProfile(innerModel().networkProfile());
+        agentPoolInner.withWindowsProfile(innerModel().windowsProfile());
         return agentPoolInner;
     }
 
