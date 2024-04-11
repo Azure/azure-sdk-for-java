@@ -328,7 +328,7 @@ public class CosmosSourceTask extends SourceTask {
                     throw new IllegalArgumentException(feedRangeTaskUnit.getContinuationState() + " is not supported");
             }
 
-            if (this.taskConfig.getChangeFeedConfig().getChangeFeedModes() == CosmosChangeFeedModes.ALL_VERSION_AND_DELETES) {
+            if (this.taskConfig.getChangeFeedConfig().getChangeFeedModes() == CosmosChangeFeedMode.ALL_VERSION_AND_DELETES) {
                 changeFeedRequestOptions.allVersionsAndDeletes();
             }
         } else {

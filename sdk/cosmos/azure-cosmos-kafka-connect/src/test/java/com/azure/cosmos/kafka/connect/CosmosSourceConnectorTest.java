@@ -15,10 +15,10 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
-import com.azure.cosmos.kafka.connect.implementation.CosmosAuthTypes;
+import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
-import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedModes;
-import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedStartFromModes;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedMode;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedStartFromMode;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceOffsetStorageReader;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTask;
@@ -508,7 +508,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         sourceConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.container", "ThroughputControlContainer");
         sourceConfigMap.put("kafka.connect.cosmos.throughputControl.name", "groupName");
         sourceConfigMap.put("kafka.connect.cosmos.throughputControl.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
-        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.auth.type", CosmosAuthTypes.SERVICE_PRINCIPAL.getName());
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
 
         config = sourceConnector.validate(sourceConfigMap);
         errorMessages = config.configValues().stream()
@@ -671,7 +671,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         public static final List<KafkaCosmosConfigEntry<?>> ALL_VALID_CONFIGS = Arrays.asList(
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.accountEndpoint", null, false),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.account.tenantId", Strings.Emtpy, true),
-            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.auth.type", CosmosAuthTypes.MASTER_KEY.getName(), true),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.auth.type", CosmosAuthType.MASTER_KEY.getName(), true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.accountKey", Strings.Emtpy, true, true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.auth.aad.clientId", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.auth.aad.clientSecret", Strings.Emtpy, true, true),
@@ -681,7 +681,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.enabled", false, true),
             new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.accountEndpoint", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.throughputControl.account.tenantId", Strings.Emtpy, true),
-            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.throughputControl.auth.type", CosmosAuthTypes.MASTER_KEY.getName(), true),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.throughputControl.auth.type", CosmosAuthType.MASTER_KEY.getName(), true),
             new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.accountKey", Strings.Emtpy, true, true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.throughputControl.auth.aad.clientId", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.throughputControl.auth.aad.clientSecret", Strings.Emtpy, true, true),
@@ -702,11 +702,11 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.source.containers.topicMap", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>(
                 "kafka.connect.cosmos.source.changeFeed.startFrom",
-                CosmosChangeFeedStartFromModes.BEGINNING.getName(),
+                CosmosChangeFeedStartFromMode.BEGINNING.getName(),
                 true),
             new KafkaCosmosConfigEntry<String>(
                 "kafka.connect.cosmos.source.changeFeed.mode",
-                CosmosChangeFeedModes.LATEST_VERSION.getName(),
+                CosmosChangeFeedMode.LATEST_VERSION.getName(),
                 true),
             new KafkaCosmosConfigEntry<Integer>("kafka.connect.cosmos.source.changeFeed.maxItemCountHint", 1000, true),
             new KafkaCosmosConfigEntry<Integer>("kafka.connect.cosmos.source.metadata.poll.delay.ms", 5 * 60 * 1000, true),
