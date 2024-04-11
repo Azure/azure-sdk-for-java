@@ -28,22 +28,22 @@ public final class PageableList<T>  {
     /*
      * The requested list of items.
      */
-    private List<T> data;
+    private final List<T> data;
 
     /*
      * The first ID represented in this list.
      */
-    private String firstId;
+    private final String firstId;
 
     /*
      * The last ID represented in this list.
      */
-    private String lastId;
+    private final String lastId;
 
     /*
      * A value indicating whether there are additional values available not captured in this list.
      */
-    private boolean hasMore;
+    private final boolean hasMore;
 
     /**
      * Creates an instance of PageableList class.
@@ -64,6 +64,10 @@ public final class PageableList<T>  {
      * Creates an instance of PageableList class.
      */
     public PageableList() {
+        this.data = null;
+        this.firstId = null;
+        this.lastId = null;
+        this.hasMore = false;
     }
 
     /**
