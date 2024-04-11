@@ -54,7 +54,6 @@ public class TelemetryHelper {
     private final Attributes commonAttributes;
     private final Attributes canceledAttributes;
     private final String packageType;
-    private final String packageVersion;
 
     private final AtomicLong successfulRuns = new AtomicLong();
     private final AtomicLong failedRuns = new AtomicLong();
@@ -80,16 +79,6 @@ public class TelemetryHelper {
         this.commonAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName);
         this.canceledAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, "cancelled");
         this.packageType = scenarioClass.getPackage().toString();
-        // Since packageVersion is not obtainable, hardcoding the values based on the package type.
-        if (packageType.contains("blob")) {
-            this.packageVersion = "12.25.1";
-        } else if (packageType.contains("datalake")) {
-            this.packageVersion = "12.18.1";
-        } else if (packageType.contains(("share"))) {
-            this.packageVersion =  "12.21.1";
-        } else {
-            this.packageVersion = null;
-        }
     }
 
     /**
@@ -233,15 +222,11 @@ public class TelemetryHelper {
      * @param options test parameters
      */
     public void recordStart(StorageStressOptions options) {
-        // Version of the storage package implementation version returns as null. Hardcoding the value for now.
-        String storagePackageVersion = packageType + "/" + packageVersion;
-        System.out.println("storagePackageVersion: " + storagePackageVersion);
-
         Span before = startSampledInSpan("before run");
         before.setAttribute(AttributeKey.longKey("durationSec"), options.getDuration());
         before.setAttribute(AttributeKey.stringKey("scenarioName"), scenarioName);
         before.setAttribute(AttributeKey.longKey("concurrency"), options.getParallel());
-        before.setAttribute(AttributeKey.stringKey("storagePackageVersion"), storagePackageVersion);
+        before.setAttribute(AttributeKey.stringKey("storagePackageVersion"), this.packageType);
         before.setAttribute(AttributeKey.booleanKey("sync"), options.isSync());
         before.setAttribute(AttributeKey.longKey("payloadSize"), options.getSize());
         before.setAttribute(AttributeKey.stringKey("hostname"), System.getenv().get("HOSTNAME"));
@@ -259,7 +244,7 @@ public class TelemetryHelper {
             .addKeyValue("concurrency", options.getParallel())
             .addKeyValue("faultInjectionForDownloads", options.isFaultInjectionEnabledForDownloads())
             .addKeyValue("faultInjectionForUploads", options.isFaultInjectionEnabledForUploads())
-            .addKeyValue("storagePackageVersion", storagePackageVersion)
+            .addKeyValue("storagePackageVersion", this.packageType)
             .addKeyValue("sync", options.isSync())
             .addKeyValue("scenarioName", scenarioName)
             .log("starting test");
