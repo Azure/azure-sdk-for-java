@@ -647,6 +647,117 @@ class SparkE2EChangeFeedITest
     rowsArray2 should have size 50 - initialCount
   }
 
+  "spark change feed query (incremental)" should "honor checkpoint location even when triggering multiple planInputPartitions calls" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+
+    for (sequenceNumber <- 1 to 50) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode.put("name", "Shrodigner's cat")
+      objectNode.put("type", "cat")
+      objectNode.put("age", 20)
+      objectNode.put("sequenceNumber", sequenceNumber)
+      objectNode.put("id", UUID.randomUUID().toString)
+      container.createItem(objectNode).block()
+    }
+
+    val checkpointLocation = s"/tmp/checkpoints/${UUID.randomUUID().toString}"
+    val cfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "1",
+      "spark.cosmos.read.inferSchema.enabled" -> "false",
+      "spark.cosmos.changeFeed.startFrom" -> "Beginning",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.changeFeed.batchCheckpointLocation" -> checkpointLocation
+    )
+
+    val df1 = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
+    val rowsArray1 = df1.collect()
+    // technically possible that even with 50 documents randomly distributed across 3 partitions some
+    // has no documents
+    // rowsArray should have size df.rdd.getNumPartitions
+    rowsArray1.length > 0 shouldEqual true
+    rowsArray1.length <= df1.rdd.getNumPartitions shouldEqual true
+
+    val initialCount = rowsArray1.length
+
+    df1.schema.equals(
+      ChangeFeedTable.defaultIncrementalChangeFeedSchemaForInferenceDisabled) shouldEqual true
+
+    val hdfs = org.apache.hadoop.fs.FileSystem.get(spark.sparkContext.hadoopConfiguration)
+
+    val startOffsetFolderLocation = Paths.get(checkpointLocation, "startOffset").toString
+    val startOffsetFileLocation = Paths.get(startOffsetFolderLocation, "0").toString
+    hdfs.exists(new Path(startOffsetFolderLocation)) shouldEqual true
+    hdfs.exists(new Path(startOffsetFileLocation)) shouldEqual false
+
+    val latestOffsetFolderLocation = Paths.get(checkpointLocation, "latestOffset").toString
+    val latestOffsetFileLocation = Paths.get(latestOffsetFolderLocation, "0").toString
+    hdfs.exists(new Path(latestOffsetFolderLocation)) shouldEqual true
+    hdfs.exists(new Path(latestOffsetFileLocation)) shouldEqual true
+
+    hdfs.copyToLocalFile(true, new Path(latestOffsetFileLocation), new Path(startOffsetFileLocation))
+    assert(!hdfs.exists(new Path(latestOffsetFileLocation)))
+
+    val cfgWithoutItemCountPerTriggerHint = cfg.filter(keyValuePair => !keyValuePair._1.equals("spark.cosmos.changeFeed.itemCountPerTriggerHint"))
+    val df2 = spark.read.format("cosmos.oltp.changeFeed").options(cfgWithoutItemCountPerTriggerHint).load()
+    println(df2.queryExecution.logical)
+    assert(!hdfs.exists(new Path(latestOffsetFileLocation)))
+    println(df2.queryExecution.optimizedPlan)
+    assert(!hdfs.exists(new Path(latestOffsetFileLocation)))
+    println(df2.queryExecution.sparkPlan)
+    // physical plan will trigger calling planInputPartitions (so, latestOffset file gets created)
+    assert(hdfs.exists(new Path(latestOffsetFileLocation)))
+
+    for (sequenceNumber <- 51 to 60) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode.put("name", "Shrodigner's cat")
+      objectNode.put("type", "cat")
+      objectNode.put("age", 20)
+      objectNode.put("sequenceNumber", sequenceNumber)
+      objectNode.put("id", UUID.randomUUID().toString)
+      container.createItem(objectNode).block()
+    }
+
+    // Ensure that even after some new changes happen, planInputPartitions can be called again
+    println(df2.queryExecution.sparkPlan)
+    assert(hdfs.exists(new Path(latestOffsetFileLocation)))
+
+    val rowsArray2 = df2.collect()
+
+    // What is important is that at this point not all changes have been consumed yet
+    // the 10 additional changes after initial planInputPartitions invocation are not consumed
+    // yet because the latestOffset file was created before making those changes
+    rowsArray2 should have size 50 - initialCount
+
+    hdfs.exists(new Path(startOffsetFolderLocation)) shouldEqual true
+    hdfs.exists(new Path(startOffsetFileLocation)) shouldEqual true
+    val startOffsetFileBackupLocation = Paths.get(startOffsetFolderLocation, "backup").toString
+    hdfs.copyToLocalFile(true, new Path(startOffsetFileLocation), new Path(startOffsetFileBackupLocation))
+    hdfs.exists(new Path(startOffsetFileLocation)) shouldEqual false
+
+    var remainingFromLastBatchOfTen = 10;
+    while(remainingFromLastBatchOfTen > 0) {
+      hdfs.copyToLocalFile(true, new Path(startOffsetFileBackupLocation), new Path(startOffsetFileLocation))
+      hdfs.delete(new Path(latestOffsetFileLocation), true)
+
+      val df3 = spark.read.format("cosmos.oltp.changeFeed").options(cfgWithoutItemCountPerTriggerHint).load()
+      val rowsArray3 = df3.collect()
+      remainingFromLastBatchOfTen -= rowsArray3.length
+
+
+      if (remainingFromLastBatchOfTen != 0) {
+        logWarning(s"Still waiting for $remainingFromLastBatchOfTen changes to be processed. Waiting 500ms before retry...")
+        Thread.sleep(500)
+      }
+    }
+  }
+
   private def validateArraysUnordered(inputArrayBuffer : ArrayBuffer[String], outputArray: Array[String]) : Unit = {
     assert(inputArrayBuffer.length == outputArray.length)
     val set: mutable.HashSet[String] = new mutable.HashSet[String]()
