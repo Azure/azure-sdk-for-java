@@ -118,15 +118,14 @@ jobs:
         displayName: 'Generate Linting Reports'
         condition: and(always(), ne(variables['LintingGoals'], ''))
 
-      - task: PublishPipelineArtifact@1
-        displayName: 'Publish Linting Reports'
-        inputs:
-          artifactName: 'linting-reports'
-          path: '$(Build.ArtifactStagingDirectory)/troubleshooting/linting-report.zip'
-        condition: eq(variables['HAS_TROUBLESHOOTING'], 'true')
+      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+        parameters:
+          ArtifactName: linting-report
+          ArtifactPath: '$(Build.ArtifactStagingDirectory)/troubleshooting/linting-report.zip'
+          CustomCondition: ne(variables['LintingGoals'], '')
 
       - pwsh: |
-          Write-Host "Linting errors have been found, download the 'linting-reports.zip' artifact to see what was found."
+          Write-Host "Linting errors have been found, download the 'linting-report.zip' artifact to see what was found."
           exit 1
         displayName: 'Fail Pipeline if Linting Reports Exist'
         condition: eq(variables['HAS_TROUBLESHOOTING'], 'true')
