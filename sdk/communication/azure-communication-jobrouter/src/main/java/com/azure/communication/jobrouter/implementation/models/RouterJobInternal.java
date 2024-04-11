@@ -76,7 +76,7 @@ public final class RouterJobInternal {
     private String queueId;
 
     /*
-     * Priority of this job.
+     * Priority of this job. Value must be between -100 to 100.
      */
     @Generated
     @JsonProperty(value = "priority")
@@ -284,7 +284,7 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Get the priority property: Priority of this job.
+     * Get the priority property: Priority of this job. Value must be between -100 to 100.
      *
      * @return the priority value.
      */
@@ -294,7 +294,7 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Set the priority property: Priority of this job.
+     * Set the priority property: Priority of this job. Value must be between -100 to 100.
      *
      * @param priority the priority value to set.
      * @return the RouterJobInternal object itself.

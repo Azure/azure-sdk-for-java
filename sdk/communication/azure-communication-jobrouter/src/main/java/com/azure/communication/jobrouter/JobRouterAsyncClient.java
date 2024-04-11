@@ -404,118 +404,15 @@ public final class JobRouterAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
-     * <p>
-     * <strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     jobId: String (Required)
-     *     channelReference: String (Optional)
-     *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
-     *     enqueuedAt: OffsetDateTime (Optional)
-     *     channelId: String (Optional)
-     *     classificationPolicyId: String (Optional)
-     *     queueId: String (Optional)
-     *     priority: Integer (Optional)
-     *     dispositionCode: String (Optional)
-     *     requestedWorkerSelectors (Optional): [
-     *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
-     *             value: Object (Optional)
-     *             expiresAfterSeconds: Double (Optional)
-     *             expedite: Boolean (Optional)
-     *             status: String(active/expired) (Optional)
-     *             expiresAt: OffsetDateTime (Optional)
-     *         }
-     *     ]
-     *     attachedWorkerSelectors (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     labels (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     assignments (Optional): {
-     *         String (Optional): {
-     *             assignmentId: String (Required)
-     *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
-     *             completedAt: OffsetDateTime (Optional)
-     *             closedAt: OffsetDateTime (Optional)
-     *         }
-     *     }
-     *     tags (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     notes (Optional): {
-     *         String: String (Optional)
-     *     }
-     *     scheduledAt: OffsetDateTime (Optional)
-     *     matchingMode (Optional): {
-     *     }
-     * }
-     * }</pre>
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     jobId: String (Required)
-     *     channelReference: String (Optional)
-     *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
-     *     enqueuedAt: OffsetDateTime (Optional)
-     *     channelId: String (Optional)
-     *     classificationPolicyId: String (Optional)
-     *     queueId: String (Optional)
-     *     priority: Integer (Optional)
-     *     dispositionCode: String (Optional)
-     *     requestedWorkerSelectors (Optional): [
-     *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
-     *             value: Object (Optional)
-     *             expiresAfterSeconds: Double (Optional)
-     *             expedite: Boolean (Optional)
-     *             status: String(active/expired) (Optional)
-     *             expiresAt: OffsetDateTime (Optional)
-     *         }
-     *     ]
-     *     attachedWorkerSelectors (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     labels (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     assignments (Optional): {
-     *         String (Optional): {
-     *             assignmentId: String (Required)
-     *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
-     *             completedAt: OffsetDateTime (Optional)
-     *             closedAt: OffsetDateTime (Optional)
-     *         }
-     *     }
-     *     tags (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     notes (Optional): {
-     *         String: String (Optional)
-     *     }
-     *     scheduledAt: OffsetDateTime (Optional)
-     *     matchingMode (Optional): {
-     *     }
-     * }
-     * }</pre>
-     *
      * @param jobId The jobId of the job.
-     * @param resource The resource instance.
+     * @param job The job to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return result object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> updateJob(String jobId, BinaryData resource, RequestOptions requestOptions) {
-        return updateJobWithResponse(jobId, resource, requestOptions).map(response -> response.getValue());
+    public Mono<RouterJob> updateJob(String jobId, RouterJob job, RequestOptions requestOptions) {
+        return updateJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions)
+            .map(response -> response.getValue().toObject(RouterJob.class));
     }
 
     /**
@@ -530,8 +427,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterJob>> createJobWithResponse(CreateJobOptions createJobOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        RouterJobInternal routerJob
-            = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobOptions);
+        RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
         return upsertJobWithResponse(createJobOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions)
             .map(response -> new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), response.getValue().toObject(RouterJob.class)));
@@ -1333,6 +1229,7 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
+     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1379,6 +1276,7 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
+     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1427,106 +1325,15 @@ public final class JobRouterAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
-     * <p>
-     * <strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     state: String(active/draining/inactive) (Optional)
-     *     queueAssignments (Optional): {
-     *         String (Optional): {
-     *         }
-     *     }
-     *     totalCapacity: Integer (Optional)
-     *     labels (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     tags (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     channelConfigurations (Optional): {
-     *         String (Optional): {
-     *             capacityCostPerJob: int (Required)
-     *             maxNumberOfJobs: Integer (Optional)
-     *         }
-     *     }
-     *     offers (Optional): [
-     *          (Optional){
-     *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             offeredAt: OffsetDateTime (Optional)
-     *             expiresAt: OffsetDateTime (Optional)
-     *         }
-     *     ]
-     *     assignedJobs (Optional): [
-     *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
-     *         }
-     *     ]
-     *     loadRatio: Double (Optional)
-     *     availableForOffers: Boolean (Optional)
-     * }
-     * }</pre>
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     state: String(active/draining/inactive) (Optional)
-     *     queueAssignments (Optional): {
-     *         String (Optional): {
-     *         }
-     *     }
-     *     totalCapacity: Integer (Optional)
-     *     labels (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     tags (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     channelConfigurations (Optional): {
-     *         String (Optional): {
-     *             capacityCostPerJob: int (Required)
-     *             maxNumberOfJobs: Integer (Optional)
-     *         }
-     *     }
-     *     offers (Optional): [
-     *          (Optional){
-     *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             offeredAt: OffsetDateTime (Optional)
-     *             expiresAt: OffsetDateTime (Optional)
-     *         }
-     *     ]
-     *     assignedJobs (Optional): [
-     *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
-     *         }
-     *     ]
-     *     loadRatio: Double (Optional)
-     *     availableForOffers: Boolean (Optional)
-     * }
-     * }</pre>
-     *
      * @param workerId Id of the worker.
-     * @param resource The resource instance.
+     * @param worker The worker to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return result object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> updateWorker(String workerId, BinaryData resource, RequestOptions requestOptions) {
-        return this.updateWorkerWithResponse(workerId, resource, requestOptions).flatMap(FluxUtil::toMono);
+    public Mono<RouterWorker> updateWorker(String workerId, RouterWorker worker, RequestOptions requestOptions) {
+        return this.updateWorkerWithResponse(workerId, BinaryData.fromObject(worker), requestOptions)
+            .map(routerWorkerResponse -> routerWorkerResponse.getValue().toObject(RouterWorker.class));
     }
 
     /**

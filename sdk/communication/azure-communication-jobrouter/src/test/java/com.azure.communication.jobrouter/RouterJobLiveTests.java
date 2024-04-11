@@ -156,7 +156,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         }
 
         jobDeserialized.setPriority(10);
-        RouterJob updatedJob = jobRouterClient.updateJob(jobId, BinaryData.fromObject(jobDeserialized), null).toObject(RouterJob.class);
+        RouterJob updatedJob = jobRouterClient.updateJob(jobId, jobDeserialized, null);
 
         // Verify
         assertEquals(jobId, updatedJob.getId());
@@ -266,7 +266,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
 
         // Action
         job.setMatchingMode(new QueueAndMatchMode());
-        RouterJob updatedJob = jobRouterClient.updateJob(jobId, BinaryData.fromObject(job), null).toObject(RouterJob.class);
+        RouterJob updatedJob = jobRouterClient.updateJob(jobId, job, null);
 
         assertEquals(RouterJobStatus.QUEUED, updatedJob.getStatus());
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 2.0.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -11,10 +11,12 @@
 
 - Added value to RouterWorkerSelector/RouterQueueSelector constructor, remove setter
 - Change return type of createJobWithResponse to RouterJob instead of BinaryData in JobRouterClient and JobRouterAsyncClient
+- Change return type of updateXX to XX instead of BinaryData in JobRouterClient, JobRouterAdministrationClient, JobRouterAsyncClient and JobRouterAdministrationAsyncClient
 
 ### Bugs Fixed
 
 - Fix Jackson annotations for all models
+- JobRouterClient and JobRouterAdminClient no longer throws 401 errors when HmacAuthenticationPolicy is not provided
 
 ### Other Changes
 
@@ -30,8 +32,6 @@
 - Upgraded `azure-communication-common` from `1.3.0` to version `1.3.1`.
 
 ### Bugs Fixed
-
-- JobRouterClient and JobRouterAdminClient no longer throws 401 errors when HmacAuthenticationPolicy is not provided
 
 
 ## 1.1.1 (2024-02-13)

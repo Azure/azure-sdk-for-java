@@ -44,7 +44,7 @@ public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
         /**
          * Setup queue
          */
-        String distributionPolicyId = String.format("%s-CreateWorker-DistributionPolicy", JAVA_LIVE_TESTS);
+        String distributionPolicyId = String.format("%s-CreateWorkerAsync-DistributionPolicy", JAVA_LIVE_TESTS);
         String distributionPolicyName = String.format("%s-Name", distributionPolicyId);
 
         CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
@@ -143,8 +143,7 @@ public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
                 add(new RouterChannel("channel2", 5));
             }
         });
-        RouterWorker updatedWorker = routerAsyncClient.updateWorker(workerId, BinaryData.fromObject(deserialized), null)
-            .block().toObject(RouterWorker.class);
+        RouterWorker updatedWorker = routerAsyncClient.updateWorker(workerId, deserialized, null).block();
 
         assertEquals(workerId, updatedWorker.getId());
         assertEquals(updatedWorker.isAvailableForOffers(), true);

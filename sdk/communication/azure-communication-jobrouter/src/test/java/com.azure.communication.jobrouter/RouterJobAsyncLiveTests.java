@@ -155,8 +155,7 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
         }
 
         jobDeserialized.setPriority(10);
-        RouterJob updatedJob = jobRouterAsyncClient.updateJob(jobId, BinaryData.fromObject(jobDeserialized), null)
-            .block().toObject(RouterJob.class);
+        RouterJob updatedJob = jobRouterAsyncClient.updateJob(jobId, jobDeserialized, null).block();
 
         // Verify
         assertEquals(jobId, updatedJob.getId());

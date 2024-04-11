@@ -32,7 +32,7 @@ public class JobAdapter {
      * @param createJobOptions Container with options to create {@link RouterJob}
      * @return RouterJob
      */
-    public static RouterJobInternal convertCreateJobWithClassificationPolicyOptionsToRouterJob(CreateJobOptions createJobOptions) {
+    public static RouterJobInternal convertCreateJobOptionsToRouterJob(CreateJobOptions createJobOptions) {
         Map<String, RouterValue> labelValueMap = createJobOptions.getLabels();
         Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
             .collect(Collectors.toMap(entry -> entry.getKey(), entry -> getValue(entry.getValue()))) : null;

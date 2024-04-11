@@ -238,47 +238,16 @@ public final class JobRouterAdministrationClient {
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
-     * <p>
-     * <strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     distributionPolicyId: String (Required)
-     *     name: String (Optional)
-     *     offerExpiresAfterSeconds: Double (Optional)
-     *     mode (Optional): {
-     *         minConcurrentOffers: Integer (Optional)
-     *         maxConcurrentOffers: Integer (Optional)
-     *         bypassSelectors: Boolean (Optional)
-     *     }
-     * }
-     * }</pre>
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     distributionPolicyId: String (Required)
-     *     name: String (Optional)
-     *     offerExpiresAfterSeconds: Double (Optional)
-     *     mode (Optional): {
-     *         minConcurrentOffers: Integer (Optional)
-     *         maxConcurrentOffers: Integer (Optional)
-     *         bypassSelectors: Boolean (Optional)
-     *     }
-     * }
-     * }</pre>
-     *
      * @param distributionPolicyId The unique identifier of the policy.
-     * @param resource The resource instance.
+     * @param distributionPolicy The distribution policy to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return result object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData updateDistributionPolicy(String distributionPolicyId, BinaryData resource,
-        RequestOptions requestOptions) {
-        return updateDistributionPolicyWithResponse(distributionPolicyId, resource, requestOptions).getValue();
+    public DistributionPolicy updateDistributionPolicy(String distributionPolicyId,
+        DistributionPolicy distributionPolicy, RequestOptions requestOptions) {
+        return updateDistributionPolicyWithResponse(distributionPolicyId, BinaryData.fromObject(distributionPolicy),
+            requestOptions).getValue().toObject(DistributionPolicy.class);
     }
 
     /**
@@ -672,14 +641,16 @@ public final class JobRouterAdministrationClient {
      * }</pre>
      *
      * @param classificationPolicyId Unique identifier of this policy.
-     * @param resource The resource instance.
+     * @param classificationPolicy The classification policy to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return result object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData updateClassificationPolicy(String classificationPolicyId, BinaryData resource,
-        RequestOptions requestOptions) {
-        return updateClassificationPolicyWithResponse(classificationPolicyId, resource, requestOptions).getValue();
+    public ClassificationPolicy updateClassificationPolicy(String classificationPolicyId,
+        ClassificationPolicy classificationPolicy, RequestOptions requestOptions) {
+        return updateClassificationPolicyWithResponse(classificationPolicyId,
+            BinaryData.fromObject(classificationPolicy), requestOptions).getValue()
+            .toObject(ClassificationPolicy.class);
     }
 
     /**
@@ -1039,55 +1010,16 @@ public final class JobRouterAdministrationClient {
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
-     * <p>
-     * <strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     exceptionPolicyId: String (Required)
-     *     name: String (Optional)
-     *     exceptionRules (Optional): {
-     *         String (Optional): {
-     *             trigger (Required): {
-     *             }
-     *             actions (Required): {
-     *                 String (Required): {
-     *                 }
-     *             }
-     *         }
-     *     }
-     * }
-     * }</pre>
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     exceptionPolicyId: String (Required)
-     *     name: String (Optional)
-     *     exceptionRules (Optional): {
-     *         String (Optional): {
-     *             trigger (Required): {
-     *             }
-     *             actions (Required): {
-     *                 String (Required): {
-     *                 }
-     *             }
-     *         }
-     *     }
-     * }
-     * }</pre>
-     *
      * @param exceptionPolicyId The Id of the exception policy.
-     * @param resource The resource instance.
+     * @param exceptionPolicy The exception policy to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return result object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData updateExceptionPolicy(String exceptionPolicyId, BinaryData resource,
+    public ExceptionPolicy updateExceptionPolicy(String exceptionPolicyId, ExceptionPolicy exceptionPolicy,
         RequestOptions requestOptions) {
-        return updateExceptionPolicyWithResponse(exceptionPolicyId, resource, requestOptions).getValue();
+        return this.updateExceptionPolicyWithResponse(exceptionPolicyId, BinaryData.fromObject(exceptionPolicy),
+            requestOptions).getValue().toObject(ExceptionPolicy.class);
     }
 
     /**
@@ -1160,9 +1092,9 @@ public final class JobRouterAdministrationClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a policy that defines actions to execute when exception are triggered along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getExceptionPolicyWithResponse(String exceptionPolicyId,
-        RequestOptions requestOptions) {
+    Response<BinaryData> getExceptionPolicyWithResponse(String exceptionPolicyId, RequestOptions requestOptions) {
         return this.serviceClient.getExceptionPolicyWithResponse(exceptionPolicyId, requestOptions);
     }
 
@@ -1419,44 +1351,15 @@ public final class JobRouterAdministrationClient {
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
-     * <p>
-     * <strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     queueId: String (Required)
-     *     name: String (Optional)
-     *     distributionPolicyId: String (Optional)
-     *     labels (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     exceptionPolicyId: String (Optional)
-     * }
-     * }</pre>
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     queueId: String (Required)
-     *     name: String (Optional)
-     *     distributionPolicyId: String (Optional)
-     *     labels (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     exceptionPolicyId: String (Optional)
-     * }
-     * }</pre>
-     *
      * @param queueId The Id of this queue.
-     * @param resource RouterQueue resource.
+     * @param queue The queue to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return a queue that can contain jobs to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData updateQueue(String queueId, BinaryData resource, RequestOptions requestOptions) {
-        return updateQueueWithResponse(queueId, resource, requestOptions).getValue();
+    public RouterQueue updateQueue(String queueId, RouterQueue queue, RequestOptions requestOptions) {
+        return updateQueueWithResponse(queueId, BinaryData.fromObject(queue), requestOptions).getValue()
+            .toObject(RouterQueue.class);
     }
 
     /**
