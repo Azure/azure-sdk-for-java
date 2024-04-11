@@ -117,8 +117,11 @@ public final class OpenAIPageableListOfAssistantFile implements JsonSerializable
         return this.hasMore;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     @Generated
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("object", this.object);

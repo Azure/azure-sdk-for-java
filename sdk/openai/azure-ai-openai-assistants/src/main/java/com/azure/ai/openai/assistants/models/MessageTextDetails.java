@@ -62,8 +62,11 @@ public final class MessageTextDetails implements JsonSerializable<MessageTextDet
         return this.annotations;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     @Generated
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("value", this.value);

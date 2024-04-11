@@ -45,53 +45,6 @@ public final class RunStepCodeInterpreterToolCall extends RunStepToolCall {
         return this.codeInterpreter;
     }
 
-    @Override
-    @Generated
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", "code_interpreter");
-        jsonWriter.writeStringField("id", getId());
-        jsonWriter.writeJsonField("code_interpreter", this.codeInterpreter);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RunStepCodeInterpreterToolCall from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RunStepCodeInterpreterToolCall if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the RunStepCodeInterpreterToolCall.
-     */
-    @Generated
-    public static RunStepCodeInterpreterToolCall fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String id = null;
-            RunStepCodeInterpreterToolCallDetails codeInterpreter = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    String type = reader.getString();
-                    if (!"code_interpreter".equals(type)) {
-                        throw new IllegalStateException(
-                            "'type' was expected to be non-null and equal to 'code_interpreter'. The found 'type' was '"
-                                + type + "'.");
-                    }
-                } else if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                } else if ("code_interpreter".equals(fieldName)) {
-                    codeInterpreter = RunStepCodeInterpreterToolCallDetails.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new RunStepCodeInterpreterToolCall(id, codeInterpreter);
-        });
-    }
-
     /*
      * The object type.
      */
@@ -107,5 +60,53 @@ public final class RunStepCodeInterpreterToolCall extends RunStepToolCall {
     @Override
     public String getType() {
         return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeJsonField("code_interpreter", this.codeInterpreter);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunStepCodeInterpreterToolCall from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunStepCodeInterpreterToolCall if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunStepCodeInterpreterToolCall.
+     */
+    @Generated
+    public static RunStepCodeInterpreterToolCall fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            RunStepCodeInterpreterToolCallDetails codeInterpreter = null;
+            String type = "code_interpreter";
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("code_interpreter".equals(fieldName)) {
+                    codeInterpreter = RunStepCodeInterpreterToolCallDetails.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            RunStepCodeInterpreterToolCall deserializedRunStepCodeInterpreterToolCall
+                = new RunStepCodeInterpreterToolCall(id, codeInterpreter);
+            deserializedRunStepCodeInterpreterToolCall.type = type;
+            return deserializedRunStepCodeInterpreterToolCall;
+        });
     }
 }

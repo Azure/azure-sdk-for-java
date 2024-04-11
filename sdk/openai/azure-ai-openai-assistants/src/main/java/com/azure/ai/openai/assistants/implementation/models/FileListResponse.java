@@ -61,8 +61,11 @@ public final class FileListResponse implements JsonSerializable<FileListResponse
         return this.data;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     @Generated
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("object", this.object);

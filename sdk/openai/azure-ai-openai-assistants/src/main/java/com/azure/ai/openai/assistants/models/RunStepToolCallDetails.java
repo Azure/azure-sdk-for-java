@@ -43,25 +43,6 @@ public final class RunStepToolCallDetails extends RunStepDetails {
         return this.toolCalls;
     }
 
-    @Override
-    @Generated
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", "tool_calls");
-        jsonWriter.writeArrayField("tool_calls", this.toolCalls, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RunStepToolCallDetails from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RunStepToolCallDetails if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the RunStepToolCallDetails.
-     */
     // TODO jpalvarezl see if this is custom or not
     public static RunStepToolCallDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
@@ -101,5 +82,17 @@ public final class RunStepToolCallDetails extends RunStepDetails {
     @Override
     public RunStepType getType() {
         return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tool_calls", this.toolCalls, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
     }
 }

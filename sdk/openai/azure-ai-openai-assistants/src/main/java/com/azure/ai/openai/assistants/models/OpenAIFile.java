@@ -70,7 +70,11 @@ public final class OpenAIFile implements JsonSerializable<OpenAIFile> {
         this.id = id;
         this.bytes = bytes;
         this.filename = filename;
-        this.createdAt = createdAt.toEpochSecond();
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
         this.purpose = purpose;
     }
 

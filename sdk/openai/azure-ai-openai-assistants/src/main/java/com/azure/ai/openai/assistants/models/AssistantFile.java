@@ -54,7 +54,11 @@ public final class AssistantFile implements JsonSerializable<AssistantFile> {
     @Generated
     private AssistantFile(String id, OffsetDateTime createdAt, String assistantId) {
         this.id = id;
-        this.createdAt = createdAt.toEpochSecond();
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
         this.assistantId = assistantId;
     }
 
@@ -98,8 +102,11 @@ public final class AssistantFile implements JsonSerializable<AssistantFile> {
         return this.assistantId;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     @Generated
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);

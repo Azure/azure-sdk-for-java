@@ -86,8 +86,11 @@ public final class AssistantThreadCreationOptions implements JsonSerializable<As
         return this;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     @Generated
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("messages", this.messages, (writer, element) -> writer.writeJson(element));

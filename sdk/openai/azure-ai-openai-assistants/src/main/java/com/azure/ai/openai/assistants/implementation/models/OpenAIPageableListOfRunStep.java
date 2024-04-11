@@ -116,8 +116,11 @@ public final class OpenAIPageableListOfRunStep implements JsonSerializable<OpenA
         return this.hasMore;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     @Generated
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("object", this.object);

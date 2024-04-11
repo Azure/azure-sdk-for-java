@@ -201,7 +201,11 @@ public final class Assistant implements JsonSerializable<Assistant> {
     private Assistant(String id, OffsetDateTime createdAt, String name, String description, String model,
         String instructions, List<ToolDefinition> tools, List<String> fileIds, Map<String, String> metadata) {
         this.id = id;
-        this.createdAt = createdAt.toEpochSecond();
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
         this.name = name;
         this.description = description;
         this.model = model;
@@ -211,8 +215,11 @@ public final class Assistant implements JsonSerializable<Assistant> {
         this.metadata = metadata;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     @Generated
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);

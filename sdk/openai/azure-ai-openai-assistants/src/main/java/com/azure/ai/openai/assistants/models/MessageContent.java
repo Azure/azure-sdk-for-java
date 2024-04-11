@@ -31,15 +31,6 @@ public class MessageContent implements JsonSerializable<MessageContent> {
         return jsonWriter.writeEndObject();
     }
 
-    /**
-     * Reads an instance of MessageContent from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MessageContent if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the MessageContent.
-     */
     // TODO jpalvarezl verify this is not custom code
     public static MessageContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {

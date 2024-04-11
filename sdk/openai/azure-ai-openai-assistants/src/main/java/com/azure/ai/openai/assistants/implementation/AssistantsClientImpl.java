@@ -795,6 +795,26 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getFileSync(@HostParam("endpoint") String endpoint, @PathParam("fileId") String fileId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/files/{fileId}/content")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getFileContent(@HostParam("endpoint") String endpoint,
+            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/files/{fileId}/content")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getFileContentSync(@HostParam("endpoint") String endpoint,
+            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -2619,11 +2639,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -2696,11 +2716,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -2773,11 +2793,11 @@ public final class AssistantsClientImpl {
      *                 String (Required)
      *             ]
      *             created_at: long (Required)
-     *             expires_at: OffsetDateTime (Required)
-     *             started_at: OffsetDateTime (Required)
-     *             completed_at: OffsetDateTime (Required)
-     *             cancelled_at: OffsetDateTime (Required)
-     *             failed_at: OffsetDateTime (Required)
+     *             expires_at: Long (Required)
+     *             started_at: Long (Required)
+     *             completed_at: Long (Required)
+     *             cancelled_at: Long (Required)
+     *             failed_at: Long (Required)
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
@@ -2854,11 +2874,11 @@ public final class AssistantsClientImpl {
      *                 String (Required)
      *             ]
      *             created_at: long (Required)
-     *             expires_at: OffsetDateTime (Required)
-     *             started_at: OffsetDateTime (Required)
-     *             completed_at: OffsetDateTime (Required)
-     *             cancelled_at: OffsetDateTime (Required)
-     *             failed_at: OffsetDateTime (Required)
+     *             expires_at: Long (Required)
+     *             started_at: Long (Required)
+     *             completed_at: Long (Required)
+     *             cancelled_at: Long (Required)
+     *             failed_at: Long (Required)
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
@@ -2913,11 +2933,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -2971,11 +2991,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3036,11 +3056,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3105,11 +3125,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3177,11 +3197,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3250,11 +3270,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3308,11 +3328,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3366,11 +3386,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3456,11 +3476,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3548,11 +3568,11 @@ public final class AssistantsClientImpl {
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3596,10 +3616,10 @@ public final class AssistantsClientImpl {
      *         message: String (Required)
      *     }
      *     created_at: long (Required)
-     *     expired_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expired_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3645,10 +3665,10 @@ public final class AssistantsClientImpl {
      *         message: String (Required)
      *     }
      *     created_at: long (Required)
-     *     expired_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expired_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3714,10 +3734,10 @@ public final class AssistantsClientImpl {
      *                 message: String (Required)
      *             }
      *             created_at: long (Required)
-     *             expired_at: OffsetDateTime (Required)
-     *             completed_at: OffsetDateTime (Required)
-     *             cancelled_at: OffsetDateTime (Required)
-     *             failed_at: OffsetDateTime (Required)
+     *             expired_at: Long (Required)
+     *             completed_at: Long (Required)
+     *             cancelled_at: Long (Required)
+     *             failed_at: Long (Required)
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
@@ -3788,10 +3808,10 @@ public final class AssistantsClientImpl {
      *                 message: String (Required)
      *             }
      *             created_at: long (Required)
-     *             expired_at: OffsetDateTime (Required)
-     *             completed_at: OffsetDateTime (Required)
-     *             cancelled_at: OffsetDateTime (Required)
-     *             failed_at: OffsetDateTime (Required)
+     *             expired_at: Long (Required)
+     *             completed_at: Long (Required)
+     *             cancelled_at: Long (Required)
+     *             failed_at: Long (Required)
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
@@ -4076,5 +4096,50 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> getFileWithResponse(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getFileSync(this.getEndpoint(), fileId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Returns information about a specific file. Does not retrieve file content.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * byte[]
+     * }</pre>
+     * 
+     * @param fileId The ID of the file to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represent a byte array along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getFileContentWithResponseAsync(String fileId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.getFileContent(this.getEndpoint(), fileId, accept, requestOptions, context));
+    }
+
+    /**
+     * Returns information about a specific file. Does not retrieve file content.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * byte[]
+     * }</pre>
+     * 
+     * @param fileId The ID of the file to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represent a byte array along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getFileContentWithResponse(String fileId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getFileContentSync(this.getEndpoint(), fileId, accept, requestOptions, Context.NONE);
     }
 }

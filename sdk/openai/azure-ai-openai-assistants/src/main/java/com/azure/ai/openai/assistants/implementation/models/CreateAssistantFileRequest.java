@@ -43,8 +43,11 @@ public final class CreateAssistantFileRequest implements JsonSerializable<Create
         return this.fileId;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     @Generated
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("file_id", this.fileId);

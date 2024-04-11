@@ -64,8 +64,11 @@ public final class RunStepCodeInterpreterToolCallDetails
         return this.outputs;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     @Generated
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("input", this.input);

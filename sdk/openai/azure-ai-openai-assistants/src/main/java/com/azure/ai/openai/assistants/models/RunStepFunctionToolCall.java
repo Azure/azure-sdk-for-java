@@ -46,53 +46,6 @@ public final class RunStepFunctionToolCall extends RunStepToolCall {
         return this.function;
     }
 
-    @Override
-    @Generated
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", "function");
-        jsonWriter.writeStringField("id", getId());
-        jsonWriter.writeJsonField("function", this.function);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RunStepFunctionToolCall from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RunStepFunctionToolCall if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the RunStepFunctionToolCall.
-     */
-    @Generated
-    public static RunStepFunctionToolCall fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String id = null;
-            RunStepFunctionToolCallDetails function = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    String type = reader.getString();
-                    if (!"function".equals(type)) {
-                        throw new IllegalStateException(
-                            "'type' was expected to be non-null and equal to 'function'. The found 'type' was '" + type
-                                + "'.");
-                    }
-                } else if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                } else if ("function".equals(fieldName)) {
-                    function = RunStepFunctionToolCallDetails.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new RunStepFunctionToolCall(id, function);
-        });
-    }
-
     /*
      * The object type.
      */
@@ -108,5 +61,52 @@ public final class RunStepFunctionToolCall extends RunStepToolCall {
     @Override
     public String getType() {
         return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeJsonField("function", this.function);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunStepFunctionToolCall from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunStepFunctionToolCall if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunStepFunctionToolCall.
+     */
+    @Generated
+    public static RunStepFunctionToolCall fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            RunStepFunctionToolCallDetails function = null;
+            String type = "function";
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("function".equals(fieldName)) {
+                    function = RunStepFunctionToolCallDetails.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            RunStepFunctionToolCall deserializedRunStepFunctionToolCall = new RunStepFunctionToolCall(id, function);
+            deserializedRunStepFunctionToolCall.type = type;
+            return deserializedRunStepFunctionToolCall;
+        });
     }
 }

@@ -45,12 +45,16 @@ public final class RequiredFunctionToolCall extends RequiredToolCall {
         this.function = function;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", "function");
         jsonWriter.writeStringField("id", getId());
         jsonWriter.writeJsonField("function", this.function);
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -60,33 +64,31 @@ public final class RequiredFunctionToolCall extends RequiredToolCall {
      * @param jsonReader The JsonReader being read.
      * @return An instance of RequiredFunctionToolCall if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RequiredFunctionToolCall.
      */
+    @Generated
     public static RequiredFunctionToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             RequiredFunctionToolCallDetails function = null;
+            String type = "function";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    String type = reader.getString();
-                    if (!"function".equals(type)) {
-                        throw new IllegalStateException(
-                            "'type' was expected to be non-null and equal to 'function'. The found 'type' was '" + type
-                                + "'.");
-                    }
-                } else if ("id".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("function".equals(fieldName)) {
                     function = RequiredFunctionToolCallDetails.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new RequiredFunctionToolCall(id, function);
+            RequiredFunctionToolCall deserializedRequiredFunctionToolCall = new RequiredFunctionToolCall(id, function);
+            deserializedRequiredFunctionToolCall.type = type;
+            return deserializedRequiredFunctionToolCall;
         });
     }
 

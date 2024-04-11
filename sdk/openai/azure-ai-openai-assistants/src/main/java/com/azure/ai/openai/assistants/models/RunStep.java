@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /**
@@ -86,25 +85,25 @@ public final class RunStep implements JsonSerializable<RunStep> {
      * The Unix timestamp, in seconds, representing when this item expired.
      */
     @Generated
-    private final OffsetDateTime expiredAt;
+    private final Long expiredAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this completed.
      */
     @Generated
-    private final OffsetDateTime completedAt;
+    private final Long completedAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this was cancelled.
      */
     @Generated
-    private final OffsetDateTime cancelledAt;
+    private final Long cancelledAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this failed.
      */
     @Generated
-    private final OffsetDateTime failedAt;
+    private final Long failedAt;
 
     /*
      * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
@@ -219,7 +218,10 @@ public final class RunStep implements JsonSerializable<RunStep> {
      */
     @Generated
     public OffsetDateTime getExpiredAt() {
-        return this.expiredAt;
+        if (this.expiredAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.expiredAt), ZoneOffset.UTC);
     }
 
     /**
@@ -229,7 +231,10 @@ public final class RunStep implements JsonSerializable<RunStep> {
      */
     @Generated
     public OffsetDateTime getCompletedAt() {
-        return this.completedAt;
+        if (this.completedAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.completedAt), ZoneOffset.UTC);
     }
 
     /**
@@ -239,7 +244,10 @@ public final class RunStep implements JsonSerializable<RunStep> {
      */
     @Generated
     public OffsetDateTime getCancelledAt() {
-        return this.cancelledAt;
+        if (this.cancelledAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.cancelledAt), ZoneOffset.UTC);
     }
 
     /**
@@ -249,7 +257,10 @@ public final class RunStep implements JsonSerializable<RunStep> {
      */
     @Generated
     public OffsetDateTime getFailedAt() {
-        return this.failedAt;
+        if (this.failedAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.failedAt), ZoneOffset.UTC);
     }
 
     /**
@@ -295,14 +306,38 @@ public final class RunStep implements JsonSerializable<RunStep> {
         this.status = status;
         this.stepDetails = stepDetails;
         this.lastError = lastError;
-        this.createdAt = createdAt.toEpochSecond();
-        this.expiredAt = expiredAt;
-        this.completedAt = completedAt;
-        this.cancelledAt = cancelledAt;
-        this.failedAt = failedAt;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        if (expiredAt == null) {
+            this.expiredAt = null;
+        } else {
+            this.expiredAt = expiredAt.toEpochSecond();
+        }
+        if (completedAt == null) {
+            this.completedAt = null;
+        } else {
+            this.completedAt = completedAt.toEpochSecond();
+        }
+        if (cancelledAt == null) {
+            this.cancelledAt = null;
+        } else {
+            this.cancelledAt = cancelledAt.toEpochSecond();
+        }
+        if (failedAt == null) {
+            this.failedAt = null;
+        } else {
+            this.failedAt = failedAt.toEpochSecond();
+        }
         this.metadata = metadata;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -316,14 +351,10 @@ public final class RunStep implements JsonSerializable<RunStep> {
         jsonWriter.writeJsonField("step_details", this.stepDetails);
         jsonWriter.writeJsonField("last_error", this.lastError);
         jsonWriter.writeLongField("created_at", this.createdAt);
-        jsonWriter.writeStringField("expired_at",
-            this.expiredAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiredAt));
-        jsonWriter.writeStringField("completed_at",
-            this.completedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.completedAt));
-        jsonWriter.writeStringField("cancelled_at",
-            this.cancelledAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.cancelledAt));
-        jsonWriter.writeStringField("failed_at",
-            this.failedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.failedAt));
+        jsonWriter.writeNumberField("expired_at", this.expiredAt);
+        jsonWriter.writeNumberField("completed_at", this.completedAt);
+        jsonWriter.writeNumberField("cancelled_at", this.cancelledAt);
+        jsonWriter.writeNumberField("failed_at", this.failedAt);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -337,6 +368,7 @@ public final class RunStep implements JsonSerializable<RunStep> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RunStep.
      */
+    @Generated
     public static RunStep fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
@@ -375,13 +407,27 @@ public final class RunStep implements JsonSerializable<RunStep> {
                 } else if ("created_at".equals(fieldName)) {
                     createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
                 } else if ("expired_at".equals(fieldName)) {
-                    expiredAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    Long expiredAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (expiredAtHolder != null) {
+                        expiredAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(expiredAtHolder), ZoneOffset.UTC);
+                    }
                 } else if ("completed_at".equals(fieldName)) {
-                    completedAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    Long completedAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (completedAtHolder != null) {
+                        completedAt
+                            = OffsetDateTime.ofInstant(Instant.ofEpochSecond(completedAtHolder), ZoneOffset.UTC);
+                    }
                 } else if ("cancelled_at".equals(fieldName)) {
-                    cancelledAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    Long cancelledAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (cancelledAtHolder != null) {
+                        cancelledAt
+                            = OffsetDateTime.ofInstant(Instant.ofEpochSecond(cancelledAtHolder), ZoneOffset.UTC);
+                    }
                 } else if ("failed_at".equals(fieldName)) {
-                    failedAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    Long failedAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (failedAtHolder != null) {
+                        failedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(failedAtHolder), ZoneOffset.UTC);
+                    }
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
                 } else {

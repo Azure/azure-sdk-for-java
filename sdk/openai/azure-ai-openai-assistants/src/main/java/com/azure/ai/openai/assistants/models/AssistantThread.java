@@ -97,12 +97,19 @@ public final class AssistantThread implements JsonSerializable<AssistantThread> 
     @Generated
     private AssistantThread(String id, OffsetDateTime createdAt, Map<String, String> metadata) {
         this.id = id;
-        this.createdAt = createdAt.toEpochSecond();
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
         this.metadata = metadata;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     @Generated
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);

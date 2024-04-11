@@ -23,10 +23,14 @@ public final class RetrievalToolDefinition extends ToolDefinition {
     public RetrievalToolDefinition() {
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", "retrieval");
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -36,9 +40,9 @@ public final class RetrievalToolDefinition extends ToolDefinition {
      * @param jsonReader The JsonReader being read.
      * @return An instance of RetrievalToolDefinition if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the RetrievalToolDefinition.
      */
+    @Generated
     public static RetrievalToolDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RetrievalToolDefinition deserializedRetrievalToolDefinition = new RetrievalToolDefinition();
@@ -46,12 +50,7 @@ public final class RetrievalToolDefinition extends ToolDefinition {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    String type = reader.getString();
-                    if (!"retrieval".equals(type)) {
-                        throw new IllegalStateException(
-                            "'type' was expected to be non-null and equal to 'retrieval'. The found 'type' was '" + type
-                                + "'.");
-                    }
+                    deserializedRetrievalToolDefinition.type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -80,8 +80,11 @@ public final class RunStepFunctionToolCallDetails implements JsonSerializable<Ru
         return this.output;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     @Generated
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);

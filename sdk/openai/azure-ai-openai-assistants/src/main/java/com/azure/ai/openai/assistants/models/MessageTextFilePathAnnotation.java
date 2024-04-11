@@ -48,14 +48,18 @@ public final class MessageTextFilePathAnnotation extends MessageTextAnnotation {
         return this.filePath;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", "file_path");
         jsonWriter.writeStringField("text", getText());
         jsonWriter.writeIntField("start_index", getStartIndex());
         jsonWriter.writeIntField("end_index", getEndIndex());
         jsonWriter.writeJsonField("file_path", this.filePath);
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -65,27 +69,21 @@ public final class MessageTextFilePathAnnotation extends MessageTextAnnotation {
      * @param jsonReader The JsonReader being read.
      * @return An instance of MessageTextFilePathAnnotation if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MessageTextFilePathAnnotation.
      */
+    @Generated
     public static MessageTextFilePathAnnotation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String text = null;
             int startIndex = 0;
             int endIndex = 0;
             MessageTextFilePathDetails filePath = null;
+            String type = "file_path";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    String type = reader.getString();
-                    if (!"file_path".equals(type)) {
-                        throw new IllegalStateException(
-                            "'type' was expected to be non-null and equal to 'file_path'. The found 'type' was '" + type
-                                + "'.");
-                    }
-                } else if ("text".equals(fieldName)) {
+                if ("text".equals(fieldName)) {
                     text = reader.getString();
                 } else if ("start_index".equals(fieldName)) {
                     startIndex = reader.getInt();
@@ -93,11 +91,16 @@ public final class MessageTextFilePathAnnotation extends MessageTextAnnotation {
                     endIndex = reader.getInt();
                 } else if ("file_path".equals(fieldName)) {
                     filePath = MessageTextFilePathDetails.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new MessageTextFilePathAnnotation(text, startIndex, endIndex, filePath);
+            MessageTextFilePathAnnotation deserializedMessageTextFilePathAnnotation
+                = new MessageTextFilePathAnnotation(text, startIndex, endIndex, filePath);
+            deserializedMessageTextFilePathAnnotation.type = type;
+            return deserializedMessageTextFilePathAnnotation;
         });
     }
 

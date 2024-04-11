@@ -3054,4 +3054,46 @@ public final class AssistantsClient {
             .getRequestBody();
         return uploadFileWithResponse(request, requestOptions).getValue().toObject(OpenAIFile.class);
     }
+
+    /**
+     * Returns information about a specific file. Does not retrieve file content.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * byte[]
+     * }</pre>
+     *
+     * @param fileId The ID of the file to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represent a byte array along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getFileContentWithResponse(String fileId, RequestOptions requestOptions) {
+        return this.serviceClient.getFileContentWithResponse(fileId, requestOptions);
+    }
+
+    /**
+     * Returns information about a specific file. Does not retrieve file content.
+     *
+     * @param fileId The ID of the file to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represent a byte array.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public byte[] getFileContent(String fileId) {
+        // Generated convenience method for getFileContentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getFileContentWithResponse(fileId, requestOptions).getValue().toObject(byte[].class);
+    }
 }

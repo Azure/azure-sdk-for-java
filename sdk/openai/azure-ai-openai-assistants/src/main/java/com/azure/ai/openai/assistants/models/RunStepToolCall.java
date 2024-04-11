@@ -51,16 +51,6 @@ public class RunStepToolCall implements JsonSerializable<RunStepToolCall> {
         return jsonWriter.writeEndObject();
     }
 
-    /**
-     * Reads an instance of RunStepToolCall from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RunStepToolCall if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the RunStepToolCall.
-     */
     // TODO jpalvarezl see if this is custom or not
     public static RunStepToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {

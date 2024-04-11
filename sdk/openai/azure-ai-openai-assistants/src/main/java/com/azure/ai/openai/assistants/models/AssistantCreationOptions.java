@@ -217,8 +217,11 @@ public final class AssistantCreationOptions implements JsonSerializable<Assistan
         return this;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     @Generated
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("model", this.model);

@@ -61,8 +61,11 @@ public final class RunStepError implements JsonSerializable<RunStepError> {
         return this.message;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     @Generated
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("code", this.code == null ? null : this.code.toString());

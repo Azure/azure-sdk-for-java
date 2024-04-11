@@ -63,6 +63,10 @@ public final class RequiredFunctionToolCallDetails implements JsonSerializable<R
         return this.arguments;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -80,6 +84,7 @@ public final class RequiredFunctionToolCallDetails implements JsonSerializable<R
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RequiredFunctionToolCallDetails.
      */
+    @Generated
     public static RequiredFunctionToolCallDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;

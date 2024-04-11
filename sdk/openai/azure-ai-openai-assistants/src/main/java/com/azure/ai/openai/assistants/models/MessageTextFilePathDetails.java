@@ -43,6 +43,10 @@ public final class MessageTextFilePathDetails implements JsonSerializable<Messag
         return this.fileId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -59,6 +63,7 @@ public final class MessageTextFilePathDetails implements JsonSerializable<Messag
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MessageTextFilePathDetails.
      */
+    @Generated
     public static MessageTextFilePathDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String fileId = null;

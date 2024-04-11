@@ -189,8 +189,11 @@ public final class CreateAndRunThreadOptions implements JsonSerializable<CreateA
         return this;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     @Generated
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("assistant_id", this.assistantId);

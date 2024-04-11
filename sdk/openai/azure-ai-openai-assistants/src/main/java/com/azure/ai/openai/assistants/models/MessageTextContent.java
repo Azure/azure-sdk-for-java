@@ -42,49 +42,6 @@ public final class MessageTextContent extends MessageContent {
         return this.text;
     }
 
-    @Override
-    @Generated
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", "text");
-        jsonWriter.writeJsonField("text", this.text);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of MessageTextContent from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MessageTextContent if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the MessageTextContent.
-     */
-    @Generated
-    public static MessageTextContent fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            MessageTextDetails text = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    String type = reader.getString();
-                    if (!"text".equals(type)) {
-                        throw new IllegalStateException(
-                            "'type' was expected to be non-null and equal to 'text'. The found 'type' was '" + type
-                                + "'.");
-                    }
-                } else if ("text".equals(fieldName)) {
-                    text = MessageTextDetails.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new MessageTextContent(text);
-        });
-    }
-
     /*
      * The object type.
      */
@@ -100,5 +57,48 @@ public final class MessageTextContent extends MessageContent {
     @Override
     public String getType() {
         return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("text", this.text);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MessageTextContent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MessageTextContent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MessageTextContent.
+     */
+    @Generated
+    public static MessageTextContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MessageTextDetails text = null;
+            String type = "text";
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("text".equals(fieldName)) {
+                    text = MessageTextDetails.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            MessageTextContent deserializedMessageTextContent = new MessageTextContent(text);
+            deserializedMessageTextContent.type = type;
+            return deserializedMessageTextContent;
+        });
     }
 }

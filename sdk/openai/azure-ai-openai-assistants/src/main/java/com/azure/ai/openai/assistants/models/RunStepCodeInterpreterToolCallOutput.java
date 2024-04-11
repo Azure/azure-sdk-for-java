@@ -31,15 +31,6 @@ public class RunStepCodeInterpreterToolCallOutput implements JsonSerializable<Ru
         return jsonWriter.writeEndObject();
     }
 
-    /**
-     * Reads an instance of RunStepCodeInterpreterToolCallOutput from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RunStepCodeInterpreterToolCallOutput if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the RunStepCodeInterpreterToolCallOutput.
-     */
     // TODO jpalvarezl check if custom
     public static RunStepCodeInterpreterToolCallOutput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {

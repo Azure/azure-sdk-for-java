@@ -43,8 +43,11 @@ public final class RunStepMessageCreationReference implements JsonSerializable<R
         return this.messageId;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     @Generated
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("message_id", this.messageId);

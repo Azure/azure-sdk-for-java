@@ -21,17 +21,7 @@ public final class MessageImageFileDetails implements JsonSerializable<MessageIm
      * The ID for the file associated with this image.
      */
     @Generated
-    private final MessageImageFileIdDetails fileId;
-
-    /**
-     * Creates an instance of MessageImageFileDetails class.
-     *
-     * @param fileId the fileId value to set.
-     */
-    @Generated
-    private MessageImageFileDetails(MessageImageFileIdDetails fileId) {
-        this.fileId = fileId;
-    }
+    private final String fileId;
 
     /**
      * Get the fileId property: The ID for the file associated with this image.
@@ -39,15 +29,28 @@ public final class MessageImageFileDetails implements JsonSerializable<MessageIm
      * @return the fileId value.
      */
     @Generated
-    public MessageImageFileIdDetails getFileId() {
+    public String getFileId() {
         return this.fileId;
     }
 
-    @Override
+    /**
+     * Creates an instance of MessageImageFileDetails class.
+     *
+     * @param fileId the fileId value to set.
+     */
     @Generated
+    private MessageImageFileDetails(String fileId) {
+        this.fileId = fileId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("file_id", this.fileId);
+        jsonWriter.writeStringField("file_id", this.fileId);
         return jsonWriter.writeEndObject();
     }
 
@@ -63,12 +66,12 @@ public final class MessageImageFileDetails implements JsonSerializable<MessageIm
     @Generated
     public static MessageImageFileDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            MessageImageFileIdDetails fileId = null;
+            String fileId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("file_id".equals(fieldName)) {
-                    fileId = MessageImageFileIdDetails.fromJson(reader);
+                    fileId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

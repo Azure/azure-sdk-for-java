@@ -82,8 +82,11 @@ public final class ToolOutput implements JsonSerializable<ToolOutput> {
         return this;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     @Generated
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("tool_call_id", this.toolCallId);

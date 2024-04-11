@@ -42,49 +42,6 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
         return this.messageCreation;
     }
 
-    @Override
-    @Generated
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", "message_creation");
-        jsonWriter.writeJsonField("message_creation", this.messageCreation);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RunStepMessageCreationDetails from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RunStepMessageCreationDetails if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the RunStepMessageCreationDetails.
-     */
-    @Generated
-    public static RunStepMessageCreationDetails fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            RunStepMessageCreationReference messageCreation = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    String type = reader.getString();
-                    if (!"message_creation".equals(type)) {
-                        throw new IllegalStateException(
-                            "'type' was expected to be non-null and equal to 'message_creation'. The found 'type' was '"
-                                + type + "'.");
-                    }
-                } else if ("message_creation".equals(fieldName)) {
-                    messageCreation = RunStepMessageCreationReference.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new RunStepMessageCreationDetails(messageCreation);
-        });
-    }
-
     /*
      * The object type.
      */
@@ -100,5 +57,49 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
     @Override
     public RunStepType getType() {
         return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("message_creation", this.messageCreation);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunStepMessageCreationDetails from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunStepMessageCreationDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunStepMessageCreationDetails.
+     */
+    @Generated
+    public static RunStepMessageCreationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunStepMessageCreationReference messageCreation = null;
+            RunStepType type = RunStepType.MESSAGE_CREATION;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("message_creation".equals(fieldName)) {
+                    messageCreation = RunStepMessageCreationReference.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = RunStepType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            RunStepMessageCreationDetails deserializedRunStepMessageCreationDetails
+                = new RunStepMessageCreationDetails(messageCreation);
+            deserializedRunStepMessageCreationDetails.type = type;
+            return deserializedRunStepMessageCreationDetails;
+        });
     }
 }

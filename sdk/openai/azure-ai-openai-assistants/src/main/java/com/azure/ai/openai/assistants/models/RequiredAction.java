@@ -31,15 +31,6 @@ public class RequiredAction implements JsonSerializable<RequiredAction> {
         return jsonWriter.writeEndObject();
     }
 
-    /**
-     * Reads an instance of RequiredAction from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RequiredAction if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the RequiredAction.
-     */
     // TODO jpalvarezl see if this is custom or not
     public static RequiredAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {

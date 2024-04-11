@@ -77,8 +77,11 @@ public final class ThreadDeletionStatus implements JsonSerializable<ThreadDeleti
         return this.object;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     @Generated
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);

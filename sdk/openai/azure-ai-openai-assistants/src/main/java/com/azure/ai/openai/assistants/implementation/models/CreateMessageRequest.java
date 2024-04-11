@@ -126,8 +126,11 @@ public final class CreateMessageRequest implements JsonSerializable<CreateMessag
         return this;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     @Generated
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());

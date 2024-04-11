@@ -42,25 +42,6 @@ public final class FunctionToolDefinition extends ToolDefinition {
         return this.function;
     }
 
-    @Override
-    @Generated
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", "function");
-        jsonWriter.writeJsonField("function", this.function);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of FunctionToolDefinition from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of FunctionToolDefinition if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the FunctionToolDefinition.
-     */
     // TODO jpalvarezl: double check how that this is in fact generated code and not a customization
     public static FunctionToolDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
@@ -100,5 +81,17 @@ public final class FunctionToolDefinition extends ToolDefinition {
     @Override
     public String getType() {
         return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("function", this.function);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
     }
 }
