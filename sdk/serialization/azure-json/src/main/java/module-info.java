@@ -3,6 +3,7 @@
 
 module com.azure.json {
     exports com.azure.json;
+    exports com.azure.json.tree;
 
     uses com.azure.json.JsonProvider;
 }

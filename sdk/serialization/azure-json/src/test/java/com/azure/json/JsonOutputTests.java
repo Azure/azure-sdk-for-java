@@ -3,6 +3,12 @@
 
 package com.azure.json;
 
+import com.azure.json.tree.JsonArray;
+import com.azure.json.tree.JsonBoolean;
+import com.azure.json.tree.JsonNull;
+import com.azure.json.tree.JsonNumber;
+import com.azure.json.tree.JsonObject;
+import com.azure.json.tree.JsonString;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -18,35 +24,35 @@ public class JsonOutputTests {
     @Test
     public void objectWithStringJSON() throws IOException {
         String expected = "{\"Value1\":\"Write String\"}";
-        String actual = new JsonObject().setProperty("Value1", new JsonString("Write String")).toJson();
+        String actual = new JsonObject().setProperty("Value1", new JsonString("Write String")).toJsonString();
         assertEquals(expected, actual);
     }
 
     @Test
     public void objectWithIntJSON() throws IOException {
         String expected = "{\"Value1\":111}";
-        String actual = new JsonObject().setProperty("Value1", new JsonNumber(111)).toJson();
+        String actual = new JsonObject().setProperty("Value1", new JsonNumber(111)).toJsonString();
         assertEquals(expected, actual);
     }
 
     @Test
     public void objectWithFloatJSON() throws IOException {
         String expected = "{\"Value1\":1.23}";
-        String actual = new JsonObject().setProperty("Value1", new JsonNumber(1.23)).toJson();
+        String actual = new JsonObject().setProperty("Value1", new JsonNumber(1.23)).toJsonString();
         assertEquals(expected, actual);
     }
 
     @Test
     public void objectWithBooleanJSON() throws IOException {
         String expected = "{\"Value1\":true}";
-        String actual = new JsonObject().setProperty("Value1", JsonBoolean.getInstance(true)).toJson();
+        String actual = new JsonObject().setProperty("Value1", JsonBoolean.getInstance(true)).toJsonString();
         assertEquals(expected, actual);
     }
 
     @Test
     public void objectWithNullJSON() throws IOException {
         String expected = "{\"Value1\":null}";
-        String actual = new JsonObject().setProperty("Value1", JsonNull.getInstance()).toJson();
+        String actual = new JsonObject().setProperty("Value1", JsonNull.getInstance()).toJsonString();
         assertEquals(expected, actual);
     }
 
@@ -55,7 +61,7 @@ public class JsonOutputTests {
         String expected = "{\"Value1\":{\"Value2\":\"Second Layer\"}}";
         String actual = new JsonObject()
             .setProperty("Value1", new JsonObject().setProperty("Value2", new JsonString("Second Layer")))
-            .toJson();
+            .toJsonString();
         assertEquals(expected, actual);
     }
 
@@ -64,7 +70,7 @@ public class JsonOutputTests {
         String expected = "{\"Value1\":\"First Layer\",\"Value2\":\"Second Layer\"}";
         String actual = new JsonObject().setProperty("Value1", new JsonString("First Layer"))
             .setProperty("Value2", new JsonString("Second Layer"))
-            .toJson();
+            .toJsonString();
         assertEquals(expected, actual);
     }
 
@@ -73,7 +79,7 @@ public class JsonOutputTests {
         String expected = "{\"Value1\":\"First Layer\",\"Value2\":2}";
         String actual = new JsonObject().setProperty("Value1", new JsonString("First Layer"))
             .setProperty("Value2", new JsonNumber(2))
-            .toJson();
+            .toJsonString();
         assertEquals(expected, actual);
     }
 
@@ -85,7 +91,7 @@ public class JsonOutputTests {
                 .setProperty("Value1",
                     new JsonArray().addElement(new JsonObject().setProperty("Value2", new JsonNumber(2)))
                         .addElement(new JsonObject().setProperty("Value3", new JsonNumber(3))))
-                .toJson();
+                .toJsonString();
         assertEquals(expected, actual);
     }
 
@@ -97,7 +103,7 @@ public class JsonOutputTests {
         for (int a : values) {
             intList.addElement(new JsonNumber(a));
         }
-        String actual = new JsonObject().setProperty("intList", intList).toJson();
+        String actual = new JsonObject().setProperty("intList", intList).toJsonString();
         assertEquals(expected, actual);
     }
 
@@ -110,7 +116,7 @@ public class JsonOutputTests {
             .setProperty("Michael", new JsonString("Campbell"))
             .setProperty("Mary", new JsonString("Jones"))
             .setProperty("John", new JsonString("Williams"));
-        assertEquals(expected, jsonObj.toJson());
+        assertEquals(expected, jsonObj.toJsonString());
     }
 
     @Test
@@ -123,7 +129,7 @@ public class JsonOutputTests {
             .setProperty("Mary", new JsonString("Jones"))
             .setProperty("John", new JsonString("Williams"));
         jsonObj.removeProperty("Michael");
-        assertEquals(expected, jsonObj.toJson());
+        assertEquals(expected, jsonObj.toJsonString());
     }
 
     //    @Test
@@ -158,7 +164,7 @@ public class JsonOutputTests {
                     .setProperty("Surname", new JsonString("Jones")))
             .setProperty("John", new JsonObject().setProperty("Country", new JsonString("Australia"))
                 .setProperty("Surname", new JsonString("Williams")));
-        assertEquals(expected, jsonObj.toJson());
+        assertEquals(expected, jsonObj.toJsonString());
     }
 
     @Test
@@ -174,7 +180,7 @@ public class JsonOutputTests {
         for (String country : countries) {
             countryArray.addElement(new JsonString(country));
         }
-        assertEquals(expected, countryArray.toJson());
+        assertEquals(expected, countryArray.toJsonString());
     }
 
     //    @Test

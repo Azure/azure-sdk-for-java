@@ -3,6 +3,8 @@
 
 package com.azure.json;
 
+import com.azure.json.tree.JsonBoolean;
+import com.azure.json.tree.JsonElement;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 

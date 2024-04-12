@@ -3,6 +3,12 @@
 
 package com.azure.json;
 
+import com.azure.json.tree.JsonArray;
+import com.azure.json.tree.JsonBoolean;
+import com.azure.json.tree.JsonNull;
+import com.azure.json.tree.JsonNumber;
+import com.azure.json.tree.JsonObject;
+import com.azure.json.tree.JsonString;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;

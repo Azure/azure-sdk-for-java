@@ -3,6 +3,12 @@
 
 package com.azure.json;
 
+import com.azure.json.tree.JsonArray;
+import com.azure.json.tree.JsonBoolean;
+import com.azure.json.tree.JsonNull;
+import com.azure.json.tree.JsonNumber;
+import com.azure.json.tree.JsonObject;
+import com.azure.json.tree.JsonString;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -55,7 +61,7 @@ public class JsonEditingTests {
     @Test
     public void addArrayElementExistingEntryFullJson() throws IOException { //Test that values behind the index have been properly shifted, and not replaced.
         array.addElement(1, new JsonString("New Value"));
-        assertEquals("[\"EntryVariable\",\"New Value\",{\"InnerKey\":\"Data\"},[null,false]]", array.toJson());
+        assertEquals("[\"EntryVariable\",\"New Value\",{\"InnerKey\":\"Data\"},[null,false]]", array.toJsonString());
     }
 
     //    @Test TODO (alzimmer): this behaviour doesn't exist in the current implementation. Can probably remove this test
@@ -163,19 +169,19 @@ public class JsonEditingTests {
     @Test
     public void deleteObjectPropertyVariable() throws IOException {
         object.removeProperty("EntryVariable");
-        assertEquals("{\"EntryObject\":{\"InnerKey\":20},\"EntryArray\":[\"Value\",\"Value2\"]}", object.toJson());
+        assertEquals("{\"EntryObject\":{\"InnerKey\":20},\"EntryArray\":[\"Value\",\"Value2\"]}", object.toJsonString());
     }
 
     @Test
     public void deleteObjectPropertyObject() throws IOException {
         object.removeProperty("EntryObject");
-        assertEquals("{\"EntryVariable\":\"First\",\"EntryArray\":[\"Value\",\"Value2\"]}", object.toJson());
+        assertEquals("{\"EntryVariable\":\"First\",\"EntryArray\":[\"Value\",\"Value2\"]}", object.toJsonString());
     }
 
     @Test
     public void deleteObjectPropertyArray() throws IOException {
         object.removeProperty("EntryArray");
-        assertEquals("{\"EntryVariable\":\"First\",\"EntryObject\":{\"InnerKey\":20}}", object.toJson());
+        assertEquals("{\"EntryVariable\":\"First\",\"EntryObject\":{\"InnerKey\":20}}", object.toJsonString());
     }
 
     @Test
@@ -186,7 +192,7 @@ public class JsonEditingTests {
         // chain further JsonArray or JsonObject method calls.
         ((JsonObject) object.getProperty("EntryObject")).removeProperty("InnerKey");
         assertEquals("{\"EntryVariable\":\"First\",\"EntryObject\":{},\"EntryArray\":[\"Value\",\"Value2\"]}",
-            object.toJson());
+            object.toJsonString());
     }
 
     @Test
@@ -197,7 +203,7 @@ public class JsonEditingTests {
         // chain further JsonArray or JsonObject method calls.
         ((JsonArray) object.getProperty("EntryArray")).removeElement(0);
         assertEquals("{\"EntryVariable\":\"First\",\"EntryObject\":{\"InnerKey\":20},\"EntryArray\":[\"Value2\"]}",
-            object.toJson());
+            object.toJsonString());
     }
 
     @Test
@@ -237,19 +243,19 @@ public class JsonEditingTests {
     @Test
     public void deleteArrayPropertyVariable() throws IOException {
         array.removeElement(0);
-        assertEquals("[{\"InnerKey\":\"Data\"},[null,false]]", array.toJson());
+        assertEquals("[{\"InnerKey\":\"Data\"},[null,false]]", array.toJsonString());
     }
 
     @Test
     public void deleteArrayPropertyObject() throws IOException {
         array.removeElement(1);
-        assertEquals("[\"EntryVariable\",[null,false]]", array.toJson());
+        assertEquals("[\"EntryVariable\",[null,false]]", array.toJsonString());
     }
 
     @Test
     public void deleteArrayPropertyArray() throws IOException {
         array.removeElement(2);
-        assertEquals("[\"EntryVariable\",{\"InnerKey\":\"Data\"}]", array.toJson());
+        assertEquals("[\"EntryVariable\",{\"InnerKey\":\"Data\"}]", array.toJsonString());
     }
 
     @Test
@@ -259,7 +265,7 @@ public class JsonEditingTests {
         // getProperty to the appropriate JsonArray or JsonObject type to
         // chain further JsonArray or JsonObject method calls.
         ((JsonObject) array.getElement(1)).removeProperty("InnerKey");
-        assertEquals("[\"EntryVariable\",{},[null,false]]", array.toJson());
+        assertEquals("[\"EntryVariable\",{},[null,false]]", array.toJsonString());
     }
 
     @Test
@@ -269,7 +275,7 @@ public class JsonEditingTests {
         // getProperty to the appropriate JsonArray or JsonObject type to
         // chain further JsonArray or JsonObject method calls.
         ((JsonArray) array.getElement(2)).removeElement(1);
-        assertEquals("[\"EntryVariable\",{\"InnerKey\":\"Data\"},[null]]", array.toJson());
+        assertEquals("[\"EntryVariable\",{\"InnerKey\":\"Data\"},[null]]", array.toJsonString());
     }
 
     @Test

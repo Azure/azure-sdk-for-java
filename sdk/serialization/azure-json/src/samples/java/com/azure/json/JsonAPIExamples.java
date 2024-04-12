@@ -3,6 +3,13 @@
 
 package com.azure.json;
 
+import com.azure.json.tree.JsonArray;
+import com.azure.json.tree.JsonBoolean;
+import com.azure.json.tree.JsonElement;
+import com.azure.json.tree.JsonNumber;
+import com.azure.json.tree.JsonObject;
+import com.azure.json.tree.JsonString;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -40,7 +47,7 @@ public class JsonAPIExamples {
             .setProperty("child friendly", JsonBoolean.getInstance(false))));
 
     public static void main(String[] args) throws IOException {
-        System.out.println("Original Library Content:\n" + library.toJson() + "\n");
+        System.out.println("Original Library Content:\n" + library.toJsonString() + "\n");
 
         JsonArray bookLog = (JsonArray) ((JsonObject) library).getProperty("books");
         JsonElement childLibrary = new JsonArray();
@@ -51,8 +58,8 @@ public class JsonAPIExamples {
                 bookLog.removeElement(i);
             }
         }
-        System.out.println("Contents of Child Section:\n" + childLibrary.toJson() + "\n");
-        System.out.println("Contents of Adult Section:\n" + library.toJson() + "\n");
+        System.out.println("Contents of Child Section:\n" + childLibrary.toJsonString() + "\n");
+        System.out.println("Contents of Adult Section:\n" + library.toJsonString() + "\n");
         demonstration1();
     }
 
@@ -61,7 +68,7 @@ public class JsonAPIExamples {
         String content = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
 
         JsonElement result = JsonElement.fromString(content);
-        System.out.println("Result of Test 1: Getting JSON Model from file\n" + result.toJson() + "\n");
+        System.out.println("Result of Test 1: Getting JSON Model from file\n" + result.toJsonString() + "\n");
         demonstration2(result);
     }
 
@@ -73,7 +80,7 @@ public class JsonAPIExamples {
                 validData.addElement(database.getElement(i));
             }
         }
-        System.out.println("Result of Test 2: All movies in October\n" + validData.toJson() + "\n");
+        System.out.println("Result of Test 2: All movies in October\n" + validData.toJsonString() + "\n");
         demonstration3(element);
     }
 
@@ -87,7 +94,7 @@ public class JsonAPIExamples {
                 ((JsonObject) (database.getElement(i))).setProperty("evenNum", new JsonString("TRUE"));
             }
         }
-        String result = element.toJson();
+        String result = element.toJsonString();
         result = result.replace("},", "},\n");
         System.out.println("Result of Test 3: All even numbered movies are marked\n" + result + "\n");
         demonstration4(element);
@@ -101,7 +108,7 @@ public class JsonAPIExamples {
                 database.removeElement(i);
             }
         }
-        System.out.println("Result of Test 4: Remove Movies rated less than 8\n" + element.toJson() + "\n");
+        System.out.println("Result of Test 4: Remove Movies rated less than 8\n" + element.toJsonString() + "\n");
 
         //String path = "src/test/resources/JsonTestFileEdited.json";
         //Files.writeString(Path.of(path), element.toJson());

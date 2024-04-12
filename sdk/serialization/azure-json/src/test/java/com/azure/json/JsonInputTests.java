@@ -3,6 +3,7 @@
 
 package com.azure.json;
 
+import com.azure.json.tree.JsonElement;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
@@ -60,35 +61,35 @@ public class JsonInputTests {
     public void uriTesting() throws IOException {
         String content = new String(Files.readAllBytes(Paths.get(jsonArrayFileA)), StandardCharsets.UTF_8);
         JsonElement result = JsonElement.fromString(content);
-        assertEquals("{\"soloArray\":[1,2,3]}", result.toJson());
+        assertEquals("{\"soloArray\":[1,2,3]}", result.toJsonString());
     }
 
     @Test
     public void builderDeserializeString() throws IOException {
         String content = new String(Files.readAllBytes(Paths.get(jsonTestFileB)), StandardCharsets.UTF_8);
         JsonElement result = JsonElement.fromString(content);
-        assertEquals("{\"json\":{\"name\":\"Dave\",\"age\":22}}", result.toJson());
+        assertEquals("{\"json\":{\"name\":\"Dave\",\"age\":22}}", result.toJsonString());
     }
 
     @Test
     public void builderDeserializeBytes() throws IOException {
         byte[] content = Files.readAllBytes(Paths.get(jsonTestFileB));
         JsonElement result = JsonElement.fromBytes(content);
-        assertEquals("{\"json\":{\"name\":\"Dave\",\"age\":22}}", result.toJson());
+        assertEquals("{\"json\":{\"name\":\"Dave\",\"age\":22}}", result.toJsonString());
     }
 
     @Test
     public void builderDeserializeInputStream() throws IOException {
         InputStream content = new FileInputStream(jsonTestFileB.getPath());
         JsonElement result = JsonElement.fromStream(content);
-        assertEquals("{\"json\":{\"name\":\"Dave\",\"age\":22}}", result.toJson());
+        assertEquals("{\"json\":{\"name\":\"Dave\",\"age\":22}}", result.toJsonString());
     }
 
     @Test
     public void builderDeserializeReader() throws IOException {
         Reader content = new BufferedReader(new InputStreamReader(new FileInputStream(jsonTestFileB.getPath())));
         JsonElement result = JsonElement.fromReader(content);
-        assertEquals("{\"json\":{\"name\":\"Dave\",\"age\":22}}", result.toJson());
+        assertEquals("{\"json\":{\"name\":\"Dave\",\"age\":22}}", result.toJsonString());
     }
 
     //----------------------------------------------------------------------------------
@@ -96,7 +97,7 @@ public class JsonInputTests {
     public void builderDeserializeOnlyArrayString() throws IOException {
         String content = new String(Files.readAllBytes(Paths.get(jsonArrayFileA)), StandardCharsets.UTF_8);
         JsonElement result = JsonElement.fromString(content);
-        assertEquals("{\"soloArray\":[1,2,3]}", result.toJson());
+        assertEquals("{\"soloArray\":[1,2,3]}", result.toJsonString());
     }
 
     @Test
@@ -104,21 +105,21 @@ public class JsonInputTests {
         String content = new String(Files.readAllBytes(Paths.get(jsonArrayFileB)), StandardCharsets.UTF_8);
         JsonElement result = JsonElement.fromString(content);
         assertEquals("{\"priorJson\":\"This is before the array\",\"boolean\":true,\"array\":[1,2,3]}",
-            result.toJson());
+            result.toJsonString());
     }
 
     @Test
     public void builderDeserializeArrayDataAfterString() throws IOException {
         String content = new String(Files.readAllBytes(Paths.get(jsonArrayFileC)), StandardCharsets.UTF_8);
         JsonElement result = JsonElement.fromString(content);
-        assertEquals("{\"Array\":[1,2,3],\"JsonAfter\":\"This is after an array\",\"Number\":5}", result.toJson());
+        assertEquals("{\"Array\":[1,2,3],\"JsonAfter\":\"This is after an array\",\"Number\":5}", result.toJsonString());
     }
 
     @Test
     public void builderDeserializeArrayInArrayString() throws IOException {
         String content = new String(Files.readAllBytes(Paths.get(jsonArrayFileD)), StandardCharsets.UTF_8);
         JsonElement result = JsonElement.fromString(content);
-        assertEquals("{\"array\":[1,2,[\"array in\",\"array\"],\"follow-up word\"]}", result.toJson());
+        assertEquals("{\"array\":[1,2,[\"array in\",\"array\"],\"follow-up word\"]}", result.toJsonString());
     }
 
     @Test
@@ -127,7 +128,7 @@ public class JsonInputTests {
         JsonElement result = JsonElement.fromString(content);
         assertEquals(
             "{\"Data\":[{\"name\":\"A\",\"age\":1,\"input\":[true,false,true]},{\"name\":\"B\",\"age\":2,\"input\":[true,false,false]},{\"name\":\"C\",\"age\":3,\"input\":[false,true,true],\"favourite fruit\":\"lemons\"}]}",
-            result.toJson());
+            result.toJsonString());
     }
 
     @Test
@@ -136,21 +137,21 @@ public class JsonInputTests {
         JsonElement result = JsonElement.fromString(content);
         assertEquals(
             "{\"superDeepObjects\":[{\"layer1\":[{\"layer2\":[{\"layer3\":[{\"layer4\":[1,2,3]},{\"layer4Second\":[4,5,6]}]}]}]}]}",
-            result.toJson());
+            result.toJsonString());
     }
 
     @Test
     public void builderDeserializeArrayObjectInArrayMultiString() throws IOException {
         String content = new String(Files.readAllBytes(Paths.get(jsonArrayFileG)), StandardCharsets.UTF_8);
         JsonElement result = JsonElement.fromString(content);
-        assertEquals("{\"superDeepArray\":[[[[null,[[[\"deep\",[1,2,3],4]]]]],false]]}", result.toJson());
+        assertEquals("{\"superDeepArray\":[[[[null,[[[\"deep\",[1,2,3],4]]]]],false]]}", result.toJsonString());
     }
 
     @Test
     public void builderDeserializeEmptyArrayString() throws IOException {
         String content = new String(Files.readAllBytes(Paths.get(jsonArrayFileEmpty)), StandardCharsets.UTF_8);
         JsonElement result = JsonElement.fromString(content);
-        assertEquals("{\"inputA\":\"A\",\"array\":[],\"inputC\":null}", result.toJson());
+        assertEquals("{\"inputA\":\"A\",\"array\":[],\"inputC\":null}", result.toJsonString());
     }
 
     //----------------------------------------------------------------------------------
@@ -159,7 +160,7 @@ public class JsonInputTests {
     public void builderDeserializeOnlyArrayBytes() throws IOException {
         byte[] content = Files.readAllBytes(Paths.get(jsonArrayFileA));
         JsonElement result = JsonElement.fromBytes(content);
-        assertEquals("{\"soloArray\":[1,2,3]}", result.toJson());
+        assertEquals("{\"soloArray\":[1,2,3]}", result.toJsonString());
     }
 
     @Test
@@ -167,21 +168,21 @@ public class JsonInputTests {
         byte[] content = Files.readAllBytes(Paths.get(jsonArrayFileB));
         JsonElement result = JsonElement.fromBytes(content);
         assertEquals("{\"priorJson\":\"This is before the array\",\"boolean\":true,\"array\":[1,2,3]}",
-            result.toJson());
+            result.toJsonString());
     }
 
     @Test
     public void builderDeserializeArrayDataAfterBytes() throws IOException {
         byte[] content = Files.readAllBytes(Paths.get(jsonArrayFileC));
         JsonElement result = JsonElement.fromBytes(content);
-        assertEquals("{\"Array\":[1,2,3],\"JsonAfter\":\"This is after an array\",\"Number\":5}", result.toJson());
+        assertEquals("{\"Array\":[1,2,3],\"JsonAfter\":\"This is after an array\",\"Number\":5}", result.toJsonString());
     }
 
     @Test
     public void builderDeserializeArrayInArrayBytes() throws IOException {
         byte[] content = Files.readAllBytes(Paths.get(jsonArrayFileD));
         JsonElement result = JsonElement.fromBytes(content);
-        assertEquals("{\"array\":[1,2,[\"array in\",\"array\"],\"follow-up word\"]}", result.toJson());
+        assertEquals("{\"array\":[1,2,[\"array in\",\"array\"],\"follow-up word\"]}", result.toJsonString());
     }
 
     @Test
@@ -190,7 +191,7 @@ public class JsonInputTests {
         JsonElement result = JsonElement.fromBytes(content);
         assertEquals(
             "{\"Data\":[{\"name\":\"A\",\"age\":1,\"input\":[true,false,true]},{\"name\":\"B\",\"age\":2,\"input\":[true,false,false]},{\"name\":\"C\",\"age\":3,\"input\":[false,true,true],\"favourite fruit\":\"lemons\"}]}",
-            result.toJson());
+            result.toJsonString());
     }
 
     @Test
@@ -199,21 +200,21 @@ public class JsonInputTests {
         JsonElement result = JsonElement.fromBytes(content);
         assertEquals(
             "{\"superDeepObjects\":[{\"layer1\":[{\"layer2\":[{\"layer3\":[{\"layer4\":[1,2,3]},{\"layer4Second\":[4,5,6]}]}]}]}]}",
-            result.toJson());
+            result.toJsonString());
     }
 
     @Test
     public void builderDeserializeArrayObjectInArrayMultiBytes() throws IOException {
         byte[] content = Files.readAllBytes(Paths.get(jsonArrayFileG));
         JsonElement result = JsonElement.fromBytes(content);
-        assertEquals("{\"superDeepArray\":[[[[null,[[[\"deep\",[1,2,3],4]]]]],false]]}", result.toJson());
+        assertEquals("{\"superDeepArray\":[[[[null,[[[\"deep\",[1,2,3],4]]]]],false]]}", result.toJsonString());
     }
 
     @Test
     public void builderDeserializeEmptyArrayBytes() throws IOException {
         byte[] content = Files.readAllBytes(Paths.get(jsonArrayFileEmpty));
         JsonElement result = JsonElement.fromBytes(content);
-        assertEquals("{\"inputA\":\"A\",\"array\":[],\"inputC\":null}", result.toJson());
+        assertEquals("{\"inputA\":\"A\",\"array\":[],\"inputC\":null}", result.toJsonString());
     }
 
     //----------------------------------------------------------------------------------
@@ -222,7 +223,7 @@ public class JsonInputTests {
     public void builderDeserializeOnlyArrayInputStream() throws IOException {
         InputStream content = new FileInputStream(String.valueOf(Paths.get(jsonArrayFileA)));
         JsonElement result = JsonElement.fromStream(content);
-        assertEquals("{\"soloArray\":[1,2,3]}", result.toJson());
+        assertEquals("{\"soloArray\":[1,2,3]}", result.toJsonString());
     }
 
     @Test
@@ -230,21 +231,21 @@ public class JsonInputTests {
         InputStream content = new FileInputStream(jsonArrayFileB.getPath());
         JsonElement result = JsonElement.fromStream(content);
         assertEquals("{\"priorJson\":\"This is before the array\",\"boolean\":true,\"array\":[1,2,3]}",
-            result.toJson());
+            result.toJsonString());
     }
 
     @Test
     public void builderDeserializeArrayDataAfterInputStream() throws IOException {
         InputStream content = new FileInputStream(jsonArrayFileC.getPath());
         JsonElement result = JsonElement.fromStream(content);
-        assertEquals("{\"Array\":[1,2,3],\"JsonAfter\":\"This is after an array\",\"Number\":5}", result.toJson());
+        assertEquals("{\"Array\":[1,2,3],\"JsonAfter\":\"This is after an array\",\"Number\":5}", result.toJsonString());
     }
 
     @Test
     public void builderDeserializeArrayInArrayInputStream() throws IOException {
         InputStream content = new FileInputStream(jsonArrayFileD.getPath());
         JsonElement result = JsonElement.fromStream(content);
-        assertEquals("{\"array\":[1,2,[\"array in\",\"array\"],\"follow-up word\"]}", result.toJson());
+        assertEquals("{\"array\":[1,2,[\"array in\",\"array\"],\"follow-up word\"]}", result.toJsonString());
     }
 
     @Test
@@ -253,7 +254,7 @@ public class JsonInputTests {
         JsonElement result = JsonElement.fromStream(content);
         assertEquals(
             "{\"Data\":[{\"name\":\"A\",\"age\":1,\"input\":[true,false,true]},{\"name\":\"B\",\"age\":2,\"input\":[true,false,false]},{\"name\":\"C\",\"age\":3,\"input\":[false,true,true],\"favourite fruit\":\"lemons\"}]}",
-            result.toJson());
+            result.toJsonString());
     }
 
     @Test
@@ -262,21 +263,21 @@ public class JsonInputTests {
         JsonElement result = JsonElement.fromStream(content);
         assertEquals(
             "{\"superDeepObjects\":[{\"layer1\":[{\"layer2\":[{\"layer3\":[{\"layer4\":[1,2,3]},{\"layer4Second\":[4,5,6]}]}]}]}]}",
-            result.toJson());
+            result.toJsonString());
     }
 
     @Test
     public void builderDeserializeArrayObjectInArrayMultiInputStream() throws IOException {
         InputStream content = new FileInputStream(jsonArrayFileG.getPath());
         JsonElement result = JsonElement.fromStream(content);
-        assertEquals("{\"superDeepArray\":[[[[null,[[[\"deep\",[1,2,3],4]]]]],false]]}", result.toJson());
+        assertEquals("{\"superDeepArray\":[[[[null,[[[\"deep\",[1,2,3],4]]]]],false]]}", result.toJsonString());
     }
 
     @Test
     public void builderDeserializeEmptyArrayInputStream() throws IOException {
         InputStream content = new FileInputStream(jsonArrayFileEmpty.getPath());
         JsonElement result = JsonElement.fromStream(content);
-        assertEquals("{\"inputA\":\"A\",\"array\":[],\"inputC\":null}", result.toJson());
+        assertEquals("{\"inputA\":\"A\",\"array\":[],\"inputC\":null}", result.toJsonString());
     }
 
     //----------------------------------------------------------------------------------
@@ -285,7 +286,7 @@ public class JsonInputTests {
     public void builderDeserializeOnlyArrayReader() throws IOException {
         Reader content = new BufferedReader(new InputStreamReader(new FileInputStream(jsonArrayFileA.getPath())));
         JsonElement result = JsonElement.fromReader(content);
-        assertEquals("{\"soloArray\":[1,2,3]}", result.toJson());
+        assertEquals("{\"soloArray\":[1,2,3]}", result.toJsonString());
     }
 
     @Test
@@ -293,21 +294,21 @@ public class JsonInputTests {
         Reader content = new BufferedReader(new InputStreamReader(new FileInputStream(jsonArrayFileB.getPath())));
         JsonElement result = JsonElement.fromReader(content);
         assertEquals("{\"priorJson\":\"This is before the array\",\"boolean\":true,\"array\":[1,2,3]}",
-            result.toJson());
+            result.toJsonString());
     }
 
     @Test
     public void builderDeserializeArrayDataAfterReader() throws IOException {
         Reader content = new BufferedReader(new InputStreamReader(new FileInputStream(jsonArrayFileC.getPath())));
         JsonElement result = JsonElement.fromReader(content);
-        assertEquals("{\"Array\":[1,2,3],\"JsonAfter\":\"This is after an array\",\"Number\":5}", result.toJson());
+        assertEquals("{\"Array\":[1,2,3],\"JsonAfter\":\"This is after an array\",\"Number\":5}", result.toJsonString());
     }
 
     @Test
     public void builderDeserializeArrayInArrayReader() throws IOException {
         Reader content = new BufferedReader(new InputStreamReader(new FileInputStream(jsonArrayFileD.getPath())));
         JsonElement result = JsonElement.fromReader(content);
-        assertEquals("{\"array\":[1,2,[\"array in\",\"array\"],\"follow-up word\"]}", result.toJson());
+        assertEquals("{\"array\":[1,2,[\"array in\",\"array\"],\"follow-up word\"]}", result.toJsonString());
     }
 
     @Test
@@ -316,7 +317,7 @@ public class JsonInputTests {
         JsonElement result = JsonElement.fromReader(content);
         assertEquals(
             "{\"Data\":[{\"name\":\"A\",\"age\":1,\"input\":[true,false,true]},{\"name\":\"B\",\"age\":2,\"input\":[true,false,false]},{\"name\":\"C\",\"age\":3,\"input\":[false,true,true],\"favourite fruit\":\"lemons\"}]}",
-            result.toJson());
+            result.toJsonString());
     }
 
     @Test
@@ -325,20 +326,20 @@ public class JsonInputTests {
         JsonElement result = JsonElement.fromReader(content);
         assertEquals(
             "{\"superDeepObjects\":[{\"layer1\":[{\"layer2\":[{\"layer3\":[{\"layer4\":[1,2,3]},{\"layer4Second\":[4,5,6]}]}]}]}]}",
-            result.toJson());
+            result.toJsonString());
     }
 
     @Test
     public void builderDeserializeArrayObjectInArrayMultiReader() throws IOException {
         Reader content = new BufferedReader(new InputStreamReader(new FileInputStream(jsonArrayFileG.getPath())));
         JsonElement result = JsonElement.fromReader(content);
-        assertEquals("{\"superDeepArray\":[[[[null,[[[\"deep\",[1,2,3],4]]]]],false]]}", result.toJson());
+        assertEquals("{\"superDeepArray\":[[[[null,[[[\"deep\",[1,2,3],4]]]]],false]]}", result.toJsonString());
     }
 
     @Test
     public void builderDeserializeEmptyArrayReader() throws IOException {
         Reader content = new BufferedReader(new InputStreamReader(new FileInputStream(jsonArrayFileEmpty.getPath())));
         JsonElement result = JsonElement.fromReader(content);
-        assertEquals("{\"inputA\":\"A\",\"array\":[],\"inputC\":null}", result.toJson());
+        assertEquals("{\"inputA\":\"A\",\"array\":[],\"inputC\":null}", result.toJsonString());
     }
 }
