@@ -4,9 +4,11 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.ProxyAuthenticationType;
+import com.azure.core.amqp.ProxyAuthenticator;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AmqpErrorCode;
 import com.azure.core.amqp.implementation.AmqpMetricsProvider;
+import com.azure.core.amqp.implementation.ChallengeResponseAccessHelper;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.util.CoreUtils;
 import com.microsoft.azure.proton.transport.proxy.ProxyHandler;
@@ -217,6 +219,13 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
     }
 
     private com.microsoft.azure.proton.transport.proxy.ProxyConfiguration getProtonConfiguration() {
+        final ProxyAuthenticator authenticator = proxyOptions.getAuthenticator();
+        if (authenticator != null) {
+            final ProtonJExtensionsProxyAuthenticator protonAuthenticator
+                = new ProtonJExtensionsProxyAuthenticator(authenticator);
+            return new com.microsoft.azure.proton.transport.proxy.ProxyConfiguration(protonAuthenticator,
+                proxyOptions.getProxyAddress());
+        }
         final com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType type
             = getProtonAuthType(proxyOptions.getAuthentication());
         final String username
@@ -267,5 +276,20 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
             && proxies.get(0).type() == Proxy.Type.HTTP
             && proxies.get(0).address() != null
             && proxies.get(0).address() instanceof InetSocketAddress;
+    }
+
+    private static final class ProtonJExtensionsProxyAuthenticator
+        implements com.microsoft.azure.proton.transport.proxy.ProxyAuthenticator {
+        private final com.azure.core.amqp.ProxyAuthenticator authenticator;
+
+        private ProtonJExtensionsProxyAuthenticator(com.azure.core.amqp.ProxyAuthenticator authenticator) {
+            this.authenticator = Objects.requireNonNull(authenticator, "'authenticator' cannot be null.");
+        }
+
+        @Override
+        public String
+            authenticate(com.microsoft.azure.proton.transport.proxy.ProxyAuthenticator.ChallengeResponse response) {
+            return authenticator.authenticate(ChallengeResponseAccessHelper.internalCreate(response.getHeaders()));
+        }
     }
 }
