@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (2024-04-12)
 
 ### Features Added
 
@@ -8,13 +8,13 @@
 - Support for the scopes of non-public clouds. 
 - Migration to stream-style serialization using `azure-json`
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
+#### Dependency Updates
+
 - Added `azure-json` version `1.1.0` as a dependency.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 
 ## 1.1.5 (2024-03-11)
 
