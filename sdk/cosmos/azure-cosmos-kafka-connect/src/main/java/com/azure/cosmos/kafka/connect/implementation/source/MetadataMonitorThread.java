@@ -6,7 +6,6 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.FeedRange;
@@ -274,7 +273,7 @@ public class MetadataMonitorThread extends Thread {
         return ImplementationBridgeHelpers
                 .CosmosAsyncContainerHelper
                 .getCosmosAsyncContainerAccessor()
-                .getOverlappingFeedRanges(container, feedRangeChanged, false) // TODO [public preview: when should forcerefresh]
+                .getOverlappingFeedRanges(container, feedRangeChanged, false) // TODO (xinlian-public preview): when should forcerefresh
             .map(matchedPkRanges -> {
                 if (matchedPkRanges.size() == 0) {
                     LOGGER.warn(

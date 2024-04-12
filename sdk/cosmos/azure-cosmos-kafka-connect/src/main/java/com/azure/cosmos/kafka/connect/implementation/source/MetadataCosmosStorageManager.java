@@ -119,9 +119,9 @@ public class MetadataCosmosStorageManager implements IMetadataReader {
         @JsonProperty("metadata")
         private Map<String, Object> metadata;
 
-        public ContainersMetadataItem() {}
+        ContainersMetadataItem() {}
 
-        public ContainersMetadataItem(String databaseName, Map<String, Object> metadata) {
+        ContainersMetadataItem(String databaseName, Map<String, Object> metadata) {
             this.databaseName = databaseName;
             this.metadata = metadata;
         }
@@ -149,9 +149,9 @@ public class MetadataCosmosStorageManager implements IMetadataReader {
         @JsonProperty("metadata")
         private Map<String, Object> metadata;
 
-        private FeedRangesMetadataItem() {}
+        FeedRangesMetadataItem() {}
 
-        public FeedRangesMetadataItem(String databaseAndContainerRid, Map<String, Object> metadata) {
+        FeedRangesMetadataItem(String databaseAndContainerRid, Map<String, Object> metadata) {
             this.databaseAndContainerRid = databaseAndContainerRid;
             this.metadata = metadata;
         }

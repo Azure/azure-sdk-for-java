@@ -232,7 +232,7 @@ public class CosmosSourceTask extends SourceTask {
     }
 
     private Mono<Boolean> handleFeedRangeGone(FeedRangeTaskUnit feedRangeTaskUnit) {
-        //TODO [public preview]Add more debug logs
+        //TODO (xinlian-public preview): Add more debug logs
 
         // need to find out whether it is split or merge
         CosmosAsyncContainer container =
