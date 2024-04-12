@@ -41,7 +41,7 @@ public final class RuleEngineWorkerSelectorAttachment extends WorkerSelectorAtta
     @JsonCreator
     public RuleEngineWorkerSelectorAttachment(@JsonProperty(value = "rule") RouterRule rule) {
         this.rule = rule;
-        this.kind = "ruleEngine";
+        this.kind = WorkerSelectorAttachmentKind.RULE_ENGINE;
     }
 
     /**

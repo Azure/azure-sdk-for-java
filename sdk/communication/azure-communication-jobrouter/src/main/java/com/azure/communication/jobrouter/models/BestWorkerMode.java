@@ -31,7 +31,7 @@ public final class BestWorkerMode extends DistributionMode {
 
     /** Creates an instance of BestWorkerMode class. */
     public BestWorkerMode() {
-        this.kind = "bestWorker";
+        this.kind = DistributionModeKind.BEST_WORKER;
     }
 
     /**

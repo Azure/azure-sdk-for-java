@@ -36,7 +36,7 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
 
     /** Creates an instance of ReclassifyExceptionAction class. */
     public ReclassifyExceptionAction() {
-        this.kind = "reclassify";
+        this.kind = ExceptionActionKind.RECLASSIFY;
     }
 
     /**

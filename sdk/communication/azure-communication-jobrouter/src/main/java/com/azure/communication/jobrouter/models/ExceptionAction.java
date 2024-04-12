@@ -25,7 +25,7 @@ public abstract class ExceptionAction {
      * kind discriminator.
      */
     @JsonProperty(value = "kind")
-    protected String kind;
+    protected ExceptionActionKind kind;
 
     /** Creates an instance of ExceptionAction class. */
     public ExceptionAction() {}
@@ -49,7 +49,7 @@ public abstract class ExceptionAction {
      * Returns kind discriminator.
      * @return kind.
      */
-    public String getKind() {
+    public ExceptionActionKind getKind() {
         return this.kind;
     }
 }

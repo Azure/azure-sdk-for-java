@@ -30,7 +30,7 @@ public final class CancelExceptionAction extends ExceptionAction {
 
     /** Creates an instance of CancelExceptionAction class. */
     public CancelExceptionAction() {
-        this.kind = "cancel";
+        this.kind = ExceptionActionKind.CANCEL;
     }
 
     /**

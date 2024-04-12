@@ -35,7 +35,7 @@ public final class FunctionRouterRule extends RouterRule {
     @JsonCreator
     public FunctionRouterRule(@JsonProperty(value = "functionUri") String functionUri) {
         this.functionUri = functionUri;
-        this.kind = "function";
+        this.kind = RouterRuleKind.FUNCTION;
     }
 
     /**

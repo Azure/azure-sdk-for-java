@@ -29,7 +29,7 @@ public abstract class WorkerSelectorAttachment {
      * kind discriminator.
      */
     @JsonProperty(value = "kind")
-    protected String kind;
+    protected WorkerSelectorAttachmentKind kind;
 
     /** Creates an instance of WorkerSelectorAttachment class. */
     public WorkerSelectorAttachment() {}
@@ -38,7 +38,7 @@ public abstract class WorkerSelectorAttachment {
      * Returns kind discriminator.
      * @return kind.
      */
-    public String getKind() {
+    public WorkerSelectorAttachmentKind getKind() {
         return this.kind;
     }
 }

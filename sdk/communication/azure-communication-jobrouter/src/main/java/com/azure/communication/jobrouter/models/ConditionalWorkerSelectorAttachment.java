@@ -53,7 +53,7 @@ public final class ConditionalWorkerSelectorAttachment extends WorkerSelectorAtt
             @JsonProperty(value = "workerSelectors") List<RouterWorkerSelector> workerSelectors) {
         this.condition = condition;
         this.workerSelectors = workerSelectors;
-        this.kind = "conditional";
+        this.kind = WorkerSelectorAttachmentKind.CONDITIONAL;
     }
 
     /**

@@ -35,7 +35,7 @@ public final class WebhookRouterRule extends RouterRule {
 
     /** Creates an instance of WebhookRouterRule class. */
     public WebhookRouterRule() {
-        this.kind = "webhook";
+        this.kind = RouterRuleKind.WEBHOOK;
     }
 
     /**

@@ -26,7 +26,7 @@ public final class StaticRouterRule extends RouterRule {
 
     /** Creates an instance of StaticRouterRule class. */
     public StaticRouterRule() {
-        this.kind = "static";
+        this.kind = RouterRuleKind.STATIC;
     }
 
     /**

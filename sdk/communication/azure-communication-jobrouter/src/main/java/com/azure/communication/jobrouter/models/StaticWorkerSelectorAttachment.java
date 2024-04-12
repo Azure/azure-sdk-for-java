@@ -30,7 +30,7 @@ public final class StaticWorkerSelectorAttachment extends WorkerSelectorAttachme
     @JsonCreator
     public StaticWorkerSelectorAttachment(@JsonProperty(value = "workerSelector") RouterWorkerSelector workerSelector) {
         this.workerSelector = workerSelector;
-        this.kind = "static";
+        this.kind = WorkerSelectorAttachmentKind.STATIC;
     }
 
     /**

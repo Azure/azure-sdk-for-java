@@ -17,7 +17,7 @@ public final class RoundRobinMode extends DistributionMode {
 
     /** Creates an instance of RoundRobinMode class. */
     public RoundRobinMode() {
-        this.kind = "roundRobin";
+        this.kind = DistributionModeKind.ROUND_ROBIN;
     }
 
     /** {@inheritDoc} */

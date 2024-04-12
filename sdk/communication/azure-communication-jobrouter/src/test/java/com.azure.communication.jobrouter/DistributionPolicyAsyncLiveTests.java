@@ -5,6 +5,7 @@ package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.models.BestWorkerMode;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
+import com.azure.communication.jobrouter.models.DistributionModeKind;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.ScoringRuleOptions;
@@ -60,7 +61,7 @@ public class DistributionPolicyAsyncLiveTests extends JobRouterTestBase {
         assertEquals(bestWorkerModeDistributionPolicyId, result.getId());
         assertNotNull(result.getEtag());
         assertEquals(Duration.ofSeconds(10), result.getOfferExpiresAfter());
-        assertEquals("bestWorker", result.getMode().getKind());
+        assertEquals(DistributionModeKind.BEST_WORKER, result.getMode().getKind());
         assertEquals(bestWorkerModeDistributionPolicyName, result.getName());
         assertEquals(1, result.getMode().getMinConcurrentOffers());
         assertEquals(10, result.getMode().getMaxConcurrentOffers());
@@ -77,7 +78,7 @@ public class DistributionPolicyAsyncLiveTests extends JobRouterTestBase {
         assertEquals(bestWorkerModeDistributionPolicyId, deserialized.getId());
         assertEquals(result.getEtag(), deserialized.getEtag());
         assertEquals(Duration.ofSeconds(10), deserialized.getOfferExpiresAfter());
-        assertEquals("bestWorker", deserialized.getMode().getKind());
+        assertEquals(DistributionModeKind.BEST_WORKER, deserialized.getMode().getKind());
         assertEquals(bestWorkerModeDistributionPolicyName, deserialized.getName());
         assertEquals(1, deserialized.getMode().getMinConcurrentOffers());
         assertEquals(10, deserialized.getMode().getMaxConcurrentOffers());
@@ -96,7 +97,7 @@ public class DistributionPolicyAsyncLiveTests extends JobRouterTestBase {
         assertEquals(bestWorkerModeDistributionPolicyId, updatedPolicy.getId());
         assertNotEquals(result.getEtag(), updatedPolicy.getEtag());
         assertEquals(Duration.ofMinutes(5), updatedPolicy.getOfferExpiresAfter());
-        assertEquals("bestWorker", updatedPolicy.getMode().getKind());
+        assertEquals(DistributionModeKind.BEST_WORKER, updatedPolicy.getMode().getKind());
         assertEquals(bestWorkerModeDistributionPolicyName, updatedPolicy.getName());
         assertEquals(1, updatedPolicy.getMode().getMinConcurrentOffers());
         assertEquals(10, updatedPolicy.getMode().getMaxConcurrentOffers());

@@ -34,7 +34,7 @@ public final class ScheduleAndSuspendMode extends JobMatchingMode {
     @JsonCreator
     public ScheduleAndSuspendMode(@JsonProperty(value = "scheduleAt") OffsetDateTime scheduleAt) {
         this.scheduleAt = scheduleAt;
-        this.kind = "scheduleAndSuspend";
+        this.kind = JobMatchingModeKind.SCHEDULE_AND_SUSPEND;
     }
 
     /**

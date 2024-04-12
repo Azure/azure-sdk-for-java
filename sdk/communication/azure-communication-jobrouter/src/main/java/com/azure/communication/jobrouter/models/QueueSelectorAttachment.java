@@ -29,7 +29,7 @@ public abstract class QueueSelectorAttachment {
      * kind discriminator.
      */
     @JsonProperty(value = "kind")
-    protected String kind;
+    protected QueueSelectorAttachmentKind kind;
 
     /** Creates an instance of QueueSelectorAttachment class. */
     public QueueSelectorAttachment() {}
@@ -38,7 +38,7 @@ public abstract class QueueSelectorAttachment {
      * Returns kind discriminator.
      * @return kind.
      */
-    public String getKind() {
+    public QueueSelectorAttachmentKind getKind() {
         return this.kind;
     }
 }

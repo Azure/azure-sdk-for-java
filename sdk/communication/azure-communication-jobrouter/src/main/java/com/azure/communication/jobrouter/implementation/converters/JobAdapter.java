@@ -11,6 +11,7 @@ import com.azure.communication.jobrouter.implementation.models.ScheduleAndSuspen
 import com.azure.communication.jobrouter.implementation.models.SuspendModeInternal;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.JobMatchingModeKind;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobNote;
 import com.azure.communication.jobrouter.models.RouterValue;
@@ -52,24 +53,20 @@ public class JobAdapter {
                     .setStatus(workerSelector.getStatus())
             )
             .collect(Collectors.toList()) : null;
-        String jobMatchingModeKind;
+        JobMatchingModeKind jobMatchingModeKind;
         jobMatchingModeKind = createJobOptions.getMatchingMode() != null ? createJobOptions.getMatchingMode().getKind() : null;
         JobMatchingModeInternal jobMatchingModeInternal = null;
 
         if (jobMatchingModeKind != null) {
-            switch (jobMatchingModeKind) {
-                case "scheduleAndSuspend":
-                    ScheduleAndSuspendMode scheduleAndSuspendMode = (ScheduleAndSuspendMode) createJobOptions.getMatchingMode();
-                    jobMatchingModeInternal = new ScheduleAndSuspendModeInternal(scheduleAndSuspendMode.getScheduleAt());
-                    break;
-                case "queueAndMatch":
-                    jobMatchingModeInternal = new QueueAndMatchModeInternal();
-                    break;
-                case "suspend":
-                    jobMatchingModeInternal = new SuspendModeInternal();
-                    break;
-                default:
-                    throw new IllegalStateException("Unknown kind for JobMatchingMode.");
+            if (jobMatchingModeKind.equals(JobMatchingModeKind.SCHEDULE_AND_SUSPEND)) {
+                ScheduleAndSuspendMode scheduleAndSuspendMode = (ScheduleAndSuspendMode) createJobOptions.getMatchingMode();
+                jobMatchingModeInternal = new ScheduleAndSuspendModeInternal(scheduleAndSuspendMode.getScheduleAt());
+            } else if (jobMatchingModeKind.equals(JobMatchingModeKind.QUEUE_AND_MATCH)) {
+                jobMatchingModeInternal = new QueueAndMatchModeInternal();
+            } else if (jobMatchingModeKind.equals(JobMatchingModeKind.SUSPEND)) {
+                jobMatchingModeInternal = new SuspendModeInternal();
+            } else {
+                throw new IllegalStateException("Unknown kind for JobMatchingMode.");
             }
         }
 
@@ -111,24 +108,20 @@ public class JobAdapter {
                     .setStatus(workerSelector.getStatus())
             )
             .collect(Collectors.toList()) : null;
-        String jobMatchingModeKind;
+        JobMatchingModeKind jobMatchingModeKind;
         jobMatchingModeKind = createJobOptions.getMatchingMode() != null ? createJobOptions.getMatchingMode().getKind() : null;
         JobMatchingModeInternal jobMatchingModeInternal = null;
 
         if (jobMatchingModeKind != null) {
-            switch (jobMatchingModeKind) {
-                case "scheduleAndSuspend":
-                    ScheduleAndSuspendMode scheduleAndSuspendMode = (ScheduleAndSuspendMode) createJobOptions.getMatchingMode();
-                    jobMatchingModeInternal = new ScheduleAndSuspendModeInternal(scheduleAndSuspendMode.getScheduleAt());
-                    break;
-                case "queueAndMatch":
-                    jobMatchingModeInternal = new QueueAndMatchModeInternal();
-                    break;
-                case "suspend":
-                    jobMatchingModeInternal = new SuspendModeInternal();
-                    break;
-                default:
-                    throw new IllegalStateException("Unknown kind for JobMatchingMode.");
+            if (jobMatchingModeKind.equals(JobMatchingModeKind.SCHEDULE_AND_SUSPEND)) {
+                ScheduleAndSuspendMode scheduleAndSuspendMode = (ScheduleAndSuspendMode) createJobOptions.getMatchingMode();
+                jobMatchingModeInternal = new ScheduleAndSuspendModeInternal(scheduleAndSuspendMode.getScheduleAt());
+            } else if (jobMatchingModeKind.equals(JobMatchingModeKind.QUEUE_AND_MATCH)) {
+                jobMatchingModeInternal = new QueueAndMatchModeInternal();
+            } else if (jobMatchingModeKind.equals(JobMatchingModeKind.SUSPEND)) {
+                jobMatchingModeInternal = new SuspendModeInternal();
+            } else {
+                throw new IllegalStateException("Unknown kind for JobMatchingMode.");
             }
         }
 

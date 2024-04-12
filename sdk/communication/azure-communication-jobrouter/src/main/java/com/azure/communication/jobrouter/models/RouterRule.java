@@ -33,7 +33,7 @@ public abstract class RouterRule {
      * kind discriminator.
      */
     @JsonProperty(value = "kind")
-    protected String kind;
+    protected RouterRuleKind kind;
 
     /** Creates an instance of RouterRule class. */
     public RouterRule() {}
@@ -42,7 +42,7 @@ public abstract class RouterRule {
      * Returns kind discriminator.
      * @return kind.
      */
-    public String getKind() {
+    public RouterRuleKind getKind() {
         return this.kind;
     }
 }

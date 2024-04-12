@@ -19,6 +19,6 @@ public final class SuspendMode extends JobMatchingMode {
      * Creates an instance of SuspendMode class.
      */
     public SuspendMode() {
-        this.kind = "suspend";
+        this.kind = JobMatchingModeKind.SUSPEND;
     }
 }

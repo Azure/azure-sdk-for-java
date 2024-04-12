@@ -30,7 +30,7 @@ public abstract class JobMatchingMode {
      * kind discriminator.
      */
     @JsonProperty(value = "kind")
-    protected String kind;
+    protected JobMatchingModeKind kind;
 
     /**
      * Creates an instance of JobMatchingMode class.
@@ -42,7 +42,7 @@ public abstract class JobMatchingMode {
      * Returns kind discriminator.
      * @return kind.
      */
-    public String getKind() {
+    public JobMatchingModeKind getKind() {
         return this.kind;
     }
 }

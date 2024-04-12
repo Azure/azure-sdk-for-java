@@ -19,6 +19,6 @@ public final class QueueAndMatchMode extends JobMatchingMode {
      * Creates an instance of QueueAndMatchMode class.
      */
     public QueueAndMatchMode() {
-        this.kind = "queueAndMatch";
+        this.kind = JobMatchingModeKind.QUEUE_AND_MATCH;
     }
 }

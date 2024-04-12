@@ -24,7 +24,7 @@ public abstract class ExceptionTrigger {
      * kind discriminator.
      */
     @JsonProperty(value = "kind")
-    protected String kind;
+    protected ExceptionTriggerKind kind;
 
     /** Creates an instance of ExceptionTrigger class. */
     public ExceptionTrigger() {}
@@ -33,7 +33,7 @@ public abstract class ExceptionTrigger {
      * Returns kind discriminator.
      * @return kind.
      */
-    public String getKind() {
+    public ExceptionTriggerKind getKind() {
         return this.kind;
     }
 }
