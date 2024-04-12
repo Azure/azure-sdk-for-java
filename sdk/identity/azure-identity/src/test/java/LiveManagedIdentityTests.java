@@ -15,12 +15,15 @@ import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,6 +61,7 @@ public class LiveManagedIdentityTests extends TestBase {
     @Test
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
     @EnabledIfSystemProperty(named = "os.name", matches = "Linux")
+    @Timeout(value = 15, unit = TimeUnit.MINUTES)
     public void testManagedIdentityAksDeployment() {
 
         String os = System.getProperty("os.name");
@@ -92,6 +96,7 @@ public class LiveManagedIdentityTests extends TestBase {
     @Test
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
     @EnabledIfSystemProperty(named = "os.name", matches = "Linux")
+    @Timeout(value = 15, unit = TimeUnit.MINUTES)
     public void testManagedIdentityVmDeployment() {
 
         String os = System.getProperty("os.name");
@@ -115,8 +120,19 @@ public class LiveManagedIdentityTests extends TestBase {
         runCommand(azPath, "login",  "--service-principal", "-u", spClientId, "-p", secret, "--tenant", tenantId);
         runCommand(azPath, "account", "set", "--subscription", subscriptionId);
 
-        String vmBlob = String.format("https://%s.blob.core.windows.net/vmcontainer/testfile.jar", storageAcccountName);
-        String script = String.format("curl '%s' -o ./testfile.jar && java -jar ./testfile.jar", vmBlob);
+
+        String storageKey = runCommand(azPath, "storage", "account", "keys", "list", "--account-name", storageAcccountName,
+            "--resource-group", resourceGroup, "--query", "[0].value", "--output", "tsv").trim();
+
+        String expiry = LocalDate.now().plusDays(2).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String sasToken = runCommand(azPath, "storage", "blob", "generate-sas", "--account-name", storageAcccountName,
+            "--account-key", "\"" + storageKey + "\"", "--container-name", "vmcontainer", "--name", "testfile.jar", "--permissions", "r",
+            "--expiry", expiry, "--https-only", "--output", "tsv").trim();
+
+        String vmBlob = String.format("https://%s.blob.core.windows.net/vmcontainer/testfile.jar?%s", storageAcccountName, sasToken);
+        String script = String.format("curl \'%s\' -o ./testfile.jar && java -jar ./testfile.jar", vmBlob);
+
+        System.out.println("Script: " + script);
 
         String output = runCommand(azPath, "vm", "run-command", "invoke", "-n", vmName, "-g", resourceGroup,
             "--command-id", "RunShellScript", "--scripts", script);
@@ -157,12 +173,7 @@ public class LiveManagedIdentityTests extends TestBase {
             ProcessBuilder processBuilder = new ProcessBuilder(args);
             processBuilder.redirectErrorStream(true);
             Process process = processBuilder.start();
-            // Set timeout
-            boolean finished = process.waitFor(300, TimeUnit.SECONDS);
-            if (!finished) {
-                process.destroy();
-                throw new RuntimeException("Process execution timeout");
-            }
+            process.waitFor();
             // Read output
             StringBuilder output = new StringBuilder();
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
