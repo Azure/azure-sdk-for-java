@@ -18,13 +18,13 @@ public final class UploadFileRequest {
      * The file data (not filename) to upload.
      */
     @Generated
-    private FileDetails file;
+    private final FileDetails file;
 
     /*
      * The intended purpose of the file.
      */
     @Generated
-    private FilePurpose purpose;
+    private final FilePurpose purpose;
 
     /*
      * A filename to associate with the uploaded data.
