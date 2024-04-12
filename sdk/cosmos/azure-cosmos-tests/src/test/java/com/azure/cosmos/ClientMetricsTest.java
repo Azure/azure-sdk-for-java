@@ -116,7 +116,8 @@ public class ClientMetricsTest extends BatchTestBase {
                 CosmosMetricTagName.DEFAULT,
                 CosmosMetricTagName.PARTITION_ID,
                 CosmosMetricTagName.REPLICA_ID,
-                CosmosMetricTagName.OPERATION_SUB_STATUS_CODE);
+                CosmosMetricTagName.OPERATION_SUB_STATUS_CODE,
+                CosmosMetricTagName.PARTITION_KEY_RANGE_ID);
 
         this.inputClientTelemetryConfig = new CosmosClientTelemetryConfig()
             .metricsOptions(this.inputMetricsOptions);
@@ -846,6 +847,11 @@ public class ClientMetricsTest extends BatchTestBase {
                 0,
                 10000
             );
+
+            this.validateRequestActualItemCountMetrics(
+                Tag.of(TagName.Operation.toString(), "Document/Batch"),
+                Tag.of(TagName.PartitionKeyRangeId.toString(), "0"),
+                Tag.of(TagName.PartitionKeyRangeId.toString(), "1"));
         } finally {
             this.afterTest();
         }
@@ -1208,6 +1214,10 @@ public class ClientMetricsTest extends BatchTestBase {
             .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_REQUESTS);
         assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.TIMEline"))
             .isSameAs(CosmosMetricName.REQUEST_DETAILS_DIRECT_TIMELINE);
+        assertThat(CosmosMetricName.fromString("cosmos.client.Req.rntbd.actualItemCount"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_ACTUAL_ITEM_COUNT);
+        assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.actualITemCount"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_ACTUAL_ITEM_COUNT);
 
         assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.gw.LAtency"))
             .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY);
@@ -1217,6 +1227,10 @@ public class ClientMetricsTest extends BatchTestBase {
             .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS);
         assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.tiMELine"))
             .isSameAs(CosmosMetricName.REQUEST_DETAILS_GATEWAY_TIMELINE);
+        assertThat(CosmosMetricName.fromString("cosmos.client.Req.gw.actualItemCount"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_ACTUAL_ITEM_COUNT);
+        assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.actualITemCount"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_ACTUAL_ITEM_COUNT);
 
         assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.addressResolution.latency"))
             .isSameAs(CosmosMetricName.DIRECT_ADDRESS_RESOLUTION_LATENCY);
@@ -1278,6 +1292,20 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
+    private void validateRequestActualItemCountMetrics(Tag... expectedRequestTags) {
+        if (this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)) {
+            if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
+                for (Tag expectedRequestTag : expectedRequestTags) {
+                    this.assertMetrics("cosmos.client.req.rntbd.actualItemCount", true, expectedRequestTag);
+                }
+            } else {
+                for (Tag expectedRequestTag : expectedRequestTags) {
+                    this.assertMetrics("cosmos.client.req.gw.actualItemCount", true, expectedRequestTag);
+                }
+            }
+        }
+    }
+
     private void validateReasonableRUs(Meter reportedRequestChargeMeter, int expectedMinRu, int expectedMaxRu) {
         List<Measurement> measurements = new ArrayList<>();
         reportedRequestChargeMeter.measure().forEach(measurements::add);
@@ -1289,6 +1317,7 @@ public class ClientMetricsTest extends BatchTestBase {
             assertThat(measurements.get(i).getValue()).isLessThanOrEqualTo(expectedMaxRu);
         }
     }
+
     private void validateMetrics(Tag expectedOperationTag, Tag expectedRequestTag, int minRu, int maxRu) {
         this.assertMetrics("cosmos.client.op.latency", true, expectedOperationTag);
         this.assertMetrics("cosmos.client.op.calls", true, expectedOperationTag);
@@ -1324,7 +1353,6 @@ public class ClientMetricsTest extends BatchTestBase {
                 true,
                 expectedOperationTag);
         }
-
 
         if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
             this.assertMetrics("cosmos.client.req.rntbd.latency", true, expectedRequestTag);
