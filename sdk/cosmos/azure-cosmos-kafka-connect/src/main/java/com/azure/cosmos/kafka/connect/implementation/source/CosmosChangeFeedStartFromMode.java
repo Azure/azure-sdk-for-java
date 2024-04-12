@@ -3,13 +3,13 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
-public enum CosmosChangeFeedStartFromModes {
+public enum CosmosChangeFeedStartFromMode {
     BEGINNING("Beginning"),
     NOW("Now"),
     POINT_IN_TIME("PointInTime");
 
     private final String name;
-    CosmosChangeFeedStartFromModes(String name) {
+    CosmosChangeFeedStartFromMode(String name) {
         this.name = name;
     }
 
@@ -17,8 +17,8 @@ public enum CosmosChangeFeedStartFromModes {
         return name;
     }
 
-    public static CosmosChangeFeedStartFromModes fromName(String name) {
-        for (CosmosChangeFeedStartFromModes startFromModes : CosmosChangeFeedStartFromModes.values()) {
+    public static CosmosChangeFeedStartFromMode fromName(String name) {
+        for (CosmosChangeFeedStartFromMode startFromModes : CosmosChangeFeedStartFromMode.values()) {
             if (startFromModes.getName().equalsIgnoreCase(name)) {
                 return startFromModes;
             }

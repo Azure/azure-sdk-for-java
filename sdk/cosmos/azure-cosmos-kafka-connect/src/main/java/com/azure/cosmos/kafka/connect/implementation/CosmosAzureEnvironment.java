@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.kafka.connect.implementation;
 
-public enum CosmosAzureEnvironments {
+public enum CosmosAzureEnvironment {
     AZURE("azure"),
     AZURE_CHINA("AzureChina"),
     AZURE_US_GOVERNMENT("AzureUsGovernment"),
@@ -11,7 +11,7 @@ public enum CosmosAzureEnvironments {
 
     private final String name;
 
-    CosmosAzureEnvironments(String name) {
+    CosmosAzureEnvironment(String name) {
         this.name = name;
     }
 
@@ -19,8 +19,8 @@ public enum CosmosAzureEnvironments {
         return name;
     }
 
-    public static CosmosAzureEnvironments fromName(String name) {
-        for (CosmosAzureEnvironments azureEnvironment : CosmosAzureEnvironments.values()) {
+    public static CosmosAzureEnvironment fromName(String name) {
+        for (CosmosAzureEnvironment azureEnvironment : CosmosAzureEnvironment.values()) {
             if (azureEnvironment.getName().equalsIgnoreCase(name)) {
                 return azureEnvironment;
             }
