@@ -265,7 +265,7 @@
 ## 12.2.0 (2022-02-10)
 
 ### Features added
-- Implemented new traits (micro-interfaces) in `TableClientBuiler` and `TableServiceClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java.
+- Implemented new traits (micro-interfaces) in `TableClientBuilder` and `TableServiceClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java.
 
 ### Other Changes
 
