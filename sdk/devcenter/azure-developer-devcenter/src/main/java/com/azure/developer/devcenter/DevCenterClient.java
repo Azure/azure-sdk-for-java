@@ -41,8 +41,8 @@ public final class DevCenterClient {
 
     /**
      * Initializes a new instance of DevBoxesClient from DevCenterClient.
-     * 
-     * @return Dev Boxes Client  
+     *
+     * @return Dev Boxes Client
      */
     public DevBoxesClient getDevBoxesClient() {
         return new DevBoxesClient(new DevBoxesClientImpl(serviceClient.getHttpPipeline(),
@@ -51,8 +51,8 @@ public final class DevCenterClient {
 
     /**
      * Initializes a new instance of DeploymentEnvironmentsClient from DevCenterClient.
-     * * 
-     * @return Deployment Environments Client  
+     *
+     * @return Deployment Environments Client
      */
     public DeploymentEnvironmentsClient getDeploymentEnvironmentsClient() {
         return new DeploymentEnvironmentsClient(new DeploymentEnvironmentsClientImpl(serviceClient.getHttpPipeline(),

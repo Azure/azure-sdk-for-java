@@ -47,8 +47,8 @@ public final class DevCenterAsyncClient {
 
     /**
      * Initializes a new instance of DevBoxesAsyncClient from DevCenterAsyncClient.
-     * 
-     * @return Dev Boxes Async Client  
+     *
+     * @return Dev Boxes Async Client
      */
     public DevBoxesAsyncClient getDevBoxesAsyncClient() {
         return new DevBoxesAsyncClient(new DevBoxesClientImpl(serviceClient.getHttpPipeline(),
@@ -57,8 +57,8 @@ public final class DevCenterAsyncClient {
 
     /**
      * Initializes a new instance of DeploymentEnvironmentsAsyncClient from DevCenterAsyncClient.
-     * 
-     * @return Deployment Environments Async Client  
+     *
+     * @return Deployment Environments Async Client
      */
     public DeploymentEnvironmentsAsyncClient getDeploymentEnvironmentsAsyncClient() {
         return new DeploymentEnvironmentsAsyncClient(
