@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
@@ -75,6 +76,16 @@ public final class TransferCallToParticipantOptions {
         this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
     }
 
+    /**
+     * Constructor
+     *
+     * @param targetParticipant {@link MicrosoftTeamsAppIdentifier} contains information for TransferTarget(to whom the call is transferred).
+     */
+    public TransferCallToParticipantOptions(MicrosoftTeamsAppIdentifier targetParticipant) {
+        this.targetParticipant = targetParticipant;
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
+    }
+    
     /**
      * Get the operationContext.
      *

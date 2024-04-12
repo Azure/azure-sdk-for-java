@@ -8,6 +8,7 @@ import com.azure.communication.callautomation.implementation.models.Communicatio
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModelKind;
 import com.azure.communication.callautomation.implementation.models.CommunicationUserIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsAppIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsUserIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.common.*;
@@ -320,6 +321,99 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
         }
     }
 
+
+    @Test
+    public void convertWithoutKindMicrosoftTeamsApp() {
+        MicrosoftTeamsAppIdentifierModel MicrosoftTeamsAppIdentifierModel = new MicrosoftTeamsAppIdentifierModel()
+            .setAppId(testTeamsUserId)
+            .setCloud(CommunicationCloudEnvironmentModel.GCCH);
+        CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
+            .setMicrosoftTeamsApp(MicrosoftTeamsAppIdentifierModel);
+
+        CommunicationIdentifier got = CommunicationIdentifierConverter.convert(communicationIdentifierModel);
+
+        MicrosoftTeamsAppIdentifier expected = new MicrosoftTeamsAppIdentifier(testTeamsUserId, CommunicationCloudEnvironment.GCCH);
+
+        assertNull(communicationIdentifierModel.getKind());
+        assertEquals(expected, got);
+    }
+
+    @Test
+    public void convertWithKindMicrosoftTeamsApp() {
+        MicrosoftTeamsAppIdentifierModel MicrosoftTeamsAppIdentifierModel = new MicrosoftTeamsAppIdentifierModel()
+            .setAppId(testTeamsUserId)
+            .setCloud(CommunicationCloudEnvironmentModel.GCCH);
+        CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
+            .setMicrosoftTeamsApp(MicrosoftTeamsAppIdentifierModel)
+            .setKind(CommunicationIdentifierModelKind.MICROSOFT_TEAMS_APP);
+
+        CommunicationIdentifier got = CommunicationIdentifierConverter.convert(communicationIdentifierModel);
+
+        MicrosoftTeamsAppIdentifier expected = new MicrosoftTeamsAppIdentifier(testTeamsUserId, CommunicationCloudEnvironment.GCCH);
+
+        assertNotNull(communicationIdentifierModel.getKind());
+        assertEquals(CommunicationIdentifierModelKind.MICROSOFT_TEAMS_APP, communicationIdentifierModel.getKind());
+        assertEquals(expected, got);
+    }
+
+    @Test
+    public void convertWithKindMicrosoftTeamsAppNoAppId() {
+        MicrosoftTeamsAppIdentifierModel MicrosoftTeamsAppIdentifierModel = new MicrosoftTeamsAppIdentifierModel()
+            .setCloud(CommunicationCloudEnvironmentModel.GCCH);
+        CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
+            .setMicrosoftTeamsApp(MicrosoftTeamsAppIdentifierModel)
+            .setKind(CommunicationIdentifierModelKind.MICROSOFT_TEAMS_APP);
+
+        try {
+            CommunicationIdentifierConverter.convert(communicationIdentifierModel);
+        } catch (Exception e) {
+            assert (e instanceof NullPointerException);
+        }
+    }
+
+    @Test
+    public void convertWithoutKindMicrosoftTeamsAppNoAppId() {
+        MicrosoftTeamsAppIdentifierModel MicrosoftTeamsAppIdentifierModel = new MicrosoftTeamsAppIdentifierModel()
+            .setCloud(CommunicationCloudEnvironmentModel.GCCH);
+        CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
+            .setMicrosoftTeamsApp(MicrosoftTeamsAppIdentifierModel);
+
+        try {
+            CommunicationIdentifierConverter.convert(communicationIdentifierModel);
+        } catch (Exception e) {
+            assert (e instanceof NullPointerException);
+        }
+    }
+
+    @Test
+    public void convertWithKindMicrosoftTeamsAppNoCloudEnv() {
+        MicrosoftTeamsAppIdentifierModel MicrosoftTeamsAppIdentifierModel = new MicrosoftTeamsAppIdentifierModel()
+            .setAppId(testTeamsUserId);
+        CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
+            .setMicrosoftTeamsApp(MicrosoftTeamsAppIdentifierModel)
+            .setKind(CommunicationIdentifierModelKind.MICROSOFT_TEAMS_APP);
+
+        try {
+            CommunicationIdentifierConverter.convert(communicationIdentifierModel);
+        } catch (Exception e) {
+            assert (e instanceof NullPointerException);
+        }
+    }
+
+    @Test
+    public void convertWithoutKindMicrosoftTeamsAppNoCloudEnv() {
+        MicrosoftTeamsAppIdentifierModel MicrosoftTeamsAppIdentifierModel = new MicrosoftTeamsAppIdentifierModel()
+            .setAppId(testTeamsUserId);
+        CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
+            .setMicrosoftTeamsApp(MicrosoftTeamsAppIdentifierModel);
+
+        try {
+            CommunicationIdentifierConverter.convert(communicationIdentifierModel);
+        } catch (Exception e) {
+            assert (e instanceof NullPointerException);
+        }
+    }
+    
     @Test
     public void convertWithKindUnknownAndRawId() {
         CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()

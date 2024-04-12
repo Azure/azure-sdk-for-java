@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The request payload for holding participant from the call. */
 @Fluent
-public final class StartHoldMusicRequestInternal {
+public final class HoldRequest {
     /*
      * Participant to be held from the call.
      */
@@ -51,9 +51,9 @@ public final class StartHoldMusicRequestInternal {
      * Set the targetParticipant property: Participant to be held from the call.
      *
      * @param targetParticipant the targetParticipant value to set.
-     * @return the StartHoldMusicRequestInternal object itself.
+     * @return the HoldRequest object itself.
      */
-    public StartHoldMusicRequestInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
+    public HoldRequest setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
         return this;
     }
@@ -71,9 +71,9 @@ public final class StartHoldMusicRequestInternal {
      * Set the playSourceInfo property: Prompt to play while in hold.
      *
      * @param playSourceInfo the playSourceInfo value to set.
-     * @return the StartHoldMusicRequestInternal object itself.
+     * @return the HoldRequest object itself.
      */
-    public StartHoldMusicRequestInternal setPlaySourceInfo(PlaySourceInternal playSourceInfo) {
+    public HoldRequest setPlaySourceInfo(PlaySourceInternal playSourceInfo) {
         this.playSourceInfo = playSourceInfo;
         return this;
     }
@@ -93,9 +93,9 @@ public final class StartHoldMusicRequestInternal {
      * the response event.
      *
      * @param operationContext the operationContext value to set.
-     * @return the StartHoldMusicRequestInternal object itself.
+     * @return the HoldRequest object itself.
      */
-    public StartHoldMusicRequestInternal setOperationContext(String operationContext) {
+    public HoldRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
@@ -117,9 +117,9 @@ public final class StartHoldMusicRequestInternal {
      * set by CreateCall/AnswerCall will be used.
      *
      * @param operationCallbackUri the operationCallbackUri value to set.
-     * @return the StartHoldMusicRequestInternal object itself.
+     * @return the HoldRequest object itself.
      */
-    public StartHoldMusicRequestInternal setOperationCallbackUri(String operationCallbackUri) {
+    public HoldRequest setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
     }
