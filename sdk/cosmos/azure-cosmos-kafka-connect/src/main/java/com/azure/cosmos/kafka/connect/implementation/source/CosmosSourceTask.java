@@ -241,7 +241,7 @@ public class CosmosSourceTask extends SourceTask {
         return ImplementationBridgeHelpers
             .CosmosAsyncContainerHelper
             .getCosmosAsyncContainerAccessor()
-            .getOverlappingFeedRanges(container, feedRangeTaskUnit.getFeedRange())
+            .getOverlappingFeedRanges(container, feedRangeTaskUnit.getFeedRange(), true)
             .flatMap(overlappedRanges -> {
 
                 if (overlappedRanges.size() == 1) {

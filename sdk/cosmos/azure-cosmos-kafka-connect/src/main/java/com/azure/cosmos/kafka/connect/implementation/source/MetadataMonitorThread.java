@@ -274,7 +274,7 @@ public class MetadataMonitorThread extends Thread {
         return ImplementationBridgeHelpers
                 .CosmosAsyncContainerHelper
                 .getCosmosAsyncContainerAccessor()
-                .getOverlappingFeedRanges(container, feedRangeChanged)
+                .getOverlappingFeedRanges(container, feedRangeChanged, false) // TODO [public preview: when should forcerefresh]
             .map(matchedPkRanges -> {
                 if (matchedPkRanges.size() == 0) {
                     LOGGER.warn(

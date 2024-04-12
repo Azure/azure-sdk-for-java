@@ -155,6 +155,7 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
                         .getDatabase(this.config.getContainersConfig().getDatabaseName())
                         .getContainer(this.config.getMetadataConfig().getStorageName());
                 // validate the metadata container config
+                // TODO [public preview: should create the metadata container during runtime? ]
                 metadataContainer.read()
                     .doOnNext(containerResponse -> {
                         PartitionKeyDefinition partitionKeyDefinition = containerResponse.getProperties().getPartitionKeyDefinition();

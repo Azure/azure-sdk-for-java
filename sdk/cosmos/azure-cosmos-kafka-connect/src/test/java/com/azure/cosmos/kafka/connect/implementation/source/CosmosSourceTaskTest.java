@@ -122,8 +122,6 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             for (int i = 0; i < 3; i++) {
                 sourceRecords.addAll(sourceTask.poll());
             }
-            System.out.println("All source records " + sourceRecords);
-            System.out.println("All created items " + createdItems.stream().map(TestItem::getId).collect(Collectors.toList()));
             validateFeedRangeRecords(sourceRecords, createdItems);
         } finally {
             if (client != null) {
