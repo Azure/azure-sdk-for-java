@@ -565,6 +565,11 @@ public class ClientMetricsTest extends BatchTestBase {
                     TagName.Operation.toString(), "Document/ReadFeed/readAllItems." + container.getId())
             );
 
+            this.validateRequestActualItemCountMetrics(
+                Tag.of(
+                    TagName.Operation.toString(),
+                    "Document/ReadFeed/readAllItems." + container.getId()));
+
             Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan");
             this.assertMetrics("cosmos.client.req.gw", true, queryPlanTag);
             this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
@@ -717,6 +722,11 @@ public class ClientMetricsTest extends BatchTestBase {
             );
 
             this.validateItemCountMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/Query/queryItems." + container.getId())
+            );
+
+            this.validateRequestActualItemCountMetrics(
                 Tag.of(
                     TagName.Operation.toString(), "Document/Query/queryItems." + container.getId())
             );
