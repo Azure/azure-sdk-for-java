@@ -168,7 +168,7 @@ public class CosmosSourceTask extends SourceTask {
             this.getChangeFeedRequestOptions(feedRangeTaskUnit);
 
         // split/merge will be handled in source task
-        ModelBridgeInternal.getChangeFeedIsSplitHandlingDisabled(changeFeedRequestOptions);
+        ModelBridgeInternal.disableSplitHandling(changeFeedRequestOptions);
         CosmosThroughputControlHelper
             .tryPopulateThroughputControlGroupName(
                 changeFeedRequestOptions,
@@ -232,6 +232,8 @@ public class CosmosSourceTask extends SourceTask {
     }
 
     private Mono<Boolean> handleFeedRangeGone(FeedRangeTaskUnit feedRangeTaskUnit) {
+        //TODO [public preview]Add more debug logs
+
         // need to find out whether it is split or merge
         CosmosAsyncContainer container =
             this.cosmosClient
@@ -262,13 +264,18 @@ public class CosmosSourceTask extends SourceTask {
                     );
 
                     for (FeedRange pkRange : overlappedRanges) {
+                        KafkaCosmosChangeFeedState childContinuationState =
+                            new KafkaCosmosChangeFeedState(
+                                feedRangeTaskUnit.getContinuationState().getResponseContinuation(),
+                                pkRange);
+
                         FeedRangeTaskUnit childTaskUnit =
                             new FeedRangeTaskUnit(
                                 feedRangeTaskUnit.getDatabaseName(),
                                 feedRangeTaskUnit.getContainerName(),
                                 feedRangeTaskUnit.getContainerRid(),
                                 pkRange,
-                                feedRangeTaskUnit.getContinuationState(),
+                                childContinuationState,
                                 feedRangeTaskUnit.getTopic());
                         this.taskUnitsQueue.add(childTaskUnit);
                     }
