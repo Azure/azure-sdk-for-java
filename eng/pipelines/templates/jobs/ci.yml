@@ -74,7 +74,6 @@ jobs:
       os: linux
 
     templateContext:
-      outputParentDirectory: '$(System.DefaultWorkingDirectory)'
       outputs:
         - output: pipelineArtifact
           artifactName: '$(ArtifactName)'
@@ -227,7 +226,7 @@ jobs:
 
       - template: /eng/common/pipelines/templates/steps/validate-all-packages.yml
         parameters:
-          Artifacts: ${{ parameters.Artifacts }} 
+          Artifacts: ${{ parameters.Artifacts }}
 
       - template: /eng/pipelines/templates/steps/clean-maven-local-cache.yml
 
@@ -240,7 +239,6 @@ jobs:
       os: linux
 
     templateContext:
-      outputParentDirectory: '$(System.DefaultWorkingDirectory)'
       outputs:
         - output: pipelineArtifact
           artifactName: 'repository-$(System.JobName)'
