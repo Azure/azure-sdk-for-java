@@ -29,13 +29,17 @@ public final class TransferCallToParticipantOptions {
      */
     private CommunicationIdentifier transferee;
 
-
-
     /**
      * The operational context
      */
     private String operationContext;
 
+    /**
+     * The source caller ID number which is a phone number that will be used when inviting a pstn target.
+     * Required only when this is an incoming voip call and there will be a transfer call request to a PSTN target.
+     */
+    private PhoneNumberIdentifier sourceCallerIdNumber;
+    
     /**
      * Constructor
      *
@@ -160,6 +164,26 @@ public final class TransferCallToParticipantOptions {
      */
     public TransferCallToParticipantOptions setOperationCallbackUrl(String operationCallbackUrl) {
         this.operationCallbackUrl = operationCallbackUrl;
+        return this;
+    }
+    
+     /**
+     * Get the sourceCallerIdNumber.
+     *
+     * @return the sourceCallerIdNumber
+     */
+    public PhoneNumberIdentifier getSourceCallerIdNumber() {
+        return sourceCallerIdNumber;
+    }
+    
+    /**
+     * Set the sourceCallerIdNumber.
+     *
+     * @param sourceCallerIdNumber the sourceCallerIdNumber to set
+     * @return the TransferCallToParticipantOptions object itself.
+     */
+    public TransferCallToParticipantOptions setSourceCallerIdNumber(PhoneNumberIdentifier sourceCallerIdNumber) {
+        this.sourceCallerIdNumber = sourceCallerIdNumber;
         return this;
     }
 }

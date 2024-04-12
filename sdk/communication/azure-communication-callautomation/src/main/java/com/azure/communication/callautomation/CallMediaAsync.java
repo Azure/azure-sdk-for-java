@@ -724,7 +724,6 @@ public final class CallMediaAsync {
             StartHoldMusicRequestInternal request = new StartHoldMusicRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(options.getTargetParticipant()))
                 .setPlaySourceInfo(convertPlaySourceToPlaySourceInternal(options.getPlaySourceInfo()))
-                .setLoop(options.isLoop())
                 .setOperationContext(options.getOperationContext());
 
             return contentsInternal
