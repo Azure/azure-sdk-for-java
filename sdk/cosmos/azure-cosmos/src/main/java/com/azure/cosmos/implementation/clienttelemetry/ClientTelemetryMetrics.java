@@ -989,24 +989,22 @@ public final class ClientTelemetryMetrics {
                     requestCounter.increment();
                 }
 
-                if (actualItemCount > 0) {
-                    CosmosMeterOptions actualItemCountOptions = clientAccessor.getMeterOptions(
-                        client,
-                        CosmosMetricName.REQUEST_SUMMARY_DIRECT_ACTUAL_ITEM_COUNT);
+                CosmosMeterOptions actualItemCountOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMetricName.REQUEST_SUMMARY_DIRECT_ACTUAL_ITEM_COUNT);
 
-                    if (actualItemCountOptions.isEnabled()
-                        && (!actualItemCountOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
-                        DistributionSummary actualItemCountMeter = DistributionSummary
-                            .builder(actualItemCountOptions.getMeterName().toString())
-                            .baseUnit("item count")
-                            .description("Rntbd response actual item count")
-                            .maximumExpectedValue(100_000d)
-                            .publishPercentiles()
-                            .publishPercentileHistogram(false)
-                            .tags(getEffectiveTags(requestTags, actualItemCountOptions))
-                            .register(compositeRegistry);
-                        actualItemCountMeter.record(Math.max(0, Math.min(actualItemCount, 100_000d)));
-                    }
+                if (actualItemCountOptions.isEnabled()
+                    && (!actualItemCountOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
+                    DistributionSummary actualItemCountMeter = DistributionSummary
+                        .builder(actualItemCountOptions.getMeterName().toString())
+                        .baseUnit("item count")
+                        .description("Rntbd response actual item count")
+                        .maximumExpectedValue(100_000d)
+                        .publishPercentiles()
+                        .publishPercentileHistogram(false)
+                        .tags(getEffectiveTags(requestTags, actualItemCountOptions))
+                        .register(compositeRegistry);
+                    actualItemCountMeter.record(Math.max(0, Math.min(actualItemCount, 100_000d)));
                 }
 
                 if (this.metricCategories.contains(MetricCategory.RequestDetails)) {
@@ -1123,24 +1121,22 @@ public final class ClientTelemetryMetrics {
                     }
                 }
 
-                if (actualItemCount > 0) {
-                    CosmosMeterOptions actualItemCountOptions = clientAccessor.getMeterOptions(
-                        client,
-                        CosmosMetricName.REQUEST_SUMMARY_GATEWAY_ACTUAL_ITEM_COUNT);
+                CosmosMeterOptions actualItemCountOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_ACTUAL_ITEM_COUNT);
 
-                    if (actualItemCountOptions.isEnabled()
-                        && (!actualItemCountOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
-                        DistributionSummary actualItemCountMeter = DistributionSummary
-                            .builder(actualItemCountOptions.getMeterName().toString())
-                            .baseUnit("item count")
-                            .description("Gateway response actual item count")
-                            .maximumExpectedValue(100_000d)
-                            .publishPercentiles()
-                            .publishPercentileHistogram(false)
-                            .tags(getEffectiveTags(requestTags, actualItemCountOptions))
-                            .register(compositeRegistry);
-                        actualItemCountMeter.record(Math.max(0, Math.min(actualItemCount, 100_000d)));
-                    }
+                if (actualItemCountOptions.isEnabled()
+                    && (!actualItemCountOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
+                    DistributionSummary actualItemCountMeter = DistributionSummary
+                        .builder(actualItemCountOptions.getMeterName().toString())
+                        .baseUnit("item count")
+                        .description("Gateway response actual item count")
+                        .maximumExpectedValue(100_000d)
+                        .publishPercentiles()
+                        .publishPercentileHistogram(false)
+                        .tags(getEffectiveTags(requestTags, actualItemCountOptions))
+                        .register(compositeRegistry);
+                    actualItemCountMeter.record(Math.max(0, Math.min(actualItemCount, 100_000d)));
                 }
 
                 recordRequestTimeline(
