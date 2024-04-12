@@ -98,7 +98,7 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
-      <scope>test</scope>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
