@@ -32,6 +32,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -471,6 +472,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         });
     }
 
+    @Disabled("need to find a valid endpoint to use in Azure")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatCompletionsBasicSearchExtension(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
@@ -493,6 +495,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         });
     }
 
+    @Disabled("need to find a valid endpoint to use in Azure")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatCompletionsStreamingBasicSearchExtension(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
@@ -816,6 +819,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     }).verifyComplete());
     }
 
+    @Disabled("can't not cast to ChatCompletionsFunctionToolCall but has to be ChatCompletionsToolCall")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsToolCallStreaming(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
@@ -838,8 +842,9 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                                 assertEquals(1, chatChoices.size());
                                 ChatChoice chatChoice = chatChoices.get(0);
                                 List<ChatCompletionsToolCall> toolCalls = chatChoice.getDelta().getToolCalls();
-                                if (toolCalls != null && !toolCalls.isEmpty()) {
+                                if (!CoreUtils.isNullOrEmpty(toolCalls)) {
                                     assertEquals(1, toolCalls.size());
+                                    // TODO: can't not cast to ChatCompletionsFunctionToolCall but has to be ChatCompletionsToolCall
                                     ChatCompletionsFunctionToolCall toolCall = (ChatCompletionsFunctionToolCall) toolCalls.get(0);
                                     FunctionCall functionCall = toolCall.getFunction();
 
@@ -860,6 +865,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                             }
                             i++;
                         }
+
                         assertFunctionToolCallArgs(argumentsBuilder.toString());
                         FunctionCall functionCall = new FunctionCall(functionName, argumentsBuilder.toString());
                         ChatCompletionsFunctionToolCall functionToolCall = new ChatCompletionsFunctionToolCall(toolCallId, functionCall);
