@@ -4,6 +4,7 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,24 +16,28 @@ public final class FunctionRouterRuleCredential {
     /*
      * Access key scoped to a particular function.
      */
+    @Generated
     @JsonProperty(value = "functionKey")
     private String functionKey;
 
     /*
      * Access key scoped to a Azure Function app. This key grants access to all functions under the app.
      */
+    @Generated
     @JsonProperty(value = "appKey")
     private String appKey;
 
     /*
      * Client id, when AppKey is provided In context of Azure function, this is usually the name of the key.
      */
+    @Generated
     @JsonProperty(value = "clientId")
     private String clientId;
 
     /**
      * Creates an instance of FunctionRouterRuleCredential class.
      */
+    @Generated
     public FunctionRouterRuleCredential() {
     }
 
@@ -41,6 +46,7 @@ public final class FunctionRouterRuleCredential {
      *
      * @return the functionKey value.
      */
+    @Generated
     public String getFunctionKey() {
         return this.functionKey;
     }
@@ -51,6 +57,7 @@ public final class FunctionRouterRuleCredential {
      * @param functionKey the functionKey value to set.
      * @return the FunctionRouterRuleCredential object itself.
      */
+    @Generated
     public FunctionRouterRuleCredential setFunctionKey(String functionKey) {
         this.functionKey = functionKey;
         return this;
@@ -62,6 +69,7 @@ public final class FunctionRouterRuleCredential {
      *
      * @return the appKey value.
      */
+    @Generated
     public String getAppKey() {
         return this.appKey;
     }
@@ -73,6 +81,7 @@ public final class FunctionRouterRuleCredential {
      * @param appKey the appKey value to set.
      * @return the FunctionRouterRuleCredential object itself.
      */
+    @Generated
     public FunctionRouterRuleCredential setAppKey(String appKey) {
         this.appKey = appKey;
         return this;
@@ -84,6 +93,7 @@ public final class FunctionRouterRuleCredential {
      *
      * @return the clientId value.
      */
+    @Generated
     public String getClientId() {
         return this.clientId;
     }
@@ -95,6 +105,7 @@ public final class FunctionRouterRuleCredential {
      * @param clientId the clientId value to set.
      * @return the FunctionRouterRuleCredential object itself.
      */
+    @Generated
     public FunctionRouterRuleCredential setClientId(String clientId) {
         this.clientId = clientId;
         return this;

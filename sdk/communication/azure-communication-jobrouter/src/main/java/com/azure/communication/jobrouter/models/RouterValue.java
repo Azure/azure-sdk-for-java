@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 3. doubleValue.
  * 4. boolValue.
  */
-@Fluent
 public final class RouterValue {
 
     /**
