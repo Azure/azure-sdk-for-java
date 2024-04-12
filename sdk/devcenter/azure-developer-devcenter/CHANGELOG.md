@@ -1,12 +1,56 @@
 # Release History
 
 ## 1.0.0 (Unreleased)
-This Azure DevCenter library release uses the 2023-04-01 GA API.
+
+This release targets Azure Dev Center 2023-04-01 General Available API, which is the same version as the previous 1.0.0-beta.3 release. The main improvement was the addition of models as Convenience API was enabled for the SDK. 
 
 ### Features Added
 
 - Added models and models serialization for each Dev Center concept.
-- For each previous client method, added the correspondent method with model return instead of BinaryData
+    - DevBox
+    - DevBoxAction
+    - DevBoxActionDelayResult
+    - DevBoxActionDelayStatus
+    - DevBoxActionType
+    - DevBoxHardwareProfile
+    - DevBoxImageReference
+    - DevBoxNextAction
+    - DevBoxOsType
+    - DevBoxPool
+    - DevBoxProvisioningState
+    - DevBoxSchedule
+    - DevBoxStorageProfile
+    - DevCenterCatalog
+    - DevCenterEnvironment
+    - DevCenterEnvironmentType
+    - DevCenterOperationDetails
+    - DevCenterOperationStatus
+    - DevCenterProject
+    - EnvironmentDefinition
+    - EnvironmentDefinitionParameter
+    - EnvironmentDefinitionParameterType
+    - EnvironmentProvisioningState
+    - EnvironmentTypeStatus
+    - HibernateSupport
+    - LocalAdministratorStatus
+    - OsDisk
+    - package-info
+    - PoolHealthStatus
+    - PowerState
+    - RemoteConnection
+    - ScheduleFrequency
+    - ScheduleType
+    - SkuName
+    - StopOnDisconnectConfiguration
+    - StopOnDisconnectStatus
+    
+- For each previous client method, added the correspondent method with model return. E.g. for `getDevBoxWithResponse` method, which returns `Response<BinaryData>`, was added a correspondent `getDevBox` method, which returns `DevBox` model.   
+- Added `getDevBoxesClient()` and `getDeploymentEnvironmentsClient()` methods in `DevCenterClient` 
+- Added `getDevBoxesAsyncClient()` and `getDeploymentEnvironmentsAsyncClient()` methods in `DevCenterAsyncClient`
+
+### Breaking Changes
+
+- Removed `filter` and `top` as optional request parameters.
 
 ## 1.0.0-beta.3 (2023-11-09)
 
