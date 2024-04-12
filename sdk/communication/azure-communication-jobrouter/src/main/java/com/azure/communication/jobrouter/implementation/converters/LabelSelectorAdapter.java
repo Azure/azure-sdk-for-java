@@ -113,10 +113,14 @@ public class LabelSelectorAdapter {
                     .map(LabelSelectorAdapter::convertWorkerSelectorToInternal).collect(Collectors.toList()) : null);
         } else if (attachment instanceof PassThroughWorkerSelectorAttachment) {
             PassThroughWorkerSelectorAttachment passThrough = (PassThroughWorkerSelectorAttachment) attachment;
-            return new PassThroughWorkerSelectorAttachmentInternal(
+            PassThroughWorkerSelectorAttachmentInternal result = new PassThroughWorkerSelectorAttachmentInternal(
                 passThrough.getKey(),
                 passThrough.getLabelOperator()
-            ).setExpiresAfterSeconds((double) passThrough.getExpiresAfter().getSeconds());
+            );
+            if (passThrough.getExpiresAfter() != null) {
+                result.setExpiresAfterSeconds((double) passThrough.getExpiresAfter().getSeconds());
+            }
+            return result;
         } else if (attachment instanceof RuleEngineWorkerSelectorAttachment) {
             RuleEngineWorkerSelectorAttachment rule = (RuleEngineWorkerSelectorAttachment) attachment;
             return new RuleEngineWorkerSelectorAttachmentInternal(getRouterRuleInternal(rule.getRule()));
