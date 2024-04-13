@@ -21,5 +21,10 @@ public enum ReturnType {
     /**
      * Long-running operation return type.
      */
-    LONG_RUNNING_OPERATION
+    LONG_RUNNING_OPERATION,
+
+    /**
+     * Server Sent Event operation return type.
+     */
+    SERVER_SENT_EVENT
 }
