@@ -4,8 +4,6 @@
 package io.clientcore.http.okhttp3.implementation;
 
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.implementation.util.AuthorizationChallengeHandler;
-import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.util.ClientLogger;
 import okhttp3.Authenticator;
 import okhttp3.Challenge;
@@ -20,8 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static io.clientcore.core.implementation.util.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
-import static io.clientcore.core.implementation.util.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
+import static io.clientcore.http.okhttp3.implementation.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
+import static io.clientcore.http.okhttp3.implementation.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
+import static io.clientcore.http.okhttp3.implementation.AuthorizationChallengeHandler.isNullOrEmpty;
 
 /**
  * This class handles authorizing requests being sent through a proxy which require authentication.
@@ -88,7 +87,7 @@ public final class ProxyAuthenticator implements Authenticator {
             challengeHandler.attemptToPipelineAuthorization(PROXY_METHOD, PROXY_URI_PATH, NO_BODY);
 
         // Pipelining was successful, use the generated authorization header.
-        if (!CoreUtils.isNullOrEmpty(authorizationHeader)) {
+        if (!isNullOrEmpty(authorizationHeader)) {
             return response.request().newBuilder()
                 .header(PROXY_AUTHORIZATION, authorizationHeader)
                 .build();
@@ -167,7 +166,7 @@ public final class ProxyAuthenticator implements Authenticator {
 
             String proxyAuthenticationInfoHeader = response.header(PROXY_AUTHENTICATION_INFO);
 
-            if (!CoreUtils.isNullOrEmpty(proxyAuthenticationInfoHeader)) {
+            if (!isNullOrEmpty(proxyAuthenticationInfoHeader)) {
                 Map<String, String> authenticationInfoPieces = AuthorizationChallengeHandler
                     .parseAuthenticationOrAuthorizationHeader(proxyAuthenticationInfoHeader);
                 Map<String, String> authorizationPieces = AuthorizationChallengeHandler

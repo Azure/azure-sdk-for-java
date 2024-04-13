@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.implementation.util;
+package io.clientcore.http.okhttp3.implementation;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -209,7 +209,7 @@ public class AuthorizationChallengeHandler {
      * server split into its key-value pair pieces.
      */
     public final void consumeAuthenticationInfoHeader(Map<String, String> authenticationInfoMap) {
-        if (CoreUtils.isNullOrEmpty(authenticationInfoMap)) {
+        if (isNullOrEmpty(authenticationInfoMap)) {
             return;
         }
 
@@ -231,7 +231,7 @@ public class AuthorizationChallengeHandler {
      * @return The Authorization or Authentication header split into its key-value pairs.
      */
     public static Map<String, String> parseAuthenticationOrAuthorizationHeader(String header) {
-        if (CoreUtils.isNullOrEmpty(header)) {
+        if (isNullOrEmpty(header)) {
             return Collections.emptyMap();
         }
 
@@ -308,7 +308,7 @@ public class AuthorizationChallengeHandler {
      * be returned, otherwise the preference is 'auth' followed by 'auth-int'.
      */
     private String getQop(String qopHeader) {
-        if (CoreUtils.isNullOrEmpty(qopHeader)) {
+        if (isNullOrEmpty(qopHeader)) {
             return null;
         } else if (qopHeader.equalsIgnoreCase(AUTH)) {
             return AUTH;
@@ -481,19 +481,19 @@ public class AuthorizationChallengeHandler {
             .append("uri=\"").append(uri).append("\", ")
             .append("response=\"").append(response).append("\"");
 
-        if (!CoreUtils.isNullOrEmpty(algorithm)) {
+        if (!isNullOrEmpty(algorithm)) {
             authorizationBuilder.append(", algorithm=").append(algorithm);
         }
 
-        if (!CoreUtils.isNullOrEmpty(cnonce)) {
+        if (!isNullOrEmpty(cnonce)) {
             authorizationBuilder.append(", cnonce=\"").append(cnonce).append("\"");
         }
 
-        if (!CoreUtils.isNullOrEmpty(opaque)) {
+        if (!isNullOrEmpty(opaque)) {
             authorizationBuilder.append(", opaque=\"").append(opaque).append("\"");
         }
 
-        if (!CoreUtils.isNullOrEmpty(qop)) {
+        if (!isNullOrEmpty(qop)) {
             authorizationBuilder.append(", qop=").append(qop);
             authorizationBuilder.append(", nc=").append(String.format("%08X", nc));
         }
@@ -541,5 +541,27 @@ public class AuthorizationChallengeHandler {
         }
 
         return new String(hexString);
+    }
+
+    /**
+     * Checks if the character sequence is null or empty.
+     *
+     * @param charSequence Character sequence being checked for nullness or emptiness.
+     *
+     * @return True if the character sequence is null or empty, false otherwise.
+     */
+    public static boolean isNullOrEmpty(CharSequence charSequence) {
+        return charSequence == null || charSequence.length() == 0;
+    }
+
+    /**
+     * Checks if the map is null or empty.
+     *
+     * @param map Map being checked for nullness or emptiness.
+     *
+     * @return True if the map is null or empty, false otherwise.
+     */
+    public static boolean isNullOrEmpty(Map<?, ?> map) {
+        return map == null || map.isEmpty();
     }
 }
