@@ -11,8 +11,8 @@ import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
-import io.clientcore.core.implementation.util.ServerSentEventUtil;
 import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.ServerSentEventUtils;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.http.jdk.httpclient.implementation.InputStreamTimeoutResponseSubscriber;
 import io.clientcore.http.jdk.httpclient.implementation.JdkHttpRequest;
@@ -30,7 +30,7 @@ import java.util.function.Supplier;
 import static io.clientcore.core.http.models.ContentType.APPLICATION_OCTET_STREAM;
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
-import static io.clientcore.core.implementation.util.ServerSentEventUtil.processTextEventStream;
+import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStream;
 import static io.clientcore.http.jdk.httpclient.implementation.JdkHttpUtils.fromJdkHttpHeaders;
 
 /**
@@ -140,13 +140,13 @@ class JdkHttpClient implements HttpClient {
         HttpHeaders coreHeaders = fromJdkHttpHeaders(response.headers());
 
         String contentType = coreHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
-        if (ServerSentEventUtil.isTextEventStreamContentType(contentType)) {
+        if (ServerSentEventUtils.isTextEventStreamContentType(contentType)) {
             ServerSentEventListener listener = request.getServerSentEventListener();
 
             if (listener != null) {
-                processTextEventStream(request, this::send, response.body(), listener, LOGGER);
+                processTextEventStream(request, this, response.body(), listener, LOGGER);
             } else {
-                throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtil.NO_LISTENER_ERROR_MESSAGE));
+                throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtils.NO_LISTENER_ERROR_MESSAGE));
             }
 
             return new JdkHttpResponse(request, response.statusCode(), coreHeaders, BinaryData.EMPTY);

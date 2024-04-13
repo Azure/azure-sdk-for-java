@@ -4,8 +4,8 @@
 package io.clientcore.http.okhttp3.implementation;
 
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.implementation.util.AuthorizationChallengeHandler;
+import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.util.ClientLogger;
 import okhttp3.Authenticator;
 import okhttp3.Challenge;

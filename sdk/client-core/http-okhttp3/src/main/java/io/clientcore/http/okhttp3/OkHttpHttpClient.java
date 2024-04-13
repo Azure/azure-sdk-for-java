@@ -13,8 +13,8 @@ import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
-import io.clientcore.core.implementation.util.ServerSentEventUtil;
 import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.ServerSentEventUtils;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.binarydata.FileBinaryData;
 import io.clientcore.core.util.binarydata.InputStreamBinaryData;
@@ -34,7 +34,7 @@ import static io.clientcore.core.http.models.ContentType.APPLICATION_OCTET_STREA
 import static io.clientcore.core.http.models.HttpHeaderName.CONTENT_TYPE;
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
-import static io.clientcore.core.implementation.util.ServerSentEventUtil.processTextEventStream;
+import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStream;
 /**
  * HttpClient implementation for OkHttp.
  */
@@ -147,9 +147,9 @@ class OkHttpHttpClient implements HttpClient {
             ServerSentEventListener listener = request.getServerSentEventListener();
 
             if (listener != null) {
-                processTextEventStream(request, this::send, response.body().byteStream(), listener, LOGGER);
+                processTextEventStream(request, this, response.body().byteStream(), listener, LOGGER);
             } else {
-                throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtil.NO_LISTENER_ERROR_MESSAGE));
+                throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtils.NO_LISTENER_ERROR_MESSAGE));
             }
 
             return new OkHttpResponse(response, request, BinaryData.EMPTY);
@@ -211,7 +211,7 @@ class OkHttpHttpClient implements HttpClient {
 
     private static boolean isTextEventStream(okhttp3.Headers responseHeaders) {
         if (responseHeaders != null) {
-            return ServerSentEventUtil
+            return ServerSentEventUtils
                 .isTextEventStreamContentType(responseHeaders.get(HttpHeaderName.CONTENT_TYPE.toString()));
         }
 

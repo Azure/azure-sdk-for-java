@@ -16,8 +16,8 @@ import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
-import io.clientcore.core.implementation.util.ServerSentEventUtil;
 import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.ServerSentEventUtils;
 import io.clientcore.core.util.binarydata.BinaryData;
 
 import javax.net.ssl.SSLSocket;
@@ -47,8 +47,8 @@ import static io.clientcore.core.http.models.ContentType.APPLICATION_OCTET_STREA
 import static io.clientcore.core.http.models.HttpHeaderName.CONTENT_TYPE;
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
-import static io.clientcore.core.implementation.util.ServerSentEventUtil.NO_LISTENER_ERROR_MESSAGE;
-import static io.clientcore.core.implementation.util.ServerSentEventUtil.processTextEventStream;
+import static io.clientcore.core.util.ServerSentEventUtils.NO_LISTENER_ERROR_MESSAGE;
+import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStream;
 
 /**
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
@@ -217,8 +217,7 @@ class DefaultHttpClient implements HttpClient {
                 }
 
                 if (connection.getErrorStream() == null) {
-                    processTextEventStream(httpRequest, httpRequestConsumer ->
-                        this.send(httpRequest), connection.getInputStream(), listener, LOGGER);
+                    processTextEventStream(httpRequest, this, connection.getInputStream(), listener, LOGGER);
                 }
             } catch (IOException e) {
                 throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
@@ -281,7 +280,7 @@ class DefaultHttpClient implements HttpClient {
 
     private static boolean isTextEventStream(HttpHeaders responseHeaders) {
         if (responseHeaders != null) {
-            return ServerSentEventUtil.isTextEventStreamContentType(responseHeaders.getValue(CONTENT_TYPE));
+            return ServerSentEventUtils.isTextEventStreamContentType(responseHeaders.getValue(CONTENT_TYPE));
         }
         return false;
     }
