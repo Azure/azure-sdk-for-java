@@ -100,7 +100,7 @@ class OkHttpHttpClient implements HttpClient {
      * @return The Mono emitting okhttp request
      */
     private RequestBody toOkHttpRequestBody(BinaryData bodyContent, HttpHeaders headers) {
-        if (bodyContent == null) {
+        if (bodyContent == null || bodyContent == BinaryData.EMPTY) {
             return EMPTY_REQUEST_BODY;
         }
 
@@ -152,7 +152,7 @@ class OkHttpHttpClient implements HttpClient {
                 throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtil.NO_LISTENER_ERROR_MESSAGE));
             }
 
-            return new OkHttpResponse(response, request, BinaryData.fromBytes(EMPTY_BODY));
+            return new OkHttpResponse(response, request, BinaryData.EMPTY);
         }
 
         return processResponse(request, response);
@@ -206,7 +206,7 @@ class OkHttpHttpClient implements HttpClient {
                 }
         }
 
-        return new OkHttpResponse(response, request, body == null ? BinaryData.fromBytes(EMPTY_BODY) : body);
+        return new OkHttpResponse(response, request, body == null ? BinaryData.EMPTY : body);
     }
 
     private static boolean isTextEventStream(okhttp3.Headers responseHeaders) {

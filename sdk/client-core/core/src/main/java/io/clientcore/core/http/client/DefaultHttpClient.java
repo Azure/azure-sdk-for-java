@@ -54,7 +54,6 @@ import static io.clientcore.core.implementation.util.ServerSentEventUtil.process
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
  */
 class DefaultHttpClient implements HttpClient {
-    private static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
     private static final ClientLogger LOGGER = new ClientLogger(DefaultHttpClient.class);
 
     private final long connectionTimeout;
@@ -251,7 +250,7 @@ class DefaultHttpClient implements HttpClient {
 
             switch (responseBodyMode) {
                 case IGNORE:
-                    HttpResponseAccessHelper.setBody(httpResponse, EMPTY_BODY);
+                    HttpResponseAccessHelper.setBody(httpResponse, BinaryData.EMPTY);
 
                     connection.disconnect();
 

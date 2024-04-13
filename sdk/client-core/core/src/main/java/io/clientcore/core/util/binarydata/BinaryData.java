@@ -115,6 +115,8 @@ import java.util.List;
  * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
  */
 public abstract class BinaryData implements Closeable {
+    public static final BinaryData EMPTY = BinaryData.fromBytes(new byte[0]);
+
     static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
     static final int STREAM_READ_SIZE = 8192;
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;

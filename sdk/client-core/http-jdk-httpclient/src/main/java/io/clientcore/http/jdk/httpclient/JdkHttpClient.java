@@ -38,7 +38,6 @@ import static io.clientcore.http.jdk.httpclient.implementation.JdkHttpUtils.from
  */
 class JdkHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClient.class);
-    private static final byte[] EMPTY_BODY = new byte[0];
 
     private final java.net.http.HttpClient jdkHttpClient;
 
@@ -150,7 +149,7 @@ class JdkHttpClient implements HttpClient {
                 throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtil.NO_LISTENER_ERROR_MESSAGE));
             }
 
-            return new JdkHttpResponse(request, response.statusCode(), coreHeaders, BinaryData.fromBytes(EMPTY_BODY));
+            return new JdkHttpResponse(request, response.statusCode(), coreHeaders, BinaryData.EMPTY);
         }
 
         return processResponse(request, response, coreHeaders, contentType);
@@ -196,7 +195,6 @@ class JdkHttpClient implements HttpClient {
                 }
         }
 
-        return new JdkHttpResponse(request, response.statusCode(), coreHeaders,
-            body == null ? BinaryData.fromBytes(EMPTY_BODY) : body);
+        return new JdkHttpResponse(request, response.statusCode(), coreHeaders, body == null ? BinaryData.EMPTY : body);
     }
 }
