@@ -10,6 +10,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.ProxyOptions;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
@@ -226,7 +227,13 @@ class DefaultHttpClient implements HttpClient {
                 connection.disconnect();
             }
         } else {
-            ResponseBodyMode responseBodyMode = httpRequest.getRequestOptions().getResponseBodyMode();
+            RequestOptions requestOptions = httpRequest.getRequestOptions();
+
+            if (requestOptions == RequestOptions.NONE) {
+                requestOptions = new RequestOptions();
+            }
+
+            ResponseBodyMode responseBodyMode = requestOptions.getResponseBodyMode();
 
             if (responseBodyMode == null) {
                 HttpHeader contentType = httpResponse.getHeaders().get(CONTENT_TYPE);
@@ -239,7 +246,7 @@ class DefaultHttpClient implements HttpClient {
                     responseBodyMode = BUFFER;
                 }
 
-                httpRequest.getRequestOptions().setResponseBodyMode(responseBodyMode); // We only change this if it was null.
+                requestOptions.setResponseBodyMode(responseBodyMode); // We only change this if it was null.
             }
 
             switch (responseBodyMode) {

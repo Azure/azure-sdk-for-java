@@ -56,8 +56,8 @@ public final class RestProxy implements InvocationHandler {
         final SwaggerMethodParser methodParser = getMethodParser(method);
         RequestOptions options = methodParser.setRequestOptions(args);
 
-        return restProxyImpl.invoke(proxy, method, options, options != null ? options.getRequestCallback() : null,
-            methodParser, args);
+        return restProxyImpl.invoke(proxy, method, options, (options != null && options != RequestOptions.NONE)
+            ? options.getRequestCallback() : null, methodParser, args);
     }
 
     /**

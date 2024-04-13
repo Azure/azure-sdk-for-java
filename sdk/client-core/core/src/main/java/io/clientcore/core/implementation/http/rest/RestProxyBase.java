@@ -72,7 +72,7 @@ public abstract class RestProxyBase {
         try {
             HttpRequest request = createHttpRequest(methodParser, serializer, args);
 
-            if (options == null) {
+            if (options == null || options == RequestOptions.NONE) {
                 options = new RequestOptions()
                     .setContext(Context.EMPTY)
                     .setLogger(methodParser.getMethodLogger());

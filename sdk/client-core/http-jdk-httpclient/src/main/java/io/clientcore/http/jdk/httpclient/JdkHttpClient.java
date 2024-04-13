@@ -7,6 +7,7 @@ import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
@@ -27,7 +28,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static io.clientcore.core.http.models.ContentType.APPLICATION_OCTET_STREAM;
-import static io.clientcore.core.http.models.HttpHeaderName.CONTENT_TYPE;
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
 import static io.clientcore.core.implementation.util.ServerSentEventUtil.processTextEventStream;
@@ -91,7 +91,7 @@ class JdkHttpClient implements HttpClient {
                 HttpResponse.BodyHandlers::ofInputStream, InputStreamTimeoutResponseSubscriber::new);
 
             java.net.http.HttpResponse<InputStream> jdKResponse = jdkHttpClient.send(jdkRequest, bodyHandler);
-            return toResponse(request, jdKResponse, request.getMetadata().getResponseBodyMode());
+            return toResponse(request, jdKResponse);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         } catch (InterruptedException e) {
@@ -137,8 +137,7 @@ class JdkHttpClient implements HttpClient {
         return hasReadTimeout ? responseInfo -> timeoutSubscriber.apply(readTimeout.toMillis()) : jdkBodyHandler.get();
     }
 
-    private Response<?> toResponse(HttpRequest request, HttpResponse<InputStream> response,
-        ResponseBodyMode responseBodyMode) throws IOException {
+    private Response<?> toResponse(HttpRequest request, HttpResponse<InputStream> response) throws IOException {
         HttpHeaders coreHeaders = fromJdkHttpHeaders(response.headers());
 
         String contentType = coreHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
@@ -154,11 +153,20 @@ class JdkHttpClient implements HttpClient {
             return new JdkHttpResponse(request, response.statusCode(), coreHeaders, BinaryData.fromBytes(EMPTY_BODY));
         }
 
-        return processResponse(request, response, coreHeaders, contentType, responseBodyMode);
+        return processResponse(request, response, coreHeaders, contentType);
     }
 
     private Response<?> processResponse(HttpRequest request, HttpResponse<InputStream> response,
-        HttpHeaders coreHeaders, String contentType, ResponseBodyMode responseBodyMode) throws IOException {
+                                        HttpHeaders coreHeaders, String contentType) throws IOException {
+
+        RequestOptions requestOptions = request.getRequestOptions();
+
+        if (requestOptions == RequestOptions.NONE) {
+            requestOptions = new RequestOptions();
+        }
+
+        ResponseBodyMode responseBodyMode = requestOptions.getResponseBodyMode();
+
         if (responseBodyMode == null) {
             if (contentType != null
                 && APPLICATION_OCTET_STREAM.regionMatches(true, 0, contentType, 0, APPLICATION_OCTET_STREAM.length())) {
@@ -167,7 +175,7 @@ class JdkHttpClient implements HttpClient {
                 responseBodyMode = BUFFER;
             }
 
-            request.getMetadata().setResponseBodyMode(responseBodyMode);
+            requestOptions.setResponseBodyMode(responseBodyMode); // We only change this if it was null.
         }
 
         BinaryData body = null;
@@ -183,7 +191,9 @@ class JdkHttpClient implements HttpClient {
             case BUFFER:
             case DESERIALIZE: // Deserialization will occur at a later point in HttpResponseBodyDecoder.
             default:
-                body = BinaryData.fromBytes(response.body().readAllBytes());
+                try (InputStream responseBody = response.body()) { // Use try-with-resources to close the stream.
+                    body = BinaryData.fromBytes(responseBody.readAllBytes());
+                }
         }
 
         return new JdkHttpResponse(request, response.statusCode(), coreHeaders,
