@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The details of a account resource. */
+/**
+ * The details of a account resource.
+ */
 @Fluent
 public final class AccountResourceInner extends ProxyResource {
     /*
@@ -24,13 +26,15 @@ public final class AccountResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of AccountResourceInner class. */
+    /**
+     * Creates an instance of AccountResourceInner class.
+     */
     public AccountResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The resource-specific properties for this resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AccountProperties innerProperties() {
@@ -39,7 +43,7 @@ public final class AccountResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -48,7 +52,7 @@ public final class AccountResourceInner extends ProxyResource {
 
     /**
      * Get the organizationId property: organization id.
-     *
+     * 
      * @return the organizationId value.
      */
     public String organizationId() {
@@ -57,7 +61,7 @@ public final class AccountResourceInner extends ProxyResource {
 
     /**
      * Set the organizationId property: organization id.
-     *
+     * 
      * @param organizationId the organizationId value to set.
      * @return the AccountResourceInner object itself.
      */
@@ -71,7 +75,7 @@ public final class AccountResourceInner extends ProxyResource {
 
     /**
      * Get the accountId property: account id.
-     *
+     * 
      * @return the accountId value.
      */
     public String accountId() {
@@ -80,7 +84,7 @@ public final class AccountResourceInner extends ProxyResource {
 
     /**
      * Set the accountId property: account id.
-     *
+     * 
      * @param accountId the accountId value to set.
      * @return the AccountResourceInner object itself.
      */
@@ -94,7 +98,7 @@ public final class AccountResourceInner extends ProxyResource {
 
     /**
      * Get the accountName property: account name.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -103,7 +107,7 @@ public final class AccountResourceInner extends ProxyResource {
 
     /**
      * Set the accountName property: account name.
-     *
+     * 
      * @param accountName the accountName value to set.
      * @return the AccountResourceInner object itself.
      */
@@ -116,8 +120,8 @@ public final class AccountResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the region property: region.
-     *
+     * Get the region property: Region where New Relic account is present.
+     * 
      * @return the region value.
      */
     public String region() {
@@ -125,8 +129,8 @@ public final class AccountResourceInner extends ProxyResource {
     }
 
     /**
-     * Set the region property: region.
-     *
+     * Set the region property: Region where New Relic account is present.
+     * 
      * @param region the region value to set.
      * @return the AccountResourceInner object itself.
      */
@@ -140,7 +144,7 @@ public final class AccountResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

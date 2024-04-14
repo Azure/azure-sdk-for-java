@@ -10,8 +10,8 @@ import com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseError;
 public final class DefaultErrorResponseErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefaultErrorResponseError model =
-            BinaryData.fromString("{\"innererror\":\"lokeyy\"}").toObject(DefaultErrorResponseError.class);
+        DefaultErrorResponseError model
+            = BinaryData.fromString("{\"innererror\":\"qulngsntnbybkzgc\"}").toObject(DefaultErrorResponseError.class);
     }
 
     @org.junit.jupiter.api.Test

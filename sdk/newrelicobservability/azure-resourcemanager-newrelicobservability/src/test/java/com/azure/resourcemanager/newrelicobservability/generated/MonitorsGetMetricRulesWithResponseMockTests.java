@@ -33,49 +33,31 @@ public final class MonitorsGetMetricRulesWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"sendMetrics\":\"Disabled\",\"filteringTags\":[{\"name\":\"bpbewtghfgb\",\"value\":\"gw\",\"action\":\"Exclude\"},{\"name\":\"v\",\"value\":\"jkbegibtnmxiebww\",\"action\":\"Include\"},{\"name\":\"yqcgwrtzjuzgwy\",\"value\":\"htxongmtsavjc\",\"action\":\"Exclude\"},{\"name\":\"qpsrknftguvri\",\"value\":\"prwmdyvxqt\",\"action\":\"Include\"}],\"userEmail\":\"ww\"}";
+        String responseStr
+            = "{\"sendMetrics\":\"Enabled\",\"filteringTags\":[{\"name\":\"bsrfbj\",\"value\":\"twss\",\"action\":\"Exclude\"},{\"name\":\"pvjzbe\",\"value\":\"l\",\"action\":\"Include\"},{\"name\":\"qqnvwpmq\",\"value\":\"ruoujmk\",\"action\":\"Include\"}],\"userEmail\":\"qytjrybnwjewgd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NewRelicObservabilityManager manager =
-            NewRelicObservabilityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        MetricRules response =
-            manager
-                .monitors()
-                .getMetricRulesWithResponse(
-                    "przqlveu",
-                    "lupj",
-                    new MetricsRequest().withUserEmail("khfxobbcswsrt"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        MetricRules response = manager.monitors().getMetricRulesWithResponse("bfovasrruvwbhsq", "sub",
+            new MetricsRequest().withUserEmail("gjb"), com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(SendMetricsStatus.DISABLED, response.sendMetrics());
-        Assertions.assertEquals("bpbewtghfgb", response.filteringTags().get(0).name());
-        Assertions.assertEquals("gw", response.filteringTags().get(0).value());
+        Assertions.assertEquals(SendMetricsStatus.ENABLED, response.sendMetrics());
+        Assertions.assertEquals("bsrfbj", response.filteringTags().get(0).name());
+        Assertions.assertEquals("twss", response.filteringTags().get(0).value());
         Assertions.assertEquals(TagAction.EXCLUDE, response.filteringTags().get(0).action());
-        Assertions.assertEquals("ww", response.userEmail());
+        Assertions.assertEquals("qytjrybnwjewgd", response.userEmail());
     }
 }

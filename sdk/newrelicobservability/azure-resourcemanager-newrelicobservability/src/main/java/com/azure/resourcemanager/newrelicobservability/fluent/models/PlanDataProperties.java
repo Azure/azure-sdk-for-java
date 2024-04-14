@@ -10,7 +10,9 @@ import com.azure.resourcemanager.newrelicobservability.models.OrgCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.PlanData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Plan details. */
+/**
+ * Plan details.
+ */
 @Fluent
 public final class PlanDataProperties {
     /*
@@ -31,13 +33,15 @@ public final class PlanDataProperties {
     @JsonProperty(value = "accountCreationSource")
     private AccountCreationSource accountCreationSource;
 
-    /** Creates an instance of PlanDataProperties class. */
+    /**
+     * Creates an instance of PlanDataProperties class.
+     */
     public PlanDataProperties() {
     }
 
     /**
      * Get the planData property: Plan details.
-     *
+     * 
      * @return the planData value.
      */
     public PlanData planData() {
@@ -46,7 +50,7 @@ public final class PlanDataProperties {
 
     /**
      * Set the planData property: Plan details.
-     *
+     * 
      * @param planData the planData value to set.
      * @return the PlanDataProperties object itself.
      */
@@ -57,7 +61,7 @@ public final class PlanDataProperties {
 
     /**
      * Get the orgCreationSource property: Source of org creation.
-     *
+     * 
      * @return the orgCreationSource value.
      */
     public OrgCreationSource orgCreationSource() {
@@ -66,7 +70,7 @@ public final class PlanDataProperties {
 
     /**
      * Set the orgCreationSource property: Source of org creation.
-     *
+     * 
      * @param orgCreationSource the orgCreationSource value to set.
      * @return the PlanDataProperties object itself.
      */
@@ -77,7 +81,7 @@ public final class PlanDataProperties {
 
     /**
      * Get the accountCreationSource property: Source of account creation.
-     *
+     * 
      * @return the accountCreationSource value.
      */
     public AccountCreationSource accountCreationSource() {
@@ -86,7 +90,7 @@ public final class PlanDataProperties {
 
     /**
      * Set the accountCreationSource property: Source of account creation.
-     *
+     * 
      * @param accountCreationSource the accountCreationSource value to set.
      * @return the PlanDataProperties object itself.
      */
@@ -97,7 +101,7 @@ public final class PlanDataProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

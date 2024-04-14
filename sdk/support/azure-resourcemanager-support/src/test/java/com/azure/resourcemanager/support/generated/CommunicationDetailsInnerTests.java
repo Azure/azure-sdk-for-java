@@ -11,23 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class CommunicationDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommunicationDetailsInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"outbound\",\"sender\":\"riuhprwm\",\"subject\":\"yvxqtayriwwroy\",\"body\":\"bexrmcq\",\"createdDate\":\"2021-02-16T05:25:07Z\"},\"id\":\"cnojvknmefqsg\",\"name\":\"vah\",\"type\":\"pjyzhpv\"}")
-                .toObject(CommunicationDetailsInner.class);
-        Assertions.assertEquals("riuhprwm", model.sender());
-        Assertions.assertEquals("yvxqtayriwwroy", model.subject());
-        Assertions.assertEquals("bexrmcq", model.body());
+        CommunicationDetailsInner model = BinaryData.fromString(
+            "{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"inbound\",\"sender\":\"n\",\"subject\":\"aljutiiswac\",\"body\":\"fgdkzzew\",\"createdDate\":\"2021-09-11T04:06:27Z\"},\"id\":\"hqcrailvpnpp\",\"name\":\"uflrwd\",\"type\":\"hdlxyjrxsagafcn\"}")
+            .toObject(CommunicationDetailsInner.class);
+        Assertions.assertEquals("n", model.sender());
+        Assertions.assertEquals("aljutiiswac", model.subject());
+        Assertions.assertEquals("fgdkzzew", model.body());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommunicationDetailsInner model =
-            new CommunicationDetailsInner().withSender("riuhprwm").withSubject("yvxqtayriwwroy").withBody("bexrmcq");
+        CommunicationDetailsInner model
+            = new CommunicationDetailsInner().withSender("n").withSubject("aljutiiswac").withBody("fgdkzzew");
         model = BinaryData.fromObject(model).toObject(CommunicationDetailsInner.class);
-        Assertions.assertEquals("riuhprwm", model.sender());
-        Assertions.assertEquals("yvxqtayriwwroy", model.subject());
-        Assertions.assertEquals("bexrmcq", model.body());
+        Assertions.assertEquals("n", model.sender());
+        Assertions.assertEquals("aljutiiswac", model.subject());
+        Assertions.assertEquals("fgdkzzew", model.body());
     }
 }

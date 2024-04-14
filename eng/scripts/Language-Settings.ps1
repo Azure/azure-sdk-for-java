@@ -110,7 +110,7 @@ function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory)
   $pkgId = $contentXML.project.artifactId
   $docsReadMeName = $pkgId -replace "^azure-" , ""
   $pkgVersion = $contentXML.project.version
-  $groupId = if ($contentXML.project.groupId -eq $null) { $contentXML.project.parent.groupId } else { $contentXML.project.groupId }
+  $groupId = if ($null -eq $contentXML.project.groupId) { $contentXML.project.parent.groupId } else { $contentXML.project.groupId }
   $releaseNotes = ""
   $readmeContent = ""
 
@@ -139,6 +139,34 @@ function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory)
     ReadmeContent  = $readmeContent
     DocsReadMeName = $docsReadMeName
   }
+}
+
+# Defined in common.ps1 as:
+# $GetDocsMsDevLanguageSpecificPackageInfoFn = "Get-${Language}-DocsMsDevLanguageSpecificPackageInfo"
+function Get-java-DocsMsDevLanguageSpecificPackageInfo($packageInfo, $packageSourceOverride) {
+  # If the default namespace isn't in the package info then it needs to be added
+  # Can't check if (!$packageInfo.Namespaces) in strict mode because Namespaces won't exist
+  # at all.
+  if (!($packageInfo | Get-Member Namespaces)) {
+    $version = $packageInfo.Version
+    # If the dev version is set, use that
+    if ($packageInfo.DevVersion) {
+      $version = $packageInfo.DevVersion
+    }
+    $namespaces = Fetch-Namespaces-From-Javadoc $packageInfo.Name $packageInfo.Group $version
+    # If there are namespaces found from the javadoc.jar then add them to the packageInfo which
+    # will later update the metadata json file in the docs repository. If there aren't any namespaces
+    # then don't add the namespaces member with an empty list. The reason being is that the
+    # UpdateDocsMsMetadataForPackage function will merge the packageInfo json and the metadata json
+    # files by taking any properties in the metadata json file that aren't in the packageInfo and add
+    # them from the metadata. This allows us to set the namespaces for things that can't be figured out
+    # through the javadoc, like track 1 libraries whose javadoc.jar files don't contain anything, in
+    # the metadata json files.
+    if ($namespaces.Count -gt 0) {
+      $packageInfo | Add-Member -Type NoteProperty -Name "Namespaces" -Value $namespaces
+    }
+  }
+  return $packageInfo
 }
 
 # Stage and Upload Docs to blob Storage
@@ -288,6 +316,7 @@ $PackageExclusions = @{
   "azure-cosmos-spark_3-2_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-spark_3-3_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-spark_3-4_2-12" = "Javadoc dependency issue.";
+  "azure-cosmos-spark_3-5_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-test" = "Don't want to include the test framework package.";
   "azure-aot-graalvm-support-netty" = "No Javadocs for the package.";
   "azure-aot-graalvm-support" = "No Javadocs for the package.";
@@ -655,7 +684,7 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
   # Filter for package in "com.azure*" groupid.
   $artifactPath = Join-Path $artifactDir "com.azure*" $pkgName
   Write-Host "Checking for source jar in artifact path $($artifactPath)"
-  $files = Get-ChildItem -Recurse "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")}
+  $files = @(Get-ChildItem -Recurse "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
   if (!$files)
   {
     Write-Host "$($artifactPath) does not have any package"

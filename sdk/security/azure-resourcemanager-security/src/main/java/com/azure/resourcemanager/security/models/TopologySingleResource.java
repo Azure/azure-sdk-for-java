@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TopologySingleResource model. */
+/**
+ * The TopologySingleResource model.
+ */
 @Immutable
 public final class TopologySingleResource {
     /*
@@ -59,13 +61,15 @@ public final class TopologySingleResource {
     @JsonProperty(value = "children", access = JsonProperty.Access.WRITE_ONLY)
     private List<TopologySingleResourceChild> children;
 
-    /** Creates an instance of TopologySingleResource class. */
+    /**
+     * Creates an instance of TopologySingleResource class.
+     */
     public TopologySingleResource() {
     }
 
     /**
      * Get the resourceId property: Azure resource id.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -74,7 +78,7 @@ public final class TopologySingleResource {
 
     /**
      * Get the severity property: The security severity of the resource.
-     *
+     * 
      * @return the severity value.
      */
     public String severity() {
@@ -83,7 +87,7 @@ public final class TopologySingleResource {
 
     /**
      * Get the recommendationsExist property: Indicates if the resource has security recommendations.
-     *
+     * 
      * @return the recommendationsExist value.
      */
     public Boolean recommendationsExist() {
@@ -93,7 +97,7 @@ public final class TopologySingleResource {
     /**
      * Get the networkZones property: Indicates the resource connectivity level to the Internet (InternetFacing,
      * Internal ,etc.).
-     *
+     * 
      * @return the networkZones value.
      */
     public String networkZones() {
@@ -102,7 +106,7 @@ public final class TopologySingleResource {
 
     /**
      * Get the topologyScore property: Score of the resource based on its security severity.
-     *
+     * 
      * @return the topologyScore value.
      */
     public Integer topologyScore() {
@@ -111,7 +115,7 @@ public final class TopologySingleResource {
 
     /**
      * Get the location property: The location of this resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -121,7 +125,7 @@ public final class TopologySingleResource {
     /**
      * Get the parents property: Azure resources connected to this resource which are in higher level in the topology
      * view.
-     *
+     * 
      * @return the parents value.
      */
     public List<TopologySingleResourceParent> parents() {
@@ -131,7 +135,7 @@ public final class TopologySingleResource {
     /**
      * Get the children property: Azure resources connected to this resource which are in lower level in the topology
      * view.
-     *
+     * 
      * @return the children value.
      */
     public List<TopologySingleResourceChild> children() {
@@ -140,7 +144,7 @@ public final class TopologySingleResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

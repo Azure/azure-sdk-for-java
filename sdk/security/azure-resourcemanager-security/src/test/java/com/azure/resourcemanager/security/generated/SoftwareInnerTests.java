@@ -12,44 +12,35 @@ import org.junit.jupiter.api.Assertions;
 public final class SoftwareInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SoftwareInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"deviceId\":\"gm\",\"osPlatform\":\"fjlrxwtoauk\",\"vendor\":\"kvci\",\"softwareName\":\"zmoaeds\",\"version\":\"wuived\",\"endOfSupportStatus\":\"noLongerSupported\",\"endOfSupportDate\":\"eewxeiqbpsmg\",\"numberOfKnownVulnerabilities\":1437777352,\"firstSeenAt\":\"amljdlrgmsplzgau\"},\"id\":\"cshhv\",\"name\":\"ewgnxkympqanxrj\",\"type\":\"ixt\"}")
-                .toObject(SoftwareInner.class);
-        Assertions.assertEquals("gm", model.deviceId());
-        Assertions.assertEquals("fjlrxwtoauk", model.osPlatform());
-        Assertions.assertEquals("kvci", model.vendor());
-        Assertions.assertEquals("zmoaeds", model.softwareName());
-        Assertions.assertEquals("wuived", model.version());
-        Assertions.assertEquals(EndOfSupportStatus.NO_LONGER_SUPPORTED, model.endOfSupportStatus());
-        Assertions.assertEquals("eewxeiqbpsmg", model.endOfSupportDate());
-        Assertions.assertEquals(1437777352, model.numberOfKnownVulnerabilities());
-        Assertions.assertEquals("amljdlrgmsplzgau", model.firstSeenAt());
+        SoftwareInner model = BinaryData.fromString(
+            "{\"properties\":{\"deviceId\":\"xrbuukzclew\",\"osPlatform\":\"mlwpazt\",\"vendor\":\"ofncckwyfzqwhxxb\",\"softwareName\":\"qa\",\"version\":\"feqztppriol\",\"endOfSupportStatus\":\"upcomingNoLongerSupported\",\"endOfSupportDate\":\"altol\",\"numberOfKnownVulnerabilities\":136991246,\"firstSeenAt\":\"sobqw\"},\"id\":\"sdbnwdcfhucqdpf\",\"name\":\"vglsbjjca\",\"type\":\"vxb\"}")
+            .toObject(SoftwareInner.class);
+        Assertions.assertEquals("xrbuukzclew", model.deviceId());
+        Assertions.assertEquals("mlwpazt", model.osPlatform());
+        Assertions.assertEquals("ofncckwyfzqwhxxb", model.vendor());
+        Assertions.assertEquals("qa", model.softwareName());
+        Assertions.assertEquals("feqztppriol", model.version());
+        Assertions.assertEquals(EndOfSupportStatus.UPCOMING_NO_LONGER_SUPPORTED, model.endOfSupportStatus());
+        Assertions.assertEquals("altol", model.endOfSupportDate());
+        Assertions.assertEquals(136991246, model.numberOfKnownVulnerabilities());
+        Assertions.assertEquals("sobqw", model.firstSeenAt());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SoftwareInner model =
-            new SoftwareInner()
-                .withDeviceId("gm")
-                .withOsPlatform("fjlrxwtoauk")
-                .withVendor("kvci")
-                .withSoftwareName("zmoaeds")
-                .withVersion("wuived")
-                .withEndOfSupportStatus(EndOfSupportStatus.NO_LONGER_SUPPORTED)
-                .withEndOfSupportDate("eewxeiqbpsmg")
-                .withNumberOfKnownVulnerabilities(1437777352)
-                .withFirstSeenAt("amljdlrgmsplzgau");
+        SoftwareInner model = new SoftwareInner().withDeviceId("xrbuukzclew").withOsPlatform("mlwpazt")
+            .withVendor("ofncckwyfzqwhxxb").withSoftwareName("qa").withVersion("feqztppriol")
+            .withEndOfSupportStatus(EndOfSupportStatus.UPCOMING_NO_LONGER_SUPPORTED).withEndOfSupportDate("altol")
+            .withNumberOfKnownVulnerabilities(136991246).withFirstSeenAt("sobqw");
         model = BinaryData.fromObject(model).toObject(SoftwareInner.class);
-        Assertions.assertEquals("gm", model.deviceId());
-        Assertions.assertEquals("fjlrxwtoauk", model.osPlatform());
-        Assertions.assertEquals("kvci", model.vendor());
-        Assertions.assertEquals("zmoaeds", model.softwareName());
-        Assertions.assertEquals("wuived", model.version());
-        Assertions.assertEquals(EndOfSupportStatus.NO_LONGER_SUPPORTED, model.endOfSupportStatus());
-        Assertions.assertEquals("eewxeiqbpsmg", model.endOfSupportDate());
-        Assertions.assertEquals(1437777352, model.numberOfKnownVulnerabilities());
-        Assertions.assertEquals("amljdlrgmsplzgau", model.firstSeenAt());
+        Assertions.assertEquals("xrbuukzclew", model.deviceId());
+        Assertions.assertEquals("mlwpazt", model.osPlatform());
+        Assertions.assertEquals("ofncckwyfzqwhxxb", model.vendor());
+        Assertions.assertEquals("qa", model.softwareName());
+        Assertions.assertEquals("feqztppriol", model.version());
+        Assertions.assertEquals(EndOfSupportStatus.UPCOMING_NO_LONGER_SUPPORTED, model.endOfSupportStatus());
+        Assertions.assertEquals("altol", model.endOfSupportDate());
+        Assertions.assertEquals(136991246, model.numberOfKnownVulnerabilities());
+        Assertions.assertEquals("sobqw", model.firstSeenAt());
     }
 }

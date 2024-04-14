@@ -25,6 +25,8 @@ import com.azure.messaging.eventgrid.systemevents.AcsChatThreadWithUserDeletedEv
 import com.azure.messaging.eventgrid.systemevents.AcsEmailDeliveryReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsEmailEngagementTrackingReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsIncomingCallEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsMessageDeliveryStatusUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsMessageReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsRecordingFileStatusUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsRouterJobCancelledEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsRouterJobClassificationFailedEventData;
@@ -47,9 +49,12 @@ import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerOfferExpiredEve
 import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerOfferIssuedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerOfferRevokedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerRegisteredEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsDeliveryReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsUserDisconnectedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiCenterApiDefinitionAddedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiCenterApiDefinitionUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementApiCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementApiDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementApiReleaseCreatedEventData;
@@ -347,6 +352,18 @@ public final class SystemEventNames {
     public static final String COMMUNICATION_INCOMING_CALL = "Microsoft.Communication.IncomingCall";
 
     /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.Communication.AdvancedMessageDeliveryStatusUpdated event.
+     */
+    public static final String COMMUNICATION_MESSAGE_DELIVERY_STATUS_UPDATED
+        = "Microsoft.Communication.AdvancedMessageDeliveryStatusUpdated";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.AdvancedMessageReceived event.
+     */
+    public static final String COMMUNICATION_MESSAGE_RECEIVED = "Microsoft.Communication.AdvancedMessageReceived";
+
+    /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RecordingFileStatusUpdated event.
      */
     public static final String COMMUNICATION_RECORDING_FILE_STATUS_UPDATED
@@ -473,6 +490,11 @@ public final class SystemEventNames {
         = "Microsoft.Communication.RouterWorkerRegistered";
 
     /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerUpdated event.
+     */
+    public static final String COMMUNICATION_ROUTER_WORKER_UPDATED = "Microsoft.Communication.RouterWorkerUpdated";
+
+    /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSDeliveryReportReceived event.
      */
     public static final String COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED
@@ -487,6 +509,16 @@ public final class SystemEventNames {
      * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.UserDisconnected event.
      */
     public static final String COMMUNICATION_USER_DISCONNECTED = "Microsoft.Communication.UserDisconnected";
+
+    /**
+     * Schema of the data property of an EventGridEvent for a Microsoft.ApiCenter.ApiDefinitionAdded event.
+     */
+    public static final String API_CENTER_API_DEFINITION_ADDED = "Microsoft.ApiCenter.ApiDefinitionAdded";
+
+    /**
+     * Schema of the data property of an EventGridEvent for a Microsoft.ApiCenter.ApiDefinitionUpdated event.
+     */
+    public static final String API_CENTER_API_DEFINITION_UPDATED = "Microsoft.ApiCenter.ApiDefinitionUpdated";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APICreated event.
@@ -1465,6 +1497,8 @@ public final class SystemEventNames {
             put(COMMUNICATION_EMAIL_ENGAGEMENT_TRACKING_REPORT_RECEIVED,
                 AcsEmailEngagementTrackingReportReceivedEventData.class);
             put(COMMUNICATION_INCOMING_CALL, AcsIncomingCallEventData.class);
+            put(COMMUNICATION_MESSAGE_DELIVERY_STATUS_UPDATED, AcsMessageDeliveryStatusUpdatedEventData.class);
+            put(COMMUNICATION_MESSAGE_RECEIVED, AcsMessageReceivedEventData.class);
             put(COMMUNICATION_RECORDING_FILE_STATUS_UPDATED, AcsRecordingFileStatusUpdatedEventData.class);
             put(COMMUNICATION_ROUTER_JOB_CANCELLED, AcsRouterJobCancelledEventData.class);
             put(COMMUNICATION_ROUTER_JOB_CLASSIFICATION_FAILED, AcsRouterJobClassificationFailedEventData.class);
@@ -1487,9 +1521,12 @@ public final class SystemEventNames {
             put(COMMUNICATION_ROUTER_WORKER_OFFER_ISSUED, AcsRouterWorkerOfferIssuedEventData.class);
             put(COMMUNICATION_ROUTER_WORKER_OFFER_REVOKED, AcsRouterWorkerOfferRevokedEventData.class);
             put(COMMUNICATION_ROUTER_WORKER_REGISTERED, AcsRouterWorkerRegisteredEventData.class);
+            put(COMMUNICATION_ROUTER_WORKER_UPDATED, AcsRouterWorkerUpdatedEventData.class);
             put(COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED, AcsSmsDeliveryReportReceivedEventData.class);
             put(COMMUNICATION_SMS_RECEIVED, AcsSmsReceivedEventData.class);
             put(COMMUNICATION_USER_DISCONNECTED, AcsUserDisconnectedEventData.class);
+            put(API_CENTER_API_DEFINITION_ADDED, ApiCenterApiDefinitionAddedEventData.class);
+            put(API_CENTER_API_DEFINITION_UPDATED, ApiCenterApiDefinitionUpdatedEventData.class);
             put(API_MANAGEMENT_API_CREATED, ApiManagementApiCreatedEventData.class);
             put(API_MANAGEMENT_API_DELETED, ApiManagementApiDeletedEventData.class);
             put(API_MANAGEMENT_API_RELEASE_CREATED, ApiManagementApiReleaseCreatedEventData.class);

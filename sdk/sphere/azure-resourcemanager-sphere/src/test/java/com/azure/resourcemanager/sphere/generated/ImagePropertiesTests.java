@@ -5,33 +5,28 @@
 package com.azure.resourcemanager.sphere.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.sphere.fluent.models.ImageProperties;
+import com.azure.resourcemanager.sphere.models.ImageProperties;
 import com.azure.resourcemanager.sphere.models.RegionalDataBoundary;
 import org.junit.jupiter.api.Assertions;
 
 public final class ImagePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageProperties model =
-            BinaryData
-                .fromString(
-                    "{\"image\":\"uhmuouqfprwzwbn\",\"imageId\":\"itnwuizgazxufi\",\"imageName\":\"ckyfih\",\"regionalDataBoundary\":\"None\",\"uri\":\"fvzwdzuhty\",\"description\":\"isdkfthwxmnteiw\",\"componentId\":\"pvkmijcmmxdcuf\",\"imageType\":\"FwConfig\",\"provisioningState\":\"Accepted\"}")
-                .toObject(ImageProperties.class);
-        Assertions.assertEquals("uhmuouqfprwzwbn", model.image());
-        Assertions.assertEquals("itnwuizgazxufi", model.imageId());
-        Assertions.assertEquals(RegionalDataBoundary.NONE, model.regionalDataBoundary());
+        ImageProperties model = BinaryData.fromString(
+            "{\"image\":\"inpvswjdkirsoodq\",\"imageId\":\"crmnohjtckwhds\",\"imageName\":\"fiyipjxsqwpgrj\",\"regionalDataBoundary\":\"EU\",\"uri\":\"rcjxvsnbyxqabn\",\"description\":\"cpc\",\"componentId\":\"hurzafblj\",\"imageType\":\"InvalidImageType\",\"provisioningState\":\"Provisioning\"}")
+            .toObject(ImageProperties.class);
+        Assertions.assertEquals("inpvswjdkirsoodq", model.image());
+        Assertions.assertEquals("crmnohjtckwhds", model.imageId());
+        Assertions.assertEquals(RegionalDataBoundary.EU, model.regionalDataBoundary());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageProperties model =
-            new ImageProperties()
-                .withImage("uhmuouqfprwzwbn")
-                .withImageId("itnwuizgazxufi")
-                .withRegionalDataBoundary(RegionalDataBoundary.NONE);
+        ImageProperties model = new ImageProperties().withImage("inpvswjdkirsoodq").withImageId("crmnohjtckwhds")
+            .withRegionalDataBoundary(RegionalDataBoundary.EU);
         model = BinaryData.fromObject(model).toObject(ImageProperties.class);
-        Assertions.assertEquals("uhmuouqfprwzwbn", model.image());
-        Assertions.assertEquals("itnwuizgazxufi", model.imageId());
-        Assertions.assertEquals(RegionalDataBoundary.NONE, model.regionalDataBoundary());
+        Assertions.assertEquals("inpvswjdkirsoodq", model.image());
+        Assertions.assertEquals("crmnohjtckwhds", model.imageId());
+        Assertions.assertEquals(RegionalDataBoundary.EU, model.regionalDataBoundary());
     }
 }

@@ -10,10 +10,8 @@ import com.azure.resourcemanager.quantum.models.ProviderPropertiesAad;
 public final class ProviderPropertiesAadTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProviderPropertiesAad model =
-            BinaryData
-                .fromString("{\"applicationId\":\"qolbgyc\",\"tenantId\":\"iertgccymvaolp\"}")
-                .toObject(ProviderPropertiesAad.class);
+        ProviderPropertiesAad model = BinaryData.fromString("{\"applicationId\":\"z\",\"tenantId\":\"hzxct\"}")
+            .toObject(ProviderPropertiesAad.class);
     }
 
     @org.junit.jupiter.api.Test

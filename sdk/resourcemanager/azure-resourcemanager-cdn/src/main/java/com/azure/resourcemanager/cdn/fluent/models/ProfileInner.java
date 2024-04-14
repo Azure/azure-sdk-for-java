@@ -9,13 +9,16 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.cdn.models.ProfileLogScrubbing;
 import com.azure.resourcemanager.cdn.models.ProfileProvisioningState;
 import com.azure.resourcemanager.cdn.models.ProfileResourceState;
 import com.azure.resourcemanager.cdn.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** A profile is a logical grouping of endpoints that share the same settings. */
+/**
+ * A profile is a logical grouping of endpoints that share the same settings.
+ */
 @Fluent
 public final class ProfileInner extends Resource {
     /*
@@ -49,14 +52,16 @@ public final class ProfileInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ProfileInner class. */
+    /**
+     * Creates an instance of ProfileInner class.
+     */
     public ProfileInner() {
     }
 
     /**
      * Get the sku property: The pricing tier (defines Azure Front Door Standard or Premium or a CDN provider, feature
      * list and rate) of the profile.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -66,7 +71,7 @@ public final class ProfileInner extends Resource {
     /**
      * Set the sku property: The pricing tier (defines Azure Front Door Standard or Premium or a CDN provider, feature
      * list and rate) of the profile.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ProfileInner object itself.
      */
@@ -78,7 +83,7 @@ public final class ProfileInner extends Resource {
     /**
      * Get the kind property: Kind of the profile. Used by portal to differentiate traditional CDN profile and new AFD
      * profile.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -87,7 +92,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -96,7 +101,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ProfileInner object itself.
      */
@@ -107,7 +112,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties required to create a profile.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ProfileProperties innerProperties() {
@@ -116,21 +121,25 @@ public final class ProfileInner extends Resource {
 
     /**
      * Get the systemData property: Read only system data.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -139,7 +148,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Get the resourceState property: Resource status of the profile.
-     *
+     * 
      * @return the resourceState value.
      */
     public ProfileResourceState resourceState() {
@@ -148,7 +157,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning status of the profile.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProfileProvisioningState provisioningState() {
@@ -157,7 +166,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Get the extendedProperties property: Key-Value pair representing additional properties for profiles.
-     *
+     * 
      * @return the extendedProperties value.
      */
     public Map<String, String> extendedProperties() {
@@ -166,7 +175,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Get the frontDoorId property: The Id of the frontdoor.
-     *
+     * 
      * @return the frontDoorId value.
      */
     public String frontDoorId() {
@@ -174,9 +183,9 @@ public final class ProfileInner extends Resource {
     }
 
     /**
-     * Get the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin. When
-     * timeout is reached, the request fails and returns.
-     *
+     * Get the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin.
+     * When timeout is reached, the request fails and returns.
+     * 
      * @return the originResponseTimeoutSeconds value.
      */
     public Integer originResponseTimeoutSeconds() {
@@ -184,9 +193,9 @@ public final class ProfileInner extends Resource {
     }
 
     /**
-     * Set the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin. When
-     * timeout is reached, the request fails and returns.
-     *
+     * Set the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin.
+     * When timeout is reached, the request fails and returns.
+     * 
      * @param originResponseTimeoutSeconds the originResponseTimeoutSeconds value to set.
      * @return the ProfileInner object itself.
      */
@@ -199,15 +208,37 @@ public final class ProfileInner extends Resource {
     }
 
     /**
+     * Get the logScrubbing property: Defines rules that scrub sensitive fields in the Azure Front Door profile logs.
+     * 
+     * @return the logScrubbing value.
+     */
+    public ProfileLogScrubbing logScrubbing() {
+        return this.innerProperties() == null ? null : this.innerProperties().logScrubbing();
+    }
+
+    /**
+     * Set the logScrubbing property: Defines rules that scrub sensitive fields in the Azure Front Door profile logs.
+     * 
+     * @param logScrubbing the logScrubbing value to set.
+     * @return the ProfileInner object itself.
+     */
+    public ProfileInner withLogScrubbing(ProfileLogScrubbing logScrubbing) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withLogScrubbing(logScrubbing);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model ProfileInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sku in model ProfileInner"));
         } else {
             sku().validate();
         }

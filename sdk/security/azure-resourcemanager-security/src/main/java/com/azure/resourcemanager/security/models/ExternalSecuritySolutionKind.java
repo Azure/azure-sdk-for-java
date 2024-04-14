@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of the external solution. */
+/**
+ * The kind of the external solution.
+ */
 public final class ExternalSecuritySolutionKind extends ExpandableStringEnum<ExternalSecuritySolutionKind> {
-    /** Static value CEF for ExternalSecuritySolutionKind. */
+    /**
+     * Static value CEF for ExternalSecuritySolutionKind.
+     */
     public static final ExternalSecuritySolutionKind CEF = fromString("CEF");
 
-    /** Static value ATA for ExternalSecuritySolutionKind. */
+    /**
+     * Static value ATA for ExternalSecuritySolutionKind.
+     */
     public static final ExternalSecuritySolutionKind ATA = fromString("ATA");
 
-    /** Static value AAD for ExternalSecuritySolutionKind. */
+    /**
+     * Static value AAD for ExternalSecuritySolutionKind.
+     */
     public static final ExternalSecuritySolutionKind AAD = fromString("AAD");
 
     /**
      * Creates a new instance of ExternalSecuritySolutionKind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class ExternalSecuritySolutionKind extends ExpandableStringEnum<Ext
 
     /**
      * Creates or finds a ExternalSecuritySolutionKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExternalSecuritySolutionKind.
      */
@@ -41,7 +49,7 @@ public final class ExternalSecuritySolutionKind extends ExpandableStringEnum<Ext
 
     /**
      * Gets known ExternalSecuritySolutionKind values.
-     *
+     * 
      * @return known ExternalSecuritySolutionKind values.
      */
     public static Collection<ExternalSecuritySolutionKind> values() {

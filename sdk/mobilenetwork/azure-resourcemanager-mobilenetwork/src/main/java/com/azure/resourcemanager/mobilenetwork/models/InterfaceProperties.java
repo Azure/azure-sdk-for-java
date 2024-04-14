@@ -7,7 +7,9 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Interface properties. */
+/**
+ * Interface properties.
+ */
 @Fluent
 public final class InterfaceProperties {
     /*
@@ -35,14 +37,16 @@ public final class InterfaceProperties {
     @JsonProperty(value = "ipv4Gateway")
     private String ipv4Gateway;
 
-    /** Creates an instance of InterfaceProperties class. */
+    /**
+     * Creates an instance of InterfaceProperties class.
+     */
     public InterfaceProperties() {
     }
 
     /**
-     * Get the name property: The logical name for this interface. This should match one of the interfaces configured on
-     * your Azure Stack Edge device.
-     *
+     * Get the name property: The logical name for this interface. This should match one of the interfaces configured
+     * on your Azure Stack Edge device.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,9 +54,9 @@ public final class InterfaceProperties {
     }
 
     /**
-     * Set the name property: The logical name for this interface. This should match one of the interfaces configured on
-     * your Azure Stack Edge device.
-     *
+     * Set the name property: The logical name for this interface. This should match one of the interfaces configured
+     * on your Azure Stack Edge device.
+     * 
      * @param name the name value to set.
      * @return the InterfaceProperties object itself.
      */
@@ -63,7 +67,7 @@ public final class InterfaceProperties {
 
     /**
      * Get the ipv4Address property: The IPv4 address.
-     *
+     * 
      * @return the ipv4Address value.
      */
     public String ipv4Address() {
@@ -72,7 +76,7 @@ public final class InterfaceProperties {
 
     /**
      * Set the ipv4Address property: The IPv4 address.
-     *
+     * 
      * @param ipv4Address the ipv4Address value to set.
      * @return the InterfaceProperties object itself.
      */
@@ -83,7 +87,7 @@ public final class InterfaceProperties {
 
     /**
      * Get the ipv4Subnet property: The IPv4 subnet.
-     *
+     * 
      * @return the ipv4Subnet value.
      */
     public String ipv4Subnet() {
@@ -92,7 +96,7 @@ public final class InterfaceProperties {
 
     /**
      * Set the ipv4Subnet property: The IPv4 subnet.
-     *
+     * 
      * @param ipv4Subnet the ipv4Subnet value to set.
      * @return the InterfaceProperties object itself.
      */
@@ -103,7 +107,7 @@ public final class InterfaceProperties {
 
     /**
      * Get the ipv4Gateway property: The default IPv4 gateway (router).
-     *
+     * 
      * @return the ipv4Gateway value.
      */
     public String ipv4Gateway() {
@@ -112,7 +116,7 @@ public final class InterfaceProperties {
 
     /**
      * Set the ipv4Gateway property: The default IPv4 gateway (router).
-     *
+     * 
      * @param ipv4Gateway the ipv4Gateway value to set.
      * @return the InterfaceProperties object itself.
      */
@@ -123,7 +127,7 @@ public final class InterfaceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

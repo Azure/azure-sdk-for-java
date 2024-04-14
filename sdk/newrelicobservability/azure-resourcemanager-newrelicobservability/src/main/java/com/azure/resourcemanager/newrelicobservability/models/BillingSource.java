@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Billing source. */
+/**
+ * Billing source.
+ */
 public final class BillingSource extends ExpandableStringEnum<BillingSource> {
-    /** Static value AZURE for BillingSource. */
+    /**
+     * Static value AZURE for BillingSource.
+     */
     public static final BillingSource AZURE = fromString("AZURE");
 
-    /** Static value NEWRELIC for BillingSource. */
+    /**
+     * Static value NEWRELIC for BillingSource.
+     */
     public static final BillingSource NEWRELIC = fromString("NEWRELIC");
 
     /**
      * Creates a new instance of BillingSource value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class BillingSource extends ExpandableStringEnum<BillingSource> {
 
     /**
      * Creates or finds a BillingSource from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BillingSource.
      */
@@ -38,7 +44,7 @@ public final class BillingSource extends ExpandableStringEnum<BillingSource> {
 
     /**
      * Gets known BillingSource values.
-     *
+     * 
      * @return known BillingSource values.
      */
     public static Collection<BillingSource> values() {

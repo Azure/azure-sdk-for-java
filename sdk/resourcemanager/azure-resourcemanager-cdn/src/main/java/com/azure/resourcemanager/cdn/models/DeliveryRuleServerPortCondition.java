@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Defines the ServerPort condition for the delivery rule. */
+/**
+ * Defines the ServerPort condition for the delivery rule.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
 @JsonTypeName("ServerPort")
 @Fluent
@@ -21,13 +23,15 @@ public final class DeliveryRuleServerPortCondition extends DeliveryRuleCondition
     @JsonProperty(value = "parameters", required = true)
     private ServerPortMatchConditionParameters parameters;
 
-    /** Creates an instance of DeliveryRuleServerPortCondition class. */
+    /**
+     * Creates an instance of DeliveryRuleServerPortCondition class.
+     */
     public DeliveryRuleServerPortCondition() {
     }
 
     /**
      * Get the parameters property: Defines the parameters for the condition.
-     *
+     * 
      * @return the parameters value.
      */
     public ServerPortMatchConditionParameters parameters() {
@@ -36,7 +40,7 @@ public final class DeliveryRuleServerPortCondition extends DeliveryRuleCondition
 
     /**
      * Set the parameters property: Defines the parameters for the condition.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DeliveryRuleServerPortCondition object itself.
      */
@@ -47,17 +51,15 @@ public final class DeliveryRuleServerPortCondition extends DeliveryRuleCondition
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property parameters in model DeliveryRuleServerPortCondition"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property parameters in model DeliveryRuleServerPortCondition"));
         } else {
             parameters().validate();
         }

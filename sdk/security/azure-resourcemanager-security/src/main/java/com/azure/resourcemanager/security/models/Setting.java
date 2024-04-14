@@ -6,32 +6,34 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.resourcemanager.security.fluent.models.SettingInner;
 
-/** An immutable client-side representation of Setting. */
+/**
+ * An immutable client-side representation of Setting.
+ */
 public interface Setting {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.SettingInner object.
-     *
+     * 
      * @return the inner object.
      */
     SettingInner innerModel();

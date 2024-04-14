@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the Web Application Firewall policy for the endpoint (if applicable). */
+/**
+ * Defines the Web Application Firewall policy for the endpoint (if applicable).
+ */
 @Fluent
 public final class EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink {
     /*
@@ -16,13 +18,15 @@ public final class EndpointPropertiesUpdateParametersWebApplicationFirewallPolic
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink class. */
+    /**
+     * Creates an instance of EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink class.
+     */
     public EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink() {
     }
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public final class EndpointPropertiesUpdateParametersWebApplicationFirewallPolic
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink object itself.
      */
@@ -42,7 +46,7 @@ public final class EndpointPropertiesUpdateParametersWebApplicationFirewallPolic
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

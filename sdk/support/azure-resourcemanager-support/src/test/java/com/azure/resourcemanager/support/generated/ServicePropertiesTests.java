@@ -12,22 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ServicePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceProperties model =
-            BinaryData
-                .fromString("{\"displayName\":\"tfell\",\"resourceTypes\":[\"zitonpeqfpjkjl\",\"ofpdvh\"]}")
-                .toObject(ServiceProperties.class);
-        Assertions.assertEquals("tfell", model.displayName());
-        Assertions.assertEquals("zitonpeqfpjkjl", model.resourceTypes().get(0));
+        ServiceProperties model = BinaryData.fromString(
+            "{\"displayName\":\"itcjczdz\",\"resourceTypes\":[\"dhkrwpdappdsbdk\",\"wrwjfeu\"],\"metadata\":{\"zdatqxhocdg\":\"utjeltmrldhugj\",\"ozwyiftyhxhuro\":\"ablgphuticndvk\"}}")
+            .toObject(ServiceProperties.class);
+        Assertions.assertEquals("itcjczdz", model.displayName());
+        Assertions.assertEquals("dhkrwpdappdsbdk", model.resourceTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceProperties model =
-            new ServiceProperties()
-                .withDisplayName("tfell")
-                .withResourceTypes(Arrays.asList("zitonpeqfpjkjl", "ofpdvh"));
+        ServiceProperties model = new ServiceProperties().withDisplayName("itcjczdz")
+            .withResourceTypes(Arrays.asList("dhkrwpdappdsbdk", "wrwjfeu"));
         model = BinaryData.fromObject(model).toObject(ServiceProperties.class);
-        Assertions.assertEquals("tfell", model.displayName());
-        Assertions.assertEquals("zitonpeqfpjkjl", model.resourceTypes().get(0));
+        Assertions.assertEquals("itcjczdz", model.displayName());
+        Assertions.assertEquals("dhkrwpdappdsbdk", model.resourceTypes().get(0));
     }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,23 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2024-04-04)
+
+### Features Added
+
+- Added `XmlReader` and `XmlWriter` factory methods to create instances of `XmlReader` and `XmlWriter`.
+
+### Breaking Changes
+
+- Removed `XmlProvider` and `XmlProviders`, use the factory methods on `XmlReader` and `XmlWriter` instead.
+- Made `XmlReader` and `XmlWriter` final classes instead of abstract classes.
+- Renamed `ReadValueCallback` to `XmlReadValueCallback`.
+- Removed checked `IOException` from `XmlReadValueCallback`.
+
+### Bugs Fixed
+
+- Fixed a bug where the get element methods on `XmlReader` weren't idempotent.
 
 ## 1.0.0-beta.3 (2024-02-29)
 

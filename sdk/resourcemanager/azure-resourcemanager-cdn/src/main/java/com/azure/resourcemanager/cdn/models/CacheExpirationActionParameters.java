@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the parameters for the cache expiration action. */
+/**
+ * Defines the parameters for the cache expiration action.
+ */
 @Fluent
 public final class CacheExpirationActionParameters {
     /*
@@ -35,14 +37,15 @@ public final class CacheExpirationActionParameters {
     @JsonProperty(value = "cacheDuration")
     private String cacheDuration;
 
-    /** Creates an instance of CacheExpirationActionParameters class. */
+    /**
+     * Creates an instance of CacheExpirationActionParameters class.
+     */
     public CacheExpirationActionParameters() {
-        typeName = "DeliveryRuleCacheExpirationActionParameters";
     }
 
     /**
      * Get the typeName property: The typeName property.
-     *
+     * 
      * @return the typeName value.
      */
     public String typeName() {
@@ -51,7 +54,7 @@ public final class CacheExpirationActionParameters {
 
     /**
      * Set the typeName property: The typeName property.
-     *
+     * 
      * @param typeName the typeName value to set.
      * @return the CacheExpirationActionParameters object itself.
      */
@@ -62,7 +65,7 @@ public final class CacheExpirationActionParameters {
 
     /**
      * Get the cacheBehavior property: Caching behavior for the requests.
-     *
+     * 
      * @return the cacheBehavior value.
      */
     public CacheBehavior cacheBehavior() {
@@ -71,7 +74,7 @@ public final class CacheExpirationActionParameters {
 
     /**
      * Set the cacheBehavior property: Caching behavior for the requests.
-     *
+     * 
      * @param cacheBehavior the cacheBehavior value to set.
      * @return the CacheExpirationActionParameters object itself.
      */
@@ -82,7 +85,7 @@ public final class CacheExpirationActionParameters {
 
     /**
      * Get the cacheType property: The level at which the content needs to be cached.
-     *
+     * 
      * @return the cacheType value.
      */
     public CacheType cacheType() {
@@ -91,7 +94,7 @@ public final class CacheExpirationActionParameters {
 
     /**
      * Set the cacheType property: The level at which the content needs to be cached.
-     *
+     * 
      * @param cacheType the cacheType value to set.
      * @return the CacheExpirationActionParameters object itself.
      */
@@ -103,7 +106,7 @@ public final class CacheExpirationActionParameters {
     /**
      * Get the cacheDuration property: The duration for which the content needs to be cached. Allowed format is
      * [d.]hh:mm:ss.
-     *
+     * 
      * @return the cacheDuration value.
      */
     public String cacheDuration() {
@@ -113,7 +116,7 @@ public final class CacheExpirationActionParameters {
     /**
      * Set the cacheDuration property: The duration for which the content needs to be cached. Allowed format is
      * [d.]hh:mm:ss.
-     *
+     * 
      * @param cacheDuration the cacheDuration value to set.
      * @return the CacheExpirationActionParameters object itself.
      */
@@ -124,21 +127,17 @@ public final class CacheExpirationActionParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (cacheBehavior() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property cacheBehavior in model CacheExpirationActionParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property cacheBehavior in model CacheExpirationActionParameters"));
         }
         if (cacheType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property cacheType in model CacheExpirationActionParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property cacheType in model CacheExpirationActionParameters"));
         }
     }
 

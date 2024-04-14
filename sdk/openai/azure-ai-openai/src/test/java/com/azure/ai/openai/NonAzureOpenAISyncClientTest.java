@@ -177,6 +177,20 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatCompletionsWithResponseRunnerForNonAzure(deploymentId -> chatMessages -> requestOptions -> {
+            Response<IterableStream<ChatCompletions>> response = client.getChatCompletionsStreamWithResponse(
+                    deploymentId, new ChatCompletionsOptions(chatMessages), requestOptions);
+            assertResponseRequestHeader(response.getRequest());
+            IterableStream<ChatCompletions> value = response.getValue();
+            assertTrue(value.stream().toArray().length > 1);
+            value.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
         getChatCompletionsRunnerForNonAzure((deploymentId, chatMessages) -> {
@@ -194,6 +208,17 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         getEmbeddingRunnerForNonAzure((deploymentId, embeddingsOptions) -> {
             Embeddings resultEmbeddings = client.getEmbeddings(deploymentId, embeddingsOptions);
             assertEmbeddings(resultEmbeddings);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void getEmbeddingsWithSmallerDimensions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getEmbeddingWithSmallerDimensionsRunner((deploymentId, embeddingsOptions) -> {
+            Embeddings resultEmbeddings = client.getEmbeddings(deploymentId, embeddingsOptions);
+            assertEmbeddings(resultEmbeddings);
+            assertEquals(embeddingsOptions.getDimensions(), resultEmbeddings.getData().get(0).getEmbedding().size());
         });
     }
 

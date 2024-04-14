@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.fluent.models.SecurityAssessmentMetada
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of security assessment metadata. */
+/**
+ * List of security assessment metadata.
+ */
 @Immutable
 public final class SecurityAssessmentMetadataResponseList {
     /*
@@ -24,13 +26,15 @@ public final class SecurityAssessmentMetadataResponseList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SecurityAssessmentMetadataResponseList class. */
+    /**
+     * Creates an instance of SecurityAssessmentMetadataResponseList class.
+     */
     public SecurityAssessmentMetadataResponseList() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<SecurityAssessmentMetadataResponseInner> value() {
@@ -39,7 +43,7 @@ public final class SecurityAssessmentMetadataResponseList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class SecurityAssessmentMetadataResponseList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,6 +10,28 @@
 
 ### Other Changes
 
+## 4.8.2 (2024-04-09)
+
+### Bugs Fixed
+- Fixed issue where `hsmPlatform` was not being set in `KeyProperties`. ([#39537](https://github.com/Azure/azure-sdk-for-java/pull/39537))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
+## 4.8.1 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+
+
 ## 4.8.0 (2024-02-22)
 Changes when compared to the last stable release (`4.7.3`) include:
 

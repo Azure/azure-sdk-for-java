@@ -34,6 +34,13 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      */
     private Boolean exhaustive;
 
+    /*
+     * Oversampling factor. Minimum value is 1. It overrides the 'defaultOversampling' parameter configured in the
+     * index definition. It can be set only when 'rerankWithOriginalVectors' is true. This parameter is only permitted
+     * when a compression method is used on the underlying vector field.
+     */
+    private Double oversampling;
+
     /**
      * Creates an instance of VectorQuery class.
      */
@@ -104,12 +111,37 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
         return this;
     }
 
+    /**
+     * Get the oversampling property: Oversampling factor. Minimum value is 1. It overrides the 'defaultOversampling'
+     * parameter configured in the index definition. It can be set only when 'rerankWithOriginalVectors' is true. This
+     * parameter is only permitted when a compression method is used on the underlying vector field.
+     *
+     * @return the oversampling value.
+     */
+    public Double getOversampling() {
+        return this.oversampling;
+    }
+
+    /**
+     * Set the oversampling property: Oversampling factor. Minimum value is 1. It overrides the 'defaultOversampling'
+     * parameter configured in the index definition. It can be set only when 'rerankWithOriginalVectors' is true. This
+     * parameter is only permitted when a compression method is used on the underlying vector field.
+     *
+     * @param oversampling the oversampling value to set.
+     * @return the VectorQuery object itself.
+     */
+    public VectorQuery setOversampling(Double oversampling) {
+        this.oversampling = oversampling;
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("k", this.kNearestNeighborsCount);
         jsonWriter.writeStringField("fields", this.fields);
         jsonWriter.writeBooleanField("exhaustive", this.exhaustive);
+        jsonWriter.writeNumberField("oversampling", this.oversampling);
         return jsonWriter.writeEndObject();
     }
 
@@ -161,6 +193,8 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
                     deserializedVectorQuery.fields = reader.getString();
                 } else if ("exhaustive".equals(fieldName)) {
                     deserializedVectorQuery.exhaustive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("oversampling".equals(fieldName)) {
+                    deserializedVectorQuery.oversampling = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }

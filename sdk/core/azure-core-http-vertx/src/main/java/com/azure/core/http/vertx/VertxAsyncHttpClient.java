@@ -36,6 +36,8 @@ import reactor.core.publisher.MonoSink;
 
 import java.util.Objects;
 
+import static com.azure.core.http.vertx.implementation.VertxUtils.wrapVertxException;
+
 /**
  * {@link HttpClient} implementation for the Vert.x {@link io.vertx.core.http.HttpClient}.
  */
@@ -73,7 +75,7 @@ class VertxAsyncHttpClient implements HttpClient {
 
         return Mono.create(sink -> client.request(options, requestResult -> {
             if (requestResult.failed()) {
-                sink.error(requestResult.cause());
+                sink.error(wrapVertxException(requestResult.cause()));
                 return;
             }
 
@@ -90,7 +92,7 @@ class VertxAsyncHttpClient implements HttpClient {
             vertxRequest.response(event -> {
                 if (event.succeeded()) {
                     HttpClientResponse vertxHttpResponse = event.result();
-                    vertxHttpResponse.exceptionHandler(sink::error);
+                    vertxHttpResponse.exceptionHandler(exception -> sink.error(wrapVertxException(exception)));
 
                     // TODO (alzimmer)
                     // For now Vertx will always use a buffered response until reliability issues when using streaming
@@ -101,14 +103,14 @@ class VertxAsyncHttpClient implements HttpClient {
                                 sink.success(
                                     new BufferedVertxHttpResponse(request, vertxHttpResponse, bodyEvent.result()));
                             } else {
-                                sink.error(bodyEvent.cause());
+                                sink.error(wrapVertxException(bodyEvent.cause()));
                             }
                         });
                     } else {
                         sink.success(new VertxHttpAsyncResponse(request, vertxHttpResponse));
                     }
                 } else {
-                    sink.error(event.cause());
+                    sink.error(wrapVertxException(event.cause()));
                 }
             });
 
@@ -128,7 +130,7 @@ class VertxAsyncHttpClient implements HttpClient {
         if (body == null) {
             vertxRequest.send(result -> {
                 if (result.failed()) {
-                    sink.error(result.cause());
+                    sink.error(wrapVertxException(result.cause()));
                 }
             });
             return;
@@ -143,7 +145,7 @@ class VertxAsyncHttpClient implements HttpClient {
                 if (result.succeeded()) {
                     reportProgress(content.length, progressReporter);
                 } else {
-                    sink.error(result.cause());
+                    sink.error(wrapVertxException(result.cause()));
                 }
             });
         } else if (bodyContent instanceof ByteBufferContent) {
@@ -152,7 +154,7 @@ class VertxAsyncHttpClient implements HttpClient {
                 if (result.succeeded()) {
                     reportProgress(contentLength, progressReporter);
                 } else {
-                    sink.error(result.cause());
+                    sink.error(wrapVertxException(result.cause()));
                 }
             });
         } else if (bodyContent instanceof FileContent) {
@@ -169,11 +171,11 @@ class VertxAsyncHttpClient implements HttpClient {
                         if (result.succeeded()) {
                             reportProgress(fileContent.getLength(), progressReporter);
                         } else {
-                            sink.error(result.cause());
+                            sink.error(wrapVertxException(result.cause()));
                         }
                     });
                 } else {
-                    sink.error(event.cause());
+                    sink.error(wrapVertxException(event.cause()));
                 }
             });
         } else {
@@ -187,4 +189,5 @@ class VertxAsyncHttpClient implements HttpClient {
             progressReporter.reportProgress(progress);
         }
     }
+
 }

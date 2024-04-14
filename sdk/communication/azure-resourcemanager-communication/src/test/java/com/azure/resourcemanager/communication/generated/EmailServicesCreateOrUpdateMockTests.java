@@ -33,7 +33,7 @@ public final class EmailServicesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"dataLocation\":\"qxwbpokulpiu\"},\"location\":\"aasipqi\",\"tags\":{\"rpqlp\":\"yuq\",\"auvfbtkuwhhmhyk\":\"wcciuqgbdbu\",\"hkoymkcdyhbp\":\"joxafnndlpi\"},\"id\":\"kpw\",\"name\":\"reqnovvqfov\",\"type\":\"jxywsuws\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"dataLocation\":\"xogaokonzmnsikv\"},\"location\":\"qzeqqkdltfzxm\",\"tags\":{\"dkwobdagx\":\"hgure\"},\"id\":\"ibqdxbxwakbogqx\",\"name\":\"dlkzgxhuri\",\"type\":\"lbpodxunk\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,14 +50,14 @@ public final class EmailServicesCreateOrUpdateMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        EmailServiceResource response = manager.emailServices().define("gkopkwhojvpajqgx").withRegion("oz")
-            .withExistingResourceGroup("mquxvypo").withTags(mapOf("dd", "helxprglya", "rjxgciqib", "kcbcue",
-                "sdqrhzoymibmrq", "hos", "dtmhrkwofyyvoqa", "ibahwflus"))
-            .withDataLocation("cmbqfqvmk").create();
+        EmailServiceResource response
+            = manager.emailServices().define("mnvdfzn").withRegion("hh").withExistingResourceGroup("mcwyhzdxssadb")
+                .withTags(mapOf("wjmy", "zdzucerscdntnevf", "s", "tdss", "emwabnet", "tmweriofzpyq", "d", "hhszh"))
+                .withDataLocation("dvxzbncblylpst").create();
 
-        Assertions.assertEquals("aasipqi", response.location());
-        Assertions.assertEquals("yuq", response.tags().get("rpqlp"));
-        Assertions.assertEquals("qxwbpokulpiu", response.dataLocation());
+        Assertions.assertEquals("qzeqqkdltfzxm", response.location());
+        Assertions.assertEquals("hgure", response.tags().get("dkwobdagx"));
+        Assertions.assertEquals("xogaokonzmnsikv", response.dataLocation());
     }
 
     // Use "Map.of" if available

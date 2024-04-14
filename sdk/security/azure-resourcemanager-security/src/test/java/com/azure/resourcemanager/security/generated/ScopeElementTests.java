@@ -13,21 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ScopeElementTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScopeElement model =
-            BinaryData
-                .fromString(
-                    "{\"field\":\"oldweyuqdu\",\"\":{\"alywjhhgdn\":\"datannrwrbiork\",\"iqndieuzaofj\":\"dataxmsivfomiloxggdu\"}}")
-                .toObject(ScopeElement.class);
-        Assertions.assertEquals("oldweyuqdu", model.field());
+        ScopeElement model = BinaryData.fromString(
+            "{\"field\":\"zabglcuhxwt\",\"\":{\"bbovplwzbhvgyugu\":\"dataqik\",\"fpl\":\"datasvmkfssxquk\",\"xnkjzkdesl\":\"datamg\",\"kdwzbaiuebbaumny\":\"datavlopwiyighx\"}}")
+            .toObject(ScopeElement.class);
+        Assertions.assertEquals("zabglcuhxwt", model.field());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScopeElement model = new ScopeElement().withField("oldweyuqdu").withAdditionalProperties(mapOf());
+        ScopeElement model = new ScopeElement().withField("zabglcuhxwt").withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(ScopeElement.class);
-        Assertions.assertEquals("oldweyuqdu", model.field());
+        Assertions.assertEquals("zabglcuhxwt", model.field());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

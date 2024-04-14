@@ -15,40 +15,37 @@ import org.junit.jupiter.api.Assertions;
 public final class AdaptiveNetworkHardeningEnforceRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdaptiveNetworkHardeningEnforceRequest model =
-            BinaryData
-                .fromString(
-                    "{\"rules\":[{\"name\":\"vyc\",\"direction\":\"Inbound\",\"destinationPort\":1491139189,\"protocols\":[\"UDP\"],\"ipAddresses\":[\"nfnw\",\"btmvpdvjdhttza\",\"fedxihchrphkm\",\"rjdqnsdfzp\"]}],\"networkSecurityGroups\":[\"tg\",\"ylkdghrje\",\"utlwxezwzhok\"]}")
-                .toObject(AdaptiveNetworkHardeningEnforceRequest.class);
-        Assertions.assertEquals("vyc", model.rules().get(0).name());
+        AdaptiveNetworkHardeningEnforceRequest model = BinaryData.fromString(
+            "{\"rules\":[{\"name\":\"ah\",\"direction\":\"Inbound\",\"destinationPort\":829874658,\"protocols\":[\"UDP\",\"TCP\"],\"ipAddresses\":[\"gwzsf\"]},{\"name\":\"edous\",\"direction\":\"Outbound\",\"destinationPort\":417418918,\"protocols\":[\"UDP\",\"UDP\"],\"ipAddresses\":[\"ogfkbebauzlqb\",\"xxw\",\"f\",\"njzudr\"]},{\"name\":\"zkg\",\"direction\":\"Inbound\",\"destinationPort\":1612164141,\"protocols\":[\"UDP\",\"UDP\"],\"ipAddresses\":[\"rhmngqbedy\"]}],\"networkSecurityGroups\":[\"s\"]}")
+            .toObject(AdaptiveNetworkHardeningEnforceRequest.class);
+        Assertions.assertEquals("ah", model.rules().get(0).name());
         Assertions.assertEquals(Direction.INBOUND, model.rules().get(0).direction());
-        Assertions.assertEquals(1491139189, model.rules().get(0).destinationPort());
+        Assertions.assertEquals(829874658, model.rules().get(0).destinationPort());
         Assertions.assertEquals(TransportProtocol.UDP, model.rules().get(0).protocols().get(0));
-        Assertions.assertEquals("nfnw", model.rules().get(0).ipAddresses().get(0));
-        Assertions.assertEquals("tg", model.networkSecurityGroups().get(0));
+        Assertions.assertEquals("gwzsf", model.rules().get(0).ipAddresses().get(0));
+        Assertions.assertEquals("s", model.networkSecurityGroups().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdaptiveNetworkHardeningEnforceRequest model =
-            new AdaptiveNetworkHardeningEnforceRequest()
-                .withRules(
-                    Arrays
-                        .asList(
-                            new Rule()
-                                .withName("vyc")
-                                .withDirection(Direction.INBOUND)
-                                .withDestinationPort(1491139189)
-                                .withProtocols(Arrays.asList(TransportProtocol.UDP))
-                                .withIpAddresses(
-                                    Arrays.asList("nfnw", "btmvpdvjdhttza", "fedxihchrphkm", "rjdqnsdfzp"))))
-                .withNetworkSecurityGroups(Arrays.asList("tg", "ylkdghrje", "utlwxezwzhok"));
+        AdaptiveNetworkHardeningEnforceRequest model
+            = new AdaptiveNetworkHardeningEnforceRequest().withRules(Arrays.asList(
+                new Rule().withName("ah").withDirection(Direction.INBOUND).withDestinationPort(829874658)
+                    .withProtocols(Arrays.asList(TransportProtocol.UDP, TransportProtocol.TCP))
+                    .withIpAddresses(Arrays.asList("gwzsf")),
+                new Rule().withName("edous").withDirection(Direction.OUTBOUND).withDestinationPort(417418918)
+                    .withProtocols(Arrays.asList(TransportProtocol.UDP, TransportProtocol.UDP))
+                    .withIpAddresses(Arrays.asList("ogfkbebauzlqb", "xxw", "f", "njzudr")),
+                new Rule().withName("zkg").withDirection(Direction.INBOUND).withDestinationPort(1612164141)
+                    .withProtocols(Arrays.asList(TransportProtocol.UDP, TransportProtocol.UDP))
+                    .withIpAddresses(Arrays.asList("rhmngqbedy"))))
+                .withNetworkSecurityGroups(Arrays.asList("s"));
         model = BinaryData.fromObject(model).toObject(AdaptiveNetworkHardeningEnforceRequest.class);
-        Assertions.assertEquals("vyc", model.rules().get(0).name());
+        Assertions.assertEquals("ah", model.rules().get(0).name());
         Assertions.assertEquals(Direction.INBOUND, model.rules().get(0).direction());
-        Assertions.assertEquals(1491139189, model.rules().get(0).destinationPort());
+        Assertions.assertEquals(829874658, model.rules().get(0).destinationPort());
         Assertions.assertEquals(TransportProtocol.UDP, model.rules().get(0).protocols().get(0));
-        Assertions.assertEquals("nfnw", model.rules().get(0).ipAddresses().get(0));
-        Assertions.assertEquals("tg", model.networkSecurityGroups().get(0));
+        Assertions.assertEquals("gwzsf", model.rules().get(0).ipAddresses().get(0));
+        Assertions.assertEquals("s", model.networkSecurityGroups().get(0));
     }
 }

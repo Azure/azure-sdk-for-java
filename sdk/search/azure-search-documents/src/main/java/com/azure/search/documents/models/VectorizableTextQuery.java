@@ -68,6 +68,15 @@ public final class VectorizableTextQuery extends VectorQuery {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public VectorizableTextQuery setOversampling(Double oversampling) {
+        super.setOversampling(oversampling);
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -75,6 +84,7 @@ public final class VectorizableTextQuery extends VectorQuery {
         jsonWriter.writeNumberField("k", getKNearestNeighborsCount());
         jsonWriter.writeStringField("fields", getFields());
         jsonWriter.writeBooleanField("exhaustive", isExhaustive());
+        jsonWriter.writeNumberField("oversampling", getOversampling());
         jsonWriter.writeStringField("text", this.text);
         return jsonWriter.writeEndObject();
     }
@@ -94,6 +104,7 @@ public final class VectorizableTextQuery extends VectorQuery {
             Integer kNearestNeighborsCount = null;
             String fields = null;
             Boolean exhaustive = null;
+            Double oversampling = null;
             boolean textFound = false;
             String text = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -112,6 +123,8 @@ public final class VectorizableTextQuery extends VectorQuery {
                     fields = reader.getString();
                 } else if ("exhaustive".equals(fieldName)) {
                     exhaustive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("oversampling".equals(fieldName)) {
+                    oversampling = reader.getNullable(JsonReader::getDouble);
                 } else if ("text".equals(fieldName)) {
                     text = reader.getString();
                     textFound = true;
@@ -124,6 +137,7 @@ public final class VectorizableTextQuery extends VectorQuery {
                 deserializedVectorizableTextQuery.setKNearestNeighborsCount(kNearestNeighborsCount);
                 deserializedVectorizableTextQuery.setFields(fields);
                 deserializedVectorizableTextQuery.setExhaustive(exhaustive);
+                deserializedVectorizableTextQuery.setOversampling(oversampling);
                 return deserializedVectorizableTextQuery;
             }
             throw new IllegalStateException("Missing required property: text");

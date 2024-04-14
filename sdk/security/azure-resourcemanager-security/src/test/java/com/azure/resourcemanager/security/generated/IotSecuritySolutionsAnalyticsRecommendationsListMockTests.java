@@ -31,41 +31,29 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"recommendationName\":\"auolawiu\",\"recommendationDisplayName\":\"oms\",\"description\":\"vjhvvlr\",\"recommendationTypeId\":\"hewjjmajnkdflqio\",\"detectedBy\":\"waeqkzfzqxjosho\",\"remediationSteps\":\"otryegp\",\"reportedSeverity\":\"Medium\",\"healthyDevices\":341577657952902216,\"unhealthyDeviceCount\":4595206481574403678,\"logAnalyticsQuery\":\"wkbfokxkhupzer\"},\"tags\":{\"yykyalu\":\"jblcdrmyfcemftz\"},\"id\":\"ekdfqnhttwd\",\"name\":\"wrczfjjnnuxxrk\",\"type\":\"mhmnulwemp\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"recommendationName\":\"fnbphceeivkb\",\"recommendationDisplayName\":\"lepghcnuqhqp\",\"description\":\"wt\",\"recommendationTypeId\":\"sclggagygn\",\"detectedBy\":\"fytnhdnihu\",\"remediationSteps\":\"juzvwgbzdtorbi\",\"reportedSeverity\":\"Low\",\"healthyDevices\":6390283563454339742,\"unhealthyDeviceCount\":3111841785740589643,\"logAnalyticsQuery\":\"sucr\"},\"tags\":{\"lgmpupj\":\"ejobjzrlwtidcnz\",\"uudvbgvzlzjsb\":\"ltyl\",\"utzaziydpoknsea\":\"p\"},\"id\":\"mbdqra\",\"name\":\"kdarl\",\"type\":\"o\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<IoTSecurityAggregatedRecommendation> response =
-            manager
-                .iotSecuritySolutionsAnalyticsRecommendations()
-                .list("caydbjzcqymlcfnz", "mhsurlgwqkpmm", 1745325763, com.azure.core.util.Context.NONE);
+        PagedIterable<IoTSecurityAggregatedRecommendation> response
+            = manager.iotSecuritySolutionsAnalyticsRecommendations().list("ssjgbfbb", "chxxc", 831138879,
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jblcdrmyfcemftz", response.iterator().next().tags().get("yykyalu"));
-        Assertions.assertEquals("auolawiu", response.iterator().next().recommendationName());
+        Assertions.assertEquals("ejobjzrlwtidcnz", response.iterator().next().tags().get("lgmpupj"));
+        Assertions.assertEquals("fnbphceeivkb", response.iterator().next().recommendationName());
     }
 }

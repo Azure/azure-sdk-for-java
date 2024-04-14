@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Output of custom domain validation. */
+/**
+ * Output of custom domain validation.
+ */
 @Immutable
 public final class ValidateCustomDomainOutputInner {
     /*
@@ -28,13 +30,15 @@ public final class ValidateCustomDomainOutputInner {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of ValidateCustomDomainOutputInner class. */
+    /**
+     * Creates an instance of ValidateCustomDomainOutputInner class.
+     */
     public ValidateCustomDomainOutputInner() {
     }
 
     /**
      * Get the customDomainValidated property: Indicates whether the custom domain is valid or not.
-     *
+     * 
      * @return the customDomainValidated value.
      */
     public Boolean customDomainValidated() {
@@ -43,7 +47,7 @@ public final class ValidateCustomDomainOutputInner {
 
     /**
      * Get the reason property: The reason why the custom domain is not valid.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -52,7 +56,7 @@ public final class ValidateCustomDomainOutputInner {
 
     /**
      * Get the message property: Error message describing why the custom domain is not valid.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -61,7 +65,7 @@ public final class ValidateCustomDomainOutputInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

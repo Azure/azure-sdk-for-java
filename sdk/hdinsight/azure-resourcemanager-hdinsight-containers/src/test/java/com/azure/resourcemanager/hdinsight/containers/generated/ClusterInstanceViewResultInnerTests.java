@@ -7,6 +7,7 @@ package com.azure.resourcemanager.hdinsight.containers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterInstanceViewResultInner;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterInstanceViewPropertiesStatus;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterInstanceViewResultProperties;
 import com.azure.resourcemanager.hdinsight.containers.models.ServiceStatus;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -14,47 +15,35 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterInstanceViewResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterInstanceViewResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"qidbqfatpxllrxcy\",\"properties\":{\"status\":{\"ready\":\"moadsuvarmy\",\"reason\":\"mjsjqb\",\"message\":\"hyxxrwlycoduhpk\"},\"serviceStatuses\":[{\"kind\":\"gymare\",\"ready\":\"n\",\"message\":\"xqugjhkycubedd\"},{\"kind\":\"ssofwqmzqa\",\"ready\":\"krmnjijpxacqqud\",\"message\":\"byxbaaabjy\"},{\"kind\":\"ayffim\",\"ready\":\"zrtuzq\",\"message\":\"sexnevfdnw\"},{\"kind\":\"wmewzsyy\",\"ready\":\"euzsoi\",\"message\":\"ud\"}]}}")
-                .toObject(ClusterInstanceViewResultInner.class);
-        Assertions.assertEquals("qidbqfatpxllrxcy", model.name());
-        Assertions.assertEquals("moadsuvarmy", model.status().ready());
-        Assertions.assertEquals("mjsjqb", model.status().reason());
-        Assertions.assertEquals("hyxxrwlycoduhpk", model.status().message());
-        Assertions.assertEquals("gymare", model.serviceStatuses().get(0).kind());
-        Assertions.assertEquals("n", model.serviceStatuses().get(0).ready());
-        Assertions.assertEquals("xqugjhkycubedd", model.serviceStatuses().get(0).message());
+        ClusterInstanceViewResultInner model = BinaryData.fromString(
+            "{\"name\":\"ncormrlxqtvcof\",\"properties\":{\"status\":{\"ready\":\"dflvkg\",\"reason\":\"bgdknnqv\",\"message\":\"znqntoru\"},\"serviceStatuses\":[{\"kind\":\"gsahmkycgrauw\",\"ready\":\"uetae\",\"message\":\"ruvdmov\"},{\"kind\":\"mz\",\"ready\":\"xwabmqoe\",\"message\":\"ifrvtpu\"},{\"kind\":\"ujmqlgkfbtndoa\",\"ready\":\"n\",\"message\":\"jcntuj\"}]}}")
+            .toObject(ClusterInstanceViewResultInner.class);
+        Assertions.assertEquals("ncormrlxqtvcof", model.name());
+        Assertions.assertEquals("dflvkg", model.properties().status().ready());
+        Assertions.assertEquals("bgdknnqv", model.properties().status().reason());
+        Assertions.assertEquals("znqntoru", model.properties().status().message());
+        Assertions.assertEquals("gsahmkycgrauw", model.properties().serviceStatuses().get(0).kind());
+        Assertions.assertEquals("uetae", model.properties().serviceStatuses().get(0).ready());
+        Assertions.assertEquals("ruvdmov", model.properties().serviceStatuses().get(0).message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterInstanceViewResultInner model =
-            new ClusterInstanceViewResultInner()
-                .withName("qidbqfatpxllrxcy")
-                .withStatus(
-                    new ClusterInstanceViewPropertiesStatus()
-                        .withReady("moadsuvarmy")
-                        .withReason("mjsjqb")
-                        .withMessage("hyxxrwlycoduhpk"))
-                .withServiceStatuses(
-                    Arrays
-                        .asList(
-                            new ServiceStatus().withKind("gymare").withReady("n").withMessage("xqugjhkycubedd"),
-                            new ServiceStatus()
-                                .withKind("ssofwqmzqa")
-                                .withReady("krmnjijpxacqqud")
-                                .withMessage("byxbaaabjy"),
-                            new ServiceStatus().withKind("ayffim").withReady("zrtuzq").withMessage("sexnevfdnw"),
-                            new ServiceStatus().withKind("wmewzsyy").withReady("euzsoi").withMessage("ud")));
+        ClusterInstanceViewResultInner model = new ClusterInstanceViewResultInner().withName("ncormrlxqtvcof")
+            .withProperties(new ClusterInstanceViewResultProperties()
+                .withStatus(new ClusterInstanceViewPropertiesStatus().withReady("dflvkg").withReason("bgdknnqv")
+                    .withMessage("znqntoru"))
+                .withServiceStatuses(Arrays.asList(
+                    new ServiceStatus().withKind("gsahmkycgrauw").withReady("uetae").withMessage("ruvdmov"),
+                    new ServiceStatus().withKind("mz").withReady("xwabmqoe").withMessage("ifrvtpu"),
+                    new ServiceStatus().withKind("ujmqlgkfbtndoa").withReady("n").withMessage("jcntuj"))));
         model = BinaryData.fromObject(model).toObject(ClusterInstanceViewResultInner.class);
-        Assertions.assertEquals("qidbqfatpxllrxcy", model.name());
-        Assertions.assertEquals("moadsuvarmy", model.status().ready());
-        Assertions.assertEquals("mjsjqb", model.status().reason());
-        Assertions.assertEquals("hyxxrwlycoduhpk", model.status().message());
-        Assertions.assertEquals("gymare", model.serviceStatuses().get(0).kind());
-        Assertions.assertEquals("n", model.serviceStatuses().get(0).ready());
-        Assertions.assertEquals("xqugjhkycubedd", model.serviceStatuses().get(0).message());
+        Assertions.assertEquals("ncormrlxqtvcof", model.name());
+        Assertions.assertEquals("dflvkg", model.properties().status().ready());
+        Assertions.assertEquals("bgdknnqv", model.properties().status().reason());
+        Assertions.assertEquals("znqntoru", model.properties().status().message());
+        Assertions.assertEquals("gsahmkycgrauw", model.properties().serviceStatuses().get(0).kind());
+        Assertions.assertEquals("uetae", model.properties().serviceStatuses().get(0).ready());
+        Assertions.assertEquals("ruvdmov", model.properties().serviceStatuses().get(0).message());
     }
 }

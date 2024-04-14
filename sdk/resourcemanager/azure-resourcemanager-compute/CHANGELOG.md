@@ -1,6 +1,6 @@
 # Release History
 
-## 2.37.0-beta.1 (Unreleased)
+## 2.38.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,18 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of ComputeRP to `2024-03-01`.
+
+## 2.37.0 (2024-03-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.36.0 (2024-02-29)
 

@@ -15,6 +15,9 @@ public final class MonitorQueryTestUtils {
     private static final String LOG_WORKSPACE_ID = Configuration.getGlobalConfiguration()
         .get("AZURE_MONITOR_LOGS_WORKSPACE_ID");
 
+    private static final String ADDITIONAL_LOG_WORKSPACE_ID = Configuration.getGlobalConfiguration()
+        .get("AZURE_MONITOR_LOGS_ADDITIONAL_WORKSPACE_ID");
+
     private static final String LOG_RESOURCE_ID = Configuration.getGlobalConfiguration()
         .get("AZURE_MONITOR_LOGS_RESOURCE_ID");
 
@@ -38,25 +41,33 @@ public final class MonitorQueryTestUtils {
 
     public static String getLogWorkspaceId(boolean isPlaybackMode) {
         if (isPlaybackMode) {
-            return "d2d0e126-fa1e-4b0a-b647-250cdd471e68";
+            return "5e700434-51e6-484f-b218-6dd21a3fe279";
         } else {
             return LOG_WORKSPACE_ID;
         }
     }
 
+    public static String getAdditionalLogWorkspaceId(boolean isPlaybackMode) {
+        if (isPlaybackMode) {
+            return "1941bf29-2e03-4f06-8ccf-d4668b4c62ed";
+        } else {
+            return ADDITIONAL_LOG_WORKSPACE_ID;
+        }
+    }
+
     public static String getLogResourceId(boolean isPlaybackMode) {
         if (isPlaybackMode) {
-            return "subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.Storage/storageAccounts/srnagarstorage";
+            return "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-april1/providers/Microsoft.OperationalInsights/workspaces/april1-azmonitorlogsws";
         } else {
-            return LOG_RESOURCE_ID;
+            return LOG_RESOURCE_ID.substring(LOG_RESOURCE_ID.indexOf("/subscriptions"));
         }
     }
 
     public static String getMetricResourceUri(boolean isPlaybackMode) {
         if (isPlaybackMode) {
-            return "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-jairmyree-test/providers/Microsoft.EventHub/namespaces/eventhubt9a76fe3bdd7263f8";
+            return "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-april1/providers/Microsoft.Eventhub/Namespaces/eventhubapril1";
         } else {
-            return METRIC_RESOURCE_URI;
+            return METRIC_RESOURCE_URI.substring(METRIC_RESOURCE_URI.indexOf("/subscriptions"));
         }
     }
 

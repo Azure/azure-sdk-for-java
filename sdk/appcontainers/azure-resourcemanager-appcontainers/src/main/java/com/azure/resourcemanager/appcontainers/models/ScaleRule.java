@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Container App container scaling rule. */
+/**
+ * Container App container scaling rule.
+ */
 @Fluent
 public final class ScaleRule {
     /*
@@ -40,13 +42,15 @@ public final class ScaleRule {
     @JsonProperty(value = "tcp")
     private TcpScaleRule tcp;
 
-    /** Creates an instance of ScaleRule class. */
+    /**
+     * Creates an instance of ScaleRule class.
+     */
     public ScaleRule() {
     }
 
     /**
      * Get the name property: Scale Rule Name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -55,7 +59,7 @@ public final class ScaleRule {
 
     /**
      * Set the name property: Scale Rule Name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ScaleRule object itself.
      */
@@ -66,7 +70,7 @@ public final class ScaleRule {
 
     /**
      * Get the azureQueue property: Azure Queue based scaling.
-     *
+     * 
      * @return the azureQueue value.
      */
     public QueueScaleRule azureQueue() {
@@ -75,7 +79,7 @@ public final class ScaleRule {
 
     /**
      * Set the azureQueue property: Azure Queue based scaling.
-     *
+     * 
      * @param azureQueue the azureQueue value to set.
      * @return the ScaleRule object itself.
      */
@@ -86,7 +90,7 @@ public final class ScaleRule {
 
     /**
      * Get the custom property: Custom scale rule.
-     *
+     * 
      * @return the custom value.
      */
     public CustomScaleRule custom() {
@@ -95,7 +99,7 @@ public final class ScaleRule {
 
     /**
      * Set the custom property: Custom scale rule.
-     *
+     * 
      * @param custom the custom value to set.
      * @return the ScaleRule object itself.
      */
@@ -106,7 +110,7 @@ public final class ScaleRule {
 
     /**
      * Get the http property: HTTP requests based scaling.
-     *
+     * 
      * @return the http value.
      */
     public HttpScaleRule http() {
@@ -115,7 +119,7 @@ public final class ScaleRule {
 
     /**
      * Set the http property: HTTP requests based scaling.
-     *
+     * 
      * @param http the http value to set.
      * @return the ScaleRule object itself.
      */
@@ -126,7 +130,7 @@ public final class ScaleRule {
 
     /**
      * Get the tcp property: Tcp requests based scaling.
-     *
+     * 
      * @return the tcp value.
      */
     public TcpScaleRule tcp() {
@@ -135,7 +139,7 @@ public final class ScaleRule {
 
     /**
      * Set the tcp property: Tcp requests based scaling.
-     *
+     * 
      * @param tcp the tcp value to set.
      * @return the ScaleRule object itself.
      */
@@ -146,7 +150,7 @@ public final class ScaleRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
