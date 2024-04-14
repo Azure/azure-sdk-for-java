@@ -60,7 +60,6 @@ public class PartitionKeyBasedBloomFilter {
                 return;
             }
 
-
             String effectivePartitionKeyString = request.getEffectivePartitionKey() != null ? request.getEffectivePartitionKey() : PartitionKeyInternalHelper
                 .getEffectivePartitionKeyString(partitionKeyInternal, partitionKeyDefinition);
 

@@ -5,10 +5,13 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -28,6 +31,9 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConsistencyTests2 extends ConsistencyTestsBase {
+
+    private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor clientBuilderAccessor
+        = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
 
     @DataProvider(name = "regionScopedSessionContainerConfigs")
     public Object[] regionScopedSessionContainerConfigs() {
@@ -273,8 +279,8 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
     // Note that we need multiple CONSISTENCY_TEST_TIMEOUT
     // SEE: https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
 
-    @Test(groups = {"direct"}, timeOut = 8 * CONSISTENCY_TEST_TIMEOUT)
-    public void validateSessionTokenAsync() {
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = 8 * CONSISTENCY_TEST_TIMEOUT)
+    public void validateSessionTokenAsync(boolean isRegionScopedSessionCapturingEnabled) {
         // Validate that document query never fails
         // with NotFoundException
         List<Document> documents = new ArrayList<>();
@@ -285,40 +291,42 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         }
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-        RxDocumentClientImpl client =
-                (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
-                        .withServiceEndpoint(TestConfigurations.HOST)
-                        .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                        .withConnectionPolicy(connectionPolicy)
-                        .withConsistencyLevel(ConsistencyLevel.SESSION)
-                        .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(
-                            new CosmosClientTelemetryConfig()
-                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
-                        .build();
+
+        CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .directMode()
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .connectionSharingAcrossClientsEnabled(true)
+            .clientTelemetryConfig(new CosmosClientTelemetryConfig()
+                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
+
+        clientBuilderAccessor.setRegionScopedSessionCapturingEnabled(clientBuilder, isRegionScopedSessionCapturingEnabled);
+
+        CosmosAsyncClient cosmosAsyncClient = clientBuilder.buildAsyncClient();
+
+        RxDocumentClientImpl client = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(cosmosAsyncClient);
 
         try {
-            Document lastDocument = client.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
-                                                          null, true)
-                    .block()
-                    .getResource();
 
             Mono<Void> task1 = ParallelAsync.forEachAsync(Range.between(0, 1000), 5, index -> client.createDocument(createdCollection.getSelfLink(), documents.get(index % documents.size()),
                                   null, true)
                     .block());
 
+            CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+
+            ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .setAllowEmptyPages(cosmosQueryRequestOptions, true);
+
             Mono<Void> task2 = ParallelAsync.forEachAsync(Range.between(0, 1000), 5, index -> {
                 try {
-                    CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
-                    ImplementationBridgeHelpers
-                        .CosmosQueryRequestOptionsHelper
-                        .getCosmosQueryRequestOptionsAccessor()
-                        .setAllowEmptyPages(cosmosQueryRequestOptions, true);
 
                     FeedResponse<Document> queryResponse = client.queryDocuments(
                         createdCollection.getSelfLink(),
                         "SELECT * FROM c WHERE c.Id = 'foo'",
-                        TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, cosmosQueryRequestOptions, client),
+                        TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, cosmosQueryRequestOptions, cosmosAsyncClient),
                         Document.class)
                             .blockFirst();
                     String lsnHeaderValue = queryResponse.getResponseHeaders().get(WFConstants.BackendHeaders.LSN);
