@@ -10,6 +10,8 @@ import com.azure.ai.openai.functions.Parameters;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
+import com.azure.ai.openai.models.AudioTranscriptionSegment;
+import com.azure.ai.openai.models.AudioTranscriptionWord;
 import com.azure.ai.openai.models.AudioTranslation;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.AzureChatExtensionDataSourceResponseCitation;
@@ -64,6 +66,7 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
@@ -672,8 +675,27 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNotNull(transcription.getDuration());
         assertNotNull(transcription.getLanguage());
         assertEquals(audioTaskLabel, transcription.getTask());
-        assertNotNull(transcription.getSegments());
-        assertFalse(transcription.getSegments().isEmpty());
+        assertAudioTranscriptionSegments(transcription.getSegments());
+    }
+
+    static void assertAudioTranscriptionSegments(List<AudioTranscriptionSegment> segments) {
+        assertFalse(CoreUtils.isNullOrEmpty(segments));
+        for (AudioTranscriptionSegment segment : segments) {
+            assertTrue(segment.getId() > -1);
+            assertNotNull(segment.getText());
+            assertNotNull(segment.getStart());
+            assertNotNull(segment.getTokens());
+            assertNotNull(segment.getEnd());
+        }
+    }
+
+    static void assertAudioTranscriptionWords(List<AudioTranscriptionWord> words) {
+        assertFalse(CoreUtils.isNullOrEmpty(words));
+        for (AudioTranscriptionWord word : words) {
+            assertNotNull(word.getWord());
+            assertNotNull(word.getStart());
+            assertNotNull(word.getEnd());
+        }
     }
 
     static void assertAudioTranslationSimpleJson(AudioTranslation translation, String expectedText) {
