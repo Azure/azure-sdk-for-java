@@ -29,21 +29,18 @@ public final class FilesImpl implements Files {
 
     public PagedIterable<FileDetails> list(String fileWorkspaceName) {
         PagedIterable<FileDetailsInner> inner = this.serviceClient().list(fileWorkspaceName);
-        return Utils.mapPage(inner, inner1 -> new FileDetailsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FileDetailsImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FileDetails> list(String fileWorkspaceName, Context context) {
         PagedIterable<FileDetailsInner> inner = this.serviceClient().list(fileWorkspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new FileDetailsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FileDetailsImpl(inner1, this.manager()));
     }
 
     public Response<FileDetails> getWithResponse(String fileWorkspaceName, String fileName, Context context) {
         Response<FileDetailsInner> inner = this.serviceClient().getWithResponse(fileWorkspaceName, fileName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FileDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -59,8 +56,8 @@ public final class FilesImpl implements Files {
         }
     }
 
-    public Response<Void> uploadWithResponse(
-        String fileWorkspaceName, String fileName, UploadFile uploadFile, Context context) {
+    public Response<Void> uploadWithResponse(String fileWorkspaceName, String fileName, UploadFile uploadFile,
+        Context context) {
         return this.serviceClient().uploadWithResponse(fileWorkspaceName, fileName, uploadFile, context);
     }
 
@@ -69,39 +66,29 @@ public final class FilesImpl implements Files {
     }
 
     public FileDetails getById(String id) {
-        String fileWorkspaceName = Utils.getValueFromIdByName(id, "fileWorkspaces");
+        String fileWorkspaceName = ResourceManagerUtils.getValueFromIdByName(id, "fileWorkspaces");
         if (fileWorkspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'fileWorkspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fileWorkspaces'.", id)));
         }
-        String fileName = Utils.getValueFromIdByName(id, "files");
+        String fileName = ResourceManagerUtils.getValueFromIdByName(id, "files");
         if (fileName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'files'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'files'.", id)));
         }
         return this.getWithResponse(fileWorkspaceName, fileName, Context.NONE).getValue();
     }
 
     public Response<FileDetails> getByIdWithResponse(String id, Context context) {
-        String fileWorkspaceName = Utils.getValueFromIdByName(id, "fileWorkspaces");
+        String fileWorkspaceName = ResourceManagerUtils.getValueFromIdByName(id, "fileWorkspaces");
         if (fileWorkspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'fileWorkspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fileWorkspaces'.", id)));
         }
-        String fileName = Utils.getValueFromIdByName(id, "files");
+        String fileName = ResourceManagerUtils.getValueFromIdByName(id, "files");
         if (fileName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'files'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'files'.", id)));
         }
         return this.getWithResponse(fileWorkspaceName, fileName, context);
     }

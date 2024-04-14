@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Retention policy of a resource metric. */
+/**
+ * Retention policy of a resource metric.
+ */
 @Fluent
 public final class MetricAvailability {
     /*
@@ -22,13 +24,15 @@ public final class MetricAvailability {
     @JsonProperty(value = "blobDuration")
     private String blobDuration;
 
-    /** Creates an instance of MetricAvailability class. */
+    /**
+     * Creates an instance of MetricAvailability class.
+     */
     public MetricAvailability() {
     }
 
     /**
      * Get the timeGrain property: The timeGrain property.
-     *
+     * 
      * @return the timeGrain value.
      */
     public String timeGrain() {
@@ -37,7 +41,7 @@ public final class MetricAvailability {
 
     /**
      * Set the timeGrain property: The timeGrain property.
-     *
+     * 
      * @param timeGrain the timeGrain value to set.
      * @return the MetricAvailability object itself.
      */
@@ -48,7 +52,7 @@ public final class MetricAvailability {
 
     /**
      * Get the blobDuration property: The blobDuration property.
-     *
+     * 
      * @return the blobDuration value.
      */
     public String blobDuration() {
@@ -57,7 +61,7 @@ public final class MetricAvailability {
 
     /**
      * Set the blobDuration property: The blobDuration property.
-     *
+     * 
      * @param blobDuration the blobDuration value to set.
      * @return the MetricAvailability object itself.
      */
@@ -68,7 +72,7 @@ public final class MetricAvailability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

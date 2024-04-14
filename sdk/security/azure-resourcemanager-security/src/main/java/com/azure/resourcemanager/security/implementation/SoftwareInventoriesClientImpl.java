@@ -30,22 +30,28 @@ import com.azure.resourcemanager.security.fluent.models.SoftwareInner;
 import com.azure.resourcemanager.security.models.SoftwaresList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SoftwareInventoriesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SoftwareInventoriesClient.
+ */
 public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SoftwareInventoriesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityCenterImpl client;
 
     /**
      * Initializes an instance of SoftwareInventoriesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SoftwareInventoriesClientImpl(SecurityCenterImpl client) {
-        this.service =
-            RestProxy.create(SoftwareInventoriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SoftwareInventoriesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,76 +62,58 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterSoftwa")
     public interface SoftwareInventoriesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Security/softwareInventories")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Security/softwareInventories")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SoftwaresList>> listByExtendedResource(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SoftwaresList>> listByExtendedResource(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceNamespace") String resourceNamespace,
-            @PathParam("resourceType") String resourceType,
-            @PathParam("resourceName") String resourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceNamespace") String resourceNamespace, @PathParam("resourceType") String resourceType,
+            @PathParam("resourceName") String resourceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/softwareInventories")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SoftwaresList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SoftwaresList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Security/softwareInventories/{softwareName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Security/softwareInventories/{softwareName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SoftwareInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SoftwareInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceNamespace") String resourceNamespace,
-            @PathParam("resourceType") String resourceType,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("softwareName") String softwareName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceNamespace") String resourceNamespace, @PathParam("resourceType") String resourceType,
+            @PathParam("resourceName") String resourceName, @PathParam("softwareName") String softwareName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SoftwaresList>> listByExtendedResourceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SoftwaresList>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the software inventory of the virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -133,22 +121,18 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the software inventory of the virtual machine along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SoftwareInner>> listByExtendedResourceSinglePageAsync(
-        String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
+    private Mono<PagedResponse<SoftwareInner>> listByExtendedResourceSinglePageAsync(String resourceGroupName,
+        String resourceNamespace, String resourceType, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -168,35 +152,18 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByExtendedResource(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceNamespace,
-                            resourceType,
-                            resourceName,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<SoftwareInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByExtendedResource(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, resourceNamespace, resourceType, resourceName, apiVersion, accept, context))
+            .<PagedResponse<SoftwareInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the software inventory of the virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -205,22 +172,18 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the software inventory of the virtual machine along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SoftwareInner>> listByExtendedResourceSinglePageAsync(
-        String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, Context context) {
+    private Mono<PagedResponse<SoftwareInner>> listByExtendedResourceSinglePageAsync(String resourceGroupName,
+        String resourceNamespace, String resourceType, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -240,32 +203,17 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByExtendedResource(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceNamespace,
-                resourceType,
-                resourceName,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByExtendedResource(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                resourceNamespace, resourceType, resourceName, apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets the software inventory of the virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -275,19 +223,17 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @return the software inventory of the virtual machine as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SoftwareInner> listByExtendedResourceAsync(
-        String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
-        return new PagedFlux<>(
-            () ->
-                listByExtendedResourceSinglePageAsync(resourceGroupName, resourceNamespace, resourceType, resourceName),
-            nextLink -> listByExtendedResourceNextSinglePageAsync(nextLink));
+    private PagedFlux<SoftwareInner> listByExtendedResourceAsync(String resourceGroupName, String resourceNamespace,
+        String resourceType, String resourceName) {
+        return new PagedFlux<>(() -> listByExtendedResourceSinglePageAsync(resourceGroupName, resourceNamespace,
+            resourceType, resourceName), nextLink -> listByExtendedResourceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the software inventory of the virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -298,20 +244,18 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @return the software inventory of the virtual machine as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SoftwareInner> listByExtendedResourceAsync(
-        String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByExtendedResourceSinglePageAsync(
-                    resourceGroupName, resourceNamespace, resourceType, resourceName, context),
+    private PagedFlux<SoftwareInner> listByExtendedResourceAsync(String resourceGroupName, String resourceNamespace,
+        String resourceType, String resourceName, Context context) {
+        return new PagedFlux<>(() -> listByExtendedResourceSinglePageAsync(resourceGroupName, resourceNamespace,
+            resourceType, resourceName, context),
             nextLink -> listByExtendedResourceNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets the software inventory of the virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -321,17 +265,17 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @return the software inventory of the virtual machine as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SoftwareInner> listByExtendedResource(
-        String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
+    public PagedIterable<SoftwareInner> listByExtendedResource(String resourceGroupName, String resourceNamespace,
+        String resourceType, String resourceName) {
         return new PagedIterable<>(
             listByExtendedResourceAsync(resourceGroupName, resourceNamespace, resourceType, resourceName));
     }
 
     /**
      * Gets the software inventory of the virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -342,130 +286,105 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @return the software inventory of the virtual machine as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SoftwareInner> listByExtendedResource(
-        String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, Context context) {
+    public PagedIterable<SoftwareInner> listByExtendedResource(String resourceGroupName, String resourceNamespace,
+        String resourceType, String resourceName, Context context) {
         return new PagedIterable<>(
             listByExtendedResourceAsync(resourceGroupName, resourceNamespace, resourceType, resourceName, context));
     }
 
     /**
      * Gets the software inventory of all virtual machines in the subscriptions.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the software inventory of all virtual machines in the subscriptions along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SoftwareInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2021-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context))
-            .<PagedResponse<SoftwareInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+                accept, context))
+            .<PagedResponse<SoftwareInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the software inventory of all virtual machines in the subscriptions.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the software inventory of all virtual machines in the subscriptions along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SoftwareInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2021-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets the software inventory of all virtual machines in the subscriptions.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of all virtual machines in the subscriptions as paginated response with {@link
-     *     PagedFlux}.
+     * @return the software inventory of all virtual machines in the subscriptions as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SoftwareInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the software inventory of all virtual machines in the subscriptions.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of all virtual machines in the subscriptions as paginated response with {@link
-     *     PagedFlux}.
+     * @return the software inventory of all virtual machines in the subscriptions as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SoftwareInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets the software inventory of all virtual machines in the subscriptions.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of all virtual machines in the subscriptions as paginated response with {@link
-     *     PagedIterable}.
+     * @return the software inventory of all virtual machines in the subscriptions as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SoftwareInner> list() {
@@ -474,13 +393,13 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
 
     /**
      * Gets the software inventory of all virtual machines in the subscriptions.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of all virtual machines in the subscriptions as paginated response with {@link
-     *     PagedIterable}.
+     * @return the software inventory of all virtual machines in the subscriptions as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SoftwareInner> list(Context context) {
@@ -489,9 +408,9 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
 
     /**
      * Gets a single software data of the virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -500,26 +419,18 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single software data of the virtual machine along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SoftwareInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String softwareName) {
+    private Mono<Response<SoftwareInner>> getWithResponseAsync(String resourceGroupName, String resourceNamespace,
+        String resourceType, String resourceName, String softwareName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -542,27 +453,16 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceNamespace,
-                            resourceType,
-                            resourceName,
-                            softwareName,
-                            apiVersion,
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    resourceNamespace, resourceType, resourceName, softwareName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a single software data of the virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -572,27 +472,18 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single software data of the virtual machine along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SoftwareInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String softwareName,
-        Context context) {
+    private Mono<Response<SoftwareInner>> getWithResponseAsync(String resourceGroupName, String resourceNamespace,
+        String resourceType, String resourceName, String softwareName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -614,25 +505,15 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
         final String apiVersion = "2021-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceNamespace,
-                resourceType,
-                resourceName,
-                softwareName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            resourceNamespace, resourceType, resourceName, softwareName, apiVersion, accept, context);
     }
 
     /**
      * Gets a single software data of the virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -643,21 +524,17 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @return a single software data of the virtual machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SoftwareInner> getAsync(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String softwareName) {
+    private Mono<SoftwareInner> getAsync(String resourceGroupName, String resourceNamespace, String resourceType,
+        String resourceName, String softwareName) {
         return getWithResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName, softwareName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a single software data of the virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -669,23 +546,17 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @return a single software data of the virtual machine along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SoftwareInner> getWithResponse(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String softwareName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, resourceNamespace, resourceType, resourceName, softwareName, context)
-            .block();
+    public Response<SoftwareInner> getWithResponse(String resourceGroupName, String resourceNamespace,
+        String resourceType, String resourceName, String softwareName, Context context) {
+        return getWithResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName, softwareName,
+            context).block();
     }
 
     /**
      * Gets a single software data of the virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -696,27 +567,23 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @return a single software data of the virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SoftwareInner get(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String softwareName) {
-        return getWithResponse(
-                resourceGroupName, resourceNamespace, resourceType, resourceName, softwareName, Context.NONE)
-            .getValue();
+    public SoftwareInner get(String resourceGroupName, String resourceNamespace, String resourceType,
+        String resourceName, String softwareName) {
+        return getWithResponse(resourceGroupName, resourceNamespace, resourceType, resourceName, softwareName,
+            Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the software inventory of the virtual machine along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SoftwareInner>> listByExtendedResourceNextSinglePageAsync(String nextLink) {
@@ -724,76 +591,59 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByExtendedResourceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SoftwareInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SoftwareInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the software inventory of the virtual machine along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SoftwareInner>> listByExtendedResourceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<SoftwareInner>> listByExtendedResourceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByExtendedResourceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByExtendedResourceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the software inventory of the virtual machine along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SoftwareInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -801,38 +651,30 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SoftwareInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SoftwareInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the software inventory of the virtual machine along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SoftwareInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
@@ -840,23 +682,13 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -8,39 +8,41 @@ import com.azure.resourcemanager.security.fluent.models.AdaptiveNetworkHardening
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** An immutable client-side representation of AdaptiveNetworkHardening. */
+/**
+ * An immutable client-side representation of AdaptiveNetworkHardening.
+ */
 public interface AdaptiveNetworkHardening {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the rules property: The security rules which are recommended to be effective on the VM.
-     *
+     * 
      * @return the rules value.
      */
     List<Rule> rules();
 
     /**
      * Gets the rulesCalculationTime property: The UTC time on which the rules were calculated.
-     *
+     * 
      * @return the rulesCalculationTime value.
      */
     OffsetDateTime rulesCalculationTime();
@@ -48,14 +50,14 @@ public interface AdaptiveNetworkHardening {
     /**
      * Gets the effectiveNetworkSecurityGroups property: The Network Security Groups effective on the network interfaces
      * of the protected resource.
-     *
+     * 
      * @return the effectiveNetworkSecurityGroups value.
      */
     List<EffectiveNetworkSecurityGroups> effectiveNetworkSecurityGroups();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.AdaptiveNetworkHardeningInner object.
-     *
+     * 
      * @return the inner object.
      */
     AdaptiveNetworkHardeningInner innerModel();

@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.TagRuleInner;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.TagRuleUpdateInner;
 
-/** An instance of this class provides access to all the operations defined in TagRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TagRulesClient.
+ */
 public interface TagRulesClient {
     /**
      * List TagRule resources by NewRelicMonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface TagRulesClient {
 
     /**
      * List TagRule resources by NewRelicMonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param context The context to associate with this operation.
@@ -41,12 +43,12 @@ public interface TagRulesClient {
      * @return the response of a TagRule list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TagRuleInner> listByNewRelicMonitorResource(
-        String resourceGroupName, String monitorName, Context context);
+    PagedIterable<TagRuleInner> listByNewRelicMonitorResource(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Get a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param ruleSetName Name of the TagRule.
@@ -57,12 +59,12 @@ public interface TagRulesClient {
      * @return a TagRule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TagRuleInner> getWithResponse(
-        String resourceGroupName, String monitorName, String ruleSetName, Context context);
+    Response<TagRuleInner> getWithResponse(String resourceGroupName, String monitorName, String ruleSetName,
+        Context context);
 
     /**
      * Get a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param ruleSetName Name of the TagRule.
@@ -76,7 +78,7 @@ public interface TagRulesClient {
 
     /**
      * Create a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param ruleSetName Name of the TagRule.
@@ -87,12 +89,12 @@ public interface TagRulesClient {
      * @return the {@link SyncPoller} for polling of a tag rule belonging to NewRelic account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TagRuleInner>, TagRuleInner> beginCreateOrUpdate(
-        String resourceGroupName, String monitorName, String ruleSetName, TagRuleInner resource);
+    SyncPoller<PollResult<TagRuleInner>, TagRuleInner> beginCreateOrUpdate(String resourceGroupName, String monitorName,
+        String ruleSetName, TagRuleInner resource);
 
     /**
      * Create a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param ruleSetName Name of the TagRule.
@@ -104,12 +106,12 @@ public interface TagRulesClient {
      * @return the {@link SyncPoller} for polling of a tag rule belonging to NewRelic account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TagRuleInner>, TagRuleInner> beginCreateOrUpdate(
-        String resourceGroupName, String monitorName, String ruleSetName, TagRuleInner resource, Context context);
+    SyncPoller<PollResult<TagRuleInner>, TagRuleInner> beginCreateOrUpdate(String resourceGroupName, String monitorName,
+        String ruleSetName, TagRuleInner resource, Context context);
 
     /**
      * Create a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param ruleSetName Name of the TagRule.
@@ -120,12 +122,12 @@ public interface TagRulesClient {
      * @return a tag rule belonging to NewRelic account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagRuleInner createOrUpdate(
-        String resourceGroupName, String monitorName, String ruleSetName, TagRuleInner resource);
+    TagRuleInner createOrUpdate(String resourceGroupName, String monitorName, String ruleSetName,
+        TagRuleInner resource);
 
     /**
      * Create a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param ruleSetName Name of the TagRule.
@@ -137,12 +139,12 @@ public interface TagRulesClient {
      * @return a tag rule belonging to NewRelic account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagRuleInner createOrUpdate(
-        String resourceGroupName, String monitorName, String ruleSetName, TagRuleInner resource, Context context);
+    TagRuleInner createOrUpdate(String resourceGroupName, String monitorName, String ruleSetName, TagRuleInner resource,
+        Context context);
 
     /**
      * Delete a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param ruleSetName Name of the TagRule.
@@ -156,7 +158,7 @@ public interface TagRulesClient {
 
     /**
      * Delete a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param ruleSetName Name of the TagRule.
@@ -167,12 +169,12 @@ public interface TagRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String monitorName, String ruleSetName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName, String ruleSetName,
+        Context context);
 
     /**
      * Delete a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param ruleSetName Name of the TagRule.
@@ -185,7 +187,7 @@ public interface TagRulesClient {
 
     /**
      * Delete a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param ruleSetName Name of the TagRule.
@@ -199,7 +201,7 @@ public interface TagRulesClient {
 
     /**
      * Update a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param ruleSetName Name of the TagRule.
@@ -211,16 +213,12 @@ public interface TagRulesClient {
      * @return a tag rule belonging to NewRelic account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TagRuleInner> updateWithResponse(
-        String resourceGroupName,
-        String monitorName,
-        String ruleSetName,
-        TagRuleUpdateInner properties,
-        Context context);
+    Response<TagRuleInner> updateWithResponse(String resourceGroupName, String monitorName, String ruleSetName,
+        TagRuleUpdateInner properties, Context context);
 
     /**
      * Update a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param ruleSetName Name of the TagRule.
@@ -231,6 +229,6 @@ public interface TagRulesClient {
      * @return a tag rule belonging to NewRelic account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagRuleInner update(
-        String resourceGroupName, String monitorName, String ruleSetName, TagRuleUpdateInner properties);
+    TagRuleInner update(String resourceGroupName, String monitorName, String ruleSetName,
+        TagRuleUpdateInner properties);
 }

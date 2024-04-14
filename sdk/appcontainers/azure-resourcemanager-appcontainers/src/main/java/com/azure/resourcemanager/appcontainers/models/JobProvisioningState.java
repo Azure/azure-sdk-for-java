@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the Container Apps Job. */
+/**
+ * Provisioning state of the Container Apps Job.
+ */
 public final class JobProvisioningState extends ExpandableStringEnum<JobProvisioningState> {
-    /** Static value InProgress for JobProvisioningState. */
+    /**
+     * Static value InProgress for JobProvisioningState.
+     */
     public static final JobProvisioningState IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Succeeded for JobProvisioningState. */
+    /**
+     * Static value Succeeded for JobProvisioningState.
+     */
     public static final JobProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for JobProvisioningState. */
+    /**
+     * Static value Failed for JobProvisioningState.
+     */
     public static final JobProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for JobProvisioningState. */
+    /**
+     * Static value Canceled for JobProvisioningState.
+     */
     public static final JobProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Deleting for JobProvisioningState. */
+    /**
+     * Static value Deleting for JobProvisioningState.
+     */
     public static final JobProvisioningState DELETING = fromString("Deleting");
 
     /**
      * Creates a new instance of JobProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class JobProvisioningState extends ExpandableStringEnum<JobProvisio
 
     /**
      * Creates or finds a JobProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding JobProvisioningState.
      */
@@ -47,7 +59,7 @@ public final class JobProvisioningState extends ExpandableStringEnum<JobProvisio
 
     /**
      * Gets known JobProvisioningState values.
-     *
+     * 
      * @return known JobProvisioningState values.
      */
     public static Collection<JobProvisioningState> values() {

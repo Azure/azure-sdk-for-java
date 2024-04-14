@@ -70,6 +70,7 @@ public final class KeyVaultKeysModelsUtils {
             KeyPropertiesHelper.setUpdatedOn(properties, attributes.getUpdated());
             KeyPropertiesHelper.setRecoveryLevel(properties, Objects.toString(attributes.getRecoveryLevel(), null));
             KeyPropertiesHelper.setRecoverableDays(properties, attributes.getRecoverableDays());
+            KeyPropertiesHelper.setHsmPlatform(properties, attributes.getHsmPlatform());
         }
     }
 
@@ -202,6 +203,7 @@ public final class KeyVaultKeysModelsUtils {
             KeyPropertiesHelper.setRecoveryLevel(properties,
                 Objects.toString(attributes.getRecoveryLevel().toString(), null));
             KeyPropertiesHelper.setRecoverableDays(properties, attributes.getRecoverableDays());
+            KeyPropertiesHelper.setHsmPlatform(properties, attributes.getHsmPlatform());
         }
     }
 

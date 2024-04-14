@@ -48,7 +48,7 @@ public class TestProxyUtils {
 
     private static final List<String> JSON_PROPERTIES_TO_REDACT
         = new ArrayList<>(Arrays.asList("authHeader", "accountKey", "accessToken", "accountName", "applicationId",
-            "apiKey", "connectionString", "url", "host", "password", "userName"));
+            "apiKey", "client_secret", "connectionString", "url", "host", "password", "userName"));
 
     private static final Map<String, String> HEADER_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {
         {
@@ -66,6 +66,8 @@ public class TestProxyUtils {
     // - Password
     // - User ID
     private static final String JSON_BODY_REGEX_REDACTIONS = "(?:(Password|User ID)=)(?<secret>.*)(?:;)";
+
+    private static final String STRING_BODY_REGEX_REDACTION = "client_secret=(?<secret>[^&]+)";
 
     // Redacts the following XML elements in a request or response body:
     // - PrimaryKey
@@ -506,6 +508,9 @@ public class TestProxyUtils {
 
         regexSanitizers
             .add(new TestProxySanitizer(JSON_BODY_REGEX_REDACTIONS, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX)
+                .setGroupForReplace("secret"));
+        regexSanitizers
+            .add(new TestProxySanitizer(STRING_BODY_REGEX_REDACTION, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX)
                 .setGroupForReplace("secret"));
         regexSanitizers.add(
             new TestProxySanitizer(XML_BODY_PRIMARY_KEY_REDACTION, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX)

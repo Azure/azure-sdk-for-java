@@ -68,25 +68,19 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
     }
 
     public FirewallRule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirewallRules()
-                .createOrUpdate(resourceGroupName, clusterName, firewallRuleName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getFirewallRules().createOrUpdate(resourceGroupName,
+            clusterName, firewallRuleName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public FirewallRule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirewallRules()
-                .createOrUpdate(resourceGroupName, clusterName, firewallRuleName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getFirewallRules().createOrUpdate(resourceGroupName,
+            clusterName, firewallRuleName, this.innerModel(), context);
         return this;
     }
 
-    FirewallRuleImpl(
-        String name, com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager) {
+    FirewallRuleImpl(String name,
+        com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager) {
         this.innerObject = new FirewallRuleInner();
         this.serviceManager = serviceManager;
         this.firewallRuleName = name;
@@ -97,50 +91,35 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
     }
 
     public FirewallRule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirewallRules()
-                .createOrUpdate(resourceGroupName, clusterName, firewallRuleName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getFirewallRules().createOrUpdate(resourceGroupName,
+            clusterName, firewallRuleName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public FirewallRule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirewallRules()
-                .createOrUpdate(resourceGroupName, clusterName, firewallRuleName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getFirewallRules().createOrUpdate(resourceGroupName,
+            clusterName, firewallRuleName, this.innerModel(), context);
         return this;
     }
 
-    FirewallRuleImpl(
-        FirewallRuleInner innerObject,
+    FirewallRuleImpl(FirewallRuleInner innerObject,
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "serverGroupsv2");
-        this.firewallRuleName = Utils.getValueFromIdByName(innerObject.id(), "firewallRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "serverGroupsv2");
+        this.firewallRuleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "firewallRules");
     }
 
     public FirewallRule refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirewallRules()
-                .getWithResponse(resourceGroupName, clusterName, firewallRuleName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFirewallRules()
+            .getWithResponse(resourceGroupName, clusterName, firewallRuleName, Context.NONE).getValue();
         return this;
     }
 
     public FirewallRule refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirewallRules()
-                .getWithResponse(resourceGroupName, clusterName, firewallRuleName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFirewallRules()
+            .getWithResponse(resourceGroupName, clusterName, firewallRuleName, context).getValue();
         return this;
     }
 

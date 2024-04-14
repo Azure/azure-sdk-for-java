@@ -9,12 +9,8 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterPoolInner;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPool;
-import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourcePropertiesAksClusterProfile;
-import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourcePropertiesClusterPoolProfile;
-import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourcePropertiesComputeProfile;
-import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourcePropertiesLogAnalyticsProfile;
-import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourcePropertiesNetworkProfile;
-import com.azure.resourcemanager.hdinsight.containers.models.ProvisioningStatus;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourceProperties;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolUpgrade;
 import com.azure.resourcemanager.hdinsight.containers.models.TagsObject;
 import java.util.Collections;
 import java.util.Map;
@@ -49,48 +45,12 @@ public final class ClusterPoolImpl implements ClusterPool, ClusterPool.Definitio
         }
     }
 
+    public ClusterPoolResourceProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public ProvisioningStatus provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public String deploymentId() {
-        return this.innerModel().deploymentId();
-    }
-
-    public String managedResourceGroupName() {
-        return this.innerModel().managedResourceGroupName();
-    }
-
-    public String aksManagedResourceGroupName() {
-        return this.innerModel().aksManagedResourceGroupName();
-    }
-
-    public ClusterPoolResourcePropertiesClusterPoolProfile clusterPoolProfile() {
-        return this.innerModel().clusterPoolProfile();
-    }
-
-    public ClusterPoolResourcePropertiesComputeProfile computeProfile() {
-        return this.innerModel().computeProfile();
-    }
-
-    public ClusterPoolResourcePropertiesAksClusterProfile aksClusterProfile() {
-        return this.innerModel().aksClusterProfile();
-    }
-
-    public ClusterPoolResourcePropertiesNetworkProfile networkProfile() {
-        return this.innerModel().networkProfile();
-    }
-
-    public ClusterPoolResourcePropertiesLogAnalyticsProfile logAnalyticsProfile() {
-        return this.innerModel().logAnalyticsProfile();
-    }
-
-    public String status() {
-        return this.innerModel().status();
     }
 
     public Region region() {
@@ -125,25 +85,19 @@ public final class ClusterPoolImpl implements ClusterPool, ClusterPool.Definitio
     }
 
     public ClusterPool create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusterPools()
-                .createOrUpdate(resourceGroupName, clusterPoolName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getClusterPools().createOrUpdate(resourceGroupName,
+            clusterPoolName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ClusterPool create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusterPools()
-                .createOrUpdate(resourceGroupName, clusterPoolName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getClusterPools().createOrUpdate(resourceGroupName,
+            clusterPoolName, this.innerModel(), context);
         return this;
     }
 
-    ClusterPoolImpl(
-        String name, com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager serviceManager) {
+    ClusterPoolImpl(String name,
+        com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager serviceManager) {
         this.innerObject = new ClusterPoolInner();
         this.serviceManager = serviceManager;
         this.clusterPoolName = name;
@@ -155,50 +109,44 @@ public final class ClusterPoolImpl implements ClusterPool, ClusterPool.Definitio
     }
 
     public ClusterPool apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusterPools()
-                .updateTags(resourceGroupName, clusterPoolName, updateClusterPoolTags, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getClusterPools().updateTags(resourceGroupName,
+            clusterPoolName, updateClusterPoolTags, Context.NONE);
         return this;
     }
 
     public ClusterPool apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusterPools()
-                .updateTags(resourceGroupName, clusterPoolName, updateClusterPoolTags, context);
+        this.innerObject = serviceManager.serviceClient().getClusterPools().updateTags(resourceGroupName,
+            clusterPoolName, updateClusterPoolTags, context);
         return this;
     }
 
-    ClusterPoolImpl(
-        ClusterPoolInner innerObject,
+    ClusterPoolImpl(ClusterPoolInner innerObject,
         com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterPoolName = Utils.getValueFromIdByName(innerObject.id(), "clusterpools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusterpools");
     }
 
     public ClusterPool refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusterPools()
-                .getByResourceGroupWithResponse(resourceGroupName, clusterPoolName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getClusterPools()
+            .getByResourceGroupWithResponse(resourceGroupName, clusterPoolName, Context.NONE).getValue();
         return this;
     }
 
     public ClusterPool refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusterPools()
-                .getByResourceGroupWithResponse(resourceGroupName, clusterPoolName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getClusterPools()
+            .getByResourceGroupWithResponse(resourceGroupName, clusterPoolName, context).getValue();
         return this;
+    }
+
+    public ClusterPool upgrade(ClusterPoolUpgrade clusterPoolUpgradeRequest) {
+        return serviceManager.clusterPools().upgrade(resourceGroupName, clusterPoolName, clusterPoolUpgradeRequest);
+    }
+
+    public ClusterPool upgrade(ClusterPoolUpgrade clusterPoolUpgradeRequest, Context context) {
+        return serviceManager.clusterPools().upgrade(resourceGroupName, clusterPoolName, clusterPoolUpgradeRequest,
+            context);
     }
 
     public ClusterPoolImpl withRegion(Region location) {
@@ -221,29 +169,8 @@ public final class ClusterPoolImpl implements ClusterPool, ClusterPool.Definitio
         }
     }
 
-    public ClusterPoolImpl withManagedResourceGroupName(String managedResourceGroupName) {
-        this.innerModel().withManagedResourceGroupName(managedResourceGroupName);
-        return this;
-    }
-
-    public ClusterPoolImpl withClusterPoolProfile(ClusterPoolResourcePropertiesClusterPoolProfile clusterPoolProfile) {
-        this.innerModel().withClusterPoolProfile(clusterPoolProfile);
-        return this;
-    }
-
-    public ClusterPoolImpl withComputeProfile(ClusterPoolResourcePropertiesComputeProfile computeProfile) {
-        this.innerModel().withComputeProfile(computeProfile);
-        return this;
-    }
-
-    public ClusterPoolImpl withNetworkProfile(ClusterPoolResourcePropertiesNetworkProfile networkProfile) {
-        this.innerModel().withNetworkProfile(networkProfile);
-        return this;
-    }
-
-    public ClusterPoolImpl withLogAnalyticsProfile(
-        ClusterPoolResourcePropertiesLogAnalyticsProfile logAnalyticsProfile) {
-        this.innerModel().withLogAnalyticsProfile(logAnalyticsProfile);
+    public ClusterPoolImpl withProperties(ClusterPoolResourceProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 

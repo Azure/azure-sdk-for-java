@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Diagnostics resource specific properties. */
+/**
+ * Diagnostics resource specific properties.
+ */
 @Fluent
 public final class DiagnosticsProperties {
     /*
@@ -35,13 +37,15 @@ public final class DiagnosticsProperties {
     @JsonProperty(value = "dataProviderMetadata")
     private DiagnosticDataProviderMetadata dataProviderMetadata;
 
-    /** Creates an instance of DiagnosticsProperties class. */
+    /**
+     * Creates an instance of DiagnosticsProperties class.
+     */
     public DiagnosticsProperties() {
     }
 
     /**
      * Get the metadata property: Metadata of the diagnostics response.
-     *
+     * 
      * @return the metadata value.
      */
     public DiagnosticsDefinition metadata() {
@@ -50,7 +54,7 @@ public final class DiagnosticsProperties {
 
     /**
      * Set the metadata property: Metadata of the diagnostics response.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the DiagnosticsProperties object itself.
      */
@@ -61,7 +65,7 @@ public final class DiagnosticsProperties {
 
     /**
      * Get the dataset property: Set of data collections associated with the response.
-     *
+     * 
      * @return the dataset value.
      */
     public List<DiagnosticsDataApiResponse> dataset() {
@@ -70,7 +74,7 @@ public final class DiagnosticsProperties {
 
     /**
      * Set the dataset property: Set of data collections associated with the response.
-     *
+     * 
      * @param dataset the dataset value to set.
      * @return the DiagnosticsProperties object itself.
      */
@@ -81,7 +85,7 @@ public final class DiagnosticsProperties {
 
     /**
      * Get the status property: Status of the diagnostics response.
-     *
+     * 
      * @return the status value.
      */
     public DiagnosticsStatus status() {
@@ -90,7 +94,7 @@ public final class DiagnosticsProperties {
 
     /**
      * Set the status property: Status of the diagnostics response.
-     *
+     * 
      * @param status the status value to set.
      * @return the DiagnosticsProperties object itself.
      */
@@ -101,7 +105,7 @@ public final class DiagnosticsProperties {
 
     /**
      * Get the dataProviderMetadata property: List of data providers' metadata.
-     *
+     * 
      * @return the dataProviderMetadata value.
      */
     public DiagnosticDataProviderMetadata dataProviderMetadata() {
@@ -110,7 +114,7 @@ public final class DiagnosticsProperties {
 
     /**
      * Set the dataProviderMetadata property: List of data providers' metadata.
-     *
+     * 
      * @param dataProviderMetadata the dataProviderMetadata value to set.
      * @return the DiagnosticsProperties object itself.
      */
@@ -121,7 +125,7 @@ public final class DiagnosticsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

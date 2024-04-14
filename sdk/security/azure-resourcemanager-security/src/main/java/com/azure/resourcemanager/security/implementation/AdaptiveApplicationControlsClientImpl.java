@@ -29,24 +29,28 @@ import com.azure.resourcemanager.security.fluent.models.AdaptiveApplicationContr
 import com.azure.resourcemanager.security.fluent.models.AdaptiveApplicationControlGroupsInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AdaptiveApplicationControlsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AdaptiveApplicationControlsClient.
+ */
 public final class AdaptiveApplicationControlsClientImpl implements AdaptiveApplicationControlsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AdaptiveApplicationControlsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityCenterImpl client;
 
     /**
      * Initializes an instance of AdaptiveApplicationControlsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AdaptiveApplicationControlsClientImpl(SecurityCenterImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    AdaptiveApplicationControlsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(AdaptiveApplicationControlsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,109 +61,77 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterAdapti")
     public interface AdaptiveApplicationControlsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/applicationWhitelistings")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AdaptiveApplicationControlGroupsInner>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<AdaptiveApplicationControlGroupsInner>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @QueryParam("includePathRecommendations") Boolean includePathRecommendations,
-            @QueryParam("summary") Boolean summary,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("summary") Boolean summary, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/applicationWhitelistings/{groupName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/applicationWhitelistings/{groupName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AdaptiveApplicationControlGroupInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("ascLocation") String ascLocation,
-            @PathParam("groupName") String groupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AdaptiveApplicationControlGroupInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("ascLocation") String ascLocation,
+            @PathParam("groupName") String groupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/applicationWhitelistings/{groupName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/applicationWhitelistings/{groupName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AdaptiveApplicationControlGroupInner>> put(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("ascLocation") String ascLocation,
-            @PathParam("groupName") String groupName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<AdaptiveApplicationControlGroupInner>> put(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("ascLocation") String ascLocation,
+            @PathParam("groupName") String groupName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AdaptiveApplicationControlGroupInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/applicationWhitelistings/{groupName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/applicationWhitelistings/{groupName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("ascLocation") String ascLocation,
-            @PathParam("groupName") String groupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("ascLocation") String ascLocation,
+            @PathParam("groupName") String groupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a list of application control machine groups for the subscription.
-     *
+     * 
      * @param includePathRecommendations Include the policy rules.
      * @param summary Return output in a summarized form.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of application control machine groups for the subscription along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AdaptiveApplicationControlGroupsInner>> listWithResponseAsync(
-        Boolean includePathRecommendations, Boolean summary) {
+    private Mono<Response<AdaptiveApplicationControlGroupsInner>>
+        listWithResponseAsync(Boolean includePathRecommendations, Boolean summary) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            includePathRecommendations,
-                            summary,
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+                includePathRecommendations, summary, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of application control machine groups for the subscription.
-     *
+     * 
      * @param includePathRecommendations Include the policy rules.
      * @param summary Return output in a summarized form.
      * @param context The context to associate with this operation.
@@ -167,44 +139,33 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of application control machine groups for the subscription along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AdaptiveApplicationControlGroupsInner>> listWithResponseAsync(
-        Boolean includePathRecommendations, Boolean summary, Context context) {
+    private Mono<Response<AdaptiveApplicationControlGroupsInner>>
+        listWithResponseAsync(Boolean includePathRecommendations, Boolean summary, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                apiVersion,
-                includePathRecommendations,
-                summary,
-                accept,
-                context);
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+            includePathRecommendations, summary, accept, context);
     }
 
     /**
      * Gets a list of application control machine groups for the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of application control machine groups for the subscription on successful completion of {@link
-     *     Mono}.
+     * @return a list of application control machine groups for the subscription on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AdaptiveApplicationControlGroupsInner> listAsync() {
@@ -216,7 +177,7 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
 
     /**
      * Gets a list of application control machine groups for the subscription.
-     *
+     * 
      * @param includePathRecommendations Include the policy rules.
      * @param summary Return output in a summarized form.
      * @param context The context to associate with this operation.
@@ -226,14 +187,14 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
      * @return a list of application control machine groups for the subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AdaptiveApplicationControlGroupsInner> listWithResponse(
-        Boolean includePathRecommendations, Boolean summary, Context context) {
+    public Response<AdaptiveApplicationControlGroupsInner> listWithResponse(Boolean includePathRecommendations,
+        Boolean summary, Context context) {
         return listWithResponseAsync(includePathRecommendations, summary, context).block();
     }
 
     /**
      * Gets a list of application control machine groups for the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of application control machine groups for the subscription.
@@ -247,30 +208,26 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
 
     /**
      * Gets an application control VM/server group.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param groupName Name of an application control machine group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application control VM/server group along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an application control VM/server group along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AdaptiveApplicationControlGroupInner>> getWithResponseAsync(
-        String ascLocation, String groupName) {
+    private Mono<Response<AdaptiveApplicationControlGroupInner>> getWithResponseAsync(String ascLocation,
+        String groupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
@@ -281,47 +238,34 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
         final String apiVersion = "2020-01-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            ascLocation,
-                            groupName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), ascLocation,
+                groupName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an application control VM/server group.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param groupName Name of an application control machine group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application control VM/server group along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an application control VM/server group along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AdaptiveApplicationControlGroupInner>> getWithResponseAsync(
-        String ascLocation, String groupName, Context context) {
+    private Mono<Response<AdaptiveApplicationControlGroupInner>> getWithResponseAsync(String ascLocation,
+        String groupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
@@ -332,22 +276,15 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
         final String apiVersion = "2020-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                ascLocation,
-                groupName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), ascLocation, groupName,
+            apiVersion, accept, context);
     }
 
     /**
      * Gets an application control VM/server group.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param groupName Name of an application control machine group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -361,9 +298,9 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
 
     /**
      * Gets an application control VM/server group.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param groupName Name of an application control machine group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -372,16 +309,16 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
      * @return an application control VM/server group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AdaptiveApplicationControlGroupInner> getWithResponse(
-        String ascLocation, String groupName, Context context) {
+    public Response<AdaptiveApplicationControlGroupInner> getWithResponse(String ascLocation, String groupName,
+        Context context) {
         return getWithResponseAsync(ascLocation, groupName, context).block();
     }
 
     /**
      * Gets an application control VM/server group.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param groupName Name of an application control machine group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -395,9 +332,9 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
 
     /**
      * Update an application control machine group.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param groupName Name of an application control machine group.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -406,19 +343,15 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AdaptiveApplicationControlGroupInner>> putWithResponseAsync(
-        String ascLocation, String groupName, AdaptiveApplicationControlGroupInner body) {
+    private Mono<Response<AdaptiveApplicationControlGroupInner>> putWithResponseAsync(String ascLocation,
+        String groupName, AdaptiveApplicationControlGroupInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
@@ -434,26 +367,16 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
         final String apiVersion = "2020-01-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .put(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            ascLocation,
-                            groupName,
-                            apiVersion,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.put(this.client.getEndpoint(), this.client.getSubscriptionId(), ascLocation,
+                groupName, apiVersion, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update an application control machine group.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param groupName Name of an application control machine group.
      * @param body The body parameter.
      * @param context The context to associate with this operation.
@@ -463,19 +386,15 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AdaptiveApplicationControlGroupInner>> putWithResponseAsync(
-        String ascLocation, String groupName, AdaptiveApplicationControlGroupInner body, Context context) {
+    private Mono<Response<AdaptiveApplicationControlGroupInner>> putWithResponseAsync(String ascLocation,
+        String groupName, AdaptiveApplicationControlGroupInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
@@ -491,23 +410,15 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
         final String apiVersion = "2020-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .put(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                ascLocation,
-                groupName,
-                apiVersion,
-                body,
-                accept,
-                context);
+        return service.put(this.client.getEndpoint(), this.client.getSubscriptionId(), ascLocation, groupName,
+            apiVersion, body, accept, context);
     }
 
     /**
      * Update an application control machine group.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param groupName Name of an application control machine group.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -516,16 +427,16 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AdaptiveApplicationControlGroupInner> putAsync(
-        String ascLocation, String groupName, AdaptiveApplicationControlGroupInner body) {
+    private Mono<AdaptiveApplicationControlGroupInner> putAsync(String ascLocation, String groupName,
+        AdaptiveApplicationControlGroupInner body) {
         return putWithResponseAsync(ascLocation, groupName, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update an application control machine group.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param groupName Name of an application control machine group.
      * @param body The body parameter.
      * @param context The context to associate with this operation.
@@ -535,16 +446,16 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AdaptiveApplicationControlGroupInner> putWithResponse(
-        String ascLocation, String groupName, AdaptiveApplicationControlGroupInner body, Context context) {
+    public Response<AdaptiveApplicationControlGroupInner> putWithResponse(String ascLocation, String groupName,
+        AdaptiveApplicationControlGroupInner body, Context context) {
         return putWithResponseAsync(ascLocation, groupName, body, context).block();
     }
 
     /**
      * Update an application control machine group.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param groupName Name of an application control machine group.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -553,16 +464,16 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AdaptiveApplicationControlGroupInner put(
-        String ascLocation, String groupName, AdaptiveApplicationControlGroupInner body) {
+    public AdaptiveApplicationControlGroupInner put(String ascLocation, String groupName,
+        AdaptiveApplicationControlGroupInner body) {
         return putWithResponse(ascLocation, groupName, body, Context.NONE).getValue();
     }
 
     /**
      * Delete an application control machine group.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param groupName Name of an application control machine group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -572,16 +483,12 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String ascLocation, String groupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
@@ -592,25 +499,16 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
         final String apiVersion = "2020-01-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            ascLocation,
-                            groupName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                ascLocation, groupName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete an application control machine group.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param groupName Name of an application control machine group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -621,16 +519,12 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String ascLocation, String groupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
@@ -641,22 +535,15 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
         final String apiVersion = "2020-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                ascLocation,
-                groupName,
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), ascLocation, groupName,
+            apiVersion, accept, context);
     }
 
     /**
      * Delete an application control machine group.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param groupName Name of an application control machine group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -670,9 +557,9 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
 
     /**
      * Delete an application control machine group.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param groupName Name of an application control machine group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -687,9 +574,9 @@ public final class AdaptiveApplicationControlsClientImpl implements AdaptiveAppl
 
     /**
      * Delete an application control machine group.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param groupName Name of an application control machine group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

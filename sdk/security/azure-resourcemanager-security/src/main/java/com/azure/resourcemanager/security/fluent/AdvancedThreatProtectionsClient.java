@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.AdvancedThreatProtectionSettingInner;
 
-/** An instance of this class provides access to all the operations defined in AdvancedThreatProtectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AdvancedThreatProtectionsClient.
+ */
 public interface AdvancedThreatProtectionsClient {
     /**
      * Gets the Advanced Threat Protection settings for the specified resource.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,7 +29,7 @@ public interface AdvancedThreatProtectionsClient {
 
     /**
      * Gets the Advanced Threat Protection settings for the specified resource.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -39,7 +41,7 @@ public interface AdvancedThreatProtectionsClient {
 
     /**
      * Creates or updates the Advanced Threat Protection settings on a specified resource.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param advancedThreatProtectionSetting Advanced Threat Protection Settings.
      * @param context The context to associate with this operation.
@@ -49,12 +51,12 @@ public interface AdvancedThreatProtectionsClient {
      * @return the Advanced Threat Protection resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AdvancedThreatProtectionSettingInner> createWithResponse(
-        String resourceId, AdvancedThreatProtectionSettingInner advancedThreatProtectionSetting, Context context);
+    Response<AdvancedThreatProtectionSettingInner> createWithResponse(String resourceId,
+        AdvancedThreatProtectionSettingInner advancedThreatProtectionSetting, Context context);
 
     /**
      * Creates or updates the Advanced Threat Protection settings on a specified resource.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param advancedThreatProtectionSetting Advanced Threat Protection Settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,6 +65,6 @@ public interface AdvancedThreatProtectionsClient {
      * @return the Advanced Threat Protection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AdvancedThreatProtectionSettingInner create(
-        String resourceId, AdvancedThreatProtectionSettingInner advancedThreatProtectionSetting);
+    AdvancedThreatProtectionSettingInner create(String resourceId,
+        AdvancedThreatProtectionSettingInner advancedThreatProtectionSetting);
 }

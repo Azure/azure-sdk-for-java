@@ -10,8 +10,8 @@ import com.azure.resourcemanager.security.models.AutomationAction;
 public final class AutomationActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutomationAction model =
-            BinaryData.fromString("{\"actionType\":\"AutomationAction\"}").toObject(AutomationAction.class);
+        AutomationAction model
+            = BinaryData.fromString("{\"actionType\":\"AutomationAction\"}").toObject(AutomationAction.class);
     }
 
     @org.junit.jupiter.api.Test

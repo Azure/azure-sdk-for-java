@@ -9,7 +9,9 @@ import com.azure.resourcemanager.support.fluent.models.OperationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of operations supported by Microsoft Support resource provider. */
+/**
+ * The list of operations supported by Microsoft Support resource provider.
+ */
 @Fluent
 public final class OperationsListResult {
     /*
@@ -18,13 +20,15 @@ public final class OperationsListResult {
     @JsonProperty(value = "value")
     private List<OperationInner> value;
 
-    /** Creates an instance of OperationsListResult class. */
+    /**
+     * Creates an instance of OperationsListResult class.
+     */
     public OperationsListResult() {
     }
 
     /**
      * Get the value property: The list of operations supported by Microsoft Support resource provider.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationInner> value() {
@@ -33,7 +37,7 @@ public final class OperationsListResult {
 
     /**
      * Set the value property: The list of operations supported by Microsoft Support resource provider.
-     *
+     * 
      * @param value the value value to set.
      * @return the OperationsListResult object itself.
      */
@@ -44,7 +48,7 @@ public final class OperationsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

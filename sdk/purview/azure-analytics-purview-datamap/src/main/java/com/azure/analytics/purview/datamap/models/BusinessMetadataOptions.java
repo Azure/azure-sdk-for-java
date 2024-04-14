@@ -16,7 +16,7 @@ public final class BusinessMetadataOptions {
      * InputStream of file
      */
     @Generated
-    private FileDetails file;
+    private final FileDetails file;
 
     /**
      * Creates an instance of BusinessMetadataOptions class.

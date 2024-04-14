@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The JitNetworkAccessPolicyInitiatePort model. */
+/**
+ * The JitNetworkAccessPolicyInitiatePort model.
+ */
 @Fluent
 public final class JitNetworkAccessPolicyInitiatePort {
     /*
@@ -31,13 +33,15 @@ public final class JitNetworkAccessPolicyInitiatePort {
     @JsonProperty(value = "endTimeUtc", required = true)
     private OffsetDateTime endTimeUtc;
 
-    /** Creates an instance of JitNetworkAccessPolicyInitiatePort class. */
+    /**
+     * Creates an instance of JitNetworkAccessPolicyInitiatePort class.
+     */
     public JitNetworkAccessPolicyInitiatePort() {
     }
 
     /**
      * Get the number property: The number property.
-     *
+     * 
      * @return the number value.
      */
     public int number() {
@@ -46,7 +50,7 @@ public final class JitNetworkAccessPolicyInitiatePort {
 
     /**
      * Set the number property: The number property.
-     *
+     * 
      * @param number the number value to set.
      * @return the JitNetworkAccessPolicyInitiatePort object itself.
      */
@@ -58,7 +62,7 @@ public final class JitNetworkAccessPolicyInitiatePort {
     /**
      * Get the allowedSourceAddressPrefix property: Source of the allowed traffic. If omitted, the request will be for
      * the source IP address of the initiate request.
-     *
+     * 
      * @return the allowedSourceAddressPrefix value.
      */
     public String allowedSourceAddressPrefix() {
@@ -68,7 +72,7 @@ public final class JitNetworkAccessPolicyInitiatePort {
     /**
      * Set the allowedSourceAddressPrefix property: Source of the allowed traffic. If omitted, the request will be for
      * the source IP address of the initiate request.
-     *
+     * 
      * @param allowedSourceAddressPrefix the allowedSourceAddressPrefix value to set.
      * @return the JitNetworkAccessPolicyInitiatePort object itself.
      */
@@ -79,7 +83,7 @@ public final class JitNetworkAccessPolicyInitiatePort {
 
     /**
      * Get the endTimeUtc property: The time to close the request in UTC.
-     *
+     * 
      * @return the endTimeUtc value.
      */
     public OffsetDateTime endTimeUtc() {
@@ -88,7 +92,7 @@ public final class JitNetworkAccessPolicyInitiatePort {
 
     /**
      * Set the endTimeUtc property: The time to close the request in UTC.
-     *
+     * 
      * @param endTimeUtc the endTimeUtc value to set.
      * @return the JitNetworkAccessPolicyInitiatePort object itself.
      */
@@ -99,15 +103,13 @@ public final class JitNetworkAccessPolicyInitiatePort {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (endTimeUtc() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endTimeUtc in model JitNetworkAccessPolicyInitiatePort"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property endTimeUtc in model JitNetworkAccessPolicyInitiatePort"));
         }
     }
 

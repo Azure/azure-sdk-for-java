@@ -12,31 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderForServersAwsOfferingArcAutoProvisioningTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderForServersAwsOfferingArcAutoProvisioning model =
-            BinaryData
-                .fromString(
-                    "{\"enabled\":true,\"cloudRoleArn\":\"cmkrftsjcwjj\",\"configuration\":{\"proxy\":\"mb\",\"privateLinkScope\":\"vifdxkecifhocjx\"}}")
-                .toObject(DefenderForServersAwsOfferingArcAutoProvisioning.class);
+        DefenderForServersAwsOfferingArcAutoProvisioning model = BinaryData.fromString(
+            "{\"enabled\":true,\"cloudRoleArn\":\"qxmyzkl\",\"configuration\":{\"proxy\":\"n\",\"privateLinkScope\":\"hrvmzrqrazadi\"}}")
+            .toObject(DefenderForServersAwsOfferingArcAutoProvisioning.class);
         Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("cmkrftsjcwjj", model.cloudRoleArn());
-        Assertions.assertEquals("mb", model.configuration().proxy());
-        Assertions.assertEquals("vifdxkecifhocjx", model.configuration().privateLinkScope());
+        Assertions.assertEquals("qxmyzkl", model.cloudRoleArn());
+        Assertions.assertEquals("n", model.configuration().proxy());
+        Assertions.assertEquals("hrvmzrqrazadi", model.configuration().privateLinkScope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForServersAwsOfferingArcAutoProvisioning model =
-            new DefenderForServersAwsOfferingArcAutoProvisioning()
-                .withEnabled(true)
-                .withCloudRoleArn("cmkrftsjcwjj")
-                .withConfiguration(
-                    new DefenderForServersAwsOfferingArcAutoProvisioningConfiguration()
-                        .withProxy("mb")
-                        .withPrivateLinkScope("vifdxkecifhocjx"));
+        DefenderForServersAwsOfferingArcAutoProvisioning model
+            = new DefenderForServersAwsOfferingArcAutoProvisioning().withEnabled(true).withCloudRoleArn("qxmyzkl")
+                .withConfiguration(new DefenderForServersAwsOfferingArcAutoProvisioningConfiguration().withProxy("n")
+                    .withPrivateLinkScope("hrvmzrqrazadi"));
         model = BinaryData.fromObject(model).toObject(DefenderForServersAwsOfferingArcAutoProvisioning.class);
         Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("cmkrftsjcwjj", model.cloudRoleArn());
-        Assertions.assertEquals("mb", model.configuration().proxy());
-        Assertions.assertEquals("vifdxkecifhocjx", model.configuration().privateLinkScope());
+        Assertions.assertEquals("qxmyzkl", model.cloudRoleArn());
+        Assertions.assertEquals("n", model.configuration().proxy());
+        Assertions.assertEquals("hrvmzrqrazadi", model.configuration().privateLinkScope());
     }
 }

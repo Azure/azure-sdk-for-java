@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Custom entity store assignment. */
+/**
+ * Custom entity store assignment.
+ */
 @Fluent
 public final class CustomEntityStoreAssignmentInner extends ProxyResource {
     /*
@@ -24,13 +26,15 @@ public final class CustomEntityStoreAssignmentInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private CustomEntityStoreAssignmentProperties innerProperties;
 
-    /** Creates an instance of CustomEntityStoreAssignmentInner class. */
+    /**
+     * Creates an instance of CustomEntityStoreAssignmentInner class.
+     */
     public CustomEntityStoreAssignmentInner() {
     }
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -39,7 +43,7 @@ public final class CustomEntityStoreAssignmentInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: describes custom entity store assignment properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CustomEntityStoreAssignmentProperties innerProperties() {
@@ -49,7 +53,7 @@ public final class CustomEntityStoreAssignmentInner extends ProxyResource {
     /**
      * Get the principal property: The principal assigned with entity store. Format of principal is: [AAD
      * type]=[PrincipalObjectId];[TenantId].
-     *
+     * 
      * @return the principal value.
      */
     public String principal() {
@@ -59,7 +63,7 @@ public final class CustomEntityStoreAssignmentInner extends ProxyResource {
     /**
      * Set the principal property: The principal assigned with entity store. Format of principal is: [AAD
      * type]=[PrincipalObjectId];[TenantId].
-     *
+     * 
      * @param principal the principal value to set.
      * @return the CustomEntityStoreAssignmentInner object itself.
      */
@@ -73,7 +77,7 @@ public final class CustomEntityStoreAssignmentInner extends ProxyResource {
 
     /**
      * Get the entityStoreDatabaseLink property: The link to entity store database.
-     *
+     * 
      * @return the entityStoreDatabaseLink value.
      */
     public String entityStoreDatabaseLink() {
@@ -82,7 +86,7 @@ public final class CustomEntityStoreAssignmentInner extends ProxyResource {
 
     /**
      * Set the entityStoreDatabaseLink property: The link to entity store database.
-     *
+     * 
      * @param entityStoreDatabaseLink the entityStoreDatabaseLink value to set.
      * @return the CustomEntityStoreAssignmentInner object itself.
      */
@@ -96,7 +100,7 @@ public final class CustomEntityStoreAssignmentInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

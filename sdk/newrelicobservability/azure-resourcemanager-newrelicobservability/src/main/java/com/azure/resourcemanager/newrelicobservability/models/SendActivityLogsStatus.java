@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates whether activity logs are being sent. */
+/**
+ * Indicates whether activity logs are being sent.
+ */
 public final class SendActivityLogsStatus extends ExpandableStringEnum<SendActivityLogsStatus> {
-    /** Static value Enabled for SendActivityLogsStatus. */
+    /**
+     * Static value Enabled for SendActivityLogsStatus.
+     */
     public static final SendActivityLogsStatus ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for SendActivityLogsStatus. */
+    /**
+     * Static value Disabled for SendActivityLogsStatus.
+     */
     public static final SendActivityLogsStatus DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of SendActivityLogsStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class SendActivityLogsStatus extends ExpandableStringEnum<SendActiv
 
     /**
      * Creates or finds a SendActivityLogsStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SendActivityLogsStatus.
      */
@@ -38,7 +44,7 @@ public final class SendActivityLogsStatus extends ExpandableStringEnum<SendActiv
 
     /**
      * Gets known SendActivityLogsStatus values.
-     *
+     * 
      * @return known SendActivityLogsStatus values.
      */
     public static Collection<SendActivityLogsStatus> values() {

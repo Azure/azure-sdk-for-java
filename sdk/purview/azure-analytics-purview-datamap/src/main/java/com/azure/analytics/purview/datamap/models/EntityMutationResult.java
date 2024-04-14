@@ -6,7 +6,11 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,26 +18,23 @@ import java.util.Map;
  * The mutation response result of entity.
  */
 @Immutable
-public final class EntityMutationResult {
+public final class EntityMutationResult implements JsonSerializable<EntityMutationResult> {
     /*
      * A map of GUID assignments with entities.
      */
     @Generated
-    @JsonProperty(value = "guidAssignments")
     private Map<String, String> guidAssignments;
 
     /*
      * The entity headers of mutated entities.
      */
     @Generated
-    @JsonProperty(value = "mutatedEntities")
     private Map<String, List<AtlasEntityHeader>> mutatedEntities;
 
     /*
      * An array of entity headers that partially updated.
      */
     @Generated
-    @JsonProperty(value = "partialUpdatedEntities")
     private List<AtlasEntityHeader> partialUpdatedEntities;
 
     /**
@@ -71,5 +72,57 @@ public final class EntityMutationResult {
     @Generated
     public List<AtlasEntityHeader> getPartialUpdatedEntities() {
         return this.partialUpdatedEntities;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("guidAssignments", this.guidAssignments,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("mutatedEntities", this.mutatedEntities,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1)));
+        jsonWriter.writeArrayField("partialUpdatedEntities", this.partialUpdatedEntities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityMutationResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityMutationResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EntityMutationResult.
+     */
+    @Generated
+    public static EntityMutationResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EntityMutationResult deserializedEntityMutationResult = new EntityMutationResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("guidAssignments".equals(fieldName)) {
+                    Map<String, String> guidAssignments = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEntityMutationResult.guidAssignments = guidAssignments;
+                } else if ("mutatedEntities".equals(fieldName)) {
+                    Map<String, List<AtlasEntityHeader>> mutatedEntities
+                        = reader.readMap(reader1 -> reader1.readArray(reader2 -> AtlasEntityHeader.fromJson(reader2)));
+                    deserializedEntityMutationResult.mutatedEntities = mutatedEntities;
+                } else if ("partialUpdatedEntities".equals(fieldName)) {
+                    List<AtlasEntityHeader> partialUpdatedEntities
+                        = reader.readArray(reader1 -> AtlasEntityHeader.fromJson(reader1));
+                    deserializedEntityMutationResult.partialUpdatedEntities = partialUpdatedEntities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntityMutationResult;
+        });
     }
 }

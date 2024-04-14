@@ -16,125 +16,162 @@ import com.azure.resourcemanager.notificationhubs.fluent.models.PnsCredentialsRe
 import com.azure.resourcemanager.notificationhubs.fluent.models.ResourceListKeysInner;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.notificationhubs.models.CheckAvailabilityParameters;
-import com.azure.resourcemanager.notificationhubs.models.NotificationHubCreateOrUpdateParameters;
 import com.azure.resourcemanager.notificationhubs.models.NotificationHubPatchParameters;
-import com.azure.resourcemanager.notificationhubs.models.PolicykeyResource;
-import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleCreateOrUpdateParameters;
+import com.azure.resourcemanager.notificationhubs.models.PolicyKeyResource;
 
-/** An instance of this class provides access to all the operations defined in NotificationHubsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NotificationHubsClient.
+ */
 public interface NotificationHubsClient {
     /**
      * Checks the availability of the given notificationHub in a namespace.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param parameters The notificationHub name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param parameters Request content.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a CheckAvailability resource.
+     * @return description of a CheckAvailability resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckAvailabilityResultInner checkNotificationHubAvailability(
-        String resourceGroupName, String namespaceName, CheckAvailabilityParameters parameters);
+    Response<CheckAvailabilityResultInner> checkNotificationHubAvailabilityWithResponse(String resourceGroupName,
+        String namespaceName, CheckAvailabilityParameters parameters, Context context);
 
     /**
      * Checks the availability of the given notificationHub in a namespace.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param parameters The notificationHub name.
-     * @param context The context to associate with this operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param parameters Request content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a CheckAvailability resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckAvailabilityResultInner> checkNotificationHubAvailabilityWithResponse(
-        String resourceGroupName, String namespaceName, CheckAvailabilityParameters parameters, Context context);
+    CheckAvailabilityResultInner checkNotificationHubAvailability(String resourceGroupName, String namespaceName,
+        CheckAvailabilityParameters parameters);
 
     /**
-     * Creates/Update a NotificationHub in a namespace.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
-     * @param parameters Parameters supplied to the create/update a NotificationHub Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a NotificationHub Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NotificationHubResourceInner createOrUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        String notificationHubName,
-        NotificationHubCreateOrUpdateParameters parameters);
-
-    /**
-     * Creates/Update a NotificationHub in a namespace.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
-     * @param parameters Parameters supplied to the create/update a NotificationHub Resource.
+     * Gets the notification hub.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a NotificationHub Resource.
+     * @return the notification hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NotificationHubResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String notificationHubName,
-        NotificationHubCreateOrUpdateParameters parameters,
-        Context context);
+    Response<NotificationHubResourceInner> getWithResponse(String resourceGroupName, String namespaceName,
+        String notificationHubName, Context context);
 
     /**
-     * Patch a NotificationHub in a namespace.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
+     * Gets the notification hub.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a NotificationHub Resource.
+     * @return the notification hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NotificationHubResourceInner patch(String resourceGroupName, String namespaceName, String notificationHubName);
+    NotificationHubResourceInner get(String resourceGroupName, String namespaceName, String notificationHubName);
 
     /**
-     * Patch a NotificationHub in a namespace.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
-     * @param parameters Parameters supplied to patch a NotificationHub Resource.
+     * Creates/Update a NotificationHub in a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
+     * @param parameters Request content.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a NotificationHub Resource.
+     * @return notification Hub Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NotificationHubResourceInner> patchWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String notificationHubName,
-        NotificationHubPatchParameters parameters,
+    Response<NotificationHubResourceInner> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
+        String notificationHubName, NotificationHubResourceInner parameters, Context context);
+
+    /**
+     * Creates/Update a NotificationHub in a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
+     * @param parameters Request content.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return notification Hub Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NotificationHubResourceInner createOrUpdate(String resourceGroupName, String namespaceName,
+        String notificationHubName, NotificationHubResourceInner parameters);
+
+    /**
+     * Patch a NotificationHub in a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
+     * @param parameters Request content.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return notification Hub Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<NotificationHubResourceInner> updateWithResponse(String resourceGroupName, String namespaceName,
+        String notificationHubName, NotificationHubPatchParameters parameters, Context context);
+
+    /**
+     * Patch a NotificationHub in a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
+     * @param parameters Request content.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return notification Hub Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NotificationHubResourceInner update(String resourceGroupName, String namespaceName, String notificationHubName,
+        NotificationHubPatchParameters parameters);
+
+    /**
+     * Deletes a notification hub associated with a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String namespaceName, String notificationHubName,
         Context context);
 
     /**
      * Deletes a notification hub associated with a namespace.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -143,57 +180,57 @@ public interface NotificationHubsClient {
     void delete(String resourceGroupName, String namespaceName, String notificationHubName);
 
     /**
-     * Deletes a notification hub associated with a namespace.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
+     * Lists the notification hubs associated with a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the List NotificationHub operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<NotificationHubResourceInner> list(String resourceGroupName, String namespaceName);
+
+    /**
+     * Lists the notification hubs associated with a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param skipToken Continuation token.
+     * @param top Page size.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of the List NotificationHub operation as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String namespaceName, String notificationHubName, Context context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<NotificationHubResourceInner> list(String resourceGroupName, String namespaceName, String skipToken,
+        Integer top, Context context);
 
     /**
-     * Lists the notification hubs associated with a namespace.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a NotificationHub Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NotificationHubResourceInner get(String resourceGroupName, String namespaceName, String notificationHubName);
-
-    /**
-     * Lists the notification hubs associated with a namespace.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
+     * Test send a push notification.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a NotificationHub Resource.
+     * @return description of a NotificationHub Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NotificationHubResourceInner> getWithResponse(
-        String resourceGroupName, String namespaceName, String notificationHubName, Context context);
+    Response<DebugSendResponseInner> debugSendWithResponse(String resourceGroupName, String namespaceName,
+        String notificationHubName, Context context);
 
     /**
-     * test send a push notification.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
+     * Test send a push notification.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -203,306 +240,235 @@ public interface NotificationHubsClient {
     DebugSendResponseInner debugSend(String resourceGroupName, String namespaceName, String notificationHubName);
 
     /**
-     * test send a push notification.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
-     * @param parameters Debug send parameters.
+     * Creates/Updates an authorization rule for a NotificationHub.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
+     * @param authorizationRuleName Authorization Rule Name.
+     * @param parameters Request content.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a NotificationHub Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DebugSendResponseInner> debugSendWithResponse(
-        String resourceGroupName, String namespaceName, String notificationHubName, Object parameters, Context context);
-
-    /**
-     * Creates/Updates an authorization rule for a NotificationHub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
-     * @param authorizationRuleName Authorization Rule Name.
-     * @param parameters The shared access authorization rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a Namespace AuthorizationRules.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedAccessAuthorizationRuleResourceInner createOrUpdateAuthorizationRule(
-        String resourceGroupName,
-        String namespaceName,
-        String notificationHubName,
-        String authorizationRuleName,
-        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters);
-
-    /**
-     * Creates/Updates an authorization rule for a NotificationHub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
-     * @param authorizationRuleName Authorization Rule Name.
-     * @param parameters The shared access authorization rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a Namespace AuthorizationRules.
+     * @return response for POST requests that return single SharedAccessAuthorizationRule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SharedAccessAuthorizationRuleResourceInner> createOrUpdateAuthorizationRuleWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String notificationHubName,
-        String authorizationRuleName,
-        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters,
-        Context context);
+        String resourceGroupName, String namespaceName, String notificationHubName, String authorizationRuleName,
+        SharedAccessAuthorizationRuleResourceInner parameters, Context context);
+
+    /**
+     * Creates/Updates an authorization rule for a NotificationHub.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
+     * @param authorizationRuleName Authorization Rule Name.
+     * @param parameters Request content.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for POST requests that return single SharedAccessAuthorizationRule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SharedAccessAuthorizationRuleResourceInner createOrUpdateAuthorizationRule(String resourceGroupName,
+        String namespaceName, String notificationHubName, String authorizationRuleName,
+        SharedAccessAuthorizationRuleResourceInner parameters);
 
     /**
      * Deletes a notificationHub authorization rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
+     * @param authorizationRuleName Authorization Rule Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteAuthorizationRuleWithResponse(String resourceGroupName, String namespaceName,
+        String notificationHubName, String authorizationRuleName, Context context);
+
+    /**
+     * Deletes a notificationHub authorization rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
      * @param authorizationRuleName Authorization Rule Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteAuthorizationRule(
-        String resourceGroupName, String namespaceName, String notificationHubName, String authorizationRuleName);
+    void deleteAuthorizationRule(String resourceGroupName, String namespaceName, String notificationHubName,
+        String authorizationRuleName);
 
     /**
-     * Deletes a notificationHub authorization rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
+     * Gets an authorization rule for a NotificationHub by name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
      * @param authorizationRuleName Authorization Rule Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return an authorization rule for a NotificationHub by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteAuthorizationRuleWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String notificationHubName,
-        String authorizationRuleName,
-        Context context);
+    Response<SharedAccessAuthorizationRuleResourceInner> getAuthorizationRuleWithResponse(String resourceGroupName,
+        String namespaceName, String notificationHubName, String authorizationRuleName, Context context);
 
     /**
      * Gets an authorization rule for a NotificationHub by name.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
-     * @param authorizationRuleName authorization rule name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
+     * @param authorizationRuleName Authorization Rule Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an authorization rule for a NotificationHub by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedAccessAuthorizationRuleResourceInner getAuthorizationRule(
-        String resourceGroupName, String namespaceName, String notificationHubName, String authorizationRuleName);
-
-    /**
-     * Gets an authorization rule for a NotificationHub by name.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
-     * @param authorizationRuleName authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a NotificationHub by name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SharedAccessAuthorizationRuleResourceInner> getAuthorizationRuleWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String notificationHubName,
-        String authorizationRuleName,
-        Context context);
-
-    /**
-     * Lists the notification hubs associated with a namespace.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List NotificationHub operation.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NotificationHubResourceInner> list(String resourceGroupName, String namespaceName);
-
-    /**
-     * Lists the notification hubs associated with a namespace.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List NotificationHub operation.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NotificationHubResourceInner> list(String resourceGroupName, String namespaceName, Context context);
+    SharedAccessAuthorizationRuleResourceInner getAuthorizationRule(String resourceGroupName, String namespaceName,
+        String notificationHubName, String authorizationRuleName);
 
     /**
      * Gets the authorization rules for a NotificationHub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization rules for a NotificationHub.
+     * @return the authorization rules for a NotificationHub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRules(
-        String resourceGroupName, String namespaceName, String notificationHubName);
+    PagedIterable<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRules(String resourceGroupName,
+        String namespaceName, String notificationHubName);
 
     /**
      * Gets the authorization rules for a NotificationHub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization rules for a NotificationHub.
+     * @return the authorization rules for a NotificationHub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRules(
-        String resourceGroupName, String namespaceName, String notificationHubName, Context context);
+    PagedIterable<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRules(String resourceGroupName,
+        String namespaceName, String notificationHubName, Context context);
 
     /**
      * Gets the Primary and Secondary ConnectionStrings to the NotificationHub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
-     * @param authorizationRuleName The connection string of the NotificationHub for the specified authorizationRule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
+     * @param authorizationRuleName Authorization Rule Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Primary and Secondary ConnectionStrings to the NotificationHub along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ResourceListKeysInner> listKeysWithResponse(String resourceGroupName, String namespaceName,
+        String notificationHubName, String authorizationRuleName, Context context);
+
+    /**
+     * Gets the Primary and Secondary ConnectionStrings to the NotificationHub.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
+     * @param authorizationRuleName Authorization Rule Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Primary and Secondary ConnectionStrings to the NotificationHub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourceListKeysInner listKeys(
-        String resourceGroupName, String namespaceName, String notificationHubName, String authorizationRuleName);
+    ResourceListKeysInner listKeys(String resourceGroupName, String namespaceName, String notificationHubName,
+        String authorizationRuleName);
 
     /**
-     * Gets the Primary and Secondary ConnectionStrings to the NotificationHub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
-     * @param authorizationRuleName The connection string of the NotificationHub for the specified authorizationRule.
+     * Regenerates the Primary/Secondary Keys to the NotificationHub Authorization Rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
+     * @param authorizationRuleName Authorization Rule Name.
+     * @param parameters Request content.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Primary and Secondary ConnectionStrings to the NotificationHub.
+     * @return response for the POST request that returns Namespace or NotificationHub access keys (connection strings)
+     * along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourceListKeysInner> listKeysWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String notificationHubName,
-        String authorizationRuleName,
-        Context context);
+    Response<ResourceListKeysInner> regenerateKeysWithResponse(String resourceGroupName, String namespaceName,
+        String notificationHubName, String authorizationRuleName, PolicyKeyResource parameters, Context context);
 
     /**
      * Regenerates the Primary/Secondary Keys to the NotificationHub Authorization Rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
-     * @param authorizationRuleName The connection string of the NotificationHub for the specified authorizationRule.
-     * @param parameters Parameters supplied to regenerate the NotificationHub Authorization Rule Key.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
+     * @param authorizationRuleName Authorization Rule Name.
+     * @param parameters Request content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/NotificationHub Connection String.
+     * @return response for the POST request that returns Namespace or NotificationHub access keys (connection strings).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourceListKeysInner regenerateKeys(
-        String resourceGroupName,
-        String namespaceName,
-        String notificationHubName,
-        String authorizationRuleName,
-        PolicykeyResource parameters);
+    ResourceListKeysInner regenerateKeys(String resourceGroupName, String namespaceName, String notificationHubName,
+        String authorizationRuleName, PolicyKeyResource parameters);
 
     /**
-     * Regenerates the Primary/Secondary Keys to the NotificationHub Authorization Rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
-     * @param authorizationRuleName The connection string of the NotificationHub for the specified authorizationRule.
-     * @param parameters Parameters supplied to regenerate the NotificationHub Authorization Rule Key.
+     * Lists the PNS Credentials associated with a notification hub.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/NotificationHub Connection String.
+     * @return description of a NotificationHub PNS Credentials along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourceListKeysInner> regenerateKeysWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String notificationHubName,
-        String authorizationRuleName,
-        PolicykeyResource parameters,
-        Context context);
+    Response<PnsCredentialsResourceInner> getPnsCredentialsWithResponse(String resourceGroupName, String namespaceName,
+        String notificationHubName, Context context);
 
     /**
-     * Lists the PNS Credentials associated with a notification hub .
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
+     * Lists the PNS Credentials associated with a notification hub.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName Namespace name.
+     * @param notificationHubName Notification Hub name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a NotificationHub PNS Credentials.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PnsCredentialsResourceInner getPnsCredentials(
-        String resourceGroupName, String namespaceName, String notificationHubName);
-
-    /**
-     * Lists the PNS Credentials associated with a notification hub .
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param notificationHubName The notification hub name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a NotificationHub PNS Credentials.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PnsCredentialsResourceInner> getPnsCredentialsWithResponse(
-        String resourceGroupName, String namespaceName, String notificationHubName, Context context);
+    PnsCredentialsResourceInner getPnsCredentials(String resourceGroupName, String namespaceName,
+        String notificationHubName);
 }

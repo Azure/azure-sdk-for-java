@@ -758,23 +758,105 @@ public class ReactiveCosmosTemplateIT {
     }
 
     @Test
-    public void queryWithQueryMerticsEnabled() throws ClassNotFoundException {
+    public void queryDatabaseWithQueryMetricsEnabledFlag() throws ClassNotFoundException {
         final CosmosConfig config = CosmosConfig.builder()
-            .enableQueryMetrics(true)
-            .build();
+                                                .enableQueryMetrics(true)
+                                                .build();
         final ReactiveCosmosTemplate queryMetricsEnabledCosmosTemplate = createReactiveCosmosTemplate(config, TestConstants.DB_NAME);
 
-        final AuditableEntity entity = new AuditableEntity();
-        entity.setId(UUID.randomUUID().toString());
-
-        auditableRepository.save(entity);
-
-        Criteria equals = Criteria.getInstance(CriteriaType.IS_EQUAL, "id", Collections.singletonList(entity.getId()), Part.IgnoreCaseType.NEVER);
-        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(equals));
-        final Flux<AuditableEntity> flux = queryMetricsEnabledCosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class);
-
-        StepVerifier.create(flux).expectNextCount(1).verifyComplete();
         assertEquals((boolean) ReflectionTestUtils.getField(queryMetricsEnabledCosmosTemplate, "queryMetricsEnabled"), true);
+    }
+
+    @Test
+    public void queryDatabaseWithIndexMetricsEnabledFlag() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+            .enableIndexMetrics(true)
+            .build();
+        final ReactiveCosmosTemplate indexMetricsEnabledCosmosTemplate = createReactiveCosmosTemplate(config, TestConstants.DB_NAME);
+
+        assertEquals((boolean) ReflectionTestUtils.getField(indexMetricsEnabledCosmosTemplate, "indexMetricsEnabled"), true);
+    }
+
+    @Test
+    public void queryWithIndexMetricsEnabled() {
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+        final Flux<Person> personFlux = cosmosTemplate.find(query, Person.class,
+            Person.class.getSimpleName());
+
+        StepVerifier.create(personFlux).expectNextCount(1).verifyComplete();
+        String queryDiagnostics = responseDiagnosticsTestUtils.getCosmosDiagnostics().toString();
+
+        assertThat(queryDiagnostics).contains("\"indexUtilizationInfo\"");
+        assertThat(queryDiagnostics).contains("\"UtilizedSingleIndexes\"");
+        assertThat(queryDiagnostics).contains("\"PotentialSingleIndexes\"");
+        assertThat(queryDiagnostics).contains("\"UtilizedCompositeIndexes\"");
+        assertThat(queryDiagnostics).contains("\"PotentialCompositeIndexes\"");
+    }
+
+    @Test
+    public void queryWithQueryMetricsEnabled() {
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+        final Flux<Person> personFlux = cosmosTemplate.find(query, Person.class,
+            Person.class.getSimpleName());
+
+        StepVerifier.create(personFlux).expectNextCount(1).verifyComplete();
+        String queryDiagnostics = responseDiagnosticsTestUtils.getCosmosDiagnostics().toString();
+
+        assertThat(queryDiagnostics).contains("retrievedDocumentCount");
+        assertThat(queryDiagnostics).contains("queryPreparationTimes");
+        assertThat(queryDiagnostics).contains("runtimeExecutionTimes");
+        assertThat(queryDiagnostics).contains("fetchExecutionRanges");
+    }
+
+    @Test
+    public void queryWithIndexMetricsDisabled() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+            .enableIndexMetrics(false)
+            .build();
+        final ReactiveCosmosTemplate indexMetricsDisabledCosmosTemplate = createReactiveCosmosTemplate(config, TestConstants.DB_NAME);
+        assertEquals((boolean) ReflectionTestUtils.getField(indexMetricsDisabledCosmosTemplate, "indexMetricsEnabled"), false);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+        final Flux<Person> personFlux = indexMetricsDisabledCosmosTemplate.find(query, Person.class,
+            Person.class.getSimpleName());
+
+        StepVerifier.create(personFlux).expectNextCount(1).verifyComplete();
+        String queryDiagnostics = responseDiagnosticsTestUtils.getCosmosDiagnostics().toString();
+
+        assertThat(queryDiagnostics).doesNotContain("\"indexUtilizationInfo\"");
+        assertThat(queryDiagnostics).doesNotContain("\"UtilizedSingleIndexes\"");
+        assertThat(queryDiagnostics).doesNotContain("\"PotentialSingleIndexes\"");
+        assertThat(queryDiagnostics).doesNotContain("\"UtilizedCompositeIndexes\"");
+        assertThat(queryDiagnostics).doesNotContain("\"PotentialCompositeIndexes\"");
+    }
+
+    @Test
+    public void queryWithQueryMetricsDisabled() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+            .enableQueryMetrics(false)
+            .build();
+        final ReactiveCosmosTemplate queryMetricsDisabledCosmosTemplate = createReactiveCosmosTemplate(config, TestConstants.DB_NAME);
+        assertEquals((boolean) ReflectionTestUtils.getField(queryMetricsDisabledCosmosTemplate, "queryMetricsEnabled"), false);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+        final Flux<Person> personFlux = queryMetricsDisabledCosmosTemplate.find(query, Person.class,
+            Person.class.getSimpleName());
+
+        StepVerifier.create(personFlux).expectNextCount(1).verifyComplete();
+        String queryDiagnostics = responseDiagnosticsTestUtils.getCosmosDiagnostics().toString();
+
+        assertThat(queryDiagnostics).doesNotContain("retrievedDocumentCount");
+        assertThat(queryDiagnostics).doesNotContain("queryPreparationTimes");
+        assertThat(queryDiagnostics).doesNotContain("runtimeExecutionTimes");
+        assertThat(queryDiagnostics).doesNotContain("fetchExecutionRanges");
     }
 
     @Test

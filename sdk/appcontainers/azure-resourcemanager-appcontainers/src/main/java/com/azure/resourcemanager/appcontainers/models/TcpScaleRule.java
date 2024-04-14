@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Container App container Tcp scaling rule. */
+/**
+ * Container App container Tcp scaling rule.
+ */
 @Fluent
 public final class TcpScaleRule {
     /*
@@ -26,13 +28,15 @@ public final class TcpScaleRule {
     @JsonProperty(value = "auth")
     private List<ScaleRuleAuth> auth;
 
-    /** Creates an instance of TcpScaleRule class. */
+    /**
+     * Creates an instance of TcpScaleRule class.
+     */
     public TcpScaleRule() {
     }
 
     /**
      * Get the metadata property: Metadata properties to describe tcp scale rule.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -41,7 +45,7 @@ public final class TcpScaleRule {
 
     /**
      * Set the metadata property: Metadata properties to describe tcp scale rule.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the TcpScaleRule object itself.
      */
@@ -52,7 +56,7 @@ public final class TcpScaleRule {
 
     /**
      * Get the auth property: Authentication secrets for the tcp scale rule.
-     *
+     * 
      * @return the auth value.
      */
     public List<ScaleRuleAuth> auth() {
@@ -61,7 +65,7 @@ public final class TcpScaleRule {
 
     /**
      * Set the auth property: Authentication secrets for the tcp scale rule.
-     *
+     * 
      * @param auth the auth value to set.
      * @return the TcpScaleRule object itself.
      */
@@ -72,7 +76,7 @@ public final class TcpScaleRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

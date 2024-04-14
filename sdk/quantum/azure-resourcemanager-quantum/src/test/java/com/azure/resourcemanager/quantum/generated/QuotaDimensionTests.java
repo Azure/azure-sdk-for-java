@@ -11,41 +11,32 @@ import org.junit.jupiter.api.Assertions;
 public final class QuotaDimensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaDimension model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"cjefuzmu\",\"scope\":\"bttdumorppxe\",\"period\":\"nzbtbhj\",\"quota\":21.287733,\"name\":\"fgohdneuelfphs\",\"description\":\"htozfikdow\",\"unit\":\"uuvxz\",\"unitPlural\":\"lvithhqzonosgg\"}")
-                .toObject(QuotaDimension.class);
-        Assertions.assertEquals("cjefuzmu", model.id());
-        Assertions.assertEquals("bttdumorppxe", model.scope());
-        Assertions.assertEquals("nzbtbhj", model.period());
-        Assertions.assertEquals(21.287733F, model.quota());
-        Assertions.assertEquals("fgohdneuelfphs", model.name());
-        Assertions.assertEquals("htozfikdow", model.description());
-        Assertions.assertEquals("uuvxz", model.unit());
-        Assertions.assertEquals("lvithhqzonosgg", model.unitPlural());
+        QuotaDimension model = BinaryData.fromString(
+            "{\"id\":\"hzdxssadbzm\",\"scope\":\"dfznudaodv\",\"period\":\"bncblylpstdbhhx\",\"quota\":95.43601,\"name\":\"zucerscdntnev\",\"description\":\"wjmy\",\"unit\":\"dsslswt\",\"unitPlural\":\"eriofzpyqs\"}")
+            .toObject(QuotaDimension.class);
+        Assertions.assertEquals("hzdxssadbzm", model.id());
+        Assertions.assertEquals("dfznudaodv", model.scope());
+        Assertions.assertEquals("bncblylpstdbhhx", model.period());
+        Assertions.assertEquals(95.43601F, model.quota());
+        Assertions.assertEquals("zucerscdntnev", model.name());
+        Assertions.assertEquals("wjmy", model.description());
+        Assertions.assertEquals("dsslswt", model.unit());
+        Assertions.assertEquals("eriofzpyqs", model.unitPlural());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaDimension model =
-            new QuotaDimension()
-                .withId("cjefuzmu")
-                .withScope("bttdumorppxe")
-                .withPeriod("nzbtbhj")
-                .withQuota(21.287733F)
-                .withName("fgohdneuelfphs")
-                .withDescription("htozfikdow")
-                .withUnit("uuvxz")
-                .withUnitPlural("lvithhqzonosgg");
+        QuotaDimension model = new QuotaDimension().withId("hzdxssadbzm").withScope("dfznudaodv")
+            .withPeriod("bncblylpstdbhhx").withQuota(95.43601F).withName("zucerscdntnev").withDescription("wjmy")
+            .withUnit("dsslswt").withUnitPlural("eriofzpyqs");
         model = BinaryData.fromObject(model).toObject(QuotaDimension.class);
-        Assertions.assertEquals("cjefuzmu", model.id());
-        Assertions.assertEquals("bttdumorppxe", model.scope());
-        Assertions.assertEquals("nzbtbhj", model.period());
-        Assertions.assertEquals(21.287733F, model.quota());
-        Assertions.assertEquals("fgohdneuelfphs", model.name());
-        Assertions.assertEquals("htozfikdow", model.description());
-        Assertions.assertEquals("uuvxz", model.unit());
-        Assertions.assertEquals("lvithhqzonosgg", model.unitPlural());
+        Assertions.assertEquals("hzdxssadbzm", model.id());
+        Assertions.assertEquals("dfznudaodv", model.scope());
+        Assertions.assertEquals("bncblylpstdbhhx", model.period());
+        Assertions.assertEquals(95.43601F, model.quota());
+        Assertions.assertEquals("zucerscdntnev", model.name());
+        Assertions.assertEquals("wjmy", model.description());
+        Assertions.assertEquals("dsslswt", model.unit());
+        Assertions.assertEquals("eriofzpyqs", model.unitPlural());
     }
 }

@@ -12,19 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ClaimDevicesRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClaimDevicesRequest model =
-            BinaryData
-                .fromString("{\"deviceIdentifiers\":[\"ckzywbiexzfeyue\",\"xibxujwbhqwalm\",\"zyoxaepdkzjan\"]}")
-                .toObject(ClaimDevicesRequest.class);
-        Assertions.assertEquals("ckzywbiexzfeyue", model.deviceIdentifiers().get(0));
+        ClaimDevicesRequest model = BinaryData.fromString("{\"deviceIdentifiers\":[\"wiyighxpkdw\",\"baiuebbaumny\"]}")
+            .toObject(ClaimDevicesRequest.class);
+        Assertions.assertEquals("wiyighxpkdw", model.deviceIdentifiers().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClaimDevicesRequest model =
-            new ClaimDevicesRequest()
-                .withDeviceIdentifiers(Arrays.asList("ckzywbiexzfeyue", "xibxujwbhqwalm", "zyoxaepdkzjan"));
+        ClaimDevicesRequest model
+            = new ClaimDevicesRequest().withDeviceIdentifiers(Arrays.asList("wiyighxpkdw", "baiuebbaumny"));
         model = BinaryData.fromObject(model).toObject(ClaimDevicesRequest.class);
-        Assertions.assertEquals("ckzywbiexzfeyue", model.deviceIdentifiers().get(0));
+        Assertions.assertEquals("wiyighxpkdw", model.deviceIdentifiers().get(0));
     }
 }

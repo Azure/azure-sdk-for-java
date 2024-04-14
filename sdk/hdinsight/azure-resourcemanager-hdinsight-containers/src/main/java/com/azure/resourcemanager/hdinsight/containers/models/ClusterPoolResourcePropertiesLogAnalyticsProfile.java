@@ -6,21 +6,29 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** Cluster pool log analytics profile to enable OMS agent for AKS cluster. */
+/**
+ * Cluster pool log analytics profile to enable OMS agent for AKS cluster.
+ */
 @Fluent
 public final class ClusterPoolResourcePropertiesLogAnalyticsProfile extends ClusterPoolLogAnalyticsProfile {
-    /** Creates an instance of ClusterPoolResourcePropertiesLogAnalyticsProfile class. */
+    /**
+     * Creates an instance of ClusterPoolResourcePropertiesLogAnalyticsProfile class.
+     */
     public ClusterPoolResourcePropertiesLogAnalyticsProfile() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterPoolResourcePropertiesLogAnalyticsProfile withEnabled(boolean enabled) {
         super.withEnabled(enabled);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterPoolResourcePropertiesLogAnalyticsProfile withWorkspaceId(String workspaceId) {
         super.withWorkspaceId(workspaceId);
@@ -29,7 +37,7 @@ public final class ClusterPoolResourcePropertiesLogAnalyticsProfile extends Clus
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

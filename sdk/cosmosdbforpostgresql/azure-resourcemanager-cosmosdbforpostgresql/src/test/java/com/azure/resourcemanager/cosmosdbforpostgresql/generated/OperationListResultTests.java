@@ -13,25 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"pheoflokeyy\",\"display\":{\"provider\":\"jbdlwtgrhpdjpju\",\"resource\":\"sxazjpq\",\"operation\":\"gual\",\"description\":\"xxhejjzzvd\"},\"isDataAction\":true,\"origin\":\"system\",\"properties\":{\"cynpwlbjnp\":\"datafhotw\"}},{\"name\":\"cftadeh\",\"display\":{\"provider\":\"tyfsoppusuesn\",\"resource\":\"dejbavo\",\"operation\":\"zdmohctbqvu\",\"description\":\"xdn\"},\"isDataAction\":false,\"origin\":\"system\",\"properties\":{\"dyggdtjixhbku\":\"datajjugwdkcglhslaz\",\"fyexfwhy\":\"datafqweykhmene\",\"amdecte\":\"datacibvyvdcsitynn\"}},{\"name\":\"iqscjeypv\",\"display\":{\"provider\":\"rkgqhcjrefo\",\"resource\":\"mkqsleyyv\",\"operation\":\"qjpkcattpngjcrc\",\"description\":\"sqpjhvmdajvn\"},\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"yhltrpmopjmcm\":\"datacanoaeupf\"}},{\"name\":\"u\",\"display\":{\"provider\":\"hfuiuaodsfc\",\"resource\":\"vxodpu\",\"operation\":\"myzydagfuaxbez\",\"description\":\"uokktwhrdxwz\"},\"isDataAction\":false,\"origin\":\"system\",\"properties\":{\"ksymd\":\"dataureximoryocfs\",\"kiiuxhqyudxor\":\"datays\"}}],\"nextLink\":\"nbpoczvyifqrvkdv\"}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"clhocohsl\",\"display\":{\"provider\":\"leggzfbu\",\"resource\":\"mvfaxkffeiith\",\"operation\":\"m\",\"description\":\"yvshxmz\"},\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"pydptko\":\"dataigrxwburvjxxjn\"}}],\"nextLink\":\"kouknvudwtiu\"}")
+            .toObject(OperationListResult.class);
         Assertions.assertEquals(true, model.value().get(0).isDataAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationListResult model =
-            new OperationListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new OperationInner().withIsDataAction(true),
-                            new OperationInner().withIsDataAction(false),
-                            new OperationInner().withIsDataAction(true),
-                            new OperationInner().withIsDataAction(false)));
+        OperationListResult model
+            = new OperationListResult().withValue(Arrays.asList(new OperationInner().withIsDataAction(true)));
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
         Assertions.assertEquals(true, model.value().get(0).isDataAction());
     }

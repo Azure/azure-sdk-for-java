@@ -7,7 +7,9 @@ module com.azure.cosmos.kafka.connect {
     requires transitive com.azure.cosmos;
     requires kafka.clients;
     requires connect.api;
-
+    requires com.fasterxml.jackson.module.afterburner;
+    requires json.path;
+    requires com.azure.identity;
 
     // public API surface area
     exports com.azure.cosmos.kafka.connect;

@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.sphere.generated;
 
-/** Samples for Images ListByCatalog. */
+/**
+ * Samples for Images ListByCatalog.
+ */
 public final class ImagesListByCatalogSamples {
     /*
-     * x-ms-original-file: specification/sphere/resource-manager/Microsoft.AzureSphere/preview/2022-09-01-preview/examples/GetImages.json
+     * x-ms-original-file:
+     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetImages.json
      */
     /**
      * Sample code: Images_ListByCatalog.
-     *
+     * 
      * @param manager Entry point to AzureSphereManager.
      */
     public static void imagesListByCatalog(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager
-            .images()
-            .listByCatalog("MyResourceGroup1", "MyCatalog1", null, null, null, null, com.azure.core.util.Context.NONE);
+        manager.images().listByCatalog("MyResourceGroup1", "MyCatalog1", null, null, null, null,
+            com.azure.core.util.Context.NONE);
     }
 }

@@ -21,42 +21,39 @@ public final class SecurityConnectorsImpl implements SecurityConnectors {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public SecurityConnectorsImpl(
-        SecurityConnectorsClient innerClient, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    public SecurityConnectorsImpl(SecurityConnectorsClient innerClient,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<SecurityConnector> list() {
         PagedIterable<SecurityConnectorInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new SecurityConnectorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SecurityConnectorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SecurityConnector> list(Context context) {
         PagedIterable<SecurityConnectorInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new SecurityConnectorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SecurityConnectorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SecurityConnector> listByResourceGroup(String resourceGroupName) {
         PagedIterable<SecurityConnectorInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new SecurityConnectorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SecurityConnectorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SecurityConnector> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<SecurityConnectorInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new SecurityConnectorImpl(inner1, this.manager()));
+        PagedIterable<SecurityConnectorInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SecurityConnectorImpl(inner1, this.manager()));
     }
 
-    public Response<SecurityConnector> getByResourceGroupWithResponse(
-        String resourceGroupName, String securityConnectorName, Context context) {
-        Response<SecurityConnectorInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, securityConnectorName, context);
+    public Response<SecurityConnector> getByResourceGroupWithResponse(String resourceGroupName,
+        String securityConnectorName, Context context) {
+        Response<SecurityConnectorInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, securityConnectorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SecurityConnectorImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -64,8 +61,8 @@ public final class SecurityConnectorsImpl implements SecurityConnectors {
     }
 
     public SecurityConnector getByResourceGroup(String resourceGroupName, String securityConnectorName) {
-        SecurityConnectorInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, securityConnectorName);
+        SecurityConnectorInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, securityConnectorName);
         if (inner != null) {
             return new SecurityConnectorImpl(inner, this.manager());
         } else {
@@ -73,8 +70,8 @@ public final class SecurityConnectorsImpl implements SecurityConnectors {
         }
     }
 
-    public Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String securityConnectorName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String securityConnectorName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, securityConnectorName, context);
     }
 
@@ -83,85 +80,57 @@ public final class SecurityConnectorsImpl implements SecurityConnectors {
     }
 
     public SecurityConnector getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String securityConnectorName = Utils.getValueFromIdByName(id, "securityConnectors");
+        String securityConnectorName = ResourceManagerUtils.getValueFromIdByName(id, "securityConnectors");
         if (securityConnectorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'securityConnectors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'securityConnectors'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, securityConnectorName, Context.NONE).getValue();
     }
 
     public Response<SecurityConnector> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String securityConnectorName = Utils.getValueFromIdByName(id, "securityConnectors");
+        String securityConnectorName = ResourceManagerUtils.getValueFromIdByName(id, "securityConnectors");
         if (securityConnectorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'securityConnectors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'securityConnectors'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, securityConnectorName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String securityConnectorName = Utils.getValueFromIdByName(id, "securityConnectors");
+        String securityConnectorName = ResourceManagerUtils.getValueFromIdByName(id, "securityConnectors");
         if (securityConnectorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'securityConnectors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'securityConnectors'.", id)));
         }
         this.deleteByResourceGroupWithResponse(resourceGroupName, securityConnectorName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String securityConnectorName = Utils.getValueFromIdByName(id, "securityConnectors");
+        String securityConnectorName = ResourceManagerUtils.getValueFromIdByName(id, "securityConnectors");
         if (securityConnectorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'securityConnectors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'securityConnectors'.", id)));
         }
         return this.deleteByResourceGroupWithResponse(resourceGroupName, securityConnectorName, context);
     }

@@ -12,8 +12,7 @@ public final class SignedCapabilityImageResponseImpl implements SignedCapability
 
     private final com.azure.resourcemanager.sphere.AzureSphereManager serviceManager;
 
-    SignedCapabilityImageResponseImpl(
-        SignedCapabilityImageResponseInner innerObject,
+    SignedCapabilityImageResponseImpl(SignedCapabilityImageResponseInner innerObject,
         com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

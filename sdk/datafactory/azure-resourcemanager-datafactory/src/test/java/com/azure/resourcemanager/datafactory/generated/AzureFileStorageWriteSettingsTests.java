@@ -13,19 +13,18 @@ public final class AzureFileStorageWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFileStorageWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"AzureFileStorageWriteSettings\",\"maxConcurrentConnections\":\"datapobjufksddxk\",\"disableMetricsCollection\":\"datawxlylxfpvoylf\",\"copyBehavior\":\"datasrgu\",\"metadata\":[{\"name\":\"datahauivgbim\",\"value\":\"dataedqgyrvulz\"},{\"name\":\"datavckpdp\",\"value\":\"datanrjqskikqd\"},{\"name\":\"dataybqtlvofjjsetiz\",\"value\":\"datanadn\"},{\"name\":\"datasbpxlserqgxnh\",\"value\":\"dataccd\"}],\"\":{\"jbhmpmeglo\":\"datayb\"}}")
+            "{\"type\":\"AzureFileStorageWriteSettings\",\"maxConcurrentConnections\":\"datavgwvfvsqlyah\",\"disableMetricsCollection\":\"dataoqk\",\"copyBehavior\":\"datatnbuzvaxlt\",\"metadata\":[{\"name\":\"datahic\",\"value\":\"dataauvprqzpfpbxljdd\"},{\"name\":\"dataoyzs\",\"value\":\"datavkcldons\"},{\"name\":\"dataazxewnl\",\"value\":\"datahhczqm\"}],\"\":{\"rmfclkyncjyafzz\":\"datay\",\"avo\":\"databohb\",\"bverbjctszb\":\"dataerduab\"}}")
             .toObject(AzureFileStorageWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureFileStorageWriteSettings model
-            = new AzureFileStorageWriteSettings().withMaxConcurrentConnections("datapobjufksddxk")
-                .withDisableMetricsCollection("datawxlylxfpvoylf").withCopyBehavior("datasrgu")
-                .withMetadata(Arrays.asList(new MetadataItem().withName("datahauivgbim").withValue("dataedqgyrvulz"),
-                    new MetadataItem().withName("datavckpdp").withValue("datanrjqskikqd"),
-                    new MetadataItem().withName("dataybqtlvofjjsetiz").withValue("datanadn"),
-                    new MetadataItem().withName("datasbpxlserqgxnh").withValue("dataccd")));
+            = new AzureFileStorageWriteSettings().withMaxConcurrentConnections("datavgwvfvsqlyah")
+                .withDisableMetricsCollection("dataoqk").withCopyBehavior("datatnbuzvaxlt")
+                .withMetadata(Arrays.asList(new MetadataItem().withName("datahic").withValue("dataauvprqzpfpbxljdd"),
+                    new MetadataItem().withName("dataoyzs").withValue("datavkcldons"),
+                    new MetadataItem().withName("dataazxewnl").withValue("datahhczqm")));
         model = BinaryData.fromObject(model).toObject(AzureFileStorageWriteSettings.class);
     }
 }

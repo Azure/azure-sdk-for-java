@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.models.IoTSecurityDeviceAlert;
 public final class IoTSecurityDeviceAlertTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IoTSecurityDeviceAlert model =
-            BinaryData
-                .fromString(
-                    "{\"alertDisplayName\":\"ws\",\"reportedSeverity\":\"Informational\",\"alertsCount\":8220008823832302214}")
-                .toObject(IoTSecurityDeviceAlert.class);
+        IoTSecurityDeviceAlert model = BinaryData.fromString(
+            "{\"alertDisplayName\":\"ottaw\",\"reportedSeverity\":\"Informational\",\"alertsCount\":6609053466837158122}")
+            .toObject(IoTSecurityDeviceAlert.class);
     }
 
     @org.junit.jupiter.api.Test

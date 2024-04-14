@@ -10,7 +10,7 @@ package com.azure.resourcemanager.batch.generated;
 public final class PoolDisableAutoScaleSamples {
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolDisableAutoScale.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolDisableAutoScale.json
      */
     /**
      * Sample code: Disable AutoScale.

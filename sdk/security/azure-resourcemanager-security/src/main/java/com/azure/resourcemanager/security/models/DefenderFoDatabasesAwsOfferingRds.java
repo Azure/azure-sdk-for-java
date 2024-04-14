@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RDS configuration. */
+/**
+ * The RDS configuration.
+ */
 @Fluent
 public final class DefenderFoDatabasesAwsOfferingRds {
     /*
@@ -22,13 +24,15 @@ public final class DefenderFoDatabasesAwsOfferingRds {
     @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
 
-    /** Creates an instance of DefenderFoDatabasesAwsOfferingRds class. */
+    /**
+     * Creates an instance of DefenderFoDatabasesAwsOfferingRds class.
+     */
     public DefenderFoDatabasesAwsOfferingRds() {
     }
 
     /**
      * Get the enabled property: Is RDS protection enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -37,7 +41,7 @@ public final class DefenderFoDatabasesAwsOfferingRds {
 
     /**
      * Set the enabled property: Is RDS protection enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the DefenderFoDatabasesAwsOfferingRds object itself.
      */
@@ -48,7 +52,7 @@ public final class DefenderFoDatabasesAwsOfferingRds {
 
     /**
      * Get the cloudRoleArn property: The cloud role ARN in AWS for this feature.
-     *
+     * 
      * @return the cloudRoleArn value.
      */
     public String cloudRoleArn() {
@@ -57,7 +61,7 @@ public final class DefenderFoDatabasesAwsOfferingRds {
 
     /**
      * Set the cloudRoleArn property: The cloud role ARN in AWS for this feature.
-     *
+     * 
      * @param cloudRoleArn the cloudRoleArn value to set.
      * @return the DefenderFoDatabasesAwsOfferingRds object itself.
      */
@@ -68,7 +72,7 @@ public final class DefenderFoDatabasesAwsOfferingRds {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

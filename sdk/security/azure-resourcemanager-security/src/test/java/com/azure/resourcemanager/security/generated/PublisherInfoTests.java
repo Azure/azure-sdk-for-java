@@ -11,29 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class PublisherInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PublisherInfo model =
-            BinaryData
-                .fromString(
-                    "{\"publisherName\":\"yrpfoobrlttymsj\",\"productName\":\"gqdnfwqzd\",\"binaryName\":\"tilaxh\",\"version\":\"hqlyvijo\"}")
-                .toObject(PublisherInfo.class);
-        Assertions.assertEquals("yrpfoobrlttymsj", model.publisherName());
-        Assertions.assertEquals("gqdnfwqzd", model.productName());
-        Assertions.assertEquals("tilaxh", model.binaryName());
-        Assertions.assertEquals("hqlyvijo", model.version());
+        PublisherInfo model = BinaryData.fromString(
+            "{\"publisherName\":\"dqhqyhwqwemv\",\"productName\":\"abckmzeoxinhgre\",\"binaryName\":\"twhlpuzjpce\",\"version\":\"nzangprbfaxy\"}")
+            .toObject(PublisherInfo.class);
+        Assertions.assertEquals("dqhqyhwqwemv", model.publisherName());
+        Assertions.assertEquals("abckmzeoxinhgre", model.productName());
+        Assertions.assertEquals("twhlpuzjpce", model.binaryName());
+        Assertions.assertEquals("nzangprbfaxy", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PublisherInfo model =
-            new PublisherInfo()
-                .withPublisherName("yrpfoobrlttymsj")
-                .withProductName("gqdnfwqzd")
-                .withBinaryName("tilaxh")
-                .withVersion("hqlyvijo");
+        PublisherInfo model = new PublisherInfo().withPublisherName("dqhqyhwqwemv").withProductName("abckmzeoxinhgre")
+            .withBinaryName("twhlpuzjpce").withVersion("nzangprbfaxy");
         model = BinaryData.fromObject(model).toObject(PublisherInfo.class);
-        Assertions.assertEquals("yrpfoobrlttymsj", model.publisherName());
-        Assertions.assertEquals("gqdnfwqzd", model.productName());
-        Assertions.assertEquals("tilaxh", model.binaryName());
-        Assertions.assertEquals("hqlyvijo", model.version());
+        Assertions.assertEquals("dqhqyhwqwemv", model.publisherName());
+        Assertions.assertEquals("abckmzeoxinhgre", model.productName());
+        Assertions.assertEquals("twhlpuzjpce", model.binaryName());
+        Assertions.assertEquals("nzangprbfaxy", model.version());
     }
 }

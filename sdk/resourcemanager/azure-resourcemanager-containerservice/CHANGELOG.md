@@ -1,14 +1,31 @@
 # Release History
 
-## 2.37.0-beta.1 (Unreleased)
+## 2.38.0-beta.1 (Unreleased)
 
 ### Features Added
 
+- Supported disabling public network access in `KubernetesCluster` via `disablePublicNetworkAccess()`, for private link feature.
+- Supported specifying network mode of Azure CNI configuration for `KubernetesCluster` during create.
+- Supported specifying network plugin mode for `KubernetesCluster` during create.
+- Supported specifying network data plane for `KubernetesCluster` during create.
+
 ### Breaking Changes
 
-### Bugs Fixed
+- `nodeSelector` is removed from `IstioEgressGateway` class.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-02-01`.
+
+## 2.37.0 (2024-03-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.36.0 (2024-02-29)
 

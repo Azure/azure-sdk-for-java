@@ -13,19 +13,19 @@ public final class EntityReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EntityReference model
-            = BinaryData.fromString("{\"type\":\"IntegrationRuntimeReference\",\"referenceName\":\"somuogeqe\"}")
+            = BinaryData.fromString("{\"type\":\"IntegrationRuntimeReference\",\"referenceName\":\"bkubzqazdlrkvi\"}")
                 .toObject(EntityReference.class);
         Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE, model.type());
-        Assertions.assertEquals("somuogeqe", model.referenceName());
+        Assertions.assertEquals("bkubzqazdlrkvi", model.referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EntityReference model
             = new EntityReference().withType(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE)
-                .withReferenceName("somuogeqe");
+                .withReferenceName("bkubzqazdlrkvi");
         model = BinaryData.fromObject(model).toObject(EntityReference.class);
         Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE, model.type());
-        Assertions.assertEquals("somuogeqe", model.referenceName());
+        Assertions.assertEquals("bkubzqazdlrkvi", model.referenceName());
     }
 }

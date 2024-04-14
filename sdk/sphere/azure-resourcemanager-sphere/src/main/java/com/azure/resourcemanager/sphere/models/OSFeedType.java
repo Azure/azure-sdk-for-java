@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** OS feed type values. */
+/**
+ * OS feed type values.
+ */
 public final class OSFeedType extends ExpandableStringEnum<OSFeedType> {
-    /** Static value Retail for OSFeedType. */
+    /**
+     * Static value Retail for OSFeedType.
+     */
     public static final OSFeedType RETAIL = fromString("Retail");
 
-    /** Static value RetailEval for OSFeedType. */
+    /**
+     * Static value RetailEval for OSFeedType.
+     */
     public static final OSFeedType RETAIL_EVAL = fromString("RetailEval");
 
     /**
      * Creates a new instance of OSFeedType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class OSFeedType extends ExpandableStringEnum<OSFeedType> {
 
     /**
      * Creates or finds a OSFeedType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OSFeedType.
      */
@@ -38,7 +44,7 @@ public final class OSFeedType extends ExpandableStringEnum<OSFeedType> {
 
     /**
      * Gets known OSFeedType values.
-     *
+     * 
      * @return known OSFeedType values.
      */
     public static Collection<OSFeedType> values() {

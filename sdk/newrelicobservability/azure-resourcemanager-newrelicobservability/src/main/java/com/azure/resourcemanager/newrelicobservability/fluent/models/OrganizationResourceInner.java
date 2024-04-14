@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.newrelicobservability.models.BillingSource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The details of a Organization resource. */
+/**
+ * The details of a Organization resource.
+ */
 @Fluent
 public final class OrganizationResourceInner extends ProxyResource {
     /*
@@ -25,13 +27,15 @@ public final class OrganizationResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of OrganizationResourceInner class. */
+    /**
+     * Creates an instance of OrganizationResourceInner class.
+     */
     public OrganizationResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The resource-specific properties for this resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private OrganizationProperties innerProperties() {
@@ -40,7 +44,7 @@ public final class OrganizationResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -49,7 +53,7 @@ public final class OrganizationResourceInner extends ProxyResource {
 
     /**
      * Get the organizationId property: organization id.
-     *
+     * 
      * @return the organizationId value.
      */
     public String organizationId() {
@@ -58,7 +62,7 @@ public final class OrganizationResourceInner extends ProxyResource {
 
     /**
      * Set the organizationId property: organization id.
-     *
+     * 
      * @param organizationId the organizationId value to set.
      * @return the OrganizationResourceInner object itself.
      */
@@ -72,7 +76,7 @@ public final class OrganizationResourceInner extends ProxyResource {
 
     /**
      * Get the organizationName property: organization name.
-     *
+     * 
      * @return the organizationName value.
      */
     public String organizationName() {
@@ -81,7 +85,7 @@ public final class OrganizationResourceInner extends ProxyResource {
 
     /**
      * Set the organizationName property: organization name.
-     *
+     * 
      * @param organizationName the organizationName value to set.
      * @return the OrganizationResourceInner object itself.
      */
@@ -95,7 +99,7 @@ public final class OrganizationResourceInner extends ProxyResource {
 
     /**
      * Get the billingSource property: Billing source.
-     *
+     * 
      * @return the billingSource value.
      */
     public BillingSource billingSource() {
@@ -104,7 +108,7 @@ public final class OrganizationResourceInner extends ProxyResource {
 
     /**
      * Set the billingSource property: Billing source.
-     *
+     * 
      * @param billingSource the billingSource value to set.
      * @return the OrganizationResourceInner object itself.
      */
@@ -118,7 +122,7 @@ public final class OrganizationResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

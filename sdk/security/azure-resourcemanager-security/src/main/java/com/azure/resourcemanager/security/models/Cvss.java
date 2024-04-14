@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** CVSS details. */
+/**
+ * CVSS details.
+ */
 @Immutable
 public final class Cvss {
     /*
@@ -16,13 +18,15 @@ public final class Cvss {
     @JsonProperty(value = "base", access = JsonProperty.Access.WRITE_ONLY)
     private Float base;
 
-    /** Creates an instance of Cvss class. */
+    /**
+     * Creates an instance of Cvss class.
+     */
     public Cvss() {
     }
 
     /**
      * Get the base property: CVSS base.
-     *
+     * 
      * @return the base value.
      */
     public Float base() {
@@ -31,7 +35,7 @@ public final class Cvss {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

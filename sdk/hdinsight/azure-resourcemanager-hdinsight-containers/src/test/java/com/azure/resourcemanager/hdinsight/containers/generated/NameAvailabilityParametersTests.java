@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class NameAvailabilityParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NameAvailabilityParameters model =
-            BinaryData
-                .fromString("{\"name\":\"dy\",\"type\":\"rwyhqmibzyhwitsm\"}")
-                .toObject(NameAvailabilityParameters.class);
-        Assertions.assertEquals("dy", model.name());
-        Assertions.assertEquals("rwyhqmibzyhwitsm", model.type());
+        NameAvailabilityParameters model = BinaryData.fromString("{\"name\":\"xitc\",\"type\":\"fcktqumiekke\"}")
+            .toObject(NameAvailabilityParameters.class);
+        Assertions.assertEquals("xitc", model.name());
+        Assertions.assertEquals("fcktqumiekke", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NameAvailabilityParameters model = new NameAvailabilityParameters().withName("dy").withType("rwyhqmibzyhwitsm");
+        NameAvailabilityParameters model = new NameAvailabilityParameters().withName("xitc").withType("fcktqumiekke");
         model = BinaryData.fromObject(model).toObject(NameAvailabilityParameters.class);
-        Assertions.assertEquals("dy", model.name());
-        Assertions.assertEquals("rwyhqmibzyhwitsm", model.type());
+        Assertions.assertEquals("xitc", model.name());
+        Assertions.assertEquals("fcktqumiekke", model.type());
     }
 }

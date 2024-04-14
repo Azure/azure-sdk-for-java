@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The governance rule metadata. */
+/**
+ * The governance rule metadata.
+ */
 @Immutable
 public final class GovernanceRuleMetadata {
     /*
@@ -35,13 +37,15 @@ public final class GovernanceRuleMetadata {
     @JsonProperty(value = "updatedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedOn;
 
-    /** Creates an instance of GovernanceRuleMetadata class. */
+    /**
+     * Creates an instance of GovernanceRuleMetadata class.
+     */
     public GovernanceRuleMetadata() {
     }
 
     /**
      * Get the createdBy property: Governance rule Created by object id (GUID).
-     *
+     * 
      * @return the createdBy value.
      */
     public String createdBy() {
@@ -50,7 +54,7 @@ public final class GovernanceRuleMetadata {
 
     /**
      * Get the createdOn property: Governance rule creation date.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -59,7 +63,7 @@ public final class GovernanceRuleMetadata {
 
     /**
      * Get the updatedBy property: Governance rule last updated by object id (GUID).
-     *
+     * 
      * @return the updatedBy value.
      */
     public String updatedBy() {
@@ -68,7 +72,7 @@ public final class GovernanceRuleMetadata {
 
     /**
      * Get the updatedOn property: Governance rule last update date.
-     *
+     * 
      * @return the updatedOn value.
      */
     public OffsetDateTime updatedOn() {
@@ -77,7 +81,7 @@ public final class GovernanceRuleMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
