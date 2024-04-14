@@ -405,6 +405,8 @@ cosmos_org.apache.kafka:connect-runtime;3.6.0
 cosmos_org.testcontainers:testcontainers;1.19.5
 cosmos_org.testcontainers:kafka;1.19.5
 cosmos_org.sourcelab:kafka-connect-client;4.0.4
+cosmos_io.confluent:kafka-avro-serializer;7.6.0
+cosmos_org.apache.avro:avro;1.11.3
 # Maven Tools for Cosmos Kafka connector only
 cosmos_io.confluent:kafka-connect-maven-plugin;0.12.0
 

@@ -51,6 +51,17 @@ public final class RouterJobAssignment {
     private OffsetDateTime closedAt;
 
     /**
+     * Creates an instance of RouterJobAssignment class.
+     *
+     * @param assignedAt the assignedAt value to set.
+     */
+    @Generated
+    @JsonCreator
+    private RouterJobAssignment(@JsonProperty(value = "assignedAt") OffsetDateTime assignedAt) {
+        this.assignedAt = assignedAt;
+    }
+
+    /**
      * Get the assignmentId property: Id of a job assignment.
      *
      * @return the assignmentId value.
@@ -98,16 +109,5 @@ public final class RouterJobAssignment {
     @Generated
     public OffsetDateTime getClosedAt() {
         return this.closedAt;
-    }
-
-    /**
-     * Creates an instance of RouterJobAssignment class.
-     *
-     * @param assignedAt the assignedAt value to set.
-     */
-    @Generated
-    @JsonCreator
-    private RouterJobAssignment(@JsonProperty(value = "assignedAt") OffsetDateTime assignedAt) {
-        this.assignedAt = assignedAt;
     }
 }

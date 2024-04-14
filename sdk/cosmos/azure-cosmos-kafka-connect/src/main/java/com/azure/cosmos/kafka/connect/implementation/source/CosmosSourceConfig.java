@@ -51,12 +51,12 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
     private static final String CHANGE_FEED_START_FROM_CONFIG_DOC = "ChangeFeed Start from settings (Now, Beginning "
         + "or a certain point in time (UTC) for example 2020-02-10T14:15:03) - the default value is 'Beginning'. ";
     private static final String CHANGE_FEED_START_FROM_CONFIG_DISPLAY = "Change feed start from.";
-    private static final String DEFAULT_CHANGE_FEED_START_FROM = CosmosChangeFeedStartFromModes.BEGINNING.getName();
+    private static final String DEFAULT_CHANGE_FEED_START_FROM = CosmosChangeFeedStartFromMode.BEGINNING.getName();
 
     private static final String CHANGE_FEED_MODE_CONFIG = SOURCE_CONFIG_PREFIX + "changeFeed.mode";
     private static final String CHANGE_FEED_MODE_CONFIG_DOC = "ChangeFeed mode (LatestVersion or AllVersionsAndDeletes)";
     private static final String CHANGE_FEED_MODE_CONFIG_DISPLAY = "ChangeFeed mode (LatestVersion or AllVersionsAndDeletes)";
-    private static final String DEFAULT_CHANGE_FEED_MODE = CosmosChangeFeedModes.LATEST_VERSION.getName();
+    private static final String DEFAULT_CHANGE_FEED_MODE = CosmosChangeFeedMode.LATEST_VERSION.getName();
 
     private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONFIG = SOURCE_CONFIG_PREFIX + "changeFeed.maxItemCountHint";
     private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONFIG_DOC =
@@ -305,8 +305,8 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
     }
 
     private CosmosSourceChangeFeedConfig parseChangeFeedConfig() {
-        CosmosChangeFeedModes changeFeedModes = this.parseChangeFeedMode();
-        CosmosChangeFeedStartFromModes changeFeedStartFromMode = this.parseChangeFeedStartFromMode();
+        CosmosChangeFeedMode changeFeedModes = this.parseChangeFeedMode();
+        CosmosChangeFeedStartFromMode changeFeedStartFromMode = this.parseChangeFeedStartFromMode();
         Instant changeFeedStartFrom = this.parseChangeFeedStartFrom(changeFeedStartFromMode);
         Integer changeFeedMaxItemCountHint = this.getInt(CHANGE_FEED_MAX_ITEM_COUNT_CONFIG);
 
@@ -323,21 +323,21 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
 
         return new CosmosSourceMessageKeyConfig(messageKeyEnabled, messageKeyField);
     }
-    private CosmosChangeFeedStartFromModes parseChangeFeedStartFromMode() {
+    private CosmosChangeFeedStartFromMode parseChangeFeedStartFromMode() {
         String changeFeedStartFrom = this.getString(CHANGE_FEED_START_FROM_CONFIG);
-        if (changeFeedStartFrom.equalsIgnoreCase(CosmosChangeFeedStartFromModes.BEGINNING.getName())) {
-            return CosmosChangeFeedStartFromModes.BEGINNING;
+        if (changeFeedStartFrom.equalsIgnoreCase(CosmosChangeFeedStartFromMode.BEGINNING.getName())) {
+            return CosmosChangeFeedStartFromMode.BEGINNING;
         }
 
-        if (changeFeedStartFrom.equalsIgnoreCase(CosmosChangeFeedStartFromModes.NOW.getName())) {
-            return CosmosChangeFeedStartFromModes.NOW;
+        if (changeFeedStartFrom.equalsIgnoreCase(CosmosChangeFeedStartFromMode.NOW.getName())) {
+            return CosmosChangeFeedStartFromMode.NOW;
         }
 
-        return CosmosChangeFeedStartFromModes.POINT_IN_TIME;
+        return CosmosChangeFeedStartFromMode.POINT_IN_TIME;
     }
 
-    private Instant parseChangeFeedStartFrom(CosmosChangeFeedStartFromModes startFromMode) {
-        if (startFromMode == CosmosChangeFeedStartFromModes.POINT_IN_TIME) {
+    private Instant parseChangeFeedStartFrom(CosmosChangeFeedStartFromMode startFromMode) {
+        if (startFromMode == CosmosChangeFeedStartFromMode.POINT_IN_TIME) {
             String changeFeedStartFrom = this.getString(CHANGE_FEED_START_FROM_CONFIG);
             return Instant.from(DateTimeFormatter.ISO_INSTANT.parse(changeFeedStartFrom.trim()));
         }
@@ -345,9 +345,9 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
         return null;
     }
 
-    private CosmosChangeFeedModes parseChangeFeedMode() {
+    private CosmosChangeFeedMode parseChangeFeedMode() {
         String changeFeedMode = this.getString(CHANGE_FEED_MODE_CONFIG);
-        return CosmosChangeFeedModes.fromName(changeFeedMode);
+        return CosmosChangeFeedMode.fromName(changeFeedMode);
     }
 
     public CosmosSourceContainersConfig getContainersConfig() {
@@ -411,7 +411,7 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
                 throw new ConfigException(name, o, "ChangeFeedMode can not be empty or null");
             }
 
-            CosmosChangeFeedModes changeFeedMode = CosmosChangeFeedModes.fromName(changeFeedModeString);
+            CosmosChangeFeedMode changeFeedMode = CosmosChangeFeedMode.fromName(changeFeedModeString);
             if (changeFeedMode == null) {
                 throw new ConfigException(name, o, "Invalid ChangeFeedMode, only allow LatestVersion or AllVersionsAndDeletes");
             }
@@ -419,7 +419,7 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
 
         @Override
         public String toString() {
-            return "ChangeFeedMode. Only allow " + CosmosChangeFeedModes.values();
+            return "ChangeFeedMode. Only allow " + CosmosChangeFeedMode.values();
         }
     }
 
@@ -432,8 +432,8 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
                 throw new ConfigException(name, o, "ChangeFeedStartFrom can not be empty or null");
             }
 
-            CosmosChangeFeedStartFromModes changeFeedStartFromModes =
-                CosmosChangeFeedStartFromModes.fromName(changeFeedStartFromString);
+            CosmosChangeFeedStartFromMode changeFeedStartFromModes =
+                CosmosChangeFeedStartFromMode.fromName(changeFeedStartFromString);
             if (changeFeedStartFromModes == null) {
                 try {
                     Instant.parse(changeFeedStartFromString);
