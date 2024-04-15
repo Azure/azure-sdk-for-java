@@ -6,20 +6,21 @@ package com.azure.resourcemanager.standbypool.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.standbypool.fluent.models.StandbyVirtualMachineResourceInner;
+import com.azure.resourcemanager.standbypool.fluent.models.OperationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * The response of a StandbyVirtualMachineResource list operation.
+ * A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of
+ * results.
  */
 @Fluent
-public final class StandbyVirtualMachineResourceListResult {
+public final class PagedOperation {
     /*
-     * The StandbyVirtualMachineResource items on this page
+     * The Operation items on this page
      */
     @JsonProperty(value = "value", required = true)
-    private List<StandbyVirtualMachineResourceInner> value;
+    private List<OperationInner> value;
 
     /*
      * The link to the next page of items
@@ -28,27 +29,27 @@ public final class StandbyVirtualMachineResourceListResult {
     private String nextLink;
 
     /**
-     * Creates an instance of StandbyVirtualMachineResourceListResult class.
+     * Creates an instance of PagedOperation class.
      */
-    public StandbyVirtualMachineResourceListResult() {
+    public PagedOperation() {
     }
 
     /**
-     * Get the value property: The StandbyVirtualMachineResource items on this page.
+     * Get the value property: The Operation items on this page.
      * 
      * @return the value value.
      */
-    public List<StandbyVirtualMachineResourceInner> value() {
+    public List<OperationInner> value() {
         return this.value;
     }
 
     /**
-     * Set the value property: The StandbyVirtualMachineResource items on this page.
+     * Set the value property: The Operation items on this page.
      * 
      * @param value the value value to set.
-     * @return the StandbyVirtualMachineResourceListResult object itself.
+     * @return the PagedOperation object itself.
      */
-    public StandbyVirtualMachineResourceListResult withValue(List<StandbyVirtualMachineResourceInner> value) {
+    public PagedOperation withValue(List<OperationInner> value) {
         this.value = value;
         return this;
     }
@@ -66,9 +67,9 @@ public final class StandbyVirtualMachineResourceListResult {
      * Set the nextLink property: The link to the next page of items.
      * 
      * @param nextLink the nextLink value to set.
-     * @return the StandbyVirtualMachineResourceListResult object itself.
+     * @return the PagedOperation object itself.
      */
-    public StandbyVirtualMachineResourceListResult withNextLink(String nextLink) {
+    public PagedOperation withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }
@@ -81,12 +82,11 @@ public final class StandbyVirtualMachineResourceListResult {
     public void validate() {
         if (value() == null) {
             throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property value in model StandbyVirtualMachineResourceListResult"));
+                .log(new IllegalArgumentException("Missing required property value in model PagedOperation"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(StandbyVirtualMachineResourceListResult.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PagedOperation.class);
 }
