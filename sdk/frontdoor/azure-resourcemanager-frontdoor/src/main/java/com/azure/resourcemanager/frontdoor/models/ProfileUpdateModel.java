@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Defines modifiable attributes of a Profile. */
+/**
+ * Defines modifiable attributes of a Profile.
+ */
 @Fluent
 public final class ProfileUpdateModel {
     /*
@@ -26,13 +28,15 @@ public final class ProfileUpdateModel {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ProfileUpdateModel class. */
+    /**
+     * Creates an instance of ProfileUpdateModel class.
+     */
     public ProfileUpdateModel() {
     }
 
     /**
      * Get the innerProperties property: The properties of a Profile.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ProfileUpdateProperties innerProperties() {
@@ -41,7 +45,7 @@ public final class ProfileUpdateModel {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -50,7 +54,7 @@ public final class ProfileUpdateModel {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ProfileUpdateModel object itself.
      */
@@ -61,7 +65,7 @@ public final class ProfileUpdateModel {
 
     /**
      * Get the enabledState property: The enabled state of the Profile.
-     *
+     * 
      * @return the enabledState value.
      */
     public State enabledState() {
@@ -70,7 +74,7 @@ public final class ProfileUpdateModel {
 
     /**
      * Set the enabledState property: The enabled state of the Profile.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the ProfileUpdateModel object itself.
      */
@@ -84,7 +88,7 @@ public final class ProfileUpdateModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

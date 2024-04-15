@@ -15,7 +15,6 @@ import java.util.Map;
  */
 @Fluent
 public class ShareCreateOptions {
-
     private Integer quotaInGb;
     private Map<String, String> metadata;
     private ShareAccessTier accessTier;
@@ -23,6 +22,14 @@ public class ShareCreateOptions {
     private ShareRootSquash rootSquash;
 
     /**
+     * Creates a new instance of {@link ShareCreateOptions}.
+     */
+    public ShareCreateOptions() {
+    }
+
+    /**
+     * Gets the size in GB to limit the share's growth.
+     *
      * @return Size in GB to limit the share's growth.
      */
     public Integer getQuotaInGb() {
@@ -30,6 +37,8 @@ public class ShareCreateOptions {
     }
 
     /**
+     * Sets the size in GB to limit the share's growth.
+     *
      * @param quotaInGb Size in GB to limit the share's growth. The quota in GB must be between 1 and 5120.
      * @return The updated options.
      */
@@ -39,6 +48,8 @@ public class ShareCreateOptions {
     }
 
     /**
+     * Gets the metadata to associate with the share.
+     *
      * @return Metadata to associate with the share
      */
     public Map<String, String> getMetadata() {
@@ -46,6 +57,8 @@ public class ShareCreateOptions {
     }
 
     /**
+     * Sets the metadata to associate with the share.
+     *
      * @param metadata Metadata to associate with the share. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
      * @return The updated options.
@@ -56,6 +69,8 @@ public class ShareCreateOptions {
     }
 
     /**
+     * Gets the access tier for the share.
+     *
      * @return {@link ShareAccessTier}.
      */
     public ShareAccessTier getAccessTier() {
@@ -63,6 +78,8 @@ public class ShareCreateOptions {
     }
 
     /**
+     * Sets the access tier for the share.
+     *
      * @param accessTier {@link ShareAccessTier}.
      * @return The updated options.
      */
@@ -72,6 +89,8 @@ public class ShareCreateOptions {
     }
 
     /**
+     * Gets the protocols to enable on the share.
+     *
      * @return {@link ShareProtocols}
      */
     public ShareProtocols getProtocols() {
@@ -79,6 +98,8 @@ public class ShareCreateOptions {
     }
 
     /**
+     * Sets the protocols to enable on the share.
+     *
      * @param protocols {@link ShareProtocols}
      * @return The updated options.
      */
@@ -88,6 +109,8 @@ public class ShareCreateOptions {
     }
 
     /**
+     * Gets the root squash to set for the share. Only valid for NFS.
+     *
      * @return The root squash to set for the share. Only valid for NFS.
      */
     public ShareRootSquash getRootSquash() {
@@ -95,6 +118,8 @@ public class ShareCreateOptions {
     }
 
     /**
+     * Sets the root squash to set for the share. Only valid for NFS.
+     *
      * @param rootSquash The root squash to set for the share. Only valid for NFS.
      * @return The updated options.
      */

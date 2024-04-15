@@ -44,7 +44,7 @@ com.azure:azure-ai-formrecognizer;4.1.6;4.2.0-beta.1
 com.azure:azure-ai-formrecognizer-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-metricsadvisor;1.1.23;1.2.0-beta.1
 com.azure:azure-ai-metricsadvisor-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-ai-openai;1.0.0-beta.7;1.0.0-beta.8
+com.azure:azure-ai-openai;1.0.0-beta.8;1.0.0-beta.9
 com.azure:azure-ai-openai-assistants;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-ai-personalizer;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-textanalytics;5.4.4;5.5.0-beta.1
@@ -202,6 +202,10 @@ com.azure:azure-verticals-agrifood-farming;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-xml;1.0.0;1.1.0-beta.1
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-vision-imageanalysis;1.0.0-beta.2;1.0.0-beta.3
+com.azure:identity-test-container;1.0-SNAPSHOT;1.0-SNAPSHOT
+com.azure:identity-test-function;1.0-SNAPSHOT;1.0-SNAPSHOT
+com.azure:identity-test-vm;1.0-SNAPSHOT;1.0-SNAPSHOT
+com.azure:identity-test-webapp;0.0.1-SNAPSHOT;0.0.1-SNAPSHOT
 com.azure.spring:azure-monitor-spring-native;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-monitor-spring-native-test;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:spring-cloud-azure-appconfiguration-config-web;4.17.0;4.18.0-beta.1
@@ -313,7 +317,7 @@ com.azure.resourcemanager:azure-resourcemanager-synapse;1.0.0-beta.7;1.0.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-resourcehealth;1.0.0;1.1.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-databricks;1.0.0-beta.4;1.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-databoxedge;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-frontdoor;1.0.0-beta.3;1.0.0-beta.4
+com.azure.resourcemanager:azure-resourcemanager-frontdoor;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mixedreality;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-automation;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-resourcemover;1.1.0;1.2.0-beta.1
@@ -336,7 +340,7 @@ com.azure.resourcemanager:azure-resourcemanager-datamigration;1.0.0-beta.2;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-devspaces;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-devtestlabs;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hanaonazure;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-healthcareapis;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-healthcareapis;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hybridcompute;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-logic;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-maintenance;1.0.0;1.1.0-beta.1

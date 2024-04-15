@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.frontdoor.fluent.models.FrontendEndpointInner;
 import com.azure.resourcemanager.frontdoor.models.CustomHttpsConfiguration;
 
-/** An instance of this class provides access to all the operations defined in FrontendEndpointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FrontendEndpointsClient.
+ */
 public interface FrontendEndpointsClient {
     /**
      * Lists all of the frontend endpoints within a Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface FrontendEndpointsClient {
 
     /**
      * Lists all of the frontend endpoints within a Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param context The context to associate with this operation.
@@ -41,12 +43,12 @@ public interface FrontendEndpointsClient {
      * @return result of the request to list frontend endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FrontendEndpointInner> listByFrontDoor(
-        String resourceGroupName, String frontDoorName, Context context);
+    PagedIterable<FrontendEndpointInner> listByFrontDoor(String resourceGroupName, String frontDoorName,
+        Context context);
 
     /**
      * Gets a Frontend endpoint with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -57,12 +59,12 @@ public interface FrontendEndpointsClient {
      * @return a Frontend endpoint with the specified name within the specified Front Door along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FrontendEndpointInner> getWithResponse(
-        String resourceGroupName, String frontDoorName, String frontendEndpointName, Context context);
+    Response<FrontendEndpointInner> getWithResponse(String resourceGroupName, String frontDoorName,
+        String frontendEndpointName, Context context);
 
     /**
      * Gets a Frontend endpoint with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -76,7 +78,7 @@ public interface FrontendEndpointsClient {
 
     /**
      * Enables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -87,15 +89,12 @@ public interface FrontendEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginEnableHttps(
-        String resourceGroupName,
-        String frontDoorName,
-        String frontendEndpointName,
-        CustomHttpsConfiguration customHttpsConfiguration);
+    SyncPoller<PollResult<Void>, Void> beginEnableHttps(String resourceGroupName, String frontDoorName,
+        String frontendEndpointName, CustomHttpsConfiguration customHttpsConfiguration);
 
     /**
      * Enables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -107,16 +106,12 @@ public interface FrontendEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginEnableHttps(
-        String resourceGroupName,
-        String frontDoorName,
-        String frontendEndpointName,
-        CustomHttpsConfiguration customHttpsConfiguration,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginEnableHttps(String resourceGroupName, String frontDoorName,
+        String frontendEndpointName, CustomHttpsConfiguration customHttpsConfiguration, Context context);
 
     /**
      * Enables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -126,15 +121,12 @@ public interface FrontendEndpointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void enableHttps(
-        String resourceGroupName,
-        String frontDoorName,
-        String frontendEndpointName,
+    void enableHttps(String resourceGroupName, String frontDoorName, String frontendEndpointName,
         CustomHttpsConfiguration customHttpsConfiguration);
 
     /**
      * Enables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -145,16 +137,12 @@ public interface FrontendEndpointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void enableHttps(
-        String resourceGroupName,
-        String frontDoorName,
-        String frontendEndpointName,
-        CustomHttpsConfiguration customHttpsConfiguration,
-        Context context);
+    void enableHttps(String resourceGroupName, String frontDoorName, String frontendEndpointName,
+        CustomHttpsConfiguration customHttpsConfiguration, Context context);
 
     /**
      * Disables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -164,12 +152,12 @@ public interface FrontendEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDisableHttps(
-        String resourceGroupName, String frontDoorName, String frontendEndpointName);
+    SyncPoller<PollResult<Void>, Void> beginDisableHttps(String resourceGroupName, String frontDoorName,
+        String frontendEndpointName);
 
     /**
      * Disables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -180,12 +168,12 @@ public interface FrontendEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDisableHttps(
-        String resourceGroupName, String frontDoorName, String frontendEndpointName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDisableHttps(String resourceGroupName, String frontDoorName,
+        String frontendEndpointName, Context context);
 
     /**
      * Disables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -198,7 +186,7 @@ public interface FrontendEndpointsClient {
 
     /**
      * Disables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
