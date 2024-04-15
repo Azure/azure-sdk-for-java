@@ -95,12 +95,17 @@ public class SampleLimitedOrderDiscrepancyInferenceAsync {
         
         asyncPoller
             .takeUntil(isComplete)
+            .doFinally(signal -> {
+                latch.countDown();
+            })
             .subscribe(completedResult -> {
                 if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                     System.out.println("Completed poll response, status: " + completedResult.getStatus());
                     displayLimitedOrderDiscrepancies(completedResult.getValue().getResult());
-                    latch.countDown();
                 }
+            }, error -> {
+                System.err.println(error.getMessage());
+                error.printStackTrace();
             });
 
         latch.await();
