@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Relevant cloud for the custom assessment automation. */
+/**
+ * Relevant cloud for the custom assessment automation.
+ */
 public final class SupportedCloudEnum extends ExpandableStringEnum<SupportedCloudEnum> {
-    /** Static value AWS for SupportedCloudEnum. */
+    /**
+     * Static value AWS for SupportedCloudEnum.
+     */
     public static final SupportedCloudEnum AWS = fromString("AWS");
 
-    /** Static value GCP for SupportedCloudEnum. */
+    /**
+     * Static value GCP for SupportedCloudEnum.
+     */
     public static final SupportedCloudEnum GCP = fromString("GCP");
 
     /**
      * Creates a new instance of SupportedCloudEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class SupportedCloudEnum extends ExpandableStringEnum<SupportedClou
 
     /**
      * Creates or finds a SupportedCloudEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SupportedCloudEnum.
      */
@@ -38,7 +44,7 @@ public final class SupportedCloudEnum extends ExpandableStringEnum<SupportedClou
 
     /**
      * Gets known SupportedCloudEnum values.
-     *
+     * 
      * @return known SupportedCloudEnum values.
      */
     public static Collection<SupportedCloudEnum> values() {

@@ -13,36 +13,64 @@ import java.util.Collection;
  * values =&gt; NEW, UPDATE, STATELESS_UPDATE, STOP, START, CANCEL, SAVEPOINT, LIST_SAVEPOINT, or DELETE.
  */
 public final class Action extends ExpandableStringEnum<Action> {
-    /** Static value NEW for Action. */
+    /**
+     * Static value NEW for Action.
+     */
     public static final Action NEW = fromString("NEW");
 
-    /** Static value UPDATE for Action. */
+    /**
+     * Static value UPDATE for Action.
+     */
     public static final Action UPDATE = fromString("UPDATE");
 
-    /** Static value STATELESS_UPDATE for Action. */
+    /**
+     * Static value STATELESS_UPDATE for Action.
+     */
     public static final Action STATELESS_UPDATE = fromString("STATELESS_UPDATE");
 
-    /** Static value STOP for Action. */
+    /**
+     * Static value STOP for Action.
+     */
     public static final Action STOP = fromString("STOP");
 
-    /** Static value START for Action. */
+    /**
+     * Static value START for Action.
+     */
     public static final Action START = fromString("START");
 
-    /** Static value CANCEL for Action. */
+    /**
+     * Static value CANCEL for Action.
+     */
     public static final Action CANCEL = fromString("CANCEL");
 
-    /** Static value SAVEPOINT for Action. */
+    /**
+     * Static value SAVEPOINT for Action.
+     */
     public static final Action SAVEPOINT = fromString("SAVEPOINT");
 
-    /** Static value LIST_SAVEPOINT for Action. */
+    /**
+     * Static value LIST_SAVEPOINT for Action.
+     */
     public static final Action LIST_SAVEPOINT = fromString("LIST_SAVEPOINT");
 
-    /** Static value DELETE for Action. */
+    /**
+     * Static value DELETE for Action.
+     */
     public static final Action DELETE = fromString("DELETE");
 
     /**
+     * Static value LAST_STATE_UPDATE for Action.
+     */
+    public static final Action LAST_STATE_UPDATE = fromString("LAST_STATE_UPDATE");
+
+    /**
+     * Static value RE_LAUNCH for Action.
+     */
+    public static final Action RE_LAUNCH = fromString("RE_LAUNCH");
+
+    /**
      * Creates a new instance of Action value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -51,7 +79,7 @@ public final class Action extends ExpandableStringEnum<Action> {
 
     /**
      * Creates or finds a Action from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Action.
      */
@@ -62,7 +90,7 @@ public final class Action extends ExpandableStringEnum<Action> {
 
     /**
      * Gets known Action values.
-     *
+     * 
      * @return known Action values.
      */
     public static Collection<Action> values() {

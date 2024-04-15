@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the parameters for the url rewrite action. */
+/**
+ * Defines the parameters for the url rewrite action.
+ */
 @Fluent
 public final class UrlRewriteActionParameters {
     /*
@@ -36,14 +38,15 @@ public final class UrlRewriteActionParameters {
     @JsonProperty(value = "preserveUnmatchedPath")
     private Boolean preserveUnmatchedPath;
 
-    /** Creates an instance of UrlRewriteActionParameters class. */
+    /**
+     * Creates an instance of UrlRewriteActionParameters class.
+     */
     public UrlRewriteActionParameters() {
-        typeName = "DeliveryRuleUrlRewriteActionParameters";
     }
 
     /**
      * Get the typeName property: The typeName property.
-     *
+     * 
      * @return the typeName value.
      */
     public String typeName() {
@@ -52,7 +55,7 @@ public final class UrlRewriteActionParameters {
 
     /**
      * Set the typeName property: The typeName property.
-     *
+     * 
      * @param typeName the typeName value to set.
      * @return the UrlRewriteActionParameters object itself.
      */
@@ -64,7 +67,7 @@ public final class UrlRewriteActionParameters {
     /**
      * Get the sourcePattern property: define a request URI pattern that identifies the type of requests that may be
      * rewritten. If value is blank, all strings are matched.
-     *
+     * 
      * @return the sourcePattern value.
      */
     public String sourcePattern() {
@@ -74,7 +77,7 @@ public final class UrlRewriteActionParameters {
     /**
      * Set the sourcePattern property: define a request URI pattern that identifies the type of requests that may be
      * rewritten. If value is blank, all strings are matched.
-     *
+     * 
      * @param sourcePattern the sourcePattern value to set.
      * @return the UrlRewriteActionParameters object itself.
      */
@@ -85,7 +88,7 @@ public final class UrlRewriteActionParameters {
 
     /**
      * Get the destination property: Define the relative URL to which the above requests will be rewritten by.
-     *
+     * 
      * @return the destination value.
      */
     public String destination() {
@@ -94,7 +97,7 @@ public final class UrlRewriteActionParameters {
 
     /**
      * Set the destination property: Define the relative URL to which the above requests will be rewritten by.
-     *
+     * 
      * @param destination the destination value to set.
      * @return the UrlRewriteActionParameters object itself.
      */
@@ -105,7 +108,7 @@ public final class UrlRewriteActionParameters {
 
     /**
      * Get the preserveUnmatchedPath property: Whether to preserve unmatched path. Default value is true.
-     *
+     * 
      * @return the preserveUnmatchedPath value.
      */
     public Boolean preserveUnmatchedPath() {
@@ -114,7 +117,7 @@ public final class UrlRewriteActionParameters {
 
     /**
      * Set the preserveUnmatchedPath property: Whether to preserve unmatched path. Default value is true.
-     *
+     * 
      * @param preserveUnmatchedPath the preserveUnmatchedPath value to set.
      * @return the UrlRewriteActionParameters object itself.
      */
@@ -125,21 +128,17 @@ public final class UrlRewriteActionParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourcePattern() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourcePattern in model UrlRewriteActionParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sourcePattern in model UrlRewriteActionParameters"));
         }
         if (destination() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property destination in model UrlRewriteActionParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property destination in model UrlRewriteActionParameters"));
         }
     }
 

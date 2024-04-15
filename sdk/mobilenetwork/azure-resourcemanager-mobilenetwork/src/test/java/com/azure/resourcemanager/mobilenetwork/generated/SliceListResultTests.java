@@ -16,71 +16,37 @@ import org.junit.jupiter.api.Assertions;
 public final class SliceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SliceListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"snssai\":{\"sst\":1098245078,\"sd\":\"lvidizozs\"},\"description\":\"ccxjm\"},\"location\":\"fdgnwncypuuwwlt\",\"tags\":{\"zzhmkd\":\"jctzenkei\",\"gsrboldforobw\":\"svflyhbxcudch\",\"hfovvacqpbtu\":\"lvizb\"},\"id\":\"dxe\",\"name\":\"zab\",\"type\":\"elawumu\"},{\"properties\":{\"provisioningState\":\"Failed\",\"snssai\":{\"sst\":46527363,\"sd\":\"wrrwoycqucw\"},\"description\":\"ahnomdrkywu\"},\"location\":\"svfuurutlwexxwl\",\"tags\":{\"q\":\"iexzsrzpge\",\"wwpgdakchzyvlixq\":\"yb\",\"bn\":\"rkcxkj\",\"swqrntvlwijp\":\"mysu\"},\"id\":\"ttexoqqpwcyyufmh\",\"name\":\"uncuw\",\"type\":\"qspkcdqzhlctd\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"snssai\":{\"sst\":302400307,\"sd\":\"dyfpchrqbnj\"},\"description\":\"cgegydcwbo\"},\"location\":\"umvq\",\"tags\":{\"jtlo\":\"ihrraiouaub\",\"iflrzpasccbiu\":\"xfuojrn\",\"ufdvruz\":\"mzdlyjdfqwmkyo\",\"hpc\":\"lzo\"},\"id\":\"fnmdxotn\",\"name\":\"fdgugeyzi\",\"type\":\"grkyuizabsnmfpph\"}],\"nextLink\":\"eevy\"}")
-                .toObject(SliceListResult.class);
-        Assertions.assertEquals("fdgnwncypuuwwlt", model.value().get(0).location());
-        Assertions.assertEquals("jctzenkei", model.value().get(0).tags().get("zzhmkd"));
-        Assertions.assertEquals(1098245078, model.value().get(0).snssai().sst());
-        Assertions.assertEquals("lvidizozs", model.value().get(0).snssai().sd());
-        Assertions.assertEquals("ccxjm", model.value().get(0).description());
+        SliceListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"snssai\":{\"sst\":1094227624,\"sd\":\"t\"},\"description\":\"kxn\"},\"location\":\"dabg\",\"tags\":{\"ewbcihxuuw\":\"dtj\",\"yxccyb\":\"c\",\"px\":\"payakkud\"},\"id\":\"wjplma\",\"name\":\"stcyohpfkyrkdbd\",\"type\":\"iogsjkmnwq\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"snssai\":{\"sst\":1313812453,\"sd\":\"iyhddvi\"},\"description\":\"egfnmntfpmvmemfn\"},\"location\":\"dwvvba\",\"tags\":{\"chp\":\"l\",\"evwrdnhfuk\":\"db\",\"fcvlerch\":\"vsjcswsmystuluqy\"},\"id\":\"qbmfpjbabwidf\",\"name\":\"xsspuunnoxyhk\",\"type\":\"g\"},{\"properties\":{\"provisioningState\":\"Deleted\",\"snssai\":{\"sst\":2067421779,\"sd\":\"hp\"},\"description\":\"oqcaaewdaomdj\"},\"location\":\"pjxxkzb\",\"tags\":{\"xonbzoggculapz\":\"geivsiykzkdncj\",\"pgogtqxepny\":\"y\"},\"id\":\"b\",\"name\":\"uajlyj\",\"type\":\"lvofqzhvfcibyfmo\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"snssai\":{\"sst\":1105067830,\"sd\":\"jpvd\"},\"description\":\"fzwiivwzjbhyz\"},\"location\":\"jrkambtrnegvmnv\",\"tags\":{\"flvestmjlxrrilo\":\"qvldspastjbkkd\",\"kuziycsle\":\"apeewchpxlkt\",\"dcgzul\":\"ufuztcktyhjtq\"},\"id\":\"mmrqz\",\"name\":\"rr\",\"type\":\"vpglydz\"}],\"nextLink\":\"rvqeevtoepryutn\"}")
+            .toObject(SliceListResult.class);
+        Assertions.assertEquals("dabg", model.value().get(0).location());
+        Assertions.assertEquals("dtj", model.value().get(0).tags().get("ewbcihxuuw"));
+        Assertions.assertEquals(1094227624, model.value().get(0).snssai().sst());
+        Assertions.assertEquals("t", model.value().get(0).snssai().sd());
+        Assertions.assertEquals("kxn", model.value().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SliceListResult model =
-            new SliceListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SliceInner()
-                                .withLocation("fdgnwncypuuwwlt")
-                                .withTags(
-                                    mapOf(
-                                        "zzhmkd",
-                                        "jctzenkei",
-                                        "gsrboldforobw",
-                                        "svflyhbxcudch",
-                                        "hfovvacqpbtu",
-                                        "lvizb"))
-                                .withSnssai(new Snssai().withSst(1098245078).withSd("lvidizozs"))
-                                .withDescription("ccxjm"),
-                            new SliceInner()
-                                .withLocation("svfuurutlwexxwl")
-                                .withTags(
-                                    mapOf(
-                                        "q",
-                                        "iexzsrzpge",
-                                        "wwpgdakchzyvlixq",
-                                        "yb",
-                                        "bn",
-                                        "rkcxkj",
-                                        "swqrntvlwijp",
-                                        "mysu"))
-                                .withSnssai(new Snssai().withSst(46527363).withSd("wrrwoycqucw"))
-                                .withDescription("ahnomdrkywu"),
-                            new SliceInner()
-                                .withLocation("umvq")
-                                .withTags(
-                                    mapOf(
-                                        "jtlo",
-                                        "ihrraiouaub",
-                                        "iflrzpasccbiu",
-                                        "xfuojrn",
-                                        "ufdvruz",
-                                        "mzdlyjdfqwmkyo",
-                                        "hpc",
-                                        "lzo"))
-                                .withSnssai(new Snssai().withSst(302400307).withSd("dyfpchrqbnj"))
-                                .withDescription("cgegydcwbo")));
+        SliceListResult model = new SliceListResult().withValue(Arrays.asList(
+            new SliceInner().withLocation("dabg").withTags(mapOf("ewbcihxuuw", "dtj", "yxccyb", "c", "px", "payakkud"))
+                .withSnssai(new Snssai().withSst(1094227624).withSd("t")).withDescription("kxn"),
+            new SliceInner().withLocation("dwvvba")
+                .withTags(mapOf("chp", "l", "evwrdnhfuk", "db", "fcvlerch", "vsjcswsmystuluqy"))
+                .withSnssai(new Snssai().withSst(1313812453).withSd("iyhddvi")).withDescription("egfnmntfpmvmemfn"),
+            new SliceInner().withLocation("pjxxkzb")
+                .withTags(mapOf("xonbzoggculapz", "geivsiykzkdncj", "pgogtqxepny", "y"))
+                .withSnssai(new Snssai().withSst(2067421779).withSd("hp")).withDescription("oqcaaewdaomdj"),
+            new SliceInner().withLocation("jrkambtrnegvmnv")
+                .withTags(
+                    mapOf("flvestmjlxrrilo", "qvldspastjbkkd", "kuziycsle", "apeewchpxlkt", "dcgzul", "ufuztcktyhjtq"))
+                .withSnssai(new Snssai().withSst(1105067830).withSd("jpvd")).withDescription("fzwiivwzjbhyz")));
         model = BinaryData.fromObject(model).toObject(SliceListResult.class);
-        Assertions.assertEquals("fdgnwncypuuwwlt", model.value().get(0).location());
-        Assertions.assertEquals("jctzenkei", model.value().get(0).tags().get("zzhmkd"));
-        Assertions.assertEquals(1098245078, model.value().get(0).snssai().sst());
-        Assertions.assertEquals("lvidizozs", model.value().get(0).snssai().sd());
-        Assertions.assertEquals("ccxjm", model.value().get(0).description());
+        Assertions.assertEquals("dabg", model.value().get(0).location());
+        Assertions.assertEquals("dtj", model.value().get(0).tags().get("ewbcihxuuw"));
+        Assertions.assertEquals(1094227624, model.value().get(0).snssai().sst());
+        Assertions.assertEquals("t", model.value().get(0).snssai().sd());
+        Assertions.assertEquals("kxn", model.value().get(0).description());
     }
 
     // Use "Map.of" if available

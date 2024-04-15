@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * A resource identifier for an alert which can be used to direct the alert to the right product exposure group (tenant,
- * workspace, subscription etc.).
+ * A resource identifier for an alert which can be used to direct the alert to the right product exposure group
+ * (tenant, workspace, subscription etc.).
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -21,17 +21,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ResourceIdentifier")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureResource", value = AzureResourceIdentifier.class),
-    @JsonSubTypes.Type(name = "LogAnalytics", value = LogAnalyticsIdentifier.class)
-})
+    @JsonSubTypes.Type(name = "LogAnalytics", value = LogAnalyticsIdentifier.class) })
 @Immutable
 public class ResourceIdentifier {
-    /** Creates an instance of ResourceIdentifier class. */
+    /**
+     * Creates an instance of ResourceIdentifier class.
+     */
     public ResourceIdentifier() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

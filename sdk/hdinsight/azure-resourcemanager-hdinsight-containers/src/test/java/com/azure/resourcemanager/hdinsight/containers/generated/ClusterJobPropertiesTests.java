@@ -10,8 +10,8 @@ import com.azure.resourcemanager.hdinsight.containers.models.ClusterJobPropertie
 public final class ClusterJobPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterJobProperties model =
-            BinaryData.fromString("{\"jobType\":\"ClusterJobProperties\"}").toObject(ClusterJobProperties.class);
+        ClusterJobProperties model
+            = BinaryData.fromString("{\"jobType\":\"ClusterJobProperties\"}").toObject(ClusterJobProperties.class);
     }
 
     @org.junit.jupiter.api.Test

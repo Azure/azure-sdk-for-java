@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Data flow template. */
+/**
+ * Data flow template.
+ */
 @Fluent
 public final class ServiceDataFlowTemplate {
     /*
@@ -53,14 +55,16 @@ public final class ServiceDataFlowTemplate {
     @JsonProperty(value = "ports")
     private List<String> ports;
 
-    /** Creates an instance of ServiceDataFlowTemplate class. */
+    /**
+     * Creates an instance of ServiceDataFlowTemplate class.
+     */
     public ServiceDataFlowTemplate() {
     }
 
     /**
      * Get the templateName property: The name of the data flow template. This must be unique within the parent data
      * flow policy rule. You must not use any of the following reserved strings - `default`, `requested` or `service`.
-     *
+     * 
      * @return the templateName value.
      */
     public String templateName() {
@@ -70,7 +74,7 @@ public final class ServiceDataFlowTemplate {
     /**
      * Set the templateName property: The name of the data flow template. This must be unique within the parent data
      * flow policy rule. You must not use any of the following reserved strings - `default`, `requested` or `service`.
-     *
+     * 
      * @param templateName the templateName value to set.
      * @return the ServiceDataFlowTemplate object itself.
      */
@@ -81,7 +85,7 @@ public final class ServiceDataFlowTemplate {
 
     /**
      * Get the direction property: The direction of this flow.
-     *
+     * 
      * @return the direction value.
      */
     public SdfDirection direction() {
@@ -90,7 +94,7 @@ public final class ServiceDataFlowTemplate {
 
     /**
      * Set the direction property: The direction of this flow.
-     *
+     * 
      * @param direction the direction value to set.
      * @return the ServiceDataFlowTemplate object itself.
      */
@@ -101,11 +105,11 @@ public final class ServiceDataFlowTemplate {
 
     /**
      * Get the protocol property: A list of the allowed protocol(s) for this flow. If you want this flow to be able to
-     * use any protocol within the internet protocol suite, use the value `ip`. If you only want to allow a selection of
-     * protocols, you must use the corresponding IANA Assigned Internet Protocol Number for each protocol, as described
-     * in https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml. For example, for UDP, you must use
-     * 17. If you use the value `ip` then you must leave the field `port` unspecified.
-     *
+     * use any protocol within the internet protocol suite, use the value `ip`. If you only want to allow a selection
+     * of protocols, you must use the corresponding IANA Assigned Internet Protocol Number for each protocol, as
+     * described in https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml. For example, for UDP, you
+     * must use 17. If you use the value `ip` then you must leave the field `port` unspecified.
+     * 
      * @return the protocol value.
      */
     public List<String> protocol() {
@@ -114,11 +118,11 @@ public final class ServiceDataFlowTemplate {
 
     /**
      * Set the protocol property: A list of the allowed protocol(s) for this flow. If you want this flow to be able to
-     * use any protocol within the internet protocol suite, use the value `ip`. If you only want to allow a selection of
-     * protocols, you must use the corresponding IANA Assigned Internet Protocol Number for each protocol, as described
-     * in https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml. For example, for UDP, you must use
-     * 17. If you use the value `ip` then you must leave the field `port` unspecified.
-     *
+     * use any protocol within the internet protocol suite, use the value `ip`. If you only want to allow a selection
+     * of protocols, you must use the corresponding IANA Assigned Internet Protocol Number for each protocol, as
+     * described in https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml. For example, for UDP, you
+     * must use 17. If you use the value `ip` then you must leave the field `port` unspecified.
+     * 
      * @param protocol the protocol value to set.
      * @return the ServiceDataFlowTemplate object itself.
      */
@@ -132,7 +136,7 @@ public final class ServiceDataFlowTemplate {
      * allow connections on any IP address, use the value `any`. Otherwise, you must provide each of the remote IP
      * addresses to which the packet core instance will connect for this flow. You must provide each IP address in CIDR
      * notation, including the netmask (for example, 192.0.2.54/24).
-     *
+     * 
      * @return the remoteIpList value.
      */
     public List<String> remoteIpList() {
@@ -144,7 +148,7 @@ public final class ServiceDataFlowTemplate {
      * allow connections on any IP address, use the value `any`. Otherwise, you must provide each of the remote IP
      * addresses to which the packet core instance will connect for this flow. You must provide each IP address in CIDR
      * notation, including the netmask (for example, 192.0.2.54/24).
-     *
+     * 
      * @param remoteIpList the remoteIpList value to set.
      * @return the ServiceDataFlowTemplate object itself.
      */
@@ -159,7 +163,7 @@ public final class ServiceDataFlowTemplate {
      * the `protocol` field. This is an optional setting. If you do not specify it then connections will be allowed on
      * all ports. Port ranges must be specified as &lt;FirstPort&gt;-&lt;LastPort&gt;. For example: [`8080`,
      * `8082-8085`].
-     *
+     * 
      * @return the ports value.
      */
     public List<String> ports() {
@@ -172,7 +176,7 @@ public final class ServiceDataFlowTemplate {
      * the `protocol` field. This is an optional setting. If you do not specify it then connections will be allowed on
      * all ports. Port ranges must be specified as &lt;FirstPort&gt;-&lt;LastPort&gt;. For example: [`8080`,
      * `8082-8085`].
-     *
+     * 
      * @param ports the ports value to set.
      * @return the ServiceDataFlowTemplate object itself.
      */
@@ -183,33 +187,25 @@ public final class ServiceDataFlowTemplate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (templateName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property templateName in model ServiceDataFlowTemplate"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property templateName in model ServiceDataFlowTemplate"));
         }
         if (direction() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property direction in model ServiceDataFlowTemplate"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property direction in model ServiceDataFlowTemplate"));
         }
         if (protocol() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property protocol in model ServiceDataFlowTemplate"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property protocol in model ServiceDataFlowTemplate"));
         }
         if (remoteIpList() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property remoteIpList in model ServiceDataFlowTemplate"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property remoteIpList in model ServiceDataFlowTemplate"));
         }
     }
 

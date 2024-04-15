@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.chaos.fluent.models.TargetTypeInner;
 
-/** An instance of this class provides access to all the operations defined in TargetTypesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TargetTypesClient.
+ */
 public interface TargetTypesClient {
     /**
      * Get a list of Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -27,7 +29,7 @@ public interface TargetTypesClient {
 
     /**
      * Get a list of Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @param continuationToken String that sets the continuation token.
      * @param context The context to associate with this operation.
@@ -41,7 +43,7 @@ public interface TargetTypesClient {
 
     /**
      * Get a Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @param targetTypeName String that represents a Target Type resource name.
      * @param context The context to associate with this operation.
@@ -55,7 +57,7 @@ public interface TargetTypesClient {
 
     /**
      * Get a Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @param targetTypeName String that represents a Target Type resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

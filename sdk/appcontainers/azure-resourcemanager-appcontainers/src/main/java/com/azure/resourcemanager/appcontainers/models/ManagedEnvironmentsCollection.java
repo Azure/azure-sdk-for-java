@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of Environments. */
+/**
+ * Collection of Environments.
+ */
 @Fluent
 public final class ManagedEnvironmentsCollection {
     /*
@@ -25,13 +27,15 @@ public final class ManagedEnvironmentsCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ManagedEnvironmentsCollection class. */
+    /**
+     * Creates an instance of ManagedEnvironmentsCollection class.
+     */
     public ManagedEnvironmentsCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedEnvironmentInner> value() {
@@ -40,7 +44,7 @@ public final class ManagedEnvironmentsCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ManagedEnvironmentsCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class ManagedEnvironmentsCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class ManagedEnvironmentsCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model ManagedEnvironmentsCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model ManagedEnvironmentsCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

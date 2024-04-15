@@ -11,9 +11,10 @@ package com.microsoft.azure.batch.protocol.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A reference to an Azure Virtual Machines Marketplace Image or a Shared Image
- * Gallery Image. To get the list of all Azure Marketplace Image references
- * verified by Azure Batch, see the 'List Supported Images' operation.
+ * A reference to an Azure Virtual Machines Marketplace Image or a Azure
+ * Compute Gallery Image. To get the list of all Azure Marketplace Image
+ * references verified by Azure Batch, see the 'List Supported Images'
+ * operation.
  */
 public class ImageReference {
     /**
@@ -46,7 +47,7 @@ public class ImageReference {
     private String version;
 
     /**
-     * The ARM resource identifier of the Shared Image Gallery Image. Compute
+     * The ARM resource identifier of the Azure Compute Gallery Image. Compute
      * Nodes in the Pool will be created using this Image Id. This is of the
      * form
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName}/versions/{VersionId}
@@ -54,7 +55,7 @@ public class ImageReference {
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName}
      * for always defaulting to the latest image version.
      * This property is mutually exclusive with other ImageReference
-     * properties. The Shared Image Gallery Image must have replicas in the
+     * properties. The Azure Compute Gallery Image must have replicas in the
      * same region and must be in the same subscription as the Azure Batch
      * account. If the image version is not specified in the imageId, the
      * latest version will be used. For information about the firewall settings
@@ -154,7 +155,7 @@ public class ImageReference {
     }
 
     /**
-     * Get this property is mutually exclusive with other ImageReference properties. The Shared Image Gallery Image must have replicas in the same region and must be in the same subscription as the Azure Batch account. If the image version is not specified in the imageId, the latest version will be used. For information about the firewall settings for the Batch Compute Node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
+     * Get this property is mutually exclusive with other ImageReference properties. The Azure Compute Gallery Image must have replicas in the same region and must be in the same subscription as the Azure Batch account. If the image version is not specified in the imageId, the latest version will be used. For information about the firewall settings for the Batch Compute Node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      *
      * @return the virtualMachineImageId value
      */
@@ -163,7 +164,7 @@ public class ImageReference {
     }
 
     /**
-     * Set this property is mutually exclusive with other ImageReference properties. The Shared Image Gallery Image must have replicas in the same region and must be in the same subscription as the Azure Batch account. If the image version is not specified in the imageId, the latest version will be used. For information about the firewall settings for the Batch Compute Node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
+     * Set this property is mutually exclusive with other ImageReference properties. The Azure Compute Gallery Image must have replicas in the same region and must be in the same subscription as the Azure Batch account. If the image version is not specified in the imageId, the latest version will be used. For information about the firewall settings for the Batch Compute Node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      *
      * @param virtualMachineImageId the virtualMachineImageId value to set
      * @return the ImageReference object itself.

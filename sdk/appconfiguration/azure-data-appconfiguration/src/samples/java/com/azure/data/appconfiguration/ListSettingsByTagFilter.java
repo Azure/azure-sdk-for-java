@@ -8,7 +8,6 @@ import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 

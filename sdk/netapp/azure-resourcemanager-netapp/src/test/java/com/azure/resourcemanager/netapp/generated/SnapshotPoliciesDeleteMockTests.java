@@ -45,7 +45,7 @@ public final class SnapshotPoliciesDeleteMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.snapshotPolicies().delete("zvaylptrsqqw", "tcmwqkchc", "waxfewzjkj", com.azure.core.util.Context.NONE);
+        manager.snapshotPolicies().delete("jpdn", "zhajoylhjlmuo", "xprimrsop", com.azure.core.util.Context.NONE);
 
     }
 }

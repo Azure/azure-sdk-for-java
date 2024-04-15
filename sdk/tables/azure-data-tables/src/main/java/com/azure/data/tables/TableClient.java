@@ -159,7 +159,7 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  * <!-- src_embed com.azure.data.tables.tableClient.updateEntity#TableEntity-TableEntityUpdateMode -->
  * <pre>
  *
- * TableEntity myTableEntity = new TableEntity&#40;&quot;paritionKey&quot;, &quot;rowKey&quot;&#41;
+ * TableEntity myTableEntity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
  *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
  *
  * tableClient.updateEntity&#40;myTableEntity, TableEntityUpdateMode.REPLACE&#41;;
@@ -772,7 +772,7 @@ public final class TableClient {
      * <!-- src_embed com.azure.data.tables.tableClient.updateEntity#TableEntity-TableEntityUpdateMode -->
      * <pre>
      *
-     * TableEntity myTableEntity = new TableEntity&#40;&quot;paritionKey&quot;, &quot;rowKey&quot;&#41;
+     * TableEntity myTableEntity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
      *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
      *
      * tableClient.updateEntity&#40;myTableEntity, TableEntityUpdateMode.REPLACE&#41;;

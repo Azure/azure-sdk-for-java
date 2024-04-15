@@ -11,14 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class OrganizationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OrganizationInfo model = BinaryData.fromString("{\"organizationId\":\"zw\"}").toObject(OrganizationInfo.class);
-        Assertions.assertEquals("zw", model.organizationId());
+        OrganizationInfo model
+            = BinaryData.fromString("{\"organizationId\":\"amiheognarxz\"}").toObject(OrganizationInfo.class);
+        Assertions.assertEquals("amiheognarxz", model.organizationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrganizationInfo model = new OrganizationInfo().withOrganizationId("zw");
+        OrganizationInfo model = new OrganizationInfo().withOrganizationId("amiheognarxz");
         model = BinaryData.fromObject(model).toObject(OrganizationInfo.class);
-        Assertions.assertEquals("zw", model.organizationId());
+        Assertions.assertEquals("amiheognarxz", model.organizationId());
     }
 }

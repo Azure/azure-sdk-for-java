@@ -10,7 +10,7 @@ package com.azure.resourcemanager.confluent.generated;
 public final class OrganizationGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Organization_Get.json
+     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_Get.json
      */
     /**
      * Sample code: Organization_Get.

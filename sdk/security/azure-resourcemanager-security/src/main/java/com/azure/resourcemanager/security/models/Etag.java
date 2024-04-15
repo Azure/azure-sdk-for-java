@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Entity tag is used for comparing two or more entities from the same requested resource. */
+/**
+ * Entity tag is used for comparing two or more entities from the same requested resource.
+ */
 @Fluent
 public class Etag {
     /*
@@ -16,13 +18,15 @@ public class Etag {
     @JsonProperty(value = "etag")
     private String etag;
 
-    /** Creates an instance of Etag class. */
+    /**
+     * Creates an instance of Etag class.
+     */
     public Etag() {
     }
 
     /**
      * Get the etag property: Entity tag is used for comparing two or more entities from the same requested resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -31,7 +35,7 @@ public class Etag {
 
     /**
      * Set the etag property: Entity tag is used for comparing two or more entities from the same requested resource.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the Etag object itself.
      */
@@ -42,7 +46,7 @@ public class Etag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

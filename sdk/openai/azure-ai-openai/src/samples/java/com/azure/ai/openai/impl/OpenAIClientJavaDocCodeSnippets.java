@@ -12,7 +12,9 @@ import com.azure.ai.openai.models.ChatRequestSystemMessage;
 import com.azure.ai.openai.models.ChatRequestUserMessage;
 import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ public class OpenAIClientJavaDocCodeSnippets {
      */
     @Test
     public void getChatCompletionsStream() {
-        String deploymentOrModelId = "gpt-4-1106-preview";
+        String deploymentOrModelId = Configuration.getGlobalConfiguration().get("OPENAI_DEPLOYMENT_OR_MODEL_ID");
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
         chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
@@ -39,12 +41,10 @@ public class OpenAIClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptions
         openAIClient.getChatCompletionsStream(deploymentOrModelId, new ChatCompletionsOptions(chatMessages))
-                .stream()
-                // Remove .skip(1) when using Non-Azure OpenAI API
-                // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
-                // TODO: remove .skip(1) after service fixes the issue.
-                .skip(1)
                 .forEach(chatCompletions -> {
+                    if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
+                        return;
+                    }
                     ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
                     if (delta.getRole() != null) {
                         System.out.println("Role = " + delta.getRole());
@@ -55,6 +55,27 @@ public class OpenAIClientJavaDocCodeSnippets {
                     }
                 });
         // END: com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptions
+
+        // With Response Code Snippet
+
+        // BEGIN: com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload
+        openAIClient.getChatCompletionsStreamWithResponse(deploymentOrModelId, new ChatCompletionsOptions(chatMessages),
+                        new RequestOptions().setHeader("my-header", "my-header-value"))
+                .getValue()
+                .forEach(chatCompletions -> {
+                    if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
+                        return;
+                    }
+                    ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
+                    if (delta.getRole() != null) {
+                        System.out.println("Role = " + delta.getRole());
+                    }
+                    if (delta.getContent() != null) {
+                        String content = delta.getContent();
+                        System.out.print(content);
+                    }
+                });
+        // END: com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload
     }
 
     private OpenAIClient getOpenAIClient() {

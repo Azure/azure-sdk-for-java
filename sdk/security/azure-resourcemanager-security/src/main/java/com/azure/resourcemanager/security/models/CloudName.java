@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The multi cloud resource's cloud name. */
+/**
+ * The multi cloud resource's cloud name.
+ */
 public final class CloudName extends ExpandableStringEnum<CloudName> {
-    /** Static value Azure for CloudName. */
+    /**
+     * Static value Azure for CloudName.
+     */
     public static final CloudName AZURE = fromString("Azure");
 
-    /** Static value AWS for CloudName. */
+    /**
+     * Static value AWS for CloudName.
+     */
     public static final CloudName AWS = fromString("AWS");
 
-    /** Static value GCP for CloudName. */
+    /**
+     * Static value GCP for CloudName.
+     */
     public static final CloudName GCP = fromString("GCP");
 
-    /** Static value Github for CloudName. */
+    /**
+     * Static value Github for CloudName.
+     */
     public static final CloudName GITHUB = fromString("Github");
 
-    /** Static value AzureDevOps for CloudName. */
+    /**
+     * Static value AzureDevOps for CloudName.
+     */
     public static final CloudName AZURE_DEV_OPS = fromString("AzureDevOps");
 
-    /** Static value GitLab for CloudName. */
+    /**
+     * Static value GitLab for CloudName.
+     */
     public static final CloudName GIT_LAB = fromString("GitLab");
 
     /**
      * Creates a new instance of CloudName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class CloudName extends ExpandableStringEnum<CloudName> {
 
     /**
      * Creates or finds a CloudName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CloudName.
      */
@@ -50,7 +64,7 @@ public final class CloudName extends ExpandableStringEnum<CloudName> {
 
     /**
      * Gets known CloudName values.
-     *
+     * 
      * @return known CloudName values.
      */
     public static Collection<CloudName> values() {

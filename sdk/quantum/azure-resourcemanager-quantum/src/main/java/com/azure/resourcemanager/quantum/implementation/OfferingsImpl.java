@@ -19,20 +19,20 @@ public final class OfferingsImpl implements Offerings {
 
     private final com.azure.resourcemanager.quantum.AzureQuantumManager serviceManager;
 
-    public OfferingsImpl(
-        OfferingsClient innerClient, com.azure.resourcemanager.quantum.AzureQuantumManager serviceManager) {
+    public OfferingsImpl(OfferingsClient innerClient,
+        com.azure.resourcemanager.quantum.AzureQuantumManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ProviderDescription> list(String locationName) {
         PagedIterable<ProviderDescriptionInner> inner = this.serviceClient().list(locationName);
-        return Utils.mapPage(inner, inner1 -> new ProviderDescriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProviderDescriptionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ProviderDescription> list(String locationName, Context context) {
         PagedIterable<ProviderDescriptionInner> inner = this.serviceClient().list(locationName, context);
-        return Utils.mapPage(inner, inner1 -> new ProviderDescriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProviderDescriptionImpl(inner1, this.manager()));
     }
 
     private OfferingsClient serviceClient() {

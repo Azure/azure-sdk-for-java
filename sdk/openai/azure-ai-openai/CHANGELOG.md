@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.8 (Unreleased)
+## 1.0.0-beta.9 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,35 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.8 (2024-04-09)
+
+### Features Added
+
+- Added support for service API version, `2024-03-01-preview`.
+- Added a new property to `EmbeddingOptions`:
+  - `dimensions`, which is only supported in models `text-embedding-3-*` and above.
+- Added a new method to get base64 encoded string in `EmbeddingItem` class:
+  - `getEmbeddingAsString` method returns the embedding as a base64 encoded string.
+- Added a new overload `getChatCompletionsStreamWithResponse` that takes `RequestOptions` to provide the flexibility to
+  modify the HTTP request.
+
+### Breaking Changes
+
+- Replace return type `List<Double>` with `List<Float>` of `getEmbedding` method in `EmbeddingItem` class.
+
+### Bugs Fixed
+
+- A bugs fixed in Azure Core SDK that solves where text/event-stream content type wasn't being handled correctly.
+  Replaced content type exact match equal by 'startwith'. ([#39204](https://github.com/Azure/azure-sdk-for-java/pull/39204))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
 
 ## 1.0.0-beta.7 (2024-03-04)
 

@@ -31,83 +31,42 @@ public final class SimPoliciesListByMobileNetworkMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"siteProvisioningState\":{\"owtljvfw\":\"NotApplicable\",\"eagk\":\"Failed\",\"xv\":\"Adding\",\"tvbczsulm\":\"Adding\"},\"ueAmbr\":{\"uplink\":\"gglmepjpfsey\",\"downlink\":\"g\"},\"defaultSlice\":{\"id\":\"angpszngafpgyl\"},\"rfspIndex\":2068016278,\"registrationTimer\":73150877,\"sliceConfigurations\":[{\"slice\":{\"id\":\"jcngoadyed\"},\"defaultDataNetwork\":{\"id\":\"zrgjfok\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"bnoit\"},\"sessionAmbr\":{\"uplink\":\"kpztrgd\",\"downlink\":\"x\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"coqra\"},\"defaultDataNetwork\":{\"id\":\"wugyx\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"itweialwvskbuh\"},\"sessionAmbr\":{\"uplink\":\"acaqtyltcoqcu\",\"downlink\":\"pdsxzakuejkm\"},\"allowedServices\":[]}]}]},\"location\":\"iztjof\",\"tags\":{\"yeji\":\"ovjufycsjmlbe\",\"rtudawlpjfel\":\"iuxegth\",\"bgqnz\":\"erppt\",\"ialwc\":\"nhii\"},\"id\":\"gckbb\",\"name\":\"ccgzpraoxnyu\",\"type\":\"fa\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"siteProvisioningState\":{\"rtywi\":\"Updating\",\"mhlaku\":\"Updating\",\"gbhgau\":\"Failed\"},\"ueAmbr\":{\"uplink\":\"cdixmx\",\"downlink\":\"f\"},\"defaultSlice\":{\"id\":\"sryjqgdkfno\"},\"rfspIndex\":2036068845,\"registrationTimer\":374644844,\"sliceConfigurations\":[{\"slice\":{\"id\":\"vjhvefgwbm\"},\"defaultDataNetwork\":{\"id\":\"jchnta\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"ay\"},\"sessionAmbr\":{\"uplink\":\"xbulpzealbmqkyo\",\"downlink\":\"wyvf\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"mbtsuahxsg\"},\"sessionAmbr\":{\"uplink\":\"jcmmzrrscub\",\"downlink\":\"wsdrnpxqwodif\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"jxcjrmmuabwib\"},\"sessionAmbr\":{\"uplink\":\"jogjonmc\",\"downlink\":\"e\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"oyzbamwineofvf\"},\"defaultDataNetwork\":{\"id\":\"akpoldtvevbo\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"zhzjknyuxg\"},\"sessionAmbr\":{\"uplink\":\"ttxpnrupza\",\"downlink\":\"mrdixtreki\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"swyskbruffg\"},\"defaultDataNetwork\":{\"id\":\"lukkutvlxhrpqhvm\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"couqehb\"},\"sessionAmbr\":{\"uplink\":\"bcdsziryrandoyp\",\"downlink\":\"blto\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"rmkfqlwxldykals\"},\"sessionAmbr\":{\"uplink\":\"g\",\"downlink\":\"olnjpnnbmjksibj\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"sjjx\"},\"sessionAmbr\":{\"uplink\":\"ahmrnadzyqegxyi\",\"downlink\":\"pinbmhwbjijkgqxn\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"mbk\"},\"sessionAmbr\":{\"uplink\":\"znj\",\"downlink\":\"ujvaannggi\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"cwkdtaaw\"},\"defaultDataNetwork\":{\"id\":\"wfekaumrrqmb\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"qkratbnxwbjsid\"},\"sessionAmbr\":{\"uplink\":\"irkfpksokdgo\",\"downlink\":\"ewijymrhbguz\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"zkye\"},\"sessionAmbr\":{\"uplink\":\"nfnzhhh\",\"downlink\":\"o\"},\"allowedServices\":[]}]}]},\"location\":\"ffjkutycyarnroo\",\"tags\":{\"ocnhzqrottjzcfyj\":\"abzoghktdpyczhco\",\"rl\":\"pt\",\"pqinf\":\"h\"},\"id\":\"zpyglqdhmrj\",\"name\":\"ralcxpjbyypsj\",\"type\":\"qcjenkyhf\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MobileNetworkManager manager = MobileNetworkManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SimPolicy> response =
-            manager.simPolicies().listByMobileNetwork("rftb", "ve", com.azure.core.util.Context.NONE);
+        PagedIterable<SimPolicy> response
+            = manager.simPolicies().listByMobileNetwork("upeuknijduyye", "pydjfboc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iztjof", response.iterator().next().location());
-        Assertions.assertEquals("ovjufycsjmlbe", response.iterator().next().tags().get("yeji"));
-        Assertions.assertEquals("gglmepjpfsey", response.iterator().next().ueAmbr().uplink());
-        Assertions.assertEquals("g", response.iterator().next().ueAmbr().downlink());
-        Assertions.assertEquals("angpszngafpgyl", response.iterator().next().defaultSlice().id());
-        Assertions.assertEquals(2068016278, response.iterator().next().rfspIndex());
-        Assertions.assertEquals(73150877, response.iterator().next().registrationTimer());
-        Assertions.assertEquals("jcngoadyed", response.iterator().next().sliceConfigurations().get(0).slice().id());
-        Assertions
-            .assertEquals("zrgjfok", response.iterator().next().sliceConfigurations().get(0).defaultDataNetwork().id());
-        Assertions
-            .assertEquals(
-                "bnoit",
-                response
-                    .iterator()
-                    .next()
-                    .sliceConfigurations()
-                    .get(0)
-                    .dataNetworkConfigurations()
-                    .get(0)
-                    .dataNetwork()
-                    .id());
-        Assertions
-            .assertEquals(
-                "kpztrgd",
-                response
-                    .iterator()
-                    .next()
-                    .sliceConfigurations()
-                    .get(0)
-                    .dataNetworkConfigurations()
-                    .get(0)
-                    .sessionAmbr()
-                    .uplink());
-        Assertions
-            .assertEquals(
-                "x",
-                response
-                    .iterator()
-                    .next()
-                    .sliceConfigurations()
-                    .get(0)
-                    .dataNetworkConfigurations()
-                    .get(0)
-                    .sessionAmbr()
-                    .downlink());
+        Assertions.assertEquals("ffjkutycyarnroo", response.iterator().next().location());
+        Assertions.assertEquals("abzoghktdpyczhco", response.iterator().next().tags().get("ocnhzqrottjzcfyj"));
+        Assertions.assertEquals("cdixmx", response.iterator().next().ueAmbr().uplink());
+        Assertions.assertEquals("f", response.iterator().next().ueAmbr().downlink());
+        Assertions.assertEquals("sryjqgdkfno", response.iterator().next().defaultSlice().id());
+        Assertions.assertEquals(2036068845, response.iterator().next().rfspIndex());
+        Assertions.assertEquals(374644844, response.iterator().next().registrationTimer());
+        Assertions.assertEquals("vjhvefgwbm", response.iterator().next().sliceConfigurations().get(0).slice().id());
+        Assertions.assertEquals("jchnta",
+            response.iterator().next().sliceConfigurations().get(0).defaultDataNetwork().id());
+        Assertions.assertEquals("ay", response.iterator().next().sliceConfigurations().get(0)
+            .dataNetworkConfigurations().get(0).dataNetwork().id());
+        Assertions.assertEquals("xbulpzealbmqkyo", response.iterator().next().sliceConfigurations().get(0)
+            .dataNetworkConfigurations().get(0).sessionAmbr().uplink());
+        Assertions.assertEquals("wyvf", response.iterator().next().sliceConfigurations().get(0)
+            .dataNetworkConfigurations().get(0).sessionAmbr().downlink());
     }
 }

@@ -6,28 +6,38 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** Status of the instance view. */
+/**
+ * Status of the instance view.
+ */
 @Fluent
 public final class ClusterInstanceViewPropertiesStatus extends ClusterInstanceViewStatus {
-    /** Creates an instance of ClusterInstanceViewPropertiesStatus class. */
+    /**
+     * Creates an instance of ClusterInstanceViewPropertiesStatus class.
+     */
     public ClusterInstanceViewPropertiesStatus() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInstanceViewPropertiesStatus withReady(String ready) {
         super.withReady(ready);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInstanceViewPropertiesStatus withReason(String reason) {
         super.withReason(reason);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInstanceViewPropertiesStatus withMessage(String message) {
         super.withMessage(message);
@@ -36,7 +46,7 @@ public final class ClusterInstanceViewPropertiesStatus extends ClusterInstanceVi
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

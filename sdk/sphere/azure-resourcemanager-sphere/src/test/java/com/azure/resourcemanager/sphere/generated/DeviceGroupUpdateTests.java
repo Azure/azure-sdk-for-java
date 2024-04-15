@@ -7,6 +7,7 @@ package com.azure.resourcemanager.sphere.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sphere.models.AllowCrashDumpCollection;
 import com.azure.resourcemanager.sphere.models.DeviceGroupUpdate;
+import com.azure.resourcemanager.sphere.models.DeviceGroupUpdateProperties;
 import com.azure.resourcemanager.sphere.models.OSFeedType;
 import com.azure.resourcemanager.sphere.models.RegionalDataBoundary;
 import com.azure.resourcemanager.sphere.models.UpdatePolicy;
@@ -15,32 +16,28 @@ import org.junit.jupiter.api.Assertions;
 public final class DeviceGroupUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeviceGroupUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"xdbabphlwr\",\"osFeedType\":\"Retail\",\"updatePolicy\":\"No3rdPartyAppUpdates\",\"allowCrashDumpsCollection\":\"Enabled\",\"regionalDataBoundary\":\"EU\"}}")
-                .toObject(DeviceGroupUpdate.class);
-        Assertions.assertEquals("xdbabphlwr", model.description());
-        Assertions.assertEquals(OSFeedType.RETAIL, model.osFeedType());
-        Assertions.assertEquals(UpdatePolicy.NO3RD_PARTY_APP_UPDATES, model.updatePolicy());
-        Assertions.assertEquals(AllowCrashDumpCollection.ENABLED, model.allowCrashDumpsCollection());
-        Assertions.assertEquals(RegionalDataBoundary.EU, model.regionalDataBoundary());
+        DeviceGroupUpdate model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"xquk\",\"osFeedType\":\"RetailEval\",\"updatePolicy\":\"No3rdPartyAppUpdates\",\"allowCrashDumpsCollection\":\"Disabled\",\"regionalDataBoundary\":\"EU\"}}")
+            .toObject(DeviceGroupUpdate.class);
+        Assertions.assertEquals("xquk", model.properties().description());
+        Assertions.assertEquals(OSFeedType.RETAIL_EVAL, model.properties().osFeedType());
+        Assertions.assertEquals(UpdatePolicy.NO3RD_PARTY_APP_UPDATES, model.properties().updatePolicy());
+        Assertions.assertEquals(AllowCrashDumpCollection.DISABLED, model.properties().allowCrashDumpsCollection());
+        Assertions.assertEquals(RegionalDataBoundary.EU, model.properties().regionalDataBoundary());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeviceGroupUpdate model =
-            new DeviceGroupUpdate()
-                .withDescription("xdbabphlwr")
-                .withOsFeedType(OSFeedType.RETAIL)
-                .withUpdatePolicy(UpdatePolicy.NO3RD_PARTY_APP_UPDATES)
-                .withAllowCrashDumpsCollection(AllowCrashDumpCollection.ENABLED)
-                .withRegionalDataBoundary(RegionalDataBoundary.EU);
+        DeviceGroupUpdate model
+            = new DeviceGroupUpdate().withProperties(new DeviceGroupUpdateProperties().withDescription("xquk")
+                .withOsFeedType(OSFeedType.RETAIL_EVAL).withUpdatePolicy(UpdatePolicy.NO3RD_PARTY_APP_UPDATES)
+                .withAllowCrashDumpsCollection(AllowCrashDumpCollection.DISABLED)
+                .withRegionalDataBoundary(RegionalDataBoundary.EU));
         model = BinaryData.fromObject(model).toObject(DeviceGroupUpdate.class);
-        Assertions.assertEquals("xdbabphlwr", model.description());
-        Assertions.assertEquals(OSFeedType.RETAIL, model.osFeedType());
-        Assertions.assertEquals(UpdatePolicy.NO3RD_PARTY_APP_UPDATES, model.updatePolicy());
-        Assertions.assertEquals(AllowCrashDumpCollection.ENABLED, model.allowCrashDumpsCollection());
-        Assertions.assertEquals(RegionalDataBoundary.EU, model.regionalDataBoundary());
+        Assertions.assertEquals("xquk", model.properties().description());
+        Assertions.assertEquals(OSFeedType.RETAIL_EVAL, model.properties().osFeedType());
+        Assertions.assertEquals(UpdatePolicy.NO3RD_PARTY_APP_UPDATES, model.properties().updatePolicy());
+        Assertions.assertEquals(AllowCrashDumpCollection.DISABLED, model.properties().allowCrashDumpsCollection());
+        Assertions.assertEquals(RegionalDataBoundary.EU, model.properties().regionalDataBoundary());
     }
 }

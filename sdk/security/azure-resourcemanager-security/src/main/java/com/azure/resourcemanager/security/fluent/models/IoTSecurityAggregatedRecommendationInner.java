@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** IoT Security solution recommendation information. */
+/**
+ * IoT Security solution recommendation information.
+ */
 @Fluent
 public final class IoTSecurityAggregatedRecommendationInner extends ProxyResource {
     /*
@@ -27,13 +29,15 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of IoTSecurityAggregatedRecommendationInner class. */
+    /**
+     * Creates an instance of IoTSecurityAggregatedRecommendationInner class.
+     */
     public IoTSecurityAggregatedRecommendationInner() {
     }
 
     /**
      * Get the innerProperties property: Security Solution data.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IoTSecurityAggregatedRecommendationProperties innerProperties() {
@@ -42,7 +46,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -51,7 +55,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the IoTSecurityAggregatedRecommendationInner object itself.
      */
@@ -62,7 +66,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the recommendationName property: Name of the recommendation.
-     *
+     * 
      * @return the recommendationName value.
      */
     public String recommendationName() {
@@ -71,7 +75,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Set the recommendationName property: Name of the recommendation.
-     *
+     * 
      * @param recommendationName the recommendationName value to set.
      * @return the IoTSecurityAggregatedRecommendationInner object itself.
      */
@@ -85,7 +89,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the recommendationDisplayName property: Display name of the recommendation type.
-     *
+     * 
      * @return the recommendationDisplayName value.
      */
     public String recommendationDisplayName() {
@@ -94,7 +98,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the description property: Description of the suspected vulnerability and meaning.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -103,7 +107,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the recommendationTypeId property: Recommendation-type GUID.
-     *
+     * 
      * @return the recommendationTypeId value.
      */
     public String recommendationTypeId() {
@@ -112,7 +116,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the detectedBy property: Name of the organization that made the recommendation.
-     *
+     * 
      * @return the detectedBy value.
      */
     public String detectedBy() {
@@ -121,7 +125,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the remediationSteps property: Recommended steps for remediation.
-     *
+     * 
      * @return the remediationSteps value.
      */
     public String remediationSteps() {
@@ -130,7 +134,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the reportedSeverity property: Assessed recommendation severity.
-     *
+     * 
      * @return the reportedSeverity value.
      */
     public ReportedSeverity reportedSeverity() {
@@ -139,7 +143,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the healthyDevices property: Number of healthy devices within the IoT Security solution.
-     *
+     * 
      * @return the healthyDevices value.
      */
     public Long healthyDevices() {
@@ -148,7 +152,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the unhealthyDeviceCount property: Number of unhealthy devices within the IoT Security solution.
-     *
+     * 
      * @return the unhealthyDeviceCount value.
      */
     public Long unhealthyDeviceCount() {
@@ -157,7 +161,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the logAnalyticsQuery property: Log analytics query for getting the list of affected devices/alerts.
-     *
+     * 
      * @return the logAnalyticsQuery value.
      */
     public String logAnalyticsQuery() {
@@ -166,7 +170,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

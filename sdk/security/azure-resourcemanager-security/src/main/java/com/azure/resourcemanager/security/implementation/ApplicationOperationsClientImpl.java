@@ -28,23 +28,28 @@ import com.azure.resourcemanager.security.fluent.ApplicationOperationsClient;
 import com.azure.resourcemanager.security.fluent.models.ApplicationInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApplicationOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApplicationOperationsClient.
+ */
 public final class ApplicationOperationsClientImpl implements ApplicationOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ApplicationOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityCenterImpl client;
 
     /**
      * Initializes an instance of ApplicationOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApplicationOperationsClientImpl(SecurityCenterImpl client) {
-        this.service =
-            RestProxy
-                .create(ApplicationOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ApplicationOperationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,66 +60,52 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterApplic")
     public interface ApplicationOperationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications/{applicationId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("applicationId") String applicationId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApplicationInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("applicationId") String applicationId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications/{applicationId}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<ApplicationInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("applicationId") String applicationId,
-            @BodyParam("application/json") ApplicationInner application,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ApplicationInner application, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications/{applicationId}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("applicationId") String applicationId,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("applicationId") String applicationId,
             Context context);
     }
 
     /**
      * Get a specific application for the requested scope by applicationId.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific application for the requested scope by applicationId along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInner>> getWithResponseAsync(String applicationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (applicationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
@@ -122,43 +113,31 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
         final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            applicationId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                applicationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a specific application for the requested scope by applicationId.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific application for the requested scope by applicationId along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInner>> getWithResponseAsync(String applicationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (applicationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
@@ -166,14 +145,13 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
         final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), applicationId, accept, context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), applicationId,
+            accept, context);
     }
 
     /**
      * Get a specific application for the requested scope by applicationId.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -187,7 +165,7 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
 
     /**
      * Get a specific application for the requested scope by applicationId.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -202,7 +180,7 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
 
     /**
      * Get a specific application for the requested scope by applicationId.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -216,29 +194,25 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
 
     /**
      * Creates or update a security application on the given subscription.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @param application Application over a subscription scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Application over a given scope along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return security Application over a given scope along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInner>> createOrUpdateWithResponseAsync(
-        String applicationId, ApplicationInner application) {
+    private Mono<Response<ApplicationInner>> createOrUpdateWithResponseAsync(String applicationId,
+        ApplicationInner application) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (applicationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
@@ -251,46 +225,33 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
         final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            applicationId,
-                            application,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), applicationId, application, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or update a security application on the given subscription.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @param application Application over a subscription scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Application over a given scope along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return security Application over a given scope along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInner>> createOrUpdateWithResponseAsync(
-        String applicationId, ApplicationInner application, Context context) {
+    private Mono<Response<ApplicationInner>> createOrUpdateWithResponseAsync(String applicationId,
+        ApplicationInner application, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (applicationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
@@ -303,20 +264,13 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
         final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                applicationId,
-                application,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            applicationId, application, accept, context);
     }
 
     /**
      * Creates or update a security application on the given subscription.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @param application Application over a subscription scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -332,7 +286,7 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
 
     /**
      * Creates or update a security application on the given subscription.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @param application Application over a subscription scope.
      * @param context The context to associate with this operation.
@@ -342,14 +296,14 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
      * @return security Application over a given scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInner> createOrUpdateWithResponse(
-        String applicationId, ApplicationInner application, Context context) {
+    public Response<ApplicationInner> createOrUpdateWithResponse(String applicationId, ApplicationInner application,
+        Context context) {
         return createOrUpdateWithResponseAsync(applicationId, application, context).block();
     }
 
     /**
      * Creates or update a security application on the given subscription.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @param application Application over a subscription scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -364,7 +318,7 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
 
     /**
      * Delete an Application over a given scope.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -374,37 +328,26 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String applicationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (applicationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
         }
         final String apiVersion = "2022-07-01-preview";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            applicationId,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), applicationId, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete an Application over a given scope.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -415,29 +358,25 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String applicationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (applicationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
         }
         final String apiVersion = "2022-07-01-preview";
         context = this.client.mergeContext(context);
-        return service
-            .delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), applicationId, context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), applicationId,
+            context);
     }
 
     /**
      * Delete an Application over a given scope.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -451,7 +390,7 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
 
     /**
      * Delete an Application over a given scope.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -466,7 +405,7 @@ public final class ApplicationOperationsClientImpl implements ApplicationOperati
 
     /**
      * Delete an Application over a given scope.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

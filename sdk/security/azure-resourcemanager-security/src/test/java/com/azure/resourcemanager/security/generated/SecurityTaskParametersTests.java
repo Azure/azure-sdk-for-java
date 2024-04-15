@@ -12,20 +12,18 @@ import java.util.Map;
 public final class SecurityTaskParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecurityTaskParameters model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"npkukghimdblx\",\"\":{\"j\":\"datamfnjh\",\"oqreyfkzikfjawn\":\"datawmszkk\",\"vxwc\":\"dataa\"}}")
-                .toObject(SecurityTaskParameters.class);
+        SecurityTaskParameters model = BinaryData.fromString(
+            "{\"name\":\"ol\",\"\":{\"gjyjgzjaoyfhrtxi\":\"datapsalgbqux\",\"rkujy\":\"datan\",\"rlyxwjkcprbnw\":\"datavlejuvfqa\"}}")
+            .toObject(SecurityTaskParameters.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityTaskParameters model =
-            new SecurityTaskParameters().withAdditionalProperties(mapOf("name", "npkukghimdblx"));
+        SecurityTaskParameters model = new SecurityTaskParameters().withAdditionalProperties(mapOf("name", "ol"));
         model = BinaryData.fromObject(model).toObject(SecurityTaskParameters.class);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

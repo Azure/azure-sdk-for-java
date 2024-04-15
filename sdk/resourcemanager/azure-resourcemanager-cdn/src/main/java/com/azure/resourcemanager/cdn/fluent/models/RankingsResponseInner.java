@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Rankings Response. */
+/**
+ * Rankings Response.
+ */
 @Fluent
 public final class RankingsResponseInner {
     /*
@@ -31,13 +33,15 @@ public final class RankingsResponseInner {
     @JsonProperty(value = "tables")
     private List<RankingsResponseTablesItem> tables;
 
-    /** Creates an instance of RankingsResponseInner class. */
+    /**
+     * Creates an instance of RankingsResponseInner class.
+     */
     public RankingsResponseInner() {
     }
 
     /**
      * Get the dateTimeBegin property: The dateTimeBegin property.
-     *
+     * 
      * @return the dateTimeBegin value.
      */
     public OffsetDateTime dateTimeBegin() {
@@ -46,7 +50,7 @@ public final class RankingsResponseInner {
 
     /**
      * Set the dateTimeBegin property: The dateTimeBegin property.
-     *
+     * 
      * @param dateTimeBegin the dateTimeBegin value to set.
      * @return the RankingsResponseInner object itself.
      */
@@ -57,7 +61,7 @@ public final class RankingsResponseInner {
 
     /**
      * Get the dateTimeEnd property: The dateTimeEnd property.
-     *
+     * 
      * @return the dateTimeEnd value.
      */
     public OffsetDateTime dateTimeEnd() {
@@ -66,7 +70,7 @@ public final class RankingsResponseInner {
 
     /**
      * Set the dateTimeEnd property: The dateTimeEnd property.
-     *
+     * 
      * @param dateTimeEnd the dateTimeEnd value to set.
      * @return the RankingsResponseInner object itself.
      */
@@ -77,7 +81,7 @@ public final class RankingsResponseInner {
 
     /**
      * Get the tables property: The tables property.
-     *
+     * 
      * @return the tables value.
      */
     public List<RankingsResponseTablesItem> tables() {
@@ -86,7 +90,7 @@ public final class RankingsResponseInner {
 
     /**
      * Set the tables property: The tables property.
-     *
+     * 
      * @param tables the tables value to set.
      * @return the RankingsResponseInner object itself.
      */
@@ -97,7 +101,7 @@ public final class RankingsResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

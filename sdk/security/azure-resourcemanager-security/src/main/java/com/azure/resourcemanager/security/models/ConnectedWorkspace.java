@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents an OMS workspace to which the solution is connected. */
+/**
+ * Represents an OMS workspace to which the solution is connected.
+ */
 @Fluent
 public final class ConnectedWorkspace {
     /*
@@ -16,13 +18,15 @@ public final class ConnectedWorkspace {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of ConnectedWorkspace class. */
+    /**
+     * Creates an instance of ConnectedWorkspace class.
+     */
     public ConnectedWorkspace() {
     }
 
     /**
      * Get the id property: Azure resource ID of the connected OMS workspace.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public final class ConnectedWorkspace {
 
     /**
      * Set the id property: Azure resource ID of the connected OMS workspace.
-     *
+     * 
      * @param id the id value to set.
      * @return the ConnectedWorkspace object itself.
      */
@@ -42,7 +46,7 @@ public final class ConnectedWorkspace {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

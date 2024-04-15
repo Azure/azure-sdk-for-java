@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Web Application Firewall Mapping. */
+/**
+ * Web Application Firewall Mapping.
+ */
 @Fluent
 public final class MigrationWebApplicationFirewallMapping {
     /*
@@ -22,13 +24,15 @@ public final class MigrationWebApplicationFirewallMapping {
     @JsonProperty(value = "migratedTo")
     private ResourceReference migratedTo;
 
-    /** Creates an instance of MigrationWebApplicationFirewallMapping class. */
+    /**
+     * Creates an instance of MigrationWebApplicationFirewallMapping class.
+     */
     public MigrationWebApplicationFirewallMapping() {
     }
 
     /**
      * Get the migratedFrom property: Migration From Waf policy.
-     *
+     * 
      * @return the migratedFrom value.
      */
     public ResourceReference migratedFrom() {
@@ -37,7 +41,7 @@ public final class MigrationWebApplicationFirewallMapping {
 
     /**
      * Set the migratedFrom property: Migration From Waf policy.
-     *
+     * 
      * @param migratedFrom the migratedFrom value to set.
      * @return the MigrationWebApplicationFirewallMapping object itself.
      */
@@ -48,7 +52,7 @@ public final class MigrationWebApplicationFirewallMapping {
 
     /**
      * Get the migratedTo property: Migration to Waf policy.
-     *
+     * 
      * @return the migratedTo value.
      */
     public ResourceReference migratedTo() {
@@ -57,7 +61,7 @@ public final class MigrationWebApplicationFirewallMapping {
 
     /**
      * Set the migratedTo property: Migration to Waf policy.
-     *
+     * 
      * @param migratedTo the migratedTo value to set.
      * @return the MigrationWebApplicationFirewallMapping object itself.
      */
@@ -68,7 +72,7 @@ public final class MigrationWebApplicationFirewallMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

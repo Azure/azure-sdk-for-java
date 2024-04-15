@@ -31,49 +31,30 @@ public final class CommunicationsNoSubscriptionsCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"communicationType\":\"web\",\"communicationDirection\":\"inbound\",\"sender\":\"mnwqj\",\"subject\":\"obaiyhddviaceg\",\"body\":\"n\",\"createdDate\":\"2021-10-12T00:07:33Z\"},\"id\":\"fpmvmemfnczd\",\"name\":\"vvbalx\",\"type\":\"l\"}";
+        String responseStr
+            = "{\"properties\":{\"communicationType\":\"web\",\"communicationDirection\":\"outbound\",\"sender\":\"vl\",\"subject\":\"ijpstte\",\"body\":\"oqq\",\"createdDate\":\"2021-08-04T21:44:36Z\"},\"id\":\"yyufmhruncuw\",\"name\":\"qspkcdqzhlctd\",\"type\":\"unqndyfpchrqb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SupportManager manager =
-            SupportManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SupportManager manager = SupportManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CommunicationDetails response =
-            manager
-                .communicationsNoSubscriptions()
-                .create(
-                    "eoybfhjxakvvjgs",
-                    "ordilmywwtkgkxny",
-                    new CommunicationDetailsInner()
-                        .withSender("udtjuewbc")
-                        .withSubject("hxuuwhcjyxccybvp")
-                        .withBody("yakk"),
-                    com.azure.core.util.Context.NONE);
+        CommunicationDetails response = manager.communicationsNoSubscriptions().create("hnomdrkywuh", "svfuurutlwexxwl",
+            new CommunicationDetailsInner().withSender("srzpgepqtybbww").withSubject("gdakchz").withBody("vl"),
+            com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mnwqj", response.sender());
-        Assertions.assertEquals("obaiyhddviaceg", response.subject());
-        Assertions.assertEquals("n", response.body());
+        Assertions.assertEquals("vl", response.sender());
+        Assertions.assertEquals("ijpstte", response.subject());
+        Assertions.assertEquals("oqq", response.body());
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The kubernetes to scuba connection configuration. */
+/**
+ * The kubernetes to scuba connection configuration.
+ */
 @Fluent
 public final class DefenderForContainersAwsOfferingKubernetesScubaReader {
     /*
@@ -16,13 +18,15 @@ public final class DefenderForContainersAwsOfferingKubernetesScubaReader {
     @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
 
-    /** Creates an instance of DefenderForContainersAwsOfferingKubernetesScubaReader class. */
+    /**
+     * Creates an instance of DefenderForContainersAwsOfferingKubernetesScubaReader class.
+     */
     public DefenderForContainersAwsOfferingKubernetesScubaReader() {
     }
 
     /**
      * Get the cloudRoleArn property: The cloud role ARN in AWS for this feature used for reading data.
-     *
+     * 
      * @return the cloudRoleArn value.
      */
     public String cloudRoleArn() {
@@ -31,7 +35,7 @@ public final class DefenderForContainersAwsOfferingKubernetesScubaReader {
 
     /**
      * Set the cloudRoleArn property: The cloud role ARN in AWS for this feature used for reading data.
-     *
+     * 
      * @param cloudRoleArn the cloudRoleArn value to set.
      * @return the DefenderForContainersAwsOfferingKubernetesScubaReader object itself.
      */
@@ -42,7 +46,7 @@ public final class DefenderForContainersAwsOfferingKubernetesScubaReader {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

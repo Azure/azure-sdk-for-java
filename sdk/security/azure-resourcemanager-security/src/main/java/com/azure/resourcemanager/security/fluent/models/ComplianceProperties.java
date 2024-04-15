@@ -36,13 +36,15 @@ public final class ComplianceProperties {
     @JsonProperty(value = "assessmentResult", access = JsonProperty.Access.WRITE_ONLY)
     private List<ComplianceSegment> assessmentResult;
 
-    /** Creates an instance of ComplianceProperties class. */
+    /**
+     * Creates an instance of ComplianceProperties class.
+     */
     public ComplianceProperties() {
     }
 
     /**
      * Get the assessmentTimestampUtcDate property: The timestamp when the Compliance calculation was conducted.
-     *
+     * 
      * @return the assessmentTimestampUtcDate value.
      */
     public OffsetDateTime assessmentTimestampUtcDate() {
@@ -50,9 +52,9 @@ public final class ComplianceProperties {
     }
 
     /**
-     * Get the resourceCount property: The resource count of the given subscription for which the Compliance calculation
-     * was conducted (needed for Management Group Compliance calculation).
-     *
+     * Get the resourceCount property: The resource count of the given subscription for which the Compliance
+     * calculation was conducted (needed for Management Group Compliance calculation).
+     * 
      * @return the resourceCount value.
      */
     public Integer resourceCount() {
@@ -61,7 +63,7 @@ public final class ComplianceProperties {
 
     /**
      * Get the assessmentResult property: An array of segment, which is the actually the compliance assessment.
-     *
+     * 
      * @return the assessmentResult value.
      */
     public List<ComplianceSegment> assessmentResult() {
@@ -70,7 +72,7 @@ public final class ComplianceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

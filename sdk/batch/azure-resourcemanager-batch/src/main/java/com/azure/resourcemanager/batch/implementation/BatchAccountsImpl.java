@@ -65,22 +65,22 @@ public final class BatchAccountsImpl implements BatchAccounts {
 
     public PagedIterable<BatchAccount> list() {
         PagedIterable<BatchAccountInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new BatchAccountImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BatchAccountImpl(inner1, this.manager()));
     }
 
     public PagedIterable<BatchAccount> list(Context context) {
         PagedIterable<BatchAccountInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new BatchAccountImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BatchAccountImpl(inner1, this.manager()));
     }
 
     public PagedIterable<BatchAccount> listByResourceGroup(String resourceGroupName) {
         PagedIterable<BatchAccountInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new BatchAccountImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BatchAccountImpl(inner1, this.manager()));
     }
 
     public PagedIterable<BatchAccount> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<BatchAccountInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new BatchAccountImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BatchAccountImpl(inner1, this.manager()));
     }
 
     public Response<Void> synchronizeAutoStorageKeysWithResponse(String resourceGroupName, String accountName,
@@ -137,14 +137,14 @@ public final class BatchAccountsImpl implements BatchAccounts {
 
     public PagedIterable<DetectorResponse> listDetectors(String resourceGroupName, String accountName) {
         PagedIterable<DetectorResponseInner> inner = this.serviceClient().listDetectors(resourceGroupName, accountName);
-        return Utils.mapPage(inner, inner1 -> new DetectorResponseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DetectorResponseImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DetectorResponse> listDetectors(String resourceGroupName, String accountName,
         Context context) {
         PagedIterable<DetectorResponseInner> inner
             = this.serviceClient().listDetectors(resourceGroupName, accountName, context);
-        return Utils.mapPage(inner, inner1 -> new DetectorResponseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DetectorResponseImpl(inner1, this.manager()));
     }
 
     public Response<DetectorResponse> getDetectorWithResponse(String resourceGroupName, String accountName,
@@ -172,23 +172,25 @@ public final class BatchAccountsImpl implements BatchAccounts {
         String accountName) {
         PagedIterable<OutboundEnvironmentEndpointInner> inner
             = this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, accountName);
-        return Utils.mapPage(inner, inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
         String accountName, Context context) {
         PagedIterable<OutboundEnvironmentEndpointInner> inner
             = this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, accountName, context);
-        return Utils.mapPage(inner, inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
     }
 
     public BatchAccount getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "batchAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "batchAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));
@@ -197,12 +199,12 @@ public final class BatchAccountsImpl implements BatchAccounts {
     }
 
     public Response<BatchAccount> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "batchAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "batchAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));
@@ -211,12 +213,12 @@ public final class BatchAccountsImpl implements BatchAccounts {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "batchAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "batchAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));
@@ -225,12 +227,12 @@ public final class BatchAccountsImpl implements BatchAccounts {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "batchAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "batchAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));

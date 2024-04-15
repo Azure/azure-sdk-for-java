@@ -8,14 +8,15 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** A participant of the chat thread. */
+/**
+ * A participant of the chat thread.
+ */
 @Fluent
 public final class ChatParticipant {
     /*
-     * Identifies a participant in Azure Communication services. A participant
-     * is, for example, a phone number or an Azure communication user. This
-     * model is polymorphic: Apart from kind and rawId, at most one further
-     * property may be set which must match the kind enum value.
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     @JsonProperty(value = "communicationIdentifier", required = true)
     private CommunicationIdentifierModel communicationIdentifier;
@@ -27,17 +28,23 @@ public final class ChatParticipant {
     private String displayName;
 
     /*
-     * Time from which the chat history is shared with the participant. The
-     * timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * Time from which the chat history is shared with the participant. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      */
     @JsonProperty(value = "shareHistoryTime")
     private OffsetDateTime shareHistoryTime;
 
     /**
-     * Get the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
-     * is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and
-     * rawId, at most one further property may be set which must match the kind enum value.
-     *
+     * Creates an instance of ChatParticipant class.
+     */
+    public ChatParticipant() {
+    }
+
+    /**
+     * Get the communicationIdentifier property: Identifies a participant in Azure Communication services. A
+     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart
+     * from kind and rawId, at most one further property may be set which must match the kind enum value.
+     * 
      * @return the communicationIdentifier value.
      */
     public CommunicationIdentifierModel getCommunicationIdentifier() {
@@ -45,10 +52,10 @@ public final class ChatParticipant {
     }
 
     /**
-     * Set the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
-     * is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and
-     * rawId, at most one further property may be set which must match the kind enum value.
-     *
+     * Set the communicationIdentifier property: Identifies a participant in Azure Communication services. A
+     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart
+     * from kind and rawId, at most one further property may be set which must match the kind enum value.
+     * 
      * @param communicationIdentifier the communicationIdentifier value to set.
      * @return the ChatParticipant object itself.
      */
@@ -59,7 +66,7 @@ public final class ChatParticipant {
 
     /**
      * Get the displayName property: Display name for the chat participant.
-     *
+     * 
      * @return the displayName value.
      */
     public String getDisplayName() {
@@ -68,7 +75,7 @@ public final class ChatParticipant {
 
     /**
      * Set the displayName property: Display name for the chat participant.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ChatParticipant object itself.
      */
@@ -78,9 +85,9 @@ public final class ChatParticipant {
     }
 
     /**
-     * Get the shareHistoryTime property: Time from which the chat history is shared with the participant. The timestamp
-     * is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * Get the shareHistoryTime property: Time from which the chat history is shared with the participant. The
+     * timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * 
      * @return the shareHistoryTime value.
      */
     public OffsetDateTime getShareHistoryTime() {
@@ -88,9 +95,9 @@ public final class ChatParticipant {
     }
 
     /**
-     * Set the shareHistoryTime property: Time from which the chat history is shared with the participant. The timestamp
-     * is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * Set the shareHistoryTime property: Time from which the chat history is shared with the participant. The
+     * timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * 
      * @param shareHistoryTime the shareHistoryTime value to set.
      * @return the ChatParticipant object itself.
      */

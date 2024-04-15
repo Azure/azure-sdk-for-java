@@ -14,24 +14,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AutoProvisioningSettingListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutoProvisioningSettingList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"autoProvision\":\"On\"},\"id\":\"irels\",\"name\":\"eae\",\"type\":\"wabfatkl\"},{\"properties\":{\"autoProvision\":\"Off\"},\"id\":\"bjhwuaan\",\"name\":\"zjosp\",\"type\":\"youlp\"},{\"properties\":{\"autoProvision\":\"On\"},\"id\":\"xagl\",\"name\":\"vimjwos\",\"type\":\"tx\"}],\"nextLink\":\"cskfcktqumiekk\"}")
-                .toObject(AutoProvisioningSettingList.class);
+        AutoProvisioningSettingList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"autoProvision\":\"On\"},\"id\":\"tbvpysszdnru\",\"name\":\"qguhmuo\",\"type\":\"qfprwzwbn\"},{\"properties\":{\"autoProvision\":\"Off\"},\"id\":\"tnwu\",\"name\":\"zga\",\"type\":\"x\"}],\"nextLink\":\"izuckyfihrfidfvz\"}")
+            .toObject(AutoProvisioningSettingList.class);
         Assertions.assertEquals(AutoProvision.ON, model.value().get(0).autoProvision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoProvisioningSettingList model =
-            new AutoProvisioningSettingList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AutoProvisioningSettingInner().withAutoProvision(AutoProvision.ON),
-                            new AutoProvisioningSettingInner().withAutoProvision(AutoProvision.OFF),
-                            new AutoProvisioningSettingInner().withAutoProvision(AutoProvision.ON)));
+        AutoProvisioningSettingList model = new AutoProvisioningSettingList()
+            .withValue(Arrays.asList(new AutoProvisioningSettingInner().withAutoProvision(AutoProvision.ON),
+                new AutoProvisioningSettingInner().withAutoProvision(AutoProvision.OFF)));
         model = BinaryData.fromObject(model).toObject(AutoProvisioningSettingList.class);
         Assertions.assertEquals(AutoProvision.ON, model.value().get(0).autoProvision());
     }

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Images. */
+/**
+ * Resource collection API of Images.
+ */
 public interface Images {
     /**
      * List Image resources by Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface Images {
 
     /**
      * List Image resources by Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param filter Filter the result list using the given expression.
@@ -37,21 +39,15 @@ public interface Images {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Image list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Image> listByCatalog(
-        String resourceGroupName,
-        String catalogName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
-        Context context);
+    PagedIterable<Image> listByCatalog(String resourceGroupName, String catalogName, String filter, Integer top,
+        Integer skip, Integer maxpagesize, Context context);
 
     /**
      * Get a Image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
-     * @param imageName Image name. Use .default for image creation.
+     * @param imageName Image name. Use an image GUID for GA versions of the API.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -62,10 +58,10 @@ public interface Images {
 
     /**
      * Get a Image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
-     * @param imageName Image name. Use .default for image creation.
+     * @param imageName Image name. Use an image GUID for GA versions of the API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -75,10 +71,10 @@ public interface Images {
 
     /**
      * Delete a Image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
-     * @param imageName Image name. Use .default for image creation.
+     * @param imageName Image name. Use an image GUID for GA versions of the API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -87,10 +83,10 @@ public interface Images {
 
     /**
      * Delete a Image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
-     * @param imageName Image name. Use .default for image creation.
+     * @param imageName Image name. Use an image GUID for GA versions of the API.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -100,7 +96,7 @@ public interface Images {
 
     /**
      * Get a Image.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -111,7 +107,7 @@ public interface Images {
 
     /**
      * Get a Image.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -123,7 +119,7 @@ public interface Images {
 
     /**
      * Delete a Image.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,7 +129,7 @@ public interface Images {
 
     /**
      * Delete a Image.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -144,7 +140,7 @@ public interface Images {
 
     /**
      * Begins definition for a new Image resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Image definition.
      */

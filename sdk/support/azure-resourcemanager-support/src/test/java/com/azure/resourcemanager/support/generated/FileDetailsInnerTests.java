@@ -11,23 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class FileDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileDetailsInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"createdOn\":\"2021-06-16T22:00:02Z\",\"chunkSize\":4.7582684,\"fileSize\":88.195015,\"numberOfChunks\":66.2164},\"id\":\"vmkqzeqq\",\"name\":\"dltfz\",\"type\":\"mhhv\"}")
-                .toObject(FileDetailsInner.class);
-        Assertions.assertEquals(4.7582684F, model.chunkSize());
-        Assertions.assertEquals(88.195015F, model.fileSize());
-        Assertions.assertEquals(66.2164F, model.numberOfChunks());
+        FileDetailsInner model = BinaryData.fromString(
+            "{\"properties\":{\"createdOn\":\"2021-05-14T18:56:32Z\",\"chunkSize\":596393327,\"fileSize\":546578204,\"numberOfChunks\":1587464346},\"id\":\"rz\",\"name\":\"hleosjsw\",\"type\":\"rmslyzrpzbchckqq\"}")
+            .toObject(FileDetailsInner.class);
+        Assertions.assertEquals(596393327, model.chunkSize());
+        Assertions.assertEquals(546578204, model.fileSize());
+        Assertions.assertEquals(1587464346, model.numberOfChunks());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileDetailsInner model =
-            new FileDetailsInner().withChunkSize(4.7582684F).withFileSize(88.195015F).withNumberOfChunks(66.2164F);
+        FileDetailsInner model
+            = new FileDetailsInner().withChunkSize(596393327).withFileSize(546578204).withNumberOfChunks(1587464346);
         model = BinaryData.fromObject(model).toObject(FileDetailsInner.class);
-        Assertions.assertEquals(4.7582684F, model.chunkSize());
-        Assertions.assertEquals(88.195015F, model.fileSize());
-        Assertions.assertEquals(66.2164F, model.numberOfChunks());
+        Assertions.assertEquals(596393327, model.chunkSize());
+        Assertions.assertEquals(546578204, model.fileSize());
+        Assertions.assertEquals(1587464346, model.numberOfChunks());
     }
 }

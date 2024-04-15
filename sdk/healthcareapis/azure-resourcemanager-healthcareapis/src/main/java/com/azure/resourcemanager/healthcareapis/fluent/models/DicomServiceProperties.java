@@ -12,6 +12,7 @@ import com.azure.resourcemanager.healthcareapis.models.PrivateEndpointConnection
 import com.azure.resourcemanager.healthcareapis.models.ProvisioningState;
 import com.azure.resourcemanager.healthcareapis.models.PublicNetworkAccess;
 import com.azure.resourcemanager.healthcareapis.models.ServiceEventState;
+import com.azure.resourcemanager.healthcareapis.models.StorageConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -67,6 +68,18 @@ public final class DicomServiceProperties {
      */
     @JsonProperty(value = "encryption")
     private Encryption encryption;
+
+    /*
+     * The configuration of external storage account
+     */
+    @JsonProperty(value = "storageConfiguration")
+    private StorageConfiguration storageConfiguration;
+
+    /*
+     * If data partitions is enabled or not.
+     */
+    @JsonProperty(value = "enableDataPartitions")
+    private Boolean enableDataPartitions;
 
     /**
      * Creates an instance of DicomServiceProperties class.
@@ -144,8 +157,8 @@ public final class DicomServiceProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
+     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
+     * private endpoint is enabled.
      * 
      * @return the publicNetworkAccess value.
      */
@@ -154,8 +167,8 @@ public final class DicomServiceProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
+     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
+     * private endpoint is enabled.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the DicomServiceProperties object itself.
@@ -195,6 +208,46 @@ public final class DicomServiceProperties {
     }
 
     /**
+     * Get the storageConfiguration property: The configuration of external storage account.
+     * 
+     * @return the storageConfiguration value.
+     */
+    public StorageConfiguration storageConfiguration() {
+        return this.storageConfiguration;
+    }
+
+    /**
+     * Set the storageConfiguration property: The configuration of external storage account.
+     * 
+     * @param storageConfiguration the storageConfiguration value to set.
+     * @return the DicomServiceProperties object itself.
+     */
+    public DicomServiceProperties withStorageConfiguration(StorageConfiguration storageConfiguration) {
+        this.storageConfiguration = storageConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the enableDataPartitions property: If data partitions is enabled or not.
+     * 
+     * @return the enableDataPartitions value.
+     */
+    public Boolean enableDataPartitions() {
+        return this.enableDataPartitions;
+    }
+
+    /**
+     * Set the enableDataPartitions property: If data partitions is enabled or not.
+     * 
+     * @param enableDataPartitions the enableDataPartitions value to set.
+     * @return the DicomServiceProperties object itself.
+     */
+    public DicomServiceProperties withEnableDataPartitions(Boolean enableDataPartitions) {
+        this.enableDataPartitions = enableDataPartitions;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -211,6 +264,9 @@ public final class DicomServiceProperties {
         }
         if (encryption() != null) {
             encryption().validate();
+        }
+        if (storageConfiguration() != null) {
+            storageConfiguration().validate();
         }
     }
 }

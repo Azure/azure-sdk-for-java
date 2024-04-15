@@ -1,6 +1,6 @@
 # Release History
 
-## 1.12.0-beta.2 (Unreleased)
+## 1.13.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,35 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.12.0 (2024-04-08)
+
+### Features Added
+- Added default sign-in experience for brokered authentication. See the documentation in the `azure-identity-broker` package for more information. [#39284](https://github.com/Azure/azure-sdk-for-java/pull/39284) 
+
+### Breaking Changes
+#### Behavioral Breaking Changes
+- The timeout interval for IMDS probing has been adjusted from 0.5 seconds to 1 second. This update is designed to enhance the system's reliability without affecting user applications. [#38345](https://github.com/Azure/azure-sdk-for-java/issues/38345)
+- The default retry logic of Managed Identity has been updated to retry 5 times, the retry delay increases exponentially, starting at 800 milliseconds and doubling with each subsequent retry, up to 5 retries. This change is designed to optimize the retry mechanism, reducing the likelihood of congestion and improving the overall stability of service connections under varying network conditions. [#38345](https://github.com/Azure/azure-sdk-for-java/issues/38345)
+- The `DefaultAzureCredential` caches the last working credential by default and tries it directly on subsequent attempts. This change is designed to improve the performance of the `DefaultAzureCredential` by reducing the number of attempts required to acquire a token. [#36867](https://github.com/Azure/azure-sdk-for-java/issues/36867)
+
+### Bugs Fixed
+- Changed log level of an informational message in token acquisition. [#39063](https://github.com/Azure/azure-sdk-for-java/issues/39063)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+- Upgraded `msal4j` from `1.14.3` to version `1.15.0`.
+- Upgraded `msal4j-persistence-extension` from `1.2.0` to version `1.3.0`.
+
+## 1.11.4 (2024-03-14)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `msal4j` from `1.14.0` to version `1.14.3`.
 
 ## 1.11.3 (2024-03-01)
 

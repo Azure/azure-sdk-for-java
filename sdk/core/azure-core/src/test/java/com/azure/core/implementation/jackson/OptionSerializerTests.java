@@ -16,6 +16,7 @@ import java.io.IOException;
  * Tests for {@link Option} that can represent tri-sate (non-null-value, null-value, or no-value).
  */
 public class OptionSerializerTests {
+    @SuppressWarnings("deprecation")
     private static final JacksonAdapter ADAPTER
         = new JacksonAdapter((outerMapper, innerMapper) -> outerMapper.registerModule(new OptionModule()));
 

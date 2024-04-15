@@ -13,15 +13,19 @@ import java.util.Collection;
  * it will be the first rule that gets executed.
  */
 public final class HttpsRedirect extends ExpandableStringEnum<HttpsRedirect> {
-    /** Static value Enabled for HttpsRedirect. */
+    /**
+     * Static value Enabled for HttpsRedirect.
+     */
     public static final HttpsRedirect ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for HttpsRedirect. */
+    /**
+     * Static value Disabled for HttpsRedirect.
+     */
     public static final HttpsRedirect DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of HttpsRedirect value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class HttpsRedirect extends ExpandableStringEnum<HttpsRedirect> {
 
     /**
      * Creates or finds a HttpsRedirect from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HttpsRedirect.
      */
@@ -41,7 +45,7 @@ public final class HttpsRedirect extends ExpandableStringEnum<HttpsRedirect> {
 
     /**
      * Gets known HttpsRedirect values.
-     *
+     * 
      * @return known HttpsRedirect values.
      */
     public static Collection<HttpsRedirect> values() {

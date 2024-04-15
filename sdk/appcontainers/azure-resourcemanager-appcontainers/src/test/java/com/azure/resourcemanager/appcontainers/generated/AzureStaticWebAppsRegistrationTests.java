@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureStaticWebAppsRegistrationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureStaticWebAppsRegistration model =
-            BinaryData.fromString("{\"clientId\":\"uhrhcffcyddgl\"}").toObject(AzureStaticWebAppsRegistration.class);
-        Assertions.assertEquals("uhrhcffcyddgl", model.clientId());
+        AzureStaticWebAppsRegistration model
+            = BinaryData.fromString("{\"clientId\":\"wgndrvynhzgpp\"}").toObject(AzureStaticWebAppsRegistration.class);
+        Assertions.assertEquals("wgndrvynhzgpp", model.clientId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureStaticWebAppsRegistration model = new AzureStaticWebAppsRegistration().withClientId("uhrhcffcyddgl");
+        AzureStaticWebAppsRegistration model = new AzureStaticWebAppsRegistration().withClientId("wgndrvynhzgpp");
         model = BinaryData.fromObject(model).toObject(AzureStaticWebAppsRegistration.class);
-        Assertions.assertEquals("uhrhcffcyddgl", model.clientId());
+        Assertions.assertEquals("wgndrvynhzgpp", model.clientId());
     }
 }

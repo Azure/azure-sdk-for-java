@@ -19,7 +19,7 @@ public final class DocumentAdministrativeMetadata {
      */
     @Generated
     @JsonProperty(value = "orderedProcedures")
-    private List<FhirR4Extendible> orderedProcedures;
+    private List<OrderedProcedure> orderedProcedures;
 
     /*
      * Reference to the encounter associated with the document.
@@ -41,7 +41,7 @@ public final class DocumentAdministrativeMetadata {
      * @return the orderedProcedures value.
      */
     @Generated
-    public List<FhirR4Extendible> getOrderedProcedures() {
+    public List<OrderedProcedure> getOrderedProcedures() {
         return this.orderedProcedures;
     }
 
@@ -52,7 +52,7 @@ public final class DocumentAdministrativeMetadata {
      * @return the DocumentAdministrativeMetadata object itself.
      */
     @Generated
-    public DocumentAdministrativeMetadata setOrderedProcedures(List<FhirR4Extendible> orderedProcedures) {
+    public DocumentAdministrativeMetadata setOrderedProcedures(List<OrderedProcedure> orderedProcedures) {
         this.orderedProcedures = orderedProcedures;
         return this;
     }

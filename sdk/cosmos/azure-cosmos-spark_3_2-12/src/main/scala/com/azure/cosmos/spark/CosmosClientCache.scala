@@ -265,7 +265,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           // indicators that the default number of I/O threads can be too low
           // for workloads with large payloads
               SparkBridgeImplementationInternal
-                  .setIoThreadCountPerCoreFactor(directConfig, CosmosConstants.defaultIoThreadCountFactorPerCore)
+                  .setIoThreadCountPerCoreFactor(directConfig, SparkBridgeImplementationInternal.getIoThreadCountPerCoreOverride)
 
           directConfig =
           // Spark workloads often result in very high CPU load

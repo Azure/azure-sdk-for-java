@@ -46,6 +46,7 @@ import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -190,24 +191,20 @@ public final class ReadmeSamples {
         chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
         chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
-        IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelName}",
-            new ChatCompletionsOptions(chatMessages));
-
-        chatCompletionsStream
-            .stream()
-            // Remove .skip(1) when using Non-Azure OpenAI API
-            // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
-            // TODO: remove .skip(1) when service fix the issue.
-            .skip(1)
-            .forEach(chatCompletions -> {
-                ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
-                if (delta.getRole() != null) {
-                    System.out.println("Role = " + delta.getRole());
-                }
-                if (delta.getContent() != null) {
-                    System.out.print(delta.getContent());
-                }
-            });
+        client.getChatCompletionsStream("{deploymentOrModelName}", new ChatCompletionsOptions(chatMessages))
+                .forEach(chatCompletions -> {
+                    if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
+                        return;
+                    }
+                    ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
+                    if (delta.getRole() != null) {
+                        System.out.println("Role = " + delta.getRole());
+                    }
+                    if (delta.getContent() != null) {
+                        String content = delta.getContent();
+                        System.out.print(content);
+                    }
+                });
         // END: readme-sample-getChatCompletionsStream
     }
 
@@ -220,7 +217,7 @@ public final class ReadmeSamples {
 
         for (EmbeddingItem item : embeddings.getData()) {
             System.out.printf("Index: %d.%n", item.getPromptIndex());
-            for (Double embedding : item.getEmbedding()) {
+            for (Float embedding : item.getEmbedding()) {
                 System.out.printf("%f;", embedding);
             }
         }

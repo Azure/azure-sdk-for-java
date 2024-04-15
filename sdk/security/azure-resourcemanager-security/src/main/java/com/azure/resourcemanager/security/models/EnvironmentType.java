@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the environment data. */
+/**
+ * The type of the environment data.
+ */
 public final class EnvironmentType extends ExpandableStringEnum<EnvironmentType> {
-    /** Static value AwsAccount for EnvironmentType. */
+    /**
+     * Static value AwsAccount for EnvironmentType.
+     */
     public static final EnvironmentType AWS_ACCOUNT = fromString("AwsAccount");
 
-    /** Static value GcpProject for EnvironmentType. */
+    /**
+     * Static value GcpProject for EnvironmentType.
+     */
     public static final EnvironmentType GCP_PROJECT = fromString("GcpProject");
 
-    /** Static value GithubScope for EnvironmentType. */
+    /**
+     * Static value GithubScope for EnvironmentType.
+     */
     public static final EnvironmentType GITHUB_SCOPE = fromString("GithubScope");
 
-    /** Static value AzureDevOpsScope for EnvironmentType. */
+    /**
+     * Static value AzureDevOpsScope for EnvironmentType.
+     */
     public static final EnvironmentType AZURE_DEV_OPS_SCOPE = fromString("AzureDevOpsScope");
 
-    /** Static value GitlabScope for EnvironmentType. */
+    /**
+     * Static value GitlabScope for EnvironmentType.
+     */
     public static final EnvironmentType GITLAB_SCOPE = fromString("GitlabScope");
 
     /**
      * Creates a new instance of EnvironmentType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class EnvironmentType extends ExpandableStringEnum<EnvironmentType>
 
     /**
      * Creates or finds a EnvironmentType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EnvironmentType.
      */
@@ -47,7 +59,7 @@ public final class EnvironmentType extends ExpandableStringEnum<EnvironmentType>
 
     /**
      * Gets known EnvironmentType values.
-     *
+     * 
      * @return known EnvironmentType values.
      */
     public static Collection<EnvironmentType> values() {
