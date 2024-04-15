@@ -9,37 +9,49 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
 
-/** Number of rejected cloud to device messages (HTTP protocol) is not in allowed range. */
+/**
+ * Number of rejected cloud to device messages (HTTP protocol) is not in allowed range.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
 @JsonTypeName("HttpC2DRejectedMessagesNotInAllowedRange")
 @Fluent
 public final class HttpC2DRejectedMessagesNotInAllowedRange extends TimeWindowCustomAlertRule {
-    /** Creates an instance of HttpC2DRejectedMessagesNotInAllowedRange class. */
+    /**
+     * Creates an instance of HttpC2DRejectedMessagesNotInAllowedRange class.
+     */
     public HttpC2DRejectedMessagesNotInAllowedRange() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpC2DRejectedMessagesNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {
         super.withTimeWindowSize(timeWindowSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpC2DRejectedMessagesNotInAllowedRange withMinThreshold(int minThreshold) {
         super.withMinThreshold(minThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpC2DRejectedMessagesNotInAllowedRange withMaxThreshold(int maxThreshold) {
         super.withMaxThreshold(maxThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpC2DRejectedMessagesNotInAllowedRange withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -48,7 +60,7 @@ public final class HttpC2DRejectedMessagesNotInAllowedRange extends TimeWindowCu
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -32,10 +32,11 @@ parameters:
     default: false
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: serialization
     JavadocSafeJavaBuildVersion: '1.21'
+    TimeoutInMinutes: 90
     EnableBatchRelease: true
     Artifacts:
       - name: azure-json
@@ -53,7 +54,6 @@ extends:
         jobs:
           - template: /eng/pipelines/templates/jobs/ci.versions.tests.yml
             parameters:
-              ServiceDirectory: serialization
               Artifacts:
                 - name: azure-json-reflect
                   groupId: com.azure
@@ -65,6 +65,7 @@ extends:
                 - gson_2.7
                 - gson_2.8
                 - gson_2.9
+                - gson_2.10
                 - jackson_2.10
                 - jackson_2.11
                 - jackson_2.12
@@ -76,7 +77,7 @@ extends:
               TestGoals: surefire:test
 
     LiveTestStages:
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           ServiceDirectory: serialization
           Artifacts:

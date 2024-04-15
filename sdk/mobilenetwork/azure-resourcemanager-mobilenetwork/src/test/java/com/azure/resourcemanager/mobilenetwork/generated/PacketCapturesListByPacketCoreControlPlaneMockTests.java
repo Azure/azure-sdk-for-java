@@ -31,43 +31,30 @@ public final class PacketCapturesListByPacketCoreControlPlaneMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"status\":\"Error\",\"reason\":\"wgcloxoebqinji\",\"captureStartTime\":\"2021-03-04T16:18:21Z\",\"networkInterfaces\":[\"ujqlafcbahh\",\"zpofoiyjwpfilk\",\"kkholvdndvia\"],\"bytesToCapturePerPacket\":3026958489306582785,\"totalBytesPerSession\":6998870719021995460,\"timeLimitInSeconds\":626252727,\"outputFiles\":[\"iukyefchnmna\",\"mnxhkxjqirwrweo\"]},\"id\":\"ffifhx\",\"name\":\"rsnewmozqvbubqma\",\"type\":\"hsycxhxzgaz\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Unknown\",\"status\":\"Stopped\",\"reason\":\"ejjtbxqmul\",\"captureStartTime\":\"2021-12-05T08:42:23Z\",\"networkInterfaces\":[\"zvners\",\"ycucrwnamikzeb\",\"qbsms\",\"ziqgfuh\"],\"bytesToCapturePerPacket\":6886133591151042666,\"totalBytesPerSession\":7144106503918371496,\"timeLimitInSeconds\":302343226,\"outputFiles\":[\"zznvfbyc\",\"sxjwwixz\",\"umwmxqhnd\",\"noamldsehaohdj\"]},\"id\":\"flzokxco\",\"name\":\"pelnjetag\",\"type\":\"tsxoatftgz\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MobileNetworkManager manager = MobileNetworkManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<PacketCapture> response =
-            manager
-                .packetCaptures()
-                .listByPacketCoreControlPlane("wjedmurrxxgew", "ktvqylkmqpzoy", com.azure.core.util.Context.NONE);
+        PagedIterable<PacketCapture> response = manager.packetCaptures().listByPacketCoreControlPlane("tmninw", "izcil",
+            com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ujqlafcbahh", response.iterator().next().networkInterfaces().get(0));
-        Assertions.assertEquals(3026958489306582785L, response.iterator().next().bytesToCapturePerPacket());
-        Assertions.assertEquals(6998870719021995460L, response.iterator().next().totalBytesPerSession());
-        Assertions.assertEquals(626252727, response.iterator().next().timeLimitInSeconds());
+        Assertions.assertEquals("zvners", response.iterator().next().networkInterfaces().get(0));
+        Assertions.assertEquals(6886133591151042666L, response.iterator().next().bytesToCapturePerPacket());
+        Assertions.assertEquals(7144106503918371496L, response.iterator().next().totalBytesPerSession());
+        Assertions.assertEquals(302343226, response.iterator().next().timeLimitInSeconds());
     }
 }

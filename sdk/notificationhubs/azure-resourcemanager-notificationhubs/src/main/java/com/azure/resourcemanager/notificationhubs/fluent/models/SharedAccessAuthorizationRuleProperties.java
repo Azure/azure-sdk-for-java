@@ -7,74 +7,80 @@ package com.azure.resourcemanager.notificationhubs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.notificationhubs.models.AccessRights;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 
-/** SharedAccessAuthorizationRule properties. */
+/**
+ * SharedAccessAuthorizationRule properties.
+ */
 @Fluent
 public final class SharedAccessAuthorizationRuleProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedAccessAuthorizationRuleProperties.class);
-
     /*
-     * The rights associated with the rule.
+     * Gets or sets the rights associated with the rule.
      */
-    @JsonProperty(value = "rights")
+    @JsonProperty(value = "rights", required = true)
     private List<AccessRights> rights;
 
     /*
-     * A base64-encoded 256-bit primary key for signing and validating the SAS
-     * token.
+     * Gets a base64-encoded 256-bit primary key for signing and
+     * validating the SAS token.
      */
-    @JsonProperty(value = "primaryKey", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "primaryKey")
     private String primaryKey;
 
     /*
-     * A base64-encoded 256-bit primary key for signing and validating the SAS
-     * token.
+     * Gets a base64-encoded 256-bit primary key for signing and
+     * validating the SAS token.
      */
-    @JsonProperty(value = "secondaryKey", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
 
     /*
-     * A string that describes the authorization rule.
+     * Gets a string that describes the authorization rule.
      */
     @JsonProperty(value = "keyName", access = JsonProperty.Access.WRITE_ONLY)
     private String keyName;
 
     /*
-     * A string that describes the claim type
+     * Gets the last modified time for this rule
+     */
+    @JsonProperty(value = "modifiedTime", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime modifiedTime;
+
+    /*
+     * Gets the created time for this rule
+     */
+    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime createdTime;
+
+    /*
+     * Gets a string that describes the claim type
      */
     @JsonProperty(value = "claimType", access = JsonProperty.Access.WRITE_ONLY)
     private String claimType;
 
     /*
-     * A string that describes the claim value
+     * Gets a string that describes the claim value
      */
     @JsonProperty(value = "claimValue", access = JsonProperty.Access.WRITE_ONLY)
     private String claimValue;
 
     /*
-     * The last modified time for this rule
-     */
-    @JsonProperty(value = "modifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private String modifiedTime;
-
-    /*
-     * The created time for this rule
-     */
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
-    private String createdTime;
-
-    /*
-     * The revision number for the rule
+     * Gets the revision number for the rule
      */
     @JsonProperty(value = "revision", access = JsonProperty.Access.WRITE_ONLY)
     private Integer revision;
 
     /**
-     * Get the rights property: The rights associated with the rule.
-     *
+     * Creates an instance of SharedAccessAuthorizationRuleProperties class.
+     */
+    public SharedAccessAuthorizationRuleProperties() {
+    }
+
+    /**
+     * Get the rights property: Gets or sets the rights associated with the rule.
+     * 
      * @return the rights value.
      */
     public List<AccessRights> rights() {
@@ -82,8 +88,8 @@ public final class SharedAccessAuthorizationRuleProperties {
     }
 
     /**
-     * Set the rights property: The rights associated with the rule.
-     *
+     * Set the rights property: Gets or sets the rights associated with the rule.
+     * 
      * @param rights the rights value to set.
      * @return the SharedAccessAuthorizationRuleProperties object itself.
      */
@@ -93,8 +99,9 @@ public final class SharedAccessAuthorizationRuleProperties {
     }
 
     /**
-     * Get the primaryKey property: A base64-encoded 256-bit primary key for signing and validating the SAS token.
-     *
+     * Get the primaryKey property: Gets a base64-encoded 256-bit primary key for signing and
+     * validating the SAS token.
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -102,8 +109,21 @@ public final class SharedAccessAuthorizationRuleProperties {
     }
 
     /**
-     * Get the secondaryKey property: A base64-encoded 256-bit primary key for signing and validating the SAS token.
-     *
+     * Set the primaryKey property: Gets a base64-encoded 256-bit primary key for signing and
+     * validating the SAS token.
+     * 
+     * @param primaryKey the primaryKey value to set.
+     * @return the SharedAccessAuthorizationRuleProperties object itself.
+     */
+    public SharedAccessAuthorizationRuleProperties withPrimaryKey(String primaryKey) {
+        this.primaryKey = primaryKey;
+        return this;
+    }
+
+    /**
+     * Get the secondaryKey property: Gets a base64-encoded 256-bit primary key for signing and
+     * validating the SAS token.
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -111,8 +131,20 @@ public final class SharedAccessAuthorizationRuleProperties {
     }
 
     /**
-     * Get the keyName property: A string that describes the authorization rule.
-     *
+     * Set the secondaryKey property: Gets a base64-encoded 256-bit primary key for signing and
+     * validating the SAS token.
+     * 
+     * @param secondaryKey the secondaryKey value to set.
+     * @return the SharedAccessAuthorizationRuleProperties object itself.
+     */
+    public SharedAccessAuthorizationRuleProperties withSecondaryKey(String secondaryKey) {
+        this.secondaryKey = secondaryKey;
+        return this;
+    }
+
+    /**
+     * Get the keyName property: Gets a string that describes the authorization rule.
+     * 
      * @return the keyName value.
      */
     public String keyName() {
@@ -120,8 +152,26 @@ public final class SharedAccessAuthorizationRuleProperties {
     }
 
     /**
-     * Get the claimType property: A string that describes the claim type.
-     *
+     * Get the modifiedTime property: Gets the last modified time for this rule.
+     * 
+     * @return the modifiedTime value.
+     */
+    public OffsetDateTime modifiedTime() {
+        return this.modifiedTime;
+    }
+
+    /**
+     * Get the createdTime property: Gets the created time for this rule.
+     * 
+     * @return the createdTime value.
+     */
+    public OffsetDateTime createdTime() {
+        return this.createdTime;
+    }
+
+    /**
+     * Get the claimType property: Gets a string that describes the claim type.
+     * 
      * @return the claimType value.
      */
     public String claimType() {
@@ -129,8 +179,8 @@ public final class SharedAccessAuthorizationRuleProperties {
     }
 
     /**
-     * Get the claimValue property: A string that describes the claim value.
-     *
+     * Get the claimValue property: Gets a string that describes the claim value.
+     * 
      * @return the claimValue value.
      */
     public String claimValue() {
@@ -138,26 +188,8 @@ public final class SharedAccessAuthorizationRuleProperties {
     }
 
     /**
-     * Get the modifiedTime property: The last modified time for this rule.
-     *
-     * @return the modifiedTime value.
-     */
-    public String modifiedTime() {
-        return this.modifiedTime;
-    }
-
-    /**
-     * Get the createdTime property: The created time for this rule.
-     *
-     * @return the createdTime value.
-     */
-    public String createdTime() {
-        return this.createdTime;
-    }
-
-    /**
-     * Get the revision property: The revision number for the rule.
-     *
+     * Get the revision property: Gets the revision number for the rule.
+     * 
      * @return the revision value.
      */
     public Integer revision() {
@@ -166,9 +198,15 @@ public final class SharedAccessAuthorizationRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (rights() == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property rights in model SharedAccessAuthorizationRuleProperties"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SharedAccessAuthorizationRuleProperties.class);
 }

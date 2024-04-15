@@ -48,7 +48,7 @@ def createCosmosView(cosmosDatabaseName: String, cosmosContainerName: String, co
                             spark.cosmos.database = '$cosmosDatabaseName',
                             spark.cosmos.container = '$cosmosContainerName',
                             spark.cosmos.read.inferSchema.enabled = 'False',  
-                            spark.cosmos.read.partitioning.strategy = 'Default'
+                            spark.cosmos.read.partitioning.strategy = 'Restrictive'
                           );
               """
   println("Executing create View...")

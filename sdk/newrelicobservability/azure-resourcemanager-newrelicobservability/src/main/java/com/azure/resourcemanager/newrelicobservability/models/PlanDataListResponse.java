@@ -10,7 +10,9 @@ import com.azure.resourcemanager.newrelicobservability.fluent.models.PlanDataRes
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response of get all plan data Operation. */
+/**
+ * Response of get all plan data Operation.
+ */
 @Fluent
 public final class PlanDataListResponse {
     /*
@@ -25,13 +27,15 @@ public final class PlanDataListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PlanDataListResponse class. */
+    /**
+     * Creates an instance of PlanDataListResponse class.
+     */
     public PlanDataListResponse() {
     }
 
     /**
      * Get the value property: The PlanDataResource items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<PlanDataResourceInner> value() {
@@ -40,7 +44,7 @@ public final class PlanDataListResponse {
 
     /**
      * Set the value property: The PlanDataResource items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the PlanDataListResponse object itself.
      */
@@ -51,7 +55,7 @@ public final class PlanDataListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class PlanDataListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PlanDataListResponse object itself.
      */
@@ -71,14 +75,13 @@ public final class PlanDataListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model PlanDataListResponse"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model PlanDataListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }

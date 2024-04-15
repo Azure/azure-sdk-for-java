@@ -13,26 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateStageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateStage model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"masxazjpqyegu\",\"groups\":[{\"name\":\"b\"}],\"afterStageWaitInSeconds\":1163750271}")
-                .toObject(UpdateStage.class);
-        Assertions.assertEquals("masxazjpqyegu", model.name());
-        Assertions.assertEquals("b", model.groups().get(0).name());
-        Assertions.assertEquals(1163750271, model.afterStageWaitInSeconds());
+        UpdateStage model = BinaryData.fromString(
+            "{\"name\":\"cfsf\",\"groups\":[{\"name\":\"mddystkiiux\"},{\"name\":\"qyud\"}],\"afterStageWaitInSeconds\":2120884016}")
+            .toObject(UpdateStage.class);
+        Assertions.assertEquals("cfsf", model.name());
+        Assertions.assertEquals("mddystkiiux", model.groups().get(0).name());
+        Assertions.assertEquals(2120884016, model.afterStageWaitInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateStage model =
-            new UpdateStage()
-                .withName("masxazjpqyegu")
-                .withGroups(Arrays.asList(new UpdateGroup().withName("b")))
-                .withAfterStageWaitInSeconds(1163750271);
+        UpdateStage model = new UpdateStage().withName("cfsf")
+            .withGroups(Arrays.asList(new UpdateGroup().withName("mddystkiiux"), new UpdateGroup().withName("qyud")))
+            .withAfterStageWaitInSeconds(2120884016);
         model = BinaryData.fromObject(model).toObject(UpdateStage.class);
-        Assertions.assertEquals("masxazjpqyegu", model.name());
-        Assertions.assertEquals("b", model.groups().get(0).name());
-        Assertions.assertEquals(1163750271, model.afterStageWaitInSeconds());
+        Assertions.assertEquals("cfsf", model.name());
+        Assertions.assertEquals("mddystkiiux", model.groups().get(0).name());
+        Assertions.assertEquals(2120884016, model.afterStageWaitInSeconds());
     }
 }

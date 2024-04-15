@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The kubernetes service connection configuration. */
+/**
+ * The kubernetes service connection configuration.
+ */
 @Fluent
 public final class DefenderForContainersAwsOfferingKubernetesService {
     /*
@@ -16,13 +18,15 @@ public final class DefenderForContainersAwsOfferingKubernetesService {
     @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
 
-    /** Creates an instance of DefenderForContainersAwsOfferingKubernetesService class. */
+    /**
+     * Creates an instance of DefenderForContainersAwsOfferingKubernetesService class.
+     */
     public DefenderForContainersAwsOfferingKubernetesService() {
     }
 
     /**
      * Get the cloudRoleArn property: The cloud role ARN in AWS for this feature used for provisioning resources.
-     *
+     * 
      * @return the cloudRoleArn value.
      */
     public String cloudRoleArn() {
@@ -31,7 +35,7 @@ public final class DefenderForContainersAwsOfferingKubernetesService {
 
     /**
      * Set the cloudRoleArn property: The cloud role ARN in AWS for this feature used for provisioning resources.
-     *
+     * 
      * @param cloudRoleArn the cloudRoleArn value to set.
      * @return the DefenderForContainersAwsOfferingKubernetesService object itself.
      */
@@ -42,7 +46,7 @@ public final class DefenderForContainersAwsOfferingKubernetesService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -36,13 +36,15 @@ public final class ProtectionMode {
     @JsonProperty(value = "executable")
     private EnforcementMode executable;
 
-    /** Creates an instance of ProtectionMode class. */
+    /**
+     * Creates an instance of ProtectionMode class.
+     */
     public ProtectionMode() {
     }
 
     /**
      * Get the exe property: The application control policy enforcement/protection mode of the machine group.
-     *
+     * 
      * @return the exe value.
      */
     public EnforcementMode exe() {
@@ -51,7 +53,7 @@ public final class ProtectionMode {
 
     /**
      * Set the exe property: The application control policy enforcement/protection mode of the machine group.
-     *
+     * 
      * @param exe the exe value to set.
      * @return the ProtectionMode object itself.
      */
@@ -62,7 +64,7 @@ public final class ProtectionMode {
 
     /**
      * Get the msi property: The application control policy enforcement/protection mode of the machine group.
-     *
+     * 
      * @return the msi value.
      */
     public EnforcementMode msi() {
@@ -71,7 +73,7 @@ public final class ProtectionMode {
 
     /**
      * Set the msi property: The application control policy enforcement/protection mode of the machine group.
-     *
+     * 
      * @param msi the msi value to set.
      * @return the ProtectionMode object itself.
      */
@@ -82,7 +84,7 @@ public final class ProtectionMode {
 
     /**
      * Get the script property: The application control policy enforcement/protection mode of the machine group.
-     *
+     * 
      * @return the script value.
      */
     public EnforcementMode script() {
@@ -91,7 +93,7 @@ public final class ProtectionMode {
 
     /**
      * Set the script property: The application control policy enforcement/protection mode of the machine group.
-     *
+     * 
      * @param script the script value to set.
      * @return the ProtectionMode object itself.
      */
@@ -102,7 +104,7 @@ public final class ProtectionMode {
 
     /**
      * Get the executable property: The application control policy enforcement/protection mode of the machine group.
-     *
+     * 
      * @return the executable value.
      */
     public EnforcementMode executable() {
@@ -111,7 +113,7 @@ public final class ProtectionMode {
 
     /**
      * Set the executable property: The application control policy enforcement/protection mode of the machine group.
-     *
+     * 
      * @param executable the executable value to set.
      * @return the ProtectionMode object itself.
      */
@@ -122,7 +124,7 @@ public final class ProtectionMode {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

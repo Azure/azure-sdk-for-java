@@ -6,39 +6,53 @@ package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.notificationhubs.models.AdmCredential;
 import com.azure.resourcemanager.notificationhubs.models.ApnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.BaiduCredential;
+import com.azure.resourcemanager.notificationhubs.models.BrowserCredential;
+import com.azure.resourcemanager.notificationhubs.models.FcmV1Credential;
 import com.azure.resourcemanager.notificationhubs.models.GcmCredential;
 import com.azure.resourcemanager.notificationhubs.models.MpnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.Sku;
 import com.azure.resourcemanager.notificationhubs.models.WnsCredential;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.notificationhubs.models.XiaomiCredential;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Description of a NotificationHub Resource. */
+/**
+ * Notification Hub Resource.
+ */
 @Fluent
 public final class NotificationHubResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotificationHubResourceInner.class);
-
     /*
-     * Properties of the NotificationHub.
+     * NotificationHub properties.
      */
     @JsonProperty(value = "properties")
     private NotificationHubProperties innerProperties;
 
     /*
-     * The sku of the created namespace
+     * The Sku description for a namespace
      */
     @JsonProperty(value = "sku")
     private Sku sku;
 
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
     /**
-     * Get the innerProperties property: Properties of the NotificationHub.
-     *
+     * Creates an instance of NotificationHubResourceInner class.
+     */
+    public NotificationHubResourceInner() {
+    }
+
+    /**
+     * Get the innerProperties property: NotificationHub properties.
+     * 
      * @return the innerProperties value.
      */
     private NotificationHubProperties innerProperties() {
@@ -46,8 +60,8 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
-     * Get the sku property: The sku of the created namespace.
-     *
+     * Get the sku property: The Sku description for a namespace.
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -55,8 +69,8 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
-     * Set the sku property: The sku of the created namespace.
-     *
+     * Set the sku property: The Sku description for a namespace.
+     * 
      * @param sku the sku value to set.
      * @return the NotificationHubResourceInner object itself.
      */
@@ -65,14 +79,27 @@ public final class NotificationHubResourceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NotificationHubResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NotificationHubResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -80,8 +107,8 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
-     * Get the name property: The NotificationHub name.
-     *
+     * Get the name property: Gets or sets the NotificationHub name.
+     * 
      * @return the name value.
      */
     public String namePropertiesName() {
@@ -89,8 +116,8 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
-     * Set the name property: The NotificationHub name.
-     *
+     * Set the name property: Gets or sets the NotificationHub name.
+     * 
      * @param name the name value to set.
      * @return the NotificationHubResourceInner object itself.
      */
@@ -103,8 +130,8 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
-     * Get the registrationTtl property: The RegistrationTtl of the created NotificationHub.
-     *
+     * Get the registrationTtl property: Gets or sets the RegistrationTtl of the created NotificationHub.
+     * 
      * @return the registrationTtl value.
      */
     public String registrationTtl() {
@@ -112,8 +139,8 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
-     * Set the registrationTtl property: The RegistrationTtl of the created NotificationHub.
-     *
+     * Set the registrationTtl property: Gets or sets the RegistrationTtl of the created NotificationHub.
+     * 
      * @param registrationTtl the registrationTtl value to set.
      * @return the NotificationHubResourceInner object itself.
      */
@@ -126,8 +153,8 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
-     * Get the authorizationRules property: The AuthorizationRules of the created NotificationHub.
-     *
+     * Get the authorizationRules property: Gets or sets the AuthorizationRules of the created NotificationHub.
+     * 
      * @return the authorizationRules value.
      */
     public List<SharedAccessAuthorizationRuleProperties> authorizationRules() {
@@ -135,23 +162,8 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
-     * Set the authorizationRules property: The AuthorizationRules of the created NotificationHub.
-     *
-     * @param authorizationRules the authorizationRules value to set.
-     * @return the NotificationHubResourceInner object itself.
-     */
-    public NotificationHubResourceInner withAuthorizationRules(
-        List<SharedAccessAuthorizationRuleProperties> authorizationRules) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new NotificationHubProperties();
-        }
-        this.innerProperties().withAuthorizationRules(authorizationRules);
-        return this;
-    }
-
-    /**
-     * Get the apnsCredential property: The ApnsCredential of the created NotificationHub.
-     *
+     * Get the apnsCredential property: Description of a NotificationHub ApnsCredential.
+     * 
      * @return the apnsCredential value.
      */
     public ApnsCredential apnsCredential() {
@@ -159,8 +171,8 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
-     * Set the apnsCredential property: The ApnsCredential of the created NotificationHub.
-     *
+     * Set the apnsCredential property: Description of a NotificationHub ApnsCredential.
+     * 
      * @param apnsCredential the apnsCredential value to set.
      * @return the NotificationHubResourceInner object itself.
      */
@@ -173,8 +185,8 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
-     * Get the wnsCredential property: The WnsCredential of the created NotificationHub.
-     *
+     * Get the wnsCredential property: Description of a NotificationHub WnsCredential.
+     * 
      * @return the wnsCredential value.
      */
     public WnsCredential wnsCredential() {
@@ -182,8 +194,8 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
-     * Set the wnsCredential property: The WnsCredential of the created NotificationHub.
-     *
+     * Set the wnsCredential property: Description of a NotificationHub WnsCredential.
+     * 
      * @param wnsCredential the wnsCredential value to set.
      * @return the NotificationHubResourceInner object itself.
      */
@@ -196,8 +208,8 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
-     * Get the gcmCredential property: The GcmCredential of the created NotificationHub.
-     *
+     * Get the gcmCredential property: Description of a NotificationHub GcmCredential.
+     * 
      * @return the gcmCredential value.
      */
     public GcmCredential gcmCredential() {
@@ -205,8 +217,8 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
-     * Set the gcmCredential property: The GcmCredential of the created NotificationHub.
-     *
+     * Set the gcmCredential property: Description of a NotificationHub GcmCredential.
+     * 
      * @param gcmCredential the gcmCredential value to set.
      * @return the NotificationHubResourceInner object itself.
      */
@@ -219,8 +231,8 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
-     * Get the mpnsCredential property: The MpnsCredential of the created NotificationHub.
-     *
+     * Get the mpnsCredential property: Description of a NotificationHub MpnsCredential.
+     * 
      * @return the mpnsCredential value.
      */
     public MpnsCredential mpnsCredential() {
@@ -228,8 +240,8 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
-     * Set the mpnsCredential property: The MpnsCredential of the created NotificationHub.
-     *
+     * Set the mpnsCredential property: Description of a NotificationHub MpnsCredential.
+     * 
      * @param mpnsCredential the mpnsCredential value to set.
      * @return the NotificationHubResourceInner object itself.
      */
@@ -242,8 +254,8 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
-     * Get the admCredential property: The AdmCredential of the created NotificationHub.
-     *
+     * Get the admCredential property: Description of a NotificationHub AdmCredential.
+     * 
      * @return the admCredential value.
      */
     public AdmCredential admCredential() {
@@ -251,8 +263,8 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
-     * Set the admCredential property: The AdmCredential of the created NotificationHub.
-     *
+     * Set the admCredential property: Description of a NotificationHub AdmCredential.
+     * 
      * @param admCredential the admCredential value to set.
      * @return the NotificationHubResourceInner object itself.
      */
@@ -265,8 +277,8 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
-     * Get the baiduCredential property: The BaiduCredential of the created NotificationHub.
-     *
+     * Get the baiduCredential property: Description of a NotificationHub BaiduCredential.
+     * 
      * @return the baiduCredential value.
      */
     public BaiduCredential baiduCredential() {
@@ -274,8 +286,8 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
-     * Set the baiduCredential property: The BaiduCredential of the created NotificationHub.
-     *
+     * Set the baiduCredential property: Description of a NotificationHub BaiduCredential.
+     * 
      * @param baiduCredential the baiduCredential value to set.
      * @return the NotificationHubResourceInner object itself.
      */
@@ -288,8 +300,86 @@ public final class NotificationHubResourceInner extends Resource {
     }
 
     /**
+     * Get the browserCredential property: Description of a NotificationHub BrowserCredential.
+     * 
+     * @return the browserCredential value.
+     */
+    public BrowserCredential browserCredential() {
+        return this.innerProperties() == null ? null : this.innerProperties().browserCredential();
+    }
+
+    /**
+     * Set the browserCredential property: Description of a NotificationHub BrowserCredential.
+     * 
+     * @param browserCredential the browserCredential value to set.
+     * @return the NotificationHubResourceInner object itself.
+     */
+    public NotificationHubResourceInner withBrowserCredential(BrowserCredential browserCredential) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationHubProperties();
+        }
+        this.innerProperties().withBrowserCredential(browserCredential);
+        return this;
+    }
+
+    /**
+     * Get the xiaomiCredential property: Description of a NotificationHub XiaomiCredential.
+     * 
+     * @return the xiaomiCredential value.
+     */
+    public XiaomiCredential xiaomiCredential() {
+        return this.innerProperties() == null ? null : this.innerProperties().xiaomiCredential();
+    }
+
+    /**
+     * Set the xiaomiCredential property: Description of a NotificationHub XiaomiCredential.
+     * 
+     * @param xiaomiCredential the xiaomiCredential value to set.
+     * @return the NotificationHubResourceInner object itself.
+     */
+    public NotificationHubResourceInner withXiaomiCredential(XiaomiCredential xiaomiCredential) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationHubProperties();
+        }
+        this.innerProperties().withXiaomiCredential(xiaomiCredential);
+        return this;
+    }
+
+    /**
+     * Get the fcmV1Credential property: Description of a NotificationHub FcmV1Credential.
+     * 
+     * @return the fcmV1Credential value.
+     */
+    public FcmV1Credential fcmV1Credential() {
+        return this.innerProperties() == null ? null : this.innerProperties().fcmV1Credential();
+    }
+
+    /**
+     * Set the fcmV1Credential property: Description of a NotificationHub FcmV1Credential.
+     * 
+     * @param fcmV1Credential the fcmV1Credential value to set.
+     * @return the NotificationHubResourceInner object itself.
+     */
+    public NotificationHubResourceInner withFcmV1Credential(FcmV1Credential fcmV1Credential) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationHubProperties();
+        }
+        this.innerProperties().withFcmV1Credential(fcmV1Credential);
+        return this;
+    }
+
+    /**
+     * Get the dailyMaxActiveDevices property: The dailyMaxActiveDevices property.
+     * 
+     * @return the dailyMaxActiveDevices value.
+     */
+    public Long dailyMaxActiveDevices() {
+        return this.innerProperties() == null ? null : this.innerProperties().dailyMaxActiveDevices();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

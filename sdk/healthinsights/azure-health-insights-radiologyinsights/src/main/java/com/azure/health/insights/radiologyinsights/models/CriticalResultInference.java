@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -14,7 +15,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Critical results refer to findings of utmost importance that may require timely attention due to their potential
  * impact on patient care.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = CriticalResultInference.class,
+    visible = true)
 @JsonTypeName("criticalResult")
 @Immutable
 public final class CriticalResultInference extends RadiologyInsightsInference {
@@ -24,7 +29,7 @@ public final class CriticalResultInference extends RadiologyInsightsInference {
      */
     @Generated
     @JsonProperty(value = "result")
-    private CriticalResult result;
+    private final CriticalResult result;
 
     /**
      * Creates an instance of CriticalResultInference class.
@@ -45,5 +50,24 @@ public final class CriticalResultInference extends RadiologyInsightsInference {
     @Generated
     public CriticalResult getResult() {
         return this.result;
+    }
+
+    /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.CRITICAL_RESULT;
+
+    /**
+     * Get the kind property: Inference type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
     }
 }

@@ -30,41 +30,28 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsGetWithResponseM
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"alertType\":\"psimioy\",\"alertDisplayName\":\"glkmiqwnnr\",\"vendorName\":\"ibb\",\"reportedSeverity\":\"High\",\"remediationSteps\":\"pkl\",\"description\":\"ydgnha\",\"count\":3154276649040417156,\"effectedResourceType\":\"exzgpmnmabedd\",\"systemSource\":\"lwgdfpfqfpcvs\",\"actionTaken\":\"l\",\"logAnalyticsQuery\":\"rvwerfwxbsmtb\",\"topDevicesList\":[]},\"tags\":{\"kwdvbtb\":\"hci\"},\"id\":\"ekqhs\",\"name\":\"htfpwpqb\",\"type\":\"ejuwyqwdqigmghgi\"}";
+        String responseStr
+            = "{\"properties\":{\"alertType\":\"pe\",\"alertDisplayName\":\"j\",\"vendorName\":\"djuzmu\",\"reportedSeverity\":\"High\",\"remediationSteps\":\"ckzov\",\"description\":\"z\",\"count\":4966422720279400267,\"effectedResourceType\":\"hboigzxko\",\"systemSource\":\"lrzhtocjzfppexu\",\"actionTaken\":\"tzwnkjwgiitvjcmi\",\"logAnalyticsQuery\":\"mswskbbbjoypplod\",\"topDevicesList\":[{\"deviceId\":\"kp\",\"alertsCount\":5905519790484062186,\"lastOccurrence\":\"o\"},{\"deviceId\":\"gva\",\"alertsCount\":27354943556494179,\"lastOccurrence\":\"xlmbrtvtgolmlp\"},{\"deviceId\":\"tlayyxhxj\",\"alertsCount\":2222631388301443172,\"lastOccurrence\":\"aqqjh\"}]},\"tags\":{\"njc\":\"faob\",\"qwssyd\":\"bozvc\",\"ywo\":\"wrybi\"},\"id\":\"jnjuvtzijrdlxba\",\"name\":\"yocpkvltjfdzfmnp\",\"type\":\"drcibjxnn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        IoTSecurityAggregatedAlert response =
-            manager
-                .iotSecuritySolutionsAnalyticsAggregatedAlerts()
-                .getWithResponse("tdavuqmcbymsfobj", "quvjez", "j", com.azure.core.util.Context.NONE)
-                .getValue();
+        IoTSecurityAggregatedAlert response = manager.iotSecuritySolutionsAnalyticsAggregatedAlerts()
+            .getWithResponse("xlvzpfdka", "gbiwpgopqlktthb", "rrmtrxgjmpdvrjz", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("hci", response.tags().get("kwdvbtb"));
+        Assertions.assertEquals("faob", response.tags().get("njc"));
     }
 }

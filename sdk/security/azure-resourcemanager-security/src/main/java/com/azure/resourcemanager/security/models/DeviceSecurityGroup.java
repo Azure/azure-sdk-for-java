@@ -8,228 +8,265 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.DeviceSecurityGroupInner;
 import java.util.List;
 
-/** An immutable client-side representation of DeviceSecurityGroup. */
+/**
+ * An immutable client-side representation of DeviceSecurityGroup.
+ */
 public interface DeviceSecurityGroup {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the thresholdRules property: The list of custom alert threshold rules.
-     *
+     * 
      * @return the thresholdRules value.
      */
     List<ThresholdCustomAlertRule> thresholdRules();
 
     /**
      * Gets the timeWindowRules property: The list of custom alert time-window rules.
-     *
+     * 
      * @return the timeWindowRules value.
      */
     List<TimeWindowCustomAlertRule> timeWindowRules();
 
     /**
      * Gets the allowlistRules property: The allow-list custom alert rules.
-     *
+     * 
      * @return the allowlistRules value.
      */
     List<AllowlistCustomAlertRule> allowlistRules();
 
     /**
      * Gets the denylistRules property: The deny-list custom alert rules.
-     *
+     * 
      * @return the denylistRules value.
      */
     List<DenylistCustomAlertRule> denylistRules();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.DeviceSecurityGroupInner object.
-     *
+     * 
      * @return the inner object.
      */
     DeviceSecurityGroupInner innerModel();
 
-    /** The entirety of the DeviceSecurityGroup definition. */
+    /**
+     * The entirety of the DeviceSecurityGroup definition.
+     */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithScope, DefinitionStages.WithCreate {
     }
-    /** The DeviceSecurityGroup definition stages. */
+
+    /**
+     * The DeviceSecurityGroup definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the DeviceSecurityGroup definition. */
+        /**
+         * The first stage of the DeviceSecurityGroup definition.
+         */
         interface Blank extends WithScope {
         }
-        /** The stage of the DeviceSecurityGroup definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the DeviceSecurityGroup definition allowing to specify parent resource.
+         */
         interface WithScope {
             /**
              * Specifies resourceId.
-             *
+             * 
              * @param resourceId The identifier of the resource.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceId(String resourceId);
         }
+
         /**
          * The stage of the DeviceSecurityGroup definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithThresholdRules,
-                DefinitionStages.WithTimeWindowRules,
-                DefinitionStages.WithAllowlistRules,
-                DefinitionStages.WithDenylistRules {
+        interface WithCreate extends DefinitionStages.WithThresholdRules, DefinitionStages.WithTimeWindowRules,
+            DefinitionStages.WithAllowlistRules, DefinitionStages.WithDenylistRules {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             DeviceSecurityGroup create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             DeviceSecurityGroup create(Context context);
         }
-        /** The stage of the DeviceSecurityGroup definition allowing to specify thresholdRules. */
+
+        /**
+         * The stage of the DeviceSecurityGroup definition allowing to specify thresholdRules.
+         */
         interface WithThresholdRules {
             /**
              * Specifies the thresholdRules property: The list of custom alert threshold rules..
-             *
+             * 
              * @param thresholdRules The list of custom alert threshold rules.
              * @return the next definition stage.
              */
             WithCreate withThresholdRules(List<ThresholdCustomAlertRule> thresholdRules);
         }
-        /** The stage of the DeviceSecurityGroup definition allowing to specify timeWindowRules. */
+
+        /**
+         * The stage of the DeviceSecurityGroup definition allowing to specify timeWindowRules.
+         */
         interface WithTimeWindowRules {
             /**
              * Specifies the timeWindowRules property: The list of custom alert time-window rules..
-             *
+             * 
              * @param timeWindowRules The list of custom alert time-window rules.
              * @return the next definition stage.
              */
             WithCreate withTimeWindowRules(List<TimeWindowCustomAlertRule> timeWindowRules);
         }
-        /** The stage of the DeviceSecurityGroup definition allowing to specify allowlistRules. */
+
+        /**
+         * The stage of the DeviceSecurityGroup definition allowing to specify allowlistRules.
+         */
         interface WithAllowlistRules {
             /**
              * Specifies the allowlistRules property: The allow-list custom alert rules..
-             *
+             * 
              * @param allowlistRules The allow-list custom alert rules.
              * @return the next definition stage.
              */
             WithCreate withAllowlistRules(List<AllowlistCustomAlertRule> allowlistRules);
         }
-        /** The stage of the DeviceSecurityGroup definition allowing to specify denylistRules. */
+
+        /**
+         * The stage of the DeviceSecurityGroup definition allowing to specify denylistRules.
+         */
         interface WithDenylistRules {
             /**
              * Specifies the denylistRules property: The deny-list custom alert rules..
-             *
+             * 
              * @param denylistRules The deny-list custom alert rules.
              * @return the next definition stage.
              */
             WithCreate withDenylistRules(List<DenylistCustomAlertRule> denylistRules);
         }
     }
+
     /**
      * Begins update for the DeviceSecurityGroup resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     DeviceSecurityGroup.Update update();
 
-    /** The template for DeviceSecurityGroup update. */
-    interface Update
-        extends UpdateStages.WithThresholdRules,
-            UpdateStages.WithTimeWindowRules,
-            UpdateStages.WithAllowlistRules,
-            UpdateStages.WithDenylistRules {
+    /**
+     * The template for DeviceSecurityGroup update.
+     */
+    interface Update extends UpdateStages.WithThresholdRules, UpdateStages.WithTimeWindowRules,
+        UpdateStages.WithAllowlistRules, UpdateStages.WithDenylistRules {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         DeviceSecurityGroup apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         DeviceSecurityGroup apply(Context context);
     }
-    /** The DeviceSecurityGroup update stages. */
+
+    /**
+     * The DeviceSecurityGroup update stages.
+     */
     interface UpdateStages {
-        /** The stage of the DeviceSecurityGroup update allowing to specify thresholdRules. */
+        /**
+         * The stage of the DeviceSecurityGroup update allowing to specify thresholdRules.
+         */
         interface WithThresholdRules {
             /**
              * Specifies the thresholdRules property: The list of custom alert threshold rules..
-             *
+             * 
              * @param thresholdRules The list of custom alert threshold rules.
              * @return the next definition stage.
              */
             Update withThresholdRules(List<ThresholdCustomAlertRule> thresholdRules);
         }
-        /** The stage of the DeviceSecurityGroup update allowing to specify timeWindowRules. */
+
+        /**
+         * The stage of the DeviceSecurityGroup update allowing to specify timeWindowRules.
+         */
         interface WithTimeWindowRules {
             /**
              * Specifies the timeWindowRules property: The list of custom alert time-window rules..
-             *
+             * 
              * @param timeWindowRules The list of custom alert time-window rules.
              * @return the next definition stage.
              */
             Update withTimeWindowRules(List<TimeWindowCustomAlertRule> timeWindowRules);
         }
-        /** The stage of the DeviceSecurityGroup update allowing to specify allowlistRules. */
+
+        /**
+         * The stage of the DeviceSecurityGroup update allowing to specify allowlistRules.
+         */
         interface WithAllowlistRules {
             /**
              * Specifies the allowlistRules property: The allow-list custom alert rules..
-             *
+             * 
              * @param allowlistRules The allow-list custom alert rules.
              * @return the next definition stage.
              */
             Update withAllowlistRules(List<AllowlistCustomAlertRule> allowlistRules);
         }
-        /** The stage of the DeviceSecurityGroup update allowing to specify denylistRules. */
+
+        /**
+         * The stage of the DeviceSecurityGroup update allowing to specify denylistRules.
+         */
         interface WithDenylistRules {
             /**
              * Specifies the denylistRules property: The deny-list custom alert rules..
-             *
+             * 
              * @param denylistRules The deny-list custom alert rules.
              * @return the next definition stage.
              */
             Update withDenylistRules(List<DenylistCustomAlertRule> denylistRules);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     DeviceSecurityGroup refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

@@ -9,9 +9,12 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Configuration;
+import com.azure.identity.ClientSecretCredentialBuilder;
 
+import java.util.Arrays;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,7 +29,7 @@ public class TextTranslationClientBase extends TestProxyTestBase {
     public void beforeTest() {
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Collections.singletonList("Ocp-Apim-Subscription-Region"))));
+                .setHeadersKeyOnlyMatch(Arrays.asList("Ocp-Apim-Subscription-Region", "Ocp-Apim-ResourceId"))));
         }
     }
 
@@ -77,6 +80,18 @@ public class TextTranslationClientBase extends TestProxyTestBase {
             : Configuration.getGlobalConfiguration().get("TEXT_TRANSLATION_REGION");
     }
 
+    private String getAadRegion() {
+        return interceptorManager.isPlaybackMode()
+            ? "fakeRegion"
+            : Configuration.getGlobalConfiguration().get("TEXT_TRANSLATION_AAD_REGION");
+    }
+
+    private String getResourceId() {
+        return interceptorManager.isPlaybackMode()
+            ? "fakeResourceId"
+            : Configuration.getGlobalConfiguration().get("TEXT_TRANSLATION_AAD_RESOURCE_ID");
+    }
+
     private String getTokenURL() {
         return interceptorManager.isPlaybackMode()
             ? "https://fakeTokenEndpoint.api.cognitive.microsoft.com"
@@ -86,8 +101,22 @@ public class TextTranslationClientBase extends TestProxyTestBase {
     TextTranslationClient getTranslationClientWithToken() throws IOException {
         TextTranslationClientBuilder textTranslationClientbuilder = new TextTranslationClientBuilder()
             .credential(getTokenCredential())
-            .region(getRegion())
             .endpoint(getEndpoint())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+            textTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (getTestMode() == TestMode.RECORD) {
+            textTranslationClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+        return textTranslationClientbuilder.buildClient();
+    }
+
+    TextTranslationClient getTranslationClientWithAadAuth() {
+        TextTranslationClientBuilder textTranslationClientbuilder = new TextTranslationClientBuilder()
+            .credential(getAadUserToken())
+            .region(getAadRegion())
+            .resourceId(getResourceId())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -117,5 +146,22 @@ public class TextTranslationClientBase extends TestProxyTestBase {
             in.close();
         }
         return new StaticTokenForTest(tokenResponse);
+    }
+
+    private TokenCredential getAadUserToken() {
+        TokenCredential credential;
+
+        if (getTestMode() != TestMode.PLAYBACK) {
+            Configuration global = Configuration.getGlobalConfiguration().clone();
+            credential = new ClientSecretCredentialBuilder()
+                .clientSecret(global.get("AZURE_CLIENT_SECRET"))
+                .clientId(global.get("AZURE_CLIENT_ID"))
+                .tenantId(global.get("AZURE_TENANT_ID"))
+                .build();
+        } else {
+            credential = new MockTokenCredential();
+        }
+
+        return credential;
     }
 }

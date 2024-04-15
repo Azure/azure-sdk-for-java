@@ -12,19 +12,29 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * caching to prevent requests that contain query strings from being cached, or cache every request with a unique URL.
  */
 public enum QueryStringCachingBehavior {
-    /** Enum value IgnoreQueryString. */
+    /**
+     * Enum value IgnoreQueryString.
+     */
     IGNORE_QUERY_STRING("IgnoreQueryString"),
 
-    /** Enum value BypassCaching. */
+    /**
+     * Enum value BypassCaching.
+     */
     BYPASS_CACHING("BypassCaching"),
 
-    /** Enum value UseQueryString. */
+    /**
+     * Enum value UseQueryString.
+     */
     USE_QUERY_STRING("UseQueryString"),
 
-    /** Enum value NotSet. */
+    /**
+     * Enum value NotSet.
+     */
     NOT_SET("NotSet");
 
-    /** The actual serialized value for a QueryStringCachingBehavior instance. */
+    /**
+     * The actual serialized value for a QueryStringCachingBehavior instance.
+     */
     private final String value;
 
     QueryStringCachingBehavior(String value) {
@@ -33,7 +43,7 @@ public enum QueryStringCachingBehavior {
 
     /**
      * Parses a serialized value to a QueryStringCachingBehavior instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed QueryStringCachingBehavior object, or null if unable to parse.
      */
@@ -51,7 +61,9 @@ public enum QueryStringCachingBehavior {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

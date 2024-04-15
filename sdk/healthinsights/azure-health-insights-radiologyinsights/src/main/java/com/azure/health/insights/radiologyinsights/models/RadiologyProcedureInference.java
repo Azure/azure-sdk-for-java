@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,7 +16,11 @@ import java.util.List;
  * Radiology procedures are the specific imaging studies or examinations ordered for the patient, extracted from the
  * document information and text.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = RadiologyProcedureInference.class,
+    visible = true)
 @JsonTypeName("radiologyProcedure")
 @Immutable
 public final class RadiologyProcedureInference extends RadiologyInsightsInference {
@@ -32,14 +37,14 @@ public final class RadiologyProcedureInference extends RadiologyInsightsInferenc
      */
     @Generated
     @JsonProperty(value = "imagingProcedures")
-    private List<ImagingProcedure> imagingProcedures;
+    private final List<ImagingProcedure> imagingProcedures;
 
     /*
      * Ordered procedure information from the document information or text.
      */
     @Generated
     @JsonProperty(value = "orderedProcedure")
-    private OrderedProcedure orderedProcedure;
+    private final OrderedProcedure orderedProcedure;
 
     /**
      * Get the procedureCodes property: LOINC codes for the procedure.
@@ -84,5 +89,24 @@ public final class RadiologyProcedureInference extends RadiologyInsightsInferenc
         @JsonProperty(value = "orderedProcedure") OrderedProcedure orderedProcedure) {
         this.imagingProcedures = imagingProcedures;
         this.orderedProcedure = orderedProcedure;
+    }
+
+    /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.RADIOLOGY_PROCEDURE;
+
+    /**
+     * Get the kind property: Inference type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
     }
 }

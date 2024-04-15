@@ -4,25 +4,21 @@
 
 package com.azure.resourcemanager.sphere.generated;
 
-/** Samples for Deployments Delete. */
+/**
+ * Samples for Deployments Delete.
+ */
 public final class DeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sphere/resource-manager/Microsoft.AzureSphere/preview/2022-09-01-preview/examples/DeleteDeployment.json
+     * x-ms-original-file:
+     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/DeleteDeployment.json
      */
     /**
      * Sample code: Deployments_Delete.
-     *
+     * 
      * @param manager Entry point to AzureSphereManager.
      */
     public static void deploymentsDelete(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager
-            .deployments()
-            .delete(
-                "MyResourceGroup1",
-                "MyCatalog1",
-                "MyProductName1",
-                "DeviceGroupName1",
-                "MyDeploymentName1",
-                com.azure.core.util.Context.NONE);
+        manager.deployments().delete("MyResourceGroup1", "MyCatalog1", "MyProductName1", "DeviceGroupName1",
+            "MyDeploymentName1", com.azure.core.util.Context.NONE);
     }
 }

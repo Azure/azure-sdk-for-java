@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cluster service configs. */
+/**
+ * Cluster service configs.
+ */
 @Fluent
 public final class ClusterServiceConfigsProfile {
     /*
@@ -24,13 +26,15 @@ public final class ClusterServiceConfigsProfile {
     @JsonProperty(value = "configs", required = true)
     private List<ClusterServiceConfig> configs;
 
-    /** Creates an instance of ClusterServiceConfigsProfile class. */
+    /**
+     * Creates an instance of ClusterServiceConfigsProfile class.
+     */
     public ClusterServiceConfigsProfile() {
     }
 
     /**
      * Get the serviceName property: Name of the service the configurations should apply to.
-     *
+     * 
      * @return the serviceName value.
      */
     public String serviceName() {
@@ -39,7 +43,7 @@ public final class ClusterServiceConfigsProfile {
 
     /**
      * Set the serviceName property: Name of the service the configurations should apply to.
-     *
+     * 
      * @param serviceName the serviceName value to set.
      * @return the ClusterServiceConfigsProfile object itself.
      */
@@ -50,7 +54,7 @@ public final class ClusterServiceConfigsProfile {
 
     /**
      * Get the configs property: List of service configs.
-     *
+     * 
      * @return the configs value.
      */
     public List<ClusterServiceConfig> configs() {
@@ -59,7 +63,7 @@ public final class ClusterServiceConfigsProfile {
 
     /**
      * Set the configs property: List of service configs.
-     *
+     * 
      * @param configs the configs value to set.
      * @return the ClusterServiceConfigsProfile object itself.
      */
@@ -70,21 +74,17 @@ public final class ClusterServiceConfigsProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serviceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serviceName in model ClusterServiceConfigsProfile"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property serviceName in model ClusterServiceConfigsProfile"));
         }
         if (configs() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property configs in model ClusterServiceConfigsProfile"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property configs in model ClusterServiceConfigsProfile"));
         } else {
             configs().forEach(e -> e.validate());
         }

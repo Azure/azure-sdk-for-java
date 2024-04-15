@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.frontdoor.models.KeyVaultCertificateSourceParametersVault;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters required for bring-your-own-certification via Key Vault. */
+/**
+ * Parameters required for bring-your-own-certification via Key Vault.
+ */
 @Fluent
 public final class KeyVaultCertificateSourceParameters {
     /*
@@ -29,13 +31,15 @@ public final class KeyVaultCertificateSourceParameters {
     @JsonProperty(value = "secretVersion")
     private String secretVersion;
 
-    /** Creates an instance of KeyVaultCertificateSourceParameters class. */
+    /**
+     * Creates an instance of KeyVaultCertificateSourceParameters class.
+     */
     public KeyVaultCertificateSourceParameters() {
     }
 
     /**
      * Get the vault property: The Key Vault containing the SSL certificate.
-     *
+     * 
      * @return the vault value.
      */
     public KeyVaultCertificateSourceParametersVault vault() {
@@ -44,7 +48,7 @@ public final class KeyVaultCertificateSourceParameters {
 
     /**
      * Set the vault property: The Key Vault containing the SSL certificate.
-     *
+     * 
      * @param vault the vault value to set.
      * @return the KeyVaultCertificateSourceParameters object itself.
      */
@@ -55,7 +59,7 @@ public final class KeyVaultCertificateSourceParameters {
 
     /**
      * Get the secretName property: The name of the Key Vault secret representing the full certificate PFX.
-     *
+     * 
      * @return the secretName value.
      */
     public String secretName() {
@@ -64,7 +68,7 @@ public final class KeyVaultCertificateSourceParameters {
 
     /**
      * Set the secretName property: The name of the Key Vault secret representing the full certificate PFX.
-     *
+     * 
      * @param secretName the secretName value to set.
      * @return the KeyVaultCertificateSourceParameters object itself.
      */
@@ -75,7 +79,7 @@ public final class KeyVaultCertificateSourceParameters {
 
     /**
      * Get the secretVersion property: The version of the Key Vault secret representing the full certificate PFX.
-     *
+     * 
      * @return the secretVersion value.
      */
     public String secretVersion() {
@@ -84,7 +88,7 @@ public final class KeyVaultCertificateSourceParameters {
 
     /**
      * Set the secretVersion property: The version of the Key Vault secret representing the full certificate PFX.
-     *
+     * 
      * @param secretVersion the secretVersion value to set.
      * @return the KeyVaultCertificateSourceParameters object itself.
      */
@@ -95,7 +99,7 @@ public final class KeyVaultCertificateSourceParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

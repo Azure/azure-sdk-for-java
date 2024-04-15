@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Servers. */
+/**
+ * Resource collection API of Servers.
+ */
 public interface Servers {
     /**
      * Lists servers of a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface Servers {
 
     /**
      * Lists servers of a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface Servers {
 
     /**
      * Gets information about a server in cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param serverName The name of the server.
@@ -47,12 +49,12 @@ public interface Servers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a server in cluster along with {@link Response}.
      */
-    Response<ClusterServer> getWithResponse(
-        String resourceGroupName, String clusterName, String serverName, Context context);
+    Response<ClusterServer> getWithResponse(String resourceGroupName, String clusterName, String serverName,
+        Context context);
 
     /**
      * Gets information about a server in cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param serverName The name of the server.

@@ -31,38 +31,27 @@ public final class CatalogsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"location\":\"kde\",\"tags\":{\"kdwzbaiuebbaumny\":\"vlopwiyighx\",\"txp\":\"upedeojnabckhs\",\"tfhvpesapskrdqmh\":\"ie\",\"tkncwsc\":\"jdhtldwkyzxu\"},\"id\":\"svlxotogtwrup\",\"name\":\"sx\",\"type\":\"nmic\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"tenantId\":\"nxdhbt\",\"provisioningState\":\"Provisioning\"},\"location\":\"ywpnvjt\",\"tags\":{\"abgy\":\"ermclfplphoxuscr\",\"qugxywpmueefjzwf\":\"psbjta\"},\"id\":\"kqujidsuyono\",\"name\":\"glaocq\",\"type\":\"tcc\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureSphereManager manager =
-            AzureSphereManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Catalog> response = manager.catalogs().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kde", response.iterator().next().location());
-        Assertions.assertEquals("vlopwiyighx", response.iterator().next().tags().get("kdwzbaiuebbaumny"));
+        Assertions.assertEquals("ywpnvjt", response.iterator().next().location());
+        Assertions.assertEquals("ermclfplphoxuscr", response.iterator().next().tags().get("abgy"));
     }
 }

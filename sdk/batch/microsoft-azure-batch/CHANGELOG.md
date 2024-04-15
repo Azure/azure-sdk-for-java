@@ -1,6 +1,6 @@
 # Release History
 
-## 11.1.0-beta.1 (Unreleased)
+## 11.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,27 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 11.1.1 (2024-04-09)
+
+### Features Added
+
+- Implemented UpgradePolicy in CloudPool to facilitate OS upgrade strategies during pool creation. This includes:
+  - AutomaticOSUpgradePolicy for automatic OS updates.
+  - RollingUpgradePolicy for gradual OS upgrades across pools.
+
+- Pool Specification and Cloud Pool Enhancements:
+  - New upgradePolicy attribute in PoolSpecification and CloudPool to configure OS upgrade strategies, enriching pool management with UpgradeMode options (automatic, manual, rolling).
+  - Added resourceTags functionality to PoolSpecification and CloudPool, facilitating the assignment of tags during pool creation for enhanced resource management.
+  - Integrated securityProfile into VirtualMachineConfiguration, incorporating Trusted Launch support for improved OS security against unauthorized changes.
+
+- Virtual Machine and Disk Configuration Improvements:
+  - Enhanced OSDisk with new properties (caching, managedDisk, diskSizeGB, writeAcceleratorEnabled) for comprehensive disk configuration.
+  - Introduced serviceArtifactReference in VirtualMachineConfiguration for consistent image versioning across virtual machine instances.
+
+- Additional Enhancements:
+  - Expanded the StorageAccountType enum with StandardSSD_LRS option for diverse storage solutions.
+  - Added scaleSetVmResourceID to VirtualMachineInfo to aid in managing VM scale sets effectively.
 
 ## 11.0.0 (2023-05-23)
 
@@ -30,9 +51,9 @@
 
 ### Other Changes
 
-- Added @Deprecated annotation to the `CertificateOperations` class. 
+- Added @Deprecated annotation to the `CertificateOperations` class.
     - This operation is deprecated and will be removed after February 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-  
+
 
 ## 10.1.0 (2022-11-15)
 
@@ -108,7 +129,7 @@
 - **[Breaking]** The `virtualMachineImageId` property of `ImageReference` can now only refer to a Shared Image Gallery image.
 - **[Breaking]** Pools can now be provisioned without a public IP using the new `PublicIPAddressConfiguration` property of `NetworkConfiguration`.
     - The `PublicIPs` property of `NetworkConfiguration` has moved in to `PublicIPAddressConfiguration` as well. This property can only be specified if `IPAddressProvisioningType` is `UserManaged`.
-      
+
 ## 7.0.0
 ### Features
     - Added ability to specify a collection of public IPs on CloudPool via the new PublicIPs property. This guarantees nodes in the Pool will have an IP from the list user provided IPs.
@@ -135,7 +156,7 @@ This version of the Batch .NET client library targets version 2019-06-01.9.0 of 
 
 ## 5.0.0
 ### Features
-- **[Breaking]** Removed support for the `ChangeOSVersion` API on `CloudServiceConfiguration` pools. 
+- **[Breaking]** Removed support for the `ChangeOSVersion` API on `CloudServiceConfiguration` pools.
   - Removed `PoolOperations.ChangeOSVersion`.
   - Renamed `TargetOSVersion` to `OSVersion` and removed `CurrentOSVersion` on `CloudPool`.
   - Removed `PoolState.Upgrading` enum.
@@ -148,9 +169,9 @@ This version of the Batch .NET client library targets version 2019-06-01.9.0 of 
       - The `BlobPrefix` property can be used to filter downloads from a storage container to only those matching the prefix.
   - URLs provided to `ResourceFile` via the `ResourceFile.withUrl` method can now be any HTTP URL. Previously, these had to be an Azure Blob Storage URL.
 - **[Breaking]** Removed `OSDisk` property from `VirtualMachineConfiguration`. This property is no longer supported.
-- Pools which set the `DynamicVNetAssignmentScope` on `NetworkConfiguration` to be `DynamicVNetAssignmentScope.Job` can 
-  now dynamically assign a Virtual Network to each node the job's tasks run on. The specific Virtual Network to join the nodes to is specified in 
-  the new `JobNetworkConfiguration` property on `CloudJob` and `JobSpecification`. 
+- Pools which set the `DynamicVNetAssignmentScope` on `NetworkConfiguration` to be `DynamicVNetAssignmentScope.Job` can
+  now dynamically assign a Virtual Network to each node the job's tasks run on. The specific Virtual Network to join the nodes to is specified in
+  the new `JobNetworkConfiguration` property on `CloudJob` and `JobSpecification`.
   - Note: This feature is in public preview. It is disabled for all Batch accounts except for those which have contacted us and requested to be in the pilot.
 - The maximum lifetime of a task is now 180 days (previously it was 7).
 - Added support on Windows pools for creating users with a specific login mode (either `Batch` or `Interactive`) via `WindowsUserConfiguration.LoginMode`.
@@ -176,7 +197,7 @@ This version of the Batch Java client library targets version 2018-08-01.7.1 of 
 
 ## 3.3.0
 ### Features
- - `createTasks` rethrow `RuntimeException` catched by internal threads. 
+ - `createTasks` rethrow `RuntimeException` catched by internal threads.
  - `createTasks` handle `RequestSizeTooLarge` chunking errors for well behaved tasks.
 
 ## 3.2.0

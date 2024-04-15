@@ -13,7 +13,7 @@ public final class BigDataPoolParametrizationReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BigDataPoolParametrizationReference model
-            = BinaryData.fromString("{\"type\":\"BigDataPoolReference\",\"referenceName\":\"datavr\"}")
+            = BinaryData.fromString("{\"type\":\"BigDataPoolReference\",\"referenceName\":\"datacuiipnszrrmq\"}")
                 .toObject(BigDataPoolParametrizationReference.class);
         Assertions.assertEquals(BigDataPoolReferenceType.BIG_DATA_POOL_REFERENCE, model.type());
     }
@@ -21,7 +21,7 @@ public final class BigDataPoolParametrizationReferenceTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BigDataPoolParametrizationReference model = new BigDataPoolParametrizationReference()
-            .withType(BigDataPoolReferenceType.BIG_DATA_POOL_REFERENCE).withReferenceName("datavr");
+            .withType(BigDataPoolReferenceType.BIG_DATA_POOL_REFERENCE).withReferenceName("datacuiipnszrrmq");
         model = BinaryData.fromObject(model).toObject(BigDataPoolParametrizationReference.class);
         Assertions.assertEquals(BigDataPoolReferenceType.BIG_DATA_POOL_REFERENCE, model.type());
     }

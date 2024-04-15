@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.fluent.models.ConnectorSettingInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** For a subscription, list of all cloud account connectors and their settings. */
+/**
+ * For a subscription, list of all cloud account connectors and their settings.
+ */
 @Fluent
 public final class ConnectorSettingList {
     /*
@@ -24,13 +26,15 @@ public final class ConnectorSettingList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ConnectorSettingList class. */
+    /**
+     * Creates an instance of ConnectorSettingList class.
+     */
     public ConnectorSettingList() {
     }
 
     /**
      * Get the value property: List of all the cloud account connector settings.
-     *
+     * 
      * @return the value value.
      */
     public List<ConnectorSettingInner> value() {
@@ -39,7 +43,7 @@ public final class ConnectorSettingList {
 
     /**
      * Set the value property: List of all the cloud account connector settings.
-     *
+     * 
      * @param value the value value to set.
      * @return the ConnectorSettingList object itself.
      */
@@ -50,7 +54,7 @@ public final class ConnectorSettingList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ConnectorSettingList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

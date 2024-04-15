@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmosdbforpostgresql.models.PrivateLinkService
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties in private endpoint connection. */
+/**
+ * The properties in private endpoint connection.
+ */
 @Fluent
 public final class PrivateEndpointConnectionSimpleProperties {
     /*
@@ -31,13 +33,15 @@ public final class PrivateEndpointConnectionSimpleProperties {
     @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
 
-    /** Creates an instance of PrivateEndpointConnectionSimpleProperties class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionSimpleProperties class.
+     */
     public PrivateEndpointConnectionSimpleProperties() {
     }
 
     /**
      * Get the privateEndpoint property: Private endpoint which the connection belongs to.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public PrivateEndpointProperty privateEndpoint() {
@@ -46,7 +50,7 @@ public final class PrivateEndpointConnectionSimpleProperties {
 
     /**
      * Set the privateEndpoint property: Private endpoint which the connection belongs to.
-     *
+     * 
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the PrivateEndpointConnectionSimpleProperties object itself.
      */
@@ -57,7 +61,7 @@ public final class PrivateEndpointConnectionSimpleProperties {
 
     /**
      * Get the groupIds property: Group ids of the private endpoint connection.
-     *
+     * 
      * @return the groupIds value.
      */
     public List<String> groupIds() {
@@ -66,7 +70,7 @@ public final class PrivateEndpointConnectionSimpleProperties {
 
     /**
      * Set the groupIds property: Group ids of the private endpoint connection.
-     *
+     * 
      * @param groupIds the groupIds value to set.
      * @return the PrivateEndpointConnectionSimpleProperties object itself.
      */
@@ -76,9 +80,9 @@ public final class PrivateEndpointConnectionSimpleProperties {
     }
 
     /**
-     * Get the privateLinkServiceConnectionState property: A collection of information about the state of the connection
-     * between service consumer and provider.
-     *
+     * Get the privateLinkServiceConnectionState property: A collection of information about the state of the
+     * connection between service consumer and provider.
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
@@ -86,21 +90,21 @@ public final class PrivateEndpointConnectionSimpleProperties {
     }
 
     /**
-     * Set the privateLinkServiceConnectionState property: A collection of information about the state of the connection
-     * between service consumer and provider.
-     *
+     * Set the privateLinkServiceConnectionState property: A collection of information about the state of the
+     * connection between service consumer and provider.
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionSimpleProperties object itself.
      */
-    public PrivateEndpointConnectionSimpleProperties withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionSimpleProperties
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

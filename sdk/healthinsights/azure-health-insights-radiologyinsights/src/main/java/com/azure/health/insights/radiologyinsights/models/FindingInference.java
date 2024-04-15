@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -14,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Findings in a radiology report typically describe abnormalities, lesions, or other notable observations related to
  * the anatomy or pathology of the imaged area.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = FindingInference.class, visible = true)
 @JsonTypeName("finding")
 @Immutable
 public final class FindingInference extends RadiologyInsightsInference {
@@ -24,7 +25,7 @@ public final class FindingInference extends RadiologyInsightsInference {
      */
     @Generated
     @JsonProperty(value = "finding")
-    private FhirR4Observation finding;
+    private final FhirR4Observation finding;
 
     /**
      * Creates an instance of FindingInference class.
@@ -45,5 +46,24 @@ public final class FindingInference extends RadiologyInsightsInference {
     @Generated
     public FhirR4Observation getFinding() {
         return this.finding;
+    }
+
+    /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FINDING;
+
+    /**
+     * Get the kind property: Inference type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
     }
 }

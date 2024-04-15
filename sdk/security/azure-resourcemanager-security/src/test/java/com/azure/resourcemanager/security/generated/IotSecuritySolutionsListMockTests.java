@@ -13,9 +13,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.security.SecurityManager;
+import com.azure.resourcemanager.security.models.AdditionalWorkspaceDataType;
+import com.azure.resourcemanager.security.models.AdditionalWorkspaceType;
 import com.azure.resourcemanager.security.models.DataSource;
 import com.azure.resourcemanager.security.models.ExportData;
 import com.azure.resourcemanager.security.models.IoTSecuritySolutionModel;
+import com.azure.resourcemanager.security.models.RecommendationConfigStatus;
+import com.azure.resourcemanager.security.models.RecommendationType;
 import com.azure.resourcemanager.security.models.SecuritySolutionStatus;
 import com.azure.resourcemanager.security.models.UnmaskedIpLoggingStatus;
 import java.nio.ByteBuffer;
@@ -35,47 +39,47 @@ public final class IotSecuritySolutionsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"location\":\"utmdpvozg\",\"properties\":{\"workspace\":\"bknlzcl\",\"displayName\":\"tzeyowmndcovd\",\"status\":\"Enabled\",\"export\":[\"RawEvents\"],\"disabledDataSources\":[\"TwinData\"],\"iotHubs\":[\"mk\",\"fruwkud\",\"bcpftxudqyemebun\",\"ucmci\"],\"userDefinedResources\":{\"query\":\"nee\",\"querySubscriptions\":[]},\"autoDiscoveredResources\":[\"auwcg\",\"efnoh\",\"itranizerwguda\",\"mxubvfbngfcoce\"],\"recommendationsConfiguration\":[],\"unmaskedIpLoggingStatus\":\"Enabled\",\"additionalWorkspaces\":[]},\"tags\":{\"vhl\":\"ztraud\",\"tmojhvrztnvgyshq\":\"dculregp\",\"zlpykcfazzwjcay\":\"dgrtwmew\"},\"id\":\"rzrr\",\"name\":\"nsyby\",\"type\":\"polwzrghsrlei\"}]}";
+        String responseStr
+            = "{\"value\":[{\"location\":\"wzknyujxysv\",\"properties\":{\"workspace\":\"jyclvildlffl\",\"displayName\":\"eirmtxfqp\",\"status\":\"Enabled\",\"export\":[\"RawEvents\",\"RawEvents\"],\"disabledDataSources\":[\"TwinData\"],\"iotHubs\":[\"fbpgcryvidbzdy\"],\"userDefinedResources\":{\"query\":\"vjatgng\",\"querySubscriptions\":[\"xjftecgprz\",\"qm\",\"dq\"]},\"autoDiscoveredResources\":[\"zbyqhaath\"],\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_ACRAuthentication\",\"name\":\"ucolusyruxrzhhl\",\"status\":\"Enabled\"},{\"recommendationType\":\"IoT_PermissiveInputFirewallRules\",\"name\":\"gsbpgmncrvtp\",\"status\":\"Disabled\"}],\"unmaskedIpLoggingStatus\":\"Enabled\",\"additionalWorkspaces\":[{\"workspace\":\"pzs\",\"type\":\"Sentinel\",\"dataTypes\":[\"Alerts\"]},{\"workspace\":\"plfcmpua\",\"type\":\"Sentinel\",\"dataTypes\":[\"Alerts\",\"Alerts\"]},{\"workspace\":\"lyspjym\",\"type\":\"Sentinel\",\"dataTypes\":[\"Alerts\"]},{\"workspace\":\"cfunlakgixhqjqh\",\"type\":\"Sentinel\",\"dataTypes\":[\"Alerts\"]}]},\"tags\":{\"ab\":\"wfgoclalvemnnzu\",\"mtsnvo\":\"yydsyweoh\",\"tsw\":\"vb\",\"vdticcaf\":\"dopnsep\"},\"id\":\"gzwkopxdkbtwoqh\",\"name\":\"ppwxnikfz\",\"type\":\"xxfnduv\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<IoTSecuritySolutionModel> response =
-            manager.iotSecuritySolutions().list("q", com.azure.core.util.Context.NONE);
+        PagedIterable<IoTSecuritySolutionModel> response
+            = manager.iotSecuritySolutions().list("bva", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("utmdpvozg", response.iterator().next().location());
-        Assertions.assertEquals("ztraud", response.iterator().next().tags().get("vhl"));
-        Assertions.assertEquals("bknlzcl", response.iterator().next().workspace());
-        Assertions.assertEquals("tzeyowmndcovd", response.iterator().next().displayName());
+        Assertions.assertEquals("wzknyujxysv", response.iterator().next().location());
+        Assertions.assertEquals("wfgoclalvemnnzu", response.iterator().next().tags().get("ab"));
+        Assertions.assertEquals("jyclvildlffl", response.iterator().next().workspace());
+        Assertions.assertEquals("eirmtxfqp", response.iterator().next().displayName());
         Assertions.assertEquals(SecuritySolutionStatus.ENABLED, response.iterator().next().status());
         Assertions.assertEquals(ExportData.RAW_EVENTS, response.iterator().next().export().get(0));
         Assertions.assertEquals(DataSource.TWIN_DATA, response.iterator().next().disabledDataSources().get(0));
-        Assertions.assertEquals("mk", response.iterator().next().iotHubs().get(0));
-        Assertions.assertEquals("nee", response.iterator().next().userDefinedResources().query());
+        Assertions.assertEquals("fbpgcryvidbzdy", response.iterator().next().iotHubs().get(0));
+        Assertions.assertEquals("vjatgng", response.iterator().next().userDefinedResources().query());
+        Assertions.assertEquals("xjftecgprz",
+            response.iterator().next().userDefinedResources().querySubscriptions().get(0));
+        Assertions.assertEquals(RecommendationType.IO_T_ACRAUTHENTICATION,
+            response.iterator().next().recommendationsConfiguration().get(0).recommendationType());
+        Assertions.assertEquals(RecommendationConfigStatus.ENABLED,
+            response.iterator().next().recommendationsConfiguration().get(0).status());
         Assertions.assertEquals(UnmaskedIpLoggingStatus.ENABLED, response.iterator().next().unmaskedIpLoggingStatus());
+        Assertions.assertEquals("pzs", response.iterator().next().additionalWorkspaces().get(0).workspace());
+        Assertions.assertEquals(AdditionalWorkspaceType.SENTINEL,
+            response.iterator().next().additionalWorkspaces().get(0).type());
+        Assertions.assertEquals(AdditionalWorkspaceDataType.ALERTS,
+            response.iterator().next().additionalWorkspaces().get(0).dataTypes().get(0));
     }
 }

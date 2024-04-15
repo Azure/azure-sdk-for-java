@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class GenerateUploadUrlRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenerateUploadUrlRequest model =
-            BinaryData.fromString("{\"firmwareId\":\"u\"}").toObject(GenerateUploadUrlRequest.class);
-        Assertions.assertEquals("u", model.firmwareId());
+        GenerateUploadUrlRequest model
+            = BinaryData.fromString("{\"firmwareId\":\"uecivyhz\"}").toObject(GenerateUploadUrlRequest.class);
+        Assertions.assertEquals("uecivyhz", model.firmwareId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenerateUploadUrlRequest model = new GenerateUploadUrlRequest().withFirmwareId("u");
+        GenerateUploadUrlRequest model = new GenerateUploadUrlRequest().withFirmwareId("uecivyhz");
         model = BinaryData.fromObject(model).toObject(GenerateUploadUrlRequest.class);
-        Assertions.assertEquals("u", model.firmwareId());
+        Assertions.assertEquals("uecivyhz", model.firmwareId());
     }
 }

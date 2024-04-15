@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,7 +16,11 @@ import java.util.List;
  * A complete order discrepancy is shown when one or more body parts and/or measurements that should be in the document
  * (because there is a complete order) are not present.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = CompleteOrderDiscrepancyInference.class,
+    visible = true)
 @JsonTypeName("completeOrderDiscrepancy")
 @Immutable
 public final class CompleteOrderDiscrepancyInference extends RadiologyInsightsInference {
@@ -25,7 +30,7 @@ public final class CompleteOrderDiscrepancyInference extends RadiologyInsightsIn
      */
     @Generated
     @JsonProperty(value = "orderType")
-    private FhirR4CodeableConcept orderType;
+    private final FhirR4CodeableConcept orderType;
 
     /*
      * List of missing body parts required by a complete order : SNOMED CT codes.
@@ -82,5 +87,24 @@ public final class CompleteOrderDiscrepancyInference extends RadiologyInsightsIn
     @Generated
     public List<FhirR4CodeableConcept> getMissingBodyPartMeasurements() {
         return this.missingBodyPartMeasurements;
+    }
+
+    /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.COMPLETE_ORDER_DISCREPANCY;
+
+    /**
+     * Get the kind property: Inference type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
     }
 }

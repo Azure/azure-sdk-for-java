@@ -6,42 +6,30 @@ package com.azure.resourcemanager.iotfirmwaredefense.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.BinaryHardeningFeatures;
-import com.azure.resourcemanager.iotfirmwaredefense.models.CanaryFlag;
-import com.azure.resourcemanager.iotfirmwaredefense.models.NxFlag;
-import com.azure.resourcemanager.iotfirmwaredefense.models.PieFlag;
-import com.azure.resourcemanager.iotfirmwaredefense.models.RelroFlag;
-import com.azure.resourcemanager.iotfirmwaredefense.models.StrippedFlag;
 import org.junit.jupiter.api.Assertions;
 
 public final class BinaryHardeningFeaturesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BinaryHardeningFeatures model =
-            BinaryData
-                .fromString(
-                    "{\"nx\":\"True\",\"pie\":\"True\",\"relro\":\"True\",\"canary\":\"True\",\"stripped\":\"True\"}")
+        BinaryHardeningFeatures model
+            = BinaryData.fromString("{\"nx\":false,\"pie\":true,\"relro\":false,\"canary\":true,\"stripped\":false}")
                 .toObject(BinaryHardeningFeatures.class);
-        Assertions.assertEquals(NxFlag.TRUE, model.nx());
-        Assertions.assertEquals(PieFlag.TRUE, model.pie());
-        Assertions.assertEquals(RelroFlag.TRUE, model.relro());
-        Assertions.assertEquals(CanaryFlag.TRUE, model.canary());
-        Assertions.assertEquals(StrippedFlag.TRUE, model.stripped());
+        Assertions.assertEquals(false, model.nx());
+        Assertions.assertEquals(true, model.pie());
+        Assertions.assertEquals(false, model.relro());
+        Assertions.assertEquals(true, model.canary());
+        Assertions.assertEquals(false, model.stripped());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BinaryHardeningFeatures model =
-            new BinaryHardeningFeatures()
-                .withNx(NxFlag.TRUE)
-                .withPie(PieFlag.TRUE)
-                .withRelro(RelroFlag.TRUE)
-                .withCanary(CanaryFlag.TRUE)
-                .withStripped(StrippedFlag.TRUE);
+        BinaryHardeningFeatures model = new BinaryHardeningFeatures().withNx(false).withPie(true).withRelro(false)
+            .withCanary(true).withStripped(false);
         model = BinaryData.fromObject(model).toObject(BinaryHardeningFeatures.class);
-        Assertions.assertEquals(NxFlag.TRUE, model.nx());
-        Assertions.assertEquals(PieFlag.TRUE, model.pie());
-        Assertions.assertEquals(RelroFlag.TRUE, model.relro());
-        Assertions.assertEquals(CanaryFlag.TRUE, model.canary());
-        Assertions.assertEquals(StrippedFlag.TRUE, model.stripped());
+        Assertions.assertEquals(false, model.nx());
+        Assertions.assertEquals(true, model.pie());
+        Assertions.assertEquals(false, model.relro());
+        Assertions.assertEquals(true, model.canary());
+        Assertions.assertEquals(false, model.stripped());
     }
 }

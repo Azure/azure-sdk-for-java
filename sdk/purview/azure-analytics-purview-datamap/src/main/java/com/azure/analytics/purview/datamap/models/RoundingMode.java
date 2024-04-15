@@ -6,7 +6,6 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -78,7 +77,6 @@ public final class RoundingMode extends ExpandableStringEnum<RoundingMode> {
      * @return the corresponding RoundingMode.
      */
     @Generated
-    @JsonCreator
     public static RoundingMode fromString(String name) {
         return fromString(name, RoundingMode.class);
     }

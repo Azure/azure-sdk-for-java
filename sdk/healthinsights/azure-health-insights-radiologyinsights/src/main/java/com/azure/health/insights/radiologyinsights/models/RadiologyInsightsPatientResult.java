@@ -20,14 +20,14 @@ public final class RadiologyInsightsPatientResult {
      */
     @Generated
     @JsonProperty(value = "patientId")
-    private String patientId;
+    private final String patientId;
 
     /*
      * The model's inferences for the given patient.
      */
     @Generated
     @JsonProperty(value = "inferences")
-    private List<RadiologyInsightsInference> inferences;
+    private final List<RadiologyInsightsInference> inferences;
 
     /**
      * Creates an instance of RadiologyInsightsPatientResult class.

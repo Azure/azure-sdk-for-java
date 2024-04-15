@@ -14,21 +14,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ChaosTargetSelectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChaosTargetSelector model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ChaosTargetSelector\",\"id\":\"hniskxfbkpyc\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"auwhvylwzbtdhx\":\"datandnhj\",\"pow\":\"datajznb\"}}")
-                .toObject(ChaosTargetSelector.class);
+        ChaosTargetSelector model = BinaryData.fromString(
+            "{\"type\":\"ChaosTargetSelector\",\"id\":\"hniskxfbkpyc\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"auwhvylwzbtdhx\":\"datandnhj\",\"pow\":\"datajznb\"}}")
+            .toObject(ChaosTargetSelector.class);
         Assertions.assertEquals("hniskxfbkpyc", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChaosTargetSelector model =
-            new ChaosTargetSelector()
-                .withId("hniskxfbkpyc")
-                .withFilter(new ChaosTargetFilter())
-                .withAdditionalProperties(mapOf("type", "ChaosTargetSelector"));
+        ChaosTargetSelector model = new ChaosTargetSelector().withId("hniskxfbkpyc").withFilter(new ChaosTargetFilter())
+            .withAdditionalProperties(mapOf("type", "ChaosTargetSelector"));
         model = BinaryData.fromObject(model).toObject(ChaosTargetSelector.class);
         Assertions.assertEquals("hniskxfbkpyc", model.id());
     }

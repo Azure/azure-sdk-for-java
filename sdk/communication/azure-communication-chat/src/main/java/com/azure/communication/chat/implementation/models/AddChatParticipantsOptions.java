@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Participants to be added to the thread. */
+/**
+ * Participants to be added to the thread.
+ */
 @Fluent
 public final class AddChatParticipantsOptions {
     /*
@@ -18,8 +20,14 @@ public final class AddChatParticipantsOptions {
     private List<ChatParticipant> participants;
 
     /**
+     * Creates an instance of AddChatParticipantsOptions class.
+     */
+    public AddChatParticipantsOptions() {
+    }
+
+    /**
      * Get the participants property: Participants to add to a chat thread.
-     *
+     * 
      * @return the participants value.
      */
     public List<ChatParticipant> getParticipants() {
@@ -28,7 +36,7 @@ public final class AddChatParticipantsOptions {
 
     /**
      * Set the participants property: Participants to add to a chat thread.
-     *
+     * 
      * @param participants the participants value to set.
      * @return the AddChatParticipantsOptions object itself.
      */

@@ -11,17 +11,17 @@ public final class AzureDataExplorerSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDataExplorerSink model = BinaryData.fromString(
-            "{\"type\":\"AzureDataExplorerSink\",\"ingestionMappingName\":\"dataqekqtiuveaz\",\"ingestionMappingAsJson\":\"dataiwbiwygwpwq\",\"flushImmediately\":\"dataiqgslspihu\",\"writeBatchSize\":\"datavviotvoolkm\",\"writeBatchTimeout\":\"datazefbbr\",\"sinkRetryCount\":\"dataa\",\"sinkRetryWait\":\"dataxvufrfwa\",\"maxConcurrentConnections\":\"datas\",\"disableMetricsCollection\":\"datas\",\"\":{\"eyeblkgupgnstq\":\"datavpys\"}}")
+            "{\"type\":\"AzureDataExplorerSink\",\"ingestionMappingName\":\"datalyjdbsx\",\"ingestionMappingAsJson\":\"dataleqsk\",\"flushImmediately\":\"dataol\",\"writeBatchSize\":\"databellpk\",\"writeBatchTimeout\":\"databrsmy\",\"sinkRetryCount\":\"datandfrfhgowhnvc\",\"sinkRetryWait\":\"datamuvgysto\",\"maxConcurrentConnections\":\"datarktodeertyijlvcm\",\"disableMetricsCollection\":\"datanxxw\",\"\":{\"bkhvlsahjdeb\":\"datadbdkw\",\"cpxlkih\":\"datayqnluszilk\",\"cmcehtrhwr\":\"dataxtbvhms\",\"chyyfgkrp\":\"dataihw\"}}")
             .toObject(AzureDataExplorerSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDataExplorerSink model
-            = new AzureDataExplorerSink().withWriteBatchSize("datavviotvoolkm").withWriteBatchTimeout("datazefbbr")
-                .withSinkRetryCount("dataa").withSinkRetryWait("dataxvufrfwa").withMaxConcurrentConnections("datas")
-                .withDisableMetricsCollection("datas").withIngestionMappingName("dataqekqtiuveaz")
-                .withIngestionMappingAsJson("dataiwbiwygwpwq").withFlushImmediately("dataiqgslspihu");
+        AzureDataExplorerSink model = new AzureDataExplorerSink().withWriteBatchSize("databellpk")
+            .withWriteBatchTimeout("databrsmy").withSinkRetryCount("datandfrfhgowhnvc")
+            .withSinkRetryWait("datamuvgysto").withMaxConcurrentConnections("datarktodeertyijlvcm")
+            .withDisableMetricsCollection("datanxxw").withIngestionMappingName("datalyjdbsx")
+            .withIngestionMappingAsJson("dataleqsk").withFlushImmediately("dataol");
         model = BinaryData.fromObject(model).toObject(AzureDataExplorerSink.class);
     }
 }

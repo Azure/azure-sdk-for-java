@@ -29,36 +29,26 @@ public final class FileWorkspacesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"createdOn\":\"2021-09-12T12:46:22Z\",\"expirationTime\":\"2021-02-25T04:42:49Z\"},\"id\":\"suxmpraf\",\"name\":\"g\",\"type\":\"khocxvdfffwaf\"}";
+        String responseStr
+            = "{\"properties\":{\"createdOn\":\"2021-08-09T14:47:12Z\",\"expirationTime\":\"2021-11-24T12:44:14Z\"},\"id\":\"jeokbzefezrxccz\",\"name\":\"rtle\",\"type\":\"pqxbkwvzgnzvdf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SupportManager manager =
-            SupportManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SupportManager manager = SupportManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        FileWorkspaceDetails response =
-            manager.fileWorkspaces().getWithResponse("vgtrdcnifmzzs", com.azure.core.util.Context.NONE).getValue();
+        FileWorkspaceDetails response
+            = manager.fileWorkspaces().getWithResponse("owxeqocljmy", com.azure.core.util.Context.NONE).getValue();
+
     }
 }

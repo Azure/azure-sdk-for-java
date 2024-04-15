@@ -41,29 +41,16 @@ public final class RadiologyInsightsClient {
      * Create Radiology Insights job
      *
      * Creates a Radiology Insights job with the given request body.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>expand</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>Expand the indicated resources into the response. Call {@link RequestOptions#addQueryParam} to add string to
-     * array.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>expand</td><td>List&lt;String&gt;</td><td>No</td><td>Expand the indicated resources into the response.
+     * Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     jobData (Optional): {
@@ -267,6 +254,7 @@ public final class RadiologyInsightsClient {
      *                 patientId: String (Required)
      *                 inferences (Required): [
      *                      (Required){
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
      *                         extension (Optional): [
      *                             (recursive schema, see above)
      *                         ]
@@ -295,9 +283,9 @@ public final class RadiologyInsightsClient {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     jobData (Optional): {
@@ -501,6 +489,7 @@ public final class RadiologyInsightsClient {
      *                 patientId: String (Required)
      *                 inferences (Required): [
      *                      (Required){
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
      *                         extension (Optional): [
      *                             (recursive schema, see above)
      *                         ]

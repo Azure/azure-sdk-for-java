@@ -31,39 +31,28 @@ public final class ChatTranscriptsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"messages\":[{\"communicationDirection\":\"outbound\",\"sender\":\"iykzkdncjdx\",\"body\":\"nbzoggcu\",\"createdDate\":\"2021-03-21T04:12:38Z\"},{\"communicationDirection\":\"inbound\",\"sender\":\"pgogtqxepny\",\"body\":\"b\",\"createdDate\":\"2021-09-26T03:21:12Z\"},{\"communicationDirection\":\"inbound\",\"sender\":\"tlvofq\",\"body\":\"hvfcibyfmow\",\"createdDate\":\"2021-10-26T15:15:39Z\"},{\"communicationDirection\":\"inbound\",\"sender\":\"dwxf\",\"body\":\"wiivwzjbhyzsx\",\"createdDate\":\"2021-06-01T08:07:59Z\"}],\"startTime\":\"2021-10-20T08:24:02Z\"},\"id\":\"trnegvmnvuqeqvld\",\"name\":\"pa\",\"type\":\"tjb\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"messages\":[{\"communicationDirection\":\"inbound\",\"sender\":\"qqoli\",\"body\":\"r\",\"createdDate\":\"2021-05-10T13:24:14Z\"},{\"communicationDirection\":\"outbound\",\"sender\":\"brjtloqxfuoj\",\"body\":\"ngiflrzpasccbi\",\"createdDate\":\"2021-02-19T12:22:52Z\"}],\"startTime\":\"2021-07-29T06:48:21Z\"},\"id\":\"yjdfqwmky\",\"name\":\"qufdvruzslzojh\",\"type\":\"ctfnmdxotng\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SupportManager manager =
-            SupportManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SupportManager manager = SupportManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ChatTranscriptDetails> response =
-            manager.chatTranscripts().list("xkzb", com.azure.core.util.Context.NONE);
+        PagedIterable<ChatTranscriptDetails> response
+            = manager.chatTranscripts().list("jjrcgegydc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iykzkdncjdx", response.iterator().next().messages().get(0).sender());
-        Assertions.assertEquals("nbzoggcu", response.iterator().next().messages().get(0).body());
+        Assertions.assertEquals("qqoli", response.iterator().next().messages().get(0).sender());
+        Assertions.assertEquals("r", response.iterator().next().messages().get(0).body());
     }
 }

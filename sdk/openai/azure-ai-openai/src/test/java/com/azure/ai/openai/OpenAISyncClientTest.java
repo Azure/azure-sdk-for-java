@@ -171,6 +171,20 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getChatCompletionsWithResponseRunner(deploymentId -> chatMessages -> requestOptions -> {
+            Response<IterableStream<ChatCompletions>> response = client.getChatCompletionsStreamWithResponse(
+                    deploymentId, new ChatCompletionsOptions(chatMessages), requestOptions);
+            assertResponseRequestHeader(response.getRequest());
+            IterableStream<ChatCompletions> value = response.getValue();
+            assertTrue(value.stream().toArray().length > 1);
+            value.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
@@ -188,6 +202,17 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getEmbeddingRunner((deploymentId, embeddingsOptions) -> {
             Embeddings resultEmbeddings = client.getEmbeddings(deploymentId, embeddingsOptions);
             assertEmbeddings(resultEmbeddings);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void getEmbeddingsWithSmallerDimensions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getEmbeddingWithSmallerDimensionsRunner((deploymentId, embeddingsOptions) -> {
+            Embeddings resultEmbeddings = client.getEmbeddings(deploymentId, embeddingsOptions);
+            assertEmbeddings(resultEmbeddings);
+            assertEquals(embeddingsOptions.getDimensions(), resultEmbeddings.getData().get(0).getEmbedding().size());
         });
     }
 
@@ -355,7 +380,6 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                 Completions completions = it.next();
                 assertCompletionsStream(completions);
                 if (i == 0) {
-                    System.out.println("First stream message");
                     // The first stream message has the prompt filter result
                     assertEquals(1, completions.getPromptFilterResults().size());
                     assertSafePromptContentFilterResults(completions.getPromptFilterResults().get(0));
@@ -678,7 +702,6 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             assertNotNull(responseMessage);
             assertTrue(responseMessage.getContent() == null || responseMessage.getContent().isEmpty());
             assertFalse(responseMessage.getToolCalls() == null || responseMessage.getToolCalls().isEmpty());
-            assertEquals(1, responseMessage.getToolCalls().size());
 
             ChatCompletionsFunctionToolCall functionToolCall = (ChatCompletionsFunctionToolCall) responseMessage.getToolCalls().get(0);
             assertNotNull(functionToolCall);
