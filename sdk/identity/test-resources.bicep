@@ -1,3 +1,4 @@
+// cspell:ignore oidc, usermgdid, azfunc, kubelet
 @description('The client OID to grant access to test resources.')
 param testApplicationOid string
 
