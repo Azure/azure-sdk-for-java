@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.RequestOptions;
 
 /**

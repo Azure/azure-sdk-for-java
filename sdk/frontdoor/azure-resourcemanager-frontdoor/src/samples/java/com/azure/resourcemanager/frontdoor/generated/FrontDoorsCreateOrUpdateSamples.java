@@ -26,135 +26,92 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for FrontDoors CreateOrUpdate. */
+/**
+ * Samples for FrontDoors CreateOrUpdate.
+ */
 public final class FrontDoorsCreateOrUpdateSamples {
     /*
      * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorCreate.json
      */
     /**
      * Sample code: Create or update specific Front Door.
-     *
+     * 
      * @param manager Entry point to FrontDoorManager.
      */
     public static void createOrUpdateSpecificFrontDoor(com.azure.resourcemanager.frontdoor.FrontDoorManager manager) {
-        manager
-            .frontDoors()
+        manager.frontDoors()
             .define("frontDoor1")
             .withRegion("westus")
             .withExistingResourceGroup("rg1")
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
-            .withRoutingRules(
-                Arrays
-                    .asList(
-                        new RoutingRule()
-                            .withName("routingRule1")
-                            .withFrontendEndpoints(
-                                Arrays
-                                    .asList(
-                                        new SubResource()
-                                            .withId(
-                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoors/frontDoor1/frontendEndpoints/frontendEndpoint1"),
-                                        new SubResource()
-                                            .withId(
-                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoors/frontDoor1/frontendEndpoints/default")))
-                            .withAcceptedProtocols(Arrays.asList(FrontDoorProtocol.HTTP))
-                            .withPatternsToMatch(Arrays.asList("/*"))
-                            .withEnabledState(RoutingRuleEnabledState.ENABLED)
-                            .withRouteConfiguration(
-                                new ForwardingConfiguration()
-                                    .withBackendPool(
-                                        new SubResource()
-                                            .withId(
-                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoors/frontDoor1/backendPools/backendPool1")))
-                            .withRulesEngine(
-                                new SubResource()
-                                    .withId(
-                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoors/frontDoor1/rulesEngines/rulesEngine1"))
-                            .withWebApplicationFirewallPolicyLink(
-                                new RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink()
-                                    .withId(
-                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies/policy1"))))
-            .withLoadBalancingSettings(
-                Arrays
-                    .asList(
-                        new LoadBalancingSettingsModel()
-                            .withName("loadBalancingSettings1")
-                            .withSampleSize(4)
-                            .withSuccessfulSamplesRequired(2)))
-            .withHealthProbeSettings(
-                Arrays
-                    .asList(
-                        new HealthProbeSettingsModel()
-                            .withName("healthProbeSettings1")
-                            .withPath("/")
-                            .withProtocol(FrontDoorProtocol.HTTP)
-                            .withIntervalInSeconds(120)
-                            .withHealthProbeMethod(FrontDoorHealthProbeMethod.HEAD)
-                            .withEnabledState(HealthProbeEnabled.ENABLED)))
-            .withBackendPools(
-                Arrays
-                    .asList(
-                        new BackendPool()
-                            .withName("backendPool1")
-                            .withBackends(
-                                Arrays
-                                    .asList(
-                                        new Backend()
-                                            .withAddress("w3.contoso.com")
-                                            .withHttpPort(80)
-                                            .withHttpsPort(443)
-                                            .withPriority(2)
-                                            .withWeight(1),
-                                        new Backend()
-                                            .withAddress("contoso.com.website-us-west-2.othercloud.net")
-                                            .withPrivateLinkResourceId(
-                                                "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Network/privateLinkServices/pls1")
-                                            .withPrivateLinkLocation("eastus")
-                                            .withPrivateLinkApprovalMessage(
-                                                "Please approve the connection request for this Private Link")
-                                            .withHttpPort(80)
-                                            .withHttpsPort(443)
-                                            .withPriority(1)
-                                            .withWeight(2),
-                                        new Backend()
-                                            .withAddress("10.0.1.5")
-                                            .withPrivateLinkAlias(
-                                                "APPSERVER.d84e61f0-0870-4d24-9746-7438fa0019d1.westus2.azure.privatelinkservice")
-                                            .withPrivateLinkApprovalMessage(
-                                                "Please approve this request to connect to the Private Link")
-                                            .withHttpPort(80)
-                                            .withHttpsPort(443)
-                                            .withPriority(1)
-                                            .withWeight(1)))
-                            .withLoadBalancingSettings(
-                                new SubResource()
-                                    .withId(
-                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoors/frontDoor1/loadBalancingSettings/loadBalancingSettings1"))
-                            .withHealthProbeSettings(
-                                new SubResource()
-                                    .withId(
-                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoors/frontDoor1/healthProbeSettings/healthProbeSettings1"))))
-            .withFrontendEndpoints(
-                Arrays
-                    .asList(
-                        new FrontendEndpointInner()
-                            .withName("frontendEndpoint1")
-                            .withHostname("www.contoso.com")
-                            .withSessionAffinityEnabledState(SessionAffinityEnabledState.ENABLED)
-                            .withSessionAffinityTtlSeconds(60)
-                            .withWebApplicationFirewallPolicyLink(
-                                new FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink()
-                                    .withId(
-                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies/policy1")),
-                        new FrontendEndpointInner().withName("default").withHostname("frontDoor1.azurefd.net")))
-            .withBackendPoolsSettings(
-                new BackendPoolsSettings()
-                    .withEnforceCertificateNameCheck(EnforceCertificateNameCheckEnabledState.ENABLED)
-                    .withSendRecvTimeoutSeconds(60))
+            .withRoutingRules(Arrays.asList(new RoutingRule().withName("routingRule1")
+                .withFrontendEndpoints(Arrays.asList(new SubResource().withId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoors/frontDoor1/frontendEndpoints/frontendEndpoint1"),
+                    new SubResource().withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoors/frontDoor1/frontendEndpoints/default")))
+                .withAcceptedProtocols(Arrays.asList(FrontDoorProtocol.HTTP))
+                .withPatternsToMatch(Arrays.asList("/*"))
+                .withEnabledState(RoutingRuleEnabledState.ENABLED)
+                .withRouteConfiguration(new ForwardingConfiguration().withBackendPool(new SubResource().withId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoors/frontDoor1/backendPools/backendPool1")))
+                .withRulesEngine(new SubResource().withId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoors/frontDoor1/rulesEngines/rulesEngine1"))
+                .withWebApplicationFirewallPolicyLink(
+                    new RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink().withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies/policy1"))))
+            .withLoadBalancingSettings(Arrays.asList(new LoadBalancingSettingsModel().withName("loadBalancingSettings1")
+                .withSampleSize(4)
+                .withSuccessfulSamplesRequired(2)))
+            .withHealthProbeSettings(Arrays.asList(new HealthProbeSettingsModel().withName("healthProbeSettings1")
+                .withPath("/")
+                .withProtocol(FrontDoorProtocol.HTTP)
+                .withIntervalInSeconds(120)
+                .withHealthProbeMethod(FrontDoorHealthProbeMethod.HEAD)
+                .withEnabledState(HealthProbeEnabled.ENABLED)))
+            .withBackendPools(Arrays.asList(new BackendPool().withName("backendPool1")
+                .withBackends(Arrays.asList(
+                    new Backend().withAddress("w3.contoso.com")
+                        .withHttpPort(80)
+                        .withHttpsPort(443)
+                        .withPriority(2)
+                        .withWeight(1),
+                    new Backend().withAddress("contoso.com.website-us-west-2.othercloud.net")
+                        .withPrivateLinkResourceId(
+                            "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Network/privateLinkServices/pls1")
+                        .withPrivateLinkLocation("eastus")
+                        .withPrivateLinkApprovalMessage("Please approve the connection request for this Private Link")
+                        .withHttpPort(80)
+                        .withHttpsPort(443)
+                        .withPriority(1)
+                        .withWeight(2),
+                    new Backend().withAddress("10.0.1.5")
+                        .withPrivateLinkAlias(
+                            "APPSERVER.d84e61f0-0870-4d24-9746-7438fa0019d1.westus2.azure.privatelinkservice")
+                        .withPrivateLinkApprovalMessage("Please approve this request to connect to the Private Link")
+                        .withHttpPort(80)
+                        .withHttpsPort(443)
+                        .withPriority(1)
+                        .withWeight(1)))
+                .withLoadBalancingSettings(new SubResource().withId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoors/frontDoor1/loadBalancingSettings/loadBalancingSettings1"))
+                .withHealthProbeSettings(new SubResource().withId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoors/frontDoor1/healthProbeSettings/healthProbeSettings1"))))
+            .withFrontendEndpoints(Arrays.asList(new FrontendEndpointInner().withName("frontendEndpoint1")
+                .withHostname("www.contoso.com")
+                .withSessionAffinityEnabledState(SessionAffinityEnabledState.ENABLED)
+                .withSessionAffinityTtlSeconds(60)
+                .withWebApplicationFirewallPolicyLink(
+                    new FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink().withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies/policy1")),
+                new FrontendEndpointInner().withName("default").withHostname("frontDoor1.azurefd.net")))
+            .withBackendPoolsSettings(new BackendPoolsSettings()
+                .withEnforceCertificateNameCheck(EnforceCertificateNameCheckEnabledState.ENABLED)
+                .withSendRecvTimeoutSeconds(60))
             .withEnabledState(FrontDoorEnabledState.ENABLED)
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

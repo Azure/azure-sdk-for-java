@@ -273,7 +273,7 @@ com.google.code.findbugs:jsr305;3.0.2
 com.microsoft.azure:azure-webapp-maven-plugin;1.14.0
 com.nimbusds:nimbus-jose-jwt;9.37.3
 com.puppycrawl.tools:checkstyle;9.3
-com.toasttab.android:gummy-bears-api-26;0.5.1
+com.toasttab.android:gummy-bears-api-26;0.8.0
 commons-io:commons-io;2.11.0
 commons-validator:commons-validator;1.6
 io.dropwizard.metrics:metrics-core;4.2.22
@@ -407,6 +407,8 @@ cosmos_org.apache.kafka:connect-runtime;3.6.0
 cosmos_org.testcontainers:testcontainers;1.19.5
 cosmos_org.testcontainers:kafka;1.19.5
 cosmos_org.sourcelab:kafka-connect-client;4.0.4
+cosmos_io.confluent:kafka-avro-serializer;7.6.0
+cosmos_org.apache.avro:avro;1.11.3
 # Maven Tools for Cosmos Kafka connector only
 cosmos_io.confluent:kafka-connect-maven-plugin;0.12.0
 

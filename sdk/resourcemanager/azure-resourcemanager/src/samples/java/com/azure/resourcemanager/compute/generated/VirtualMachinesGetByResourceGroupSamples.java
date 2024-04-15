@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 public final class VirtualMachinesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Get_WithVMSizeProperties.json
      */
     /**
@@ -27,7 +27,7 @@ public final class VirtualMachinesGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Get_AutoPlacedOnDedicatedHostGroup.json
      */
     /**
@@ -43,7 +43,7 @@ public final class VirtualMachinesGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Get_WithDiskControllerType.json
      */
     /**
@@ -59,7 +59,7 @@ public final class VirtualMachinesGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Get.json
      */
     /**

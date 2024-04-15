@@ -14,23 +14,25 @@ public final class IotFhirDestinationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotFhirDestinationInner model = BinaryData.fromString(
-            "{\"properties\":{\"resourceIdentityResolutionType\":\"Create\",\"fhirServiceResourceId\":\"xb\",\"fhirMapping\":{\"content\":\"databsrfbj\"},\"provisioningState\":\"Accepted\"},\"location\":\"sotftpvj\",\"etag\":\"exilzznfqqnvwpmq\",\"id\":\"aruoujmkcjhwqyt\",\"name\":\"r\",\"type\":\"bnw\"}")
+            "{\"properties\":{\"resourceIdentityResolutionType\":\"Lookup\",\"fhirServiceResourceId\":\"us\",\"fhirMapping\":{\"content\":\"datatouwaboekqv\"},\"provisioningState\":\"Verifying\"},\"location\":\"mvb\",\"etag\":\"yjsflhhcaalnji\",\"id\":\"isxyawjoyaqcslyj\",\"name\":\"kiidzyex\",\"type\":\"nelixhnrztfo\"}")
             .toObject(IotFhirDestinationInner.class);
-        Assertions.assertEquals("exilzznfqqnvwpmq", model.etag());
-        Assertions.assertEquals("sotftpvj", model.location());
-        Assertions.assertEquals(IotIdentityResolutionType.CREATE, model.resourceIdentityResolutionType());
-        Assertions.assertEquals("xb", model.fhirServiceResourceId());
+        Assertions.assertEquals("yjsflhhcaalnji", model.etag());
+        Assertions.assertEquals("mvb", model.location());
+        Assertions.assertEquals(IotIdentityResolutionType.LOOKUP, model.resourceIdentityResolutionType());
+        Assertions.assertEquals("us", model.fhirServiceResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IotFhirDestinationInner model = new IotFhirDestinationInner().withEtag("exilzznfqqnvwpmq")
-            .withLocation("sotftpvj").withResourceIdentityResolutionType(IotIdentityResolutionType.CREATE)
-            .withFhirServiceResourceId("xb").withFhirMapping(new IotMappingProperties().withContent("databsrfbj"));
+        IotFhirDestinationInner model = new IotFhirDestinationInner().withEtag("yjsflhhcaalnji")
+            .withLocation("mvb")
+            .withResourceIdentityResolutionType(IotIdentityResolutionType.LOOKUP)
+            .withFhirServiceResourceId("us")
+            .withFhirMapping(new IotMappingProperties().withContent("datatouwaboekqv"));
         model = BinaryData.fromObject(model).toObject(IotFhirDestinationInner.class);
-        Assertions.assertEquals("exilzznfqqnvwpmq", model.etag());
-        Assertions.assertEquals("sotftpvj", model.location());
-        Assertions.assertEquals(IotIdentityResolutionType.CREATE, model.resourceIdentityResolutionType());
-        Assertions.assertEquals("xb", model.fhirServiceResourceId());
+        Assertions.assertEquals("yjsflhhcaalnji", model.etag());
+        Assertions.assertEquals("mvb", model.location());
+        Assertions.assertEquals(IotIdentityResolutionType.LOOKUP, model.resourceIdentityResolutionType());
+        Assertions.assertEquals("us", model.fhirServiceResourceId());
     }
 }

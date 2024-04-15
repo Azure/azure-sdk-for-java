@@ -1,6 +1,16 @@
 # Release History
 
-## 1.0.0-beta.8 (Unreleased)
+## 1.0.0-beta.9 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.8 (2024-04-09)
 
 ### Features Added
 
@@ -18,7 +28,15 @@
 
 ### Bugs Fixed
 
+- A bugs fixed in Azure Core SDK that solves where text/event-stream content type wasn't being handled correctly.
+  Replaced content type exact match equal by 'startwith'. ([#39204](https://github.com/Azure/azure-sdk-for-java/pull/39204))
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
 
 
 ## 1.0.0-beta.7 (2024-03-04)

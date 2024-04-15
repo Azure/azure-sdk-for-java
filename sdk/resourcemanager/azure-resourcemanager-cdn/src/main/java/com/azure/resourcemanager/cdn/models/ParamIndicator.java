@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates the purpose of the parameter. */
+/**
+ * Indicates the purpose of the parameter.
+ */
 public final class ParamIndicator extends ExpandableStringEnum<ParamIndicator> {
-    /** Static value Expires for ParamIndicator. */
+    /**
+     * Static value Expires for ParamIndicator.
+     */
     public static final ParamIndicator EXPIRES = fromString("Expires");
 
-    /** Static value KeyId for ParamIndicator. */
+    /**
+     * Static value KeyId for ParamIndicator.
+     */
     public static final ParamIndicator KEY_ID = fromString("KeyId");
 
-    /** Static value Signature for ParamIndicator. */
+    /**
+     * Static value Signature for ParamIndicator.
+     */
     public static final ParamIndicator SIGNATURE = fromString("Signature");
 
     /**
      * Creates a new instance of ParamIndicator value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class ParamIndicator extends ExpandableStringEnum<ParamIndicator> {
 
     /**
      * Creates or finds a ParamIndicator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ParamIndicator.
      */
@@ -41,7 +49,7 @@ public final class ParamIndicator extends ExpandableStringEnum<ParamIndicator> {
 
     /**
      * Gets known ParamIndicator values.
-     *
+     * 
      * @return known ParamIndicator values.
      */
     public static Collection<ParamIndicator> values() {

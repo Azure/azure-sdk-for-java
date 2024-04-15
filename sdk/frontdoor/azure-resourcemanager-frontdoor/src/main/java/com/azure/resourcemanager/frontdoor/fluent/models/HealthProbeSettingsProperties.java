@@ -12,61 +12,75 @@ import com.azure.resourcemanager.frontdoor.models.HealthProbeEnabled;
 import com.azure.resourcemanager.frontdoor.models.HealthProbeSettingsUpdateParameters;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JSON object that contains the properties required to create a health probe settings. */
+/**
+ * The JSON object that contains the properties required to create a health probe settings.
+ */
 @Fluent
 public final class HealthProbeSettingsProperties extends HealthProbeSettingsUpdateParameters {
     /*
      * Resource status of the Front Door or Front Door SubResource.
-     *
+     * 
      * Resource status.
      */
     @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private FrontDoorResourceState resourceState;
 
-    /** Creates an instance of HealthProbeSettingsProperties class. */
+    /**
+     * Creates an instance of HealthProbeSettingsProperties class.
+     */
     public HealthProbeSettingsProperties() {
     }
 
     /**
      * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
-     *
-     * <p>Resource status.
-     *
+     * 
+     * Resource status.
+     * 
      * @return the resourceState value.
      */
     public FrontDoorResourceState resourceState() {
         return this.resourceState;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HealthProbeSettingsProperties withPath(String path) {
         super.withPath(path);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HealthProbeSettingsProperties withProtocol(FrontDoorProtocol protocol) {
         super.withProtocol(protocol);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HealthProbeSettingsProperties withIntervalInSeconds(Integer intervalInSeconds) {
         super.withIntervalInSeconds(intervalInSeconds);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HealthProbeSettingsProperties withHealthProbeMethod(FrontDoorHealthProbeMethod healthProbeMethod) {
         super.withHealthProbeMethod(healthProbeMethod);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HealthProbeSettingsProperties withEnabledState(HealthProbeEnabled enabledState) {
         super.withEnabledState(enabledState);
@@ -75,7 +89,7 @@ public final class HealthProbeSettingsProperties extends HealthProbeSettingsUpda
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

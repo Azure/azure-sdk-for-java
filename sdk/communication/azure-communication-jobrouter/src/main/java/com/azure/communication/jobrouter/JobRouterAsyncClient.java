@@ -42,11 +42,10 @@ import java.time.OffsetDateTime;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterJobConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWorkerConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
 import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterQueueStatistics;
@@ -390,118 +389,15 @@ public final class JobRouterAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
-     * <p>
-     * <strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     jobId: String (Required)
-     *     channelReference: String (Optional)
-     *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
-     *     enqueuedAt: OffsetDateTime (Optional)
-     *     channelId: String (Optional)
-     *     classificationPolicyId: String (Optional)
-     *     queueId: String (Optional)
-     *     priority: Integer (Optional)
-     *     dispositionCode: String (Optional)
-     *     requestedWorkerSelectors (Optional): [
-     *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
-     *             value: Object (Optional)
-     *             expiresAfterSeconds: Double (Optional)
-     *             expedite: Boolean (Optional)
-     *             status: String(active/expired) (Optional)
-     *             expiresAt: OffsetDateTime (Optional)
-     *         }
-     *     ]
-     *     attachedWorkerSelectors (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     labels (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     assignments (Optional): {
-     *         String (Optional): {
-     *             assignmentId: String (Required)
-     *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
-     *             completedAt: OffsetDateTime (Optional)
-     *             closedAt: OffsetDateTime (Optional)
-     *         }
-     *     }
-     *     tags (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     notes (Optional): {
-     *         String: String (Optional)
-     *     }
-     *     scheduledAt: OffsetDateTime (Optional)
-     *     matchingMode (Optional): {
-     *     }
-     * }
-     * }</pre>
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     jobId: String (Required)
-     *     channelReference: String (Optional)
-     *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
-     *     enqueuedAt: OffsetDateTime (Optional)
-     *     channelId: String (Optional)
-     *     classificationPolicyId: String (Optional)
-     *     queueId: String (Optional)
-     *     priority: Integer (Optional)
-     *     dispositionCode: String (Optional)
-     *     requestedWorkerSelectors (Optional): [
-     *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
-     *             value: Object (Optional)
-     *             expiresAfterSeconds: Double (Optional)
-     *             expedite: Boolean (Optional)
-     *             status: String(active/expired) (Optional)
-     *             expiresAt: OffsetDateTime (Optional)
-     *         }
-     *     ]
-     *     attachedWorkerSelectors (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     labels (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     assignments (Optional): {
-     *         String (Optional): {
-     *             assignmentId: String (Required)
-     *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
-     *             completedAt: OffsetDateTime (Optional)
-     *             closedAt: OffsetDateTime (Optional)
-     *         }
-     *     }
-     *     tags (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     notes (Optional): {
-     *         String: String (Optional)
-     *     }
-     *     scheduledAt: OffsetDateTime (Optional)
-     *     matchingMode (Optional): {
-     *     }
-     * }
-     * }</pre>
-     *
      * @param jobId The jobId of the job.
-     * @param resource The resource instance.
+     * @param job The job to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return result object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> updateJob(String jobId, BinaryData resource, RequestOptions requestOptions) {
-        return updateJobWithResponse(jobId, resource, requestOptions).map(response -> response.getValue());
+    public Mono<RouterJob> updateJob(String jobId, RouterJob job, RequestOptions requestOptions) {
+        return updateJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions)
+            .map(response -> response.getValue().toObject(RouterJob.class));
     }
 
     /**
@@ -519,8 +415,7 @@ public final class JobRouterAsyncClient {
         RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
         return upsertJobWithResponse(createJobOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions)
             .map(response -> new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(),
-                RouterJobConstructorProxy.create(response.getValue().toObject(RouterJobInternal.class))));
+                response.getHeaders(), response.getValue().toObject(RouterJob.class)));
     }
 
     /**
@@ -535,6 +430,46 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterJob> createJob(CreateJobOptions createJobOptions) {
         return this.createJobWithResponse(createJobOptions).map(response -> response.getValue());
+    }
+
+    /**
+     * Create a job using a classification policy.
+     *
+     * @param createJobWithClassificationPolicyOptions Options to create a RouterJob using a classification policy.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a unit of work to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RouterJob>> createJobWithClassificationPolicyWithResponse(
+        CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions,
+        RequestOptions requestOptions) {
+        RouterJobInternal routerJob = JobAdapter
+            .convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
+        return upsertJobWithResponse(createJobWithClassificationPolicyOptions.getJobId(),
+            BinaryData.fromObject(routerJob), requestOptions)
+            .map(response -> new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue().toObject(RouterJob.class)));
+    }
+
+    /**
+     * Convenience method to create a job using a classification policy.
+     *
+     * @param createJobWithClassificationPolicyOptions Options to create a RouterJob using a classification policy.
+     * @return a unit of work to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RouterJob> createJobWithClassificationPolicy(
+        CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        return this
+            .createJobWithClassificationPolicyWithResponse(createJobWithClassificationPolicyOptions, requestOptions)
+            .map(response -> response.getValue());
     }
 
     /**
@@ -1227,6 +1162,7 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
+     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1273,6 +1209,7 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
+     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1321,106 +1258,15 @@ public final class JobRouterAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
-     * <p>
-     * <strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     state: String(active/draining/inactive) (Optional)
-     *     queueAssignments (Optional): {
-     *         String (Optional): {
-     *         }
-     *     }
-     *     totalCapacity: Integer (Optional)
-     *     labels (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     tags (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     channelConfigurations (Optional): {
-     *         String (Optional): {
-     *             capacityCostPerJob: int (Required)
-     *             maxNumberOfJobs: Integer (Optional)
-     *         }
-     *     }
-     *     offers (Optional): [
-     *          (Optional){
-     *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             offeredAt: OffsetDateTime (Optional)
-     *             expiresAt: OffsetDateTime (Optional)
-     *         }
-     *     ]
-     *     assignedJobs (Optional): [
-     *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
-     *         }
-     *     ]
-     *     loadRatio: Double (Optional)
-     *     availableForOffers: Boolean (Optional)
-     * }
-     * }</pre>
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     state: String(active/draining/inactive) (Optional)
-     *     queueAssignments (Optional): {
-     *         String (Optional): {
-     *         }
-     *     }
-     *     totalCapacity: Integer (Optional)
-     *     labels (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     tags (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     channelConfigurations (Optional): {
-     *         String (Optional): {
-     *             capacityCostPerJob: int (Required)
-     *             maxNumberOfJobs: Integer (Optional)
-     *         }
-     *     }
-     *     offers (Optional): [
-     *          (Optional){
-     *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             offeredAt: OffsetDateTime (Optional)
-     *             expiresAt: OffsetDateTime (Optional)
-     *         }
-     *     ]
-     *     assignedJobs (Optional): [
-     *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
-     *         }
-     *     ]
-     *     loadRatio: Double (Optional)
-     *     availableForOffers: Boolean (Optional)
-     * }
-     * }</pre>
-     *
      * @param workerId Id of the worker.
-     * @param resource The resource instance.
+     * @param worker The worker to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return result object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> updateWorker(String workerId, BinaryData resource, RequestOptions requestOptions) {
-        return this.updateWorkerWithResponse(workerId, resource, requestOptions).flatMap(FluxUtil::toMono);
+    public Mono<RouterWorker> updateWorker(String workerId, RouterWorker worker, RequestOptions requestOptions) {
+        return this.updateWorkerWithResponse(workerId, BinaryData.fromObject(worker), requestOptions)
+            .map(routerWorkerResponse -> routerWorkerResponse.getValue().toObject(RouterWorker.class));
     }
 
     /**
@@ -1439,8 +1285,7 @@ public final class JobRouterAsyncClient {
         return upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), BinaryData.fromObject(routerWorker),
             requestOptions)
             .map(response -> new SimpleResponse<RouterWorker>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(),
-                RouterWorkerConstructorProxy.create(response.getValue().toObject(RouterWorkerInternal.class))));
+                response.getHeaders(), response.getValue().toObject(RouterWorker.class)));
     }
 
     /**
@@ -1887,8 +1732,7 @@ public final class JobRouterAsyncClient {
         // Generated convenience method for getWorkerWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getWorkerWithResponse(workerId, requestOptions)
-            .map(response -> response.getValue().toObject(RouterWorkerInternal.class))
-            .map(internal -> RouterWorkerConstructorProxy.create(internal));
+            .map(response -> response.getValue().toObject(RouterWorker.class));
     }
 
     /**

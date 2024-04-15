@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
 
 /**
  * Istio egress gateway configuration.
@@ -19,13 +17,6 @@ public final class IstioEgressGateway {
      */
     @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
-
-    /*
-     * NodeSelector for scheduling the egress gateway.
-     */
-    @JsonProperty(value = "nodeSelector")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> nodeSelector;
 
     /**
      * Creates an instance of IstioEgressGateway class.
@@ -50,26 +41,6 @@ public final class IstioEgressGateway {
      */
     public IstioEgressGateway withEnabled(boolean enabled) {
         this.enabled = enabled;
-        return this;
-    }
-
-    /**
-     * Get the nodeSelector property: NodeSelector for scheduling the egress gateway.
-     * 
-     * @return the nodeSelector value.
-     */
-    public Map<String, String> nodeSelector() {
-        return this.nodeSelector;
-    }
-
-    /**
-     * Set the nodeSelector property: NodeSelector for scheduling the egress gateway.
-     * 
-     * @param nodeSelector the nodeSelector value to set.
-     * @return the IstioEgressGateway object itself.
-     */
-    public IstioEgressGateway withNodeSelector(Map<String, String> nodeSelector) {
-        this.nodeSelector = nodeSelector;
         return this;
     }
 
