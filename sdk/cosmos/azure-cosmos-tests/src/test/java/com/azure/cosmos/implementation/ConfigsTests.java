@@ -3,8 +3,12 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import org.testng.annotations.Test;
+
+import java.util.EnumSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,5 +36,34 @@ public class ConfigsTests {
     public void getDirectHttpsMaxConnectionLimit() {
         Configs config = new Configs();
         assertThat(config.getDirectHttpsMaxConnectionLimit()).isEqualTo(Runtime.getRuntime().availableProcessors() * 500);
+    }
+
+    @Test(groups = { "unit" })
+    public void getMetricsCategory() {
+        CosmosMicrometerMetricsConfig metricsConfig = Configs.getMetricsConfig();
+        assertThat(metricsConfig.getMetricCategories()).isEqualTo(MetricCategory.DEFAULT_CATEGORIES);
+        assertThat(metricsConfig.getTagNames()).isEqualTo(TagName.DEFAULT_TAGS);
+        assertThat(metricsConfig.getPercentiles()).contains(0.95, 0.99);
+        assertThat(metricsConfig.getEnableHistograms()).isTrue();
+        assertThat(metricsConfig.getApplyDiagnosticThresholdsForTransportLevelMeters()).isFalse();
+
+        System.setProperty(
+            "COSMOS.METRICS_CONFIG",
+           "{\"metricCategories\":\"[OperationSummary, RequestSummary]\","
+               + "\"tagNames\":\"[Container, Operation]\","
+               + "\"sampleRate\":0.5,"
+               + "\"percentiles\":[0.90,0.99],"
+               + "\"enableHistograms\":false,"
+               + "\"applyDiagnosticThresholdsForTransportLevelMeters\":true}");
+        try {
+            metricsConfig = Configs.getMetricsConfig();
+            assertThat(metricsConfig.getMetricCategories()).isEqualTo(EnumSet.of(MetricCategory.OperationSummary, MetricCategory.RequestSummary));
+            assertThat(metricsConfig.getTagNames()).isEqualTo(EnumSet.of(TagName.Container, TagName.Operation));
+            assertThat(metricsConfig.getPercentiles()).contains(0.90, 0.99);
+            assertThat(metricsConfig.getEnableHistograms()).isFalse();
+            assertThat(metricsConfig.getApplyDiagnosticThresholdsForTransportLevelMeters()).isTrue();
+        } finally {
+            System.clearProperty("METRICS_CONFIG");
+        }
     }
 }

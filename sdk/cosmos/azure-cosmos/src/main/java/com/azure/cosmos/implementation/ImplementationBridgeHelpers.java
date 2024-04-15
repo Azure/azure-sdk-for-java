@@ -37,10 +37,8 @@ import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnect
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
-import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -1459,6 +1457,9 @@ public class ImplementationBridgeHelpers {
             void setUseLegacyTracing(CosmosClientTelemetryConfig config, boolean useLegacyTracing);
             void setTracer(CosmosClientTelemetryConfig config, Tracer tracer);
             double getSamplingRate(CosmosClientTelemetryConfig config);
+            double[] getDefaultPercentiles(CosmosClientTelemetryConfig config);
+            boolean shouldPublishHistograms(CosmosClientTelemetryConfig config);
+            boolean shouldApplyDiagnosticThresholdsForTransportLevelMeters(CosmosClientTelemetryConfig config);
         }
     }
 

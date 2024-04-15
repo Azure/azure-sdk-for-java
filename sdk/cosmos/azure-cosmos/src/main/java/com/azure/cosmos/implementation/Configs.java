@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLException;
-
 import java.time.Duration;
 import java.util.Locale;
 
@@ -174,6 +173,19 @@ public class Configs {
     // Error handling strategy in diagnostics provider
     public static final String DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR = "COSMOS.DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR";
     public static final boolean DEFAULT_DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR = true;
+
+    // Metrics
+    // Samples:
+    //            System.setProperty(
+    //                "COSMOS.METRICS_CONFIG",
+    //                "{\"metricCategories\":\"[OperationSummary, RequestSummary]\","
+    //                + "\"tagNames\":\"[Container, Operation]\","
+    //                + "\"sampleRate\":0.5,"
+    //                + "\"percentiles\":[0.90,0.99],"
+    //                + "\"enableHistograms\":false,"
+    //                + "\"applyDiagnosticThresholdsForTransportLevelMeters\":true}");
+    public static final String METRICS_CONFIG = "COSMOS.METRICS_CONFIG";
+    public static final String DEFAULT_METRICS_CONFIG = new CosmosMicrometerMetricsConfig().toJson();
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -508,5 +520,16 @@ public class Configs {
                     String.valueOf(DEFAULT_DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR)));
 
         return Boolean.parseBoolean(shouldSystemExit);
+    }
+
+    public static CosmosMicrometerMetricsConfig getMetricsConfig() {
+        String metricsConfig =
+            System.getProperty(
+                METRICS_CONFIG,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(METRICS_CONFIG)),
+                    DEFAULT_METRICS_CONFIG));
+
+        return CosmosMicrometerMetricsConfig.fromJsonString(metricsConfig);
     }
 }
