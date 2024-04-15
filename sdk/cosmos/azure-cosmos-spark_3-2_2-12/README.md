@@ -187,6 +187,11 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 | 4.21.1    | 3.4.0                    | [8, 11]                | 2.12                     | 13.*                          |
 | 4.21.0    | 3.4.0                    | [8, 11]                | 2.12                     | 13.*                          |
 
+#### azure-cosmos-spark_3-5_2-12
+| Connector     | Supported Spark Versions | Minimum Java Version | Supported Scala Versions | Supported Databricks Runtimes |
+|---------------|--------------------------|----------------------| -----------------------  |-------------------------------|
+| 4.29.0-beta.1 | 3.5.0                    | [8, 11]              | 2.12                     | 14.*                          |
+
 ### Download
 
 You can use the maven coordinate of the jar to auto install the Spark Connector to your Databricks Runtime 10 from Maven:
