@@ -69,6 +69,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
@@ -111,6 +112,10 @@ public class ReactiveCosmosTemplateIT {
     private static final AuditableEntity TEST_AUDITABLE_ENTITY_2 = new AuditableEntity();
 
     private static final String UUID_2 = UUID.randomUUID().toString();
+
+    private static final AuditableEntity TEST_AUDITABLE_ENTITY_3 = new AuditableEntity();
+
+    private static final String UUID_3 = UUID.randomUUID().toString();
 
     private static final BasicItem BASIC_ITEM = new BasicItem(ID_1);
     private static final String PRECONDITION_IS_NOT_MET = "is not met";
@@ -184,6 +189,7 @@ public class ReactiveCosmosTemplateIT {
             personInfo = new CosmosEntityInformation<>(Person.class);
             TEST_AUDITABLE_ENTITY_1.setId(UUID_1);
             TEST_AUDITABLE_ENTITY_2.setId(UUID_2);
+            TEST_AUDITABLE_ENTITY_3.setId(UUID_3);
             auditableEntityInfo = new CosmosEntityInformation<>(AuditableEntity.class);
             itemInfo = new CosmosEntityInformation<>(BasicItem.class);
             containerName = personInfo.getContainerName();
@@ -312,7 +318,6 @@ public class ReactiveCosmosTemplateIT {
                 Assert.assertEquals(actual.getId(), UUID_2);
             }).verifyComplete();
 
-
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
 
@@ -340,7 +345,6 @@ public class ReactiveCosmosTemplateIT {
         StepVerifier.create(cosmosTemplate.insertAll(auditableEntityInfo, Lists.newArrayList(TEST_AUDITABLE_ENTITY_1,
                 TEST_AUDITABLE_ENTITY_2))).expectNextCount(2).verifyComplete();
 
-
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
 
@@ -357,6 +361,50 @@ public class ReactiveCosmosTemplateIT {
             Assert.assertEquals(actual.getLastModifiedBy(), "test-auditor-2");
             Assert.assertEquals(actual.getCreatedDate(), now);
             Assert.assertEquals(actual.getLastModifiedByDate(), now);
+        }).verifyComplete();
+    }
+
+    @Test
+    public void testSaveAllFailureAuditData() {
+        stubAuditorProvider.setCurrentAuditor("test-auditor-2");
+        final OffsetDateTime now = OffsetDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.MICROS);
+        stubDateTimeProvider.setNow(now);
+        StepVerifier.create(cosmosTemplate.insertAll(auditableEntityInfo, Lists.newArrayList(TEST_AUDITABLE_ENTITY_1,
+            TEST_AUDITABLE_ENTITY_2, TEST_AUDITABLE_ENTITY_3))).expectNextCount(3).verifyComplete();
+
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+
+        final List<AuditableEntity> result = cosmosTemplate.findAll(auditableEntityInfo.getContainerName(), AuditableEntity.class).collectList().block();
+
+        result.get(1).set_etag("broken_etag");
+        stubAuditorProvider.setCurrentAuditor("test-auditor-3");
+        final OffsetDateTime now2 = OffsetDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.MICROS);
+        stubDateTimeProvider.setNow(now2);
+
+        StepVerifier.create(cosmosTemplate.insertAll(auditableEntityInfo, result))
+            .consumeNextWith(actual -> Assert.assertEquals(actual.getId(), UUID_1))
+            .consumeNextWith(actual -> Assert.assertEquals(actual.getId(), UUID_3)).verifyComplete();
+
+        final Flux<AuditableEntity> flux = cosmosTemplate.findAll(auditableEntityInfo.getContainerName(), AuditableEntity.class);
+        StepVerifier.create(flux).consumeNextWith(actual -> {
+            Assert.assertEquals(actual.getId(), UUID_1);
+            Assert.assertEquals(actual.getCreatedBy(), "test-auditor-2");
+            Assert.assertEquals(actual.getLastModifiedBy(), "test-auditor-3");
+            Assert.assertEquals(actual.getCreatedDate(), now);
+            Assert.assertEquals(actual.getLastModifiedByDate(), now2);
+        }).consumeNextWith(actual -> {
+            Assert.assertEquals(actual.getId(), UUID_2);
+            Assert.assertEquals(actual.getCreatedBy(), "test-auditor-2");
+            Assert.assertEquals(actual.getLastModifiedBy(), "test-auditor-2");
+            Assert.assertEquals(actual.getCreatedDate(), now);
+            Assert.assertEquals(actual.getLastModifiedByDate(), now);
+        }).consumeNextWith(actual -> {
+            Assert.assertEquals(actual.getId(), UUID_3);
+            Assert.assertEquals(actual.getCreatedBy(), "test-auditor-2");
+            Assert.assertEquals(actual.getLastModifiedBy(), "test-auditor-3");
+            Assert.assertEquals(actual.getCreatedDate(), now);
+            Assert.assertEquals(actual.getLastModifiedByDate(), now2);
         }).verifyComplete();
     }
 

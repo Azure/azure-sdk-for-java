@@ -120,6 +120,10 @@ public class CosmosTemplateIT {
 
     private static final String UUID_2 = UUID.randomUUID().toString();
 
+    private static final AuditableEntity TEST_AUDITABLE_ENTITY_3 = new AuditableEntity();
+
+    private static final String UUID_3 = UUID.randomUUID().toString();
+
     private static final BasicItem BASIC_ITEM = new BasicItem(ID_1);
 
     private static final String PRECONDITION_IS_NOT_MET = "is not met";
@@ -185,6 +189,7 @@ public class CosmosTemplateIT {
             personInfo = new CosmosEntityInformation<>(Person.class);
             TEST_AUDITABLE_ENTITY_1.setId(UUID_1);
             TEST_AUDITABLE_ENTITY_2.setId(UUID_2);
+            TEST_AUDITABLE_ENTITY_3.setId(UUID_3);
             auditableEntityInfo = new CosmosEntityInformation<>(AuditableEntity.class);
             containerName = personInfo.getContainerName();
             cosmosTemplate = createCosmosTemplate(cosmosConfig, TestConstants.DB_NAME);
@@ -363,6 +368,45 @@ public class CosmosTemplateIT {
         assertThat(result.get(1).getLastModifiedBy()).isEqualTo("test-auditor-2");
         assertThat(result.get(1).getCreatedDate()).isEqualTo(now);
         assertThat(result.get(1).getLastModifiedByDate()).isEqualTo(now);
+    }
+
+    @Test
+    public void testSaveAllFailureAuditData() {
+        stubAuditorProvider.setCurrentAuditor("test-auditor-2");
+        final OffsetDateTime now = OffsetDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.MICROS);
+        stubDateTimeProvider.setNow(now);
+        cosmosTemplate.insertAll(auditableEntityInfo, Lists.newArrayList(TEST_AUDITABLE_ENTITY_1,
+            TEST_AUDITABLE_ENTITY_2, TEST_AUDITABLE_ENTITY_3));
+
+        final List<AuditableEntity> result = TestUtils.toList(cosmosTemplate.findAll(AuditableEntity.class));
+
+        result.get(1).set_etag("broken_etag");
+        stubAuditorProvider.setCurrentAuditor("test-auditor-3");
+        final OffsetDateTime now2 = OffsetDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.MICROS);
+        stubDateTimeProvider.setNow(now2);
+
+        List<AuditableEntity> upsertResult = TestUtils.toList(cosmosTemplate.insertAll(auditableEntityInfo, result));
+        assertThat(upsertResult.size()).isEqualTo(2);
+        assertThat(upsertResult.get(0).getId()).isEqualTo(UUID_1);
+        assertThat(upsertResult.get(1).getId()).isEqualTo(UUID_3);
+
+        final List<AuditableEntity> result2 = TestUtils.toList(cosmosTemplate.findAll(AuditableEntity.class));
+        assertThat(result2.size()).isEqualTo(3);
+        assertThat(result2.get(0).getId()).isEqualTo(UUID_1);
+        assertThat(result2.get(0).getCreatedBy()).isEqualTo("test-auditor-2");
+        assertThat(result2.get(0).getLastModifiedBy()).isEqualTo("test-auditor-3");
+        assertThat(result2.get(0).getCreatedDate()).isEqualTo(now);
+        assertThat(result2.get(0).getLastModifiedByDate()).isEqualTo(now2);
+        assertThat(result2.get(1).getId()).isEqualTo(UUID_2);
+        assertThat(result2.get(1).getCreatedBy()).isEqualTo("test-auditor-2");
+        assertThat(result2.get(1).getLastModifiedBy()).isEqualTo("test-auditor-2");
+        assertThat(result2.get(1).getCreatedDate()).isEqualTo(now);
+        assertThat(result2.get(1).getLastModifiedByDate()).isEqualTo(now);
+        assertThat(result2.get(2).getId()).isEqualTo(UUID_3);
+        assertThat(result2.get(2).getCreatedBy()).isEqualTo("test-auditor-2");
+        assertThat(result2.get(2).getLastModifiedBy()).isEqualTo("test-auditor-3");
+        assertThat(result2.get(2).getCreatedDate()).isEqualTo(now);
+        assertThat(result2.get(2).getLastModifiedByDate()).isEqualTo(now2);
     }
 
     @Test
