@@ -143,6 +143,7 @@ public final class DistributionPolicyInternal {
         return this;
     }
 
+    // @formatter:off
     /**
      * Set id.
      *
@@ -152,8 +153,9 @@ public final class DistributionPolicyInternal {
     public DistributionPolicyInternal setId(String id) {
         this.id = id;
         return this;
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Set etag.
      *
@@ -163,5 +165,6 @@ public final class DistributionPolicyInternal {
     public DistributionPolicyInternal setEtag(String etag) {
         this.etag = etag;
         return this;
-    }
+    }// @formatter:on
+
 }

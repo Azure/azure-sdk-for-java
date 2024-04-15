@@ -144,6 +144,7 @@ public final class ContentSafetyAsyncClient {
         return this.serviceClient.analyzeImageWithResponseAsync(options, requestOptions);
     }
 
+    // @formatter:off
     /**
      * Analyze Text
      *
@@ -164,7 +165,7 @@ public final class ContentSafetyAsyncClient {
         // Customized convenience method for analyzeText
         AnalyzeTextOptions options = new AnalyzeTextOptions(text);
         return analyzeText(options);
-    }
+    }// @formatter:on
 
     /**
      * Analyze Text
@@ -214,6 +215,7 @@ public final class ContentSafetyAsyncClient {
             .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeImageResult.class));
     }
 
+    // @formatter:off
     /**
      * Analyze Image
      *
@@ -234,8 +236,9 @@ public final class ContentSafetyAsyncClient {
         /// Customized convenience method for analyzeImage
         AnalyzeImageOptions options = new AnalyzeImageOptions(new ContentSafetyImageData().setBlobUrl(blobUrl));
         return analyzeImage(options);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Analyze Image
      *
@@ -256,5 +259,6 @@ public final class ContentSafetyAsyncClient {
         /// Customized convenience method for analyzeImage
         AnalyzeImageOptions options = new AnalyzeImageOptions(new ContentSafetyImageData().setContent(content));
         return analyzeImage(options);
-    }
+    }// @formatter:on
+
 }

@@ -25,6 +25,7 @@ public class RunStepDetails implements JsonSerializable<RunStepDetails> {
         this.type = RunStepType.fromString("RunStepDetails");
     }
 
+    // @formatter:off
     static RunStepDetails fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RunStepDetails deserializedRunStepDetails = new RunStepDetails();
@@ -35,7 +36,7 @@ public class RunStepDetails implements JsonSerializable<RunStepDetails> {
             }
             return deserializedRunStepDetails;
         });
-    }
+    }// @formatter:on
 
     /*
      * The object type.

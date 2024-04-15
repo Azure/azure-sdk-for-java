@@ -204,6 +204,7 @@ public final class JobRouterClient {
         return this.serviceClient.upsertJobWithResponse(jobId, resource, requestOptions);
     }
 
+    // @formatter:off
     /**
      * Updates a router job.
      *
@@ -348,11 +349,11 @@ public final class JobRouterClient {
      * @return a unit of work to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateJobWithResponse(String jobId, BinaryData resource,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> updateJobWithResponse(String jobId, BinaryData resource, RequestOptions requestOptions) {
         return this.serviceClient.upsertJobWithResponse(jobId, resource, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Creates or updates a router job.
      *
@@ -394,11 +395,10 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterJob updateJob(String jobId, RouterJob job, RequestOptions requestOptions) {
-        return this.updateJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions)
-            .getValue()
-            .toObject(RouterJob.class);
-    }
+        return this.updateJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions).getValue().toObject(RouterJob.class);
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Create a job.
      *
@@ -412,12 +412,11 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterJob> createJobWithResponse(CreateJobOptions createJobOptions, RequestOptions requestOptions) {
         RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
-        Response<BinaryData> response = this.serviceClient.upsertJobWithResponse(createJobOptions.getJobId(),
-            BinaryData.fromObject(routerJob), requestOptions);
-        return new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            response.getValue().toObject(RouterJob.class));
-    }
+        Response<BinaryData> response = this.serviceClient.upsertJobWithResponse(createJobOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions);
+        return new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue().toObject(RouterJob.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Convenience method to create a job.
      *
@@ -431,8 +430,9 @@ public final class JobRouterClient {
     public RouterJob createJob(CreateJobOptions createJobOptions) {
         RequestOptions requestOptions = new RequestOptions();
         return this.createJobWithResponse(createJobOptions, requestOptions).getValue();
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Create a job using a classification policy.
      *
@@ -444,17 +444,13 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterJob> createJobWithClassificationPolicyWithResponse(
-        CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions,
-        RequestOptions requestOptions) {
-        RouterJobInternal routerJob = JobAdapter
-            .convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
-        Response<BinaryData> response = this.serviceClient.upsertJobWithResponse(
-            createJobWithClassificationPolicyOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions);
-        return new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            response.getValue().toObject(RouterJob.class));
-    }
+    public Response<RouterJob> createJobWithClassificationPolicyWithResponse(CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions, RequestOptions requestOptions) {
+        RouterJobInternal routerJob = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
+        Response<BinaryData> response = this.serviceClient.upsertJobWithResponse(createJobWithClassificationPolicyOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions);
+        return new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue().toObject(RouterJob.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Convenience method to create a job using a classification policy.
      *
@@ -465,13 +461,10 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterJob createJobWithClassificationPolicy(
-        CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions) {
+    public RouterJob createJobWithClassificationPolicy(CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return this
-            .createJobWithClassificationPolicyWithResponse(createJobWithClassificationPolicyOptions, requestOptions)
-            .getValue();
-    }
+        return this.createJobWithClassificationPolicyWithResponse(createJobWithClassificationPolicyOptions, requestOptions).getValue();
+    }// @formatter:on
 
     /**
      * Retrieves an existing job by Id.
@@ -562,6 +555,7 @@ public final class JobRouterClient {
         return this.serviceClient.deleteJobWithResponse(jobId, requestOptions);
     }
 
+    // @formatter:off
     /**
      * Reclassify a job.
      * <p>
@@ -591,8 +585,9 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> reclassifyJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.reclassifyJobWithResponse(jobId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Reclassify a job.
      * <p>
@@ -622,8 +617,9 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData reclassifyJob(String jobId, RequestOptions requestOptions) {
         return this.reclassifyJobWithResponse(jobId, requestOptions).getValue();
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      * <p>
@@ -656,8 +652,9 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cancelJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.cancelJobWithResponse(jobId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      * <p>
@@ -690,7 +687,7 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData cancelJob(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.cancelJobWithResponse(jobId, requestOptions).getValue();
-    }
+    }// @formatter:on
 
     /**
      * Retrieves list of jobs based on filter parameters.
@@ -873,6 +870,7 @@ public final class JobRouterClient {
         return this.serviceClient.acceptJobOfferWithResponse(workerId, offerId, requestOptions);
     }
 
+    // @formatter:off
     /**
      * Declines an offer to work on a job.
      * <p>
@@ -903,11 +901,11 @@ public final class JobRouterClient {
      * @return response payload from declining a job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> declineJobOfferWithResponse(String workerId, String offerId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> declineJobOfferWithResponse(String workerId, String offerId, RequestOptions requestOptions) {
         return this.serviceClient.declineJobOfferWithResponse(workerId, offerId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Declines an offer to work on a job.
      * <p>
@@ -940,7 +938,7 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData declineJobOffer(String workerId, String offerId, RequestOptions requestOptions) {
         return this.serviceClient.declineJobOfferWithResponse(workerId, offerId, requestOptions).getValue();
-    }
+    }// @formatter:on
 
     /**
      * Retrieves a queue's statistics.
@@ -1093,6 +1091,7 @@ public final class JobRouterClient {
         return this.serviceClient.upsertWorkerWithResponse(workerId, resource, requestOptions);
     }
 
+    // @formatter:off
     /**
      * Updates a worker.
      *
@@ -1227,11 +1226,11 @@ public final class JobRouterClient {
      * @return an entity for jobs to be routed to along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateWorkerWithResponse(String workerId, BinaryData resource,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> updateWorkerWithResponse(String workerId, BinaryData resource, RequestOptions requestOptions) {
         return this.serviceClient.upsertWorkerWithResponse(workerId, resource, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Updates a worker.
      *
@@ -1273,11 +1272,10 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterWorker updateWorker(String workerId, RouterWorker worker, RequestOptions requestOptions) {
-        return this.updateWorkerWithResponse(workerId, BinaryData.fromObject(worker), requestOptions)
-            .getValue()
-            .toObject(RouterWorker.class);
-    }
+        return this.updateWorkerWithResponse(workerId, BinaryData.fromObject(worker), requestOptions).getValue().toObject(RouterWorker.class);
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Create a worker.
      *
@@ -1289,15 +1287,13 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterWorker> createWorkerWithResponse(CreateWorkerOptions createWorkerOptions,
-        RequestOptions requestOptions) {
+    public Response<RouterWorker> createWorkerWithResponse(CreateWorkerOptions createWorkerOptions, RequestOptions requestOptions) {
         RouterWorkerInternal routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
-        Response<BinaryData> response = this.serviceClient.upsertWorkerWithResponse(createWorkerOptions.getWorkerId(),
-            BinaryData.fromObject(routerWorker), requestOptions);
-        return new SimpleResponse<RouterWorker>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            response.getValue().toObject(RouterWorker.class));
-    }
+        Response<BinaryData> response = this.serviceClient.upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), BinaryData.fromObject(routerWorker), requestOptions);
+        return new SimpleResponse<RouterWorker>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue().toObject(RouterWorker.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Convenience method to create a worker.
      *
@@ -1311,7 +1307,7 @@ public final class JobRouterClient {
     public RouterWorker createWorker(CreateWorkerOptions createWorkerOptions) {
         RequestOptions requestOptions = new RequestOptions();
         return this.createWorkerWithResponse(createWorkerOptions, requestOptions).getValue();
-    }
+    }// @formatter:on
 
     /**
      * Retrieves an existing worker by Id.
@@ -1471,6 +1467,7 @@ public final class JobRouterClient {
         return this.serviceClient.listWorkers(requestOptions);
     }
 
+    // @formatter:off
     /**
      * Retrieves an existing job by Id.
      *
@@ -1487,7 +1484,7 @@ public final class JobRouterClient {
     public RouterJob getJob(String jobId) {
         RequestOptions requestOptions = new RequestOptions();
         return getJobWithResponse(jobId, requestOptions).getValue().toObject(RouterJob.class);
-    }
+    }// @formatter:on
 
     /**
      * Deletes a job and all of its traces.
@@ -1508,6 +1505,7 @@ public final class JobRouterClient {
         deleteJobWithResponse(jobId, requestOptions).getValue();
     }
 
+    // @formatter:off
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      *
@@ -1525,8 +1523,9 @@ public final class JobRouterClient {
         // Generated convenience method for cancelJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cancelJobWithResponse(jobId, requestOptions).getValue().toObject(CancelJobResultInternal.class);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Retrieves list of jobs based on filter parameters.
      *
@@ -1547,8 +1546,7 @@ public final class JobRouterClient {
      * @return a paged collection of jobs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterJob> listJobs(RouterJobStatusSelector status, String queueId, String channelId,
-        String classificationPolicyId, OffsetDateTime scheduledBefore, OffsetDateTime scheduledAfter) {
+    public PagedIterable<RouterJob> listJobs(RouterJobStatusSelector status, String queueId, String channelId, String classificationPolicyId, OffsetDateTime scheduledBefore, OffsetDateTime scheduledAfter) {
         RequestOptions requestOptions = new RequestOptions();
         if (status != null) {
             requestOptions.addQueryParam("status", status.toString(), false);
@@ -1569,8 +1567,9 @@ public final class JobRouterClient {
             requestOptions.addQueryParam("scheduledAfter", String.valueOf(scheduledAfter), false);
         }
         return serviceClient.listJobs(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(RouterJob.class));
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Retrieves list of jobs based on filter parameters.
      *
@@ -1585,7 +1584,7 @@ public final class JobRouterClient {
     public PagedIterable<RouterJob> listJobs() {
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listJobs(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(RouterJob.class));
-    }
+    }// @formatter:on
 
     /**
      * Gets a job's position details.
@@ -1673,6 +1672,7 @@ public final class JobRouterClient {
             .toObject(DeclineJobOfferResultInternal.class);
     }
 
+    // @formatter:off
     /**
      * Retrieves a queue's statistics.
      *
@@ -1690,8 +1690,9 @@ public final class JobRouterClient {
         // Generated convenience method for getQueueStatisticsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getQueueStatisticsWithResponse(queueId, requestOptions).getValue().toObject(RouterQueueStatistics.class);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Retrieves an existing worker by Id.
      *
@@ -1709,7 +1710,7 @@ public final class JobRouterClient {
         // Generated convenience method for getWorkerWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getWorkerWithResponse(workerId, requestOptions).getValue().toObject(RouterWorker.class);
-    }
+    }// @formatter:on
 
     /**
      * Deletes a worker and all of its traces.
@@ -1730,6 +1731,7 @@ public final class JobRouterClient {
         deleteWorkerWithResponse(workerId, requestOptions).getValue();
     }
 
+    // @formatter:off
     /**
      * Retrieves existing workers.
      *
@@ -1748,8 +1750,7 @@ public final class JobRouterClient {
      * @return a paged collection of workers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterWorker> listWorkers(RouterWorkerStateSelector state, String channelId, String queueId,
-        Boolean hasCapacity) {
+    public PagedIterable<RouterWorker> listWorkers(RouterWorkerStateSelector state, String channelId, String queueId, Boolean hasCapacity) {
         // Generated convenience method for listWorkers
         RequestOptions requestOptions = new RequestOptions();
         if (state != null) {
@@ -1764,10 +1765,10 @@ public final class JobRouterClient {
         if (hasCapacity != null) {
             requestOptions.addQueryParam("hasCapacity", String.valueOf(hasCapacity), false);
         }
-        return serviceClient.listWorkers(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(RouterWorker.class));
-    }
+        return serviceClient.listWorkers(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(RouterWorker.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Retrieves existing workers.
      *
@@ -1782,9 +1783,8 @@ public final class JobRouterClient {
     public PagedIterable<RouterWorker> listWorkers() {
         // Generated convenience method for listWorkers
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listWorkers(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(RouterWorker.class));
-    }
+        return serviceClient.listWorkers(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(RouterWorker.class));
+    }// @formatter:on
 
     /**
      * Unassign a job.
@@ -1812,6 +1812,7 @@ public final class JobRouterClient {
             .toObject(UnassignJobResult.class);
     }
 
+    // @formatter:off
     /**
      * Completes an assigned job.
      * <p>
@@ -1842,11 +1843,11 @@ public final class JobRouterClient {
      * @return response payload from completing a job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> completeJobWithResponse(String jobId, String assignmentId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> completeJobWithResponse(String jobId, String assignmentId, RequestOptions requestOptions) {
         return this.serviceClient.completeJobWithResponse(jobId, assignmentId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Completes an assigned job.
      * <p>
@@ -1879,8 +1880,9 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData completeJob(String jobId, String assignmentId, RequestOptions requestOptions) {
         return this.serviceClient.completeJobWithResponse(jobId, assignmentId, requestOptions).getValue();
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Closes a completed job.
      * <p>
@@ -1915,8 +1917,9 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> closeJobWithResponse(String jobId, String assignmentId, RequestOptions requestOptions) {
         return this.serviceClient.closeJobWithResponse(jobId, assignmentId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Closes a completed job.
      * <p>
@@ -1951,7 +1954,7 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData closeJob(String jobId, String assignmentId, RequestOptions requestOptions) {
         return this.serviceClient.closeJobWithResponse(jobId, assignmentId, requestOptions).getValue();
-    }
+    }// @formatter:on
 
     /**
      * Reclassify a job.
@@ -1997,6 +2000,7 @@ public final class JobRouterClient {
         return reclassifyJobWithResponse(jobId, requestOptions).getValue().toObject(ReclassifyJobResultInternal.class);
     }
 
+    // @formatter:off
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      *
@@ -2018,7 +2022,7 @@ public final class JobRouterClient {
             requestOptions.setBody(BinaryData.fromObject(options));
         }
         return cancelJobWithResponse(jobId, requestOptions).getValue().toObject(CancelJobResultInternal.class);
-    }
+    }// @formatter:on
 
     /**
      * Completes an assigned job.

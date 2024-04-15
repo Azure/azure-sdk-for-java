@@ -70,6 +70,7 @@ public final class AssistantsAsyncClient {
     @Generated
     private final AssistantsClientImpl serviceClient;
 
+    // @formatter:off
     /**
      * Creates a new assistant.
      * <p>
@@ -131,12 +132,12 @@ public final class AssistantsAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createAssistantWithResponse(BinaryData assistantCreationOptions,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createAssistantWithResponse(BinaryData assistantCreationOptions, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createAssistantWithResponseAsync(assistantCreationOptions, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of assistants that were previously created.
      * <p>
@@ -228,8 +229,9 @@ public final class AssistantsAsyncClient {
     public Mono<Response<BinaryData>> listAssistantsWithResponse(RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listAssistantsWithResponseAsync(requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Deletes an assistant.
      * <p>
@@ -257,8 +259,9 @@ public final class AssistantsAsyncClient {
     public Mono<Response<BinaryData>> deleteAssistantWithResponse(String assistantId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.deleteAssistantWithResponseAsync(assistantId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Attaches a previously uploaded file to an assistant for use by tools that can read files.
      * <p>
@@ -295,12 +298,12 @@ public final class AssistantsAsyncClient {
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createAssistantFileWithResponse(String assistantId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createAssistantFileWithResponse(String assistantId, BinaryData request, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createAssistantFileWithResponseAsync(assistantId, request, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of files attached to a specific assistant, as used by tools that can read files.
      * <p>
@@ -377,12 +380,12 @@ public final class AssistantsAsyncClient {
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listAssistantFilesWithResponse(String assistantId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listAssistantFilesWithResponse(String assistantId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listAssistantFilesWithResponseAsync(assistantId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
      * files.
@@ -409,11 +412,10 @@ public final class AssistantsAsyncClient {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteAssistantFileWithResponse(String assistantId, String fileId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> deleteAssistantFileWithResponse(String assistantId, String fileId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.deleteAssistantFileWithResponseAsync(assistantId, fileId, requestOptions);
-    }
+    }// @formatter:on
 
     /**
      * Creates a new assistant.
@@ -437,6 +439,7 @@ public final class AssistantsAsyncClient {
             .map(protocolMethodData -> protocolMethodData.toObject(Assistant.class));
     }
 
+    // @formatter:off
     /**
      * Gets a list of assistants that were previously created.
      *
@@ -459,8 +462,7 @@ public final class AssistantsAsyncClient {
      * @return a list of assistants that were previously created on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageableList<Assistant>> listAssistants(Integer limit, ListSortOrder order, String after,
-        String before) {
+    public Mono<PageableList<Assistant>> listAssistants(Integer limit, ListSortOrder order, String after, String before) {
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -474,12 +476,10 @@ public final class AssistantsAsyncClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return listAssistantsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistant.class))
-            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                assistantList.getLastId(), assistantList.isHasMore()));
-    }
+        return listAssistantsWithResponse(requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistant.class)).map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(), assistantList.getLastId(), assistantList.isHasMore()));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of assistants that were previously created.
      *
@@ -493,11 +493,8 @@ public final class AssistantsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<Assistant>> listAssistants() {
         RequestOptions requestOptions = new RequestOptions();
-        return listAssistantsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistant.class))
-            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                assistantList.getLastId(), assistantList.isHasMore()));
-    }
+        return listAssistantsWithResponse(requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistant.class)).map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(), assistantList.getLastId(), assistantList.isHasMore()));
+    }// @formatter:on
 
     /**
      * Deletes an assistant.
@@ -545,6 +542,7 @@ public final class AssistantsAsyncClient {
             .map(protocolMethodData -> protocolMethodData.toObject(AssistantFile.class));
     }
 
+    // @formatter:off
     /**
      * Gets a list of files attached to a specific assistant, as used by tools that can read files.
      *
@@ -569,8 +567,7 @@ public final class AssistantsAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageableList<AssistantFile>> listAssistantFiles(String assistantId, Integer limit, ListSortOrder order,
-        String after, String before) {
+    public Mono<PageableList<AssistantFile>> listAssistantFiles(String assistantId, Integer limit, ListSortOrder order, String after, String before) {
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -584,12 +581,10 @@ public final class AssistantsAsyncClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return listAssistantFilesWithResponse(assistantId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistantFile.class))
-            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                assistantList.getLastId(), assistantList.isHasMore()));
-    }
+        return listAssistantFilesWithResponse(assistantId, requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistantFile.class)).map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(), assistantList.getLastId(), assistantList.isHasMore()));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of files attached to a specific assistant, as used by tools that can read files.
      *
@@ -606,11 +601,8 @@ public final class AssistantsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<AssistantFile>> listAssistantFiles(String assistantId) {
         RequestOptions requestOptions = new RequestOptions();
-        return listAssistantFilesWithResponse(assistantId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistantFile.class))
-            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                assistantList.getLastId(), assistantList.isHasMore()));
-    }
+        return listAssistantFilesWithResponse(assistantId, requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistantFile.class)).map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(), assistantList.getLastId(), assistantList.isHasMore()));
+    }// @formatter:on
 
     /**
      * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
@@ -645,6 +637,7 @@ public final class AssistantsAsyncClient {
         this.serviceClient = serviceClient;
     }
 
+    // @formatter:off
     /**
      * Retrieves an existing assistant.
      * <p>
@@ -686,8 +679,9 @@ public final class AssistantsAsyncClient {
     public Mono<Response<BinaryData>> getAssistantWithResponse(String assistantId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getAssistantWithResponseAsync(assistantId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Retrieves a file attached to an assistant.
      * <p>
@@ -714,12 +708,12 @@ public final class AssistantsAsyncClient {
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAssistantFileWithResponse(String assistantId, String fileId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAssistantFileWithResponse(String assistantId, String fileId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getAssistantFileWithResponseAsync(assistantId, fileId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Creates a new thread. Threads contain messages and can be run by assistants.
      * <p>
@@ -771,12 +765,12 @@ public final class AssistantsAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createThreadWithResponse(BinaryData assistantThreadCreationOptions,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createThreadWithResponse(BinaryData assistantThreadCreationOptions, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createThreadWithResponseAsync(assistantThreadCreationOptions, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets information about an existing thread.
      * <p>
@@ -807,8 +801,9 @@ public final class AssistantsAsyncClient {
     public Mono<Response<BinaryData>> getThreadWithResponse(String threadId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getThreadWithResponseAsync(threadId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Deletes an existing thread.
      * <p>
@@ -836,8 +831,9 @@ public final class AssistantsAsyncClient {
     public Mono<Response<BinaryData>> deleteThreadWithResponse(String threadId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.deleteThreadWithResponseAsync(threadId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Creates a new message on a specified thread.
      * <p>
@@ -894,12 +890,12 @@ public final class AssistantsAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createMessageWithResponse(String threadId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createMessageWithResponse(String threadId, BinaryData request, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createMessageWithResponseAsync(threadId, request, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of messages that exist on a thread.
      * <p>
@@ -992,8 +988,9 @@ public final class AssistantsAsyncClient {
     public Mono<Response<BinaryData>> listMessagesWithResponse(String threadId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listMessagesWithResponseAsync(threadId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets an existing message from an existing thread.
      * <p>
@@ -1033,12 +1030,12 @@ public final class AssistantsAsyncClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getMessageWithResponse(String threadId, String messageId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getMessageWithResponse(String threadId, String messageId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getMessageWithResponseAsync(threadId, messageId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of previously uploaded files associated with a message from a thread.
      * <p>
@@ -1116,12 +1113,12 @@ public final class AssistantsAsyncClient {
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMessageFilesWithResponse(String threadId, String messageId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listMessageFilesWithResponse(String threadId, String messageId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listMessageFilesWithResponseAsync(threadId, messageId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets information about a file attachment to a message within a thread.
      * <p>
@@ -1149,12 +1146,12 @@ public final class AssistantsAsyncClient {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getMessageFileWithResponse(String threadId, String messageId, String fileId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getMessageFileWithResponse(String threadId, String messageId, String fileId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getMessageFileWithResponseAsync(threadId, messageId, fileId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Creates a new run for an assistant thread.
      * <p>
@@ -1226,12 +1223,12 @@ public final class AssistantsAsyncClient {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createRunWithResponse(String threadId, BinaryData createRunOptions,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createRunWithResponse(String threadId, BinaryData createRunOptions, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createRunWithResponseAsync(threadId, createRunOptions, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of runs for a specified thread.
      * <p>
@@ -1336,8 +1333,9 @@ public final class AssistantsAsyncClient {
     public Mono<Response<BinaryData>> listRunsWithResponse(String threadId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listRunsWithResponseAsync(threadId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets an existing run from an existing thread.
      * <p>
@@ -1392,8 +1390,9 @@ public final class AssistantsAsyncClient {
     public Mono<Response<BinaryData>> getRunWithResponse(String threadId, String runId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getRunWithResponseAsync(threadId, runId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a
      * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
@@ -1462,12 +1461,12 @@ public final class AssistantsAsyncClient {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> submitToolOutputsToRunWithResponse(String threadId, String runId,
-        BinaryData request, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> submitToolOutputsToRunWithResponse(String threadId, String runId, BinaryData request, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.submitToolOutputsToRunWithResponseAsync(threadId, runId, request, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Cancels a run of an in progress thread.
      * <p>
@@ -1519,12 +1518,12 @@ public final class AssistantsAsyncClient {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelRunWithResponse(String threadId, String runId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> cancelRunWithResponse(String threadId, String runId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.cancelRunWithResponseAsync(threadId, runId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Creates a new assistant thread and immediately starts a run using that new thread.
      * <p>
@@ -1611,12 +1610,12 @@ public final class AssistantsAsyncClient {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createThreadAndRunWithResponse(BinaryData createAndRunThreadOptions,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createThreadAndRunWithResponse(BinaryData createAndRunThreadOptions, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createThreadAndRunWithResponseAsync(createAndRunThreadOptions, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a single run step from a thread run.
      * <p>
@@ -1660,12 +1659,12 @@ public final class AssistantsAsyncClient {
      * @return a single run step from a thread run along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getRunStepWithResponse(String threadId, String runId, String stepId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getRunStepWithResponse(String threadId, String runId, String stepId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getRunStepWithResponseAsync(threadId, runId, stepId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of run steps from a thread run.
      * <p>
@@ -1760,12 +1759,12 @@ public final class AssistantsAsyncClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listRunStepsWithResponse(String threadId, String runId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listRunStepsWithResponse(String threadId, String runId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listRunStepsWithResponseAsync(threadId, runId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of previously uploaded files.
      * <p>
@@ -1819,8 +1818,9 @@ public final class AssistantsAsyncClient {
     public Mono<Response<BinaryData>> listFilesWithResponse(RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listFilesWithResponseAsync(requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Delete a previously uploaded file.
      * <p>
@@ -1848,7 +1848,7 @@ public final class AssistantsAsyncClient {
     public Mono<Response<BinaryData>> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.deleteFileWithResponseAsync(fileId, requestOptions);
-    }
+    }// @formatter:on
 
     /**
      * Retrieves an existing assistant.
@@ -2015,6 +2015,7 @@ public final class AssistantsAsyncClient {
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadMessage.class));
     }
 
+    // @formatter:off
     /**
      * Gets a list of messages that exist on a thread.
      *
@@ -2038,8 +2039,7 @@ public final class AssistantsAsyncClient {
      * @return a list of messages that exist on a thread on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageableList<ThreadMessage>> listMessages(String threadId, Integer limit, ListSortOrder order,
-        String after, String before) {
+    public Mono<PageableList<ThreadMessage>> listMessages(String threadId, Integer limit, ListSortOrder order, String after, String before) {
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -2053,12 +2053,10 @@ public final class AssistantsAsyncClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return listMessagesWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadMessage.class))
-            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                assistantList.getLastId(), assistantList.isHasMore()));
-    }
+        return listMessagesWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadMessage.class)).map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(), assistantList.getLastId(), assistantList.isHasMore()));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of messages that exist on a thread.
      *
@@ -2074,11 +2072,8 @@ public final class AssistantsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<ThreadMessage>> listMessages(String threadId) {
         RequestOptions requestOptions = new RequestOptions();
-        return listMessagesWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadMessage.class))
-            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                assistantList.getLastId(), assistantList.isHasMore()));
-    }
+        return listMessagesWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadMessage.class)).map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(), assistantList.getLastId(), assistantList.isHasMore()));
+    }// @formatter:on
 
     /**
      * Gets an existing message from an existing thread.
@@ -2102,6 +2097,7 @@ public final class AssistantsAsyncClient {
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadMessage.class));
     }
 
+    // @formatter:off
     /**
      * Gets a list of previously uploaded files associated with a message from a thread.
      *
@@ -2127,8 +2123,7 @@ public final class AssistantsAsyncClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageableList<MessageFile>> listMessageFiles(String threadId, String messageId, Integer limit,
-        ListSortOrder order, String after, String before) {
+    public Mono<PageableList<MessageFile>> listMessageFiles(String threadId, String messageId, Integer limit, ListSortOrder order, String after, String before) {
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -2142,12 +2137,10 @@ public final class AssistantsAsyncClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return listMessageFilesWithResponse(threadId, messageId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfMessageFile.class))
-            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                assistantList.getLastId(), assistantList.isHasMore()));
-    }
+        return listMessageFilesWithResponse(threadId, messageId, requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfMessageFile.class)).map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(), assistantList.getLastId(), assistantList.isHasMore()));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of previously uploaded files associated with a message from a thread.
      *
@@ -2165,11 +2158,8 @@ public final class AssistantsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<MessageFile>> listMessageFiles(String threadId, String messageId) {
         RequestOptions requestOptions = new RequestOptions();
-        return listMessageFilesWithResponse(threadId, messageId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfMessageFile.class))
-            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                assistantList.getLastId(), assistantList.isHasMore()));
-    }
+        return listMessageFilesWithResponse(threadId, messageId, requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfMessageFile.class)).map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(), assistantList.getLastId(), assistantList.isHasMore()));
+    }// @formatter:on
 
     /**
      * Gets information about a file attachment to a message within a thread.
@@ -2195,6 +2185,7 @@ public final class AssistantsAsyncClient {
             .map(protocolMethodData -> protocolMethodData.toObject(MessageFile.class));
     }
 
+    // @formatter:off
     /**
      * Gets a list of runs for a specified thread.
      *
@@ -2218,8 +2209,7 @@ public final class AssistantsAsyncClient {
      * @return a list of runs for a specified thread on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageableList<ThreadRun>> listRuns(String threadId, Integer limit, ListSortOrder order, String after,
-        String before) {
+    public Mono<PageableList<ThreadRun>> listRuns(String threadId, Integer limit, ListSortOrder order, String after, String before) {
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -2233,12 +2223,10 @@ public final class AssistantsAsyncClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return listRunsWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadRun.class))
-            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                assistantList.getLastId(), assistantList.isHasMore()));
-    }
+        return listRunsWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadRun.class)).map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(), assistantList.getLastId(), assistantList.isHasMore()));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of runs for a specified thread.
      *
@@ -2254,11 +2242,8 @@ public final class AssistantsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<ThreadRun>> listRuns(String threadId) {
         RequestOptions requestOptions = new RequestOptions();
-        return listRunsWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadRun.class))
-            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                assistantList.getLastId(), assistantList.isHasMore()));
-    }
+        return listRunsWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadRun.class)).map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(), assistantList.getLastId(), assistantList.isHasMore()));
+    }// @formatter:on
 
     /**
      * Gets an existing run from an existing thread.
@@ -2378,6 +2363,7 @@ public final class AssistantsAsyncClient {
             .map(protocolMethodData -> protocolMethodData.toObject(RunStep.class));
     }
 
+    // @formatter:off
     /**
      * Gets a list of run steps from a thread run.
      *
@@ -2402,8 +2388,7 @@ public final class AssistantsAsyncClient {
      * @return a list of run steps from a thread run on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageableList<RunStep>> listRunSteps(String threadId, String runId, Integer limit, ListSortOrder order,
-        String after, String before) {
+    public Mono<PageableList<RunStep>> listRunSteps(String threadId, String runId, Integer limit, ListSortOrder order, String after, String before) {
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -2417,12 +2402,10 @@ public final class AssistantsAsyncClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return listRunStepsWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfRunStep.class))
-            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                assistantList.getLastId(), assistantList.isHasMore()));
-    }
+        return listRunStepsWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfRunStep.class)).map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(), assistantList.getLastId(), assistantList.isHasMore()));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of run steps from a thread run.
      *
@@ -2439,12 +2422,10 @@ public final class AssistantsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<RunStep>> listRunSteps(String threadId, String runId) {
         RequestOptions requestOptions = new RequestOptions();
-        return listRunStepsWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfRunStep.class))
-            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                assistantList.getLastId(), assistantList.isHasMore()));
-    }
+        return listRunStepsWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfRunStep.class)).map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(), assistantList.getLastId(), assistantList.isHasMore()));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of previously uploaded files.
      *
@@ -2464,10 +2445,10 @@ public final class AssistantsAsyncClient {
         if (purpose != null) {
             requestOptions.addQueryParam("purpose", purpose.toString(), false);
         }
-        return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(FileListResponse.class).getData());
-    }
+        return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(FileListResponse.class).getData());
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of previously uploaded files.
      *
@@ -2482,9 +2463,8 @@ public final class AssistantsAsyncClient {
     public Mono<List<OpenAIFile>> listFiles() {
         // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(FileListResponse.class).getData());
-    }
+        return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(FileListResponse.class).getData());
+    }// @formatter:on
 
     /**
      * Delete a previously uploaded file.
@@ -2507,6 +2487,7 @@ public final class AssistantsAsyncClient {
             .map(protocolMethodData -> protocolMethodData.toObject(FileDeletionStatus.class));
     }
 
+    // @formatter:off
     /**
      * Modifies an existing assistant.
      * <p>
@@ -2569,12 +2550,12 @@ public final class AssistantsAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateAssistantWithResponse(String assistantId, BinaryData updateAssistantOptions,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateAssistantWithResponse(String assistantId, BinaryData updateAssistantOptions, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.updateAssistantWithResponseAsync(assistantId, updateAssistantOptions, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Modifies an existing thread.
      * <p>
@@ -2615,12 +2596,12 @@ public final class AssistantsAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateThreadWithResponse(String threadId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateThreadWithResponse(String threadId, BinaryData request, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.updateThreadWithResponseAsync(threadId, request, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Modifies an existing message on an existing thread.
      * <p>
@@ -2673,12 +2654,12 @@ public final class AssistantsAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateMessageWithResponse(String threadId, String messageId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateMessageWithResponse(String threadId, String messageId, BinaryData request, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.updateMessageWithResponseAsync(threadId, messageId, request, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Modifies an existing thread run.
      * <p>
@@ -2743,12 +2724,12 @@ public final class AssistantsAsyncClient {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateRunWithResponse(String threadId, String runId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateRunWithResponse(String threadId, String runId, BinaryData request, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.updateRunWithResponseAsync(threadId, runId, request, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Uploads a file for use by other operations.
      * <p>
@@ -2781,8 +2762,9 @@ public final class AssistantsAsyncClient {
         // 'multipart/form-data'
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.uploadFileWithResponseAsync(request, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p>
@@ -2813,7 +2795,7 @@ public final class AssistantsAsyncClient {
     public Mono<Response<BinaryData>> getFileWithResponse(String fileId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getFileWithResponseAsync(fileId, requestOptions);
-    }
+    }// @formatter:on
 
     /**
      * Modifies an existing assistant.
@@ -2962,6 +2944,7 @@ public final class AssistantsAsyncClient {
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
     }
 
+    // @formatter:off
     /**
      * Creates a new run for an assistant thread.
      *
@@ -2979,7 +2962,7 @@ public final class AssistantsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThreadRun> createRun(AssistantThread thread, Assistant assistant) {
         return createRun(thread.getId(), new CreateRunOptions(assistant.getId()));
-    }
+    }// @formatter:on
 
     /**
      * Modifies an existing thread run.

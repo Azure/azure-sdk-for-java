@@ -73,10 +73,11 @@ public final class RouterQueueInternal {
         return this.etag;
     }
 
+    // @formatter:off
     public RouterQueueInternal setEtag(String etag) {
         this.etag = etag;
         return this;
-    }
+    }// @formatter:on
 
     /**
      * Get the id property: Id of a queue.
@@ -88,6 +89,7 @@ public final class RouterQueueInternal {
         return this.id;
     }
 
+    // @formatter:off
     /**
      * Set id.
      *
@@ -97,7 +99,7 @@ public final class RouterQueueInternal {
     public RouterQueueInternal setId(String id) {
         this.id = id;
         return this;
-    }
+    }// @formatter:on
 
     /**
      * Get the name property: Friendly name of this queue.

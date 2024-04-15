@@ -473,6 +473,7 @@ public final class RouterJobInternal {
         return this;
     }
 
+    // @formatter:off
     /**
      * Set id.
      *
@@ -482,8 +483,9 @@ public final class RouterJobInternal {
     public RouterJobInternal setId(String id) {
         this.id = id;
         return this;
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Set etag.
      *
@@ -493,8 +495,9 @@ public final class RouterJobInternal {
     public RouterJobInternal setEtag(String etag) {
         this.etag = etag;
         return this;
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Set enqueuedAt.
      *
@@ -504,8 +507,9 @@ public final class RouterJobInternal {
     public RouterJobInternal setEnqueuedAt(OffsetDateTime enqueuedAt) {
         this.enqueuedAt = enqueuedAt;
         return this;
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Set status.
      *
@@ -515,8 +519,9 @@ public final class RouterJobInternal {
     public RouterJobInternal setStatus(RouterJobStatus routerJobStatus) {
         this.status = routerJobStatus;
         return this;
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Set assignments.
      *
@@ -526,8 +531,9 @@ public final class RouterJobInternal {
     public RouterJobInternal setAssignments(Map<String, RouterJobAssignment> assignments) {
         this.assignments = assignments;
         return this;
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Set attachedWorkerSelectors.
      *
@@ -537,8 +543,9 @@ public final class RouterJobInternal {
     public RouterJobInternal setAttachedWorkerSelectors(List<RouterWorkerSelectorInternal> attachedWorkerSelectors) {
         this.attachedWorkerSelectors = attachedWorkerSelectors;
         return this;
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Set scheduledAt.
      *
@@ -548,5 +555,6 @@ public final class RouterJobInternal {
     public RouterJobInternal setScheduledAt(OffsetDateTime scheduledAt) {
         this.scheduledAt = scheduledAt;
         return this;
-    }
+    }// @formatter:on
+
 }

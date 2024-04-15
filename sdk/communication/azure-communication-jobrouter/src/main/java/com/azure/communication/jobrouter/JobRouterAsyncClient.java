@@ -210,6 +210,7 @@ public final class JobRouterAsyncClient {
         return this.serviceClient.upsertJobWithResponseAsync(jobId, resource, requestOptions);
     }
 
+    // @formatter:off
     /**
      * Updates a router job.
      *
@@ -354,11 +355,11 @@ public final class JobRouterAsyncClient {
      * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateJobWithResponse(String jobId, BinaryData resource,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateJobWithResponse(String jobId, BinaryData resource, RequestOptions requestOptions) {
         return this.serviceClient.upsertJobWithResponseAsync(jobId, resource, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Updates a router job.
      *
@@ -396,10 +397,10 @@ public final class JobRouterAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterJob> updateJob(String jobId, RouterJob job, RequestOptions requestOptions) {
-        return updateJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions)
-            .map(response -> response.getValue().toObject(RouterJob.class));
-    }
+        return updateJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions).map(response -> response.getValue().toObject(RouterJob.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Create a job.
      *
@@ -413,11 +414,10 @@ public final class JobRouterAsyncClient {
     public Mono<Response<RouterJob>> createJobWithResponse(CreateJobOptions createJobOptions) {
         RequestOptions requestOptions = new RequestOptions();
         RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
-        return upsertJobWithResponse(createJobOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions)
-            .map(response -> new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue().toObject(RouterJob.class)));
-    }
+        return upsertJobWithResponse(createJobOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions).map(response -> new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue().toObject(RouterJob.class)));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Convenience method to create a job.
      *
@@ -430,8 +430,9 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterJob> createJob(CreateJobOptions createJobOptions) {
         return this.createJobWithResponse(createJobOptions).map(response -> response.getValue());
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Create a job using a classification policy.
      *
@@ -443,17 +444,12 @@ public final class JobRouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJob>> createJobWithClassificationPolicyWithResponse(
-        CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions,
-        RequestOptions requestOptions) {
-        RouterJobInternal routerJob = JobAdapter
-            .convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
-        return upsertJobWithResponse(createJobWithClassificationPolicyOptions.getJobId(),
-            BinaryData.fromObject(routerJob), requestOptions)
-            .map(response -> new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue().toObject(RouterJob.class)));
-    }
+    public Mono<Response<RouterJob>> createJobWithClassificationPolicyWithResponse(CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions, RequestOptions requestOptions) {
+        RouterJobInternal routerJob = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
+        return upsertJobWithResponse(createJobWithClassificationPolicyOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions).map(response -> new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue().toObject(RouterJob.class)));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Convenience method to create a job using a classification policy.
      *
@@ -464,13 +460,10 @@ public final class JobRouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJob> createJobWithClassificationPolicy(
-        CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions) {
+    public Mono<RouterJob> createJobWithClassificationPolicy(CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return this
-            .createJobWithClassificationPolicyWithResponse(createJobWithClassificationPolicyOptions, requestOptions)
-            .map(response -> response.getValue());
-    }
+        return this.createJobWithClassificationPolicyWithResponse(createJobWithClassificationPolicyOptions, requestOptions).map(response -> response.getValue());
+    }// @formatter:on
 
     /**
      * Retrieves an existing job by Id.
@@ -561,6 +554,7 @@ public final class JobRouterAsyncClient {
         return this.serviceClient.deleteJobWithResponseAsync(jobId, requestOptions);
     }
 
+    // @formatter:off
     /**
      * Reclassify a job.
      * <p>
@@ -591,8 +585,9 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> reclassifyJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.reclassifyJobWithResponseAsync(jobId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Reclassify a job.
      * <p>
@@ -619,8 +614,9 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> reclassifyJob(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.reclassifyJobWithResponseAsync(jobId, requestOptions).flatMap(FluxUtil::toMono);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      * <p>
@@ -654,8 +650,9 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> cancelJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.cancelJobWithResponseAsync(jobId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      * <p>
@@ -685,7 +682,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> cancelJob(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.cancelJobWithResponseAsync(jobId, requestOptions).flatMap(FluxUtil::toMono);
-    }
+    }// @formatter:on
 
     /**
      * Retrieves list of jobs based on filter parameters.
@@ -869,6 +866,7 @@ public final class JobRouterAsyncClient {
         return this.serviceClient.acceptJobOfferWithResponseAsync(workerId, offerId, requestOptions);
     }
 
+    // @formatter:off
     /**
      * Declines an offer to work on a job.
      * <p>
@@ -900,11 +898,11 @@ public final class JobRouterAsyncClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> declineJobOfferWithResponse(String workerId, String offerId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> declineJobOfferWithResponse(String workerId, String offerId, RequestOptions requestOptions) {
         return this.serviceClient.declineJobOfferWithResponseAsync(workerId, offerId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Declines an offer to work on a job.
      * <p>
@@ -933,9 +931,8 @@ public final class JobRouterAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> declineJobOffer(String workerId, String offerId, RequestOptions requestOptions) {
-        return this.serviceClient.declineJobOfferWithResponseAsync(workerId, offerId, requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
+        return this.serviceClient.declineJobOfferWithResponseAsync(workerId, offerId, requestOptions).flatMap(FluxUtil::toMono);
+    }// @formatter:on
 
     /**
      * Retrieves a queue's statistics.
@@ -1089,6 +1086,7 @@ public final class JobRouterAsyncClient {
         return this.serviceClient.upsertWorkerWithResponseAsync(workerId, resource, requestOptions);
     }
 
+    // @formatter:off
     /**
      * Updates a worker.
      *
@@ -1223,11 +1221,11 @@ public final class JobRouterAsyncClient {
      * @return an entity for jobs to be routed to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateWorkerWithResponse(String workerId, BinaryData resource,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateWorkerWithResponse(String workerId, BinaryData resource, RequestOptions requestOptions) {
         return this.serviceClient.upsertWorkerWithResponseAsync(workerId, resource, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Updates a worker.
      *
@@ -1265,10 +1263,10 @@ public final class JobRouterAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterWorker> updateWorker(String workerId, RouterWorker worker, RequestOptions requestOptions) {
-        return this.updateWorkerWithResponse(workerId, BinaryData.fromObject(worker), requestOptions)
-            .map(routerWorkerResponse -> routerWorkerResponse.getValue().toObject(RouterWorker.class));
-    }
+        return this.updateWorkerWithResponse(workerId, BinaryData.fromObject(worker), requestOptions).map(routerWorkerResponse -> routerWorkerResponse.getValue().toObject(RouterWorker.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Create a worker.
      *
@@ -1282,12 +1280,10 @@ public final class JobRouterAsyncClient {
     public Mono<Response<RouterWorker>> createWorkerWithResponse(CreateWorkerOptions createWorkerOptions) {
         RequestOptions requestOptions = new RequestOptions();
         RouterWorkerInternal routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
-        return upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), BinaryData.fromObject(routerWorker),
-            requestOptions)
-            .map(response -> new SimpleResponse<RouterWorker>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue().toObject(RouterWorker.class)));
-    }
+        return upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), BinaryData.fromObject(routerWorker), requestOptions).map(response -> new SimpleResponse<RouterWorker>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue().toObject(RouterWorker.class)));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Convenience method to create a worker.
      *
@@ -1299,9 +1295,8 @@ public final class JobRouterAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterWorker> createWorker(CreateWorkerOptions createWorkerOptions) {
-        return createWorkerWithResponse(createWorkerOptions)
-            .map(routerWorkerResponse -> routerWorkerResponse.getValue());
-    }
+        return createWorkerWithResponse(createWorkerOptions).map(routerWorkerResponse -> routerWorkerResponse.getValue());
+    }// @formatter:on
 
     /**
      * Retrieves an existing worker by Id.
@@ -1461,6 +1456,7 @@ public final class JobRouterAsyncClient {
         return this.serviceClient.listWorkersAsync(requestOptions);
     }
 
+    // @formatter:off
     /**
      * Retrieves an existing job by Id.
      *
@@ -1477,9 +1473,8 @@ public final class JobRouterAsyncClient {
     public Mono<RouterJob> getJob(String jobId) {
         // Generated convenience method for getJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(RouterJob.class));
-    }
+        return getJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(RouterJob.class));
+    }// @formatter:on
 
     /**
      * Deletes a job and all of its traces.
@@ -1522,6 +1517,7 @@ public final class JobRouterAsyncClient {
             .map(protocolMethodData -> protocolMethodData.toObject(CancelJobResultInternal.class));
     }
 
+    // @formatter:off
     /**
      * Retrieves list of jobs based on filter parameters.
      *
@@ -1542,8 +1538,7 @@ public final class JobRouterAsyncClient {
      * @return a paged collection of jobs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterJob> listJobs(RouterJobStatusSelector status, String queueId, String channelId,
-        String classificationPolicyId, OffsetDateTime scheduledBefore, OffsetDateTime scheduledAfter) {
+    public PagedFlux<RouterJob> listJobs(RouterJobStatusSelector status, String queueId, String channelId, String classificationPolicyId, OffsetDateTime scheduledBefore, OffsetDateTime scheduledAfter) {
         // Generated convenience method for listJobs
         RequestOptions requestOptions = new RequestOptions();
         if (status != null) {
@@ -1566,19 +1561,12 @@ public final class JobRouterAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listJobs(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterJob>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(RouterJob.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1) : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterJob>(pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream().map(protocolMethodData -> protocolMethodData.toObject(RouterJob.class)).collect(Collectors.toList()), pagedResponse.getContinuationToken(), null));
         });
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Retrieves list of jobs based on filter parameters.
      *
@@ -1595,18 +1583,10 @@ public final class JobRouterAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listJobs(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterJob>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(RouterJob.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1) : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterJob>(pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream().map(protocolMethodData -> protocolMethodData.toObject(RouterJob.class)).collect(Collectors.toList()), pagedResponse.getContinuationToken(), null));
         });
-    }
+    }// @formatter:on
 
     /**
      * Gets a job's position details.
@@ -1674,6 +1654,7 @@ public final class JobRouterAsyncClient {
             .map(protocolMethodData -> protocolMethodData.toObject(AcceptJobOfferResult.class));
     }
 
+    // @formatter:off
     /**
      * Declines an offer to work on a job.
      *
@@ -1691,10 +1672,10 @@ public final class JobRouterAsyncClient {
     Mono<DeclineJobOfferResultInternal> declineJobOffer(String workerId, String offerId) {
         // Generated convenience method for declineJobOfferWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return declineJobOfferWithResponse(workerId, offerId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DeclineJobOfferResultInternal.class));
-    }
+        return declineJobOfferWithResponse(workerId, offerId, requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(DeclineJobOfferResultInternal.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Retrieves a queue's statistics.
      *
@@ -1711,10 +1692,10 @@ public final class JobRouterAsyncClient {
     public Mono<RouterQueueStatistics> getQueueStatistics(String queueId) {
         // Generated convenience method for getQueueStatisticsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getQueueStatisticsWithResponse(queueId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(RouterQueueStatistics.class));
-    }
+        return getQueueStatisticsWithResponse(queueId, requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(RouterQueueStatistics.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Retrieves an existing worker by Id.
      *
@@ -1731,9 +1712,8 @@ public final class JobRouterAsyncClient {
     public Mono<RouterWorker> getWorker(String workerId) {
         // Generated convenience method for getWorkerWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWorkerWithResponse(workerId, requestOptions)
-            .map(response -> response.getValue().toObject(RouterWorker.class));
-    }
+        return getWorkerWithResponse(workerId, requestOptions).map(response -> response.getValue().toObject(RouterWorker.class));
+    }// @formatter:on
 
     /**
      * Deletes a worker and all of its traces.
@@ -1755,6 +1735,7 @@ public final class JobRouterAsyncClient {
         return deleteWorkerWithResponse(workerId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
+    // @formatter:off
     /**
      * Retrieves existing workers.
      *
@@ -1773,8 +1754,7 @@ public final class JobRouterAsyncClient {
      * @return a paged collection of workers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterWorker> listWorkers(RouterWorkerStateSelector state, String channelId, String queueId,
-        Boolean hasCapacity) {
+    public PagedFlux<RouterWorker> listWorkers(RouterWorkerStateSelector state, String channelId, String queueId, Boolean hasCapacity) {
         // Generated convenience method for listWorkers
         RequestOptions requestOptions = new RequestOptions();
         if (state != null) {
@@ -1791,19 +1771,12 @@ public final class JobRouterAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listWorkers(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterWorker>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(RouterWorker.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1) : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterWorker>(pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream().map(protocolMethodData -> protocolMethodData.toObject(RouterWorker.class)).collect(Collectors.toList()), pagedResponse.getContinuationToken(), null));
         });
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Retrieves existing workers.
      *
@@ -1820,18 +1793,10 @@ public final class JobRouterAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listWorkers(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterWorker>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(RouterWorker.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1) : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterWorker>(pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream().map(protocolMethodData -> protocolMethodData.toObject(RouterWorker.class)).collect(Collectors.toList()), pagedResponse.getContinuationToken(), null));
         });
-    }
+    }// @formatter:on
 
     /**
      * Unassign a job.
@@ -1859,6 +1824,7 @@ public final class JobRouterAsyncClient {
             .map(protocolMethodData -> protocolMethodData.toObject(UnassignJobResult.class));
     }
 
+    // @formatter:off
     /**
      * Completes an assigned job.
      * <p>
@@ -1890,11 +1856,11 @@ public final class JobRouterAsyncClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> completeJobWithResponse(String jobId, String assignmentId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> completeJobWithResponse(String jobId, String assignmentId, RequestOptions requestOptions) {
         return this.serviceClient.completeJobWithResponseAsync(jobId, assignmentId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Completes an assigned job.
      * <p>
@@ -1923,10 +1889,10 @@ public final class JobRouterAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> completeJob(String jobId, String assignmentId, RequestOptions requestOptions) {
-        return this.serviceClient.completeJobWithResponseAsync(jobId, assignmentId, requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
+        return this.serviceClient.completeJobWithResponseAsync(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono);
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Closes a completed job.
      * <p>
@@ -1959,11 +1925,11 @@ public final class JobRouterAsyncClient {
      * @return response payload from closing a job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> closeJobWithResponse(String jobId, String assignmentId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> closeJobWithResponse(String jobId, String assignmentId, RequestOptions requestOptions) {
         return this.serviceClient.closeJobWithResponseAsync(jobId, assignmentId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Closes a completed job.
      * <p>
@@ -1993,9 +1959,8 @@ public final class JobRouterAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> closeJob(String jobId, String assignmentId, RequestOptions requestOptions) {
-        return this.serviceClient.closeJobWithResponseAsync(jobId, assignmentId, requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
+        return this.serviceClient.closeJobWithResponseAsync(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono);
+    }// @formatter:on
 
     /**
      * Reclassify a job.

@@ -116,6 +116,7 @@ public final class JobRouterAdministrationClient {
         return this.serviceClient.upsertDistributionPolicyWithResponse(distributionPolicyId, resource, requestOptions);
     }
 
+    // @formatter:off
     /**
      * Updates a distribution policy.
      *
@@ -188,11 +189,11 @@ public final class JobRouterAdministrationClient {
      * @return policy governing how jobs are distributed to workers along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateDistributionPolicyWithResponse(String distributionPolicyId, BinaryData resource,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> updateDistributionPolicyWithResponse(String distributionPolicyId, BinaryData resource, RequestOptions requestOptions) {
         return this.serviceClient.upsertDistributionPolicyWithResponse(distributionPolicyId, resource, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Updates a distribution policy.
      *
@@ -229,12 +230,11 @@ public final class JobRouterAdministrationClient {
      * @return result object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DistributionPolicy updateDistributionPolicy(String distributionPolicyId,
-        DistributionPolicy distributionPolicy, RequestOptions requestOptions) {
-        return updateDistributionPolicyWithResponse(distributionPolicyId, BinaryData.fromObject(distributionPolicy),
-            requestOptions).getValue().toObject(DistributionPolicy.class);
-    }
+    public DistributionPolicy updateDistributionPolicy(String distributionPolicyId, DistributionPolicy distributionPolicy, RequestOptions requestOptions) {
+        return updateDistributionPolicyWithResponse(distributionPolicyId, BinaryData.fromObject(distributionPolicy), requestOptions).getValue().toObject(DistributionPolicy.class);
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Create a distribution policy.
      *
@@ -246,17 +246,13 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DistributionPolicy> createDistributionPolicyWithResponse(
-        CreateDistributionPolicyOptions createDistributionPolicyOptions, RequestOptions requestOptions) {
-        DistributionPolicyInternal distributionPolicy
-            = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
-        Response<BinaryData> response = this.serviceClient.upsertDistributionPolicyWithResponse(
-            createDistributionPolicyOptions.getDistributionPolicyId(), BinaryData.fromObject(distributionPolicy),
-            requestOptions);
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            response.getValue().toObject(DistributionPolicy.class));
-    }
+    public Response<DistributionPolicy> createDistributionPolicyWithResponse(CreateDistributionPolicyOptions createDistributionPolicyOptions, RequestOptions requestOptions) {
+        DistributionPolicyInternal distributionPolicy = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
+        Response<BinaryData> response = this.serviceClient.upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getDistributionPolicyId(), BinaryData.fromObject(distributionPolicy), requestOptions);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue().toObject(DistributionPolicy.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Convenience method to create a distribution policy.
      *
@@ -267,11 +263,10 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DistributionPolicy
-        createDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
+    public DistributionPolicy createDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
         RequestOptions requestOptions = new RequestOptions();
         return this.createDistributionPolicyWithResponse(createDistributionPolicyOptions, requestOptions).getValue();
-    }
+    }// @formatter:on
 
     /**
      * Retrieves an existing distribution policy by Id.
@@ -442,6 +437,7 @@ public final class JobRouterAdministrationClient {
             requestOptions);
     }
 
+    // @formatter:off
     /**
      * Updates a classification policy.
      *
@@ -524,12 +520,11 @@ public final class JobRouterAdministrationClient {
      * @return a container for the rules that govern how jobs are classified along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateClassificationPolicyWithResponse(String classificationPolicyId,
-        BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertClassificationPolicyWithResponse(classificationPolicyId, resource,
-            requestOptions);
-    }
+    public Response<BinaryData> updateClassificationPolicyWithResponse(String classificationPolicyId, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertClassificationPolicyWithResponse(classificationPolicyId, resource, requestOptions);
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Updates a classification policy.
      *
@@ -608,13 +603,11 @@ public final class JobRouterAdministrationClient {
      * @return result object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClassificationPolicy updateClassificationPolicy(String classificationPolicyId,
-        ClassificationPolicy classificationPolicy, RequestOptions requestOptions) {
-        return updateClassificationPolicyWithResponse(classificationPolicyId,
-            BinaryData.fromObject(classificationPolicy), requestOptions).getValue()
-            .toObject(ClassificationPolicy.class);
-    }
+    public ClassificationPolicy updateClassificationPolicy(String classificationPolicyId, ClassificationPolicy classificationPolicy, RequestOptions requestOptions) {
+        return updateClassificationPolicyWithResponse(classificationPolicyId, BinaryData.fromObject(classificationPolicy), requestOptions).getValue().toObject(ClassificationPolicy.class);
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Create a classification policy.
      *
@@ -626,17 +619,13 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClassificationPolicy> createClassificationPolicyWithResponse(
-        CreateClassificationPolicyOptions createClassificationPolicyOptions, RequestOptions requestOptions) {
-        ClassificationPolicyInternal classificationPolicy = ClassificationPolicyAdapter
-            .convertCreateOptionsToClassificationPolicyInternal(createClassificationPolicyOptions);
-        Response<BinaryData> response = this.serviceClient.upsertClassificationPolicyWithResponse(
-            createClassificationPolicyOptions.getClassificationPolicyId(), BinaryData.fromObject(classificationPolicy),
-            requestOptions);
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            response.getValue().toObject(ClassificationPolicy.class));
-    }
+    public Response<ClassificationPolicy> createClassificationPolicyWithResponse(CreateClassificationPolicyOptions createClassificationPolicyOptions, RequestOptions requestOptions) {
+        ClassificationPolicyInternal classificationPolicy = ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicyInternal(createClassificationPolicyOptions);
+        Response<BinaryData> response = this.serviceClient.upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getClassificationPolicyId(), BinaryData.fromObject(classificationPolicy), requestOptions);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue().toObject(ClassificationPolicy.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Convenience method to create a classification policy.
      *
@@ -647,12 +636,10 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClassificationPolicy
-        createClassificationPolicy(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
+    public ClassificationPolicy createClassificationPolicy(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return this.createClassificationPolicyWithResponse(createClassificationPolicyOptions, requestOptions)
-            .getValue();
-    }
+        return this.createClassificationPolicyWithResponse(createClassificationPolicyOptions, requestOptions).getValue();
+    }// @formatter:on
 
     /**
      * Retrieves an existing classification policy by Id.
@@ -836,6 +823,7 @@ public final class JobRouterAdministrationClient {
         return this.serviceClient.upsertExceptionPolicyWithResponse(exceptionPolicyId, resource, requestOptions);
     }
 
+    // @formatter:off
     /**
      * Updates a exception policy.
      *
@@ -916,11 +904,11 @@ public final class JobRouterAdministrationClient {
      * @return a policy that defines actions to execute when exception are triggered along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateExceptionPolicyWithResponse(String exceptionPolicyId, BinaryData resource,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> updateExceptionPolicyWithResponse(String exceptionPolicyId, BinaryData resource, RequestOptions requestOptions) {
         return this.serviceClient.upsertExceptionPolicyWithResponse(exceptionPolicyId, resource, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Updates a exception policy.
      *
@@ -957,15 +945,11 @@ public final class JobRouterAdministrationClient {
      * @return result object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExceptionPolicy updateExceptionPolicy(String exceptionPolicyId, ExceptionPolicy exceptionPolicy,
-        RequestOptions requestOptions) {
-        return this
-            .updateExceptionPolicyWithResponse(exceptionPolicyId, BinaryData.fromObject(exceptionPolicy),
-                requestOptions)
-            .getValue()
-            .toObject(ExceptionPolicy.class);
-    }
+    public ExceptionPolicy updateExceptionPolicy(String exceptionPolicyId, ExceptionPolicy exceptionPolicy, RequestOptions requestOptions) {
+        return this.updateExceptionPolicyWithResponse(exceptionPolicyId, BinaryData.fromObject(exceptionPolicy), requestOptions).getValue().toObject(ExceptionPolicy.class);
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Create an exception policy.
      *
@@ -977,17 +961,13 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExceptionPolicy> createExceptionPolicyWithResponse(
-        CreateExceptionPolicyOptions createExceptionPolicyOptions, RequestOptions requestOptions) {
-        ExceptionPolicyInternal exceptionPolicy
-            = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
-        Response<BinaryData> response
-            = this.serviceClient.upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(),
-                BinaryData.fromObject(exceptionPolicy), requestOptions);
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            response.getValue().toObject(ExceptionPolicy.class));
-    }
+    public Response<ExceptionPolicy> createExceptionPolicyWithResponse(CreateExceptionPolicyOptions createExceptionPolicyOptions, RequestOptions requestOptions) {
+        ExceptionPolicyInternal exceptionPolicy = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
+        Response<BinaryData> response = this.serviceClient.upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(), BinaryData.fromObject(exceptionPolicy), requestOptions);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue().toObject(ExceptionPolicy.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Convenience method to create an exception policy.
      *
@@ -1001,7 +981,7 @@ public final class JobRouterAdministrationClient {
     public ExceptionPolicy createExceptionPolicy(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
         RequestOptions requestOptions = new RequestOptions();
         return this.createExceptionPolicyWithResponse(createExceptionPolicyOptions, requestOptions).getValue();
-    }
+    }// @formatter:on
 
     /**
      * Retrieves an existing exception policy by Id.
@@ -1044,6 +1024,7 @@ public final class JobRouterAdministrationClient {
         return this.serviceClient.getExceptionPolicyWithResponse(exceptionPolicyId, requestOptions);
     }
 
+    // @formatter:off
     /**
      * Retrieves existing exception policies.
      * <p>
@@ -1099,7 +1080,7 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listExceptionPolicies(RequestOptions requestOptions) {
         return this.serviceClient.listExceptionPolicies(requestOptions);
-    }
+    }// @formatter:on
 
     /**
      * Deletes a exception policy by Id.
@@ -1176,6 +1157,7 @@ public final class JobRouterAdministrationClient {
         return this.serviceClient.upsertQueueWithResponse(queueId, resource, requestOptions);
     }
 
+    // @formatter:off
     /**
      * Updates a queue.
      *
@@ -1246,11 +1228,11 @@ public final class JobRouterAdministrationClient {
      * @return a queue that can contain jobs to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateQueueWithResponse(String queueId, BinaryData resource,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> updateQueueWithResponse(String queueId, BinaryData resource, RequestOptions requestOptions) {
         return this.serviceClient.upsertQueueWithResponse(queueId, resource, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Updates a queue.
      *
@@ -1288,10 +1270,10 @@ public final class JobRouterAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterQueue updateQueue(String queueId, RouterQueue queue, RequestOptions requestOptions) {
-        return updateQueueWithResponse(queueId, BinaryData.fromObject(queue), requestOptions).getValue()
-            .toObject(RouterQueue.class);
-    }
+        return updateQueueWithResponse(queueId, BinaryData.fromObject(queue), requestOptions).getValue().toObject(RouterQueue.class);
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Create a queue.
      *
@@ -1303,15 +1285,13 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterQueue> createQueueWithResponse(CreateQueueOptions createQueueOptions,
-        RequestOptions requestOptions) {
+    public Response<RouterQueue> createQueueWithResponse(CreateQueueOptions createQueueOptions, RequestOptions requestOptions) {
         RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
-        Response<BinaryData> response = this.serviceClient.upsertQueueWithResponse(createQueueOptions.getQueueId(),
-            BinaryData.fromObject(queue), requestOptions);
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            response.getValue().toObject(RouterQueue.class));
-    }
+        Response<BinaryData> response = this.serviceClient.upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue().toObject(RouterQueue.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Convenience method to create a queue.
      *
@@ -1325,7 +1305,7 @@ public final class JobRouterAdministrationClient {
     public RouterQueue createQueue(CreateQueueOptions createQueueOptions) {
         RequestOptions requestOptions = new RequestOptions();
         return this.createQueueWithResponse(createQueueOptions, requestOptions).getValue();
-    }
+    }// @formatter:on
 
     /**
      * Retrieves an existing queue by Id.
@@ -1412,6 +1392,7 @@ public final class JobRouterAdministrationClient {
         return this.serviceClient.deleteQueueWithResponse(queueId, requestOptions);
     }
 
+    // @formatter:off
     /**
      * Retrieves an existing distribution policy by Id.
      *
@@ -1427,10 +1408,10 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DistributionPolicy getDistributionPolicy(String distributionPolicyId) {
         RequestOptions requestOptions = new RequestOptions();
-        return getDistributionPolicyWithResponse(distributionPolicyId, requestOptions).getValue()
-            .toObject(DistributionPolicy.class);
-    }
+        return getDistributionPolicyWithResponse(distributionPolicyId, requestOptions).getValue().toObject(DistributionPolicy.class);
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Retrieves existing distribution policies.
      *
@@ -1445,9 +1426,8 @@ public final class JobRouterAdministrationClient {
     public PagedIterable<DistributionPolicy> listDistributionPolicies() {
         // Generated convenience method for listDistributionPolicies
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listDistributionPolicies(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(DistributionPolicy.class));
-    }
+        return serviceClient.listDistributionPolicies(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(DistributionPolicy.class));
+    }// @formatter:on
 
     /**
      * Delete a distribution policy by Id.
@@ -1468,6 +1448,7 @@ public final class JobRouterAdministrationClient {
         deleteDistributionPolicyWithResponse(distributionPolicyId, requestOptions).getValue();
     }
 
+    // @formatter:off
     /**
      * Retrieves an existing classification policy by Id.
      *
@@ -1483,10 +1464,10 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClassificationPolicy getClassificationPolicy(String classificationPolicyId) {
         RequestOptions requestOptions = new RequestOptions();
-        return getClassificationPolicyWithResponse(classificationPolicyId, requestOptions).getValue()
-            .toObject(ClassificationPolicy.class);
-    }
+        return getClassificationPolicyWithResponse(classificationPolicyId, requestOptions).getValue().toObject(ClassificationPolicy.class);
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Retrieves existing classification policies.
      *
@@ -1501,9 +1482,8 @@ public final class JobRouterAdministrationClient {
     public PagedIterable<ClassificationPolicy> listClassificationPolicies() {
         // Generated convenience method for listClassificationPolicies
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listClassificationPolicies(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(ClassificationPolicy.class));
-    }
+        return serviceClient.listClassificationPolicies(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(ClassificationPolicy.class));
+    }// @formatter:on
 
     /**
      * Delete a classification policy by Id.
@@ -1524,6 +1504,7 @@ public final class JobRouterAdministrationClient {
         deleteClassificationPolicyWithResponse(classificationPolicyId, requestOptions).getValue();
     }
 
+    // @formatter:off
     /**
      * Retrieves an existing exception policy by Id.
      *
@@ -1539,10 +1520,10 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExceptionPolicy getExceptionPolicy(String exceptionPolicyId) {
         RequestOptions requestOptions = new RequestOptions();
-        return getExceptionPolicyWithResponse(exceptionPolicyId, requestOptions).getValue()
-            .toObject(ExceptionPolicy.class);
-    }
+        return getExceptionPolicyWithResponse(exceptionPolicyId, requestOptions).getValue().toObject(ExceptionPolicy.class);
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Retrieves existing exception policies.
      *
@@ -1556,9 +1537,8 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExceptionPolicy> listExceptionPolicies() {
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listExceptionPolicies(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(ExceptionPolicy.class));
-    }
+        return serviceClient.listExceptionPolicies(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(ExceptionPolicy.class));
+    }// @formatter:on
 
     /**
      * Deletes a exception policy by Id.
@@ -1579,6 +1559,7 @@ public final class JobRouterAdministrationClient {
         deleteExceptionPolicyWithResponse(exceptionPolicyId, requestOptions).getValue();
     }
 
+    // @formatter:off
     /**
      * Retrieves an existing queue by Id.
      *
@@ -1595,8 +1576,9 @@ public final class JobRouterAdministrationClient {
     public RouterQueue getQueue(String queueId) {
         RequestOptions requestOptions = new RequestOptions();
         return getQueueWithResponse(queueId, requestOptions).getValue().toObject(RouterQueue.class);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Retrieves existing queues.
      *
@@ -1610,9 +1592,8 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RouterQueue> listQueues() {
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listQueues(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(RouterQueue.class));
-    }
+        return serviceClient.listQueues(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(RouterQueue.class));
+    }// @formatter:on
 
     /**
      * Deletes a queue by Id.

@@ -138,6 +138,7 @@ public final class OpenAIFile implements JsonSerializable<OpenAIFile> {
         return this.purpose;
     }
 
+    // @formatter:off
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -148,8 +149,9 @@ public final class OpenAIFile implements JsonSerializable<OpenAIFile> {
         jsonWriter.writeLongField("created_at", this.createdAt);
         jsonWriter.writeStringField("purpose", this.purpose == null ? null : this.purpose.toString());
         return jsonWriter.writeEndObject();
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Reads an instance of OpenAIFile from the JsonReader.
      *
@@ -185,5 +187,6 @@ public final class OpenAIFile implements JsonSerializable<OpenAIFile> {
             }
             return new OpenAIFile(id, bytes, filename, createdAt, purpose);
         });
-    }
+    }// @formatter:on
+
 }

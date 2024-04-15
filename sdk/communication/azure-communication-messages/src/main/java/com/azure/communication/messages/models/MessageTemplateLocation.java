@@ -110,6 +110,7 @@ public final class MessageTemplateLocation extends MessageTemplateValue {
         return this;
     }
 
+    // @formatter:off
     /**
      * Get the geo position: The longitude and latitude of the location.
      *
@@ -117,7 +118,7 @@ public final class MessageTemplateLocation extends MessageTemplateValue {
      */
     public GeoPosition getPosition() {
         return new GeoPosition(this.longitude, this.latitude);
-    }
+    }// @formatter:on
 
     /*
      * The type discriminator describing a template parameter type.

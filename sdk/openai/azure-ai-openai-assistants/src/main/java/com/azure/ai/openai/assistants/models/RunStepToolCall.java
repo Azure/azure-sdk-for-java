@@ -96,6 +96,7 @@ public class RunStepToolCall implements JsonSerializable<RunStepToolCall> {
         });
     }
 
+    // @formatter:off
     static RunStepToolCall fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
@@ -110,7 +111,7 @@ public class RunStepToolCall implements JsonSerializable<RunStepToolCall> {
             }
             return new RunStepToolCall(id);
         });
-    }
+    }// @formatter:on
 
     /*
      * The object type.

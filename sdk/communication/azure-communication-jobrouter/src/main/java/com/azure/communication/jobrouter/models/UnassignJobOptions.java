@@ -12,18 +12,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class UnassignJobOptions {
 
+    // @formatter:off
     /*
      * If SuspendMatching is true, then a job is not queued for re-matching with a worker.
      */
     @JsonProperty(value = "suspendMatching")
-    private Boolean suspendMatching;
+    private Boolean suspendMatching;// @formatter:on
 
+    // @formatter:off
     /**
      * Creates an instance of UnassignJobOptions class.
      */
     public UnassignJobOptions() {
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Get the suspendMatching property: If SuspendMatching is true, then a job is not queued for re-matching with a
      * worker.
@@ -32,8 +35,9 @@ public final class UnassignJobOptions {
      */
     public Boolean isSuspendMatching() {
         return this.suspendMatching;
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Set the suspendMatching property: If SuspendMatching is true, then a job is not queued for re-matching with a
      * worker.
@@ -44,5 +48,6 @@ public final class UnassignJobOptions {
     public UnassignJobOptions setSuspendMatching(Boolean suspendMatching) {
         this.suspendMatching = suspendMatching;
         return this;
-    }
+    }// @formatter:on
+
 }

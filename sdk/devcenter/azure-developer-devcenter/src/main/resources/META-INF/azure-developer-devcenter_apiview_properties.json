@@ -1,0 +1,14 @@
+{
+  "flavor": "Azure", 
+  "CrossLanguageDefinitionId": {
+    "com.azure.developer.devcenter.DeploymentEnvironmentsAsyncClient": "DevCenterService.DeploymentEnvironmentsClient",
+    "com.azure.developer.devcenter.DeploymentEnvironmentsClient": "DevCenterService.DeploymentEnvironmentsClient",
+    "com.azure.developer.devcenter.DeploymentEnvironmentsClientBuilder": "DevCenterService.DeploymentEnvironmentsClient",
+    "com.azure.developer.devcenter.DevBoxesAsyncClient": "DevCenterService.DevBoxesClient",
+    "com.azure.developer.devcenter.DevBoxesClient": "DevCenterService.DevBoxesClient",
+    "com.azure.developer.devcenter.DevBoxesClientBuilder": "DevCenterService.DevBoxesClient",
+    "com.azure.developer.devcenter.DevCenterAsyncClient": "DevCenterService.DevCenterClient",
+    "com.azure.developer.devcenter.DevCenterClient": "DevCenterService.DevCenterClient",
+    "com.azure.developer.devcenter.DevCenterClientBuilder": "DevCenterService.DevCenterClient"
+  }
+}

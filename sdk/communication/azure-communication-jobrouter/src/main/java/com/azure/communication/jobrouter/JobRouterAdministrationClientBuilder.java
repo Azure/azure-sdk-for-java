@@ -70,9 +70,11 @@ public final class JobRouterAdministrationClientBuilder implements HttpTrait<Job
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    private TokenCredential tokenCredential;
+    // @formatter:off
+    private TokenCredential tokenCredential;// @formatter:on
 
-    private KeyCredential keyCredential;
+    // @formatter:off
+    private KeyCredential keyCredential;// @formatter:on
 
     /**
      * Create an instance of the JobRouterAdministrationClientBuilder.
@@ -305,8 +307,10 @@ public final class JobRouterAdministrationClientBuilder implements HttpTrait<Job
         return new JobRouterAdministrationClient(buildInnerClient());
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(JobRouterAdministrationClientBuilder.class);
+    // @formatter:off
+    private static final ClientLogger LOGGER = new ClientLogger(JobRouterAdministrationClientBuilder.class);// @formatter:on
 
+    // @formatter:off
     /**
      * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
      * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
@@ -319,8 +323,9 @@ public final class JobRouterAdministrationClientBuilder implements HttpTrait<Job
     public JobRouterAdministrationClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Set a key credential for authorization
      *
@@ -330,7 +335,7 @@ public final class JobRouterAdministrationClientBuilder implements HttpTrait<Job
     public JobRouterAdministrationClientBuilder credential(KeyCredential credential) {
         this.keyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
-    }
+    }// @formatter:on
 
     /**
      * Sets Service version.
@@ -344,6 +349,7 @@ public final class JobRouterAdministrationClientBuilder implements HttpTrait<Job
         return this;
     }
 
+    // @formatter:off
     /**
      * Set a connection string for authorization.
      *
@@ -355,17 +361,17 @@ public final class JobRouterAdministrationClientBuilder implements HttpTrait<Job
         this.credential(new AzureKeyCredential(connection.getAccessKey()));
         this.endpoint(connection.getEndpoint());
         return this;
-    }
+    }// @formatter:on
 
+    // @formatter:off
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
         if (this.tokenCredential != null) {
-            return new BearerTokenAuthenticationPolicy(this.tokenCredential,
-                "https://communication.azure.com/.default");
+            return new BearerTokenAuthenticationPolicy(this.tokenCredential, "https://communication.azure.com/.default");
         } else if (this.keyCredential != null) {
             return new HmacAuthenticationPolicy(new AzureKeyCredential(this.keyCredential.getKey()));
         } else {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Missing credential information while building a client."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Missing credential information while building a client."));
         }
-    }
+    }// @formatter:on
+
 }

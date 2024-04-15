@@ -80,6 +80,7 @@ public final class ClassificationPolicyInternal {
         return this.etag;
     }
 
+    // @formatter:off
     /**
      * Set etag.
      *
@@ -89,7 +90,7 @@ public final class ClassificationPolicyInternal {
     public ClassificationPolicyInternal setEtag(String etag) {
         this.etag = etag;
         return this;
-    }
+    }// @formatter:on
 
     /**
      * Get the id property: Id of a classification policy.
@@ -101,6 +102,7 @@ public final class ClassificationPolicyInternal {
         return this.id;
     }
 
+    // @formatter:off
     /**
      * Sets id.
      *
@@ -110,7 +112,7 @@ public final class ClassificationPolicyInternal {
     public ClassificationPolicyInternal setId(String id) {
         this.id = id;
         return this;
-    }
+    }// @formatter:on
 
     /**
      * Get the name property: Friendly name of this policy.

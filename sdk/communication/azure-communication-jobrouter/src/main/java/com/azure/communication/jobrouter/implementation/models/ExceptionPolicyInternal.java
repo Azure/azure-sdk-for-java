@@ -113,6 +113,7 @@ public final class ExceptionPolicyInternal {
         return this;
     }
 
+    // @formatter:off
     /**
      * Set id.
      *
@@ -122,8 +123,9 @@ public final class ExceptionPolicyInternal {
     public ExceptionPolicyInternal setId(String id) {
         this.id = id;
         return this;
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Set etag
      *
@@ -133,5 +135,6 @@ public final class ExceptionPolicyInternal {
     public ExceptionPolicyInternal setEtag(String etag) {
         this.etag = etag;
         return this;
-    }
+    }// @formatter:on
+
 }

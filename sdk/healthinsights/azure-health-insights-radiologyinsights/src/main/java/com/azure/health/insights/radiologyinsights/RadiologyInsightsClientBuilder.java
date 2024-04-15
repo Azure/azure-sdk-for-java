@@ -322,5 +322,7 @@ public final class RadiologyInsightsClientBuilder
         return new RadiologyInsightsClient(buildInnerClient());
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(RadiologyInsightsClientBuilder.class);
+    // @formatter:off
+    private static final ClientLogger LOGGER = new ClientLogger(RadiologyInsightsClientBuilder.class);// @formatter:on
+
 }

@@ -68,6 +68,7 @@ public final class AssistantsClient {
     @Generated
     private final AssistantsClientImpl serviceClient;
 
+    // @formatter:off
     /**
      * Creates a new assistant.
      * <p>
@@ -128,12 +129,12 @@ public final class AssistantsClient {
      * @return represents an assistant that can call the model and use tools along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAssistantWithResponse(BinaryData assistantCreationOptions,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> createAssistantWithResponse(BinaryData assistantCreationOptions, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createAssistantWithResponse(assistantCreationOptions, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of assistants that were previously created.
      * <p>
@@ -224,8 +225,9 @@ public final class AssistantsClient {
     public Response<BinaryData> listAssistantsWithResponse(RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listAssistantsWithResponse(requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Deletes an assistant.
      * <p>
@@ -252,8 +254,9 @@ public final class AssistantsClient {
     public Response<BinaryData> deleteAssistantWithResponse(String assistantId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.deleteAssistantWithResponse(assistantId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Attaches a previously uploaded file to an assistant for use by tools that can read files.
      * <p>
@@ -290,12 +293,12 @@ public final class AssistantsClient {
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAssistantFileWithResponse(String assistantId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> createAssistantFileWithResponse(String assistantId, BinaryData request, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createAssistantFileWithResponse(assistantId, request, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of files attached to a specific assistant, as used by tools that can read files.
      * <p>
@@ -375,8 +378,9 @@ public final class AssistantsClient {
     public Response<BinaryData> listAssistantFilesWithResponse(String assistantId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listAssistantFilesWithResponse(assistantId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
      * files.
@@ -402,11 +406,10 @@ public final class AssistantsClient {
      * @return the status of an assistant file deletion operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteAssistantFileWithResponse(String assistantId, String fileId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> deleteAssistantFileWithResponse(String assistantId, String fileId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.deleteAssistantFileWithResponse(assistantId, fileId, requestOptions);
-    }
+    }// @formatter:on
 
     /**
      * Creates a new assistant.
@@ -429,6 +432,7 @@ public final class AssistantsClient {
             .toObject(Assistant.class);
     }
 
+    // @formatter:off
     /**
      * Gets a list of assistants that were previously created.
      *
@@ -465,12 +469,11 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        OpenAIPageableListOfAssistant assistantList
-            = listAssistantsWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfAssistant.class);
-        return PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-            assistantList.getLastId(), assistantList.isHasMore());
-    }
+        OpenAIPageableListOfAssistant assistantList = listAssistantsWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfAssistant.class);
+        return PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(), assistantList.getLastId(), assistantList.isHasMore());
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of assistants that were previously created.
      *
@@ -484,11 +487,9 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<Assistant> listAssistants() {
         RequestOptions requestOptions = new RequestOptions();
-        OpenAIPageableListOfAssistant assistantList
-            = listAssistantsWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfAssistant.class);
-        return PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-            assistantList.getLastId(), assistantList.isHasMore());
-    }
+        OpenAIPageableListOfAssistant assistantList = listAssistantsWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfAssistant.class);
+        return PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(), assistantList.getLastId(), assistantList.isHasMore());
+    }// @formatter:on
 
     /**
      * Deletes an assistant.
@@ -535,6 +536,7 @@ public final class AssistantsClient {
             .toObject(AssistantFile.class);
     }
 
+    // @formatter:off
     /**
      * Gets a list of files attached to a specific assistant, as used by tools that can read files.
      *
@@ -558,8 +560,7 @@ public final class AssistantsClient {
      * @return a list of files attached to a specific assistant, as used by tools that can read files.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PageableList<AssistantFile> listAssistantFiles(String assistantId, Integer limit, ListSortOrder order,
-        String after, String before) {
+    public PageableList<AssistantFile> listAssistantFiles(String assistantId, Integer limit, ListSortOrder order, String after, String before) {
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -573,13 +574,11 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        OpenAIPageableListOfAssistantFile assistantFileList
-            = listAssistantFilesWithResponse(assistantId, requestOptions).getValue()
-                .toObject(OpenAIPageableListOfAssistantFile.class);
-        return PageableListAccessHelper.create(assistantFileList.getData(), assistantFileList.getFirstId(),
-            assistantFileList.getLastId(), assistantFileList.isHasMore());
-    }
+        OpenAIPageableListOfAssistantFile assistantFileList = listAssistantFilesWithResponse(assistantId, requestOptions).getValue().toObject(OpenAIPageableListOfAssistantFile.class);
+        return PageableListAccessHelper.create(assistantFileList.getData(), assistantFileList.getFirstId(), assistantFileList.getLastId(), assistantFileList.isHasMore());
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of files attached to a specific assistant, as used by tools that can read files.
      *
@@ -595,12 +594,9 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<AssistantFile> listAssistantFiles(String assistantId) {
         RequestOptions requestOptions = new RequestOptions();
-        OpenAIPageableListOfAssistantFile assistantFileList
-            = listAssistantFilesWithResponse(assistantId, requestOptions).getValue()
-                .toObject(OpenAIPageableListOfAssistantFile.class);
-        return PageableListAccessHelper.create(assistantFileList.getData(), assistantFileList.getFirstId(),
-            assistantFileList.getLastId(), assistantFileList.isHasMore());
-    }
+        OpenAIPageableListOfAssistantFile assistantFileList = listAssistantFilesWithResponse(assistantId, requestOptions).getValue().toObject(OpenAIPageableListOfAssistantFile.class);
+        return PageableListAccessHelper.create(assistantFileList.getData(), assistantFileList.getFirstId(), assistantFileList.getLastId(), assistantFileList.isHasMore());
+    }// @formatter:on
 
     /**
      * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
@@ -635,6 +631,7 @@ public final class AssistantsClient {
         this.serviceClient = serviceClient;
     }
 
+    // @formatter:off
     /**
      * Retrieves an existing assistant.
      * <p>
@@ -675,8 +672,9 @@ public final class AssistantsClient {
     public Response<BinaryData> getAssistantWithResponse(String assistantId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getAssistantWithResponse(assistantId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Retrieves a file attached to an assistant.
      * <p>
@@ -703,12 +701,12 @@ public final class AssistantsClient {
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAssistantFileWithResponse(String assistantId, String fileId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getAssistantFileWithResponse(String assistantId, String fileId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getAssistantFileWithResponse(assistantId, fileId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Creates a new thread. Threads contain messages and can be run by assistants.
      * <p>
@@ -759,12 +757,12 @@ public final class AssistantsClient {
      * @return information about a single thread associated with an assistant along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createThreadWithResponse(BinaryData assistantThreadCreationOptions,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> createThreadWithResponse(BinaryData assistantThreadCreationOptions, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createThreadWithResponse(assistantThreadCreationOptions, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets information about an existing thread.
      * <p>
@@ -794,8 +792,9 @@ public final class AssistantsClient {
     public Response<BinaryData> getThreadWithResponse(String threadId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getThreadWithResponse(threadId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Deletes an existing thread.
      * <p>
@@ -822,8 +821,9 @@ public final class AssistantsClient {
     public Response<BinaryData> deleteThreadWithResponse(String threadId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.deleteThreadWithResponse(threadId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Creates a new message on a specified thread.
      * <p>
@@ -879,12 +879,12 @@ public final class AssistantsClient {
      * @return a single, existing message within an assistant thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createMessageWithResponse(String threadId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> createMessageWithResponse(String threadId, BinaryData request, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createMessageWithResponse(threadId, request, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of messages that exist on a thread.
      * <p>
@@ -976,8 +976,9 @@ public final class AssistantsClient {
     public Response<BinaryData> listMessagesWithResponse(String threadId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listMessagesWithResponse(threadId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets an existing message from an existing thread.
      * <p>
@@ -1016,12 +1017,12 @@ public final class AssistantsClient {
      * @return an existing message from an existing thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getMessageWithResponse(String threadId, String messageId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getMessageWithResponse(String threadId, String messageId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getMessageWithResponse(threadId, messageId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of previously uploaded files associated with a message from a thread.
      * <p>
@@ -1098,12 +1099,12 @@ public final class AssistantsClient {
      * @return a list of previously uploaded files associated with a message from a thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listMessageFilesWithResponse(String threadId, String messageId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> listMessageFilesWithResponse(String threadId, String messageId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listMessageFilesWithResponse(threadId, messageId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets information about a file attachment to a message within a thread.
      * <p>
@@ -1130,12 +1131,12 @@ public final class AssistantsClient {
      * @return information about a file attachment to a message within a thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getMessageFileWithResponse(String threadId, String messageId, String fileId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getMessageFileWithResponse(String threadId, String messageId, String fileId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getMessageFileWithResponse(threadId, messageId, fileId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Creates a new run for an assistant thread.
      * <p>
@@ -1206,12 +1207,12 @@ public final class AssistantsClient {
      * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createRunWithResponse(String threadId, BinaryData createRunOptions,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> createRunWithResponse(String threadId, BinaryData createRunOptions, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createRunWithResponse(threadId, createRunOptions, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of runs for a specified thread.
      * <p>
@@ -1315,8 +1316,9 @@ public final class AssistantsClient {
     public Response<BinaryData> listRunsWithResponse(String threadId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listRunsWithResponse(threadId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets an existing run from an existing thread.
      * <p>
@@ -1370,8 +1372,9 @@ public final class AssistantsClient {
     public Response<BinaryData> getRunWithResponse(String threadId, String runId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getRunWithResponse(threadId, runId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a
      * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
@@ -1439,12 +1442,12 @@ public final class AssistantsClient {
      * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> submitToolOutputsToRunWithResponse(String threadId, String runId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> submitToolOutputsToRunWithResponse(String threadId, String runId, BinaryData request, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.submitToolOutputsToRunWithResponse(threadId, runId, request, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Cancels a run of an in progress thread.
      * <p>
@@ -1498,8 +1501,9 @@ public final class AssistantsClient {
     public Response<BinaryData> cancelRunWithResponse(String threadId, String runId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.cancelRunWithResponse(threadId, runId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Creates a new assistant thread and immediately starts a run using that new thread.
      * <p>
@@ -1585,12 +1589,12 @@ public final class AssistantsClient {
      * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createThreadAndRunWithResponse(BinaryData createAndRunThreadOptions,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> createThreadAndRunWithResponse(BinaryData createAndRunThreadOptions, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createThreadAndRunWithResponse(createAndRunThreadOptions, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a single run step from a thread run.
      * <p>
@@ -1634,12 +1638,12 @@ public final class AssistantsClient {
      * @return a single run step from a thread run along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getRunStepWithResponse(String threadId, String runId, String stepId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getRunStepWithResponse(String threadId, String runId, String stepId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getRunStepWithResponse(threadId, runId, stepId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of run steps from a thread run.
      * <p>
@@ -1736,8 +1740,9 @@ public final class AssistantsClient {
     public Response<BinaryData> listRunStepsWithResponse(String threadId, String runId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listRunStepsWithResponse(threadId, runId, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of previously uploaded files.
      * <p>
@@ -1791,8 +1796,9 @@ public final class AssistantsClient {
     public Response<BinaryData> listFilesWithResponse(RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listFilesWithResponse(requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Delete a previously uploaded file.
      * <p>
@@ -1819,7 +1825,7 @@ public final class AssistantsClient {
     public Response<BinaryData> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.deleteFileWithResponse(fileId, requestOptions);
-    }
+    }// @formatter:on
 
     /**
      * Retrieves an existing assistant.
@@ -1980,6 +1986,7 @@ public final class AssistantsClient {
         return createMessageWithResponse(threadId, request, requestOptions).getValue().toObject(ThreadMessage.class);
     }
 
+    // @formatter:off
     /**
      * Gets a list of messages that exist on a thread.
      *
@@ -2003,8 +2010,7 @@ public final class AssistantsClient {
      * @return a list of messages that exist on a thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PageableList<ThreadMessage> listMessages(String threadId, Integer limit, ListSortOrder order, String after,
-        String before) {
+    public PageableList<ThreadMessage> listMessages(String threadId, Integer limit, ListSortOrder order, String after, String before) {
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -2018,13 +2024,11 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        OpenAIPageableListOfThreadMessage threadMessageList
-            = listMessagesWithResponse(threadId, requestOptions).getValue()
-                .toObject(OpenAIPageableListOfThreadMessage.class);
-        return PageableListAccessHelper.create(threadMessageList.getData(), threadMessageList.getFirstId(),
-            threadMessageList.getLastId(), threadMessageList.isHasMore());
-    }
+        OpenAIPageableListOfThreadMessage threadMessageList = listMessagesWithResponse(threadId, requestOptions).getValue().toObject(OpenAIPageableListOfThreadMessage.class);
+        return PageableListAccessHelper.create(threadMessageList.getData(), threadMessageList.getFirstId(), threadMessageList.getLastId(), threadMessageList.isHasMore());
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of messages that exist on a thread.
      *
@@ -2040,12 +2044,9 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<ThreadMessage> listMessages(String threadId) {
         RequestOptions requestOptions = new RequestOptions();
-        OpenAIPageableListOfThreadMessage threadMessageList
-            = listMessagesWithResponse(threadId, requestOptions).getValue()
-                .toObject(OpenAIPageableListOfThreadMessage.class);
-        return PageableListAccessHelper.create(threadMessageList.getData(), threadMessageList.getFirstId(),
-            threadMessageList.getLastId(), threadMessageList.isHasMore());
-    }
+        OpenAIPageableListOfThreadMessage threadMessageList = listMessagesWithResponse(threadId, requestOptions).getValue().toObject(OpenAIPageableListOfThreadMessage.class);
+        return PageableListAccessHelper.create(threadMessageList.getData(), threadMessageList.getFirstId(), threadMessageList.getLastId(), threadMessageList.isHasMore());
+    }// @formatter:on
 
     /**
      * Gets an existing message from an existing thread.
@@ -2068,6 +2069,7 @@ public final class AssistantsClient {
         return getMessageWithResponse(threadId, messageId, requestOptions).getValue().toObject(ThreadMessage.class);
     }
 
+    // @formatter:off
     /**
      * Gets a list of previously uploaded files associated with a message from a thread.
      *
@@ -2092,8 +2094,7 @@ public final class AssistantsClient {
      * @return a list of previously uploaded files associated with a message from a thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PageableList<MessageFile> listMessageFiles(String threadId, String messageId, Integer limit,
-        ListSortOrder order, String after, String before) {
+    public PageableList<MessageFile> listMessageFiles(String threadId, String messageId, Integer limit, ListSortOrder order, String after, String before) {
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -2107,13 +2108,11 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        OpenAIPageableListOfMessageFile messageFileList
-            = listMessageFilesWithResponse(threadId, messageId, requestOptions).getValue()
-                .toObject(OpenAIPageableListOfMessageFile.class);
-        return PageableListAccessHelper.create(messageFileList.getData(), messageFileList.getFirstId(),
-            messageFileList.getLastId(), messageFileList.isHasMore());
-    }
+        OpenAIPageableListOfMessageFile messageFileList = listMessageFilesWithResponse(threadId, messageId, requestOptions).getValue().toObject(OpenAIPageableListOfMessageFile.class);
+        return PageableListAccessHelper.create(messageFileList.getData(), messageFileList.getFirstId(), messageFileList.getLastId(), messageFileList.isHasMore());
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of previously uploaded files associated with a message from a thread.
      *
@@ -2130,12 +2129,9 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<MessageFile> listMessageFiles(String threadId, String messageId) {
         RequestOptions requestOptions = new RequestOptions();
-        OpenAIPageableListOfMessageFile messageFileList
-            = listMessageFilesWithResponse(threadId, messageId, requestOptions).getValue()
-                .toObject(OpenAIPageableListOfMessageFile.class);
-        return PageableListAccessHelper.create(messageFileList.getData(), messageFileList.getFirstId(),
-            messageFileList.getLastId(), messageFileList.isHasMore());
-    }
+        OpenAIPageableListOfMessageFile messageFileList = listMessageFilesWithResponse(threadId, messageId, requestOptions).getValue().toObject(OpenAIPageableListOfMessageFile.class);
+        return PageableListAccessHelper.create(messageFileList.getData(), messageFileList.getFirstId(), messageFileList.getLastId(), messageFileList.isHasMore());
+    }// @formatter:on
 
     /**
      * Gets information about a file attachment to a message within a thread.
@@ -2160,6 +2156,7 @@ public final class AssistantsClient {
             .toObject(MessageFile.class);
     }
 
+    // @formatter:off
     /**
      * Gets a list of runs for a specified thread.
      *
@@ -2183,8 +2180,7 @@ public final class AssistantsClient {
      * @return a list of runs for a specified thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PageableList<ThreadRun> listRuns(String threadId, Integer limit, ListSortOrder order, String after,
-        String before) {
+    public PageableList<ThreadRun> listRuns(String threadId, Integer limit, ListSortOrder order, String after, String before) {
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -2198,12 +2194,11 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        OpenAIPageableListOfThreadRun threadRunList
-            = listRunsWithResponse(threadId, requestOptions).getValue().toObject(OpenAIPageableListOfThreadRun.class);
-        return PageableListAccessHelper.create(threadRunList.getData(), threadRunList.getFirstId(),
-            threadRunList.getLastId(), threadRunList.isHasMore());
-    }
+        OpenAIPageableListOfThreadRun threadRunList = listRunsWithResponse(threadId, requestOptions).getValue().toObject(OpenAIPageableListOfThreadRun.class);
+        return PageableListAccessHelper.create(threadRunList.getData(), threadRunList.getFirstId(), threadRunList.getLastId(), threadRunList.isHasMore());
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of runs for a specified thread.
      *
@@ -2219,11 +2214,9 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<ThreadRun> listRuns(String threadId) {
         RequestOptions requestOptions = new RequestOptions();
-        OpenAIPageableListOfThreadRun threadRunList
-            = listRunsWithResponse(threadId, requestOptions).getValue().toObject(OpenAIPageableListOfThreadRun.class);
-        return PageableListAccessHelper.create(threadRunList.getData(), threadRunList.getFirstId(),
-            threadRunList.getLastId(), threadRunList.isHasMore());
-    }
+        OpenAIPageableListOfThreadRun threadRunList = listRunsWithResponse(threadId, requestOptions).getValue().toObject(OpenAIPageableListOfThreadRun.class);
+        return PageableListAccessHelper.create(threadRunList.getData(), threadRunList.getFirstId(), threadRunList.getLastId(), threadRunList.isHasMore());
+    }// @formatter:on
 
     /**
      * Gets an existing run from an existing thread.
@@ -2337,6 +2330,7 @@ public final class AssistantsClient {
         return getRunStepWithResponse(threadId, runId, stepId, requestOptions).getValue().toObject(RunStep.class);
     }
 
+    // @formatter:off
     /**
      * Gets a list of run steps from a thread run.
      *
@@ -2361,8 +2355,7 @@ public final class AssistantsClient {
      * @return a list of run steps from a thread run.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PageableList<RunStep> listRunSteps(String threadId, String runId, Integer limit, ListSortOrder order,
-        String after, String before) {
+    public PageableList<RunStep> listRunSteps(String threadId, String runId, Integer limit, ListSortOrder order, String after, String before) {
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -2376,12 +2369,11 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        OpenAIPageableListOfRunStep runStepList = listRunStepsWithResponse(threadId, runId, requestOptions).getValue()
-            .toObject(OpenAIPageableListOfRunStep.class);
-        return PageableListAccessHelper.create(runStepList.getData(), runStepList.getFirstId(), runStepList.getLastId(),
-            runStepList.isHasMore());
-    }
+        OpenAIPageableListOfRunStep runStepList = listRunStepsWithResponse(threadId, runId, requestOptions).getValue().toObject(OpenAIPageableListOfRunStep.class);
+        return PageableListAccessHelper.create(runStepList.getData(), runStepList.getFirstId(), runStepList.getLastId(), runStepList.isHasMore());
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of run steps from a thread run.
      *
@@ -2398,12 +2390,11 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<RunStep> listRunSteps(String threadId, String runId) {
         RequestOptions requestOptions = new RequestOptions();
-        OpenAIPageableListOfRunStep runStepList = listRunStepsWithResponse(threadId, runId, requestOptions).getValue()
-            .toObject(OpenAIPageableListOfRunStep.class);
-        return PageableListAccessHelper.create(runStepList.getData(), runStepList.getFirstId(), runStepList.getLastId(),
-            runStepList.isHasMore());
-    }
+        OpenAIPageableListOfRunStep runStepList = listRunStepsWithResponse(threadId, runId, requestOptions).getValue().toObject(OpenAIPageableListOfRunStep.class);
+        return PageableListAccessHelper.create(runStepList.getData(), runStepList.getFirstId(), runStepList.getLastId(), runStepList.isHasMore());
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of previously uploaded files.
      *
@@ -2423,8 +2414,9 @@ public final class AssistantsClient {
             requestOptions.addQueryParam("purpose", purpose.toString(), false);
         }
         return listFilesWithResponse(requestOptions).getValue().toObject(FileListResponse.class).getData();
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Gets a list of previously uploaded files.
      *
@@ -2440,7 +2432,7 @@ public final class AssistantsClient {
         // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listFilesWithResponse(requestOptions).getValue().toObject(FileListResponse.class).getData();
-    }
+    }// @formatter:on
 
     /**
      * Delete a previously uploaded file.
@@ -2462,6 +2454,7 @@ public final class AssistantsClient {
         return deleteFileWithResponse(fileId, requestOptions).getValue().toObject(FileDeletionStatus.class);
     }
 
+    // @formatter:off
     /**
      * Modifies an existing assistant.
      * <p>
@@ -2523,12 +2516,12 @@ public final class AssistantsClient {
      * @return represents an assistant that can call the model and use tools along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateAssistantWithResponse(String assistantId, BinaryData updateAssistantOptions,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> updateAssistantWithResponse(String assistantId, BinaryData updateAssistantOptions, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.updateAssistantWithResponse(assistantId, updateAssistantOptions, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Modifies an existing thread.
      * <p>
@@ -2568,12 +2561,12 @@ public final class AssistantsClient {
      * @return information about a single thread associated with an assistant along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateThreadWithResponse(String threadId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> updateThreadWithResponse(String threadId, BinaryData request, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.updateThreadWithResponse(threadId, request, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Modifies an existing message on an existing thread.
      * <p>
@@ -2625,12 +2618,12 @@ public final class AssistantsClient {
      * @return a single, existing message within an assistant thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateMessageWithResponse(String threadId, String messageId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> updateMessageWithResponse(String threadId, String messageId, BinaryData request, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.updateMessageWithResponse(threadId, messageId, request, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Modifies an existing thread run.
      * <p>
@@ -2694,12 +2687,12 @@ public final class AssistantsClient {
      * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateRunWithResponse(String threadId, String runId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> updateRunWithResponse(String threadId, String runId, BinaryData request, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.updateRunWithResponse(threadId, runId, request, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Uploads a file for use by other operations.
      * <p>
@@ -2731,8 +2724,9 @@ public final class AssistantsClient {
         // 'multipart/form-data'
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.uploadFileWithResponse(request, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p>
@@ -2762,7 +2756,7 @@ public final class AssistantsClient {
     public Response<BinaryData> getFileWithResponse(String fileId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getFileWithResponse(fileId, requestOptions);
-    }
+    }// @formatter:on
 
     /**
      * Modifies an existing assistant.
@@ -2907,6 +2901,7 @@ public final class AssistantsClient {
             .toObject(ThreadRun.class);
     }
 
+    // @formatter:off
     /**
      * Creates a new run for an assistant thread.
      *
@@ -2923,9 +2918,8 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThreadRun createRun(AssistantThread thread, Assistant assistant) {
         RequestOptions requestOptions = new RequestOptions();
-        return createRunWithResponse(thread.getId(), BinaryData.fromObject(new CreateRunOptions(assistant.getId())),
-            requestOptions).getValue().toObject(ThreadRun.class);
-    }
+        return createRunWithResponse(thread.getId(), BinaryData.fromObject(new CreateRunOptions(assistant.getId())), requestOptions).getValue().toObject(ThreadRun.class);
+    }// @formatter:on
 
     /**
      * Modifies an existing thread run.

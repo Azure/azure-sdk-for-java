@@ -346,6 +346,7 @@ public final class NotificationMessagesClientBuilder
         return new NotificationMessagesClient(buildInnerClient());
     }
 
+    // @formatter:off
     /**
      * Set a connection string for authorization.
      *
@@ -358,18 +359,20 @@ public final class NotificationMessagesClientBuilder
         this.credential(new KeyCredential(connection.getAccessKey()));
         this.endpoint(connection.getEndpoint());
         return this;
-    }
+    }// @formatter:on
 
+    // @formatter:off
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
         if (tokenCredential != null) {
             return new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES);
         } else if (keyCredential != null) {
             return new HmacAuthenticationPolicy(new AzureKeyCredential(keyCredential.getKey()));
         } else {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Missing credential information while building a client."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Missing credential information while building a client."));
         }
-    }
+    }// @formatter:on
 
-    private static final ClientLogger LOGGER = new ClientLogger(NotificationMessagesClientBuilder.class);
+    // @formatter:off
+    private static final ClientLogger LOGGER = new ClientLogger(NotificationMessagesClientBuilder.class);// @formatter:on
+
 }

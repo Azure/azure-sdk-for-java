@@ -75,6 +75,7 @@ public class ToolDefinition implements JsonSerializable<ToolDefinition> {
         });
     }
 
+    // @formatter:off
     static ToolDefinition fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ToolDefinition deserializedToolDefinition = new ToolDefinition();
@@ -85,7 +86,7 @@ public class ToolDefinition implements JsonSerializable<ToolDefinition> {
             }
             return deserializedToolDefinition;
         });
-    }
+    }// @formatter:on
 
     /*
      * The object type.

@@ -71,6 +71,7 @@ public class RequiredAction implements JsonSerializable<RequiredAction> {
         });
     }
 
+    // @formatter:off
     static RequiredAction fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RequiredAction deserializedRequiredAction = new RequiredAction();
@@ -81,7 +82,7 @@ public class RequiredAction implements JsonSerializable<RequiredAction> {
             }
             return deserializedRequiredAction;
         });
-    }
+    }// @formatter:on
 
     /*
      * The object type.

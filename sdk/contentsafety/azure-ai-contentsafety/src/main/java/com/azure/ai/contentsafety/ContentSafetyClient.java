@@ -166,6 +166,7 @@ public final class ContentSafetyClient {
             .toObject(AnalyzeTextResult.class);
     }
 
+    // @formatter:off
     /**
      * Analyze Text
      *
@@ -186,7 +187,7 @@ public final class ContentSafetyClient {
         // Customized convenience method for analyzeTextWithResponse
         AnalyzeTextOptions options = new AnalyzeTextOptions(text);
         return analyzeText(options);
-    }
+    }// @formatter:on
 
     /**
      * Analyze Image
@@ -212,6 +213,7 @@ public final class ContentSafetyClient {
             .toObject(AnalyzeImageResult.class);
     }
 
+    // @formatter:off
     /**
      * Analyze Image
      *
@@ -232,8 +234,9 @@ public final class ContentSafetyClient {
         // Customized convenience method for analyzeImageWithResponse
         AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setBlobUrl(blobUrl));
         return analyzeImage(body);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Analyze Image
      *
@@ -254,5 +257,6 @@ public final class ContentSafetyClient {
         // Customized convenience method for analyzeImageWithResponse
         AnalyzeImageOptions body = new AnalyzeImageOptions(new ContentSafetyImageData().setContent(content));
         return analyzeImage(body);
-    }
+    }// @formatter:on
+
 }

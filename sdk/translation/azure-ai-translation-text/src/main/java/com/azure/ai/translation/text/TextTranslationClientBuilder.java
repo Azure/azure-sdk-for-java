@@ -59,21 +59,29 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
     @Generated
     private static final String SDK_VERSION = "version";
 
-    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
+    // @formatter:off
+    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";// @formatter:on
 
-    private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
+    // @formatter:off
+    private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";// @formatter:on
 
-    private static final String OCP_APIM_SUBSCRIPTION_REGION = "Ocp-Apim-Subscription-Region";
+    // @formatter:off
+    private static final String OCP_APIM_SUBSCRIPTION_REGION = "Ocp-Apim-Subscription-Region";// @formatter:on
 
-    private static final String OCP_APIM_RESOURCE_ID_KEY = "Ocp-Apim-ResourceId";
+    // @formatter:off
+    private static final String OCP_APIM_RESOURCE_ID_KEY = "Ocp-Apim-ResourceId";// @formatter:on
 
-    private String region;
+    // @formatter:off
+    private String region;// @formatter:on
 
-    private String resourceId;
+    // @formatter:off
+    private String resourceId;// @formatter:on
 
-    private KeyCredential credential;
+    // @formatter:off
+    private KeyCredential credential;// @formatter:on
 
-    private TokenCredential tokenCredential;
+    // @formatter:off
+    private TokenCredential tokenCredential;// @formatter:on
 
     @Generated
     private static final Map<String, String> PROPERTIES
@@ -206,8 +214,10 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
     @Generated
     private String endpoint;
 
-    private Boolean isCustomEndpoint = false;
+    // @formatter:off
+    private Boolean isCustomEndpoint = false;// @formatter:on
 
+    // @formatter:off
     /**
      * {@inheritDoc}.
      */
@@ -216,7 +226,7 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         this.endpoint = endpoint;
         this.isCustomEndpoint = CustomEndpointUtils.isPlatformHost(endpoint);
         return this;
-    }
+    }// @formatter:on
 
     /*
      * Service version
@@ -254,6 +264,7 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         return this;
     }
 
+    // @formatter:off
     /**
      * Sets the {@link KeyCredential} used to authorize requests sent to the service.
      *
@@ -265,8 +276,9 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.credential = credential;
         return this;
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Sets the region used to authorize requests sent to the service.
      *
@@ -278,8 +290,9 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         Objects.requireNonNull(region, "'region' cannot be null.");
         this.region = region;
         return this;
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Sets the Azure Resource Id used to authorize requests sent to the service.
      *
@@ -291,8 +304,9 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         Objects.requireNonNull(resourceId, "'resourceId' cannot be null.");
         this.resourceId = resourceId;
         return this;
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
      * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
@@ -306,8 +320,9 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         this.tokenCredential = tokenCredential;
         return this;
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Builds an instance of TextTranslationClientImpl with the provided parameters.
      *
@@ -315,8 +330,7 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
      */
     private TextTranslationClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        TextTranslationServiceVersion localServiceVersion
-            = (serviceVersion != null) ? serviceVersion : TextTranslationServiceVersion.getLatest();
+        TextTranslationServiceVersion localServiceVersion = (serviceVersion != null) ? serviceVersion : TextTranslationServiceVersion.getLatest();
         String serviceEndpoint;
         if (this.endpoint == null) {
             serviceEndpoint = "https://api.cognitive.microsofttranslator.com";
@@ -336,21 +350,18 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
             Objects.requireNonNull(this.resourceId, "'resourceId' cannot be null.");
         }
         if (this.credential != null && !CoreUtils.isNullOrEmpty(this.resourceId)) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Resource Id cannot be used with key credential. Set resourceId to null."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Resource Id cannot be used with key credential. Set resourceId to null."));
         }
         if (tokenCredential != null && this.credential != null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Both token credential and key credential cannot be set."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Both token credential and key credential cannot be set."));
         }
-        TextTranslationClientImpl client = new TextTranslationClientImpl(localPipeline,
-            JacksonAdapter.createDefaultSerializerAdapter(), serviceEndpoint, localServiceVersion);
+        TextTranslationClientImpl client = new TextTranslationClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), serviceEndpoint, localServiceVersion);
         return client;
-    }
+    }// @formatter:on
 
+    // @formatter:off
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration
-            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
         ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -361,14 +372,11 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders()
-            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
+        localClientOptions.getHeaders().forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        this.pipelinePolicies.stream()
-            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-            .forEach(p -> policies.add(p));
+        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL).forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
@@ -389,17 +397,12 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
                 policies.add(new AddHeadersPolicy(regionHeaders));
             }
         }
-        this.pipelinePolicies.stream()
-            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-            .forEach(p -> policies.add(p));
+        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(localHttpLogOptions));
-        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .clientOptions(localClientOptions)
-            .build();
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0])).httpClient(httpClient).clientOptions(localClientOptions).build();
         return httpPipeline;
-    }
+    }// @formatter:on
 
     /**
      * Builds an instance of TextTranslationAsyncClient class.
@@ -421,5 +424,7 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         return new TextTranslationClient(buildInnerClient());
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(TextTranslationClientBuilder.class);
+    // @formatter:off
+    private static final ClientLogger LOGGER = new ClientLogger(TextTranslationClientBuilder.class);// @formatter:on
+
 }

@@ -73,10 +73,10 @@ public class RunStepCodeInterpreterToolCallOutput implements JsonSerializable<Ru
         });
     }
 
+    // @formatter:off
     static RunStepCodeInterpreterToolCallOutput fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            RunStepCodeInterpreterToolCallOutput deserializedRunStepCodeInterpreterToolCallOutput
-                = new RunStepCodeInterpreterToolCallOutput();
+            RunStepCodeInterpreterToolCallOutput deserializedRunStepCodeInterpreterToolCallOutput = new RunStepCodeInterpreterToolCallOutput();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -84,7 +84,7 @@ public class RunStepCodeInterpreterToolCallOutput implements JsonSerializable<Ru
             }
             return deserializedRunStepCodeInterpreterToolCallOutput;
         });
-    }
+    }// @formatter:on
 
     /*
      * The object type.

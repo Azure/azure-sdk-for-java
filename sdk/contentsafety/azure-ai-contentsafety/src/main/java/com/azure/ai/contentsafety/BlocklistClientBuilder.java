@@ -346,5 +346,7 @@ public final class BlocklistClientBuilder implements HttpTrait<BlocklistClientBu
         return new BlocklistClient(buildInnerClient());
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(BlocklistClientBuilder.class);
+    // @formatter:off
+    private static final ClientLogger LOGGER = new ClientLogger(BlocklistClientBuilder.class);// @formatter:on
+
 }

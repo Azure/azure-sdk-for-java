@@ -124,6 +124,7 @@ public final class JobRouterAdministrationAsyncClient {
             requestOptions);
     }
 
+    // @formatter:off
     /**
      * Updates a distribution policy.
      *
@@ -197,12 +198,11 @@ public final class JobRouterAdministrationAsyncClient {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateDistributionPolicyWithResponse(String distributionPolicyId,
-        BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertDistributionPolicyWithResponseAsync(distributionPolicyId, resource,
-            requestOptions);
-    }
+    public Mono<Response<BinaryData>> updateDistributionPolicyWithResponse(String distributionPolicyId, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertDistributionPolicyWithResponseAsync(distributionPolicyId, resource, requestOptions);
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Updates a distribution policy.
      *
@@ -240,14 +240,11 @@ public final class JobRouterAdministrationAsyncClient {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DistributionPolicy> updateDistributionPolicy(String distributionPolicyId,
-        DistributionPolicy distributionPolicy, RequestOptions requestOptions) {
-        return this
-            .updateDistributionPolicyWithResponse(distributionPolicyId, BinaryData.fromObject(distributionPolicy),
-                requestOptions)
-            .map(response -> response.getValue().toObject(DistributionPolicy.class));
-    }
+    public Mono<DistributionPolicy> updateDistributionPolicy(String distributionPolicyId, DistributionPolicy distributionPolicy, RequestOptions requestOptions) {
+        return this.updateDistributionPolicyWithResponse(distributionPolicyId, BinaryData.fromObject(distributionPolicy), requestOptions).map(response -> response.getValue().toObject(DistributionPolicy.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Creates a distribution policy.
      *
@@ -258,17 +255,13 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DistributionPolicy>>
-        createDistributionPolicyWithResponse(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
+    public Mono<Response<DistributionPolicy>> createDistributionPolicyWithResponse(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        DistributionPolicyInternal distributionPolicy
-            = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
-        return upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getDistributionPolicyId(),
-            BinaryData.fromObject(distributionPolicy), requestOptions)
-            .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue().toObject(DistributionPolicy.class)));
-    }
+        DistributionPolicyInternal distributionPolicy = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
+        return upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getDistributionPolicyId(), BinaryData.fromObject(distributionPolicy), requestOptions).map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue().toObject(DistributionPolicy.class)));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Creates a distribution policy.
      *
@@ -276,11 +269,9 @@ public final class JobRouterAdministrationAsyncClient {
      * @return response The response instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DistributionPolicy>
-        createDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
-        return createDistributionPolicyWithResponse(createDistributionPolicyOptions)
-            .map(response -> response.getValue());
-    }
+    public Mono<DistributionPolicy> createDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
+        return createDistributionPolicyWithResponse(createDistributionPolicyOptions).map(response -> response.getValue());
+    }// @formatter:on
 
     /**
      * Retrieves an existing distribution policy by Id.
@@ -453,6 +444,7 @@ public final class JobRouterAdministrationAsyncClient {
             requestOptions);
     }
 
+    // @formatter:off
     /**
      * Updates a classification policy.
      *
@@ -536,12 +528,11 @@ public final class JobRouterAdministrationAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateClassificationPolicyWithResponse(String classificationPolicyId,
-        BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertClassificationPolicyWithResponseAsync(classificationPolicyId, resource,
-            requestOptions);
-    }
+    public Mono<Response<BinaryData>> updateClassificationPolicyWithResponse(String classificationPolicyId, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertClassificationPolicyWithResponseAsync(classificationPolicyId, resource, requestOptions);
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Updates a classification policy.
      *
@@ -579,14 +570,11 @@ public final class JobRouterAdministrationAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ClassificationPolicy> updateClassificationPolicy(String classificationPolicyId,
-        ClassificationPolicy classificationPolicy, RequestOptions requestOptions) {
-        return this
-            .updateClassificationPolicyWithResponse(classificationPolicyId, BinaryData.fromObject(classificationPolicy),
-                requestOptions)
-            .map(response -> response.getValue().toObject(ClassificationPolicy.class));
-    }
+    public Mono<ClassificationPolicy> updateClassificationPolicy(String classificationPolicyId, ClassificationPolicy classificationPolicy, RequestOptions requestOptions) {
+        return this.updateClassificationPolicyWithResponse(classificationPolicyId, BinaryData.fromObject(classificationPolicy), requestOptions).map(response -> response.getValue().toObject(ClassificationPolicy.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Creates a classification policy.
      *
@@ -597,17 +585,13 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ClassificationPolicy>>
-        createClassificationPolicyWithResponse(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
+    public Mono<Response<ClassificationPolicy>> createClassificationPolicyWithResponse(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        ClassificationPolicyInternal classificationPolicy = ClassificationPolicyAdapter
-            .convertCreateOptionsToClassificationPolicyInternal(createClassificationPolicyOptions);
-        return upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getClassificationPolicyId(),
-            BinaryData.fromObject(classificationPolicy), requestOptions)
-            .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue().toObject(ClassificationPolicy.class)));
-    }
+        ClassificationPolicyInternal classificationPolicy = ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicyInternal(createClassificationPolicyOptions);
+        return upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getClassificationPolicyId(), BinaryData.fromObject(classificationPolicy), requestOptions).map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue().toObject(ClassificationPolicy.class)));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Convenience method to create a classification policy.
      *
@@ -618,11 +602,9 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ClassificationPolicy>
-        createClassificationPolicy(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
-        return createClassificationPolicyWithResponse(createClassificationPolicyOptions)
-            .map(response -> response.getValue());
-    }
+    public Mono<ClassificationPolicy> createClassificationPolicy(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
+        return createClassificationPolicyWithResponse(createClassificationPolicyOptions).map(response -> response.getValue());
+    }// @formatter:on
 
     /**
      * Retrieves an existing classification policy by Id.
@@ -808,6 +790,7 @@ public final class JobRouterAdministrationAsyncClient {
         return this.serviceClient.upsertExceptionPolicyWithResponseAsync(exceptionPolicyId, resource, requestOptions);
     }
 
+    // @formatter:off
     /**
      * Updates a exception policy.
      *
@@ -889,11 +872,11 @@ public final class JobRouterAdministrationAsyncClient {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateExceptionPolicyWithResponse(String exceptionPolicyId, BinaryData resource,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateExceptionPolicyWithResponse(String exceptionPolicyId, BinaryData resource, RequestOptions requestOptions) {
         return this.serviceClient.upsertExceptionPolicyWithResponseAsync(exceptionPolicyId, resource, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Updates a exception policy.
      *
@@ -931,14 +914,11 @@ public final class JobRouterAdministrationAsyncClient {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExceptionPolicy> updateExceptionPolicy(String exceptionPolicyId, ExceptionPolicy exceptionPolicy,
-        RequestOptions requestOptions) {
-        return this
-            .updateExceptionPolicyWithResponse(exceptionPolicyId, BinaryData.fromObject(exceptionPolicy),
-                requestOptions)
-            .map(response -> response.getValue().toObject(ExceptionPolicy.class));
-    }
+    public Mono<ExceptionPolicy> updateExceptionPolicy(String exceptionPolicyId, ExceptionPolicy exceptionPolicy, RequestOptions requestOptions) {
+        return this.updateExceptionPolicyWithResponse(exceptionPolicyId, BinaryData.fromObject(exceptionPolicy), requestOptions).map(response -> response.getValue().toObject(ExceptionPolicy.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Creates an exception policy.
      *
@@ -949,17 +929,13 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExceptionPolicy>>
-        createExceptionPolicyWithResponse(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
+    public Mono<Response<ExceptionPolicy>> createExceptionPolicyWithResponse(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        ExceptionPolicyInternal exceptionPolicy
-            = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
-        return upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(),
-            BinaryData.fromObject(exceptionPolicy), requestOptions)
-            .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue().toObject(ExceptionPolicy.class)));
-    }
+        ExceptionPolicyInternal exceptionPolicy = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
+        return upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(), BinaryData.fromObject(exceptionPolicy), requestOptions).map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue().toObject(ExceptionPolicy.class)));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Creates an exception policy.
      *
@@ -969,7 +945,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExceptionPolicy> createExceptionPolicy(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
         return createExceptionPolicyWithResponse(createExceptionPolicyOptions).map(response -> response.getValue());
-    }
+    }// @formatter:on
 
     /**
      * Retrieves an existing exception policy by Id.
@@ -1013,6 +989,7 @@ public final class JobRouterAdministrationAsyncClient {
         return this.serviceClient.getExceptionPolicyWithResponseAsync(exceptionPolicyId, requestOptions);
     }
 
+    // @formatter:off
     /**
      * Retrieves existing exception policies.
      * <p>
@@ -1068,7 +1045,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listExceptionPolicies(RequestOptions requestOptions) {
         return this.serviceClient.listExceptionPoliciesAsync(requestOptions);
-    }
+    }// @formatter:on
 
     /**
      * Deletes a exception policy by Id.
@@ -1148,6 +1125,7 @@ public final class JobRouterAdministrationAsyncClient {
         return this.serviceClient.upsertQueueWithResponseAsync(queueId, resource, requestOptions);
     }
 
+    // @formatter:off
     /**
      * Updates a queue.
      *
@@ -1219,11 +1197,11 @@ public final class JobRouterAdministrationAsyncClient {
      * Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateQueueWithResponse(String queueId, BinaryData resource,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateQueueWithResponse(String queueId, BinaryData resource, RequestOptions requestOptions) {
         return this.serviceClient.upsertQueueWithResponseAsync(queueId, resource, requestOptions);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Updates a queue.
      *
@@ -1262,10 +1240,10 @@ public final class JobRouterAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterQueue> updateQueue(String queueId, RouterQueue queue, RequestOptions requestOptions) {
-        return this.upsertQueueWithResponse(queueId, BinaryData.fromObject(queue), requestOptions)
-            .map(response -> response.getValue().toObject(RouterQueue.class));
-    }
+        return this.upsertQueueWithResponse(queueId, BinaryData.fromObject(queue), requestOptions).map(response -> response.getValue().toObject(RouterQueue.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Create a queue.
      *
@@ -1279,11 +1257,10 @@ public final class JobRouterAdministrationAsyncClient {
     public Mono<Response<RouterQueue>> createQueueWithResponse(CreateQueueOptions createQueueOptions) {
         RequestOptions requestOptions = new RequestOptions();
         RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
-        return upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions)
-            .map(response -> new SimpleResponse<RouterQueue>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue().toObject(RouterQueue.class)));
-    }
+        return upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions).map(response -> new SimpleResponse<RouterQueue>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue().toObject(RouterQueue.class)));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Create a queue.
      *
@@ -1297,9 +1274,8 @@ public final class JobRouterAdministrationAsyncClient {
     public Mono<RouterQueue> createQueue(CreateQueueOptions createQueueOptions) {
         RequestOptions requestOptions = new RequestOptions();
         RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
-        return upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions)
-            .map(response -> response.getValue().toObject(RouterQueue.class));
-    }
+        return upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions).map(response -> response.getValue().toObject(RouterQueue.class));
+    }// @formatter:on
 
     /**
      * Retrieves an existing queue by Id.
@@ -1387,6 +1363,7 @@ public final class JobRouterAdministrationAsyncClient {
         return this.serviceClient.deleteQueueWithResponseAsync(queueId, requestOptions);
     }
 
+    // @formatter:off
     /**
      * Retrieves an existing distribution policy by Id.
      *
@@ -1403,10 +1380,10 @@ public final class JobRouterAdministrationAsyncClient {
     public Mono<DistributionPolicy> getDistributionPolicy(String distributionPolicyId) {
         // Generated convenience method for getDistributionPolicyWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getDistributionPolicyWithResponse(distributionPolicyId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DistributionPolicy.class));
-    }
+        return getDistributionPolicyWithResponse(distributionPolicyId, requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(DistributionPolicy.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Retrieves existing distribution policies.
      *
@@ -1423,18 +1400,10 @@ public final class JobRouterAdministrationAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listDistributionPolicies(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, DistributionPolicy>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(DistributionPolicy.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1) : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DistributionPolicy>(pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream().map(protocolMethodData -> protocolMethodData.toObject(DistributionPolicy.class)).collect(Collectors.toList()), pagedResponse.getContinuationToken(), null));
         });
-    }
+    }// @formatter:on
 
     /**
      * Delete a distribution policy by Id.
@@ -1456,6 +1425,7 @@ public final class JobRouterAdministrationAsyncClient {
         return deleteDistributionPolicyWithResponse(distributionPolicyId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
+    // @formatter:off
     /**
      * Retrieves an existing classification policy by Id.
      *
@@ -1472,10 +1442,10 @@ public final class JobRouterAdministrationAsyncClient {
     public Mono<ClassificationPolicy> getClassificationPolicy(String classificationPolicyId) {
         // Generated convenience method for getClassificationPolicyWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getClassificationPolicyWithResponse(classificationPolicyId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ClassificationPolicy.class));
-    }
+        return getClassificationPolicyWithResponse(classificationPolicyId, requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(ClassificationPolicy.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Retrieves existing classification policies.
      *
@@ -1492,19 +1462,10 @@ public final class JobRouterAdministrationAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listClassificationPolicies(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, ClassificationPolicy>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(ClassificationPolicy.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1) : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, ClassificationPolicy>(pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream().map(protocolMethodData -> protocolMethodData.toObject(ClassificationPolicy.class)).collect(Collectors.toList()), pagedResponse.getContinuationToken(), null));
         });
-    }
+    }// @formatter:on
 
     /**
      * Delete a classification policy by Id.
@@ -1526,6 +1487,7 @@ public final class JobRouterAdministrationAsyncClient {
         return deleteClassificationPolicyWithResponse(classificationPolicyId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
+    // @formatter:off
     /**
      * Retrieves an existing exception policy by Id.
      *
@@ -1542,10 +1504,10 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExceptionPolicy> getExceptionPolicy(String exceptionPolicyId) {
         RequestOptions requestOptions = new RequestOptions();
-        return getExceptionPolicyWithResponse(exceptionPolicyId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ExceptionPolicy.class));
-    }
+        return getExceptionPolicyWithResponse(exceptionPolicyId, requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(ExceptionPolicy.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Retrieves existing exception policies.
      *
@@ -1562,18 +1524,10 @@ public final class JobRouterAdministrationAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listExceptionPolicies(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, ExceptionPolicy>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(ExceptionPolicy.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1) : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, ExceptionPolicy>(pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream().map(protocolMethodData -> protocolMethodData.toObject(ExceptionPolicy.class)).collect(Collectors.toList()), pagedResponse.getContinuationToken(), null));
         });
-    }
+    }// @formatter:on
 
     /**
      * Deletes a exception policy by Id.
@@ -1595,6 +1549,7 @@ public final class JobRouterAdministrationAsyncClient {
         return deleteExceptionPolicyWithResponse(exceptionPolicyId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
+    // @formatter:off
     /**
      * Retrieves an existing queue by Id.
      *
@@ -1611,10 +1566,10 @@ public final class JobRouterAdministrationAsyncClient {
     public Mono<RouterQueue> getQueue(String queueId) {
         // Generated convenience method for getQueueWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getQueueWithResponse(queueId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(RouterQueue.class));
-    }
+        return getQueueWithResponse(queueId, requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(RouterQueue.class));
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Retrieves existing queues.
      *
@@ -1631,18 +1586,10 @@ public final class JobRouterAdministrationAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listQueues(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterQueue>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(RouterQueue.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1) : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterQueue>(pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream().map(protocolMethodData -> protocolMethodData.toObject(RouterQueue.class)).collect(Collectors.toList()), pagedResponse.getContinuationToken(), null));
         });
-    }
+    }// @formatter:on
 
     /**
      * Deletes a queue by Id.

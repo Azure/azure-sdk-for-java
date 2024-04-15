@@ -132,6 +132,7 @@ public class MessageTextAnnotation implements JsonSerializable<MessageTextAnnota
         });
     }
 
+    // @formatter:off
     static MessageTextAnnotation fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String text = null;
@@ -152,7 +153,7 @@ public class MessageTextAnnotation implements JsonSerializable<MessageTextAnnota
             }
             return new MessageTextAnnotation(text, startIndex, endIndex);
         });
-    }
+    }// @formatter:on
 
     /*
      * The object type.

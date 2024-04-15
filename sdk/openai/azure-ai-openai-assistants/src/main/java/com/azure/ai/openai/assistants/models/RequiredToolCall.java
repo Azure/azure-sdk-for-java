@@ -92,6 +92,7 @@ public class RequiredToolCall implements JsonSerializable<RequiredToolCall> {
         });
     }
 
+    // @formatter:off
     static RequiredToolCall fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
@@ -106,7 +107,7 @@ public class RequiredToolCall implements JsonSerializable<RequiredToolCall> {
             }
             return new RequiredToolCall(id);
         });
-    }
+    }// @formatter:on
 
     /*
      * The object type for the required tool call.

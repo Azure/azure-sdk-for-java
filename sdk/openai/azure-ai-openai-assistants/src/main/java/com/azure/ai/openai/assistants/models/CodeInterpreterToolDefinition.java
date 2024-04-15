@@ -23,12 +23,13 @@ public final class CodeInterpreterToolDefinition extends ToolDefinition {
     public CodeInterpreterToolDefinition() {
     }
 
+    // @formatter:off
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", "code_interpreter");
         return jsonWriter.writeEndObject();
-    }
+    }// @formatter:on
 
     /*
      * The object type.

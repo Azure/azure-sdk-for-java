@@ -346,5 +346,7 @@ public final class ContentSafetyClientBuilder implements HttpTrait<ContentSafety
         return new ContentSafetyClient(buildInnerClient());
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ContentSafetyClientBuilder.class);
+    // @formatter:off
+    private static final ClientLogger LOGGER = new ClientLogger(ContentSafetyClientBuilder.class);// @formatter:on
+
 }

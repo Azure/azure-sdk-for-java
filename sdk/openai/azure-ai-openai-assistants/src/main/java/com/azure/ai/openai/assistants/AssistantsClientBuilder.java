@@ -253,9 +253,9 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
         return this;
     }
 
+    // @formatter:off
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration
-            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
         ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -266,41 +266,32 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders()
-            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
+        localClientOptions.getHeaders().forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
         if (!useAzureOpenAIService(this.endpoint)) {
             headers.add("OpenAI-Beta", "assistants=v1");
         }
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        this.pipelinePolicies.stream()
-            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-            .forEach(p -> policies.add(p));
+        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL).forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
         if (keyCredential != null) {
-            policies.add(useAzureOpenAIService(this.endpoint)
-                ? new KeyCredentialPolicy("api-key", keyCredential)
-                : new KeyCredentialPolicy("Authorization", keyCredential, "Bearer"));
+            policies.add(useAzureOpenAIService(this.endpoint) ? new KeyCredentialPolicy("api-key", keyCredential) : new KeyCredentialPolicy("Authorization", keyCredential, "Bearer"));
         }
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
-        this.pipelinePolicies.stream()
-            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-            .forEach(p -> policies.add(p));
+        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(localHttpLogOptions));
-        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .clientOptions(localClientOptions)
-            .build();
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0])).httpClient(httpClient).clientOptions(localClientOptions).build();
         return httpPipeline;
-    }
+    }// @formatter:on
 
-    private static final ClientLogger LOGGER = new ClientLogger(AssistantsClientBuilder.class);
+    // @formatter:off
+    private static final ClientLogger LOGGER = new ClientLogger(AssistantsClientBuilder.class);// @formatter:on
 
     /**
      * Builds an instance of AssistantsAsyncClient class.
@@ -340,6 +331,7 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
         return this;
     }
 
+    // @formatter:off
     /**
      * Builds an instance of AssistantsClientImpl with the provided parameters.
      *
@@ -347,14 +339,9 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
      */
     private AssistantsClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        AssistantsServiceVersion localServiceVersion
-            = (serviceVersion != null) ? serviceVersion : AssistantsServiceVersion.getLatest();
-        AssistantsClientImpl client
-            = new AssistantsClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),
-                useAzureOpenAIService(this.endpoint)
-                    ? (this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai"))
-                    : OpenAIUtils.getOpenAIEndpoint() + "/v1",
-                localServiceVersion);
+        AssistantsServiceVersion localServiceVersion = (serviceVersion != null) ? serviceVersion : AssistantsServiceVersion.getLatest();
+        AssistantsClientImpl client = new AssistantsClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), useAzureOpenAIService(this.endpoint) ? (this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai")) : OpenAIUtils.getOpenAIEndpoint() + "/v1", localServiceVersion);
         return client;
-    }
+    }// @formatter:on
+
 }

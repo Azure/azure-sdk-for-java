@@ -39,6 +39,7 @@ public final class ContentSafetyImageData implements JsonSerializable<ContentSaf
     public ContentSafetyImageData() {
     }
 
+    // @formatter:off
     /**
      * Get the content property: The Base64 encoding of the image.
      *
@@ -46,8 +47,9 @@ public final class ContentSafetyImageData implements JsonSerializable<ContentSaf
      */
     public BinaryData getContent() {
         return this.content == null ? null : BinaryData.fromBytes(this.content);
-    }
+    }// @formatter:on
 
+    // @formatter:off
     /**
      * Set the content property: The Base64 encoding of the image.
      *
@@ -57,7 +59,7 @@ public final class ContentSafetyImageData implements JsonSerializable<ContentSaf
     public ContentSafetyImageData setContent(BinaryData content) {
         this.content = content == null ? null : content.toBytes();
         return this;
-    }
+    }// @formatter:on
 
     /**
      * Get the blobUrl property: The blob url of the image.

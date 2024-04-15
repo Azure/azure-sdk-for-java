@@ -179,6 +179,7 @@ public final class RouterWorkerSelectorInternal {
         return this.status;
     }
 
+    // @formatter:off
     /**
      * Set status.
      *
@@ -188,7 +189,7 @@ public final class RouterWorkerSelectorInternal {
     public RouterWorkerSelectorInternal setStatus(RouterWorkerSelectorStatus status) {
         this.status = status;
         return this;
-    }
+    }// @formatter:on
 
     /**
      * Get the expiresAt property: The time at which this worker selector expires in UTC.
@@ -200,6 +201,7 @@ public final class RouterWorkerSelectorInternal {
         return this.expiresAt;
     }
 
+    // @formatter:off
     /**
      * Set expirestAt.
      *
@@ -209,5 +211,6 @@ public final class RouterWorkerSelectorInternal {
     public RouterWorkerSelectorInternal setExpiresAt(OffsetDateTime expiresAt) {
         this.expiresAt = expiresAt;
         return this;
-    }
+    }// @formatter:on
+
 }

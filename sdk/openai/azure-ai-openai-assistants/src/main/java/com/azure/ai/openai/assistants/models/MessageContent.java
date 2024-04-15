@@ -73,6 +73,7 @@ public class MessageContent implements JsonSerializable<MessageContent> {
         });
     }
 
+    // @formatter:off
     static MessageContent fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MessageContent deserializedMessageContent = new MessageContent();
@@ -83,7 +84,7 @@ public class MessageContent implements JsonSerializable<MessageContent> {
             }
             return deserializedMessageContent;
         });
-    }
+    }// @formatter:on
 
     /*
      * The object type.
