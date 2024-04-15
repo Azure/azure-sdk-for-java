@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * Model representing a JSON boolean value.
  */
-public final class JsonBoolean implements JsonElement {
+public final class JsonBoolean extends JsonElement {
     private static final JsonBoolean TRUE = new JsonBoolean(true);
     private static final JsonBoolean FALSE = new JsonBoolean(false);
 
@@ -78,8 +78,8 @@ public final class JsonBoolean implements JsonElement {
         }
 
         if (token != JsonToken.BOOLEAN) {
-            throw new IllegalStateException("JsonReader is pointing to an invalid token for deserialization. "
-                + "Token was: " + token + ".");
+            throw new IllegalStateException(
+                "JsonReader is pointing to an invalid token for deserialization. " + "Token was: " + token + ".");
         }
 
         return getInstance(jsonReader.getBoolean());

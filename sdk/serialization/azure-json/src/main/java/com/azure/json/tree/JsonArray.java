@@ -17,7 +17,7 @@ import java.util.Objects;
 /**
  * Model representing a JSON array.
  */
-public class JsonArray implements JsonElement {
+public class JsonArray extends JsonElement {
     private final List<JsonElement> elements;
 
     /**
@@ -113,7 +113,7 @@ public class JsonArray implements JsonElement {
      * @return boolean of whether this JsonElement object is of type JsonArray.
      */
     @Override
-    public boolean isArray() {
+    public final boolean isArray() {
         return true;
     }
 
@@ -144,8 +144,8 @@ public class JsonArray implements JsonElement {
         }
 
         if (token != JsonToken.START_ARRAY) {
-            throw new IllegalStateException("JsonReader is pointing to an invalid token for deserialization. "
-                + "Token was: " + token + ".");
+            throw new IllegalStateException(
+                "JsonReader is pointing to an invalid token for deserialization. " + "Token was: " + token + ".");
         }
 
         return new JsonArray(jsonReader.readArray(JsonElement::fromJson));
@@ -171,5 +171,31 @@ public class JsonArray implements JsonElement {
     private static JsonElement nullCheck(JsonElement element) {
         return Objects.requireNonNull(element,
             "The JsonElement cannot be null. If null must be represented in JSON, use JsonNull.");
+    }
+
+    // Following methods are overridden as final to prevent subtypes from changing the behavior.
+    @Override
+    public final boolean isObject() {
+        return false;
+    }
+
+    @Override
+    public final boolean isBoolean() {
+        return false;
+    }
+
+    @Override
+    public final boolean isNull() {
+        return false;
+    }
+
+    @Override
+    public final boolean isNumber() {
+        return false;
+    }
+
+    @Override
+    public final boolean isString() {
+        return false;
     }
 }

@@ -15,7 +15,7 @@ import java.util.Objects;
 /**
  * Class representing the JSON number type
  */
-public final class JsonNumber implements JsonElement {
+public final class JsonNumber extends JsonElement {
     /**
      * Stores the String representation of the current state of the JsonNumber
      * object.
@@ -106,7 +106,7 @@ public final class JsonNumber implements JsonElement {
      * @param value The number value the JsonNumber will represent.
      * @throws NullPointerException If {@code value} is null.
      */
-    public JsonNumber(Number value) throws IllegalArgumentException {
+    public JsonNumber(Number value) {
         this.value = Objects.requireNonNull(value, "JsonNumber cannot represent a null value.");
     }
 
@@ -160,8 +160,8 @@ public final class JsonNumber implements JsonElement {
         }
 
         if (token != JsonToken.NUMBER) {
-            throw new IllegalStateException("JsonReader is pointing to an invalid token for deserialization. "
-                + "Token was: " + token + ".");
+            throw new IllegalStateException(
+                "JsonReader is pointing to an invalid token for deserialization. " + "Token was: " + token + ".");
         }
 
         return new JsonNumber(jsonReader.getString());

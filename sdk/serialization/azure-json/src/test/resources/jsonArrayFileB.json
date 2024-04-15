@@ -1,9 +1,0 @@
-{
-  "priorJson": "This is before the array",
-  "boolean": true,
-  "array":[
-    1,
-    2,
-    3
-  ]
-}

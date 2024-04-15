@@ -17,7 +17,7 @@ import java.util.Objects;
 /**
  * Class representing the JSON object type.
  */
-public class JsonObject implements JsonElement {
+public class JsonObject extends JsonElement {
     private final Map<String, JsonElement> properties;
 
     /**
@@ -67,8 +67,17 @@ public class JsonObject implements JsonElement {
         return properties.remove(key);
     }
 
+    /**
+     * The number of properties in the JSON object.
+     *
+     * @return The number of properties in the JSON object.
+     */
+    public int size() {
+        return properties.size();
+    }
+
     @Override
-    public boolean isObject() {
+    public final boolean isObject() {
         return true;
     }
 
@@ -99,8 +108,8 @@ public class JsonObject implements JsonElement {
         }
 
         if (token != JsonToken.START_OBJECT) {
-            throw new IllegalStateException("JsonReader is pointing to an invalid token for deserialization. "
-                + "Token was: " + token + ".");
+            throw new IllegalStateException(
+                "JsonReader is pointing to an invalid token for deserialization. " + "Token was: " + token + ".");
         }
 
         return new JsonObject(jsonReader.readMap(JsonElement::fromJson));
@@ -126,5 +135,31 @@ public class JsonObject implements JsonElement {
     private static JsonElement nullCheck(JsonElement element) {
         return Objects.requireNonNull(element,
             "The JsonElement cannot be null. If null must be represented in JSON, use JsonNull.");
+    }
+
+    // Following methods are overridden as final to prevent subtypes from changing the behavior.
+    @Override
+    public final boolean isArray() {
+        return false;
+    }
+
+    @Override
+    public final boolean isBoolean() {
+        return false;
+    }
+
+    @Override
+    public final boolean isNull() {
+        return false;
+    }
+
+    @Override
+    public final boolean isNumber() {
+        return false;
+    }
+
+    @Override
+    public final boolean isString() {
+        return false;
     }
 }

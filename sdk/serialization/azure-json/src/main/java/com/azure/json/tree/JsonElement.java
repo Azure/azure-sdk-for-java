@@ -15,7 +15,13 @@ import java.io.IOException;
 /**
  * Interface defining methods that all JSON types must implement.
  */
-public interface JsonElement extends JsonSerializable<JsonElement> {
+public abstract class JsonElement implements JsonSerializable<JsonElement> {
+    JsonElement() {
+        // Dummy package-private constructor to prevent external implementations of types that shouldn't be extended.
+        // Right now, the only extension points we want are JsonArray and JsonObject, everything else should be agnostic
+        // to the JSON implementation.
+    }
+
     /**
      * Deserializes a JSON element from a JsonReader.
      * <p>
@@ -47,17 +53,23 @@ public interface JsonElement extends JsonSerializable<JsonElement> {
 
         switch (token) {
             case START_OBJECT:
-                return new JsonObject(jsonReader);
+                return JsonObject.fromJson(jsonReader);
+
             case START_ARRAY:
                 return JsonArray.fromJson(jsonReader);
+
             case STRING:
                 return new JsonString(jsonReader.getString());
+
             case NUMBER:
                 return new JsonNumber(jsonReader.getString());
+
             case BOOLEAN:
                 return JsonBoolean.getInstance(jsonReader.getBoolean());
+
             case NULL:
                 return JsonNull.getInstance();
+
             default:
                 throw new IllegalStateException(
                     "JsonReader is pointing to an invalid token for deserialization." + "Token was: " + token + ".");
@@ -69,7 +81,7 @@ public interface JsonElement extends JsonSerializable<JsonElement> {
      *
      * @return Whether the element is an array.
      */
-    default boolean isArray() {
+    public boolean isArray() {
         return false;
     }
 
@@ -78,7 +90,7 @@ public interface JsonElement extends JsonSerializable<JsonElement> {
      *
      * @return Whether the element is an object.
      */
-    default boolean isObject() {
+    public boolean isObject() {
         return false;
     }
 
@@ -87,7 +99,7 @@ public interface JsonElement extends JsonSerializable<JsonElement> {
      *
      * @return Whether the element is a boolean.
      */
-    default boolean isBoolean() {
+    public boolean isBoolean() {
         return false;
     }
 
@@ -96,7 +108,7 @@ public interface JsonElement extends JsonSerializable<JsonElement> {
      *
      * @return Whether the element is a null.
      */
-    default boolean isNull() {
+    public boolean isNull() {
         return false;
     }
 
@@ -105,7 +117,7 @@ public interface JsonElement extends JsonSerializable<JsonElement> {
      *
      * @return Whether the element is a number.
      */
-    default boolean isNumber() {
+    public boolean isNumber() {
         return false;
     }
 
@@ -114,7 +126,7 @@ public interface JsonElement extends JsonSerializable<JsonElement> {
      *
      * @return Whether the element is a string.
      */
-    default boolean isString() {
+    public boolean isString() {
         return false;
     }
 
@@ -124,7 +136,7 @@ public interface JsonElement extends JsonSerializable<JsonElement> {
      * @return JSON String representation of this element.
      * @throws IOException If an error occurs while creating the JSON string.
      */
-    default String toJsonString() throws IOException {
+    public String toJsonString() throws IOException {
         StringBuilderWriter writer = new StringBuilderWriter();
         try (JsonWriter jsonWriter = JsonProviders.createWriter(writer)) {
             toJson(jsonWriter).flush();

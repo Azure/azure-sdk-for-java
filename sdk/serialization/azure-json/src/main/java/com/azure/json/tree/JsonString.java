@@ -15,7 +15,7 @@ import java.math.BigInteger;
 /**
  * Class representing the JSON string type
  */
-public final class JsonString implements JsonElement {
+public final class JsonString extends JsonElement {
     private final String value;
 
     // Used to capture the JSON string value when toJsonString is called to prevent creating a new string each time the
@@ -30,6 +30,15 @@ public final class JsonString implements JsonElement {
      */
     public JsonString(String value) {
         this.value = value;
+    }
+
+    /**
+     * Gets the string value of this JsonString object.
+     *
+     * @return the string value of this JsonString object
+     */
+    public String getValue() {
+        return value;
     }
 
     /**
@@ -71,8 +80,8 @@ public final class JsonString implements JsonElement {
         }
 
         if (token != JsonToken.STRING) {
-            throw new IllegalStateException("JsonReader is pointing to an invalid token for deserialization. "
-                + "Token was: " + token + ".");
+            throw new IllegalStateException(
+                "JsonReader is pointing to an invalid token for deserialization. " + "Token was: " + token + ".");
         }
 
         return new JsonString(jsonReader.getString());

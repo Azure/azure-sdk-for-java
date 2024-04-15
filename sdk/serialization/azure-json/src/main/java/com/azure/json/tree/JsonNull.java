@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * Model representing a JSON null value.
  */
-public final class JsonNull implements JsonElement {
+public final class JsonNull extends JsonElement {
     private static final JsonNull INSTANCE = new JsonNull();
 
     private JsonNull() {
@@ -64,8 +64,8 @@ public final class JsonNull implements JsonElement {
         }
 
         if (token != JsonToken.NULL) {
-            throw new IllegalStateException("JsonReader is pointing to an invalid token for deserialization. "
-                + "Token was: " + token + ".");
+            throw new IllegalStateException(
+                "JsonReader is pointing to an invalid token for deserialization. " + "Token was: " + token + ".");
         }
 
         return getInstance();
