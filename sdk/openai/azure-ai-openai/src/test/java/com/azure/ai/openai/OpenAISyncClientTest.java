@@ -41,12 +41,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioSystem;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
