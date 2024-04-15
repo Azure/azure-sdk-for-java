@@ -58,6 +58,8 @@ public class ShareAudience extends ExpandableStringEnum<ShareAudience> {
     }
 
     /**
+     * Gets known ShareAudience values.
+     *
      * @return known ShareAudience values.
      */
     public static Collection<ShareAudience> values() {

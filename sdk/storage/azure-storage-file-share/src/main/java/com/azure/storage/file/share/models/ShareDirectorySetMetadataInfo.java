@@ -20,12 +20,14 @@ public class ShareDirectorySetMetadataInfo {
      * @param isServerEncrypted The value of this header is set to true if the directory metadata is completely
      * encrypted using the specified algorithm. Otherwise, the value is set to false.
      */
-    public ShareDirectorySetMetadataInfo(final String eTag, final boolean isServerEncrypted) {
+    public ShareDirectorySetMetadataInfo(String eTag, boolean isServerEncrypted) {
         this.eTag = eTag;
         this.isServerEncrypted = isServerEncrypted;
     }
 
     /**
+     * Gets the entity tag that corresponds to the directory.
+     *
      * @return The entity tag that corresponds to the directory.
      */
     public String getETag() {
@@ -33,6 +35,9 @@ public class ShareDirectorySetMetadataInfo {
     }
 
     /**
+     * The value of this header is true if the directory metadata is completely encrypted using the specified algorithm.
+     * Otherwise, the value is false.
+     *
      * @return The value of this header is true if the directory metadata is completely encrypted using the specified
      * algorithm. Otherwise, the value is false.
      */

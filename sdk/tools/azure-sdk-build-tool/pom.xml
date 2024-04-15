@@ -72,7 +72,7 @@
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugin-tools:maven-plugin-annotations;external_dependency} -->
+      <version>3.12.0</version> <!-- {x-version-update;org.apache.maven.plugin-tools:maven-plugin-annotations;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -312,7 +312,7 @@
       <plugin>
         <groupId>com.azure.tools</groupId>
         <artifactId>codesnippet-maven-plugin</artifactId>
-        <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <version>1.0.0-beta.9</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
         <configuration>
           <readmeGlob>**/*.md</readmeGlob>
         </configuration>

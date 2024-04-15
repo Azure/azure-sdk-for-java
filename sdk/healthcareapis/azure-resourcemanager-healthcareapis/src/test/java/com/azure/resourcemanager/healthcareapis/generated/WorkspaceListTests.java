@@ -30,7 +30,8 @@ public final class WorkspaceListTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkspaceList model = new WorkspaceList().withNextLink("ajzyul")
-            .withValue(Arrays.asList(new WorkspaceInner().withEtag("ovmclwhijcoejct").withLocation("odgmaajrmvdjwz")
+            .withValue(Arrays.asList(new WorkspaceInner().withEtag("ovmclwhijcoejct")
+                .withLocation("odgmaajrmvdjwz")
                 .withTags(mapOf("onpimexgstxg", "okaj"))
                 .withProperties(new WorkspaceProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED))));
         model = BinaryData.fromObject(model).toObject(WorkspaceList.class);

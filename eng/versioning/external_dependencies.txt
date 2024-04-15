@@ -45,6 +45,8 @@ com.microsoft.rest:client-runtime;1.7.4
 com.microsoft.rest.v2:client-runtime;2.1.1
 com.microsoft.sqlserver:mssql-jdbc;10.2.3.jre8
 com.microsoft.azure:spring-data-cosmosdb;2.3.0
+com.microsoft.azure:azure-functions-maven-plugin;1.30.0
+com.microsoft.azure.functions:azure-functions-java-library;2.2.0
 com.mysql:mysql-connector-j;8.0.33
 com.squareup.okhttp3:mockwebserver;4.12.0
 com.squareup.okhttp3:okhttp;4.12.0
@@ -262,7 +264,7 @@ com.google.truth:truth;1.1.3
 
 ## Maven Tools versions
 com.azure:sdk-build-tools;1.0.0
-com.azure.tools:codesnippet-maven-plugin;1.0.0-beta.8
+com.azure.tools:codesnippet-maven-plugin;1.0.0-beta.9
 com.beust:jcommander;1.78
 # Spotless 2.30.0 is the last version supporting a Java 8 runtime
 com.diffplug.spotless:spotless-maven-plugin;2.30.0
@@ -287,7 +289,7 @@ org.apache.commons:commons-text;1.10.0
 org.apache.commons:commons-dbcp2;2.9.0
 org.apache.maven:maven-plugin-api;3.9.6
 org.apache.maven:maven-project;2.2.1
-org.apache.maven.plugin-tools:maven-plugin-annotations;3.1.0
+org.apache.maven.plugin-tools:maven-plugin-annotations;3.12.0
 org.apache.maven.plugins:maven-antrun-plugin;3.1.0
 org.apache.maven.plugins:maven-assembly-plugin;3.7.1
 org.apache.maven.plugins:maven-checkstyle-plugin;3.3.1
