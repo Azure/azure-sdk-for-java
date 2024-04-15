@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'. */
+/**
+ * Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'.
+ */
 public final class RoutingRuleEnabledState extends ExpandableStringEnum<RoutingRuleEnabledState> {
-    /** Static value Enabled for RoutingRuleEnabledState. */
+    /**
+     * Static value Enabled for RoutingRuleEnabledState.
+     */
     public static final RoutingRuleEnabledState ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for RoutingRuleEnabledState. */
+    /**
+     * Static value Disabled for RoutingRuleEnabledState.
+     */
     public static final RoutingRuleEnabledState DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of RoutingRuleEnabledState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class RoutingRuleEnabledState extends ExpandableStringEnum<RoutingR
 
     /**
      * Creates or finds a RoutingRuleEnabledState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RoutingRuleEnabledState.
      */
@@ -38,7 +44,7 @@ public final class RoutingRuleEnabledState extends ExpandableStringEnum<RoutingR
 
     /**
      * Gets known RoutingRuleEnabledState values.
-     *
+     * 
      * @return known RoutingRuleEnabledState values.
      */
     public static Collection<RoutingRuleEnabledState> values() {
