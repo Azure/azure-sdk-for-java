@@ -24,12 +24,18 @@ public class ListLabels {
                 .connectionString(connectionString)
                 .buildClient();
 
+
+        client.setConfigurationSetting("prod:prod1", "prod1", "prod1");
+        client.setConfigurationSetting("prod:prod2", "prod2", "prod2");
+
+
+
         // If you want to list all labels in the sources, simply pass selector=null in the request;
         // If you want to list all labels by wildcard, pass wildcard where AppConfig supports, such as "prod*",
         // If you want to list labels by exact match, use the exact label name as the filter.
-        LabelSelector selector = new LabelSelector().setLabelFilter("prod*");
+        LabelSelector selector = new LabelSelector().setLabelFilter("prod1");
 
         client.listLabels(selector, Context.NONE)
-                .forEach(label -> System.out.println("Label name =" + label));
+                .forEach(label -> System.out.println("Label name =" + label.getName()));
     }
 }

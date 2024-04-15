@@ -1063,6 +1063,8 @@ public final class ConfigurationClient {
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
         final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
+        final List<String> tagsFilter = selector == null ? null : List.of(selector.getTagsFilter());
+
         AtomicInteger pageETagIndex = new AtomicInteger(0);
         return new PagedIterable<>(
             () -> {
