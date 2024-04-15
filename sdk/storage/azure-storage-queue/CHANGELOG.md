@@ -2,6 +2,9 @@
 
 ## 12.21.0-beta.1 (2024-04-15)
 
+### Features Added
+- Added support for service versions 2024-02-04 and 2024-05-04.
+
 ## 12.20.3 (2024-03-20)
 
 ### Other Changes
