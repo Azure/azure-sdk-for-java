@@ -56,7 +56,7 @@ public class TestProxyUtils {
         "clientSecret", "keyVaultClientSecret", "authHeader", "httpHeader", "encryptedCredential", "appkey",
         "functionKey", "atlasKafkaPrimaryEndpoint", "atlasKafkaSecondaryEndpoint", "certificatePassword",
         "storageAccountPrimaryKey", "privateKey", "fencingClientPassword", "acrToken", "scriptUrlSasToken",
-        "azureBlobSource.containerUrl");
+        "azureBlobSource.containerUrl", "properties.DOCKER_REGISTRY_SEVER_PASSWORD");
 
     private static final List<TestProxySanitizer> HEADER_KEY_REGEX_TO_REDACT = Arrays.asList(
 
