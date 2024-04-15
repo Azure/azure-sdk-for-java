@@ -29,6 +29,8 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 | Connector     | Supported Spark Versions | Minimum Java Version | Supported Scala Versions | Supported Databricks Runtimes |
 |---------------|--------------------------|----------------------| -----------------------  |-------------------------------|
 | 4.29.0-beta.1 | 3.5.0                    | [8, 11]              | 2.12                     | 14.*                          |
+Note: Java 8 prior to version 8u371 support is deprecated as of Spark 3.5.0. When using the Scala API, it is necessary for applications
+to use the same version of Scala that Spark was compiled for.
 
 #### azure-cosmos-spark_3-4_2-12
 | Connector | Supported Spark Versions | Supported JVM Versions | Supported Scala Versions | Supported Databricks Runtimes |
