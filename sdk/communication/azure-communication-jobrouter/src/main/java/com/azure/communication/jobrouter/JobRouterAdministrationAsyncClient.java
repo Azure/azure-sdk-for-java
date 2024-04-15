@@ -27,10 +27,6 @@ import com.azure.core.util.FluxUtil;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import com.azure.communication.jobrouter.implementation.accesshelpers.ClassificationPolicyConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.DistributionPolicyConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.ExceptionPolicyConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterQueueConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.ClassificationPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
@@ -237,49 +233,19 @@ public final class JobRouterAdministrationAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
-     * <p>
-     * <strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     distributionPolicyId: String (Required)
-     *     name: String (Optional)
-     *     offerExpiresAfterSeconds: Double (Optional)
-     *     mode (Optional): {
-     *         minConcurrentOffers: Integer (Optional)
-     *         maxConcurrentOffers: Integer (Optional)
-     *         bypassSelectors: Boolean (Optional)
-     *     }
-     * }
-     * }</pre>
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     distributionPolicyId: String (Required)
-     *     name: String (Optional)
-     *     offerExpiresAfterSeconds: Double (Optional)
-     *     mode (Optional): {
-     *         minConcurrentOffers: Integer (Optional)
-     *         maxConcurrentOffers: Integer (Optional)
-     *         bypassSelectors: Boolean (Optional)
-     *     }
-     * }
-     * }</pre>
-     *
      * @param distributionPolicyId The unique identifier of the policy.
-     * @param resource The resource instance.
+     * @param distributionPolicy The distribution policy to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return policy governing how jobs are distributed to workers along with {@link Response} on successful completion
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> updateDistributionPolicy(String distributionPolicyId, BinaryData resource,
-        RequestOptions requestOptions) {
-        return this.updateDistributionPolicyWithResponse(distributionPolicyId, resource, requestOptions)
-            .map(response -> response.getValue());
+    public Mono<DistributionPolicy> updateDistributionPolicy(String distributionPolicyId,
+        DistributionPolicy distributionPolicy, RequestOptions requestOptions) {
+        return this
+            .updateDistributionPolicyWithResponse(distributionPolicyId, BinaryData.fromObject(distributionPolicy),
+                requestOptions)
+            .map(response -> response.getValue().toObject(DistributionPolicy.class));
     }
 
     /**
@@ -299,9 +265,8 @@ public final class JobRouterAdministrationAsyncClient {
             = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
         return upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getDistributionPolicyId(),
             BinaryData.fromObject(distributionPolicy), requestOptions)
-            .map(response -> new SimpleResponse<DistributionPolicy>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), DistributionPolicyConstructorProxy
-                    .create(response.getValue().toObject(DistributionPolicyInternal.class))));
+            .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue().toObject(DistributionPolicy.class)));
     }
 
     /**
@@ -607,59 +572,19 @@ public final class JobRouterAdministrationAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
-     * <p>
-     * <strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     classificationPolicyId: String (Required)
-     *     name: String (Optional)
-     *     fallbackQueueId: String (Optional)
-     *     queueSelectors (Optional): [
-     *          (Optional){
-     *         }
-     *     ]
-     *     prioritizationRule (Optional): {
-     *     }
-     *     workerSelectors (Optional): [
-     *          (Optional){
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     classificationPolicyId: String (Required)
-     *     name: String (Optional)
-     *     fallbackQueueId: String (Optional)
-     *     queueSelectors (Optional): [
-     *          (Optional){
-     *         }
-     *     ]
-     *     prioritizationRule (Optional): {
-     *     }
-     *     workerSelectors (Optional): [
-     *          (Optional){
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
      * @param classificationPolicyId Unique identifier of this policy.
-     * @param resource The resource instance.
+     * @param classificationPolicy The classification policy to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return result object.
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> updateClassificationPolicy(String classificationPolicyId, BinaryData resource,
-        RequestOptions requestOptions) {
-        return this.updateClassificationPolicyWithResponse(classificationPolicyId, resource, requestOptions)
-            .map(response -> response.getValue());
+    public Mono<ClassificationPolicy> updateClassificationPolicy(String classificationPolicyId,
+        ClassificationPolicy classificationPolicy, RequestOptions requestOptions) {
+        return this
+            .updateClassificationPolicyWithResponse(classificationPolicyId, BinaryData.fromObject(classificationPolicy),
+                requestOptions)
+            .map(response -> response.getValue().toObject(ClassificationPolicy.class));
     }
 
     /**
@@ -679,9 +604,8 @@ public final class JobRouterAdministrationAsyncClient {
             .convertCreateOptionsToClassificationPolicyInternal(createClassificationPolicyOptions);
         return upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getClassificationPolicyId(),
             BinaryData.fromObject(classificationPolicy), requestOptions)
-            .map(response -> new SimpleResponse<ClassificationPolicy>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), ClassificationPolicyConstructorProxy
-                    .create(response.getValue().toObject(ClassificationPolicyInternal.class))));
+            .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue().toObject(ClassificationPolicy.class)));
     }
 
     /**
@@ -1000,57 +924,19 @@ public final class JobRouterAdministrationAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
-     * <p>
-     * <strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     exceptionPolicyId: String (Required)
-     *     name: String (Optional)
-     *     exceptionRules (Optional): {
-     *         String (Optional): {
-     *             trigger (Required): {
-     *             }
-     *             actions (Required): {
-     *                 String (Required): {
-     *                 }
-     *             }
-     *         }
-     *     }
-     * }
-     * }</pre>
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     exceptionPolicyId: String (Required)
-     *     name: String (Optional)
-     *     exceptionRules (Optional): {
-     *         String (Optional): {
-     *             trigger (Required): {
-     *             }
-     *             actions (Required): {
-     *                 String (Required): {
-     *                 }
-     *             }
-     *         }
-     *     }
-     * }
-     * }</pre>
-     *
      * @param exceptionPolicyId The Id of the exception policy.
-     * @param resource The resource instance.
+     * @param exceptionPolicy The exception policy to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> updateExceptionPolicy(String exceptionPolicyId, BinaryData resource,
+    public Mono<ExceptionPolicy> updateExceptionPolicy(String exceptionPolicyId, ExceptionPolicy exceptionPolicy,
         RequestOptions requestOptions) {
-        return this.updateExceptionPolicyWithResponse(exceptionPolicyId, resource, requestOptions)
-            .map(response -> response.getValue());
+        return this
+            .updateExceptionPolicyWithResponse(exceptionPolicyId, BinaryData.fromObject(exceptionPolicy),
+                requestOptions)
+            .map(response -> response.getValue().toObject(ExceptionPolicy.class));
     }
 
     /**
@@ -1070,9 +956,8 @@ public final class JobRouterAdministrationAsyncClient {
             = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
         return upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(),
             BinaryData.fromObject(exceptionPolicy), requestOptions)
-            .map(response -> new SimpleResponse<ExceptionPolicy>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(),
-                ExceptionPolicyConstructorProxy.create(response.getValue().toObject(ExceptionPolicyInternal.class))));
+            .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue().toObject(ExceptionPolicy.class)));
     }
 
     /**
@@ -1088,10 +973,8 @@ public final class JobRouterAdministrationAsyncClient {
 
     /**
      * Retrieves an existing exception policy by Id.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     *
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1101,9 +984,11 @@ public final class JobRouterAdministrationAsyncClient {
      *          (Optional){
      *             id: String (Required)
      *             trigger (Required): {
+     *                 kind: String(queueLength/waitTime) (Required)
      *             }
      *             actions (Required): [
      *                  (Required){
+     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -1121,6 +1006,7 @@ public final class JobRouterAdministrationAsyncClient {
      * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on
      * successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getExceptionPolicyWithResponse(String exceptionPolicyId,
         RequestOptions requestOptions) {
@@ -1368,45 +1254,16 @@ public final class JobRouterAdministrationAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
-     * <p>
-     * <strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     queueId: String (Required)
-     *     name: String (Optional)
-     *     distributionPolicyId: String (Optional)
-     *     labels (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     exceptionPolicyId: String (Optional)
-     * }
-     * }</pre>
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     queueId: String (Required)
-     *     name: String (Optional)
-     *     distributionPolicyId: String (Optional)
-     *     labels (Optional): {
-     *         String: Object (Optional)
-     *     }
-     *     exceptionPolicyId: String (Optional)
-     * }
-     * }</pre>
-     *
      * @param queueId The Id of this queue.
-     * @param resource The resource instance.
+     * @param queue The queue to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return result object.
      * Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> updateQueue(String queueId, BinaryData resource, RequestOptions requestOptions) {
-        return this.upsertQueueWithResponse(queueId, resource, requestOptions).map(response -> response.getValue());
+    public Mono<RouterQueue> updateQueue(String queueId, RouterQueue queue, RequestOptions requestOptions) {
+        return this.upsertQueueWithResponse(queueId, BinaryData.fromObject(queue), requestOptions)
+            .map(response -> response.getValue().toObject(RouterQueue.class));
     }
 
     /**
@@ -1424,8 +1281,7 @@ public final class JobRouterAdministrationAsyncClient {
         RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
         return upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions)
             .map(response -> new SimpleResponse<RouterQueue>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(),
-                RouterQueueConstructorProxy.create(response.getValue().toObject(RouterQueueInternal.class))));
+                response.getHeaders(), response.getValue().toObject(RouterQueue.class)));
     }
 
     /**
@@ -1442,8 +1298,7 @@ public final class JobRouterAdministrationAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
         return upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions)
-            .map(response -> response.getValue().toObject(RouterQueueInternal.class))
-            .map(internal -> RouterQueueConstructorProxy.create(internal));
+            .map(response -> response.getValue().toObject(RouterQueue.class));
     }
 
     /**
@@ -1686,7 +1541,6 @@ public final class JobRouterAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExceptionPolicy> getExceptionPolicy(String exceptionPolicyId) {
-        // Generated convenience method for getExceptionPolicyWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getExceptionPolicyWithResponse(exceptionPolicyId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ExceptionPolicy.class));

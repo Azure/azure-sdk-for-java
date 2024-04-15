@@ -4,6 +4,8 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
@@ -18,18 +20,21 @@ public final class RouterJobNote {
      *
      * @param message The message for the note.
      */
-    public RouterJobNote(String message) {
+    @JsonCreator
+    public RouterJobNote(@JsonProperty(value = "message") String message) {
         this.message = Objects.requireNonNull(message, "'message' cannot be null.");
     }
 
     /**
      * The time at which the note was added in UTC.
      */
+    @JsonProperty(value = "addedAt")
     private OffsetDateTime addedAt;
 
     /**
      * Message for the note.
      */
+    @JsonProperty(value = "message")
     private final String message;
 
     /**
