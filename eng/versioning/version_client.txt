@@ -44,7 +44,7 @@ com.azure:azure-ai-formrecognizer;4.1.6;4.2.0-beta.1
 com.azure:azure-ai-formrecognizer-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-metricsadvisor;1.1.23;1.2.0-beta.1
 com.azure:azure-ai-metricsadvisor-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-ai-openai;1.0.0-beta.7;1.0.0-beta.8
+com.azure:azure-ai-openai;1.0.0-beta.8;1.0.0-beta.9
 com.azure:azure-ai-openai-assistants;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-ai-personalizer;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-textanalytics;5.4.4;5.5.0-beta.1
@@ -119,7 +119,7 @@ com.azure:azure-data-appconfiguration-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-schemaregistry;1.4.4;1.5.0-beta.1
 com.azure:azure-data-schemaregistry-apacheavro;1.1.15;1.2.0-beta.2
 com.azure:azure-data-schemaregistry-jsonschema;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-data-tables;12.3.20;12.4.0-beta.2
+com.azure:azure-data-tables;12.4.0;12.5.0-beta.1
 com.azure:azure-data-tables-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-developer-devcenter;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-developer-loadtesting;1.0.11;1.1.0-beta.1
@@ -164,7 +164,7 @@ com.azure:azure-messaging-webpubsub-client;1.0.1;1.1.0-beta.1
 com.azure:azure-mixedreality-authentication;1.2.22;1.3.0-beta.1
 com.azure:azure-mixedreality-remoterendering;1.1.27;1.2.0-beta.1
 com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.21;1.0.0-beta.22
-com.azure:azure-monitor-ingestion;1.1.5;1.2.0-beta.1
+com.azure:azure-monitor-ingestion;1.2.0;1.3.0-beta.1
 com.azure:azure-monitor-ingestion-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-monitor-query;1.3.0;1.4.0-beta.1
 com.azure:azure-monitor-query-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -202,6 +202,10 @@ com.azure:azure-verticals-agrifood-farming;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-xml;1.0.0;1.1.0-beta.1
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-vision-imageanalysis;1.0.0-beta.2;1.0.0-beta.3
+com.azure:identity-test-container;1.0-SNAPSHOT;1.0-SNAPSHOT
+com.azure:identity-test-function;1.0-SNAPSHOT;1.0-SNAPSHOT
+com.azure:identity-test-vm;1.0-SNAPSHOT;1.0-SNAPSHOT
+com.azure:identity-test-webapp;0.0.1-SNAPSHOT;0.0.1-SNAPSHOT
 com.azure.spring:azure-monitor-spring-native;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-monitor-spring-native-test;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:spring-cloud-azure-appconfiguration-config-web;4.17.0;4.18.0-beta.1
@@ -313,7 +317,7 @@ com.azure.resourcemanager:azure-resourcemanager-synapse;1.0.0-beta.7;1.0.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-resourcehealth;1.0.0;1.1.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-databricks;1.0.0-beta.4;1.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-databoxedge;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-frontdoor;1.0.0-beta.3;1.0.0-beta.4
+com.azure.resourcemanager:azure-resourcemanager-frontdoor;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mixedreality;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-automation;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-resourcemover;1.1.0;1.2.0-beta.1
@@ -336,7 +340,7 @@ com.azure.resourcemanager:azure-resourcemanager-datamigration;1.0.0-beta.2;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-devspaces;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-devtestlabs;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hanaonazure;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-healthcareapis;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-healthcareapis;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hybridcompute;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-logic;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-maintenance;1.0.0;1.1.0-beta.1
@@ -462,6 +466,8 @@ com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
+
+unreleased_com.azure:azure-core-amqp;2.10.0-beta.1
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid

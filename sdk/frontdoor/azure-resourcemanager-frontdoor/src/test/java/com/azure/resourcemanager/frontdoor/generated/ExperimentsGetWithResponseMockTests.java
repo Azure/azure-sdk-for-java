@@ -6,73 +6,42 @@ package com.azure.resourcemanager.frontdoor.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.frontdoor.FrontDoorManager;
 import com.azure.resourcemanager.frontdoor.models.Experiment;
 import com.azure.resourcemanager.frontdoor.models.State;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ExperimentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"description\":\"sjvh\",\"endpointA\":{\"name\":\"ftkwq\",\"endpoint\":\"pmvssehaep\"},\"endpointB\":{\"name\":\"cxtczhupeukn\",\"endpoint\":\"d\"},\"enabledState\":\"Disabled\",\"resourceState\":\"Disabled\",\"status\":\"ydjfb\",\"scriptFileUri\":\"yv\"},\"location\":\"hulrtywikdmhla\",\"tags\":{\"mxu\":\"lgbhgauacdi\",\"yjq\":\"rs\"},\"id\":\"dkfnozoeoqbvj\",\"name\":\"vefgwbmqjchntas\",\"type\":\"ay\"}";
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"gsgbpfgzdjt\",\"endpointA\":{\"name\":\"flbqvgaq\",\"endpoint\":\"gafcqu\"},\"endpointB\":{\"name\":\"vetnwsdtutn\",\"endpoint\":\"duy\"},\"enabledState\":\"Disabled\",\"resourceState\":\"Deleting\",\"status\":\"rmewipmve\",\"scriptFileUri\":\"xukuqgsj\"},\"location\":\"xundxgk\",\"tags\":{\"gpmuneqsxvmhfbuz\":\"zhhzjhfjmhvvmu\",\"ms\":\"yihsasbhudypohyu\",\"ttymsjny\":\"ynsqyrpfoobr\",\"tilaxh\":\"qdnfwqzdz\"},\"id\":\"fhqlyvi\",\"name\":\"ouwivkxoyzunbixx\",\"type\":\"ti\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        FrontDoorManager manager = FrontDoorManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Experiment response = manager.experiments()
+            .getWithResponse("chillcecf", "huwaoaguhic", "llizs", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        FrontDoorManager manager =
-            FrontDoorManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Experiment response =
-            manager
-                .experiments()
-                .getWithResponse("f", "fiwrxgkn", "uvyinzqodfvpgs", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("xundxgk", response.location());
-        Assertions.assertEquals("zhhzjhfjmhvvmu", response.tags().get("gpmuneqsxvmhfbuz"));
-        Assertions.assertEquals("gsgbpfgzdjt", response.description());
-        Assertions.assertEquals("flbqvgaq", response.endpointA().name());
-        Assertions.assertEquals("gafcqu", response.endpointA().endpoint());
-        Assertions.assertEquals("vetnwsdtutn", response.endpointB().name());
-        Assertions.assertEquals("duy", response.endpointB().endpoint());
+        Assertions.assertEquals("hulrtywikdmhla", response.location());
+        Assertions.assertEquals("lgbhgauacdi", response.tags().get("mxu"));
+        Assertions.assertEquals("sjvh", response.description());
+        Assertions.assertEquals("ftkwq", response.endpointA().name());
+        Assertions.assertEquals("pmvssehaep", response.endpointA().endpoint());
+        Assertions.assertEquals("cxtczhupeukn", response.endpointB().name());
+        Assertions.assertEquals("d", response.endpointB().endpoint());
         Assertions.assertEquals(State.DISABLED, response.enabledState());
     }
 }

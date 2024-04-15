@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+- Migrating `azure-monitor-query` to stream-style serialization.
+
+#### Dependency Updates
+
+- Added `azure-json` dependency to support JSON serialization and deserialization.
+
 ## 1.3.0 (2024-03-26)
 
 ### Features Added
