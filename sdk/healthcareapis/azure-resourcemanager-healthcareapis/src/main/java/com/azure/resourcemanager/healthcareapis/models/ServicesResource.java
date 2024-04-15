@@ -124,8 +124,8 @@ public class ServicesResource extends Resource {
      */
     public void validate() {
         if (kind() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property kind in model ServicesResource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property kind in model ServicesResource"));
         }
         if (identity() != null) {
             identity().validate();
