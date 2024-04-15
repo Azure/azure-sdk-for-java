@@ -1,8 +1,6 @@
 # Release History
 
-## 12.26.0-beta.1 (Unreleased)
-
-### Features Added
+## 12.26.0-beta.1 (2024-04-15)
 
 ### Breaking Changes
 - When creating a `BlobClient` via `BlobContainerClient.getBlobClient(String blobName)` or 
@@ -11,10 +9,6 @@ URL-encoded. For example, if blob name is "test%25test" and is created by callin
 `BlobContainerClient.getBlobClient("test%25test")` or `BlobClient.getBlobName("test%25test")`, 
 `BlobClient.getBlobName()` will return "test%25test" and the blob's url will result in 
 “https://account.blob.core.windows.net/container/test%25%25test”.
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 12.25.3 (2024-03-20)
 

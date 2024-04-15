@@ -1,16 +1,9 @@
 # Release History
 
-## 12.25.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 12.25.0-beta.1 (2024-04-15)
 
 ### Bugs Fixed
 - Fixed bug where RequestRetryOptions.tryTimeout adds delay to the client request in the synchronous http client flow.
-
-### Other Changes
-
 
 ## 12.24.3 (2024-03-20)
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 12.19.0-beta.1 (Unreleased)
+## 12.19.0-beta.1 (2024-04-15)
 
 ### Features Added
 - Added support for owner, group and acl/permission via put APIs for object replication.
@@ -15,9 +15,6 @@ and will not be URL-encoded. For example, if the path name is "test%25test" and 
 
 ### Bugs Fixed
 - Fixed a bug that did not allow uploading an empty 0 byte file with `DataLakeFileClient.uploadFromFile()`.
-
-### Other Changes
-
 
 ## 12.18.3 (2024-03-20)
 
