@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure;
 
 import com.azure.identity.ManagedIdentityCredential;
@@ -29,7 +32,7 @@ public class Function {
                 HttpRequestMessage<Optional<String>> request,
             final ExecutionContext context) {
         context.getLogger().info("Java HTTP trigger processed a request.");
-            
+
 
         String resourceId = System.getenv().get("IDENTITY_USER_DEFINED_IDENTITY");
         String account1 = System.getenv().get("IDENTITY_STORAGE_NAME_1");

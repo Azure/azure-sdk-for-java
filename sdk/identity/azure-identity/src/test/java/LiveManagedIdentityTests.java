@@ -13,7 +13,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
@@ -26,7 +25,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 
 public class LiveManagedIdentityTests extends TestBase {
 
@@ -90,7 +91,7 @@ public class LiveManagedIdentityTests extends TestBase {
         assertTrue(podOutput.contains(podName), "Pod name not found in the output");
 
         String output = runCommand(kubectlPath, "exec", "-it", podName, "--", "java", "-jar", "/identity-test.jar");
-        Assertions.assertTrue(output.contains("Successfully retrieved managed identity tokens"), "Failed to get response from AKS");
+        assertTrue(output.contains("Successfully retrieved managed identity tokens"), "Failed to get response from AKS");
     }
 
     @Test
@@ -137,7 +138,7 @@ public class LiveManagedIdentityTests extends TestBase {
         String output = runCommand(azPath, "vm", "run-command", "invoke", "-n", vmName, "-g", resourceGroup,
             "--command-id", "RunShellScript", "--scripts", script);
 
-        Assertions.assertTrue(output.contains("Successfully retrieved managed identity tokens"),
+        assertTrue(output.contains("Successfully retrieved managed identity tokens"),
             "Failed to get response from VM");
     }
 
@@ -160,7 +161,7 @@ public class LiveManagedIdentityTests extends TestBase {
         AccessToken accessToken = credential
             .getTokenSync(new TokenRequestContext().addScopes("https://graph.microsoft.com/.default"));
 
-        Assertions.assertTrue(accessToken != null, "Failed to get access token");
+        assertTrue(accessToken != null, "Failed to get access token");
     }
 
     private String runCommand(String... args) {
