@@ -110,8 +110,16 @@ public final class AudioTranslationSegment {
     private AudioTranslationSegment(int id, Duration start, Duration end, String text, double temperature,
         double avgLogprob, double compressionRatio, double noSpeechProb, List<Integer> tokens, int seek) {
         this.id = id;
-        this.start = (double) start.toNanos() / 1000_000_000L;
-        this.end = (double) end.toNanos() / 1000_000_000L;
+        if (start == null) {
+            this.start = 0.0;
+        } else {
+            this.start = (double) start.toNanos() / 1000_000_000L;
+        }
+        if (end == null) {
+            this.end = 0.0;
+        } else {
+            this.end = (double) end.toNanos() / 1000_000_000L;
+        }
         this.text = text;
         this.temperature = temperature;
         this.avgLogprob = avgLogprob;

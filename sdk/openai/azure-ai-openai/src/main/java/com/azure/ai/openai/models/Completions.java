@@ -127,7 +127,11 @@ public final class Completions {
     @Generated
     private Completions(String id, OffsetDateTime createdAt, List<Choice> choices, CompletionsUsage usage) {
         this.id = id;
-        this.createdAt = createdAt.toEpochSecond();
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
         this.choices = choices;
         this.usage = usage;
     }

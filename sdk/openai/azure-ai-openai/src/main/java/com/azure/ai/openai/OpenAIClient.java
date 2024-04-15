@@ -692,22 +692,24 @@ public final class OpenAIClient {
      * <strong>Code Samples</strong>
      * </p>
      * <!-- src_embed com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
+     * 
      * <pre>
      * openAIClient.getChatCompletionsStream&#40;deploymentOrModelId, new ChatCompletionsOptions&#40;chatMessages&#41;&#41;
-     *         .forEach&#40;chatCompletions -&gt; &#123;
-     *             if &#40;CoreUtils.isNullOrEmpty&#40;chatCompletions.getChoices&#40;&#41;&#41;&#41; &#123;
-     *                 return;
-     *             &#125;
-     *             ChatResponseMessage delta = chatCompletions.getChoices&#40;&#41;.get&#40;0&#41;.getDelta&#40;&#41;;
-     *             if &#40;delta.getRole&#40;&#41; != null&#41; &#123;
-     *                 System.out.println&#40;&quot;Role = &quot; + delta.getRole&#40;&#41;&#41;;
-     *             &#125;
-     *             if &#40;delta.getContent&#40;&#41; != null&#41; &#123;
-     *                 String content = delta.getContent&#40;&#41;;
-     *                 System.out.print&#40;content&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     .forEach&#40;chatCompletions -&gt; &#123;
+     *         if &#40;CoreUtils.isNullOrEmpty&#40;chatCompletions.getChoices&#40;&#41;&#41;&#41; &#123;
+     *             return;
+     *         &#125;
+     *         ChatResponseMessage delta = chatCompletions.getChoices&#40;&#41;.get&#40;0&#41;.getDelta&#40;&#41;;
+     *         if &#40;delta.getRole&#40;&#41; != null&#41; &#123;
+     *             System.out.println&#40;&quot;Role = &quot; + delta.getRole&#40;&#41;&#41;;
+     *         &#125;
+     *         if &#40;delta.getContent&#40;&#41; != null&#41; &#123;
+     *             String content = delta.getContent&#40;&#41;;
+     *             System.out.print&#40;content&#41;;
+     *         &#125;
+     *     &#125;&#41;;
      * </pre>
+     * 
      * <!-- end com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name

@@ -41,7 +41,11 @@ public final class ImageGenerations {
      */
     @Generated
     private ImageGenerations(OffsetDateTime createdAt, List<ImageGenerationData> data) {
-        this.createdAt = createdAt.toEpochSecond();
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
         this.data = data;
     }
 
