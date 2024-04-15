@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Define a match condition. */
+/**
+ * Define a match condition.
+ */
 @Fluent
 public final class RulesEngineMatchCondition {
     /*
@@ -37,8 +39,7 @@ public final class RulesEngineMatchCondition {
     private Boolean negateCondition;
 
     /*
-     * Match values to match against. The operator will apply to each value in here with OR semantics. If any of them
-     * match the variable with the given operator this match condition is considered a match.
+     * Match values to match against. The operator will apply to each value in here with OR semantics. If any of them match the variable with the given operator this match condition is considered a match.
      */
     @JsonProperty(value = "rulesEngineMatchValue", required = true)
     private List<String> rulesEngineMatchValue;
@@ -49,13 +50,15 @@ public final class RulesEngineMatchCondition {
     @JsonProperty(value = "transforms")
     private List<Transform> transforms;
 
-    /** Creates an instance of RulesEngineMatchCondition class. */
+    /**
+     * Creates an instance of RulesEngineMatchCondition class.
+     */
     public RulesEngineMatchCondition() {
     }
 
     /**
      * Get the rulesEngineMatchVariable property: Match Variable.
-     *
+     * 
      * @return the rulesEngineMatchVariable value.
      */
     public RulesEngineMatchVariable rulesEngineMatchVariable() {
@@ -64,7 +67,7 @@ public final class RulesEngineMatchCondition {
 
     /**
      * Set the rulesEngineMatchVariable property: Match Variable.
-     *
+     * 
      * @param rulesEngineMatchVariable the rulesEngineMatchVariable value to set.
      * @return the RulesEngineMatchCondition object itself.
      */
@@ -75,7 +78,7 @@ public final class RulesEngineMatchCondition {
 
     /**
      * Get the selector property: Name of selector in RequestHeader or RequestBody to be matched.
-     *
+     * 
      * @return the selector value.
      */
     public String selector() {
@@ -84,7 +87,7 @@ public final class RulesEngineMatchCondition {
 
     /**
      * Set the selector property: Name of selector in RequestHeader or RequestBody to be matched.
-     *
+     * 
      * @param selector the selector value to set.
      * @return the RulesEngineMatchCondition object itself.
      */
@@ -95,7 +98,7 @@ public final class RulesEngineMatchCondition {
 
     /**
      * Get the rulesEngineOperator property: Describes operator to apply to the match condition.
-     *
+     * 
      * @return the rulesEngineOperator value.
      */
     public RulesEngineOperator rulesEngineOperator() {
@@ -104,7 +107,7 @@ public final class RulesEngineMatchCondition {
 
     /**
      * Set the rulesEngineOperator property: Describes operator to apply to the match condition.
-     *
+     * 
      * @param rulesEngineOperator the rulesEngineOperator value to set.
      * @return the RulesEngineMatchCondition object itself.
      */
@@ -115,7 +118,7 @@ public final class RulesEngineMatchCondition {
 
     /**
      * Get the negateCondition property: Describes if this is negate condition or not.
-     *
+     * 
      * @return the negateCondition value.
      */
     public Boolean negateCondition() {
@@ -124,7 +127,7 @@ public final class RulesEngineMatchCondition {
 
     /**
      * Set the negateCondition property: Describes if this is negate condition or not.
-     *
+     * 
      * @param negateCondition the negateCondition value to set.
      * @return the RulesEngineMatchCondition object itself.
      */
@@ -137,7 +140,7 @@ public final class RulesEngineMatchCondition {
      * Get the rulesEngineMatchValue property: Match values to match against. The operator will apply to each value in
      * here with OR semantics. If any of them match the variable with the given operator this match condition is
      * considered a match.
-     *
+     * 
      * @return the rulesEngineMatchValue value.
      */
     public List<String> rulesEngineMatchValue() {
@@ -148,7 +151,7 @@ public final class RulesEngineMatchCondition {
      * Set the rulesEngineMatchValue property: Match values to match against. The operator will apply to each value in
      * here with OR semantics. If any of them match the variable with the given operator this match condition is
      * considered a match.
-     *
+     * 
      * @param rulesEngineMatchValue the rulesEngineMatchValue value to set.
      * @return the RulesEngineMatchCondition object itself.
      */
@@ -159,7 +162,7 @@ public final class RulesEngineMatchCondition {
 
     /**
      * Get the transforms property: List of transforms.
-     *
+     * 
      * @return the transforms value.
      */
     public List<Transform> transforms() {
@@ -168,7 +171,7 @@ public final class RulesEngineMatchCondition {
 
     /**
      * Set the transforms property: List of transforms.
-     *
+     * 
      * @param transforms the transforms value to set.
      * @return the RulesEngineMatchCondition object itself.
      */
@@ -179,27 +182,24 @@ public final class RulesEngineMatchCondition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (rulesEngineMatchVariable() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property rulesEngineMatchVariable in model RulesEngineMatchCondition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property rulesEngineMatchVariable in model RulesEngineMatchCondition"));
         }
         if (rulesEngineOperator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property rulesEngineOperator in model RulesEngineMatchCondition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property rulesEngineOperator in model RulesEngineMatchCondition"));
         }
         if (rulesEngineMatchValue() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property rulesEngineMatchValue in model RulesEngineMatchCondition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property rulesEngineMatchValue in model RulesEngineMatchCondition"));
         }
     }
 
