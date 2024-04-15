@@ -1,3 +1,5 @@
+# cspell:ignore Drevapi, Dcheckstyle, Dspotbugs, Dspotless, Dcheckstyle, Dfunction, Dresource, vmcontainer, OIDC, oidc, usermgdid, azfunc, kubelet
+
 param (
     [hashtable] $DeploymentOutputs
 )
