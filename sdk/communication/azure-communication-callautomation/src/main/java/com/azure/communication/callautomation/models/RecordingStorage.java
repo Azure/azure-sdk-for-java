@@ -41,4 +41,14 @@ public abstract class RecordingStorage {
         this.recordingStorageType = recordingStorageType;
         return this;
     }
+
+    /**
+     * Get the recordingDestinationContainerUrl property: Uri of a container or a location within a container.
+     *
+     * @return the recordingDestinationContainerUrl value.
+     */
+    public String getRecordingDestinationContainerUrl() {
+        return this.recordingDestinationContainerUrl;
+    }
+
 }

@@ -9,6 +9,7 @@ import com.azure.communication.callautomation.implementation.models.Communicatio
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModelKind;
 import com.azure.communication.callautomation.implementation.models.CommunicationUserIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsUserIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsAppIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.common.*;
 import org.junit.jupiter.api.Test;
@@ -358,6 +359,31 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
             CommunicationIdentifierConverter.convert(communicationIdentifierModel);
         } catch (Exception e) {
             assert (e instanceof IllegalArgumentException);
+        }
+    }
+
+    @Test
+    public void convertWithKindMicrosoftTeamsAppNoRawId() {
+        MicrosoftTeamsAppIdentifierModel microsoftTeamsAppIdentifierModel = new MicrosoftTeamsAppIdentifierModel();
+        CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
+            .setMicrosoftTeamsApp(microsoftTeamsAppIdentifierModel);
+
+        try {
+            CommunicationIdentifierConverter.convert(communicationIdentifierModel);
+        } catch (Exception e) {
+            assert (e instanceof NullPointerException);
+        }
+    }
+
+    @Test
+    public void convertWithoutKindMicrosoftTeamsApp() {
+        CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
+            .setRawId(testRawId);
+
+        try {
+            CommunicationIdentifierConverter.convert(communicationIdentifierModel);
+        } catch (Exception e) {
+            assert (e instanceof NullPointerException);
         }
     }
 }

@@ -8,7 +8,7 @@ public class AzureBlobContainerRecordingStorage extends RecordingStorage {
      * @param recordingDestinationContainerUrl the recordingDestinationContainerUrl value to set.
     */
     public AzureBlobContainerRecordingStorage(String recordingDestinationContainerUrl) {
-        this.setRecordingStorageType(RecordingStorageType.fromString("AzureCommunicationServices"));
+        this.setRecordingStorageType(RecordingStorageType.fromString("AzureBlobStorage"));
         this.setRecordingDestinationContainerUrl(recordingDestinationContainerUrl);
     }
 

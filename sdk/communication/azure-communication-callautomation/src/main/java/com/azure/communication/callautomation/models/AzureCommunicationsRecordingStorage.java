@@ -7,7 +7,7 @@ public class AzureCommunicationsRecordingStorage extends RecordingStorage {
      * Creates an instance of AzureBlobContainerRecordingStorage class. 
      */
     public AzureCommunicationsRecordingStorage() {
-        this.setRecordingStorageType(RecordingStorageType.fromString("AzureBlobStorage"));
+        this.setRecordingStorageType(RecordingStorageType.fromString("AzureCommunicationServices"));
     }
 
     /**

@@ -13,6 +13,8 @@ import com.azure.communication.callautomation.implementation.models.Communicatio
 import com.azure.communication.callautomation.implementation.models.RecordingChannelInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingContentInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingFormatInternal;
+import com.azure.communication.callautomation.implementation.models.RecordingStorageInternal;
+import com.azure.communication.callautomation.implementation.models.RecordingStorageTypeInternal;
 import com.azure.communication.callautomation.implementation.models.StartCallRecordingRequestInternal;
 import com.azure.communication.callautomation.models.CallLocator;
 import com.azure.communication.callautomation.models.CallLocatorKind;
@@ -21,6 +23,7 @@ import com.azure.communication.callautomation.models.DownloadToFileOptions;
 import com.azure.communication.callautomation.models.GroupCallLocator;
 import com.azure.communication.callautomation.models.ParallelDownloadOptions;
 import com.azure.communication.callautomation.models.RecordingStateResult;
+import com.azure.communication.callautomation.models.RecordingStorageType;
 import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
 import com.azure.core.annotation.ReturnType;
@@ -155,6 +158,19 @@ public final class CallRecordingAsync {
         }
         if (options.getRecordingStateCallbackUrl() != null) {
             request.setRecordingStateCallbackUri(options.getRecordingStateCallbackUrl());
+        }
+        if (options.getRecordingStorage() != null) {
+            if (options.getRecordingStorage().getRecordingStorageType() == RecordingStorageType.AZURE_BLOB_STORAGE) {
+                RecordingStorageInternal recordingStorageInternal = new RecordingStorageInternal()
+                    .setRecordingDestinationContainerUrl(options.getRecordingStorage().getRecordingDestinationContainerUrl())
+                    .setRecordingStorageKind(RecordingStorageTypeInternal.AZURE_BLOB_STORAGE);
+                request.setExternalStorage(recordingStorageInternal); 
+            } else if (options.getRecordingStorage().getRecordingStorageType() == RecordingStorageType.ACS) {} 
+            
+            else {
+                throw logger.logExceptionAsError(new InvalidParameterException("Recording storage has invalid type."));
+            }
+                
         }
         if (options.getAudioChannelParticipantOrdering() != null) {
             List<CommunicationIdentifierModel> audioChannelParticipantOrdering = options.getAudioChannelParticipantOrdering()
