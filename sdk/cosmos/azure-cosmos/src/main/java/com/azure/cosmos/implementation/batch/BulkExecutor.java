@@ -878,7 +878,8 @@ public final class BulkExecutor<TContext> implements Disposable {
                     options.getConsistencyLevel(),
                     OperationType.Batch,
                     ResourceType.Document,
-                    options);
+                    options,
+                    this.cosmosBulkExecutionOptions.getMaxMicroBatchSize());
         });
     }
 

@@ -30,43 +30,29 @@ public final class FleetUpdateStrategiesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"uukzclewyhmlw\",\"groups\":[{\"name\":\"tzpofncckwyfzq\"}],\"afterStageWaitInSeconds\":1576078570},{\"name\":\"xbuy\",\"groups\":[{\"name\":\"zfeqztppri\"}],\"afterStageWaitInSeconds\":2094175875},{\"name\":\"or\",\"groups\":[{\"name\":\"tolmncwsobqw\"}],\"afterStageWaitInSeconds\":1051180868},{\"name\":\"bnwdcfh\",\"groups\":[{\"name\":\"dpfuvg\"},{\"name\":\"sbjjc\"},{\"name\":\"nvxbvt\"},{\"name\":\"udutnco\"}],\"afterStageWaitInSeconds\":175295404}]}},\"eTag\":\"xqtvcofu\",\"id\":\"lvkgju\",\"name\":\"gdknnqv\",\"type\":\"aznqntoru\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"strategy\":{\"stages\":[{\"name\":\"ibsystawf\",\"groups\":[{\"name\":\"pvkvpbjxbk\"},{\"name\":\"bzkdvn\"},{\"name\":\"jabudurgkakmo\"},{\"name\":\"zhjjklffhmouwq\"}],\"afterStageWaitInSeconds\":1175300996},{\"name\":\"rfzeey\",\"groups\":[{\"name\":\"zi\"},{\"name\":\"ayuhqlbjbsy\"},{\"name\":\"bqwrvtldgm\"}],\"afterStageWaitInSeconds\":1644492935},{\"name\":\"vm\",\"groups\":[{\"name\":\"as\"},{\"name\":\"thaqfxssmwu\"},{\"name\":\"wbdsr\"},{\"name\":\"zpdrhneu\"}],\"afterStageWaitInSeconds\":979577305},{\"name\":\"q\",\"groups\":[{\"name\":\"ytisibir\"}],\"afterStageWaitInSeconds\":1229797985}]}},\"eTag\":\"kpzi\",\"id\":\"j\",\"name\":\"anlfzxiavrmbz\",\"type\":\"nokixrjqcirgz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ContainerServiceFleetManager manager =
-            ContainerServiceFleetManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ContainerServiceFleetManager manager = ContainerServiceFleetManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        FleetUpdateStrategy response =
-            manager
-                .fleetUpdateStrategies()
-                .getWithResponse("jnsjervtiagxsd", "zuempsbzkf", "beyvpnqicvinvkjj", com.azure.core.util.Context.NONE)
-                .getValue();
+        FleetUpdateStrategy response = manager.fleetUpdateStrategies()
+            .getWithResponse("hvxndzwmkrefajpj", "rwkq", "yhgbijtjivfx", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("uukzclewyhmlw", response.strategy().stages().get(0).name());
-        Assertions.assertEquals("tzpofncckwyfzq", response.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(1576078570, response.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("ibsystawf", response.strategy().stages().get(0).name());
+        Assertions.assertEquals("pvkvpbjxbk", response.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(1175300996, response.strategy().stages().get(0).afterStageWaitInSeconds());
     }
 }

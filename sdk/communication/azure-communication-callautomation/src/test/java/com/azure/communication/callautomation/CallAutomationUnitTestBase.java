@@ -88,16 +88,16 @@ public class CallAutomationUnitTestBase {
         return serializeObject(result);
     }
 
-    public static String generateGetParticipantResponse(String callerId, boolean isMuted) {
-        CallParticipantInternal callParticipant = ModelGenerator.generateAcsCallParticipantInternal(callerId, isMuted);
+    public static String generateGetParticipantResponse(String callerId, boolean isMuted, boolean isHold) {
+        CallParticipantInternal callParticipant = ModelGenerator.generateAcsCallParticipantInternal(callerId, isMuted, isHold);
         return serializeObject(callParticipant);
     }
 
     public static String generateListParticipantsResponse() {
         GetParticipantsResponseInternal getParticipantsResponseInternal = new GetParticipantsResponseInternal()
             .setValue(new ArrayList<>(Arrays.asList(
-                ModelGenerator.generateAcsCallParticipantInternal(CALL_CALLER_ID, false),
-                ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, true))))
+                ModelGenerator.generateAcsCallParticipantInternal(CALL_CALLER_ID, false, false),
+                ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, true, true))))
             .setNextLink("");
 
         return serializeObject(getParticipantsResponseInternal);
@@ -106,7 +106,7 @@ public class CallAutomationUnitTestBase {
     public static String generateAddParticipantsResponse() {
         AddParticipantResponseInternal addParticipantsResponseInternal = new AddParticipantResponseInternal()
             .setOperationContext(CALL_OPERATION_CONTEXT)
-            .setParticipant(ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false));
+            .setParticipant(ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false, false));
 
         return serializeObject(addParticipantsResponseInternal);
     }

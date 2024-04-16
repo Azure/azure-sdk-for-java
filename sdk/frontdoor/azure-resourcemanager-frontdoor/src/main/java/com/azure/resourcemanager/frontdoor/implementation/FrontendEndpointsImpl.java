@@ -22,34 +22,31 @@ public final class FrontendEndpointsImpl implements FrontendEndpoints {
 
     private final com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager;
 
-    public FrontendEndpointsImpl(
-        FrontendEndpointsClient innerClient, com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
+    public FrontendEndpointsImpl(FrontendEndpointsClient innerClient,
+        com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<FrontendEndpoint> listByFrontDoor(String resourceGroupName, String frontDoorName) {
-        PagedIterable<FrontendEndpointInner> inner =
-            this.serviceClient().listByFrontDoor(resourceGroupName, frontDoorName);
-        return Utils.mapPage(inner, inner1 -> new FrontendEndpointImpl(inner1, this.manager()));
+        PagedIterable<FrontendEndpointInner> inner
+            = this.serviceClient().listByFrontDoor(resourceGroupName, frontDoorName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FrontendEndpointImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<FrontendEndpoint> listByFrontDoor(
-        String resourceGroupName, String frontDoorName, Context context) {
-        PagedIterable<FrontendEndpointInner> inner =
-            this.serviceClient().listByFrontDoor(resourceGroupName, frontDoorName, context);
-        return Utils.mapPage(inner, inner1 -> new FrontendEndpointImpl(inner1, this.manager()));
+    public PagedIterable<FrontendEndpoint> listByFrontDoor(String resourceGroupName, String frontDoorName,
+        Context context) {
+        PagedIterable<FrontendEndpointInner> inner
+            = this.serviceClient().listByFrontDoor(resourceGroupName, frontDoorName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FrontendEndpointImpl(inner1, this.manager()));
     }
 
-    public Response<FrontendEndpoint> getWithResponse(
-        String resourceGroupName, String frontDoorName, String frontendEndpointName, Context context) {
-        Response<FrontendEndpointInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, frontDoorName, frontendEndpointName, context);
+    public Response<FrontendEndpoint> getWithResponse(String resourceGroupName, String frontDoorName,
+        String frontendEndpointName, Context context) {
+        Response<FrontendEndpointInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, frontDoorName, frontendEndpointName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FrontendEndpointImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -65,24 +62,15 @@ public final class FrontendEndpointsImpl implements FrontendEndpoints {
         }
     }
 
-    public void enableHttps(
-        String resourceGroupName,
-        String frontDoorName,
-        String frontendEndpointName,
+    public void enableHttps(String resourceGroupName, String frontDoorName, String frontendEndpointName,
         CustomHttpsConfiguration customHttpsConfiguration) {
-        this
-            .serviceClient()
+        this.serviceClient()
             .enableHttps(resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration);
     }
 
-    public void enableHttps(
-        String resourceGroupName,
-        String frontDoorName,
-        String frontendEndpointName,
-        CustomHttpsConfiguration customHttpsConfiguration,
-        Context context) {
-        this
-            .serviceClient()
+    public void enableHttps(String resourceGroupName, String frontDoorName, String frontendEndpointName,
+        CustomHttpsConfiguration customHttpsConfiguration, Context context) {
+        this.serviceClient()
             .enableHttps(resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration, context);
     }
 
@@ -90,8 +78,8 @@ public final class FrontendEndpointsImpl implements FrontendEndpoints {
         this.serviceClient().disableHttps(resourceGroupName, frontDoorName, frontendEndpointName);
     }
 
-    public void disableHttps(
-        String resourceGroupName, String frontDoorName, String frontendEndpointName, Context context) {
+    public void disableHttps(String resourceGroupName, String frontDoorName, String frontendEndpointName,
+        Context context) {
         this.serviceClient().disableHttps(resourceGroupName, frontDoorName, frontendEndpointName, context);
     }
 

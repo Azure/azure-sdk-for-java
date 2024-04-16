@@ -12,15 +12,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class UpdateChatThreadOptions {
-    /**
+    /*
      * Chat thread topic.
      */
     @JsonProperty(value = "topic")
     private String topic;
 
     /**
+     * Creates an instance of UpdateChatThreadOptions class.
+     */
+    public UpdateChatThreadOptions() {
+    }
+
+    /**
      * Get the topic property: Chat thread topic.
-     *
+     * 
      * @return the topic value.
      */
     public String getTopic() {
@@ -29,7 +35,7 @@ public final class UpdateChatThreadOptions {
 
     /**
      * Set the topic property: Chat thread topic.
-     *
+     * 
      * @param topic the topic value to set.
      * @return the UpdateChatThreadOptions object itself.
      */

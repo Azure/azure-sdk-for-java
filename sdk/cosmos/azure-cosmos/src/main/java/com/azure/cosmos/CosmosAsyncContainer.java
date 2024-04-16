@@ -1234,7 +1234,8 @@ public class CosmosAsyncContainer {
                         .getConsistencyLevel(cosmosBatchRequestOptions),
                     OperationType.Batch,
                     ResourceType.Document,
-                    requestOptionsInternal);
+                    requestOptionsInternal,
+                    null);
         });
     }
 

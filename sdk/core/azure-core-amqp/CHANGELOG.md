@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded `qpid-proton-j-extensions` from `1.2.4` to `1.2.5`.
+
 ## 2.9.3 (2024-04-05)
 
 ### Other Changes
