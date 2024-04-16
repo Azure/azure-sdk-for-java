@@ -72,7 +72,7 @@ public final class EventGridAsyncClient {
      * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
      * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -87,9 +87,9 @@ public final class EventGridAsyncClient {
      *     subject: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * { }
      * }</pre>
@@ -116,7 +116,7 @@ public final class EventGridAsyncClient {
      * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
      * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -133,9 +133,9 @@ public final class EventGridAsyncClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * { }
      * }</pre>
@@ -171,7 +171,7 @@ public final class EventGridAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     value (Required): [
@@ -220,7 +220,7 @@ public final class EventGridAsyncClient {
      * other failed lockTokens with their corresponding error information. Successfully acknowledged events will no
      * longer be available to any consumer.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -228,9 +228,9 @@ public final class EventGridAsyncClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -288,7 +288,7 @@ public final class EventGridAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -296,9 +296,9 @@ public final class EventGridAsyncClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -347,7 +347,7 @@ public final class EventGridAsyncClient {
      * accepted. The response body will include the set of successfully rejected lockTokens, along with other failed
      * lockTokens with their corresponding error information.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -355,9 +355,9 @@ public final class EventGridAsyncClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -406,7 +406,7 @@ public final class EventGridAsyncClient {
      * successfully accepted. The response body will include the set of successfully renewed lockTokens, along with
      * other failed lockTokens with their corresponding error information.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -414,9 +414,9 @@ public final class EventGridAsyncClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -462,7 +462,7 @@ public final class EventGridAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PublishResult> publishCloudEvent(String topicName, CloudEvent event) {
+    public Mono<Void> publishCloudEvent(String topicName, CloudEvent event) {
         return publishCloudEvent(topicName, event, false);
     }
 
@@ -485,7 +485,7 @@ public final class EventGridAsyncClient {
      * @return the result of the Publish operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PublishResult> publishCloudEvent(String topicName, CloudEvent event, boolean binaryMode) {
+    public Mono<Void> publishCloudEvent(String topicName, CloudEvent event, boolean binaryMode) {
         RequestOptions requestOptions = new RequestOptions();
         if (binaryMode) {
             if (event.getDataContentType() != null) {
@@ -522,26 +522,22 @@ public final class EventGridAsyncClient {
                 }
                 requestOptions.setHeader(headerName, headerValue);
             });
-            return publishCloudEventWithResponse(topicName, event.getData(), requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(PublishResult.class));
+            return publishCloudEventWithResponse(topicName, event.getData(), requestOptions).then();
         }
         try {
             BinaryData binaryEvent = BinaryData.fromString(
                 SERIALIZER.serialize(BinaryData.fromObject(event).toObject(CloudEvent.class), SerializerEncoding.JSON));
-            return publishCloudEventWithResponse(topicName, binaryEvent, requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(PublishResult.class));
+            return publishCloudEventWithResponse(topicName, binaryEvent, requestOptions).then();
         } catch (IOException e) {
             throw logger.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PublishResult> publishCloudEvents(String topicName, List<CloudEvent> events) {
+    public Mono<Void> publishCloudEvents(String topicName, List<CloudEvent> events) {
         // Generated convenience method for publishCloudEventsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return publishCloudEventsWithResponse(topicName, BinaryData.fromObject(events), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(PublishResult.class));
+        return publishCloudEventsWithResponse(topicName, BinaryData.fromObject(events), requestOptions).then();
     }
 
     /**

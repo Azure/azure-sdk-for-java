@@ -70,7 +70,7 @@ public final class EventGridClient {
      * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
      * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -85,9 +85,9 @@ public final class EventGridClient {
      *     subject: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * { }
      * }</pre>
@@ -114,7 +114,7 @@ public final class EventGridClient {
      * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
      * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -131,9 +131,9 @@ public final class EventGridClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * { }
      * }</pre>
@@ -169,7 +169,7 @@ public final class EventGridClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     value (Required): [
@@ -217,7 +217,7 @@ public final class EventGridClient {
      * other failed lockTokens with their corresponding error information. Successfully acknowledged events will no
      * longer be available to any consumer.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -225,9 +225,9 @@ public final class EventGridClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -284,7 +284,7 @@ public final class EventGridClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -292,9 +292,9 @@ public final class EventGridClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -343,7 +343,7 @@ public final class EventGridClient {
      * accepted. The response body will include the set of successfully rejected lockTokens, along with other failed
      * lockTokens with their corresponding error information.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -351,9 +351,9 @@ public final class EventGridClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -402,7 +402,7 @@ public final class EventGridClient {
      * successfully accepted. The response body will include the set of successfully renewed lockTokens, along with
      * other failed lockTokens with their corresponding error information.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -410,9 +410,9 @@ public final class EventGridClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -456,9 +456,25 @@ public final class EventGridClient {
             requestOptions);
     }
 
+    /**
+     * Publish Single Cloud Event to namespace topic. In case of success, the server responds with an HTTP 200 status
+     * code with an empty JSON object in response. Otherwise, the server can return various error codes. For example,
+     * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
+     * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
+     *
+     * @param topicName Topic Name.
+     * @param event Single Cloud Event being published.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws UncheckedIOException failed to format the event properly.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PublishResult publishCloudEvent(String topicName, CloudEvent event) {
-        return publishCloudEvent(topicName, event, false);
+    public void publishCloudEvent(String topicName, CloudEvent event) {
+        publishCloudEvent(topicName, event, false);
     }
 
     /**
@@ -477,10 +493,9 @@ public final class EventGridClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the Publish operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PublishResult publishCloudEvent(String topicName, CloudEvent event, boolean binaryMode) {
+    public void publishCloudEvent(String topicName, CloudEvent event, boolean binaryMode) {
         RequestOptions requestOptions = new RequestOptions();
         if (binaryMode) {
             if (event.getDataContentType() != null) {
@@ -517,25 +532,38 @@ public final class EventGridClient {
                 }
                 requestOptions.setHeader(headerName, headerValue);
             });
-            return publishCloudEventWithResponse(topicName, event.getData(), requestOptions).getValue()
-                .toObject(PublishResult.class);
+            publishCloudEventWithResponse(topicName, event.getData(), requestOptions);
         }
         try {
             BinaryData binaryEvent = BinaryData.fromString(
                 SERIALIZER.serialize(BinaryData.fromObject(event).toObject(CloudEvent.class), SerializerEncoding.JSON));
-            return publishCloudEventWithResponse(topicName, binaryEvent, requestOptions).getValue()
-                .toObject(PublishResult.class);
+            publishCloudEventWithResponse(topicName, binaryEvent, requestOptions);
         } catch (IOException e) {
             throw logger.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
+    /**
+     * Publish Batch Cloud Event to namespace topic. In case of success, the server responds with an HTTP 200 status
+     * code with an empty JSON object in response. Otherwise, the server can return various error codes. For example,
+     * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
+     * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
+     *
+     * @param topicName Topic Name.
+     * @param events Batch of Cloud Events being published.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws UncheckedIOException failed to format the event properly.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PublishResult publishCloudEvents(String topicName, List<CloudEvent> events) {
+    public void publishCloudEvents(String topicName, List<CloudEvent> events) {
         // Generated convenience method for publishCloudEventsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return publishCloudEventsWithResponse(topicName, BinaryData.fromObject(events), requestOptions).getValue()
-            .toObject(PublishResult.class);
+        publishCloudEventsWithResponse(topicName, BinaryData.fromObject(events), requestOptions);
     }
 
     /**
