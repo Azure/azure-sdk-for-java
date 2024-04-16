@@ -4,8 +4,8 @@
 
 module com.azure.messaging.eventgrid.standard.http {
     requires transitive com.azure.core;
-    exports com.azure.messaging.eventgrid.standard.http;
-    exports com.azure.messaging.eventgrid.standard.http.models;
-    opens com.azure.messaging.eventgrid.standard.http.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.messaging.eventgrid.standard.http.implementation.models to com.azure.core, com.fasterxml.jackson.databind;
+    exports com.azure.messaging.eventgrid.namespaces;
+    exports com.azure.messaging.eventgrid.namespaces.models;
+    opens com.azure.messaging.eventgrid.namespaces.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.messaging.eventgrid.namespaces.implementation.models to com.azure.core, com.fasterxml.jackson.databind;
 }
