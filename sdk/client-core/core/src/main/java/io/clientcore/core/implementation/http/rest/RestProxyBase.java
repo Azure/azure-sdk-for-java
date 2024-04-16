@@ -8,37 +8,28 @@ import io.clientcore.core.http.exception.HttpResponseException;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.ReflectionSerializable;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.TypeUtil;
+import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.MalformedValueException;
 import io.clientcore.core.implementation.util.UrlBuilder;
 import io.clientcore.core.json.JsonSerializable;
 import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.function.Consumer;
-
-import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
-import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
-import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
 
 public abstract class RestProxyBase {
     static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
@@ -67,52 +58,20 @@ public abstract class RestProxyBase {
         this.interfaceParser = interfaceParser;
     }
 
-    public final Object invoke(Object proxy, final Method method, RequestOptions options,
-                               Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, Object[] args) {
+    public final Object invoke(Object proxy, RequestOptions options, SwaggerMethodParser methodParser, Object[] args) {
         try {
-            HttpRequest request = createHttpRequest(methodParser, serializer, args);
+            HttpRequest request = createHttpRequest(methodParser, serializer, args)
+                .setRequestOptions(options);
 
-            if (options == null || options == RequestOptions.NONE) {
-                options = new RequestOptions()
-                    .setContext(Context.EMPTY)
-                    .setLogger(methodParser.getMethodLogger());
-            }
+            HttpRequestAccessHelper.setLogger(request, methodParser.getMethodLogger());
 
-            ResponseBodyMode responseBodyMode = options.getResponseBodyMode();
-
-            if (responseBodyMode == null) {
-                if (methodParser.getHttpMethod() == HttpMethod.HEAD) {
-                    responseBodyMode = IGNORE;
-                } else {
-                    Type returnType = methodParser.getReturnType();
-
-                    if (TypeUtil.isTypeOrSubTypeOf(returnType, Response.class)) {
-                        returnType = TypeUtil.getRestResponseBodyType(returnType);
-                    }
-
-                    if (TypeUtil.isTypeOrSubTypeOf(returnType, InputStream.class)) {
-                        responseBodyMode = STREAM;
-                    } else if (TypeUtil.isTypeOrSubTypeOf(returnType, Void.TYPE)
-                        || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
-
-                        responseBodyMode = BUFFER;
-                    }
-                }
-            }
-
-            // If responseBodyHandling is still null, we'll use the response's Content-Type to determine how to read its
-            // body: 'application/octet-stream' will use STREAM and everything else will use BUFFER.
-            options.setResponseBodyMode(responseBodyMode);
-            request.setRequestOptions(options);
-
-            return invoke(proxy, method, requestCallback, methodParser, request);
+            return invoke(proxy, methodParser, request);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
-    protected abstract Object invoke(Object proxy, Method method, Consumer<HttpRequest> httpRequestConsumer,
-                                     SwaggerMethodParser methodParser, HttpRequest request);
+    protected abstract Object invoke(Object proxy, SwaggerMethodParser methodParser, HttpRequest request);
 
     public abstract void updateRequest(RequestDataConfiguration requestDataConfiguration,
                                        ObjectSerializer objectSerializer) throws IOException;

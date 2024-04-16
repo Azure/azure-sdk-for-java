@@ -34,6 +34,16 @@ public class HttpRequest {
             public HttpRequest setRetryCount(HttpRequest httpRequest, int retryCount) {
                 return httpRequest.setRetryCount(retryCount);
             }
+
+            @Override
+            public ClientLogger getLogger(HttpRequest httpRequest) {
+                return httpRequest.getLogger();
+            }
+
+            @Override
+            public HttpRequest setLogger(HttpRequest httpRequest, ClientLogger logger) {
+                return httpRequest.setLogger(logger);
+            }
         });
     }
 
@@ -44,16 +54,20 @@ public class HttpRequest {
     private ServerSentEventListener serverSentEventListener;
     private RequestOptions requestOptions;
     private int retryCount;
+    private ClientLogger requestLogger;
+    private ResponseBodyMode responseBodyMode;
 
     /**
      * Create a new {@link HttpRequest} instance.
      *
      * @param httpMethod The request {@link HttpMethod}.
      * @param url The target address to send the request to as a {@link URL}.
+     *
+     * @throws NullPointerException if {@code url} is {@code null}.
      */
     public HttpRequest(HttpMethod httpMethod, URL url) {
         this.httpMethod = httpMethod;
-        this.url = url;
+        this.url = Objects.requireNonNull(url, "'url' cannot be null");
         this.headers = new HttpHeaders();
         this.requestOptions = RequestOptions.NONE;
     }
@@ -95,9 +109,7 @@ public class HttpRequest {
      * @throws NullPointerException if {@code httpMethod} is {@code null}.
      */
     public HttpRequest setHttpMethod(HttpMethod httpMethod) {
-        Objects.requireNonNull(httpMethod, "'httpMethod' cannot be null");
-
-        this.httpMethod = httpMethod;
+        this.httpMethod = Objects.requireNonNull(httpMethod, "'httpMethod' cannot be null");
 
         return this;
     }
@@ -121,9 +133,7 @@ public class HttpRequest {
      * @throws NullPointerException if {@code url} is {@code null}.
      */
     public HttpRequest setUrl(URL url) {
-        Objects.requireNonNull(url, "'url' cannot be null");
-
-        this.url = url;
+        this.url = Objects.requireNonNull(url, "'url' cannot be null");
 
         return this;
     }
@@ -136,13 +146,12 @@ public class HttpRequest {
      * @return The updated {@link HttpRequest}.
      *
      * @throws NullPointerException if {@code url} is {@code null}.
+     * @throws IllegalArgumentException If {@code url} cannot be parsed into a valid {@link URL}.
      */
     @SuppressWarnings("deprecation")
     public HttpRequest setUrl(String url) {
-        Objects.requireNonNull(url, "'url' cannot be null");
-
         try {
-            this.url = new URL(url);
+            this.url = new URL(Objects.requireNonNull(url, "'url' cannot be null"));
         } catch (MalformedURLException ex) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("'url' must be a valid URL.", ex));
         }
@@ -221,8 +230,6 @@ public class HttpRequest {
      * @return The updated {@link HttpRequest}.
      */
     public HttpRequest setRequestOptions(RequestOptions requestOptions) {
-        Objects.requireNonNull(requestOptions, "'requestOptions' cannot be null");
-
         this.requestOptions = requestOptions;
 
         return this;
@@ -268,6 +275,28 @@ public class HttpRequest {
      */
     private HttpRequest setRetryCount(int retryCount) {
         this.retryCount = retryCount;
+
+        return this;
+    }
+
+    /**
+     * Gets the {@link ClientLogger} used to log the request and response.
+     *
+     * @return The {@link ClientLogger} used to log the request and response.
+     */
+    private ClientLogger getLogger() {
+        return requestLogger;
+    }
+
+    /**
+     * Sets the {@link ClientLogger} used to log the request and response.
+     *
+     * @param requestLogger The {@link ClientLogger} used to log the request and response.
+     *
+     * @return The updated {@link HttpRequest} object.
+     */
+    private HttpRequest setLogger(ClientLogger requestLogger) {
+        this.requestLogger = requestLogger;
 
         return this;
     }

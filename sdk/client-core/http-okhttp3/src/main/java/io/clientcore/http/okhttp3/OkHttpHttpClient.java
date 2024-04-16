@@ -32,7 +32,9 @@ import java.io.UncheckedIOException;
 
 import static io.clientcore.core.http.models.ContentType.APPLICATION_OCTET_STREAM;
 import static io.clientcore.core.http.models.HttpHeaderName.CONTENT_TYPE;
+import static io.clientcore.core.http.models.HttpMethod.HEAD;
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
+import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
 import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStream;
 /**
@@ -147,7 +149,7 @@ class OkHttpHttpClient implements HttpClient {
             ServerSentEventListener listener = request.getServerSentEventListener();
 
             if (listener != null) {
-                processTextEventStream(request, this, response.body().byteStream(), listener, LOGGER);
+                processTextEventStream(this, request, response.body().byteStream(), listener);
             } else {
                 throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtils.NO_LISTENER_ERROR_MESSAGE));
             }
@@ -159,26 +161,25 @@ class OkHttpHttpClient implements HttpClient {
     }
 
     private Response<?> processResponse(HttpRequest request, okhttp3.Response response) throws IOException {
-        RequestOptions requestOptions = request.getRequestOptions();
+        RequestOptions options = request.getRequestOptions();
+        ResponseBodyMode responseBodyMode = null;
 
-        if (requestOptions == RequestOptions.NONE) {
-            requestOptions = new RequestOptions();
+        if (options != null) {
+            responseBodyMode = options.getResponseBodyMode();
         }
-
-        ResponseBodyMode responseBodyMode = requestOptions.getResponseBodyMode();
 
         if (responseBodyMode == null) {
             String contentType = response.headers().get(CONTENT_TYPE.getCaseInsensitiveName());
 
-            if (contentType != null
+            if (request.getHttpMethod() == HEAD) {
+                responseBodyMode = IGNORE;
+            } else if (contentType != null
                 && APPLICATION_OCTET_STREAM.regionMatches(true, 0, contentType, 0, APPLICATION_OCTET_STREAM.length())) {
 
                 responseBodyMode = STREAM;
             } else {
                 responseBodyMode = BUFFER;
             }
-
-            requestOptions.setResponseBodyMode(responseBodyMode); // We only change this if it was null.
         }
 
         BinaryData body = null;

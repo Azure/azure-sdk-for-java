@@ -45,7 +45,9 @@ import java.util.Map;
 
 import static io.clientcore.core.http.models.ContentType.APPLICATION_OCTET_STREAM;
 import static io.clientcore.core.http.models.HttpHeaderName.CONTENT_TYPE;
+import static io.clientcore.core.http.models.HttpMethod.HEAD;
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
+import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
 import static io.clientcore.core.util.ServerSentEventUtils.NO_LISTENER_ERROR_MESSAGE;
 import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStream;
@@ -200,24 +202,24 @@ class DefaultHttpClient implements HttpClient {
     /**
      * Receive the response from the remote server
      *
-     * @param httpRequest The HTTP Request being sent
+     * @param request The HTTP Request being sent
      * @param connection The HttpURLConnection being sent to
      * @return A HttpResponse object
      */
-    private Response<?> receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
+    private Response<?> receiveResponse(HttpRequest request, HttpURLConnection connection) {
         HttpHeaders responseHeaders = getResponseHeaders(connection);
-        HttpResponse<?> httpResponse = createHttpResponse(httpRequest, connection);
+        HttpResponse<?> httpResponse = createHttpResponse(request, connection);
 
         if (isTextEventStream(responseHeaders)) {
             try {
-                ServerSentEventListener listener = httpRequest.getServerSentEventListener();
+                ServerSentEventListener listener = request.getServerSentEventListener();
 
                 if (listener == null) {
                     throw LOGGER.logThrowableAsError(new RuntimeException(NO_LISTENER_ERROR_MESSAGE));
                 }
 
                 if (connection.getErrorStream() == null) {
-                    processTextEventStream(httpRequest, this, connection.getInputStream(), listener, LOGGER);
+                    processTextEventStream(this, request, connection.getInputStream(), listener);
                 }
             } catch (IOException e) {
                 throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
@@ -225,26 +227,25 @@ class DefaultHttpClient implements HttpClient {
                 connection.disconnect();
             }
         } else {
-            RequestOptions requestOptions = httpRequest.getRequestOptions();
+            RequestOptions options = request.getRequestOptions();
+            ResponseBodyMode responseBodyMode = null;
 
-            if (requestOptions == RequestOptions.NONE) {
-                requestOptions = new RequestOptions();
+            if (options != null) {
+                responseBodyMode = options.getResponseBodyMode();
             }
-
-            ResponseBodyMode responseBodyMode = requestOptions.getResponseBodyMode();
 
             if (responseBodyMode == null) {
                 HttpHeader contentType = httpResponse.getHeaders().get(CONTENT_TYPE);
 
-                if (contentType != null && APPLICATION_OCTET_STREAM.regionMatches(true, 0, contentType.getValue(), 0,
-                    APPLICATION_OCTET_STREAM.length())) {
+                if (request.getHttpMethod() == HEAD) {
+                    responseBodyMode = IGNORE;
+                } else if (contentType != null && APPLICATION_OCTET_STREAM
+                    .regionMatches(true, 0, contentType.getValue(), 0, APPLICATION_OCTET_STREAM.length())) {
 
                     responseBodyMode = STREAM;
                 } else {
                     responseBodyMode = BUFFER;
                 }
-
-                requestOptions.setResponseBodyMode(responseBodyMode); // We only change this if it was null.
             }
 
             switch (responseBodyMode) {
@@ -282,6 +283,7 @@ class DefaultHttpClient implements HttpClient {
         if (responseHeaders != null) {
             return ServerSentEventUtils.isTextEventStreamContentType(responseHeaders.getValue(CONTENT_TYPE));
         }
+
         return false;
     }
 
@@ -289,6 +291,8 @@ class DefaultHttpClient implements HttpClient {
         try {
             HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromStream(connection.getInputStream()));
         } catch (IOException e) {
+            connection.disconnect();
+
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }

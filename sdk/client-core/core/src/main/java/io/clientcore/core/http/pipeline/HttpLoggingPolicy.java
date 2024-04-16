@@ -80,7 +80,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             return next.process();
         }
 
-        ClientLogger logger = httpRequest.getRequestOptions().getLogger();
+        ClientLogger logger = HttpRequestAccessHelper.getLogger(httpRequest);
 
         if (logger == null) {
             logger = LOGGER;
@@ -89,16 +89,19 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         final long startNs = System.nanoTime();
 
         requestLogger.logRequest(logger, httpRequest);
+
         try {
             Response<?> response = next.process();
 
             if (response != null) {
                 response = responseLogger.logResponse(logger, response, Duration.ofNanos(System.nanoTime() - startNs));
             }
+
             return response;
         } catch (RuntimeException e) {
             createBasicLoggingContext(logger, ClientLogger.LogLevel.WARNING, httpRequest)
                 .log("HTTP FAILED", e);
+
             throw LOGGER.logThrowableAsError(e);
         }
     }

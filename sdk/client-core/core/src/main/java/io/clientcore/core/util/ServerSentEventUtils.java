@@ -9,6 +9,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.ServerSentEvent;
 import io.clientcore.core.http.models.ServerSentEventListener;
+import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.implementation.util.ServerSentEventHelper;
 
 import java.io.BufferedReader;
@@ -55,15 +56,13 @@ public final class ServerSentEventUtils {
     /**
      * Processes the text event stream.
      *
-     * @param httpRequest The {@link HttpRequest} to send.
      * @param httpClient The {@link HttpClient} to send the {@code httpRequest} through.
+     * @param httpRequest The {@link HttpRequest} to send.
      * @param inputStream The {@link InputStream} to read data from.
      * @param listener The {@link ServerSentEventListener event listener} attached to the {@link HttpRequest}.
-     * @param logger The {@link ClientLogger} object to log errors with.
      */
-    public static void processTextEventStream(HttpRequest httpRequest, HttpClient httpClient,
-                                              InputStream inputStream, ServerSentEventListener listener,
-                                              ClientLogger logger) {
+    public static void processTextEventStream(HttpClient httpClient, HttpRequest httpRequest,
+                                              InputStream inputStream, ServerSentEventListener listener) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             RetrySSEResult retrySSEResult = processBuffer(reader, listener);
 
@@ -73,7 +72,7 @@ public final class ServerSentEventUtils {
                 httpClient.send(httpRequest);
             }
         } catch (IOException e) {
-            throw logger.logThrowableAsError(new UncheckedIOException(e));
+            throw HttpRequestAccessHelper.getLogger(httpRequest).logThrowableAsError(new UncheckedIOException(e));
         }
     }
 

@@ -113,12 +113,13 @@ import java.util.function.Consumer;
  * <!-- end io.clientcore.core.http.rest.requestoptions.postrequest -->
  */
 public final class RequestOptions {
-    public static final RequestOptions NONE = new RequestOptions().lock();
+    public static final RequestOptions NONE = new RequestOptions()
+        .setContext(Context.EMPTY)
+        .lock();
 
     // RequestOptions is a highly used, short-lived class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(RequestOptions.class);
 
-    private ClientLogger logger;
     private Consumer<HttpRequest> requestCallback = request -> {
     };
     private Context context;
@@ -137,10 +138,6 @@ public final class RequestOptions {
      * @return The request callback.
      */
     public Consumer<HttpRequest> getRequestCallback() {
-        if (locked) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException("RequestOptions.NONE is immutable."));
-        }
-
         return this.requestCallback;
     }
 
@@ -150,10 +147,6 @@ public final class RequestOptions {
      * @return The additional context that is passed during the service call.
      */
     public Context getContext() {
-        if (locked) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException("RequestOptions.NONE is immutable."));
-        }
-
         return context;
     }
 
@@ -165,24 +158,7 @@ public final class RequestOptions {
      * @return The configuration indicating how the body of the resulting HTTP response should be handled.
      */
     public ResponseBodyMode getResponseBodyMode() {
-        if (locked) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException("RequestOptions.NONE is immutable."));
-        }
-
         return responseBodyMode;
-    }
-
-    /**
-     * Gets the {@link ClientLogger} used to log during the request and response.
-     *
-     * @return The {@link ClientLogger} used to log during the request and response.
-     */
-    public ClientLogger getLogger() {
-        if (locked) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException("RequestOptions.NONE is immutable."));
-        }
-
-        return logger;
     }
 
     /**
@@ -330,7 +306,8 @@ public final class RequestOptions {
     }
 
     /**
-     * Sets the configuration indicating how the body of the resulting HTTP response should be handled.
+     * Sets the configuration indicating how the body of the resulting HTTP response should be handled. If {@code null},
+     * the response body will be handled based on the content type of the response.
      *
      * <p>For more information about the options for handling an HTTP response body, see {@link ResponseBodyMode}.</p>
      *
@@ -345,23 +322,6 @@ public final class RequestOptions {
         }
 
         this.responseBodyMode = responseBodyMode;
-
-        return this;
-    }
-
-    /**
-     * Sets the {@link ClientLogger} used to log during the request and response.
-     *
-     * @param logger The {@link ClientLogger} used to log during the request and response.
-     *
-     * @return The updated {@link RequestOptions} object.
-     */
-    public RequestOptions setLogger(ClientLogger logger) {
-        if (locked) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException("RequestOptions.NONE is immutable."));
-        }
-
-        this.logger = logger;
 
         return this;
     }
