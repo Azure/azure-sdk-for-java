@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The PhoneNumberSearchResult model. */
+/** The result of a phone number search operation. */
 @Fluent
 public final class PhoneNumberSearchResult {
     /*

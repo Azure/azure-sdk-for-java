@@ -4,47 +4,35 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The OperatorInformation model. */
-@Immutable
+@Fluent
 public final class OperatorInformation {
     /*
      * E.164 formatted string representation of the phone number
      */
-    @JsonProperty(value = "phoneNumber", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "phoneNumber")
     private String phoneNumber;
 
     /*
-     * National format of the phone number
+     * Type of service associated with the phone number
      */
-    @JsonProperty(value = "nationalFormat", access = JsonProperty.Access.WRITE_ONLY)
-    private String nationalFormat;
-
-    /*
-     * International format of the phone number
-     */
-    @JsonProperty(value = "internationalFormat", access = JsonProperty.Access.WRITE_ONLY)
-    private String internationalFormat;
+    @JsonProperty(value = "numberType")
+    private OperatorNumberType numberType;
 
     /*
      * ISO 3166-1 two character ('alpha-2') code associated with the phone
      * number.
      */
-    @JsonProperty(value = "isoCountryCode", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "isoCountryCode")
     private String isoCountryCode;
-
-    /*
-     * Type of service associated with the phone number
-     */
-    @JsonProperty(value = "numberType", access = JsonProperty.Access.WRITE_ONLY)
-    private OperatorNumberType numberType;
 
     /*
      * Represents metadata describing the operator of a phone number
      */
-    @JsonProperty(value = "operatorDetails", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "operatorDetails")
     private OperatorDetails operatorDetails;
 
     /**
@@ -57,30 +45,14 @@ public final class OperatorInformation {
     }
 
     /**
-     * Get the nationalFormat property: National format of the phone number.
+     * Set the phoneNumber property: E.164 formatted string representation of the phone number.
      *
-     * @return the nationalFormat value.
+     * @param phoneNumber the phoneNumber value to set.
+     * @return the OperatorInformation object itself.
      */
-    public String getNationalFormat() {
-        return this.nationalFormat;
-    }
-
-    /**
-     * Get the internationalFormat property: International format of the phone number.
-     *
-     * @return the internationalFormat value.
-     */
-    public String getInternationalFormat() {
-        return this.internationalFormat;
-    }
-
-    /**
-     * Get the isoCountryCode property: ISO 3166-1 two character ('alpha-2') code associated with the phone number.
-     *
-     * @return the isoCountryCode value.
-     */
-    public String getIsoCountryCode() {
-        return this.isoCountryCode;
+    public OperatorInformation setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+        return this;
     }
 
     /**
@@ -93,11 +65,53 @@ public final class OperatorInformation {
     }
 
     /**
+     * Set the numberType property: Type of service associated with the phone number.
+     *
+     * @param numberType the numberType value to set.
+     * @return the OperatorInformation object itself.
+     */
+    public OperatorInformation setNumberType(OperatorNumberType numberType) {
+        this.numberType = numberType;
+        return this;
+    }
+
+    /**
+     * Get the isoCountryCode property: ISO 3166-1 two character ('alpha-2') code associated with the phone number.
+     *
+     * @return the isoCountryCode value.
+     */
+    public String getIsoCountryCode() {
+        return this.isoCountryCode;
+    }
+
+    /**
+     * Set the isoCountryCode property: ISO 3166-1 two character ('alpha-2') code associated with the phone number.
+     *
+     * @param isoCountryCode the isoCountryCode value to set.
+     * @return the OperatorInformation object itself.
+     */
+    public OperatorInformation setIsoCountryCode(String isoCountryCode) {
+        this.isoCountryCode = isoCountryCode;
+        return this;
+    }
+
+    /**
      * Get the operatorDetails property: Represents metadata describing the operator of a phone number.
      *
      * @return the operatorDetails value.
      */
     public OperatorDetails getOperatorDetails() {
         return this.operatorDetails;
+    }
+
+    /**
+     * Set the operatorDetails property: Represents metadata describing the operator of a phone number.
+     *
+     * @param operatorDetails the operatorDetails value to set.
+     * @return the OperatorInformation object itself.
+     */
+    public OperatorInformation setOperatorDetails(OperatorDetails operatorDetails) {
+        this.operatorDetails = operatorDetails;
+        return this;
     }
 }
