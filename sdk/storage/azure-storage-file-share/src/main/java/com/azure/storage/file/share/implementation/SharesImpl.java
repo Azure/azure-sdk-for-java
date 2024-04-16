@@ -91,7 +91,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
                 @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -109,7 +108,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
                 @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -124,7 +122,6 @@ public final class SharesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -139,7 +136,6 @@ public final class SharesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -155,7 +151,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-delete-snapshots") DeleteSnapshotsOptionType deleteSnapshots,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -171,7 +166,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-delete-snapshots") DeleteSnapshotsOptionType deleteSnapshots,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -190,7 +184,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -209,7 +202,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -227,7 +219,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -245,7 +236,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -264,7 +254,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -283,7 +272,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -301,7 +289,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -319,7 +306,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -338,7 +324,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @QueryParam("sharesnapshot") String sharesnapshot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -357,7 +342,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @QueryParam("sharesnapshot") String sharesnapshot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -372,7 +356,6 @@ public final class SharesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -387,7 +370,6 @@ public final class SharesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -465,7 +447,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -483,7 +464,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -499,7 +479,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -515,7 +494,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -530,7 +508,6 @@ public final class SharesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -545,7 +522,6 @@ public final class SharesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -560,7 +536,6 @@ public final class SharesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @BodyParam("application/xml") SignedIdentifiersWrapper shareAcl,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -576,7 +551,6 @@ public final class SharesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @BodyParam("application/xml") SignedIdentifiersWrapper shareAcl,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -592,7 +566,6 @@ public final class SharesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -607,7 +580,6 @@ public final class SharesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -624,7 +596,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-deleted-share-name") String deletedShareName,
                 @HeaderParam("x-ms-deleted-share-version") String deletedShareVersion,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -641,7 +612,6 @@ public final class SharesImpl {
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-deleted-share-name") String deletedShareName,
                 @HeaderParam("x-ms-deleted-share-version") String deletedShareVersion,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -688,7 +658,6 @@ public final class SharesImpl {
                                 this.client.getVersion(),
                                 enabledProtocols,
                                 rootSquash,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -735,7 +704,6 @@ public final class SharesImpl {
                 this.client.getVersion(),
                 enabledProtocols,
                 rootSquash,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -847,7 +815,6 @@ public final class SharesImpl {
                                 this.client.getVersion(),
                                 enabledProtocols,
                                 rootSquash,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -894,7 +861,6 @@ public final class SharesImpl {
                 this.client.getVersion(),
                 enabledProtocols,
                 rootSquash,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -930,7 +896,6 @@ public final class SharesImpl {
                                 timeout,
                                 this.client.getVersion(),
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -965,7 +930,6 @@ public final class SharesImpl {
                 timeout,
                 this.client.getVersion(),
                 leaseId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1047,7 +1011,6 @@ public final class SharesImpl {
                                 timeout,
                                 this.client.getVersion(),
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1082,7 +1045,6 @@ public final class SharesImpl {
                 timeout,
                 this.client.getVersion(),
                 leaseId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1124,7 +1086,6 @@ public final class SharesImpl {
                                 this.client.getVersion(),
                                 deleteSnapshots,
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1166,7 +1127,6 @@ public final class SharesImpl {
                 this.client.getVersion(),
                 deleteSnapshots,
                 leaseId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1266,7 +1226,6 @@ public final class SharesImpl {
                                 this.client.getVersion(),
                                 deleteSnapshots,
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1308,7 +1267,6 @@ public final class SharesImpl {
                 this.client.getVersion(),
                 deleteSnapshots,
                 leaseId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1362,7 +1320,6 @@ public final class SharesImpl {
                                 this.client.getVersion(),
                                 sharesnapshot,
                                 requestId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1416,7 +1373,6 @@ public final class SharesImpl {
                 this.client.getVersion(),
                 sharesnapshot,
                 requestId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1543,7 +1499,6 @@ public final class SharesImpl {
                                 this.client.getVersion(),
                                 sharesnapshot,
                                 requestId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1597,7 +1552,6 @@ public final class SharesImpl {
                 this.client.getVersion(),
                 sharesnapshot,
                 requestId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1640,7 +1594,6 @@ public final class SharesImpl {
                                 this.client.getVersion(),
                                 sharesnapshot,
                                 requestId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1687,7 +1640,6 @@ public final class SharesImpl {
                 this.client.getVersion(),
                 sharesnapshot,
                 requestId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1786,7 +1738,6 @@ public final class SharesImpl {
                                 this.client.getVersion(),
                                 sharesnapshot,
                                 requestId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1833,7 +1784,6 @@ public final class SharesImpl {
                 this.client.getVersion(),
                 sharesnapshot,
                 requestId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -1885,7 +1835,6 @@ public final class SharesImpl {
                                 this.client.getVersion(),
                                 sharesnapshot,
                                 requestId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -1937,7 +1886,6 @@ public final class SharesImpl {
                 this.client.getVersion(),
                 sharesnapshot,
                 requestId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -2058,7 +2006,6 @@ public final class SharesImpl {
                                 this.client.getVersion(),
                                 sharesnapshot,
                                 requestId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -2110,7 +2057,6 @@ public final class SharesImpl {
                 this.client.getVersion(),
                 sharesnapshot,
                 requestId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -2153,7 +2099,6 @@ public final class SharesImpl {
                                 this.client.getVersion(),
                                 sharesnapshot,
                                 requestId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -2200,7 +2145,6 @@ public final class SharesImpl {
                 this.client.getVersion(),
                 sharesnapshot,
                 requestId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -2299,7 +2243,6 @@ public final class SharesImpl {
                                 this.client.getVersion(),
                                 sharesnapshot,
                                 requestId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -2346,7 +2289,6 @@ public final class SharesImpl {
                 this.client.getVersion(),
                 sharesnapshot,
                 requestId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -2401,7 +2343,6 @@ public final class SharesImpl {
                                 this.client.getVersion(),
                                 requestId,
                                 sharesnapshot,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -2456,7 +2397,6 @@ public final class SharesImpl {
                 this.client.getVersion(),
                 requestId,
                 sharesnapshot,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -2585,7 +2525,6 @@ public final class SharesImpl {
                                 this.client.getVersion(),
                                 requestId,
                                 sharesnapshot,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -2640,7 +2579,6 @@ public final class SharesImpl {
                 this.client.getVersion(),
                 requestId,
                 sharesnapshot,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -2674,7 +2612,6 @@ public final class SharesImpl {
                                 timeout,
                                 metadata,
                                 this.client.getVersion(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -2707,7 +2644,6 @@ public final class SharesImpl {
                 timeout,
                 metadata,
                 this.client.getVersion(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -2779,7 +2715,6 @@ public final class SharesImpl {
                                 timeout,
                                 metadata,
                                 this.client.getVersion(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -2812,7 +2747,6 @@ public final class SharesImpl {
                 timeout,
                 metadata,
                 this.client.getVersion(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -3208,7 +3142,6 @@ public final class SharesImpl {
                                 accessTier,
                                 leaseId,
                                 rootSquash,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -3253,7 +3186,6 @@ public final class SharesImpl {
                 accessTier,
                 leaseId,
                 rootSquash,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -3356,7 +3288,6 @@ public final class SharesImpl {
                                 accessTier,
                                 leaseId,
                                 rootSquash,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -3401,7 +3332,6 @@ public final class SharesImpl {
                 accessTier,
                 leaseId,
                 rootSquash,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -3437,7 +3367,6 @@ public final class SharesImpl {
                                 metadata,
                                 this.client.getVersion(),
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -3472,7 +3401,6 @@ public final class SharesImpl {
                 metadata,
                 this.client.getVersion(),
                 leaseId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -3550,7 +3478,6 @@ public final class SharesImpl {
                                 metadata,
                                 this.client.getVersion(),
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -3585,7 +3512,6 @@ public final class SharesImpl {
                 metadata,
                 this.client.getVersion(),
                 leaseId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -3620,7 +3546,6 @@ public final class SharesImpl {
                                 timeout,
                                 this.client.getVersion(),
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -3654,7 +3579,6 @@ public final class SharesImpl {
                 timeout,
                 this.client.getVersion(),
                 leaseId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -3728,7 +3652,6 @@ public final class SharesImpl {
                                 timeout,
                                 this.client.getVersion(),
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -3761,7 +3684,6 @@ public final class SharesImpl {
                 timeout,
                 this.client.getVersion(),
                 leaseId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -3797,7 +3719,6 @@ public final class SharesImpl {
                                 timeout,
                                 this.client.getVersion(),
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 shareAclConverted,
                                 accept,
                                 context));
@@ -3833,7 +3754,6 @@ public final class SharesImpl {
                 timeout,
                 this.client.getVersion(),
                 leaseId,
-                this.client.getFileRequestIntent(),
                 shareAclConverted,
                 accept,
                 context);
@@ -3912,7 +3832,6 @@ public final class SharesImpl {
                                 timeout,
                                 this.client.getVersion(),
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 shareAclConverted,
                                 accept,
                                 context));
@@ -3948,7 +3867,6 @@ public final class SharesImpl {
                 timeout,
                 this.client.getVersion(),
                 leaseId,
-                this.client.getFileRequestIntent(),
                 shareAclConverted,
                 accept,
                 context);
@@ -3983,7 +3901,6 @@ public final class SharesImpl {
                                 timeout,
                                 this.client.getVersion(),
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -4016,7 +3933,6 @@ public final class SharesImpl {
                 timeout,
                 this.client.getVersion(),
                 leaseId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -4089,7 +4005,6 @@ public final class SharesImpl {
                                 timeout,
                                 this.client.getVersion(),
                                 leaseId,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -4122,7 +4037,6 @@ public final class SharesImpl {
                 timeout,
                 this.client.getVersion(),
                 leaseId,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -4161,7 +4075,6 @@ public final class SharesImpl {
                                 requestId,
                                 deletedShareName,
                                 deletedShareVersion,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -4204,7 +4117,6 @@ public final class SharesImpl {
                 requestId,
                 deletedShareName,
                 deletedShareVersion,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -4295,7 +4207,6 @@ public final class SharesImpl {
                                 requestId,
                                 deletedShareName,
                                 deletedShareVersion,
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -4338,7 +4249,6 @@ public final class SharesImpl {
                 requestId,
                 deletedShareName,
                 deletedShareVersion,
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }

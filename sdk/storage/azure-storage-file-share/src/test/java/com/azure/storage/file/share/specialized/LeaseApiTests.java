@@ -274,27 +274,6 @@ public class LeaseApiTests extends FileShareTestBase {
         assertEquals(leaseDuration, properties.getLeaseDuration());
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
-    @ParameterizedTest
-    @MethodSource("acquireShareLeaseSupplier")
-    public void acquireShareLeaseOAuth(String proposedID, int leaseTime, LeaseStateType leaseState,
-                                  LeaseDurationType leaseDuration) {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
-
-        ShareLeaseClient leaseClient = createLeaseClient(shareClient, proposedID);
-        Response<String> leaseResponse = leaseClient.acquireLeaseWithResponse(new ShareAcquireLeaseOptions()
-            .setDuration(leaseTime), null, null);
-        assertEquals(leaseClient.getLeaseId(), leaseResponse.getValue());
-
-        ShareProperties properties = shareClient.getProperties();
-        assertNotNull(leaseResponse.getValue());
-        validateBasicHeaders(leaseResponse.getHeaders());
-        assertEquals(leaseState, properties.getLeaseState());
-        assertEquals(leaseDuration, properties.getLeaseDuration());
-    }
-
     private static Stream<Arguments> acquireShareLeaseSupplier() {
         return Stream.of(
             Arguments.of(null, -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE),
@@ -371,24 +350,6 @@ public class LeaseApiTests extends FileShareTestBase {
         validateBasicHeaders(renewLeaseResponse.getHeaders());
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
-    @Test
-    public void renewShareLeaseOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
-
-        String leaseID = setupShareLeaseCondition(shareClient, RECEIVED_LEASE_ID);
-        ShareLeaseClient leaseClient = createLeaseClient(shareClient, leaseID);
-
-        // If running in live mode wait for the lease to expire to ensure we are actually renewing it
-        sleepIfRunningAgainstService(16000);
-        Response<String> renewLeaseResponse = leaseClient.renewLeaseWithResponse(null, null);
-        assertEquals(leaseClient.getLeaseId(), renewLeaseResponse.getValue());
-        assertEquals(LeaseStateType.LEASED, shareClient.getProperties().getLeaseState());
-        validateBasicHeaders(renewLeaseResponse.getHeaders());
-    }
-
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void renewShareLeaseMin() {
@@ -424,20 +385,6 @@ public class LeaseApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void releaseShareLease() {
-        String leaseID = setupShareLeaseCondition(shareClient, RECEIVED_LEASE_ID);
-        Response<Void> releaseLeaseResponse = createLeaseClient(shareClient, leaseID)
-            .releaseLeaseWithResponse(null, null);
-
-        assertEquals(LeaseStateType.AVAILABLE, shareClient.getProperties().getLeaseState());
-        validateBasicHeaders(releaseLeaseResponse.getHeaders());
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
-    @Test
-    public void releaseShareLeaseOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
         String leaseID = setupShareLeaseCondition(shareClient, RECEIVED_LEASE_ID);
         Response<Void> releaseLeaseResponse = createLeaseClient(shareClient, leaseID)
             .releaseLeaseWithResponse(null, null);
@@ -495,27 +442,6 @@ public class LeaseApiTests extends FileShareTestBase {
         }
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
-    @ParameterizedTest
-    @MethodSource("breakShareLeaseSupplier")
-    public void breakShareLeaseOAuth(int leaseTime, Long breakPeriod) {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
-        ShareLeaseClient leaseClient = createLeaseClient(shareClient, testResourceNamer.randomUuid());
-        leaseClient.acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(leaseTime), null, null);
-
-        Response<Void> breakLeaseResponse = leaseClient.breakLeaseWithResponse(new ShareBreakLeaseOptions()
-            .setBreakPeriod(breakPeriod == null ? null : Duration.ofSeconds(breakPeriod)), null, null);
-        LeaseStateType state = shareClient.getProperties().getLeaseState();
-        assertTrue(LeaseStateType.BROKEN == state || LeaseStateType.BREAKING == state);
-        validateBasicHeaders(breakLeaseResponse.getHeaders());
-        if (breakPeriod != null) {
-            // If running in live mode wait for the lease to break so we can delete the share after the test completes
-            sleepIfRunningAgainstService(breakPeriod * 1000);
-        }
-    }
-
     private static Stream<Arguments> breakShareLeaseSupplier() {
         return Stream.of(Arguments.of(-1, null), Arguments.of(-1, 20L), Arguments.of(20, 15L));
     }
@@ -556,24 +482,6 @@ public class LeaseApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void changeShareLease() {
-        String leaseID = setupShareLeaseCondition(shareClient, RECEIVED_LEASE_ID);
-        ShareLeaseClient leaseClient = createLeaseClient(shareClient, leaseID);
-        String newLeaseId = testResourceNamer.randomUuid();
-        Response<String> changeLeaseResponse = leaseClient.changeLeaseWithResponse(newLeaseId, null, null);
-        assertEquals(newLeaseId, changeLeaseResponse.getValue());
-        assertEquals(leaseClient.getLeaseId(), changeLeaseResponse.getValue());
-        assertEquals(200, createLeaseClient(shareClient, newLeaseId).releaseLeaseWithResponse(null, null)
-            .getStatusCode());
-        validateBasicHeaders(changeLeaseResponse.getHeaders());
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
-    @Test
-    public void changeShareLeaseOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
-
         String leaseID = setupShareLeaseCondition(shareClient, RECEIVED_LEASE_ID);
         ShareLeaseClient leaseClient = createLeaseClient(shareClient, leaseID);
         String newLeaseId = testResourceNamer.randomUuid();
