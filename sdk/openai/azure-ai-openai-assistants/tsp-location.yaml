@@ -1,4 +1,3 @@
 directory: specification/ai/OpenAI.Assistants
 commit: c740a1cb0cc3f2eb63b5f83723fbf3593aad1451
 repo: Azure/azure-rest-api-specs
-save-inputs: true
