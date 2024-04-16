@@ -395,7 +395,7 @@ function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidatio
     return $false
   }
   $java2docfxDir = Join-Path $Env:BUILD_BINARIESDIRECTORY "java2docfx"
-  if (!Test-Path $java2docfxDir) {
+  if (!(Test-Path $java2docfxDir)) {
     LogError "There should be a java2docfx directory under Env:BUILD_BINARIESDIRECTORY. Ensure that the /eng/pipelines/templates/steps/install-rex-validation-tool.yml template was run prior to whatever step is running this."
     return $false
   }
