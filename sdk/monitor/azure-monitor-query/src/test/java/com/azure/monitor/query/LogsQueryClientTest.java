@@ -14,9 +14,12 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResult;
 import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
@@ -31,13 +34,12 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 import static com.azure.monitor.query.MonitorQueryTestUtils.QUERY_STRING;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getAdditionalLogWorkspaceId;
@@ -277,6 +279,24 @@ public class LogsQueryClientTest extends TestProxyTestBase {
         LogsQueryResult queryResults = client.queryWorkspaceWithResponse(workspaceId,
                 QUERY_STRING, null, new LogsQueryOptions().setIncludeStatistics(true), Context.NONE).getValue();
 
+        BinaryData statisticsData = queryResults.getStatistics();
+
+        try (JsonReader jsonReader = JsonProviders.createReader(statisticsData.toBytes())) {
+            Map<String, Object> statisticsMap = jsonReader.readMap(JsonReader::readUntyped);
+            assertNotNull(statisticsMap);
+
+            Object query = statisticsMap.get("query");
+            if (query instanceof Map<?, ?>) {
+                Map<?, ?> queryMap = (Map<?, ?>) query;
+                assertNotNull(queryMap.get("executionTime"));
+                assertNotNull(queryMap.get("resourceUsage"));
+            } else {
+                Assertions.fail("Failed to read the statistics data.");
+            }
+        } catch (Exception e) {
+            Assertions.fail("Failed to read the statistics data.");
+        }
+
         assertEquals(1, queryResults.getAllTables().size());
         assertNotNull(queryResults.getStatistics());
     }
@@ -352,6 +372,21 @@ public class LogsQueryClientTest extends TestProxyTestBase {
         assertEquals(1, queryResults.getAllTables().size());
         assertNotNull(queryResults.getVisualization());
 
+        BinaryData visualization = queryResults.getVisualization();
+
+        try (JsonReader reader = JsonProviders.createReader(visualization.toStream())) {
+            Map<String, Object> map = reader.readMap(innerReader -> {
+                return reader.readUntyped();
+            });
+            String title = map.get("title").toString();
+            String xTitle = map.get("xTitle").toString();
+
+            assertEquals("the chart title", title);
+            assertEquals("the x axis title", xTitle);
+        } catch (IOException e) {
+            Assertions.fail("Failed to read the visualization data.");
+        }
+
         LinkedHashMap<String, Object> linkedHashMap =
             queryResults.getVisualization().toObject(new TypeReference<LinkedHashMap<String, Object>>() {
             });
@@ -371,6 +406,21 @@ public class LogsQueryClientTest extends TestProxyTestBase {
             Context.NONE).getValue();
         assertEquals(1, queryResults.getAllTables().size());
         assertNotNull(queryResults.getVisualization());
+
+        BinaryData visualization = queryResults.getVisualization();
+
+        try (JsonReader reader = JsonProviders.createReader(visualization.toStream())) {
+            Map<String, Object> map = reader.readMap(innerReader -> {
+                return reader.readUntyped();
+            });
+            String title = map.get("title").toString();
+            String xTitle = map.get("xTitle").toString();
+
+            assertEquals("the chart title", title);
+            assertEquals("the x axis title", xTitle);
+        } catch (IOException e) {
+            Assertions.fail("Failed to read the visualization data.");
+        }
 
         LinkedHashMap<String, Object> linkedHashMap =
             queryResults.getVisualization().toObject(new TypeReference<LinkedHashMap<String, Object>>() {

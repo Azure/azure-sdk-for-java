@@ -239,7 +239,7 @@
     need inherited javadocs from core and explicitly adding this exclusion in each library is not maintainable. So,
     by default, we exclude core packages in the parent pom and in core packages override this exclusion -->
     <javadoc.excludePackageNames>com.azure.json,com.azure.xml,com.azure.core.*</javadoc.excludePackageNames>
-    <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../core/azure-core/src/main/java:${basedir}/../../serialization/azure-json/src/main/java:${basedir}/../../serialization/azure-xml/src/main/java</javadoc.sourcepath>
+    <javadoc.sourcepath></javadoc.sourcepath>
 
     <!-- Used to skip maven-shade-plugin. This should only be used as part of CI builds to allow for parallel builds in non-shipping pipelines. -->
     <!-- In the future this should be removed once maven-shade-plugin no longer as a possibility of deadlocking in parallel builds. -->
@@ -268,7 +268,7 @@
       <groupId>org.jacoco</groupId>
       <artifactId>org.jacoco.agent</artifactId>
       <classifier>runtime</classifier>
-      <version>0.8.11</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+      <version>0.8.12</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -339,7 +339,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
       </plugin>
 
       <!-- This plugin scans checkstyle issues in the code -->
@@ -376,7 +376,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <outputDirectory>${packageOutputDirectory}</outputDirectory>
           <archive combine.children="append">
@@ -416,7 +416,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -431,7 +431,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.2.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
+        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -449,7 +449,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>copy</id>
@@ -469,7 +469,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.11</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.12</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <dataFileIncludes>
             <dataFileInclude>${project.build.directory}/jacoco.exec</dataFileInclude>
@@ -570,7 +570,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <version>3.5.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-artifacts</id>
@@ -613,7 +613,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <!--
@@ -683,7 +683,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+          <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
           <configuration>
             <showWarnings>true</showWarnings>
             <failOnWarning>true</failOnWarning>
@@ -771,7 +771,7 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.6</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+              <version>9.7</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
             </dependency>
           </dependencies>
           <configuration>
@@ -804,7 +804,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+          <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
           <configuration>
             <source>1.8</source>
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
@@ -942,14 +942,14 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.6</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+              <version>9.7</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
             </dependency>
             <dependency>
               <!-- must be on the classpath -->
               <groupId>org.jacoco</groupId>
               <artifactId>org.jacoco.agent</artifactId>
               <classifier>runtime</classifier>
-              <version>0.8.11</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+              <version>0.8.12</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>
@@ -986,14 +986,14 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.6</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+              <version>9.7</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
             </dependency>
             <dependency>
               <!-- must be on the classpath -->
               <groupId>org.jacoco</groupId>
               <artifactId>org.jacoco.agent</artifactId>
               <classifier>runtime</classifier>
-              <version>0.8.11</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+              <version>0.8.12</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>
@@ -1054,7 +1054,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+          <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
           <configuration>
             <skip>${shade.skip}</skip>
           </configuration>
@@ -1118,7 +1118,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <reportSets>
           <reportSet>
             <id>non-aggregate</id>
@@ -1131,7 +1131,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-project-info-reports-plugin;external_dependency} -->
+        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-project-info-reports-plugin;external_dependency} -->
         <reportSets>
           <reportSet>
             <reports>
@@ -1183,7 +1183,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <source>1.8</source>
               <target>1.8</target>
@@ -1202,7 +1202,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
@@ -1217,7 +1217,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
@@ -1239,7 +1239,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <compilerArgs combine.children="append">
                 <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
@@ -1382,7 +1382,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <version>3.2.0</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>generate-overview-from-readme</id>
@@ -1410,7 +1410,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration combine.children="append">
               <overview>${project.build.directory}/readme_overview.html</overview>
             </configuration>
@@ -1432,7 +1432,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <version>3.2.0</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>verify-readme-codesnippet</id>
@@ -1667,7 +1667,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>xml-maven-plugin</artifactId>
-            <version>1.0.2</version> <!-- {x-version-update;org.codehaus.mojo:xml-maven-plugin;external_dependency} -->
+            <version>1.1.0</version> <!-- {x-version-update;org.codehaus.mojo:xml-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <phase>verify</phase>
@@ -1779,7 +1779,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <executions>
               <!-- then compile with Java 11 as the base version that supports module-info -->
               <!-- this is the Azure SDK baseline for jars that are released to Maven and should only be updated
