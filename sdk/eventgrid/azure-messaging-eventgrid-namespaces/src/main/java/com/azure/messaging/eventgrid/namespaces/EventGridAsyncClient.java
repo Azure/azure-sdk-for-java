@@ -21,7 +21,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.messaging.eventgrid.namespaces.implementation.EventGridClientImpl;
 import com.azure.messaging.eventgrid.namespaces.models.AcknowledgeOptions;
 import com.azure.messaging.eventgrid.namespaces.models.AcknowledgeResult;
-import com.azure.messaging.eventgrid.namespaces.models.PublishResult;
 import com.azure.messaging.eventgrid.namespaces.models.ReceiveResult;
 import com.azure.messaging.eventgrid.namespaces.models.RejectOptions;
 import com.azure.messaging.eventgrid.namespaces.models.RejectResult;

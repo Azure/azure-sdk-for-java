@@ -16,8 +16,6 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.messaging.eventgrid.namespaces.EventGridClient;
-import com.azure.messaging.eventgrid.namespaces.EventGridClientBuilder;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
