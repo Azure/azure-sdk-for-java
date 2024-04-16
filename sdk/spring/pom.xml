@@ -8,6 +8,11 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
 
+  <properties>
+    <test.on.azure>false</test.on.azure>
+    <test.on.emualator>false</test.on.emualator>
+  </properties>
+
   <profiles>
     <profile>
       <id>default</id>
