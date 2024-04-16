@@ -3,36 +3,38 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.FeedRange;
 import org.apache.kafka.connect.storage.OffsetStorageReader;
+import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
-public class CosmosSourceOffsetStorageReader {
+public class MetadataKafkaStorageManager implements IMetadataReader {
     private final OffsetStorageReader offsetStorageReader;
 
-    public CosmosSourceOffsetStorageReader(OffsetStorageReader offsetStorageReader) {
+    public MetadataKafkaStorageManager(OffsetStorageReader offsetStorageReader) {
         this.offsetStorageReader = offsetStorageReader;
     }
 
-    public FeedRangesMetadataTopicOffset getFeedRangesMetadataOffset(String databaseName, String containerRid) {
+    public Mono<Utils.ValueHolder<FeedRangesMetadataTopicOffset>> getFeedRangesMetadataOffset(String databaseName, String containerRid) {
         Map<String, Object> topicOffsetMap =
             this.offsetStorageReader
                 .offset(
                     FeedRangesMetadataTopicPartition.toMap(
                             new FeedRangesMetadataTopicPartition(databaseName, containerRid)));
 
-        return FeedRangesMetadataTopicOffset.fromMap(topicOffsetMap);
+        return Mono.just(new Utils.ValueHolder<>(FeedRangesMetadataTopicOffset.fromMap(topicOffsetMap)));
     }
 
-    public ContainersMetadataTopicOffset getContainersMetadataOffset(String databaseName) {
+    public Mono<Utils.ValueHolder<ContainersMetadataTopicOffset>> getContainersMetadataOffset(String databaseName) {
         Map<String, Object> topicOffsetMap =
             this.offsetStorageReader
                 .offset(
                     ContainersMetadataTopicPartition.toMap(
                         new ContainersMetadataTopicPartition(databaseName)));
 
-        return ContainersMetadataTopicOffset.fromMap(topicOffsetMap);
+        return Mono.just(new Utils.ValueHolder<>(ContainersMetadataTopicOffset.fromMap(topicOffsetMap)));
     }
 
     public FeedRangeContinuationTopicOffset getFeedRangeContinuationOffset(
@@ -47,5 +49,9 @@ public class CosmosSourceOffsetStorageReader {
                         new FeedRangeContinuationTopicPartition(databaseName, collectionRid, feedRange)));
 
         return FeedRangeContinuationTopicOffset.fromMap(topicOffsetMap);
+    }
+
+    public OffsetStorageReader getOffsetStorageReader() {
+        return offsetStorageReader;
     }
 }
