@@ -305,7 +305,7 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
                 ShareErrorCode.SHARE_NOT_FOUND));
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-05-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
     @Test
     public void listSharesEnableSnapshotVirtualDirectoryAccess() {
         ShareCreateOptions options = new ShareCreateOptions();

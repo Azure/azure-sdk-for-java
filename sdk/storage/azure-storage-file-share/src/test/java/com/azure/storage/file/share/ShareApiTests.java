@@ -1267,7 +1267,7 @@ public class ShareApiTests extends FileShareTestBase {
             Arguments.of((Boolean) null));
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-05-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
     @ParameterizedTest
     @MethodSource("createEnableSnapshotVirtualDirectoryAccessSupplier")
     public void setPropertiesEnableSnapshotVirtualDirectoryAccess(Boolean enableSnapshotVirtualDirectoryAccess) {

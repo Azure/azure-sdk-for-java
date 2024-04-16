@@ -419,7 +419,7 @@ public class FileServiceApiTests extends FileShareTestBase {
         assertEquals(response.getHeaders().getValue(X_MS_VERSION), "2017-11-09");
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-05-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
     @Test
     public void listSharesEnableSnapshotVirtualDirectoryAccess() {
         ShareCreateOptions options = new ShareCreateOptions();
