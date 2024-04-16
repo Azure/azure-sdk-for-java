@@ -13,6 +13,7 @@ import com.azure.ai.openai.assistants.models.MessageImageFileContent;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
 import com.azure.ai.openai.assistants.models.MessageTextDetails;
+import com.azure.ai.openai.assistants.models.MessageTextFileCitationAnnotation;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
@@ -88,9 +89,13 @@ public class RetrievalToolSample {
                 if (content instanceof MessageTextContent) {
                     MessageTextDetails messageTextDetails = ((MessageTextContent) content).getText();
                     System.out.println(messageTextDetails.getValue());
-                    messageTextDetails.getAnnotations().forEach(annotation ->
-                        System.out.println("\tAnnotation start: " + annotation.getStartIndex()
-                            + " ,end: " + annotation.getEndIndex() + " ,text: \"" + annotation.getText() + "\""));
+                    messageTextDetails.getAnnotations().forEach(annotation -> {
+                        if (annotation instanceof MessageTextFileCitationAnnotation) {
+                            MessageTextFileCitationAnnotation textAnnotation = (MessageTextFileCitationAnnotation) annotation;
+                            System.out.println("\tAnnotation start: " + textAnnotation.getStartIndex()
+                                + " ,end: " + textAnnotation.getEndIndex() + " ,text: \"" + textAnnotation.getText() + "\"");
+                        }
+                    });
                 } else if (content instanceof MessageImageFileContent) {
                     System.out.print("Image file ID: ");
                     System.out.println(((MessageImageFileContent) content).getImageFile().getFileId());

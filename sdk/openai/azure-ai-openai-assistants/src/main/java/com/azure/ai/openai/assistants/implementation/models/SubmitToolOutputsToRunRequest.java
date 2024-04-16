@@ -4,8 +4,8 @@
 package com.azure.ai.openai.assistants.implementation.models;
 
 import com.azure.ai.openai.assistants.models.ToolOutput;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * The SubmitToolOutputsToRunRequest model.
  */
-@Immutable
+@Fluent
 public final class SubmitToolOutputsToRunRequest implements JsonSerializable<SubmitToolOutputsToRunRequest> {
 
     /*
@@ -53,6 +53,7 @@ public final class SubmitToolOutputsToRunRequest implements JsonSerializable<Sub
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("tool_outputs", this.toolOutputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("stream", this.stream);
         return jsonWriter.writeEndObject();
     }
 
@@ -69,16 +70,52 @@ public final class SubmitToolOutputsToRunRequest implements JsonSerializable<Sub
     public static SubmitToolOutputsToRunRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<ToolOutput> toolOutputs = null;
+            Boolean stream = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("tool_outputs".equals(fieldName)) {
                     toolOutputs = reader.readArray(reader1 -> ToolOutput.fromJson(reader1));
+                } else if ("stream".equals(fieldName)) {
+                    stream = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new SubmitToolOutputsToRunRequest(toolOutputs);
+            SubmitToolOutputsToRunRequest deserializedSubmitToolOutputsToRunRequest
+                = new SubmitToolOutputsToRunRequest(toolOutputs);
+            deserializedSubmitToolOutputsToRunRequest.stream = stream;
+            return deserializedSubmitToolOutputsToRunRequest;
         });
+    }
+
+    /*
+     * If `true`, returns a stream of events that happen during the Run as server-sent events, terminating when the Run enters a terminal state with a `data: [DONE]` message.
+     */
+    @Generated
+    private Boolean stream;
+
+    /**
+     * Get the stream property: If `true`, returns a stream of events that happen during the Run as server-sent events,
+     * terminating when the Run enters a terminal state with a `data: [DONE]` message.
+     *
+     * @return the stream value.
+     */
+    @Generated
+    public Boolean isStream() {
+        return this.stream;
+    }
+
+    /**
+     * Set the stream property: If `true`, returns a stream of events that happen during the Run as server-sent events,
+     * terminating when the Run enters a terminal state with a `data: [DONE]` message.
+     *
+     * @param stream the stream value to set.
+     * @return the SubmitToolOutputsToRunRequest object itself.
+     */
+    @Generated
+    public SubmitToolOutputsToRunRequest setStream(Boolean stream) {
+        this.stream = stream;
+        return this;
     }
 }
