@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class FeedRangesMetadataTopicOffset {
-    public static final String CONTAINER_FEED_RANGES_KEY = "cosmos.source.metadata.container.feedRanges";
+    public static final String CONTAINER_FEED_RANGES_KEY = "feedRanges";
     public static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
     private final List<FeedRange> feedRanges;

@@ -119,7 +119,7 @@ public class RouterWorkerLiveTests extends JobRouterTestBase {
                 add(new RouterChannel("channel2", 5));
             }
         });
-        RouterWorker updatedWorker = jobRouterClient.updateWorker(workerId, deserialized, null);
+        RouterWorker updatedWorker = jobRouterClient.updateWorker(workerId, deserialized);
 
         assertEquals(workerId, updatedWorker.getId());
         assertEquals(updatedWorker.isAvailableForOffers(), true);
