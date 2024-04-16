@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 public final class ServerSentEventUtils {
     private static final String DEFAULT_EVENT = "message";
     private static final Pattern DIGITS_ONLY = Pattern.compile("^[\\d]*$");
-    private static final String LAST_EVENT_ID = "Last-Event-Id";
+    private static final HttpHeaderName LAST_EVENT_ID = HttpHeaderName.fromString("Last-Event-Id");
     public static final String NO_LISTENER_ERROR_MESSAGE = "No ServerSentEventListener attached to HttpRequest to "
         + "handle the text/event-stream response";
 
@@ -136,7 +136,7 @@ public final class ServerSentEventUtils {
 
         if (retrySSEResult.getLastEventId() != -1) {
             httpRequest.getHeaders()
-                .add(HttpHeaderName.fromString(LAST_EVENT_ID), String.valueOf(retrySSEResult.getLastEventId()));
+                .add(LAST_EVENT_ID, String.valueOf(retrySSEResult.getLastEventId()));
         }
 
         try {

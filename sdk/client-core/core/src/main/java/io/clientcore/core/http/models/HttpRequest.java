@@ -55,7 +55,6 @@ public class HttpRequest {
     private RequestOptions requestOptions;
     private int retryCount;
     private ClientLogger requestLogger;
-    private ResponseBodyMode responseBodyMode;
 
     /**
      * Create a new {@link HttpRequest} instance.
@@ -66,7 +65,7 @@ public class HttpRequest {
      * @throws NullPointerException if {@code url} is {@code null}.
      */
     public HttpRequest(HttpMethod httpMethod, URL url) {
-        this.httpMethod = httpMethod;
+        this.httpMethod = Objects.requireNonNull(httpMethod, "'httpMethod' cannot be null");
         this.url = Objects.requireNonNull(url, "'url' cannot be null");
         this.headers = new HttpHeaders();
         this.requestOptions = RequestOptions.NONE;
@@ -82,7 +81,7 @@ public class HttpRequest {
      * @throws IllegalArgumentException If {@code url} cannot be parsed into a valid {@link URL}.
      */
     public HttpRequest(HttpMethod httpMethod, String url) {
-        this.httpMethod = httpMethod;
+        this.httpMethod = Objects.requireNonNull(httpMethod, "'httpMethod' cannot be null");
 
         setUrl(url);
 

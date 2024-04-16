@@ -115,6 +115,9 @@ import java.util.List;
  * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
  */
 public abstract class BinaryData implements Closeable {
+    /**
+     * Represents an empty instance of BinaryData.
+     */
     public static final BinaryData EMPTY = BinaryData.fromBytes(new byte[0]);
 
     static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
