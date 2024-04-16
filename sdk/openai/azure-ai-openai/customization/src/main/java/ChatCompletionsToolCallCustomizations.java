@@ -41,6 +41,20 @@ public class ChatCompletionsToolCallCustomizations extends Customization {
         JavadocCustomization constructorJavadocCustomization = constructorCustomization.getJavadoc()
                 .setParam("type", "the type value to set.");
 
+        // Remove type and getter in ChatCompletionsFunctionToolCall
+        classCustomization = packageCustomization.getClass("ChatCompletionsFunctionToolCall");
+        classCustomization.removeMethod("getType");
+        classCustomization.customizeAst(compilationUnit -> {
+            ClassOrInterfaceDeclaration clazz = compilationUnit.getClassByName("ChatCompletionsFunctionToolCall").get();
+            clazz.getMembers().removeIf(node -> {
+                if (node.isFieldDeclaration()
+                        && node.asFieldDeclaration().getVariables() != null && !node.asFieldDeclaration().getVariables().isEmpty()) {
+                    return "type".equals(node.asFieldDeclaration().getVariables().get(0).getName().asString());
+                }
+                return false;
+            });
+        });
+
         // remove unused class (no reference to them, after partial-update)
         customization.getRawEditor().removeFile("src/main/java/com/azure/ai/openai/models/FileDetails.java");
         customization.getRawEditor().removeFile("src/main/java/com/azure/ai/openai/implementation/MultipartFormDataHelper.java");

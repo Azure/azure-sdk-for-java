@@ -304,7 +304,6 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             assertSafePromptContentFilterResults(chatCompletions.getPromptFilterResults().get(0));
             assertEquals(1, chatCompletions.getChoices().size());
             assertSafeChoiceContentFilterResults(chatCompletions.getChoices().get(0).getContentFilterResults());
-
         });
     }
 
