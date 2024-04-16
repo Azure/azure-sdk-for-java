@@ -461,6 +461,23 @@ public final class EventGridAsyncClient {
             renewLockOptions, requestOptions);
     }
 
+    /**
+     * Publish Single Cloud Event to namespace topic. In case of success, the server responds with an HTTP 200 status
+     * code with an empty JSON object in response. Otherwise, the server can return various error codes. For example,
+     * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
+     * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
+     *
+     * @param topicName Topic Name.
+     * @param event Single Cloud Event being published.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws UncheckedIOException failed to format the event properly.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the Publish operation on successful completion of {@link Mono}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> publishCloudEvent(String topicName, CloudEvent event) {
         return publishCloudEvent(topicName, event, false);
@@ -533,6 +550,23 @@ public final class EventGridAsyncClient {
         }
     }
 
+    /**
+     * Publish Batch Cloud Event to namespace topic. In case of success, the server responds with an HTTP 200 status
+     * code with an empty JSON object in response. Otherwise, the server can return various error codes. For example,
+     * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
+     * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
+     *
+     * @param topicName Topic Name.
+     * @param events Batch Cloud Event being published.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws UncheckedIOException failed to format the event properly.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the Publish operation on successful completion of {@link Mono}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> publishCloudEvents(String topicName, List<CloudEvent> events) {
         // Generated convenience method for publishCloudEventsWithResponse
