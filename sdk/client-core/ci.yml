@@ -49,11 +49,11 @@ extends:
         groupId: io.clientcore
         safeName: core
         releaseInBatch: ${{ parameters.release_core }}
-      - name: core-http-jdk-http
+      - name: http-jdk-http
         groupId: io.clientcore
         safeName: httpjdkhttp
         releaseInBatch: ${{ parameters.release_clientcorehttpjdkhttp }}
-      - name: core-http-okhttp
+      - name: http-okhttp
         groupId: io.clientcore
         safeName: httpokhttp3
         releaseInBatch: ${{ parameters.release_clientcorehttpokhttp3 }}
