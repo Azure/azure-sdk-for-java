@@ -14,6 +14,12 @@ public final class GetRelayConfigurationOptions {
     private RouteType routeType;
 
     /**
+     * Default constructor for GetRelayConfigurationOptions.
+     */
+    public GetRelayConfigurationOptions() {
+    }
+
+    /**
      * Get the communicationUser property: The CommunicationUserIdentifier for whom to issue a token.
      *
      * @return the communicationUser value.

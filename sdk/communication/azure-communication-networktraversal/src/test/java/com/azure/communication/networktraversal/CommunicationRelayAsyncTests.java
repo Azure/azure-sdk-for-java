@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
+import com.azure.communication.identity.CommunicationIdentityServiceVersion;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
 import com.azure.communication.networktraversal.models.RouteType;
 import com.azure.communication.networktraversal.models.CommunicationIceServer;
@@ -26,7 +27,7 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
     private CommunicationUserIdentifier user;
 
     private void setupTest(HttpClient httpClient) {
-        CommunicationIdentityClient communicationIdentityClient = createIdentityClientBuilder(httpClient).buildClient();
+        CommunicationIdentityClient communicationIdentityClient = createIdentityClientBuilder(httpClient).serviceVersion(CommunicationIdentityServiceVersion.V2022_10_01).buildClient();
         user = communicationIdentityClient.createUser();
     }
 
