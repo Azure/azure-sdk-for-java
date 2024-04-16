@@ -148,6 +148,33 @@ public class EventProcessorClient {
     }
 
     /**
+     * Package-private to get the consumer group.
+     *
+     * @return The consumer group.
+     */
+    String getConsumerGroup() {
+        return consumerGroup;
+    }
+
+    /**
+     * Package-private to get the Event Hub name.
+     *
+     * @return the Event Hub name.
+     */
+    String getEventHubName() {
+        return eventHubName;
+    }
+
+    /**
+     * Package-private to get the fully-qualified namespace.
+     *
+     * @return The fully-qualified namespace.
+     */
+    String getFullyQualifiedNamespace() {
+        return fullyQualifiedNamespace;
+    }
+
+    /**
      * The identifier is a unique name given to this event processor instance.
      *
      * @return Identifier for this event processor.
