@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.fasterxml.jackson.databind.JsonNode;

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.UInt128;

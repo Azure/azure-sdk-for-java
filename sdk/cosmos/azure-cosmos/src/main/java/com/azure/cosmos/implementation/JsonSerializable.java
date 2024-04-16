@@ -280,7 +280,6 @@ public class JsonSerializable {
             // Arrays, POJO, ObjectNode, number (includes int, float, double etc), boolean,
             // and string
             Map<String, Object> jsonTreeMap = itemSerializer.serialize(value);
-            ObjectNode objectNode;
             if (jsonTreeMap instanceof ObjectNodeMap) {
                 this.propertyBag.set(propertyName, ((ObjectNodeMap) jsonTreeMap).getObjectNode());
             } else if (jsonTreeMap instanceof PrimitiveJsonNodeMap) {

@@ -6,11 +6,8 @@ package com.azure.cosmos.implementation.query.orderbyquery;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.QueryItem;
-import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.List;

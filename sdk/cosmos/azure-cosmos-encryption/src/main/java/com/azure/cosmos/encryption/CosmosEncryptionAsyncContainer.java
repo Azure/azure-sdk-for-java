@@ -1088,7 +1088,6 @@ public final class CosmosEncryptionAsyncContainer {
                 transformer,
                 sqlQuerySpec,
                 options,
-                pagedFluxOptions,
                 effectiveSerializer
             ).apply(pagedFluxOptions);
 
@@ -1109,7 +1108,6 @@ public final class CosmosEncryptionAsyncContainer {
                                             transformer,
                                             sqlQuerySpec,
                                             options,
-                                            pagedFluxOptions,
                                             effectiveSerializer
                                         ).apply(pagedFluxOptions);
                                     })
@@ -1125,7 +1123,6 @@ public final class CosmosEncryptionAsyncContainer {
         Transformer<T> transformer,
         SqlQuerySpec sqlQuerySpec,
         CosmosQueryRequestOptions queryRequestOptions,
-        CosmosPagedFluxOptions pagedFluxOptions,
         CosmosItemSerializer effectiveSerializer) {
 
         CosmosQueryRequestOptions finalOptions = setRequestHeaders(cosmosQueryRequestOptionsAccessor
@@ -1167,7 +1164,6 @@ public final class CosmosEncryptionAsyncContainer {
         Transformer<T> transformer,
         Mono<SqlQuerySpec> sqlQuerySpecMono,
         CosmosQueryRequestOptions options,
-        CosmosPagedFluxOptions pagedFluxOptions,
         CosmosItemSerializer effectiveSerializer) {
 
         CosmosQueryRequestOptions finalOptions = setRequestHeaders(cosmosQueryRequestOptionsAccessor
@@ -1261,7 +1257,6 @@ public final class CosmosEncryptionAsyncContainer {
                 transformer,
                 sqlQuerySpecMono,
                 options,
-                pagedFluxOptions,
                 effectiveSerializer
             ).apply(pagedFluxOptions);
 
@@ -1277,15 +1272,13 @@ public final class CosmosEncryptionAsyncContainer {
                             return this.encryptionProcessor
                                 .initializeEncryptionSettingsAsync(true)
                                 .thenMany(
-                                    Flux.defer(() -> {
-                                        return this.transformQueryItemsInternal(
+                                    Flux.defer(() -> this.transformQueryItemsInternal(
                                             transformer,
                                             specWithEncryptionAccessor.getSqlQuerySpec(sqlQuerySpecWithEncryption),
                                             options,
-                                            pagedFluxOptions,
                                             effectiveSerializer
-                                        ).apply(pagedFluxOptions);
-                                    })
+                                        ).apply(pagedFluxOptions)
+                                    )
                                 );
                         }
                     }
@@ -1628,14 +1621,13 @@ public final class CosmosEncryptionAsyncContainer {
             .setCustomSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         return executeBulkOperationsHelper(
-            operationFlux, executionOptionsWithDefaultSerializer,  effectiveItemSerializer, false);
+            operationFlux, executionOptionsWithDefaultSerializer,  effectiveItemSerializer);
     }
 
     @SuppressWarnings("unchecked")
     private <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperationsHelper(Flux<CosmosItemOperation> operations,
                                                                                                CosmosBulkExecutionOptions bulkOptions,
-                                                                                               CosmosItemSerializer effectiveItemSerializer,
-                                                                                               boolean isRetry) {
+                                                                                               CosmosItemSerializer effectiveItemSerializer) {
         return this.container.executeBulkOperations(operations, bulkOptions).flatMap(cosmosBulkOperationResponse -> {
 
             CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();

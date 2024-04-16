@@ -3,7 +3,6 @@
 package com.azure.cosmos.implementation;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -15,7 +14,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 public class PrimitiveJsonNodeMap implements Map<String, Object> {
     public final static String VALUE_KEY = "__primitive_json-node_value__";
-    private final static ObjectMapper itemMapper = Utils.getSimpleObjectMapper();
     private final Object thisLock = new Object();
     private final JsonNode primitiveJsonNode;
     private volatile LinkedHashMap<String, Object> jsonNodeAsMap = null;
