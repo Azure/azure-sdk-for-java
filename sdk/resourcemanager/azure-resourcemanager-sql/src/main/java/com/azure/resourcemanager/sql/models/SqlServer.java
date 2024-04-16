@@ -76,9 +76,9 @@ public interface SqlServer
     SqlFirewallRule enableAccessFromAzureServices();
 
     /**
-     * Whether the sql server can be accessed from public network.
+     * Whether the SQL Server can be accessed from public network.
      *
-     * @return whether the disk can be accessed from sql server.
+     * @return whether the SQL Server can be accessed from public network.
      */
     ServerNetworkAccessFlag publicNetworkAccess();
 
@@ -277,10 +277,10 @@ public interface SqlServer
         }
 
 
-        /** The stage of sql server definition allowing to configure network access settings. */
+        /** The stage of SQL Server definition allowing to configure network access settings. */
         interface WithPublicNetworkAccess {
             /**
-             * Disables public network access for the sql server.
+             * Disables public network access for the SQL Server.
              *
              * @return the next stage of the definition
              */
@@ -398,16 +398,16 @@ public interface SqlServer
             Update withoutFirewallRule(String firewallRuleName);
         }
 
-        /** The stage of sql server update allowing to configure network access settings. */
+        /** The stage of SQL Server update allowing to configure network access settings. */
         interface WithPublicNetworkAccess {
             /**
-             * Enables public network access for the sql server.
+             * Enables public network access for the SQL Server.
              *
              * @return the next stage of the update
              */
             Update enablePublicNetworkAccess();
             /**
-             * Disables public network access for the sql server.
+             * Disables public network access for the SQL Server.
              *
              * @return the next stage of the update
              */
