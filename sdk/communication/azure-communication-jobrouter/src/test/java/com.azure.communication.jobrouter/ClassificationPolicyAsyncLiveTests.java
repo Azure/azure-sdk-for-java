@@ -179,7 +179,7 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
         deserialized.setPrioritizationRule(null);
         deserialized.setQueueSelectorAttachments(new ArrayList<>());
         ClassificationPolicy updatedPolicy = administrationAsyncClient.updateClassificationPolicy(
-            deserialized.getId(), deserialized, null).block();
+            deserialized.getId(), deserialized).block();
 
         assertEquals(classificationPolicyId, updatedPolicy.getId());
         assertEquals(classificationPolicyName, updatedPolicy.getName());

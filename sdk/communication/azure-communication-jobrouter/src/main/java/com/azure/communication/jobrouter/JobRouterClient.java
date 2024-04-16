@@ -77,7 +77,7 @@ public final class JobRouterClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -131,9 +131,9 @@ public final class JobRouterClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -354,6 +354,154 @@ public final class JobRouterClient {
     }
 
     /**
+     * Updates a router job.
+     *
+     * <p>
+     * <strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     jobId: String (Required)
+     *     channelReference: String (Optional)
+     *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *     enqueuedAt: OffsetDateTime (Optional)
+     *     channelId: String (Optional)
+     *     classificationPolicyId: String (Optional)
+     *     queueId: String (Optional)
+     *     priority: Integer (Optional)
+     *     dispositionCode: String (Optional)
+     *     requestedWorkerSelectors (Optional): [
+     *          (Optional){
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             value: Object (Optional)
+     *             expiresAfterSeconds: Double (Optional)
+     *             expedite: Boolean (Optional)
+     *             status: String(active/expired) (Optional)
+     *             expiresAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     attachedWorkerSelectors (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     assignments (Optional): {
+     *         String (Optional): {
+     *             assignmentId: String (Required)
+     *             workerId: String (Optional)
+     *             assignedAt: OffsetDateTime (Required)
+     *             completedAt: OffsetDateTime (Optional)
+     *             closedAt: OffsetDateTime (Optional)
+     *         }
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     notes (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     scheduledAt: OffsetDateTime (Optional)
+     *     matchingMode (Optional): {
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     jobId: String (Required)
+     *     channelReference: String (Optional)
+     *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *     enqueuedAt: OffsetDateTime (Optional)
+     *     channelId: String (Optional)
+     *     classificationPolicyId: String (Optional)
+     *     queueId: String (Optional)
+     *     priority: Integer (Optional)
+     *     dispositionCode: String (Optional)
+     *     requestedWorkerSelectors (Optional): [
+     *          (Optional){
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             value: Object (Optional)
+     *             expiresAfterSeconds: Double (Optional)
+     *             expedite: Boolean (Optional)
+     *             status: String(active/expired) (Optional)
+     *             expiresAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     attachedWorkerSelectors (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     assignments (Optional): {
+     *         String (Optional): {
+     *             assignmentId: String (Required)
+     *             workerId: String (Optional)
+     *             assignedAt: OffsetDateTime (Required)
+     *             completedAt: OffsetDateTime (Optional)
+     *             closedAt: OffsetDateTime (Optional)
+     *         }
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     notes (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     scheduledAt: OffsetDateTime (Optional)
+     *     matchingMode (Optional): {
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param jobId The jobId of the job.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a unit of work to be routed.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData updateJob(String jobId, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertJobWithResponse(jobId, resource, requestOptions).getValue();
+    }
+
+    /**
      * Creates or updates a router job.
      *
      * <p>
@@ -385,18 +533,15 @@ public final class JobRouterClient {
      *
      * @param jobId The jobId of the job.
      * @param job The job instance to update.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return BinaryData.
+     * @return the updated job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterJob updateJob(String jobId, RouterJob job, RequestOptions requestOptions) {
-        return this.updateJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions)
-            .getValue()
-            .toObject(RouterJob.class);
+    public RouterJob updateJob(String jobId, RouterJob job) {
+        return this.updateJobWithResponse(jobId, BinaryData.fromObject(job), null).getValue().toObject(RouterJob.class);
     }
 
     /**
@@ -476,7 +621,7 @@ public final class JobRouterClient {
     /**
      * Retrieves an existing job by Id.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -713,7 +858,7 @@ public final class JobRouterClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -784,7 +929,7 @@ public final class JobRouterClient {
     /**
      * Gets a job's position details.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     jobId: String (Required)
@@ -812,15 +957,15 @@ public final class JobRouterClient {
     /**
      * Unassign a job.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     suspendMatching: Boolean (Optional)
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     jobId: String (Required)
@@ -847,7 +992,7 @@ public final class JobRouterClient {
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     assignmentId: String (Required)
@@ -945,7 +1090,7 @@ public final class JobRouterClient {
     /**
      * Retrieves a queue's statistics.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     queueId: String (Required)
@@ -984,7 +1129,7 @@ public final class JobRouterClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1029,9 +1174,9 @@ public final class JobRouterClient {
      *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1262,18 +1407,128 @@ public final class JobRouterClient {
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     state: String(active/draining/inactive) (Optional)
+     *     queueAssignments (Optional): {
+     *         String (Optional): {
+     *         }
+     *     }
+     *     totalCapacity: Integer (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     channelConfigurations (Optional): {
+     *         String (Optional): {
+     *             capacityCostPerJob: int (Required)
+     *             maxNumberOfJobs: Integer (Optional)
+     *         }
+     *     }
+     *     offers (Optional): [
+     *          (Optional){
+     *             offerId: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             offeredAt: OffsetDateTime (Optional)
+     *             expiresAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     assignedJobs (Optional): [
+     *          (Optional){
+     *             assignmentId: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             assignedAt: OffsetDateTime (Required)
+     *         }
+     *     ]
+     *     loadRatio: Double (Optional)
+     *     availableForOffers: Boolean (Optional)
+     *     maxConcurrentOffers: Integer (Optional)
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     state: String(active/draining/inactive) (Optional)
+     *     queueAssignments (Optional): {
+     *         String (Optional): {
+     *         }
+     *     }
+     *     totalCapacity: Integer (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     channelConfigurations (Optional): {
+     *         String (Optional): {
+     *             capacityCostPerJob: int (Required)
+     *             maxNumberOfJobs: Integer (Optional)
+     *         }
+     *     }
+     *     offers (Optional): [
+     *          (Optional){
+     *             offerId: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             offeredAt: OffsetDateTime (Optional)
+     *             expiresAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     assignedJobs (Optional): [
+     *          (Optional){
+     *             assignmentId: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             assignedAt: OffsetDateTime (Required)
+     *         }
+     *     ]
+     *     loadRatio: Double (Optional)
+     *     availableForOffers: Boolean (Optional)
+     *     maxConcurrentOffers: Integer (Optional)
+     * }
+     * }</pre>
+     *
      * @param workerId Id of the worker.
-     * @param worker The worker to update.
+     * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return BinaryData.
+     * @return an entity for jobs to be routed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterWorker updateWorker(String workerId, RouterWorker worker, RequestOptions requestOptions) {
-        return this.updateWorkerWithResponse(workerId, BinaryData.fromObject(worker), requestOptions)
+    public BinaryData updateWorker(String workerId, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertWorkerWithResponse(workerId, resource, requestOptions).getValue();
+    }
+
+    /**
+     * Updates a worker.
+     *
+     * @param workerId Id of the worker.
+     * @param worker The worker to update.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return an entity for jobs to be routed to.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouterWorker updateWorker(String workerId, RouterWorker worker) {
+        return this.updateWorkerWithResponse(workerId, BinaryData.fromObject(worker), null)
             .getValue()
             .toObject(RouterWorker.class);
     }
@@ -1316,7 +1571,7 @@ public final class JobRouterClient {
     /**
      * Retrieves an existing worker by Id.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1412,7 +1667,7 @@ public final class JobRouterClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
