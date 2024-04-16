@@ -34,13 +34,13 @@ public class RouterRuleAdapter {
         if (routerRule != null) {
             if (routerRule.getClass() == ExpressionRouterRule.class) {
                 ExpressionRouterRule expressionRouterRule = (ExpressionRouterRule) routerRule;
-                prioritizationRuleInternal = new ExpressionRouterRuleInternal(expressionRouterRule.getExpression())
+                prioritizationRuleInternal = new ExpressionRouterRuleInternal().setExpression(expressionRouterRule.getExpression())
                     .setLanguage(expressionRouterRule.getLanguage());
             } else if (routerRule.getClass() == DirectMapRouterRule.class) {
                 prioritizationRuleInternal = new DirectMapRouterRuleInternal();
             } else if (routerRule.getClass() == FunctionRouterRule.class) {
                 FunctionRouterRule functionRouterRule = (FunctionRouterRule) routerRule;
-                prioritizationRuleInternal = new FunctionRouterRuleInternal(functionRouterRule.getFunctionUri())
+                prioritizationRuleInternal = new FunctionRouterRuleInternal().setFunctionUri(functionRouterRule.getFunctionUri())
                     .setCredential(functionRouterRule.getCredential());
             } else if (routerRule.getClass() == StaticRouterRule.class) {
                 StaticRouterRule staticRouterRule = (StaticRouterRule) routerRule;
@@ -62,11 +62,11 @@ public class RouterRuleAdapter {
         if (rule instanceof DirectMapRouterRule) {
             return new DirectMapRouterRuleInternal();
         } else if (rule instanceof ExpressionRouterRule) {
-            return new ExpressionRouterRuleInternal(((ExpressionRouterRule) rule).getExpression())
+            return new ExpressionRouterRuleInternal().setExpression(((ExpressionRouterRule) rule).getExpression())
                 .setLanguage(ExpressionRouterRuleLanguage.POWER_FX);
         } else if (rule instanceof FunctionRouterRule) {
             FunctionRouterRule functionRouterRule = (FunctionRouterRule) rule;
-            return new FunctionRouterRuleInternal(functionRouterRule.getFunctionUri())
+            return new FunctionRouterRuleInternal().setFunctionUri(functionRouterRule.getFunctionUri())
                     .setCredential(new FunctionRouterRuleCredential()
                     .setFunctionKey(functionRouterRule.getCredential().getFunctionKey())
                     .setAppKey(functionRouterRule.getCredential().getAppKey())

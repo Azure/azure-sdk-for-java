@@ -194,9 +194,10 @@ public final class WebhookRouterRuleInternal extends RouterRuleInternal {
             if (this.clientCredential == null) {
                 jsonWriter.writeNullField("clientCredential");
             } else {
-                this.clientCredential.serializeAsJsonMergePatch(true);
+                JsonMergePatchHelper.getOAuth2WebhookClientCredentialAccessor().prepareModelForJsonMergePatch(this.clientCredential, true);
                 jsonWriter.writeJsonField("clientCredential", this.clientCredential);
-                this.clientCredential.serializeAsJsonMergePatch(false);
+                JsonMergePatchHelper.getOAuth2WebhookClientCredentialAccessor().prepareModelForJsonMergePatch(this.clientCredential, false);
+
             }
         }
         if (updatedProperties.contains("webhookUri")) {

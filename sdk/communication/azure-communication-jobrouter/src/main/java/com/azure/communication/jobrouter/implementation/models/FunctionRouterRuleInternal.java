@@ -163,9 +163,9 @@ public final class FunctionRouterRuleInternal extends RouterRuleInternal {
             if (this.credential == null) {
                 jsonWriter.writeNullField("credential");
             } else {
-                this.credential.serializeAsJsonMergePatch(true);
+                JsonMergePatchHelper.getFunctionRouterRuleCredentialAccessor().prepareModelForJsonMergePatch(this.credential, true);
                 jsonWriter.writeJsonField("credential", this.credential);
-                this.credential.serializeAsJsonMergePatch(false);
+                JsonMergePatchHelper.getFunctionRouterRuleCredentialAccessor().prepareModelForJsonMergePatch(this.credential, false);
             }
         }
         return jsonWriter.writeEndObject();

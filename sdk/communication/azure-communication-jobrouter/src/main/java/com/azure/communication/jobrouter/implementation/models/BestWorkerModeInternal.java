@@ -227,9 +227,9 @@ public final class BestWorkerModeInternal extends DistributionModeInternal {
             if (this.scoringRuleOptions == null) {
                 jsonWriter.writeNullField("scoringRuleOptions");
             } else {
-                this.scoringRuleOptions.serializeAsJsonMergePatch(true);
+                JsonMergePatchHelper.getScoringRuleOptionsAccessor().prepareModelForJsonMergePatch(this.scoringRuleOptions, true);
                 jsonWriter.writeJsonField("scoringRuleOptions", this.scoringRuleOptions);
-                this.scoringRuleOptions.serializeAsJsonMergePatch(false);
+                JsonMergePatchHelper.getScoringRuleOptionsAccessor().prepareModelForJsonMergePatch(this.scoringRuleOptions, false);
             }
         }
         return jsonWriter.writeEndObject();

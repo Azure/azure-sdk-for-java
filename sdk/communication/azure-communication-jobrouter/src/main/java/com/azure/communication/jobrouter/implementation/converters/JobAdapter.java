@@ -45,7 +45,7 @@ public class JobAdapter {
         workerSelectors = createJobOptions.getRequestedWorkerSelectors() != null ? createJobOptions.getRequestedWorkerSelectors()
             .stream()
             .map(workerSelector ->
-                new RouterWorkerSelectorInternal(workerSelector.getKey(), workerSelector.getLabelOperator())
+                new RouterWorkerSelectorInternal().setKey(workerSelector.getKey()).setLabelOperator(workerSelector.getLabelOperator())
                     .setValue(getValue(workerSelector.getValue()))
                     .setExpedite(workerSelector.isExpedite())
                     .setExpiresAt(workerSelector.getExpiresAt())
@@ -60,7 +60,7 @@ public class JobAdapter {
         if (jobMatchingModeKind != null) {
             if (jobMatchingModeKind.equals(JobMatchingModeKind.SCHEDULE_AND_SUSPEND)) {
                 ScheduleAndSuspendMode scheduleAndSuspendMode = (ScheduleAndSuspendMode) createJobOptions.getMatchingMode();
-                jobMatchingModeInternal = new ScheduleAndSuspendModeInternal(scheduleAndSuspendMode.getScheduleAt());
+                jobMatchingModeInternal = new ScheduleAndSuspendModeInternal().setScheduleAt(scheduleAndSuspendMode.getScheduleAt());
             } else if (jobMatchingModeKind.equals(JobMatchingModeKind.QUEUE_AND_MATCH)) {
                 jobMatchingModeInternal = new QueueAndMatchModeInternal();
             } else if (jobMatchingModeKind.equals(JobMatchingModeKind.SUSPEND)) {
@@ -100,7 +100,7 @@ public class JobAdapter {
         workerSelectors = createJobOptions.getRequestedWorkerSelectors() != null ? createJobOptions.getRequestedWorkerSelectors()
             .stream()
             .map(workerSelector ->
-                new RouterWorkerSelectorInternal(workerSelector.getKey(), workerSelector.getLabelOperator())
+                new RouterWorkerSelectorInternal().setKey(workerSelector.getKey()).setLabelOperator(workerSelector.getLabelOperator())
                     .setValue(getValue(workerSelector.getValue()))
                     .setExpedite(workerSelector.isExpedite())
                     .setExpiresAt(workerSelector.getExpiresAt())
@@ -115,7 +115,7 @@ public class JobAdapter {
         if (jobMatchingModeKind != null) {
             if (jobMatchingModeKind.equals(JobMatchingModeKind.SCHEDULE_AND_SUSPEND)) {
                 ScheduleAndSuspendMode scheduleAndSuspendMode = (ScheduleAndSuspendMode) createJobOptions.getMatchingMode();
-                jobMatchingModeInternal = new ScheduleAndSuspendModeInternal(scheduleAndSuspendMode.getScheduleAt());
+                jobMatchingModeInternal = new ScheduleAndSuspendModeInternal().setScheduleAt(scheduleAndSuspendMode.getScheduleAt());
             } else if (jobMatchingModeKind.equals(JobMatchingModeKind.QUEUE_AND_MATCH)) {
                 jobMatchingModeInternal = new QueueAndMatchModeInternal();
             } else if (jobMatchingModeKind.equals(JobMatchingModeKind.SUSPEND)) {

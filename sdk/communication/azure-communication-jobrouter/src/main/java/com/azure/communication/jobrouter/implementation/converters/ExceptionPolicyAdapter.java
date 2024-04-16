@@ -50,10 +50,10 @@ public class ExceptionPolicyAdapter {
         ExceptionTriggerInternal exceptionTriggerInternal = null;
         if (exceptionTrigger.getClass() == QueueLengthExceptionTrigger.class) {
             QueueLengthExceptionTrigger queueLengthExceptionTrigger = (QueueLengthExceptionTrigger) exceptionTrigger;
-            exceptionTriggerInternal = new QueueLengthExceptionTriggerInternal(queueLengthExceptionTrigger.getThreshold());
+            exceptionTriggerInternal = new QueueLengthExceptionTriggerInternal().setThreshold(queueLengthExceptionTrigger.getThreshold());
         } else if (exceptionTrigger.getClass() == WaitTimeExceptionTrigger.class) {
             WaitTimeExceptionTrigger waitTimeExceptionTrigger = (WaitTimeExceptionTrigger) exceptionTrigger;
-            exceptionTriggerInternal = new WaitTimeExceptionTriggerInternal(waitTimeExceptionTrigger.getThreshold().getSeconds());
+            exceptionTriggerInternal = new WaitTimeExceptionTriggerInternal().setThresholdSeconds(waitTimeExceptionTrigger.getThreshold().getSeconds());
         }
         return exceptionTriggerInternal;
     }
@@ -100,7 +100,7 @@ public class ExceptionPolicyAdapter {
                 .map(action -> convertExceptionAction(action))
                 .collect(Collectors.toList())
             : null;
-        return new ExceptionRuleInternal(id, exceptionTriggerInternal, exceptionActionInternalList);
+        return new ExceptionRuleInternal().setId(id).setTrigger(exceptionTriggerInternal).setActions(exceptionActionInternalList);
     }
 
 }
