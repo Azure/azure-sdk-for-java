@@ -524,10 +524,13 @@ public final class ShareServiceAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
+     * <p>For more information on updated max file share size values, see the
+     * <a href="https://learn.microsoft.com/azure/storage/files/storage-files-scale-targets#azure-file-share-scale-targets">Azure Docs</a>.</p>
+     *
      * @param shareName Name of the share
      * @param metadata Optional metadata to associate with the share
-     * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
-     * less than or equal to 5120. The default value is 5120.
+     * @param quotaInGB Optional maximum size the share is allowed to grow to in GB.
+     * The default value is 5120. Refer to the Azure Docs for updated values.
      * @return A response containing the {@link ShareAsyncClient ShareAsyncClient} and the status of creating the share.
      * @throws ShareStorageException If a share with the same name already exists or {@code quotaInGB} is outside the
      * allowed range.
