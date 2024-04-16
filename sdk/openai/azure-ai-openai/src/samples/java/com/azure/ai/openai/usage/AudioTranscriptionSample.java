@@ -25,9 +25,9 @@ public class AudioTranscriptionSample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        String azureOpenaiKey =  Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
+        String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
-        String deploymentOrModelId = "whisper";
+        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
         String fileName = "batman.wav";
         Path filePath = Paths.get("src/samples/java/com/azure/ai/openai/resources/" + fileName);
 

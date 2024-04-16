@@ -35,6 +35,7 @@ import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsFinishReason;
+import com.azure.ai.openai.models.ContentFilterResult;
 import com.azure.ai.openai.models.ContentFilterResultDetailsForPrompt;
 import com.azure.ai.openai.models.ContentFilterResultsForChoice;
 import com.azure.ai.openai.models.ContentFilterResultsForPrompt;
@@ -590,26 +591,42 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNotNull(contentFilterResults);
         ContentFilterResultDetailsForPrompt promptFilterDetails = contentFilterResults.getContentFilterResults();
         assertNotNull(promptFilterDetails);
-        assertFalse(promptFilterDetails.getHate().isFiltered());
-        assertEquals(promptFilterDetails.getHate().getSeverity(), ContentFilterSeverity.SAFE);
-        assertFalse(promptFilterDetails.getSexual().isFiltered());
-        assertEquals(promptFilterDetails.getSexual().getSeverity(), ContentFilterSeverity.SAFE);
-        assertFalse(promptFilterDetails.getSelfHarm().isFiltered());
-        assertEquals(promptFilterDetails.getSelfHarm().getSeverity(), ContentFilterSeverity.SAFE);
-        assertFalse(promptFilterDetails.getViolence().isFiltered());
-        assertEquals(promptFilterDetails.getViolence().getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterResult hate = promptFilterDetails.getHate();
+        assertFalse(hate.isFiltered());
+        assertEquals(hate.getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterResult sexual = promptFilterDetails.getSexual();
+        assertFalse(sexual.isFiltered());
+        assertEquals(sexual.getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterResult selfHarm = promptFilterDetails.getSelfHarm();
+        assertFalse(selfHarm.isFiltered());
+        assertEquals(selfHarm.getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterResult violence = promptFilterDetails.getViolence();
+        assertFalse(violence.isFiltered());
+        assertEquals(violence.getSeverity(), ContentFilterSeverity.SAFE);
     }
 
     static void assertSafeChoiceContentFilterResults(ContentFilterResultsForChoice contentFilterResults) {
         assertNotNull(contentFilterResults);
-        assertFalse(contentFilterResults.getHate().isFiltered());
-        assertEquals(contentFilterResults.getHate().getSeverity(), ContentFilterSeverity.SAFE);
-        assertFalse(contentFilterResults.getSexual().isFiltered());
-        assertEquals(contentFilterResults.getSexual().getSeverity(), ContentFilterSeverity.SAFE);
-        assertFalse(contentFilterResults.getSelfHarm().isFiltered());
-        assertEquals(contentFilterResults.getSelfHarm().getSeverity(), ContentFilterSeverity.SAFE);
-        assertFalse(contentFilterResults.getViolence().isFiltered());
-        assertEquals(contentFilterResults.getViolence().getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterResult hate = contentFilterResults.getHate();
+        assertFalse(hate.isFiltered());
+        assertEquals(hate.getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterResult sexual = contentFilterResults.getSexual();
+        assertFalse(sexual.isFiltered());
+        assertEquals(sexual.getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterResult selfHarm = contentFilterResults.getSelfHarm();
+        assertFalse(selfHarm.isFiltered());
+        assertEquals(selfHarm.getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterResult violence = contentFilterResults.getViolence();
+        assertFalse(violence.isFiltered());
+        assertEquals(violence.getSeverity(), ContentFilterSeverity.SAFE);
     }
 
     static void assertChatCompletionsCognitiveSearch(ChatCompletions chatCompletions) {
