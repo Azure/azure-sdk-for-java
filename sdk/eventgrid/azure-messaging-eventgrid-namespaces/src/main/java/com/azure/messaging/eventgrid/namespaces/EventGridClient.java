@@ -70,7 +70,7 @@ public final class EventGridClient {
      * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
      * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -85,9 +85,9 @@ public final class EventGridClient {
      *     subject: String (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * { }
      * }</pre>
@@ -114,7 +114,7 @@ public final class EventGridClient {
      * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
      * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -131,9 +131,9 @@ public final class EventGridClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * { }
      * }</pre>
@@ -169,7 +169,7 @@ public final class EventGridClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     value (Required): [
@@ -217,7 +217,7 @@ public final class EventGridClient {
      * other failed lockTokens with their corresponding error information. Successfully acknowledged events will no
      * longer be available to any consumer.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -225,9 +225,9 @@ public final class EventGridClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -284,7 +284,7 @@ public final class EventGridClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -292,9 +292,9 @@ public final class EventGridClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -343,7 +343,7 @@ public final class EventGridClient {
      * accepted. The response body will include the set of successfully rejected lockTokens, along with other failed
      * lockTokens with their corresponding error information.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -351,9 +351,9 @@ public final class EventGridClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -402,7 +402,7 @@ public final class EventGridClient {
      * successfully accepted. The response body will include the set of successfully renewed lockTokens, along with
      * other failed lockTokens with their corresponding error information.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -410,9 +410,9 @@ public final class EventGridClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -639,15 +639,13 @@ public final class EventGridClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the Release operation.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReleaseResult releaseCloudEvents(String topicName, String eventSubscriptionName,
         ReleaseOptions releaseOptions, ReleaseDelay releaseDelayInSeconds) {
         // Generated convenience method for releaseCloudEventsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (releaseDelayInSeconds != null) {
-            requestOptions.addQueryParam("releaseDelayInSeconds", String.valueOf(releaseDelayInSeconds),
-                false);
+            requestOptions.addQueryParam("releaseDelayInSeconds", String.valueOf(releaseDelayInSeconds), false);
         }
         return releaseCloudEventsWithResponse(topicName, eventSubscriptionName, BinaryData.fromObject(releaseOptions),
             requestOptions).getValue().toObject(ReleaseResult.class);

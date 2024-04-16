@@ -42,27 +42,22 @@ import static com.github.javaparser.StaticJavaParser.parseExpression;
 public class EventGridCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
-        customizeEventGridClientImplImports(customization);
+        customizeEventGridClientImplImports(customization, logger);
     }
 
 
-    public void customizeEventGridClientImplImports(LibraryCustomization customization) {
-        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.namespaces");
-        Arrays.asList("EventGridClient", "EventGridAsyncClient", "ReceiveDetails").forEach(s -> {
-            ClassCustomization classCustomization = packageModels.getClass("EventGridClient");
+    public void customizeEventGridClientImplImports(LibraryCustomization customization, Logger logger) {
 
-            classCustomization.customizeAst(comp -> {
-                comp.getImports().removeIf(p -> p.getNameAsString().equals("com.azure.messaging.eventgrid.namespaces.implementation.models.CloudEvent"));
-                comp.addImport("com.azure.core.models.CloudEvent");
-
-//            comp.getClassByName("EventGridClient").ifPresent(c -> {
-//                c.getMethodsByName("publishCloudEvent").forEach(m -> {
-//                    m.setType("void");
-//                    m.setBody(parseBlock(""))
-//                });
-//            });
+        Arrays.asList("com.azure.messaging.eventgrid.namespaces", "com.azure.messaging.eventgrid.namespaces.models").forEach(p -> {
+            logger.info("Working on " + p);
+            PackageCustomization packageCustomization = customization.getPackage(p);
+            packageCustomization.listClasses().forEach(c -> {
+                c.customizeAst(comp -> {
+                    logger.info("Got here");
+                    comp.getImports().removeIf(i -> i.getNameAsString().equals("com.azure.messaging.eventgrid.namespaces.implementation.models.CloudEvent"));
+                    comp.addImport("com.azure.core.models.CloudEvent");
+                });
             });
         });
-
     }
 }
