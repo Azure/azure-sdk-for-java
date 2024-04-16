@@ -5,12 +5,6 @@
 ### Features Added
 - Added support for service versions 2024-02-04 and 2024-05-04.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 12.0.0-beta.19 (2023-11-08)
 
 ### Features Added
