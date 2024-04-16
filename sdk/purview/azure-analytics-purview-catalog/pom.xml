@@ -14,7 +14,7 @@
   <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-analytics-purview-catalog;current} -->
 
   <name>Microsoft Azure client library for Purview Catalog</name>
-  <description>This package contains Microsoft Azure Purview Catalog client library. Please note, this package has been deprecated and will no longer be maintained after 06/01/2024. We encourage you to upgrade to the replacement package, `com.azure/azure-analytics-purview-datamap`, to continue receiving updates. Refer to the migration guide (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-datamap/MigrationGuide.md) for guidance on upgrading. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.</description>
+  <description>This package contains Microsoft Azure Purview Catalog client library. Please note, this package has been deprecated and will no longer be maintained after 06/01/2024. We encourage you to upgrade to the replacement package, `com.azure/azure-analytics-purview-datamap`, to continue receiving updates. Refer to the migration guide (https://aka.ms/azsdk/java/migrate/purview-datamap) for guidance on upgrading. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.</description>
 
   <distributionManagement>
     <site>
