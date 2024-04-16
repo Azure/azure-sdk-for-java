@@ -22,16 +22,16 @@ pr:
       - sdk/client-core/
 
 parameters:
-  - name: release_dependsonlivetests
-    displayName: 'Release depends on live tests'
-    type: boolean
-    default: true
   - name: release_core
     displayName: 'core'
     type: boolean
     default: true
-  - name: release_clientcorehttpokhttp
-    displayName: 'core-http-okhttp'
+  - name: release_clientcorehttpjdkhttp
+    displayName: 'http-jdkhttp'
+    type: boolean
+    default: false
+  - name: release_clientcorehttpokhttp3
+    displayName: 'http-okhttp3'
     type: boolean
     default: false
   - name: release_corejson
@@ -44,36 +44,22 @@ extends:
   parameters:
     ServiceDirectory: client-core
     EnableBatchRelease: true
-    ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
       - name: core
         groupId: io.clientcore
         safeName: core
         releaseInBatch: ${{ parameters.release_core }}
+      - name: core-http-jdk-http
+        groupId: io.clientcore
+        safeName: httpjdkhttp
+        releaseInBatch: ${{ parameters.release_clientcorehttpjdkhttp }}
       - name: core-http-okhttp
         groupId: io.clientcore
-        safeName: corehttpokhttp
-        releaseInBatch: ${{ parameters.release_corehttpokhttp }}
+        safeName: httpokhttp3
+        releaseInBatch: ${{ parameters.release_clientcorehttpokhttp3 }}
       - name: core-json
         groupId: io.clientcore
         safeName: corejson
         releaseInBatch: ${{ parameters.release_corejson }}
     MatrixReplace:
       - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
-
-    LiveTestStages:
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
-        parameters:
-          ServiceDirectory: client-core
-          Artifacts:
-            - name: core
-              groupId: io.clientcore
-              safeName: core
-            - name: core-http-okhttp
-              groupId: io.clientcore
-              safeName: corehttpokhttp
-            - name: core-json
-              groupId: io.clientcore
-              safeName: corejson
-          MatrixReplace:
-            - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
