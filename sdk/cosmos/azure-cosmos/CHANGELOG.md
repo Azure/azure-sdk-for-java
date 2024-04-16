@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.58.0 (2024-04-15)
+### 4.58.0 (2024-04-16)
 
 #### Other Changes
 * Changed initial `targetBatchSize` to be capped by both `initialBatchSize` and `maxBatchSize` configured in `CosmosBulkExecutionOptions` - See[39500](https://github.com/Azure/azure-sdk-for-java/pull/39500)

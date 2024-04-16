@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.29.0 (2024-04-15)
+### 4.29.0 (2024-04-16)
 
 #### Features Added
 * Spark 3.5 support: - See [PR 39395](https://github.com/Azure/azure-sdk-for-java/pull/39395).
