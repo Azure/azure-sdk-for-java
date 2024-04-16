@@ -5,17 +5,53 @@ package com.azure.communication.jobrouter.implementation.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Response payload from cancelling a job.
  */
 @Immutable
-public final class CancelJobResultInternal {
+public final class CancelJobResultInternal implements JsonSerializable<CancelJobResultInternal> {
 
     /**
      * Creates an instance of CancelJobResultInternal class.
      */
     @Generated
     private CancelJobResultInternal() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CancelJobResultInternal from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CancelJobResultInternal if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CancelJobResultInternal.
+     */
+    @Generated
+    public static CancelJobResultInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CancelJobResultInternal deserializedCancelJobResultInternal = new CancelJobResultInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                reader.skipChildren();
+            }
+            return deserializedCancelJobResultInternal;
+        });
     }
 }

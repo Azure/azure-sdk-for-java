@@ -4,6 +4,7 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterClientImpl;
+import com.azure.communication.jobrouter.implementation.JsonMergePatchHelper;
 import com.azure.communication.jobrouter.implementation.models.CancelJobOptionsInternal;
 import com.azure.communication.jobrouter.implementation.models.CancelJobResultInternal;
 import com.azure.communication.jobrouter.implementation.models.CloseJobOptionsInternal;
@@ -30,11 +31,13 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
 import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
@@ -92,8 +95,8 @@ public final class JobRouterClient {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -111,7 +114,7 @@ public final class JobRouterClient {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -121,7 +124,7 @@ public final class JobRouterClient {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -148,8 +151,8 @@ public final class JobRouterClient {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -167,7 +170,7 @@ public final class JobRouterClient {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -177,7 +180,7 @@ public final class JobRouterClient {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -200,7 +203,6 @@ public final class JobRouterClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertJobWithResponse(String jobId, BinaryData resource, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertJob' is 'application/merge-patch+json' and stream-style-serialization is not enabled
         return this.serviceClient.upsertJobWithResponse(jobId, resource, requestOptions);
     }
 
@@ -491,8 +493,8 @@ public final class JobRouterClient {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -510,7 +512,7 @@ public final class JobRouterClient {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -520,7 +522,7 @@ public final class JobRouterClient {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -728,8 +730,8 @@ public final class JobRouterClient {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -747,7 +749,7 @@ public final class JobRouterClient {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -757,7 +759,7 @@ public final class JobRouterClient {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -1002,26 +1004,26 @@ public final class JobRouterClient {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -1049,26 +1051,26 @@ public final class JobRouterClient {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -1089,7 +1091,6 @@ public final class JobRouterClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertWorkerWithResponse(String workerId, BinaryData resource, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertWorker' is 'application/merge-patch+json' and stream-style-serialization is not enabled
         return this.serviceClient.upsertWorkerWithResponse(workerId, resource, requestOptions);
     }
 
@@ -1334,26 +1335,26 @@ public final class JobRouterClient {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -1430,26 +1431,26 @@ public final class JobRouterClient {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -2141,5 +2142,125 @@ public final class JobRouterClient {
         }
         return declineJobOfferWithResponse(workerId, offerId, requestOptions).getValue()
             .toObject(DeclineJobOfferResultInternal.class);
+    }
+
+    /**
+     * Creates or updates a router job.
+     *
+     * @param jobId Id of a job.
+     * @param resource The resource instance.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifUnmodifiedSince The request should only proceed if the entity was not modified after this time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a unit of work to be routed.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RouterJobInternal upsertJob(String jobId, RouterJobInternal resource, String ifMatch,
+        OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for upsertJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        JsonMergePatchHelper.getRouterJobInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromBytes(BinaryData.fromObject(resource).toBytes());
+        JsonMergePatchHelper.getRouterJobInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertJobWithResponse(jobId, resourceInBinaryData, requestOptions).getValue()
+            .toObject(RouterJobInternal.class);
+    }
+
+    /**
+     * Creates or updates a router job.
+     *
+     * @param jobId Id of a job.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a unit of work to be routed.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RouterJobInternal upsertJob(String jobId, RouterJobInternal resource) {
+        // Generated convenience method for upsertJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getRouterJobInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromBytes(BinaryData.fromObject(resource).toBytes());
+        JsonMergePatchHelper.getRouterJobInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertJobWithResponse(jobId, resourceInBinaryData, requestOptions).getValue()
+            .toObject(RouterJobInternal.class);
+    }
+
+    /**
+     * Creates or updates a worker.
+     *
+     * @param workerId Id of a worker.
+     * @param resource The resource instance.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifUnmodifiedSince The request should only proceed if the entity was not modified after this time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an entity for jobs to be routed to.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RouterWorkerInternal upsertWorker(String workerId, RouterWorkerInternal resource, String ifMatch,
+        OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for upsertWorkerWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        JsonMergePatchHelper.getRouterWorkerInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromBytes(BinaryData.fromObject(resource).toBytes());
+        JsonMergePatchHelper.getRouterWorkerInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertWorkerWithResponse(workerId, resourceInBinaryData, requestOptions).getValue()
+            .toObject(RouterWorkerInternal.class);
+    }
+
+    /**
+     * Creates or updates a worker.
+     *
+     * @param workerId Id of a worker.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an entity for jobs to be routed to.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RouterWorkerInternal upsertWorker(String workerId, RouterWorkerInternal resource) {
+        // Generated convenience method for upsertWorkerWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getRouterWorkerInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromBytes(BinaryData.fromObject(resource).toBytes());
+        JsonMergePatchHelper.getRouterWorkerInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertWorkerWithResponse(workerId, resourceInBinaryData, requestOptions).getValue()
+            .toObject(RouterWorkerInternal.class);
     }
 }

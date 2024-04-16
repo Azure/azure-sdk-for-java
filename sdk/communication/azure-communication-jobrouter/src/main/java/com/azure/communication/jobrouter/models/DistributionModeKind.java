@@ -5,7 +5,6 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class DistributionModeKind extends ExpandableStringEnum<Distributio
      * @return the corresponding DistributionModeKind.
      */
     @Generated
-    @JsonCreator
     public static DistributionModeKind fromString(String name) {
         return fromString(name, DistributionModeKind.class);
     }

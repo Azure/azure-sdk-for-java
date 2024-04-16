@@ -585,8 +585,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -604,7 +604,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -614,7 +614,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -641,8 +641,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -660,7 +660,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -670,7 +670,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -727,8 +727,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -746,7 +746,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -756,7 +756,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -783,8 +783,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -802,7 +802,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -812,7 +812,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -859,8 +859,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -878,7 +878,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -888,7 +888,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -932,8 +932,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -951,7 +951,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -961,7 +961,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -1367,8 +1367,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1386,7 +1386,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -1396,7 +1396,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -1461,8 +1461,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1480,7 +1480,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -1490,7 +1490,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -1573,8 +1573,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1592,7 +1592,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -1602,7 +1602,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -1665,8 +1665,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1684,7 +1684,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -1694,7 +1694,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -2115,26 +2115,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -2162,26 +2162,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -2239,26 +2239,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -2286,26 +2286,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -2353,26 +2353,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -2417,26 +2417,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -2533,26 +2533,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -2616,26 +2616,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -2717,26 +2717,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -2798,26 +2798,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -2882,8 +2882,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -2901,7 +2901,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -2911,7 +2911,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -2963,8 +2963,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -2982,7 +2982,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -2992,7 +2992,7 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -3045,26 +3045,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -3118,26 +3118,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)

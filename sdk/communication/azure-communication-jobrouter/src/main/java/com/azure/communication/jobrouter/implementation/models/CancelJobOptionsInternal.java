@@ -5,26 +5,28 @@ package com.azure.communication.jobrouter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Request payload for cancelling a job.
  */
 @Fluent
-public final class CancelJobOptionsInternal {
+public final class CancelJobOptionsInternal implements JsonSerializable<CancelJobOptionsInternal> {
 
     /*
      * A note that will be appended to a job's Notes collection with the current timestamp.
      */
     @Generated
-    @JsonProperty(value = "note")
     private String note;
 
     /*
      * Indicates the outcome of a job, populate this field with your own custom values. If not provided, default value of "Cancelled" is set.
      */
     @Generated
-    @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
 
     /**
@@ -78,5 +80,44 @@ public final class CancelJobOptionsInternal {
     public CancelJobOptionsInternal setDispositionCode(String dispositionCode) {
         this.dispositionCode = dispositionCode;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("note", this.note);
+        jsonWriter.writeStringField("dispositionCode", this.dispositionCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CancelJobOptionsInternal from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CancelJobOptionsInternal if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CancelJobOptionsInternal.
+     */
+    @Generated
+    public static CancelJobOptionsInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CancelJobOptionsInternal deserializedCancelJobOptionsInternal = new CancelJobOptionsInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("note".equals(fieldName)) {
+                    deserializedCancelJobOptionsInternal.note = reader.getString();
+                } else if ("dispositionCode".equals(fieldName)) {
+                    deserializedCancelJobOptionsInternal.dispositionCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedCancelJobOptionsInternal;
+        });
     }
 }

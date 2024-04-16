@@ -1576,12 +1576,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -1600,12 +1600,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -1656,12 +1656,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -1680,12 +1680,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -1724,12 +1724,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -1767,12 +1767,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -1816,12 +1816,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -1867,12 +1867,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -1936,12 +1936,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -1985,12 +1985,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -2692,12 +2692,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -2741,12 +2741,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
