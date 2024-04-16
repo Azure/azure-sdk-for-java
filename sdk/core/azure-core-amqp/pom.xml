@@ -83,7 +83,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>qpid-proton-j-extensions</artifactId>
-      <version>1.2.4</version> <!-- {x-version-update;com.microsoft.azure:qpid-proton-j-extensions;external_dependency} -->
+      <version>1.2.5</version> <!-- {x-version-update;com.microsoft.azure:qpid-proton-j-extensions;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.qpid</groupId>
@@ -149,12 +149,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:qpid-proton-j-extensions:[1.2.4]</include> <!-- {x-include-update;com.microsoft.azure:qpid-proton-j-extensions;external_dependency} -->
+                <include>com.microsoft.azure:qpid-proton-j-extensions:[1.2.5]</include> <!-- {x-include-update;com.microsoft.azure:qpid-proton-j-extensions;external_dependency} -->
                 <include>org.apache.qpid:proton-j:[0.34.1]</include> <!-- {x-include-update;org.apache.qpid:proton-j;external_dependency} -->
               </includes>
             </bannedDependencies>

@@ -13,26 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedRuleSetDefinitionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedRuleSetDefinitionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"ujysvle\",\"ruleSetId\":\"vfqawrlyxwjkcpr\",\"ruleSetType\":\"wbxgjvt\",\"ruleSetVersion\":\"p\",\"ruleGroups\":[{\"ruleGroupName\":\"dnrujqguhmuouqfp\",\"description\":\"zw\",\"rules\":[]},{\"ruleGroupName\":\"uitnwuiz\",\"description\":\"zxufiz\",\"rules\":[]}]},\"location\":\"kyfi\",\"tags\":{\"zwdzuh\":\"idf\",\"wxmnteiwao\":\"ymwisdkft\"},\"id\":\"vkmijcmmxdcuf\",\"name\":\"fsrpymzidnse\",\"type\":\"cxtbzsg\"}")
-                .toObject(ManagedRuleSetDefinitionInner.class);
-        Assertions.assertEquals("kyfi", model.location());
-        Assertions.assertEquals("idf", model.tags().get("zwdzuh"));
+        ManagedRuleSetDefinitionInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"xhbkuofq\",\"ruleSetId\":\"yk\",\"ruleSetType\":\"enevfyexfwhybci\",\"ruleSetVersion\":\"yvdcsitynnaa\",\"ruleGroups\":[{\"ruleGroupName\":\"tehfiqscjeypvh\",\"description\":\"rkgqhcjrefo\",\"rules\":[{\"ruleId\":\"qsl\",\"defaultState\":\"Disabled\",\"defaultAction\":\"JSChallenge\",\"description\":\"qjpkcattpngjcrc\"},{\"ruleId\":\"sqpjhvmdajvn\",\"defaultState\":\"Enabled\",\"defaultAction\":\"AnomalyScoring\",\"description\":\"e\"},{\"ruleId\":\"noae\",\"defaultState\":\"Enabled\",\"defaultAction\":\"JSChallenge\",\"description\":\"ltrpmopj\"}]},{\"ruleGroupName\":\"matuok\",\"description\":\"fu\",\"rules\":[{\"ruleId\":\"dsfcpkvxodpuoz\",\"defaultState\":\"Enabled\",\"defaultAction\":\"Allow\",\"description\":\"gf\"},{\"ruleId\":\"xbezyiuokktwh\",\"defaultState\":\"Disabled\",\"defaultAction\":\"AnomalyScoring\",\"description\":\"wqsmbsur\"},{\"ruleId\":\"imoryocfsfksym\",\"defaultState\":\"Disabled\",\"defaultAction\":\"Allow\",\"description\":\"i\"}]}]},\"location\":\"uxh\",\"tags\":{\"i\":\"dxorrqnbpoczv\",\"sllr\":\"qrvkdv\"},\"id\":\"vvdfwatkpnpul\",\"name\":\"xxbczwtr\",\"type\":\"wiqzbqjvsovmyo\"}")
+            .toObject(ManagedRuleSetDefinitionInner.class);
+        Assertions.assertEquals("uxh", model.location());
+        Assertions.assertEquals("dxorrqnbpoczv", model.tags().get("i"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedRuleSetDefinitionInner model =
-            new ManagedRuleSetDefinitionInner()
-                .withLocation("kyfi")
-                .withTags(mapOf("zwdzuh", "idf", "wxmnteiwao", "ymwisdkft"));
+        ManagedRuleSetDefinitionInner model = new ManagedRuleSetDefinitionInner().withLocation("uxh")
+            .withTags(mapOf("i", "dxorrqnbpoczv", "sllr", "qrvkdv"));
         model = BinaryData.fromObject(model).toObject(ManagedRuleSetDefinitionInner.class);
-        Assertions.assertEquals("kyfi", model.location());
-        Assertions.assertEquals("idf", model.tags().get("zwdzuh"));
+        Assertions.assertEquals("uxh", model.location());
+        Assertions.assertEquals("dxorrqnbpoczv", model.tags().get("i"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

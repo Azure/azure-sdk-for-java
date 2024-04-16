@@ -4,6 +4,8 @@ import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.azure.autorest.customization.JavadocCustomization;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.FieldDeclaration;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Modifier;

@@ -15,11 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * A tool call to a function tool, issued by the model in evaluation of a configured function tool, that represents
  * a function invocation needed for a subsequent chat completions request to resolve.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = ChatCompletionsFunctionToolCall.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type")
 @JsonTypeName("function")
 @Immutable
 public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCall {

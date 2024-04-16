@@ -15,42 +15,39 @@ import org.junit.jupiter.api.Assertions;
 public final class ExperimentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExperimentInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"y\",\"endpointA\":{\"name\":\"wlmdjrkv\",\"endpoint\":\"bvfvpdbod\"},\"endpointB\":{\"name\":\"zsjqlh\",\"endpoint\":\"r\"},\"enabledState\":\"Enabled\",\"resourceState\":\"Enabled\",\"status\":\"qipqkghvxndz\",\"scriptFileUri\":\"krefajpjo\"},\"location\":\"wkqnyhg\",\"tags\":{\"ystawfsdjpvkvp\":\"tjivfxzsjabib\"},\"id\":\"jxbkzbzkdvn\",\"name\":\"jabudurgkakmo\",\"type\":\"zhjjklffhmouwq\"}")
-                .toObject(ExperimentInner.class);
-        Assertions.assertEquals("wkqnyhg", model.location());
-        Assertions.assertEquals("tjivfxzsjabib", model.tags().get("ystawfsdjpvkvp"));
-        Assertions.assertEquals("y", model.description());
-        Assertions.assertEquals("wlmdjrkv", model.endpointA().name());
-        Assertions.assertEquals("bvfvpdbod", model.endpointA().endpoint());
-        Assertions.assertEquals("zsjqlh", model.endpointB().name());
-        Assertions.assertEquals("r", model.endpointB().endpoint());
+        ExperimentInner model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"vgpmun\",\"endpointA\":{\"name\":\"xvmhf\",\"endpoint\":\"zjyi\"},\"endpointB\":{\"name\":\"sbhud\",\"endpoint\":\"ohyuemslynsq\"},\"enabledState\":\"Enabled\",\"resourceState\":\"Disabling\",\"status\":\"brlttymsjnygq\",\"scriptFileUri\":\"fwqzdz\"},\"location\":\"tilaxh\",\"tags\":{\"wivkxo\":\"qlyvijo\",\"ti\":\"zunbixx\"},\"id\":\"vcpwpgclrc\",\"name\":\"vtsoxf\",\"type\":\"kenx\"}")
+            .toObject(ExperimentInner.class);
+        Assertions.assertEquals("tilaxh", model.location());
+        Assertions.assertEquals("qlyvijo", model.tags().get("wivkxo"));
+        Assertions.assertEquals("vgpmun", model.description());
+        Assertions.assertEquals("xvmhf", model.endpointA().name());
+        Assertions.assertEquals("zjyi", model.endpointA().endpoint());
+        Assertions.assertEquals("sbhud", model.endpointB().name());
+        Assertions.assertEquals("ohyuemslynsq", model.endpointB().endpoint());
         Assertions.assertEquals(State.ENABLED, model.enabledState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExperimentInner model =
-            new ExperimentInner()
-                .withLocation("wkqnyhg")
-                .withTags(mapOf("ystawfsdjpvkvp", "tjivfxzsjabib"))
-                .withDescription("y")
-                .withEndpointA(new Endpoint().withName("wlmdjrkv").withEndpoint("bvfvpdbod"))
-                .withEndpointB(new Endpoint().withName("zsjqlh").withEndpoint("r"))
-                .withEnabledState(State.ENABLED);
+        ExperimentInner model = new ExperimentInner().withLocation("tilaxh")
+            .withTags(mapOf("wivkxo", "qlyvijo", "ti", "zunbixx"))
+            .withDescription("vgpmun")
+            .withEndpointA(new Endpoint().withName("xvmhf").withEndpoint("zjyi"))
+            .withEndpointB(new Endpoint().withName("sbhud").withEndpoint("ohyuemslynsq"))
+            .withEnabledState(State.ENABLED);
         model = BinaryData.fromObject(model).toObject(ExperimentInner.class);
-        Assertions.assertEquals("wkqnyhg", model.location());
-        Assertions.assertEquals("tjivfxzsjabib", model.tags().get("ystawfsdjpvkvp"));
-        Assertions.assertEquals("y", model.description());
-        Assertions.assertEquals("wlmdjrkv", model.endpointA().name());
-        Assertions.assertEquals("bvfvpdbod", model.endpointA().endpoint());
-        Assertions.assertEquals("zsjqlh", model.endpointB().name());
-        Assertions.assertEquals("r", model.endpointB().endpoint());
+        Assertions.assertEquals("tilaxh", model.location());
+        Assertions.assertEquals("qlyvijo", model.tags().get("wivkxo"));
+        Assertions.assertEquals("vgpmun", model.description());
+        Assertions.assertEquals("xvmhf", model.endpointA().name());
+        Assertions.assertEquals("zjyi", model.endpointA().endpoint());
+        Assertions.assertEquals("sbhud", model.endpointB().name());
+        Assertions.assertEquals("ohyuemslynsq", model.endpointB().endpoint());
         Assertions.assertEquals(State.ENABLED, model.enabledState());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
