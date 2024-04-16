@@ -6,62 +6,51 @@ package com.azure.resourcemanager.frontdoor.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.frontdoor.FrontDoorManager;
+import com.azure.resourcemanager.frontdoor.models.HeaderActionType;
+import com.azure.resourcemanager.frontdoor.models.MatchProcessingBehavior;
 import com.azure.resourcemanager.frontdoor.models.RulesEngine;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.frontdoor.models.RulesEngineMatchVariable;
+import com.azure.resourcemanager.frontdoor.models.RulesEngineOperator;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class RulesEnginesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"resourceState\":\"Disabled\",\"rules\":[{\"name\":\"ugfsxzecpaxwk\",\"priority\":1277972193,\"action\":{\"requestHeaderActions\":[{\"headerActionType\":\"Delete\",\"headerName\":\"vuhx\"},{\"headerActionType\":\"Overwrite\",\"headerName\":\"mrutznabaobnsluj\"},{\"headerActionType\":\"Append\",\"headerName\":\"ltymkmvguihywart\"},{\"headerActionType\":\"Append\",\"headerName\":\"phkixkykxdssjpe\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Append\",\"headerName\":\"fxhikkflrmymyi\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"RouteConfiguration\"}},\"matchConditions\":[{\"rulesEngineMatchVariable\":\"RequestFilename\",\"rulesEngineOperator\":\"Any\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"RequestScheme\",\"rulesEngineOperator\":\"EndsWith\",\"rulesEngineMatchValue\":[]}],\"matchProcessingBehavior\":\"Continue\"}]},\"id\":\"lmiiiovg\",\"name\":\"cgxuugqkctotiowl\",\"type\":\"teqdptj\"}";
 
-        String responseStr =
-            "{\"properties\":{\"resourceState\":\"Disabled\",\"rules\":[]},\"id\":\"zjb\",\"name\":\"yzsxjrkambtrne\",\"type\":\"vmnvu\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        FrontDoorManager manager = FrontDoorManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        RulesEngine response = manager.rulesEngines()
+            .getWithResponse("srlsmd", "sqplpvmjcd", "ewbidyvteowxv", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        FrontDoorManager manager =
-            FrontDoorManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        RulesEngine response =
-            manager
-                .rulesEngines()
-                .getWithResponse("fmo", "uxrkjp", "dwxf", com.azure.core.util.Context.NONE)
-                .getValue();
+        Assertions.assertEquals("ugfsxzecpaxwk", response.rules().get(0).name());
+        Assertions.assertEquals(1277972193, response.rules().get(0).priority());
+        Assertions.assertEquals(HeaderActionType.DELETE,
+            response.rules().get(0).action().requestHeaderActions().get(0).headerActionType());
+        Assertions.assertEquals("vuhx", response.rules().get(0).action().requestHeaderActions().get(0).headerName());
+        Assertions.assertEquals(HeaderActionType.APPEND,
+            response.rules().get(0).action().responseHeaderActions().get(0).headerActionType());
+        Assertions.assertEquals("fxhikkflrmymyi",
+            response.rules().get(0).action().responseHeaderActions().get(0).headerName());
+        Assertions.assertEquals(RulesEngineMatchVariable.REQUEST_FILENAME,
+            response.rules().get(0).matchConditions().get(0).rulesEngineMatchVariable());
+        Assertions.assertEquals(RulesEngineOperator.ANY,
+            response.rules().get(0).matchConditions().get(0).rulesEngineOperator());
+        Assertions.assertEquals(MatchProcessingBehavior.CONTINUE, response.rules().get(0).matchProcessingBehavior());
     }
 }

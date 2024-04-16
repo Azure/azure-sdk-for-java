@@ -4,7 +4,6 @@
 
 module com.azure.monitor.ingestion {
     requires transitive com.azure.core;
-    requires com.azure.json;
     exports com.azure.monitor.ingestion;
     exports com.azure.monitor.ingestion.models;
 

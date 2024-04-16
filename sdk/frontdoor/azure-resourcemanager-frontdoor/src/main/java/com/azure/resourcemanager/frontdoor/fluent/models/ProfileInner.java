@@ -11,7 +11,9 @@ import com.azure.resourcemanager.frontdoor.models.State;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Defines an Network Experiment Profile and lists of Experiments. */
+/**
+ * Defines an Network Experiment Profile and lists of Experiments.
+ */
 @Fluent
 public final class ProfileInner extends Resource {
     /*
@@ -26,13 +28,15 @@ public final class ProfileInner extends Resource {
     @JsonProperty(value = "etag")
     private String etag;
 
-    /** Creates an instance of ProfileInner class. */
+    /**
+     * Creates an instance of ProfileInner class.
+     */
     public ProfileInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a Profile.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ProfileProperties innerProperties() {
@@ -41,7 +45,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -50,7 +54,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Set the etag property: Gets a unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the ProfileInner object itself.
      */
@@ -59,14 +63,18 @@ public final class ProfileInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -75,7 +83,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Get the resourceState property: Resource status.
-     *
+     * 
      * @return the resourceState value.
      */
     public NetworkExperimentResourceState resourceState() {
@@ -84,7 +92,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Get the enabledState property: The state of the Experiment.
-     *
+     * 
      * @return the enabledState value.
      */
     public State enabledState() {
@@ -93,7 +101,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Set the enabledState property: The state of the Experiment.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the ProfileInner object itself.
      */
@@ -107,7 +115,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

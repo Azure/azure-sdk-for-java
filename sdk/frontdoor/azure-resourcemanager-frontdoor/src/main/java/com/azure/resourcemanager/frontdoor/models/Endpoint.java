@@ -7,7 +7,9 @@ package com.azure.resourcemanager.frontdoor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the endpoint properties. */
+/**
+ * Defines the endpoint properties.
+ */
 @Fluent
 public final class Endpoint {
     /*
@@ -22,13 +24,15 @@ public final class Endpoint {
     @JsonProperty(value = "endpoint")
     private String endpoint;
 
-    /** Creates an instance of Endpoint class. */
+    /**
+     * Creates an instance of Endpoint class.
+     */
     public Endpoint() {
     }
 
     /**
      * Get the name property: The name of the endpoint.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class Endpoint {
 
     /**
      * Set the name property: The name of the endpoint.
-     *
+     * 
      * @param name the name value to set.
      * @return the Endpoint object itself.
      */
@@ -48,7 +52,7 @@ public final class Endpoint {
 
     /**
      * Get the endpoint property: The endpoint URL.
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -57,7 +61,7 @@ public final class Endpoint {
 
     /**
      * Set the endpoint property: The endpoint URL.
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the Endpoint object itself.
      */
@@ -68,7 +72,7 @@ public final class Endpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

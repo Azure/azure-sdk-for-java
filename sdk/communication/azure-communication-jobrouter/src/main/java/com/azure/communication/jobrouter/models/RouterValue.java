@@ -3,7 +3,7 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 3. doubleValue.
  * 4. boolValue.
  */
-@Fluent
+@Immutable
 public final class RouterValue {
 
     /**

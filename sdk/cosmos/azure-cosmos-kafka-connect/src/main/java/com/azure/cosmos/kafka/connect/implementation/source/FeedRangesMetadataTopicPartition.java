@@ -11,8 +11,8 @@ import java.util.Map;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
 public class FeedRangesMetadataTopicPartition {
-    public static final String DATABASE_NAME_KEY = "cosmos.source.metadata.database.name";
-    public static final String CONTAINER_RESOURCE_ID_KEY = "cosmos.source.metadata.container.resourceId";
+    public static final String DATABASE_NAME_KEY = "database";
+    public static final String CONTAINER_RESOURCE_ID_KEY = "containerResourceId";
     private final String databaseName;
     private final String containerRid;
 

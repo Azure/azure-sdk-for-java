@@ -951,7 +951,7 @@ public class ImplementationBridgeHelpers {
 
             String getLinkWithoutTrailingSlash(CosmosAsyncContainer cosmosAsyncContainer);
             Mono<Boolean> checkFeedRangeOverlapping(CosmosAsyncContainer container, FeedRange feedRange1, FeedRange feedRange2);
-            Mono<List<FeedRange>> getOverlappingFeedRanges(CosmosAsyncContainer container, FeedRange feedRange);
+            Mono<List<FeedRange>> getOverlappingFeedRanges(CosmosAsyncContainer container, FeedRange feedRange, boolean forceRefresh);
             Mono<PartitionKeyDefinition> getPartitionKeyDefinition(CosmosAsyncContainer container);
         }
     }

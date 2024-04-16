@@ -8,25 +8,26 @@ import com.azure.resourcemanager.frontdoor.models.WebApplicationFirewallPolicy;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Policies Update. */
+/**
+ * Samples for Policies Update.
+ */
 public final class PoliciesUpdateSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2022-05-01/examples/WafPolicyPatch.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafPolicyPatch.json
      */
     /**
      * Sample code: Patches specific policy.
-     *
+     * 
      * @param manager Entry point to FrontDoorManager.
      */
     public static void patchesSpecificPolicy(com.azure.resourcemanager.frontdoor.FrontDoorManager manager) {
-        WebApplicationFirewallPolicy resource =
-            manager
-                .policies()
-                .getByResourceGroupWithResponse("rg1", "Policy1", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("key1", "value1", "key2", "value2")).apply();
+        WebApplicationFirewallPolicy resource = manager.policies()
+            .getByResourceGroupWithResponse("rg1", "Policy1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
