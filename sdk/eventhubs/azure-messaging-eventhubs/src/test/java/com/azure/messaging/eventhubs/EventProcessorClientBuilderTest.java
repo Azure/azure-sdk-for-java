@@ -305,6 +305,7 @@ public class EventProcessorClientBuilderTest {
             .setTryTimeout(Duration.ofSeconds(10))
             .setMaxRetries(1);
         final String expectedFullyQualifiedNamespace = (NAMESPACE_NAME + DEFAULT_DOMAIN_NAME).toLowerCase(Locale.ROOT);
+        final String expectedEventHubName = EVENT_HUB_NAME.toLowerCase(Locale.ROOT);
 
         final EventProcessorClientBuilder builder = new EventProcessorClientBuilder()
             .clientOptions(clientOptions)
@@ -330,7 +331,7 @@ public class EventProcessorClientBuilderTest {
 
         Assertions.assertEquals(identifier1, processor1.getIdentifier());
 
-        Assertions.assertEquals(EVENT_HUB_NAME, processor1.getEventHubName());
+        Assertions.assertEquals(expectedEventHubName, processor1.getEventHubName());
         Assertions.assertEquals(expectedFullyQualifiedNamespace, processor1.getFullyQualifiedNamespace());
 
         // Arrange
@@ -356,7 +357,7 @@ public class EventProcessorClientBuilderTest {
 
         Assertions.assertEquals(identifier2, processor2.getIdentifier());
 
-        Assertions.assertEquals(EVENT_HUB_NAME, processor2.getEventHubName());
+        Assertions.assertEquals(expectedEventHubName, processor2.getEventHubName());
         Assertions.assertEquals(expectedFullyQualifiedNamespace, processor2.getFullyQualifiedNamespace());
     }
 }
