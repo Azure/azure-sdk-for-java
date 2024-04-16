@@ -607,7 +607,7 @@ public final class EventGridClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the Publish operation.
      */
-    @Generated
+
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublishResult publishCloudEvents(String topicName, List<CloudEvent> events) {
         // Generated convenience method for publishCloudEventsWithResponse
