@@ -942,10 +942,6 @@ public class EventProcessorClientBuilder implements
             builder.eventHubName(source.getEventHubName());
         }
 
-        if (source.isSharedConnection()) {
-            builder.shareConnection();
-        }
-
         builder.proxyOptions(source.getProxyOptions())
             .transportType(source.getTransportType())
             .retryOptions(source.getRetryOptions())
