@@ -48,11 +48,12 @@ public class EventGridCustomization extends Customization {
 
     public void customizeEventGridClientImplImports(LibraryCustomization customization) {
         PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.namespaces");
-        ClassCustomization classCustomization = packageModels.getClass("EventGridClient");
+        Arrays.asList("EventGridClient", "EventGridAsyncClient", "ReceiveDetails").forEach(s -> {
+            ClassCustomization classCustomization = packageModels.getClass("EventGridClient");
 
-        classCustomization.customizeAst(comp -> {
-            comp.getImports().removeIf(p -> p.getNameAsString().equals("com.azure.messaging.eventgrid.namespaces.implementation.models"));
-            comp.addImport("com.azure.core.models.CloudEvent");
+            classCustomization.customizeAst(comp -> {
+                comp.getImports().removeIf(p -> p.getNameAsString().equals("com.azure.messaging.eventgrid.namespaces.implementation.models.CloudEvent"));
+                comp.addImport("com.azure.core.models.CloudEvent");
 
 //            comp.getClassByName("EventGridClient").ifPresent(c -> {
 //                c.getMethodsByName("publishCloudEvent").forEach(m -> {
@@ -60,6 +61,8 @@ public class EventGridCustomization extends Customization {
 //                    m.setBody(parseBlock(""))
 //                });
 //            });
+            });
         });
+
     }
 }

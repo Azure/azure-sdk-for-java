@@ -51,7 +51,7 @@ public final class EventGridClientImpl {
 
     /**
      * Gets The host name of the namespace, e.g. namespaceName1.westus-1.eventgrid.azure.net.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -65,7 +65,7 @@ public final class EventGridClientImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public EventGridServiceVersion getServiceVersion() {
@@ -79,7 +79,7 @@ public final class EventGridClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -93,7 +93,7 @@ public final class EventGridClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -102,7 +102,7 @@ public final class EventGridClientImpl {
 
     /**
      * Initializes an instance of EventGridClient client.
-     *
+     * 
      * @param endpoint The host name of the namespace, e.g. namespaceName1.westus-1.eventgrid.azure.net.
      * @param serviceVersion Service version.
      */
@@ -113,7 +113,7 @@ public final class EventGridClientImpl {
 
     /**
      * Initializes an instance of EventGridClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The host name of the namespace, e.g. namespaceName1.westus-1.eventgrid.azure.net.
      * @param serviceVersion Service version.
@@ -124,7 +124,7 @@ public final class EventGridClientImpl {
 
     /**
      * Initializes an instance of EventGridClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The host name of the namespace, e.g. namespaceName1.westus-1.eventgrid.azure.net.
@@ -312,9 +312,8 @@ public final class EventGridClientImpl {
      * code with an empty JSON object in response. Otherwise, the server can return various error codes. For example,
      * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
      * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -329,14 +328,13 @@ public final class EventGridClientImpl {
      *     subject: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
-     * {
-     * }
+     * { }
      * }</pre>
-     *
+     * 
      * @param topicName Topic Name.
      * @param event Single Cloud Event being published.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -360,9 +358,8 @@ public final class EventGridClientImpl {
      * code with an empty JSON object in response. Otherwise, the server can return various error codes. For example,
      * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
      * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -377,14 +374,13 @@ public final class EventGridClientImpl {
      *     subject: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
-     * {
-     * }
+     * { }
      * }</pre>
-     *
+     * 
      * @param topicName Topic Name.
      * @param event Single Cloud Event being published.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -408,9 +404,8 @@ public final class EventGridClientImpl {
      * code with an empty JSON object in response. Otherwise, the server can return various error codes. For example,
      * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
      * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -427,14 +422,13 @@ public final class EventGridClientImpl {
      *     }
      * ]
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
-     * {
-     * }
+     * { }
      * }</pre>
-     *
+     * 
      * @param topicName Topic Name.
      * @param events Array of Cloud Events being published.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -458,9 +452,8 @@ public final class EventGridClientImpl {
      * code with an empty JSON object in response. Otherwise, the server can return various error codes. For example,
      * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
      * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -477,14 +470,13 @@ public final class EventGridClientImpl {
      *     }
      * ]
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
-     * {
-     * }
+     * { }
      * }</pre>
-     *
+     * 
      * @param topicName Topic Name.
      * @param events Array of Cloud Events being published.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -505,38 +497,20 @@ public final class EventGridClientImpl {
 
     /**
      * Receive Batch of Cloud Events from the Event Subscription.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxEvents</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Max Events count to be received. Minimum value is 1, while maximum value is 100 events. If not specified, the
-     * default value is 1.</td>
-     * </tr>
-     * <tr>
-     * <td>maxWaitTime</td>
-     * <td>Duration</td>
-     * <td>No</td>
-     * <td>Max wait time value for receive operation in Seconds. It is the time in seconds that the server approximately
-     * waits for the availability of an event and responds to the request. If an event is available, the broker responds
-     * immediately to the client. Minimum value is 10 seconds, while maximum value is 120 seconds. If not specified, the
-     * default value is 60 seconds.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxEvents</td><td>Integer</td><td>No</td><td>Max Events count to be received. Minimum value is 1, while
+     * maximum value is 100 events. If not specified, the default value is 1.</td></tr>
+     * <tr><td>maxWaitTime</td><td>Duration</td><td>No</td><td>Max wait time value for receive operation in Seconds. It
+     * is the time in seconds that the server approximately waits for the availability of an event and responds to the
+     * request. If an event is available, the broker responds immediately to the client. Minimum value is 10 seconds,
+     * while maximum value is 120 seconds. If not specified, the default value is 60 seconds.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     value (Required): [
@@ -561,7 +535,7 @@ public final class EventGridClientImpl {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -582,38 +556,20 @@ public final class EventGridClientImpl {
 
     /**
      * Receive Batch of Cloud Events from the Event Subscription.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxEvents</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Max Events count to be received. Minimum value is 1, while maximum value is 100 events. If not specified, the
-     * default value is 1.</td>
-     * </tr>
-     * <tr>
-     * <td>maxWaitTime</td>
-     * <td>Duration</td>
-     * <td>No</td>
-     * <td>Max wait time value for receive operation in Seconds. It is the time in seconds that the server approximately
-     * waits for the availability of an event and responds to the request. If an event is available, the broker responds
-     * immediately to the client. Minimum value is 10 seconds, while maximum value is 120 seconds. If not specified, the
-     * default value is 60 seconds.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxEvents</td><td>Integer</td><td>No</td><td>Max Events count to be received. Minimum value is 1, while
+     * maximum value is 100 events. If not specified, the default value is 1.</td></tr>
+     * <tr><td>maxWaitTime</td><td>Duration</td><td>No</td><td>Max wait time value for receive operation in Seconds. It
+     * is the time in seconds that the server approximately waits for the availability of an event and responds to the
+     * request. If an event is available, the broker responds immediately to the client. Minimum value is 10 seconds,
+     * while maximum value is 120 seconds. If not specified, the default value is 60 seconds.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     value (Required): [
@@ -638,7 +594,7 @@ public final class EventGridClientImpl {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -661,9 +617,8 @@ public final class EventGridClientImpl {
      * successfully accepted. The response body will include the set of successfully acknowledged lockTokens, along with
      * other failed lockTokens with their corresponding error information. Successfully acknowledged events will no
      * longer be available to any consumer.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -671,9 +626,9 @@ public final class EventGridClientImpl {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -698,7 +653,7 @@ public final class EventGridClientImpl {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param acknowledgeOptions AcknowledgeOptions.
@@ -724,9 +679,8 @@ public final class EventGridClientImpl {
      * successfully accepted. The response body will include the set of successfully acknowledged lockTokens, along with
      * other failed lockTokens with their corresponding error information. Successfully acknowledged events will no
      * longer be available to any consumer.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -734,9 +688,9 @@ public final class EventGridClientImpl {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -761,7 +715,7 @@ public final class EventGridClientImpl {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param acknowledgeOptions AcknowledgeOptions.
@@ -784,28 +738,16 @@ public final class EventGridClientImpl {
      * Release batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
      * accepted. The response body will include the set of successfully released lockTokens, along with other failed
      * lockTokens with their corresponding error information.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>releaseDelayInSeconds</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Release cloud events with the specified delay in seconds. Allowed values: 0, 10, 60, 600, 3600.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>releaseDelayInSeconds</td><td>String</td><td>No</td><td>Release cloud events with the specified delay in
+     * seconds. Allowed values: 0, 10, 60, 600, 3600.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -813,9 +755,9 @@ public final class EventGridClientImpl {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -840,7 +782,7 @@ public final class EventGridClientImpl {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param releaseOptions ReleaseOptions.
@@ -864,28 +806,16 @@ public final class EventGridClientImpl {
      * Release batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
      * accepted. The response body will include the set of successfully released lockTokens, along with other failed
      * lockTokens with their corresponding error information.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>releaseDelayInSeconds</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Release cloud events with the specified delay in seconds. Allowed values: 0, 10, 60, 600, 3600.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>releaseDelayInSeconds</td><td>String</td><td>No</td><td>Release cloud events with the specified delay in
+     * seconds. Allowed values: 0, 10, 60, 600, 3600.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -893,9 +823,9 @@ public final class EventGridClientImpl {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -920,7 +850,7 @@ public final class EventGridClientImpl {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param releaseOptions ReleaseOptions.
@@ -943,9 +873,8 @@ public final class EventGridClientImpl {
      * Reject batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
      * accepted. The response body will include the set of successfully rejected lockTokens, along with other failed
      * lockTokens with their corresponding error information.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -953,9 +882,9 @@ public final class EventGridClientImpl {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -980,7 +909,7 @@ public final class EventGridClientImpl {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param rejectOptions RejectOptions.
@@ -1004,9 +933,8 @@ public final class EventGridClientImpl {
      * Reject batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
      * accepted. The response body will include the set of successfully rejected lockTokens, along with other failed
      * lockTokens with their corresponding error information.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -1014,9 +942,9 @@ public final class EventGridClientImpl {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -1041,7 +969,7 @@ public final class EventGridClientImpl {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param rejectOptions RejectOptions.
@@ -1064,9 +992,8 @@ public final class EventGridClientImpl {
      * Renew lock for batch of Cloud Events. The server responds with an HTTP 200 status code if the request is
      * successfully accepted. The response body will include the set of successfully renewed lockTokens, along with
      * other failed lockTokens with their corresponding error information.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -1074,9 +1001,9 @@ public final class EventGridClientImpl {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -1101,7 +1028,7 @@ public final class EventGridClientImpl {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param renewLockOptions RenewLockOptions.
@@ -1126,9 +1053,8 @@ public final class EventGridClientImpl {
      * Renew lock for batch of Cloud Events. The server responds with an HTTP 200 status code if the request is
      * successfully accepted. The response body will include the set of successfully renewed lockTokens, along with
      * other failed lockTokens with their corresponding error information.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -1136,9 +1062,9 @@ public final class EventGridClientImpl {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -1163,7 +1089,7 @@ public final class EventGridClientImpl {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param renewLockOptions RenewLockOptions.

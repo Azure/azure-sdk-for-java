@@ -41,7 +41,7 @@ public enum EventGridServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service version supported by this client library.
-     *
+     * 
      * @return The latest {@link EventGridServiceVersion}.
      */
     public static EventGridServiceVersion getLatest() {
