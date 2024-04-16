@@ -4,6 +4,10 @@
 
 ### Features Added
 
+- Supported disabling public network access in `FunctionApp` via `disablePublicNetworkAccess()`, for private link feature.
+- Supported disabling public network access in `DeploymentSlot` via `disablePublicNetworkAccess()`, for private link feature.
+- Supported disabling public network access in `FunctionDeploymentSlot` via `disablePublicNetworkAccess()`, for private link feature.
+
 ### Breaking Changes
 
 ### Bugs Fixed
