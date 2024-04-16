@@ -526,13 +526,6 @@ public class EventHubClientBuilder implements
     }
 
     /**
-     * Gets whether the connection is shared.
-     */
-    boolean isSharedConnection() {
-        return isSharedConnection.get();
-    }
-
-    /**
      * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
      *
      * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
