@@ -3547,7 +3547,7 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3793,7 +3793,7 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     poolId: String (Required)
@@ -4080,9 +4080,9 @@ public final class BatchAsyncClient {
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
-     *         automaticOsUpgradePolicy (Optional): {
+     *         automaticOSUpgradePolicy (Optional): {
      *             disableAutomaticRollback: Boolean (Optional)
-     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             enableAutomaticOSUpgrade: Boolean (Optional)
      *             useRollingUpgradePolicy: Boolean (Optional)
      *             osRollingUpgradeDeferral: Boolean (Optional)
      *         }
@@ -4732,9 +4732,9 @@ public final class BatchAsyncClient {
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
-     *         automaticOsUpgradePolicy (Optional): {
+     *         automaticOSUpgradePolicy (Optional): {
      *             disableAutomaticRollback: Boolean (Optional)
-     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             enableAutomaticOSUpgrade: Boolean (Optional)
      *             useRollingUpgradePolicy: Boolean (Optional)
      *             osRollingUpgradeDeferral: Boolean (Optional)
      *         }
@@ -4815,7 +4815,7 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -5817,9 +5817,9 @@ public final class BatchAsyncClient {
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
-     *         automaticOsUpgradePolicy (Optional): {
+     *         automaticOSUpgradePolicy (Optional): {
      *             disableAutomaticRollback: Boolean (Optional)
-     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             enableAutomaticOSUpgrade: Boolean (Optional)
      *             useRollingUpgradePolicy: Boolean (Optional)
      *             osRollingUpgradeDeferral: Boolean (Optional)
      *         }
@@ -7716,7 +7716,7 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     nodeAgentSKUId: String (Required)
@@ -7788,7 +7788,7 @@ public final class BatchAsyncClient {
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
      *         total: int (Required)
-     *         upgradingOs: int (Required)
+     *         upgradingOS: int (Required)
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
@@ -7848,7 +7848,7 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     poolId: String (Required)
@@ -8426,9 +8426,9 @@ public final class BatchAsyncClient {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -9286,9 +9286,9 @@ public final class BatchAsyncClient {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -10066,9 +10066,9 @@ public final class BatchAsyncClient {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -11307,9 +11307,9 @@ public final class BatchAsyncClient {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -12120,9 +12120,9 @@ public final class BatchAsyncClient {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -12247,7 +12247,7 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -13050,9 +13050,9 @@ public final class BatchAsyncClient {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -13178,7 +13178,7 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -13750,7 +13750,7 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     poolId: String (Optional)
@@ -14154,7 +14154,7 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     thumbprint: String (Required)
@@ -15192,9 +15192,9 @@ public final class BatchAsyncClient {
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
-     *                         automaticOsUpgradePolicy (Optional): {
+     *                         automaticOSUpgradePolicy (Optional): {
      *                             disableAutomaticRollback: Boolean (Optional)
-     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             enableAutomaticOSUpgrade: Boolean (Optional)
      *                             useRollingUpgradePolicy: Boolean (Optional)
      *                             osRollingUpgradeDeferral: Boolean (Optional)
      *                         }
@@ -16146,9 +16146,9 @@ public final class BatchAsyncClient {
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
-     *                         automaticOsUpgradePolicy (Optional): {
+     *                         automaticOSUpgradePolicy (Optional): {
      *                             disableAutomaticRollback: Boolean (Optional)
-     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             enableAutomaticOSUpgrade: Boolean (Optional)
      *                             useRollingUpgradePolicy: Boolean (Optional)
      *                             osRollingUpgradeDeferral: Boolean (Optional)
      *                         }
@@ -17049,9 +17049,9 @@ public final class BatchAsyncClient {
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
-     *                         automaticOsUpgradePolicy (Optional): {
+     *                         automaticOSUpgradePolicy (Optional): {
      *                             disableAutomaticRollback: Boolean (Optional)
-     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             enableAutomaticOSUpgrade: Boolean (Optional)
      *                             useRollingUpgradePolicy: Boolean (Optional)
      *                             osRollingUpgradeDeferral: Boolean (Optional)
      *                         }
@@ -18378,9 +18378,9 @@ public final class BatchAsyncClient {
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
-     *                         automaticOsUpgradePolicy (Optional): {
+     *                         automaticOSUpgradePolicy (Optional): {
      *                             disableAutomaticRollback: Boolean (Optional)
-     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             enableAutomaticOSUpgrade: Boolean (Optional)
      *                             useRollingUpgradePolicy: Boolean (Optional)
      *                             osRollingUpgradeDeferral: Boolean (Optional)
      *                         }
@@ -19207,9 +19207,9 @@ public final class BatchAsyncClient {
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
-     *                         automaticOsUpgradePolicy (Optional): {
+     *                         automaticOSUpgradePolicy (Optional): {
      *                             disableAutomaticRollback: Boolean (Optional)
-     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             enableAutomaticOSUpgrade: Boolean (Optional)
      *                             useRollingUpgradePolicy: Boolean (Optional)
      *                             osRollingUpgradeDeferral: Boolean (Optional)
      *                         }
@@ -19324,7 +19324,7 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -20359,7 +20359,7 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -22884,7 +22884,7 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -24119,7 +24119,7 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -24558,7 +24558,7 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     provisioningState: String (Optional)
@@ -25046,7 +25046,7 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -28808,7 +28808,7 @@ public final class BatchAsyncClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: Integer (Optional)

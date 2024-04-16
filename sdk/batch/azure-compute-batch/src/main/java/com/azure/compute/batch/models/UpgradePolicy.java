@@ -22,13 +22,6 @@ public final class UpgradePolicy {
     private final UpgradeMode mode;
 
     /*
-     * Configuration parameters used for performing automatic OS Upgrade. The configuration parameters used for performing automatic OS upgrade.
-     */
-    @Generated
-    @JsonProperty(value = "automaticOsUpgradePolicy")
-    private AutomaticOsUpgradePolicy automaticOSUpgradePolicy;
-
-    /*
      * The configuration parameters used while performing a rolling upgrade. This property is only supported on Pools with the virtualMachineConfiguration property.
      */
     @Generated
@@ -61,30 +54,6 @@ public final class UpgradePolicy {
     }
 
     /**
-     * Get the automaticOSUpgradePolicy property: Configuration parameters used for performing automatic OS Upgrade. The
-     * configuration parameters used for performing automatic OS upgrade.
-     *
-     * @return the automaticOSUpgradePolicy value.
-     */
-    @Generated
-    public AutomaticOsUpgradePolicy getAutomaticOSUpgradePolicy() {
-        return this.automaticOSUpgradePolicy;
-    }
-
-    /**
-     * Set the automaticOSUpgradePolicy property: Configuration parameters used for performing automatic OS Upgrade. The
-     * configuration parameters used for performing automatic OS upgrade.
-     *
-     * @param automaticOSUpgradePolicy the automaticOSUpgradePolicy value to set.
-     * @return the UpgradePolicy object itself.
-     */
-    @Generated
-    public UpgradePolicy setAutomaticOSUpgradePolicy(AutomaticOsUpgradePolicy automaticOSUpgradePolicy) {
-        this.automaticOSUpgradePolicy = automaticOSUpgradePolicy;
-        return this;
-    }
-
-    /**
      * Get the rollingUpgradePolicy property: The configuration parameters used while performing a rolling upgrade. This
      * property is only supported on Pools with the virtualMachineConfiguration property.
      *
@@ -105,6 +74,37 @@ public final class UpgradePolicy {
     @Generated
     public UpgradePolicy setRollingUpgradePolicy(RollingUpgradePolicy rollingUpgradePolicy) {
         this.rollingUpgradePolicy = rollingUpgradePolicy;
+        return this;
+    }
+
+    /*
+     * Configuration parameters used for performing automatic OS Upgrade. The configuration parameters used for performing automatic OS upgrade.
+     */
+    @Generated
+    @JsonProperty(value = "automaticOSUpgradePolicy")
+    private AutomaticOsUpgradePolicy automaticOsUpgradePolicy;
+
+    /**
+     * Get the automaticOsUpgradePolicy property: Configuration parameters used for performing automatic OS Upgrade. The
+     * configuration parameters used for performing automatic OS upgrade.
+     *
+     * @return the automaticOsUpgradePolicy value.
+     */
+    @Generated
+    public AutomaticOsUpgradePolicy getAutomaticOsUpgradePolicy() {
+        return this.automaticOsUpgradePolicy;
+    }
+
+    /**
+     * Set the automaticOsUpgradePolicy property: Configuration parameters used for performing automatic OS Upgrade. The
+     * configuration parameters used for performing automatic OS upgrade.
+     *
+     * @param automaticOsUpgradePolicy the automaticOsUpgradePolicy value to set.
+     * @return the UpgradePolicy object itself.
+     */
+    @Generated
+    public UpgradePolicy setAutomaticOsUpgradePolicy(AutomaticOsUpgradePolicy automaticOsUpgradePolicy) {
+        this.automaticOsUpgradePolicy = automaticOsUpgradePolicy;
         return this;
     }
 }

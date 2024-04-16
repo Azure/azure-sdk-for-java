@@ -53,7 +53,6 @@ public final class VirtualMachineConfiguration {
      *  Windows_Server - The on-premises license is for Windows
      * Server.
      *  Windows_Client - The on-premises license is for Windows Client.
-     * 
      */
     @Generated
     @JsonProperty(value = "licenseType")

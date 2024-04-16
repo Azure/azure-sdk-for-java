@@ -2893,9 +2893,9 @@ public final class BatchesImpl {
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
-     *         automaticOsUpgradePolicy (Optional): {
+     *         automaticOSUpgradePolicy (Optional): {
      *             disableAutomaticRollback: Boolean (Optional)
-     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             enableAutomaticOSUpgrade: Boolean (Optional)
      *             useRollingUpgradePolicy: Boolean (Optional)
      *             osRollingUpgradeDeferral: Boolean (Optional)
      *         }
@@ -3192,9 +3192,9 @@ public final class BatchesImpl {
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
-     *         automaticOsUpgradePolicy (Optional): {
+     *         automaticOSUpgradePolicy (Optional): {
      *             disableAutomaticRollback: Boolean (Optional)
-     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             enableAutomaticOSUpgrade: Boolean (Optional)
      *             useRollingUpgradePolicy: Boolean (Optional)
      *             osRollingUpgradeDeferral: Boolean (Optional)
      *         }
@@ -3566,9 +3566,9 @@ public final class BatchesImpl {
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
-     *         automaticOsUpgradePolicy (Optional): {
+     *         automaticOSUpgradePolicy (Optional): {
      *             disableAutomaticRollback: Boolean (Optional)
-     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             enableAutomaticOSUpgrade: Boolean (Optional)
      *             useRollingUpgradePolicy: Boolean (Optional)
      *             osRollingUpgradeDeferral: Boolean (Optional)
      *         }
@@ -3942,9 +3942,9 @@ public final class BatchesImpl {
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
-     *         automaticOsUpgradePolicy (Optional): {
+     *         automaticOSUpgradePolicy (Optional): {
      *             disableAutomaticRollback: Boolean (Optional)
-     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             enableAutomaticOSUpgrade: Boolean (Optional)
      *             useRollingUpgradePolicy: Boolean (Optional)
      *             osRollingUpgradeDeferral: Boolean (Optional)
      *         }
@@ -4336,9 +4336,9 @@ public final class BatchesImpl {
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
-     *         automaticOsUpgradePolicy (Optional): {
+     *         automaticOSUpgradePolicy (Optional): {
      *             disableAutomaticRollback: Boolean (Optional)
-     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             enableAutomaticOSUpgrade: Boolean (Optional)
      *             useRollingUpgradePolicy: Boolean (Optional)
      *             osRollingUpgradeDeferral: Boolean (Optional)
      *         }
@@ -4710,9 +4710,9 @@ public final class BatchesImpl {
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
-     *         automaticOsUpgradePolicy (Optional): {
+     *         automaticOSUpgradePolicy (Optional): {
      *             disableAutomaticRollback: Boolean (Optional)
-     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             enableAutomaticOSUpgrade: Boolean (Optional)
      *             useRollingUpgradePolicy: Boolean (Optional)
      *             osRollingUpgradeDeferral: Boolean (Optional)
      *         }
@@ -5350,9 +5350,9 @@ public final class BatchesImpl {
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
-     *         automaticOsUpgradePolicy (Optional): {
+     *         automaticOSUpgradePolicy (Optional): {
      *             disableAutomaticRollback: Boolean (Optional)
-     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             enableAutomaticOSUpgrade: Boolean (Optional)
      *             useRollingUpgradePolicy: Boolean (Optional)
      *             osRollingUpgradeDeferral: Boolean (Optional)
      *         }
@@ -5740,9 +5740,9 @@ public final class BatchesImpl {
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
-     *         automaticOsUpgradePolicy (Optional): {
+     *         automaticOSUpgradePolicy (Optional): {
      *             disableAutomaticRollback: Boolean (Optional)
-     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             enableAutomaticOSUpgrade: Boolean (Optional)
      *             useRollingUpgradePolicy: Boolean (Optional)
      *             osRollingUpgradeDeferral: Boolean (Optional)
      *         }
@@ -7249,7 +7249,7 @@ public final class BatchesImpl {
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
      *         total: int (Required)
-     *         upgradingOs: int (Required)
+     *         upgradingOS: int (Required)
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
@@ -7312,7 +7312,7 @@ public final class BatchesImpl {
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
      *         total: int (Required)
-     *         upgradingOs: int (Required)
+     *         upgradingOS: int (Required)
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
@@ -7393,7 +7393,7 @@ public final class BatchesImpl {
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
      *         total: int (Required)
-     *         upgradingOs: int (Required)
+     *         upgradingOS: int (Required)
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
@@ -7454,7 +7454,7 @@ public final class BatchesImpl {
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
      *         total: int (Required)
-     *         upgradingOs: int (Required)
+     *         upgradingOS: int (Required)
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
@@ -8004,9 +8004,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -8473,9 +8473,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -8848,9 +8848,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -9189,9 +9189,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -9623,9 +9623,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -10095,9 +10095,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -10931,9 +10931,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -11344,9 +11344,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -11765,9 +11765,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -12221,9 +12221,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -12695,9 +12695,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -13149,9 +13149,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -13623,9 +13623,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -14081,9 +14081,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -14557,9 +14557,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -15013,9 +15013,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -16940,9 +16940,9 @@ public final class BatchesImpl {
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
-     *                         automaticOsUpgradePolicy (Optional): {
+     *                         automaticOSUpgradePolicy (Optional): {
      *                             disableAutomaticRollback: Boolean (Optional)
-     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             enableAutomaticOSUpgrade: Boolean (Optional)
      *                             useRollingUpgradePolicy: Boolean (Optional)
      *                             osRollingUpgradeDeferral: Boolean (Optional)
      *                         }
@@ -17414,9 +17414,9 @@ public final class BatchesImpl {
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
-     *                         automaticOsUpgradePolicy (Optional): {
+     *                         automaticOSUpgradePolicy (Optional): {
      *                             disableAutomaticRollback: Boolean (Optional)
-     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             enableAutomaticOSUpgrade: Boolean (Optional)
      *                             useRollingUpgradePolicy: Boolean (Optional)
      *                             osRollingUpgradeDeferral: Boolean (Optional)
      *                         }
@@ -17879,9 +17879,9 @@ public final class BatchesImpl {
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
-     *                         automaticOsUpgradePolicy (Optional): {
+     *                         automaticOSUpgradePolicy (Optional): {
      *                             disableAutomaticRollback: Boolean (Optional)
-     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             enableAutomaticOSUpgrade: Boolean (Optional)
      *                             useRollingUpgradePolicy: Boolean (Optional)
      *                             osRollingUpgradeDeferral: Boolean (Optional)
      *                         }
@@ -18323,9 +18323,9 @@ public final class BatchesImpl {
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
-     *                         automaticOsUpgradePolicy (Optional): {
+     *                         automaticOSUpgradePolicy (Optional): {
      *                             disableAutomaticRollback: Boolean (Optional)
-     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             enableAutomaticOSUpgrade: Boolean (Optional)
      *                             useRollingUpgradePolicy: Boolean (Optional)
      *                             osRollingUpgradeDeferral: Boolean (Optional)
      *                         }
@@ -18777,9 +18777,9 @@ public final class BatchesImpl {
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
-     *                         automaticOsUpgradePolicy (Optional): {
+     *                         automaticOSUpgradePolicy (Optional): {
      *                             disableAutomaticRollback: Boolean (Optional)
-     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             enableAutomaticOSUpgrade: Boolean (Optional)
      *                             useRollingUpgradePolicy: Boolean (Optional)
      *                             osRollingUpgradeDeferral: Boolean (Optional)
      *                         }
@@ -19255,9 +19255,9 @@ public final class BatchesImpl {
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
-     *                         automaticOsUpgradePolicy (Optional): {
+     *                         automaticOSUpgradePolicy (Optional): {
      *                             disableAutomaticRollback: Boolean (Optional)
-     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             enableAutomaticOSUpgrade: Boolean (Optional)
      *                             useRollingUpgradePolicy: Boolean (Optional)
      *                             osRollingUpgradeDeferral: Boolean (Optional)
      *                         }
@@ -19999,9 +19999,9 @@ public final class BatchesImpl {
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
-     *                         automaticOsUpgradePolicy (Optional): {
+     *                         automaticOSUpgradePolicy (Optional): {
      *                             disableAutomaticRollback: Boolean (Optional)
-     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             enableAutomaticOSUpgrade: Boolean (Optional)
      *                             useRollingUpgradePolicy: Boolean (Optional)
      *                             osRollingUpgradeDeferral: Boolean (Optional)
      *                         }
@@ -20415,9 +20415,9 @@ public final class BatchesImpl {
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
-     *                         automaticOsUpgradePolicy (Optional): {
+     *                         automaticOSUpgradePolicy (Optional): {
      *                             disableAutomaticRollback: Boolean (Optional)
-     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             enableAutomaticOSUpgrade: Boolean (Optional)
      *                             useRollingUpgradePolicy: Boolean (Optional)
      *                             osRollingUpgradeDeferral: Boolean (Optional)
      *                         }
@@ -20849,9 +20849,9 @@ public final class BatchesImpl {
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
-     *                         automaticOsUpgradePolicy (Optional): {
+     *                         automaticOSUpgradePolicy (Optional): {
      *                             disableAutomaticRollback: Boolean (Optional)
-     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             enableAutomaticOSUpgrade: Boolean (Optional)
      *                             useRollingUpgradePolicy: Boolean (Optional)
      *                             osRollingUpgradeDeferral: Boolean (Optional)
      *                         }
@@ -21308,9 +21308,9 @@ public final class BatchesImpl {
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
-     *                         automaticOsUpgradePolicy (Optional): {
+     *                         automaticOSUpgradePolicy (Optional): {
      *                             disableAutomaticRollback: Boolean (Optional)
-     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             enableAutomaticOSUpgrade: Boolean (Optional)
      *                             useRollingUpgradePolicy: Boolean (Optional)
      *                             osRollingUpgradeDeferral: Boolean (Optional)
      *                         }
@@ -21785,9 +21785,9 @@ public final class BatchesImpl {
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
-     *                         automaticOsUpgradePolicy (Optional): {
+     *                         automaticOSUpgradePolicy (Optional): {
      *                             disableAutomaticRollback: Boolean (Optional)
-     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             enableAutomaticOSUpgrade: Boolean (Optional)
      *                             useRollingUpgradePolicy: Boolean (Optional)
      *                             osRollingUpgradeDeferral: Boolean (Optional)
      *                         }
@@ -22242,9 +22242,9 @@ public final class BatchesImpl {
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
-     *                         automaticOsUpgradePolicy (Optional): {
+     *                         automaticOSUpgradePolicy (Optional): {
      *                             disableAutomaticRollback: Boolean (Optional)
-     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             enableAutomaticOSUpgrade: Boolean (Optional)
      *                             useRollingUpgradePolicy: Boolean (Optional)
      *                             osRollingUpgradeDeferral: Boolean (Optional)
      *                         }
@@ -29514,9 +29514,9 @@ public final class BatchesImpl {
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
-     *         automaticOsUpgradePolicy (Optional): {
+     *         automaticOSUpgradePolicy (Optional): {
      *             disableAutomaticRollback: Boolean (Optional)
-     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             enableAutomaticOSUpgrade: Boolean (Optional)
      *             useRollingUpgradePolicy: Boolean (Optional)
      *             osRollingUpgradeDeferral: Boolean (Optional)
      *         }
@@ -29877,9 +29877,9 @@ public final class BatchesImpl {
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
-     *         automaticOsUpgradePolicy (Optional): {
+     *         automaticOSUpgradePolicy (Optional): {
      *             disableAutomaticRollback: Boolean (Optional)
-     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             enableAutomaticOSUpgrade: Boolean (Optional)
      *             useRollingUpgradePolicy: Boolean (Optional)
      *             osRollingUpgradeDeferral: Boolean (Optional)
      *         }
@@ -30031,7 +30031,7 @@ public final class BatchesImpl {
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
      *         total: int (Required)
-     *         upgradingOs: int (Required)
+     *         upgradingOS: int (Required)
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
@@ -30081,7 +30081,7 @@ public final class BatchesImpl {
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
      *         total: int (Required)
-     *         upgradingOs: int (Required)
+     *         upgradingOS: int (Required)
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
@@ -30465,9 +30465,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -30908,9 +30908,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -31348,9 +31348,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -31791,9 +31791,9 @@ public final class BatchesImpl {
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOsUpgradePolicy (Optional): {
+     *                     automaticOSUpgradePolicy (Optional): {
      *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
      *                         useRollingUpgradePolicy: Boolean (Optional)
      *                         osRollingUpgradeDeferral: Boolean (Optional)
      *                     }
@@ -32500,9 +32500,9 @@ public final class BatchesImpl {
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
-     *                         automaticOsUpgradePolicy (Optional): {
+     *                         automaticOSUpgradePolicy (Optional): {
      *                             disableAutomaticRollback: Boolean (Optional)
-     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             enableAutomaticOSUpgrade: Boolean (Optional)
      *                             useRollingUpgradePolicy: Boolean (Optional)
      *                             osRollingUpgradeDeferral: Boolean (Optional)
      *                         }
@@ -32946,9 +32946,9 @@ public final class BatchesImpl {
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
-     *                         automaticOsUpgradePolicy (Optional): {
+     *                         automaticOSUpgradePolicy (Optional): {
      *                             disableAutomaticRollback: Boolean (Optional)
-     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             enableAutomaticOSUpgrade: Boolean (Optional)
      *                             useRollingUpgradePolicy: Boolean (Optional)
      *                             osRollingUpgradeDeferral: Boolean (Optional)
      *                         }

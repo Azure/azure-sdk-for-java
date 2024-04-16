@@ -252,13 +252,6 @@ public final class BatchNodeCounts {
         return this.total;
     }
 
-    /*
-     * The number of Compute Nodes in the upgradingOS state.
-     */
-    @Generated
-    @JsonProperty(value = "upgradingOs")
-    private final int upgradingOS;
-
     /**
      * Creates an instance of BatchNodeCounts class.
      *
@@ -276,7 +269,7 @@ public final class BatchNodeCounts {
      * @param unusable the unusable value to set.
      * @param waitingForStartTask the waitingForStartTask value to set.
      * @param total the total value to set.
-     * @param upgradingOS the upgradingOS value to set.
+     * @param upgradingOs the upgradingOs value to set.
      */
     @Generated
     @JsonCreator
@@ -288,7 +281,7 @@ public final class BatchNodeCounts {
         @JsonProperty(value = "leavingPool") int leavingPool, @JsonProperty(value = "unknown") int unknown,
         @JsonProperty(value = "unusable") int unusable,
         @JsonProperty(value = "waitingForStartTask") int waitingForStartTask, @JsonProperty(value = "total") int total,
-        @JsonProperty(value = "upgradingOs") int upgradingOS) {
+        @JsonProperty(value = "upgradingOS") int upgradingOs) {
         this.creating = creating;
         this.idle = idle;
         this.offline = offline;
@@ -303,16 +296,23 @@ public final class BatchNodeCounts {
         this.unusable = unusable;
         this.waitingForStartTask = waitingForStartTask;
         this.total = total;
-        this.upgradingOS = upgradingOS;
+        this.upgradingOs = upgradingOs;
     }
 
-    /**
-     * Get the upgradingOS property: The number of Compute Nodes in the upgradingOS state.
-     *
-     * @return the upgradingOS value.
+    /*
+     * The number of Compute Nodes in the upgradingOS state.
      */
     @Generated
-    public int getUpgradingOS() {
-        return this.upgradingOS;
+    @JsonProperty(value = "upgradingOS")
+    private final int upgradingOs;
+
+    /**
+     * Get the upgradingOs property: The number of Compute Nodes in the upgradingOS state.
+     *
+     * @return the upgradingOs value.
+     */
+    @Generated
+    public int getUpgradingOs() {
+        return this.upgradingOs;
     }
 }

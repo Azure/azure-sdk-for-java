@@ -21,13 +21,6 @@ public final class AutomaticOsUpgradePolicy {
     private Boolean disableAutomaticRollback;
 
     /*
-     * Indicates whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a newer version of the OS image becomes available. <br /><br /> If this is set to true for Windows based pools, [WindowsConfiguration.enableAutomaticUpdates](https://learn.microsoft.com/en-us/rest/api/batchservice/pool/add?tabs=HTTP#windowsconfiguration) cannot be set to true.
-     */
-    @Generated
-    @JsonProperty(value = "enableAutomaticOsUpgrade")
-    private Boolean enableAutomaticOSUpgrade;
-
-    /*
      * Indicates whether rolling upgrade policy should be used during Auto OS Upgrade. Auto OS Upgrade will fallback to the default policy if no policy is defined on the VMSS.
      */
     @Generated
@@ -67,36 +60,6 @@ public final class AutomaticOsUpgradePolicy {
     @Generated
     public AutomaticOsUpgradePolicy setDisableAutomaticRollback(Boolean disableAutomaticRollback) {
         this.disableAutomaticRollback = disableAutomaticRollback;
-        return this;
-    }
-
-    /**
-     * Get the enableAutomaticOSUpgrade property: Indicates whether OS upgrades should automatically be applied to scale
-     * set instances in a rolling fashion when a newer version of the OS image becomes available. &lt;br /&gt;&lt;br
-     * /&gt; If this is set to true for Windows based pools,
-     * [WindowsConfiguration.enableAutomaticUpdates](https://learn.microsoft.com/en-us/rest/api/batchservice/pool/add?tabs=HTTP#windowsconfiguration)
-     * cannot be set to true.
-     *
-     * @return the enableAutomaticOSUpgrade value.
-     */
-    @Generated
-    public Boolean isEnableAutomaticOSUpgrade() {
-        return this.enableAutomaticOSUpgrade;
-    }
-
-    /**
-     * Set the enableAutomaticOSUpgrade property: Indicates whether OS upgrades should automatically be applied to scale
-     * set instances in a rolling fashion when a newer version of the OS image becomes available. &lt;br /&gt;&lt;br
-     * /&gt; If this is set to true for Windows based pools,
-     * [WindowsConfiguration.enableAutomaticUpdates](https://learn.microsoft.com/en-us/rest/api/batchservice/pool/add?tabs=HTTP#windowsconfiguration)
-     * cannot be set to true.
-     *
-     * @param enableAutomaticOSUpgrade the enableAutomaticOSUpgrade value to set.
-     * @return the AutomaticOsUpgradePolicy object itself.
-     */
-    @Generated
-    public AutomaticOsUpgradePolicy setEnableAutomaticOSUpgrade(Boolean enableAutomaticOSUpgrade) {
-        this.enableAutomaticOSUpgrade = enableAutomaticOSUpgrade;
         return this;
     }
 
@@ -143,6 +106,43 @@ public final class AutomaticOsUpgradePolicy {
     @Generated
     public AutomaticOsUpgradePolicy setOsRollingUpgradeDeferral(Boolean osRollingUpgradeDeferral) {
         this.osRollingUpgradeDeferral = osRollingUpgradeDeferral;
+        return this;
+    }
+
+    /*
+     * Indicates whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a newer version of the OS image becomes available. <br /><br /> If this is set to true for Windows based pools, [WindowsConfiguration.enableAutomaticUpdates](https://learn.microsoft.com/en-us/rest/api/batchservice/pool/add?tabs=HTTP#windowsconfiguration) cannot be set to true.
+     */
+    @Generated
+    @JsonProperty(value = "enableAutomaticOSUpgrade")
+    private Boolean enableAutomaticOsUpgrade;
+
+    /**
+     * Get the enableAutomaticOsUpgrade property: Indicates whether OS upgrades should automatically be applied to scale
+     * set instances in a rolling fashion when a newer version of the OS image becomes available. &lt;br /&gt;&lt;br
+     * /&gt; If this is set to true for Windows based pools,
+     * [WindowsConfiguration.enableAutomaticUpdates](https://learn.microsoft.com/en-us/rest/api/batchservice/pool/add?tabs=HTTP#windowsconfiguration)
+     * cannot be set to true.
+     *
+     * @return the enableAutomaticOsUpgrade value.
+     */
+    @Generated
+    public Boolean isEnableAutomaticOsUpgrade() {
+        return this.enableAutomaticOsUpgrade;
+    }
+
+    /**
+     * Set the enableAutomaticOsUpgrade property: Indicates whether OS upgrades should automatically be applied to scale
+     * set instances in a rolling fashion when a newer version of the OS image becomes available. &lt;br /&gt;&lt;br
+     * /&gt; If this is set to true for Windows based pools,
+     * [WindowsConfiguration.enableAutomaticUpdates](https://learn.microsoft.com/en-us/rest/api/batchservice/pool/add?tabs=HTTP#windowsconfiguration)
+     * cannot be set to true.
+     *
+     * @param enableAutomaticOsUpgrade the enableAutomaticOsUpgrade value to set.
+     * @return the AutomaticOsUpgradePolicy object itself.
+     */
+    @Generated
+    public AutomaticOsUpgradePolicy setEnableAutomaticOsUpgrade(Boolean enableAutomaticOsUpgrade) {
+        this.enableAutomaticOsUpgrade = enableAutomaticOsUpgrade;
         return this;
     }
 }
