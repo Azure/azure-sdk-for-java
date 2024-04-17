@@ -73,7 +73,7 @@ public class JdkHttpClientTests {
     public void testBufferedResponse() throws IOException {
         HttpClient client = new JdkHttpClientProvider().getSharedInstance();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url("/long"));
-        request.getMetadata().setResponseBodyMode(ResponseBodyMode.BUFFER);
+        request.getRequestOptions().setResponseBodyMode(ResponseBodyMode.BUFFER);
         try (Response<?> response = client.send(request)) {
             TestUtils.assertArraysEqual(LONG_BODY, response.getBody().toBytes());
         }
@@ -290,7 +290,7 @@ public class JdkHttpClientTests {
 
     private static Response<?> doRequest(HttpClient client, String path, ResponseBodyMode bodyMode) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(path));
-        request.getMetadata().setResponseBodyMode(bodyMode);
+        request.getRequestOptions().setResponseBodyMode(bodyMode);
         return client.send(request);
     }
 

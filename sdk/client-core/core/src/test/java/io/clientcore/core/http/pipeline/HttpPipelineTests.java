@@ -8,9 +8,6 @@ import io.clientcore.core.http.NoOpHttpClient;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;

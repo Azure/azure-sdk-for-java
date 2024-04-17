@@ -6,7 +6,6 @@ package io.clientcore.core.http.pipeline;
 import io.clientcore.core.credential.KeyCredential;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.pipeline.KeyCredentialPolicy;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

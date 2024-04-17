@@ -4,7 +4,6 @@
 package io.clientcore.core.util.binarydata;
 
 import io.clientcore.core.models.MockPath;
-import io.clientcore.core.util.binarydata.FileBinaryData;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

@@ -192,14 +192,10 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
 
         final String qualifiedName = simpleClassNameToQualifiedNameMap.get(typeName);
 
-        if ("com.".regionMatches(0, qualifiedName, 0, 4)) {
-            if ("azure.".regionMatches(0, qualifiedName, 4, 6)) {
-                return true;
-            } else if ("io.clientcore".regionMatches(0, qualifiedName, 4, 8)) {
-                return true;
-            } else {
-                return false;
-            }
+        if ("com.azure.".regionMatches(0, qualifiedName, 0, 10)) {
+            return true;
+        } else if ("io.clientcore.".regionMatches(0, qualifiedName, 0, 14))  {
+            return true;
         } else if ("java.".regionMatches(0, qualifiedName, 0, 5)) {
             return true;
         } else if ("reactor.".regionMatches(0, qualifiedName, 0, 8)) {
