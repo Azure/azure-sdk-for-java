@@ -702,14 +702,14 @@ public final class OpenAIAsyncClient {
      * <strong>Code Samples</strong>
      * </p>
      * <!-- src_embed com.azure.ai.openai.OpenAIAsyncClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
+     *
      * <pre>
-     * openAIAsyncClient
-     *         .getChatCompletionsStream&#40;deploymentOrModelId, new ChatCompletionsOptions&#40;chatMessages&#41;&#41;
-     *         .subscribe&#40;
-     *                 chatCompletions -&gt; System.out.print&#40;chatCompletions.getId&#40;&#41;&#41;,
-     *                 error -&gt; System.err.println&#40;&quot;There was an error getting chat completions.&quot; + error&#41;,
-     *                 &#40;&#41; -&gt; System.out.println&#40;&quot;Completed called getChatCompletionsStream.&quot;&#41;&#41;;
+     * openAIAsyncClient.getChatCompletionsStream&#40;deploymentOrModelId, new ChatCompletionsOptions&#40;chatMessages&#41;&#41;
+     *     .subscribe&#40;chatCompletions -&gt; System.out.print&#40;chatCompletions.getId&#40;&#41;&#41;,
+     *         error -&gt; System.err.println&#40;&quot;There was an error getting chat completions.&quot; + error&#41;,
+     *         &#40;&#41; -&gt; System.out.println&#40;&quot;Completed called getChatCompletionsStream.&quot;&#41;&#41;;
      * </pre>
+     *
      * <!-- end com.azure.ai.openai.OpenAIAsyncClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name

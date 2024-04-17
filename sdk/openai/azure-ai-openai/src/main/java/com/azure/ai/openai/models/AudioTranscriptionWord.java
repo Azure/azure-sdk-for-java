@@ -5,35 +5,35 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Extended information about a single transcribed word, as provided on responses when the 'word' timestamp granularity
  * is provided.
  */
 @Immutable
-public final class AudioTranscriptionWord {
+public final class AudioTranscriptionWord implements JsonSerializable<AudioTranscriptionWord> {
 
     /*
      * The textual content of the word.
      */
     @Generated
-    @JsonProperty(value = "word")
     private final String word;
 
     /*
      * The start time of the word relative to the beginning of the audio, expressed in seconds.
      */
     @Generated
-    @JsonProperty(value = "start")
     private final double start;
 
     /*
      * The end time of the word relative to the beginning of the audio, expressed in seconds.
      */
     @Generated
-    @JsonProperty(value = "end")
     private final double end;
 
     /**
@@ -44,9 +44,7 @@ public final class AudioTranscriptionWord {
      * @param end the end value to set.
      */
     @Generated
-    @JsonCreator
-    private AudioTranscriptionWord(@JsonProperty(value = "word") String word,
-        @JsonProperty(value = "start") double start, @JsonProperty(value = "end") double end) {
+    private AudioTranscriptionWord(String word, double start, double end) {
         this.word = word;
         this.start = start;
         this.end = end;
@@ -80,5 +78,50 @@ public final class AudioTranscriptionWord {
     @Generated
     public double getEnd() {
         return this.end;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("word", this.word);
+        jsonWriter.writeDoubleField("start", this.start);
+        jsonWriter.writeDoubleField("end", this.end);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AudioTranscriptionWord from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AudioTranscriptionWord if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AudioTranscriptionWord.
+     */
+    @Generated
+    public static AudioTranscriptionWord fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String word = null;
+            double start = 0.0;
+            double end = 0.0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("word".equals(fieldName)) {
+                    word = reader.getString();
+                } else if ("start".equals(fieldName)) {
+                    start = reader.getDouble();
+                } else if ("end".equals(fieldName)) {
+                    end = reader.getDouble();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new AudioTranscriptionWord(word, start, end);
+        });
     }
 }

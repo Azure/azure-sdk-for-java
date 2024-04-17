@@ -5,26 +5,27 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
-import static com.azure.ai.openai.implementation.EmbeddingsUtils.convertBase64ToFloatList;
-import com.azure.core.util.BinaryData;
 
 /**
  * Representation of a single embeddings relatedness comparison.
  */
 @Immutable
-public final class EmbeddingItem {
+public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
 
     /*
      * List of embeddings value for the input prompt. These represent a measurement of the
      * vector-based relatedness of the provided input.
      */
-    @JsonProperty(value = "embedding")
-    private BinaryData embedding;
+    @Generated
+    private final List<Double> embedding;
 
-    private final String embeddingBase64;
+    private String embeddingBase64;
 
     /**
      * Get the embedding property: List of embeddings value for the input prompt. These represent a measurement of the
@@ -32,8 +33,9 @@ public final class EmbeddingItem {
      *
      * @return the embedding value.
      */
-    public List<Float> getEmbedding() {
-        return convertBase64ToFloatList(embeddingBase64);
+    @Generated
+    public List<Double> getEmbedding() {
+        return this.embedding;
     }
 
     /**
@@ -49,7 +51,6 @@ public final class EmbeddingItem {
      * Index of the prompt to which the EmbeddingItem corresponds.
      */
     @Generated
-    @JsonProperty(value = "index")
     private final int promptIndex;
 
     /**
@@ -63,16 +64,55 @@ public final class EmbeddingItem {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("embedding", this.embedding, (writer, element) -> writer.writeDouble(element));
+        jsonWriter.writeIntField("index", this.promptIndex);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EmbeddingItem from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EmbeddingItem if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EmbeddingItem.
+     */
+    @Generated
+    public static EmbeddingItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<Double> embedding = null;
+            int promptIndex = 0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("embedding".equals(fieldName)) {
+                    embedding = reader.readArray(reader1 -> reader1.getDouble());
+                } else if ("index".equals(fieldName)) {
+                    promptIndex = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new EmbeddingItem(embedding, promptIndex);
+        });
+    }
+
+    /**
      * Creates an instance of EmbeddingItem class.
      *
      * @param embedding the embedding value to set.
      * @param promptIndex the promptIndex value to set.
      */
-    @JsonCreator
-    private EmbeddingItem(@JsonProperty(value = "embedding") BinaryData embedding,
-        @JsonProperty(value = "index") int promptIndex) {
+    @Generated
+    private EmbeddingItem(List<Double> embedding, int promptIndex) {
         this.embedding = embedding;
         this.promptIndex = promptIndex;
-        embeddingBase64 = embedding.toString();
     }
 }

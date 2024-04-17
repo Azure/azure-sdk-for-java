@@ -6,8 +6,11 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import com.azure.ai.openai.implementation.models.FunctionCallPreset;
@@ -19,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * provided prompt data.
  */
 @Fluent
-public final class ChatCompletionsOptions {
+public final class ChatCompletionsOptions implements JsonSerializable<ChatCompletionsOptions> {
 
     /*
      * The collection of context messages associated with this chat completions request.
@@ -28,14 +31,12 @@ public final class ChatCompletionsOptions {
      * Assistant roles.
      */
     @Generated
-    @JsonProperty(value = "messages")
     private final List<ChatRequestMessage> messages;
 
     /*
      * The maximum number of tokens to generate.
      */
     @Generated
-    @JsonProperty(value = "max_tokens")
     private Integer maxTokens;
 
     /*
@@ -46,7 +47,6 @@ public final class ChatCompletionsOptions {
      * interaction of these two settings is difficult to predict.
      */
     @Generated
-    @JsonProperty(value = "temperature")
     private Double temperature;
 
     /*
@@ -58,7 +58,6 @@ public final class ChatCompletionsOptions {
      * interaction of these two settings is difficult to predict.
      */
     @Generated
-    @JsonProperty(value = "top_p")
     private Double topP;
 
     /*
@@ -69,7 +68,6 @@ public final class ChatCompletionsOptions {
      * score varies by model.
      */
     @Generated
-    @JsonProperty(value = "logit_bias")
     private Map<String, Integer> logitBias;
 
     /*
@@ -77,7 +75,6 @@ public final class ChatCompletionsOptions {
      * or rate-limiting purposes.
      */
     @Generated
-    @JsonProperty(value = "user")
     private String user;
 
     /*
@@ -87,14 +84,12 @@ public final class ChatCompletionsOptions {
      * Use carefully and ensure reasonable settings for max_tokens and stop.
      */
     @Generated
-    @JsonProperty(value = "n")
     private Integer n;
 
     /*
      * A collection of textual sequences that will end completions generation.
      */
     @Generated
-    @JsonProperty(value = "stop")
     private List<String> stop;
 
     /*
@@ -104,7 +99,6 @@ public final class ChatCompletionsOptions {
      * model's likelihood to output new topics.
      */
     @Generated
-    @JsonProperty(value = "presence_penalty")
     private Double presencePenalty;
 
     /*
@@ -114,14 +108,12 @@ public final class ChatCompletionsOptions {
      * decrease the likelihood of the model repeating the same statements verbatim.
      */
     @Generated
-    @JsonProperty(value = "frequency_penalty")
     private Double frequencyPenalty;
 
     /*
      * A value indicating whether chat completions should be streamed for this request.
      */
     @Generated
-    @JsonProperty(value = "stream")
     private Boolean stream;
 
     /*
@@ -130,7 +122,6 @@ public final class ChatCompletionsOptions {
      * resource URI that's connected to.
      */
     @Generated
-    @JsonProperty(value = "model")
     private String model;
 
     /**
@@ -139,8 +130,7 @@ public final class ChatCompletionsOptions {
      * @param messages the messages value to set.
      */
     @Generated
-    @JsonCreator
-    public ChatCompletionsOptions(@JsonProperty(value = "messages") List<ChatRequestMessage> messages) {
+    public ChatCompletionsOptions(List<ChatRequestMessage> messages) {
         this.messages = messages;
     }
 
@@ -461,7 +451,6 @@ public final class ChatCompletionsOptions {
      * A list of functions the model may generate JSON inputs for.
      */
     @Generated
-    @JsonProperty(value = "functions")
     private List<FunctionDefinition> functions;
 
     /*
@@ -471,7 +460,6 @@ public final class ChatCompletionsOptions {
      *  "none" is the default when no functions are present. "auto" is the default if functions are present.
      */
     @Generated
-    @JsonProperty(value = "function_call")
     private BinaryData functionCall;
 
     /*
@@ -566,7 +554,6 @@ public final class ChatCompletionsOptions {
      *   This additional specification is only compatible with Azure OpenAI.
      */
     @Generated
-    @JsonProperty(value = "data_sources")
     private List<AzureChatExtensionConfiguration> dataSources;
 
     /**
@@ -597,7 +584,6 @@ public final class ChatCompletionsOptions {
      * If provided, the configuration options for available Azure OpenAI chat enhancements.
      */
     @Generated
-    @JsonProperty(value = "enhancements")
     private AzureChatEnhancementConfiguration enhancements;
 
     /*
@@ -606,28 +592,24 @@ public final class ChatCompletionsOptions {
      * system_fingerprint response parameter to monitor changes in the backend."
      */
     @Generated
-    @JsonProperty(value = "seed")
     private Long seed;
 
     /*
      * An object specifying the format that the model must output. Used to enable JSON mode.
      */
     @Generated
-    @JsonProperty(value = "response_format")
     private ChatCompletionsResponseFormat responseFormat;
 
     /*
      * The available tool definitions that the chat completions request can use, including caller-defined functions.
      */
     @Generated
-    @JsonProperty(value = "tools")
     private List<ChatCompletionsToolDefinition> tools;
 
     /*
      * If specified, the model will configure which of the provided tools it can use for the chat completions response.
      */
     @Generated
-    @JsonProperty(value = "tool_choice")
     private BinaryData toolChoice;
 
     /**
@@ -760,14 +742,12 @@ public final class ChatCompletionsOptions {
      * Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each output token returned in the `content` of `message`. This option is currently not available on the `gpt-4-vision-preview` model.
      */
     @Generated
-    @JsonProperty(value = "logprobs")
     private Boolean logprobs;
 
     /*
      * An integer between 0 and 5 specifying the number of most likely tokens to return at each token position, each with an associated log probability. `logprobs` must be set to `true` if this parameter is used.
      */
     @Generated
-    @JsonProperty(value = "top_logprobs")
     private Integer topLogprobs;
 
     /**
@@ -820,5 +800,154 @@ public final class ChatCompletionsOptions {
     public ChatCompletionsOptions setTopLogprobs(Integer topLogprobs) {
         this.topLogprobs = topLogprobs;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("messages", this.messages, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("functions", this.functions, (writer, element) -> writer.writeJson(element));
+        if (this.functionCall != null) {
+            jsonWriter.writeUntypedField("function_call", this.functionCall.toObject(Object.class));
+        }
+        jsonWriter.writeNumberField("max_tokens", this.maxTokens);
+        jsonWriter.writeNumberField("temperature", this.temperature);
+        jsonWriter.writeNumberField("top_p", this.topP);
+        jsonWriter.writeMapField("logit_bias", this.logitBias, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeStringField("user", this.user);
+        jsonWriter.writeNumberField("n", this.n);
+        jsonWriter.writeArrayField("stop", this.stop, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("presence_penalty", this.presencePenalty);
+        jsonWriter.writeNumberField("frequency_penalty", this.frequencyPenalty);
+        jsonWriter.writeBooleanField("stream", this.stream);
+        jsonWriter.writeStringField("model", this.model);
+        jsonWriter.writeArrayField("data_sources", this.dataSources, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("enhancements", this.enhancements);
+        jsonWriter.writeNumberField("seed", this.seed);
+        jsonWriter.writeBooleanField("logprobs", this.logprobs);
+        jsonWriter.writeNumberField("top_logprobs", this.topLogprobs);
+        jsonWriter.writeJsonField("response_format", this.responseFormat);
+        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
+        if (this.toolChoice != null) {
+            jsonWriter.writeUntypedField("tool_choice", this.toolChoice.toObject(Object.class));
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatCompletionsOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatCompletionsOptions if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChatCompletionsOptions.
+     */
+    @Generated
+    public static ChatCompletionsOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<ChatRequestMessage> messages = null;
+            List<FunctionDefinition> functions = null;
+            BinaryData functionCall = null;
+            Integer maxTokens = null;
+            Double temperature = null;
+            Double topP = null;
+            Map<String, Integer> logitBias = null;
+            String user = null;
+            Integer n = null;
+            List<String> stop = null;
+            Double presencePenalty = null;
+            Double frequencyPenalty = null;
+            Boolean stream = null;
+            String model = null;
+            List<AzureChatExtensionConfiguration> dataSources = null;
+            AzureChatEnhancementConfiguration enhancements = null;
+            Long seed = null;
+            Boolean logprobs = null;
+            Integer topLogprobs = null;
+            ChatCompletionsResponseFormat responseFormat = null;
+            List<ChatCompletionsToolDefinition> tools = null;
+            BinaryData toolChoice = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("messages".equals(fieldName)) {
+                    messages = reader.readArray(reader1 -> ChatRequestMessage.fromJson(reader1));
+                } else if ("functions".equals(fieldName)) {
+                    functions = reader.readArray(reader1 -> FunctionDefinition.fromJson(reader1));
+                } else if ("function_call".equals(fieldName)) {
+                    functionCall
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("max_tokens".equals(fieldName)) {
+                    maxTokens = reader.getNullable(JsonReader::getInt);
+                } else if ("temperature".equals(fieldName)) {
+                    temperature = reader.getNullable(JsonReader::getDouble);
+                } else if ("top_p".equals(fieldName)) {
+                    topP = reader.getNullable(JsonReader::getDouble);
+                } else if ("logit_bias".equals(fieldName)) {
+                    logitBias = reader.readMap(reader1 -> reader1.getInt());
+                } else if ("user".equals(fieldName)) {
+                    user = reader.getString();
+                } else if ("n".equals(fieldName)) {
+                    n = reader.getNullable(JsonReader::getInt);
+                } else if ("stop".equals(fieldName)) {
+                    stop = reader.readArray(reader1 -> reader1.getString());
+                } else if ("presence_penalty".equals(fieldName)) {
+                    presencePenalty = reader.getNullable(JsonReader::getDouble);
+                } else if ("frequency_penalty".equals(fieldName)) {
+                    frequencyPenalty = reader.getNullable(JsonReader::getDouble);
+                } else if ("stream".equals(fieldName)) {
+                    stream = reader.getNullable(JsonReader::getBoolean);
+                } else if ("model".equals(fieldName)) {
+                    model = reader.getString();
+                } else if ("data_sources".equals(fieldName)) {
+                    dataSources = reader.readArray(reader1 -> AzureChatExtensionConfiguration.fromJson(reader1));
+                } else if ("enhancements".equals(fieldName)) {
+                    enhancements = AzureChatEnhancementConfiguration.fromJson(reader);
+                } else if ("seed".equals(fieldName)) {
+                    seed = reader.getNullable(JsonReader::getLong);
+                } else if ("logprobs".equals(fieldName)) {
+                    logprobs = reader.getNullable(JsonReader::getBoolean);
+                } else if ("top_logprobs".equals(fieldName)) {
+                    topLogprobs = reader.getNullable(JsonReader::getInt);
+                } else if ("response_format".equals(fieldName)) {
+                    responseFormat = ChatCompletionsResponseFormat.fromJson(reader);
+                } else if ("tools".equals(fieldName)) {
+                    tools = reader.readArray(reader1 -> ChatCompletionsToolDefinition.fromJson(reader1));
+                } else if ("tool_choice".equals(fieldName)) {
+                    toolChoice
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ChatCompletionsOptions deserializedChatCompletionsOptions = new ChatCompletionsOptions(messages);
+            deserializedChatCompletionsOptions.functions = functions;
+            deserializedChatCompletionsOptions.functionCall = functionCall;
+            deserializedChatCompletionsOptions.maxTokens = maxTokens;
+            deserializedChatCompletionsOptions.temperature = temperature;
+            deserializedChatCompletionsOptions.topP = topP;
+            deserializedChatCompletionsOptions.logitBias = logitBias;
+            deserializedChatCompletionsOptions.user = user;
+            deserializedChatCompletionsOptions.n = n;
+            deserializedChatCompletionsOptions.stop = stop;
+            deserializedChatCompletionsOptions.presencePenalty = presencePenalty;
+            deserializedChatCompletionsOptions.frequencyPenalty = frequencyPenalty;
+            deserializedChatCompletionsOptions.stream = stream;
+            deserializedChatCompletionsOptions.model = model;
+            deserializedChatCompletionsOptions.dataSources = dataSources;
+            deserializedChatCompletionsOptions.enhancements = enhancements;
+            deserializedChatCompletionsOptions.seed = seed;
+            deserializedChatCompletionsOptions.logprobs = logprobs;
+            deserializedChatCompletionsOptions.topLogprobs = topLogprobs;
+            deserializedChatCompletionsOptions.responseFormat = responseFormat;
+            deserializedChatCompletionsOptions.tools = tools;
+            deserializedChatCompletionsOptions.toolChoice = toolChoice;
+            return deserializedChatCompletionsOptions;
+        });
     }
 }
