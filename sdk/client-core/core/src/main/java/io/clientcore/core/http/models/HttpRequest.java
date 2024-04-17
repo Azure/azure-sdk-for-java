@@ -147,7 +147,6 @@ public class HttpRequest {
      * @throws NullPointerException if {@code url} is {@code null}.
      * @throws IllegalArgumentException If {@code url} cannot be parsed into a valid {@link URL}.
      */
-    @SuppressWarnings("deprecation")
     public HttpRequest setUrl(String url) {
         try {
             this.url = new URL(Objects.requireNonNull(url, "'url' cannot be null"));

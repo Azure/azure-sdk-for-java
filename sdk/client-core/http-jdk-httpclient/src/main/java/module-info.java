@@ -6,7 +6,6 @@ module io.clientcore.http.jdk.httpclient {
     requires java.net.http;
 
     exports io.clientcore.http.jdk.httpclient;
-    exports io.clientcore.http.jdk.httpclient.implementation;
 
     provides io.clientcore.core.http.client.HttpClientProvider
         with io.clientcore.http.jdk.httpclient.JdkHttpClientProvider;
