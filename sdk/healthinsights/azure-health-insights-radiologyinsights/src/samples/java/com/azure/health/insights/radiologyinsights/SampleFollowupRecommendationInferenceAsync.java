@@ -126,6 +126,7 @@ public class SampleFollowupRecommendationInferenceAsync {
      * @param radiologyInsightsResult The response for the Radiology Insights
      *                                request.
      */
+    // BEGIN: com.azure.health.insights.radiologyinsights.displayresults.followuprecommendation
     private static void displayFollowUpRecommendations(RadiologyInsightsInferenceResult radiologyInsightsResult) {
         List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
         for (RadiologyInsightsPatientResult patientResult : patientResults) {
@@ -226,6 +227,7 @@ public class SampleFollowupRecommendationInferenceAsync {
         }
         return evidence; 
     }
+    // END: com.azure.health.insights.radiologyinsights.displayresults.followuprecommendation
     
     /**
      * Creates a RadiologyInsightsJob object to use in the Radiology Insights job

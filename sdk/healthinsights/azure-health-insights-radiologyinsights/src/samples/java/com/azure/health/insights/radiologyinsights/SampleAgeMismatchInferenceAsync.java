@@ -123,6 +123,7 @@ public class SampleAgeMismatchInferenceAsync {
      * @param radiologyInsightsResult The response for the Radiology Insights
      *                                request.
      */
+    // BEGIN: com.azure.health.insights.radiologyinsights.displayresults.agemismatch
     private static void displayAgeMismatches(RadiologyInsightsInferenceResult radiologyInsightsResult) {
         List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
         for (RadiologyInsightsPatientResult patientResult : patientResults) {
@@ -163,11 +164,11 @@ public class SampleAgeMismatchInferenceAsync {
             }
         }
         if (offset > 0 && length > 0) {
-            //System.out.println("Offset: " + offset + ", length: " + length);
             evidence = DOC_CONTENT.substring(offset, Math.min(offset + length, DOC_CONTENT.length()));
         }
         return evidence; 
     }
+    // END: com.azure.health.insights.radiologyinsights.displayresults.agemismatch
     
     /**
      * Creates a RadiologyInsightsJob object to use in the Radiology Insights job
