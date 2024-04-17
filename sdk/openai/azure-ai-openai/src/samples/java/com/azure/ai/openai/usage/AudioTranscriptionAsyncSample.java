@@ -38,7 +38,7 @@ public class AudioTranscriptionAsyncSample {
 
         byte[] file = BinaryData.fromFile(filePath).toBytes();
 
-        // TO request timestamps for 'segments' and/or 'words', specific the desired response format as
+        // To request timestamps for 'segments' and/or 'words', specific the desired response format as
         // 'AudioTranscriptionFormat.VERBOSE_JSON' and provide the desired combination of enum flags for the available
         // timestamp granularities. If not otherwise specified, 'segments' will be provided. Note that 'words', unlike 'segments',
         // will introduce additional processing latency to compute.

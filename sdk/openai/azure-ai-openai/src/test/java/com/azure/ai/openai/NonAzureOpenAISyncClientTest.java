@@ -439,8 +439,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
-    public void testAudioTranscriptionTimestampGranularityInBothSegmentAndWord(HttpClient httpClient,
-                                                                               OpenAIServiceVersion serviceVersion) {
+    public void testAudioTranscriptionTimestampGranularityInBothSegmentAndWord(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
         getAudioTranscriptionRunnerForNonAzure((modelId, transcriptionOptions) -> {
@@ -455,6 +454,42 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
 
             assertAudioTranscriptionSegments(transcription.getSegments());
             assertAudioTranscriptionWords(transcription.getWords());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testAudioTranscriptionDuplicateTimestampGranularity(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getAudioTranscriptionRunnerForNonAzure((modelId, transcriptionOptions) -> {
+            transcriptionOptions
+                    .setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON)
+                    .setTimestampGranularities(Arrays.asList(
+                            AudioTranscriptionTimestampGranularity.WORD,
+                            AudioTranscriptionTimestampGranularity.WORD));
+
+            AudioTranscription transcription = client.getAudioTranscription(modelId, transcriptionOptions.getFilename(),
+                    transcriptionOptions);
+
+            assertNull(transcription.getSegments());
+            assertAudioTranscriptionWords(transcription.getWords());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testAudioTranscriptionTimestampGranularityInWrongResponseFormat(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getAudioTranscriptionRunnerForNonAzure((modelId, transcriptionOptions) -> {
+            transcriptionOptions
+                    .setResponseFormat(AudioTranscriptionFormat.JSON)
+                    .setTimestampGranularities(Arrays.asList(AudioTranscriptionTimestampGranularity.WORD));
+
+            assertThrows(HttpResponseException.class, () ->
+                    client.getAudioTranscription(modelId, transcriptionOptions.getFilename(),
+                            transcriptionOptions));
         });
     }
 
