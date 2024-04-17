@@ -6,7 +6,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.apachecommons.math.exception.NullArgumentException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -21,7 +20,6 @@ import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -501,12 +499,12 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         values[0] = cityItem.getCity();
         values[1] = cityItem.getZipcode();
         values[2] = cityItem.getAreaCode();
-        PartitionKey test = PartitionKeyBuilder.fromObjectArray(values, false);
+        PartitionKey test = PartitionKey.fromObjectArray(values, false);
         assertThat(test.toString()).isEqualTo("[\"Redmond\",\"98052\",1.0]");
 
         // Test invalid input for values
         try {
-            PartitionKey testError = PartitionKeyBuilder.fromObjectArray(null, false);
+            PartitionKey testError = PartitionKey.fromObjectArray(null, false);
             Assert.fail();
         } catch (NullPointerException e) {
             assertThat(e.getMessage()).isEqualTo("Argument 'values' must not be null.");
@@ -514,7 +512,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    private void extractPartitionKeyFromDocumentTests() throws JsonProcessingException {
+    private void extractPartitionKeyFromDocumentTests() {
         CityItem cityItem = new CityItem(UUID.randomUUID().toString(), "Redmond", "98052", 1);
 
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
@@ -530,14 +528,12 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         ObjectMapper om = new ObjectMapper();
         Map<String, Object> mapObject = (Map<String, Object>)om.convertValue(cityItem,
             new ConcurrentHashMap<String, Object>().getClass());
-        PartitionKey test = PartitionKeyBuilder.extractPartitionKey(
-            mapObject, partitionKeyDefinition);
+        PartitionKey test = PartitionKey.fromMap(mapObject, partitionKeyDefinition);
         assertThat(test.toString()).isEqualTo("[\"Redmond\",\"98052\",1.0]");
 
         // Test invalid input for item
         try {
-            PartitionKey testDocumentError = PartitionKeyBuilder.extractPartitionKey(
-                null, partitionKeyDefinition);
+            PartitionKey testDocumentError = PartitionKey.fromMap(null, partitionKeyDefinition);
             Assert.fail();
         } catch (NullPointerException e) {
             assertThat(e.getMessage()).isEqualTo("Argument 'item' must not be null.");
@@ -545,8 +541,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
 
         // Test invalid input for partitionKeyDefinition
         try {
-            PartitionKey testDocumentError = PartitionKeyBuilder.extractPartitionKey(
-                mapObject, null);
+            PartitionKey testDocumentError = PartitionKey.fromMap(mapObject, null);
             Assert.fail();
         } catch (NullPointerException e) {
             assertThat(e.getMessage()).isEqualTo("Argument 'partitionKeyDefinition' must not be null.");
