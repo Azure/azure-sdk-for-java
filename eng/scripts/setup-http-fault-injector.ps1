@@ -24,7 +24,7 @@ if (Test-Path $env:JAVA_HOME/jre/lib/security) {
 dotnet dev-certs https --export-path http-fault-injector.pfx
 
 if ($IsWindows) {
-    keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias HttpFaultInject -file http-fault-injector.pfx -storepass changeit
+    keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias HttpFaultInject3 -file http-fault-injector.pfx -storepass changeit
 } else {
-    sudo keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias HttpFaultInject -file http-fault-injector.pfx -storepass changeit
+    sudo keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias HttpFaultInject3 -file http-fault-injector.pfx -storepass changeit
 }
