@@ -21,8 +21,6 @@ import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.TypeUtil;
-import io.clientcore.core.implementation.http.rest.MissingRequiredAnnotationException;
-import io.clientcore.core.implementation.http.rest.SwaggerMethodParser;
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
 import io.clientcore.core.implementation.util.Base64Url;
 import io.clientcore.core.implementation.util.DateTimeRfc1123;

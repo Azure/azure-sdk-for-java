@@ -96,14 +96,14 @@ public final class AzureSdkAllowedExternalApis<E extends Element<E>> extends Bas
                 }
             } else if ("mysql.cj.".regionMatches(0, className, 4, 9)) {
                 return ExternalApiStatus.MYSQL_CJ;
-            } else if ("io.clientcore.".regionMatches(0, className, 4, 8)) {
-                return ExternalApiStatus.SDK_CLASSES;
             }
         } else if (className.startsWith("io.")) {
             if ("cloudevents.".regionMatches(0, className, 3, 12)) {
                 return ExternalApiStatus.CLOUD_EVENTS;
             } else if ("opentelemetry.".regionMatches(0, className, 3, 14)) {
                 return ExternalApiStatus.OPEN_TELEMETRY;
+            } else if ("clientcore.".regionMatches(0, className, 3, 10)) {
+                return ExternalApiStatus.SDK_CLASSES;
             }
         } else if (className.startsWith("org.")) {
             if ("json.".regionMatches(0, className, 4, 5)) {

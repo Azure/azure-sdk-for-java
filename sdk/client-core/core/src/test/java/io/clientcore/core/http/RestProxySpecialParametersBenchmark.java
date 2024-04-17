@@ -3,7 +3,6 @@
 
 package io.clientcore.core.http;
 
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.util.Context;
 import org.openjdk.jmh.annotations.Benchmark;

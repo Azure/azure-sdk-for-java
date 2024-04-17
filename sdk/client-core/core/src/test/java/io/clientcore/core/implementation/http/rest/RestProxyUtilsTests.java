@@ -6,7 +6,6 @@ package io.clientcore.core.implementation.http.rest;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.implementation.http.rest.RestProxyUtils;
 import io.clientcore.core.util.binarydata.BinaryData;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;

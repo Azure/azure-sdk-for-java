@@ -3,7 +3,6 @@
 
 package io.clientcore.core.implementation;
 
-import io.clientcore.core.implementation.TypeUtil;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Type;

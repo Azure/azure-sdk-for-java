@@ -6,7 +6,6 @@ package io.clientcore.core.http.client;
 import io.clientcore.core.shared.HttpClientTests;
 import io.clientcore.core.shared.HttpClientTestsServer;
 import io.clientcore.core.shared.LocalTestServer;
-import io.clientcore.core.http.client.HttpClient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 

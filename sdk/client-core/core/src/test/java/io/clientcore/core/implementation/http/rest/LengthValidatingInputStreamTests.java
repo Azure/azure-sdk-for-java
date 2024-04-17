@@ -3,7 +3,6 @@
 
 package io.clientcore.core.implementation.http.rest;
 
-import io.clientcore.core.implementation.http.rest.LengthValidatingInputStream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
