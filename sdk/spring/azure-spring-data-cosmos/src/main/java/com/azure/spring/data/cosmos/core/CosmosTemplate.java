@@ -61,8 +61,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -225,6 +223,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         containerName = getContainerName(domainType);
 
+        @SuppressWarnings("unchecked")
         CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
         List<String> transientFields =  entityInfo.getTransientFields();
         Boolean anyTransientFieldsSet = false;
@@ -254,9 +253,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .block();
 
         assert response != null;
-        if(anyTransientFieldsSet) {
+        if (anyTransientFieldsSet) {
             // recapitulate fields with @Transient annotation from originalItem so they remain serialized in the domain object
-            return toDomainObject(domainType,recapitulateTransientFields(originalItem, response.getItem(), transientFields));
+            return toDomainObject(domainType, recapitulateTransientFields(originalItem, response.getItem(), transientFields));
         }
         return toDomainObject(domainType, response.getItem());
     }
@@ -515,7 +514,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) object.getClass();
         containerName = getContainerName(domainType);
-
+        @SuppressWarnings("unchecked")
         CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
         List<String> transientFields =  entityInfo.getTransientFields();
         Boolean anyTransientFieldsSet = false;
@@ -541,9 +540,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .block();
 
         assert cosmosItemResponse != null;
-        if(anyTransientFieldsSet) {
+        if (anyTransientFieldsSet) {
             // recapitulate fields with @Transient annotation from originalItem so they remain serialized in the domain object
-            return toDomainObject(domainType,recapitulateTransientFields(originalItem, cosmosItemResponse.getItem(), transientFields));
+            return toDomainObject(domainType, recapitulateTransientFields(originalItem, cosmosItemResponse.getItem(), transientFields));
         }
         return toDomainObject(domainType, cosmosItemResponse.getItem());
     }

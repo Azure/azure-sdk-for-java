@@ -469,9 +469,9 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             .flatMap(cosmosItemResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosItemResponse.getDiagnostics(), null);
-                if(anyTransientFieldsSet) {
+                if (anyTransientFieldsSet) {
                     // recapitulate fields with @Transient annotation from originalItem so they remain serialized in the domain object
-                    return Mono.just(toDomainObject(domainType,recapitulateTransientFields(finalOriginalItem, cosmosItemResponse.getItem(), transientFields)));
+                    return Mono.just(toDomainObject(domainType, recapitulateTransientFields(finalOriginalItem, cosmosItemResponse.getItem(), transientFields)));
                 }
                 return Mono.just(toDomainObject(domainType, cosmosItemResponse.getItem()));
             });
@@ -665,9 +665,9 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                 .flatMap(cosmosItemResponse -> {
                                     CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null);
-                                    if(anyTransientFieldsSet) {
+                                    if (anyTransientFieldsSet) {
                                         // recapitulate fields with @Transient annotation from originalItem so they remain serialized in the domain object
-                                        return Mono.just(toDomainObject(domainType,recapitulateTransientFields(finalOriginalItem, cosmosItemResponse.getItem(), transientFields)));
+                                        return Mono.just(toDomainObject(domainType, recapitulateTransientFields(finalOriginalItem, cosmosItemResponse.getItem(), transientFields)));
                                     }
                                     return Mono.just(toDomainObject(domainType,
                                         cosmosItemResponse.getItem()));

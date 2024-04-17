@@ -66,6 +66,9 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private final Field partitionKeyField;
     private final Field versionField;
 
+    /**
+     * @return fields with @Transient annotation
+     */
     public List<String> getTransientFields() {
         return transientFields;
     }
