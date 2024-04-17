@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Supported disabling public network access in `Disk` via `disablePublicNetworkAccess()`, for private link feature.
+- Supported disabling public network access in `Snapshot` via `disablePublicNetworkAccess()`, for private link feature.
+
 ### Breaking Changes
 
 ### Bugs Fixed
