@@ -56,6 +56,13 @@ import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStrea
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
  */
 class DefaultHttpClient implements HttpClient {
+    // Implementation notes:
+    // Do not use HttpURLConnection.disconnect, rather use InputStream.close. Disconnect may close the Socket connection
+    // in keep alive scenarios which we don't want. InputStream.close may also close the Socket connection but it has
+    // finer control on whether that will happen based on keep alive information.
+    // In the scenario we receive an error response stream, keep alive won't be honored as the connection received an
+    // error status and it will be handled appropriately.
+
     private static final ClientLogger LOGGER = new ClientLogger(DefaultHttpClient.class);
 
     private final long connectionTimeout;
@@ -76,28 +83,17 @@ class DefaultHttpClient implements HttpClient {
      */
     @Override
     public Response<?> send(HttpRequest httpRequest) {
-        if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
-            return sendPatchViaSocket(httpRequest);
-        }
-
-        HttpURLConnection connection = connect(httpRequest);
-
-        sendBody(httpRequest, connection);
-
-        return receiveResponse(httpRequest, connection);
-    }
-
-    /**
-     * Synchronously sends a PATCH request via a socket client.
-     *
-     * @param httpRequest The HTTP request being sent
-     * @return The Response object
-     */
-    private Response<?> sendPatchViaSocket(HttpRequest httpRequest) {
         try {
-            return SocketClient.sendPatchRequest(httpRequest);
+            if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
+                return SocketClient.sendPatchRequest(httpRequest);
+            }
+
+            HttpURLConnection connection = connect(httpRequest);
+            sendBody(httpRequest, connection);
+
+            return receiveResponse(httpRequest, connection);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsWarning(new UncheckedIOException(e));
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -110,54 +106,46 @@ class DefaultHttpClient implements HttpClient {
      * @param httpRequest The HTTP Request being sent
      * @return The HttpURLConnection object
      */
-    private HttpURLConnection connect(HttpRequest httpRequest) {
-        try {
-            HttpURLConnection connection;
-            URL url = httpRequest.getUrl();
+    private HttpURLConnection connect(HttpRequest httpRequest) throws IOException {
+        HttpURLConnection connection;
+        URL url = httpRequest.getUrl();
 
-            if (proxyOptions != null) {
-                InetSocketAddress address = proxyOptions.getAddress();
+        if (proxyOptions != null) {
+            InetSocketAddress address = proxyOptions.getAddress();
 
-                if (address != null) {
-                    Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
-                    connection = (HttpURLConnection) url.openConnection(proxy);
+            if (address != null) {
+                Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
+                connection = (HttpURLConnection) url.openConnection(proxy);
 
-                    if (proxyOptions.getUsername() != null && proxyOptions.getPassword() != null) {
-                        String authString = proxyOptions.getUsername() + ":" + proxyOptions.getPassword();
-                        String authStringEnc = Base64.getEncoder().encodeToString(authString.getBytes());
-                        connection.setRequestProperty("Proxy-Authorization", "Basic " + authStringEnc);
-                    }
-                } else {
-                    throw LOGGER.logThrowableAsWarning(new ConnectException("Invalid proxy address"));
+                if (proxyOptions.getUsername() != null && proxyOptions.getPassword() != null) {
+                    String authString = proxyOptions.getUsername() + ":" + proxyOptions.getPassword();
+                    String authStringEnc = Base64.getEncoder().encodeToString(authString.getBytes());
+                    connection.setRequestProperty("Proxy-Authorization", "Basic " + authStringEnc);
                 }
             } else {
-                connection = (HttpURLConnection) url.openConnection();
+                throw LOGGER.logThrowableAsWarning(new ConnectException("Invalid proxy address"));
             }
-
-            if (connectionTimeout != -1) {
-                connection.setConnectTimeout((int) connectionTimeout);
-            }
-
-            if (readTimeout != -1) {
-                connection.setReadTimeout((int) readTimeout);
-            }
-
-            try {
-                connection.setRequestMethod(httpRequest.getHttpMethod().toString());
-            } catch (ProtocolException e) {
-                throw LOGGER.logThrowableAsError(new RuntimeException(e));
-            }
-
-            for (HttpHeader header : httpRequest.getHeaders()) {
-                for (String value : header.getValues()) {
-                    connection.addRequestProperty(header.getName().toString(), value);
-                }
-            }
-
-            return connection;
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        } else {
+            connection = (HttpURLConnection) url.openConnection();
         }
+
+        if (connectionTimeout != -1) {
+            connection.setConnectTimeout((int) connectionTimeout);
+        }
+
+        if (readTimeout != -1) {
+            connection.setReadTimeout((int) readTimeout);
+        }
+
+        connection.setRequestMethod(httpRequest.getHttpMethod().toString());
+
+        for (HttpHeader header : httpRequest.getHeaders()) {
+            for (String value : header.getValues()) {
+                connection.addRequestProperty(header.getName().toString(), value);
+            }
+        }
+
+        return connection;
     }
 
     /**
@@ -166,7 +154,7 @@ class DefaultHttpClient implements HttpClient {
      * @param httpRequest The HTTP Request being sent
      * @param connection The HttpURLConnection that is being sent to
      */
-    private void sendBody(HttpRequest httpRequest, HttpURLConnection connection) {
+    private static void sendBody(HttpRequest httpRequest, HttpURLConnection connection) throws IOException {
         BinaryData body = httpRequest.getBody();
         if (body == null) {
             return;
@@ -189,8 +177,6 @@ class DefaultHttpClient implements HttpClient {
                 try (DataOutputStream os = new DataOutputStream(connection.getOutputStream())) {
                     body.writeTo(os);
                     os.flush();
-                } catch (IOException e) {
-                    throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
                 }
                 return;
 
@@ -206,28 +192,29 @@ class DefaultHttpClient implements HttpClient {
      * @param connection The HttpURLConnection being sent to
      * @return A HttpResponse object
      */
-    private Response<?> receiveResponse(HttpRequest request, HttpURLConnection connection) {
+    private Response<?> receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) throws IOException {
         HttpHeaders responseHeaders = getResponseHeaders(connection);
-        HttpResponse<?> httpResponse = createHttpResponse(request, connection);
+        HttpResponse<?> httpResponse = createHttpResponse(httpRequest, connection);
+
+        // First check if we've gotten back an error response. If so, handle it now and ignore everything else.
+        if (connection.getErrorStream() != null) {
+            // Read the error stream to completion to ensure the connection is released back to the pool and set it as
+            // the response body.
+            eagerlyBufferResponseBody(httpResponse, connection);
+            return httpResponse;
+        }
 
         if (isTextEventStream(responseHeaders)) {
-            try {
-                ServerSentEventListener listener = request.getServerSentEventListener();
+            ServerSentEventListener listener = httpRequest.getServerSentEventListener();
 
-                if (listener == null) {
-                    throw LOGGER.logThrowableAsError(new RuntimeException(NO_LISTENER_ERROR_MESSAGE));
-                }
-
-                if (connection.getErrorStream() == null) {
-                    processTextEventStream(this, request, connection.getInputStream(), listener);
-                }
-            } catch (IOException e) {
-                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-            } finally {
-                connection.disconnect();
+            if (listener == null) {
+                connection.getInputStream().close();
+                throw LOGGER.logThrowableAsError(new RuntimeException(NO_LISTENER_ERROR_MESSAGE));
             }
+
+            processTextEventStream(this, httpRequest, connection.getInputStream(), listener);
         } else {
-            RequestOptions options = request.getRequestOptions();
+            RequestOptions options = httpRequest.getRequestOptions();
             ResponseBodyMode responseBodyMode = null;
 
             if (options != null) {
@@ -237,7 +224,7 @@ class DefaultHttpClient implements HttpClient {
             if (responseBodyMode == null) {
                 HttpHeader contentType = httpResponse.getHeaders().get(CONTENT_TYPE);
 
-                if (request.getHttpMethod() == HEAD) {
+                if (httpRequest.getHttpMethod() == HEAD) {
                     responseBodyMode = IGNORE;
                 } else if (contentType != null && APPLICATION_OCTET_STREAM
                     .regionMatches(true, 0, contentType.getValue(), 0, APPLICATION_OCTET_STREAM.length())) {
@@ -252,7 +239,10 @@ class DefaultHttpClient implements HttpClient {
                 case IGNORE:
                     HttpResponseAccessHelper.setBody(httpResponse, BinaryData.EMPTY);
 
-                    connection.disconnect();
+                    // Close the response InputStream rather than using disconnect. Disconnect will close the Socket
+                    // connection when the InputStream is still open, which can result in keep alive handling not being
+                    // applied.
+                    connection.getInputStream().close();
 
                     break;
                 case STREAM:
@@ -269,14 +259,9 @@ class DefaultHttpClient implements HttpClient {
         return httpResponse;
     }
 
-    private HttpResponse<?> createHttpResponse(HttpRequest httpRequest, HttpURLConnection connection) {
-        try {
-            return new HttpResponse<>(httpRequest, connection.getResponseCode(), getResponseHeaders(connection), null);
-        } catch (IOException e) {
-            connection.disconnect();
-
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+    private static HttpResponse<?> createHttpResponse(HttpRequest httpRequest, HttpURLConnection connection)
+        throws IOException {
+        return new HttpResponse<>(httpRequest, connection.getResponseCode(), getResponseHeaders(connection), null);
     }
 
     private static boolean isTextEventStream(HttpHeaders responseHeaders) {
@@ -287,29 +272,20 @@ class DefaultHttpClient implements HttpClient {
         return false;
     }
 
-    private void streamResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection) {
-        try {
-            HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromStream(connection.getInputStream()));
-        } catch (IOException e) {
-            connection.disconnect();
+    private static void streamResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection)
+        throws IOException {
 
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromStream(connection.getInputStream()));
     }
 
-    private void eagerlyBufferResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection) {
-        try {
-            AccessibleByteArrayOutputStream outputStream = getAccessibleByteArrayOutputStream(connection);
+    private static void eagerlyBufferResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection)
+        throws IOException {
+        AccessibleByteArrayOutputStream outputStream = getAccessibleByteArrayOutputStream(connection);
 
-            HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromByteBuffer(outputStream.toByteBuffer()));
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        } finally {
-            connection.disconnect();
-        }
+        HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromByteBuffer(outputStream.toByteBuffer()));
     }
 
-    private HttpHeaders getResponseHeaders(HttpURLConnection connection) {
+    private static HttpHeaders getResponseHeaders(HttpURLConnection connection) {
         Map<String, List<String>> hucHeaders = connection.getHeaderFields();
         HttpHeaders responseHeaders = new HttpHeaders(hucHeaders.size());
         for (Map.Entry<String, List<String>> entry : hucHeaders.entrySet()) {
@@ -322,7 +298,10 @@ class DefaultHttpClient implements HttpClient {
 
     private static AccessibleByteArrayOutputStream getAccessibleByteArrayOutputStream(HttpURLConnection connection)
         throws IOException {
-        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+        int contentLengthInt = connection.getContentLength();
+        AccessibleByteArrayOutputStream outputStream = (contentLengthInt >= 0)
+            ? new AccessibleByteArrayOutputStream(contentLengthInt)
+            : new AccessibleByteArrayOutputStream();
 
         try (InputStream errorStream = connection.getErrorStream();
             InputStream inputStream = (errorStream == null) ? connection.getInputStream() : errorStream) {

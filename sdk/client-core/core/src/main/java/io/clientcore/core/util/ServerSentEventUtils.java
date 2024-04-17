@@ -55,6 +55,8 @@ public final class ServerSentEventUtils {
 
     /**
      * Processes the text event stream.
+     * <p>
+     * The passed {@link InputStream} will be closed by this method.
      *
      * @param httpClient The {@link HttpClient} to send the {@code httpRequest} through.
      * @param httpRequest The {@link HttpRequest} to send.
