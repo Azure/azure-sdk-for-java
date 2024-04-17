@@ -100,7 +100,7 @@ public final class CommunicationRelayClientBuilder implements
      * @param endpoint url of the service
      * @return CommunicationRelayClientBuilder
      */
-        @Override
+    @Override
     public CommunicationRelayClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
