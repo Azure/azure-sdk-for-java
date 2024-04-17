@@ -34,7 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.standbypool.fluent.StandbyContainerGroupPoolsClient;
 import com.azure.resourcemanager.standbypool.fluent.models.StandbyContainerGroupPoolResourceInner;
-import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResourceListResult;
+import com.azure.resourcemanager.standbypool.implementation.models.StandbyContainerGroupPoolResourceListResult;
 import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResourceUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;

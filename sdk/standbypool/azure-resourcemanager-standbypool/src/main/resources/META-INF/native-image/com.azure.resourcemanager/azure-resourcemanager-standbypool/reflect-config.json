@@ -1,5 +1,5 @@
 [ {
-  "name" : "com.azure.resourcemanager.standbypool.models.PagedOperation",
+  "name" : "com.azure.resourcemanager.standbypool.implementation.models.PagedOperation",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -39,7 +39,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceListResult",
+  "name" : "com.azure.resourcemanager.standbypool.implementation.models.StandbyVirtualMachinePoolResourceListResult",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -54,7 +54,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.standbypool.models.StandbyVirtualMachineResourceListResult",
+  "name" : "com.azure.resourcemanager.standbypool.implementation.models.StandbyVirtualMachineResourceListResult",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -99,7 +99,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResourceListResult",
+  "name" : "com.azure.resourcemanager.standbypool.implementation.models.StandbyContainerGroupPoolResourceListResult",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true

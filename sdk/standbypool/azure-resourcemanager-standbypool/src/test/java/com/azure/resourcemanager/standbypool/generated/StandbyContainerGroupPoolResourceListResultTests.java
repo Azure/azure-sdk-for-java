@@ -5,17 +5,8 @@
 package com.azure.resourcemanager.standbypool.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.standbypool.fluent.models.StandbyContainerGroupPoolResourceInner;
-import com.azure.resourcemanager.standbypool.models.ContainerGroupProfile;
-import com.azure.resourcemanager.standbypool.models.ContainerGroupProperties;
+import com.azure.resourcemanager.standbypool.implementation.models.StandbyContainerGroupPoolResourceListResult;
 import com.azure.resourcemanager.standbypool.models.RefillPolicy;
-import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolElasticityProfile;
-import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResourceListResult;
-import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResourceProperties;
-import com.azure.resourcemanager.standbypool.models.Subnet;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class StandbyContainerGroupPoolResourceListResultTests {
@@ -37,48 +28,5 @@ public final class StandbyContainerGroupPoolResourceListResultTests {
         Assertions.assertEquals("wxmnteiwao",
             model.value().get(0).properties().containerGroupProperties().subnetIds().get(0).id());
         Assertions.assertEquals("rjb", model.nextLink());
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        StandbyContainerGroupPoolResourceListResult model = new StandbyContainerGroupPoolResourceListResult()
-            .withValue(Arrays.asList(new StandbyContainerGroupPoolResourceInner().withLocation("bzsgfyccsne")
-                .withTags(mapOf("oosflnr", "wzjeiach", "vypyqrimzinpv", "sfqpteehz", "rsoodqxhcrmnoh", "wjdk"))
-                .withProperties(new StandbyContainerGroupPoolResourceProperties()
-                    .withElasticityProfile(
-                        new StandbyContainerGroupPoolElasticityProfile().withMaxReadyCapacity(2296241037768956178L)
-                            .withRefillPolicy(RefillPolicy.ALWAYS))
-                    .withContainerGroupProperties(new ContainerGroupProperties()
-                        .withContainerGroupProfile(
-                            new ContainerGroupProfile().withId("dzuhtymwi").withRevision(2965143483329278673L))
-                        .withSubnetIds(Arrays.asList(new Subnet().withId("wxmnteiwao"),
-                            new Subnet().withId("vkmijcmmxdcuf"), new Subnet().withId("fsrpymzidnse")))))))
-            .withNextLink("rjb");
-        model = BinaryData.fromObject(model).toObject(StandbyContainerGroupPoolResourceListResult.class);
-        Assertions.assertEquals("bzsgfyccsne", model.value().get(0).location());
-        Assertions.assertEquals("wzjeiach", model.value().get(0).tags().get("oosflnr"));
-        Assertions.assertEquals(2296241037768956178L,
-            model.value().get(0).properties().elasticityProfile().maxReadyCapacity());
-        Assertions.assertEquals(RefillPolicy.ALWAYS,
-            model.value().get(0).properties().elasticityProfile().refillPolicy());
-        Assertions.assertEquals("dzuhtymwi",
-            model.value().get(0).properties().containerGroupProperties().containerGroupProfile().id());
-        Assertions.assertEquals(2965143483329278673L,
-            model.value().get(0).properties().containerGroupProperties().containerGroupProfile().revision());
-        Assertions.assertEquals("wxmnteiwao",
-            model.value().get(0).properties().containerGroupProperties().subnetIds().get(0).id());
-        Assertions.assertEquals("rjb", model.nextLink());
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
     }
 }

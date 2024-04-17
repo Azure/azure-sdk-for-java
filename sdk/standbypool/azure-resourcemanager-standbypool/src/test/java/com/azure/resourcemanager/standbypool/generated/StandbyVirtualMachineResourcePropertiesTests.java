@@ -16,12 +16,4 @@ public final class StandbyVirtualMachineResourcePropertiesTests {
                 .toObject(StandbyVirtualMachineResourceProperties.class);
         Assertions.assertEquals("jczdzevndh", model.virtualMachineResourceId());
     }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        StandbyVirtualMachineResourceProperties model
-            = new StandbyVirtualMachineResourceProperties().withVirtualMachineResourceId("jczdzevndh");
-        model = BinaryData.fromObject(model).toObject(StandbyVirtualMachineResourceProperties.class);
-        Assertions.assertEquals("jczdzevndh", model.virtualMachineResourceId());
-    }
 }

@@ -4,13 +4,13 @@
 
 package com.azure.resourcemanager.standbypool.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Localized display information for and operation.
  */
-@Fluent
+@Immutable
 public final class OperationDisplay {
     /*
      * The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft Compute".
@@ -39,7 +39,7 @@ public final class OperationDisplay {
     /**
      * Creates an instance of OperationDisplay class.
      */
-    public OperationDisplay() {
+    private OperationDisplay() {
     }
 
     /**
@@ -53,18 +53,6 @@ public final class OperationDisplay {
     }
 
     /**
-     * Set the provider property: The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring
-     * Insights" or "Microsoft Compute".
-     * 
-     * @param provider the provider value to set.
-     * @return the OperationDisplay object itself.
-     */
-    public OperationDisplay withProvider(String provider) {
-        this.provider = provider;
-        return this;
-    }
-
-    /**
      * Get the resource property: The localized friendly name of the resource type related to this operation. E.g.
      * "Virtual Machines" or "Job Schedule Collections".
      * 
@@ -72,18 +60,6 @@ public final class OperationDisplay {
      */
     public String resource() {
         return this.resource;
-    }
-
-    /**
-     * Set the resource property: The localized friendly name of the resource type related to this operation. E.g.
-     * "Virtual Machines" or "Job Schedule Collections".
-     * 
-     * @param resource the resource value to set.
-     * @return the OperationDisplay object itself.
-     */
-    public OperationDisplay withResource(String resource) {
-        this.resource = resource;
-        return this;
     }
 
     /**
@@ -97,18 +73,6 @@ public final class OperationDisplay {
     }
 
     /**
-     * Set the operation property: The concise, localized friendly name for the operation; suitable for dropdowns. E.g.
-     * "Create or Update Virtual Machine", "Restart Virtual Machine".
-     * 
-     * @param operation the operation value to set.
-     * @return the OperationDisplay object itself.
-     */
-    public OperationDisplay withOperation(String operation) {
-        this.operation = operation;
-        return this;
-    }
-
-    /**
      * Get the description property: The short, localized friendly description of the operation; suitable for tool tips
      * and detailed views.
      * 
@@ -116,18 +80,6 @@ public final class OperationDisplay {
      */
     public String description() {
         return this.description;
-    }
-
-    /**
-     * Set the description property: The short, localized friendly description of the operation; suitable for tool tips
-     * and detailed views.
-     * 
-     * @param description the description value to set.
-     * @return the OperationDisplay object itself.
-     */
-    public OperationDisplay withDescription(String description) {
-        this.description = description;
-        return this;
     }
 
     /**

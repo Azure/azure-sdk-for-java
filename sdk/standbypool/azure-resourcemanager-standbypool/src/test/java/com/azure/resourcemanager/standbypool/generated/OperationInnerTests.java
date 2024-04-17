@@ -7,7 +7,6 @@ package com.azure.resourcemanager.standbypool.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.standbypool.fluent.models.OperationInner;
 import com.azure.resourcemanager.standbypool.models.ActionType;
-import com.azure.resourcemanager.standbypool.models.OperationDisplay;
 import org.junit.jupiter.api.Assertions;
 
 public final class OperationInnerTests {
@@ -16,20 +15,6 @@ public final class OperationInnerTests {
         OperationInner model = BinaryData.fromString(
             "{\"name\":\"nygj\",\"isDataAction\":true,\"display\":{\"provider\":\"eqsrdeupewnwreit\",\"resource\":\"yflusarhmofc\",\"operation\":\"smy\",\"description\":\"kdtmlxhekuk\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}")
             .toObject(OperationInner.class);
-        Assertions.assertEquals("eqsrdeupewnwreit", model.display().provider());
-        Assertions.assertEquals("yflusarhmofc", model.display().resource());
-        Assertions.assertEquals("smy", model.display().operation());
-        Assertions.assertEquals("kdtmlxhekuk", model.display().description());
-        Assertions.assertEquals(ActionType.INTERNAL, model.actionType());
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        OperationInner model = new OperationInner().withDisplay(new OperationDisplay().withProvider("eqsrdeupewnwreit")
-            .withResource("yflusarhmofc")
-            .withOperation("smy")
-            .withDescription("kdtmlxhekuk")).withActionType(ActionType.INTERNAL);
-        model = BinaryData.fromObject(model).toObject(OperationInner.class);
         Assertions.assertEquals("eqsrdeupewnwreit", model.display().provider());
         Assertions.assertEquals("yflusarhmofc", model.display().resource());
         Assertions.assertEquals("smy", model.display().operation());

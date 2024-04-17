@@ -34,7 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.standbypool.fluent.StandbyVirtualMachinePoolsClient;
 import com.azure.resourcemanager.standbypool.fluent.models.StandbyVirtualMachinePoolResourceInner;
-import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceListResult;
+import com.azure.resourcemanager.standbypool.implementation.models.StandbyVirtualMachinePoolResourceListResult;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;

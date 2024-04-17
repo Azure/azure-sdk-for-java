@@ -5,10 +5,7 @@
 package com.azure.resourcemanager.standbypool.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.standbypool.fluent.models.StandbyVirtualMachineResourceInner;
-import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachineResourceListResult;
-import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachineResourceProperties;
-import java.util.Arrays;
+import com.azure.resourcemanager.standbypool.implementation.models.StandbyVirtualMachineResourceListResult;
 import org.junit.jupiter.api.Assertions;
 
 public final class StandbyVirtualMachineResourceListResultTests {
@@ -17,20 +14,6 @@ public final class StandbyVirtualMachineResourceListResultTests {
         StandbyVirtualMachineResourceListResult model = BinaryData.fromString(
             "{\"value\":[{\"properties\":{\"virtualMachineResourceId\":\"appd\",\"provisioningState\":\"Canceled\"},\"id\":\"vwrwj\",\"name\":\"eusnhutj\",\"type\":\"ltmrldh\"},{\"properties\":{\"virtualMachineResourceId\":\"jzzd\",\"provisioningState\":\"Deleting\"},\"id\":\"hocdgeab\",\"name\":\"gphuticndvka\",\"type\":\"zwyiftyhxhur\"}],\"nextLink\":\"ftyxolniw\"}")
             .toObject(StandbyVirtualMachineResourceListResult.class);
-        Assertions.assertEquals("appd", model.value().get(0).properties().virtualMachineResourceId());
-        Assertions.assertEquals("ftyxolniw", model.nextLink());
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        StandbyVirtualMachineResourceListResult model = new StandbyVirtualMachineResourceListResult()
-            .withValue(Arrays.asList(
-                new StandbyVirtualMachineResourceInner()
-                    .withProperties(new StandbyVirtualMachineResourceProperties().withVirtualMachineResourceId("appd")),
-                new StandbyVirtualMachineResourceInner().withProperties(
-                    new StandbyVirtualMachineResourceProperties().withVirtualMachineResourceId("jzzd"))))
-            .withNextLink("ftyxolniw");
-        model = BinaryData.fromObject(model).toObject(StandbyVirtualMachineResourceListResult.class);
         Assertions.assertEquals("appd", model.value().get(0).properties().virtualMachineResourceId());
         Assertions.assertEquals("ftyxolniw", model.nextLink());
     }

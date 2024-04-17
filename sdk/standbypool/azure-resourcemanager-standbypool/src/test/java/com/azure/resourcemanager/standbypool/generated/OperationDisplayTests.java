@@ -19,17 +19,4 @@ public final class OperationDisplayTests {
         Assertions.assertEquals("lhmwhfpmrqobm", model.operation());
         Assertions.assertEquals("kknryrtihf", model.description());
     }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        OperationDisplay model = new OperationDisplay().withProvider("cdm")
-            .withResource("rcryuanzwuxzdxta")
-            .withOperation("lhmwhfpmrqobm")
-            .withDescription("kknryrtihf");
-        model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
-        Assertions.assertEquals("cdm", model.provider());
-        Assertions.assertEquals("rcryuanzwuxzdxta", model.resource());
-        Assertions.assertEquals("lhmwhfpmrqobm", model.operation());
-        Assertions.assertEquals("kknryrtihf", model.description());
-    }
 }

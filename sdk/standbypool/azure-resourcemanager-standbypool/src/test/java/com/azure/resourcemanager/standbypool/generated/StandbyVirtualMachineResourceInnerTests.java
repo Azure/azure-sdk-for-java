@@ -6,7 +6,6 @@ package com.azure.resourcemanager.standbypool.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.standbypool.fluent.models.StandbyVirtualMachineResourceInner;
-import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachineResourceProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class StandbyVirtualMachineResourceInnerTests {
@@ -15,14 +14,6 @@ public final class StandbyVirtualMachineResourceInnerTests {
         StandbyVirtualMachineResourceInner model = BinaryData.fromString(
             "{\"properties\":{\"virtualMachineResourceId\":\"p\",\"provisioningState\":\"Succeeded\"},\"id\":\"lljfmppeeb\",\"name\":\"mgxsab\",\"type\":\"yqduujit\"}")
             .toObject(StandbyVirtualMachineResourceInner.class);
-        Assertions.assertEquals("p", model.properties().virtualMachineResourceId());
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        StandbyVirtualMachineResourceInner model = new StandbyVirtualMachineResourceInner()
-            .withProperties(new StandbyVirtualMachineResourceProperties().withVirtualMachineResourceId("p"));
-        model = BinaryData.fromObject(model).toObject(StandbyVirtualMachineResourceInner.class);
         Assertions.assertEquals("p", model.properties().virtualMachineResourceId());
     }
 }

@@ -27,7 +27,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.standbypool.fluent.StandbyVirtualMachinesClient;
 import com.azure.resourcemanager.standbypool.fluent.models.StandbyVirtualMachineResourceInner;
-import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachineResourceListResult;
+import com.azure.resourcemanager.standbypool.implementation.models.StandbyVirtualMachineResourceListResult;
 import reactor.core.publisher.Mono;
 
 /**

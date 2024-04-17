@@ -27,7 +27,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.standbypool.fluent.OperationsClient;
 import com.azure.resourcemanager.standbypool.fluent.models.OperationInner;
-import com.azure.resourcemanager.standbypool.models.PagedOperation;
+import com.azure.resourcemanager.standbypool.implementation.models.PagedOperation;
 import reactor.core.publisher.Mono;
 
 /**

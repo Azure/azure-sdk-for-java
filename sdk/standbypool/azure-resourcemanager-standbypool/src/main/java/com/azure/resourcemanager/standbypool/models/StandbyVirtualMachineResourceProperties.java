@@ -4,14 +4,14 @@
 
 package com.azure.resourcemanager.standbypool.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Details of the StandbyVirtualMachine.
  */
-@Fluent
+@Immutable
 public final class StandbyVirtualMachineResourceProperties {
     /*
      * Resource id of the virtual machine.
@@ -28,7 +28,7 @@ public final class StandbyVirtualMachineResourceProperties {
     /**
      * Creates an instance of StandbyVirtualMachineResourceProperties class.
      */
-    public StandbyVirtualMachineResourceProperties() {
+    private StandbyVirtualMachineResourceProperties() {
     }
 
     /**
@@ -38,17 +38,6 @@ public final class StandbyVirtualMachineResourceProperties {
      */
     public String virtualMachineResourceId() {
         return this.virtualMachineResourceId;
-    }
-
-    /**
-     * Set the virtualMachineResourceId property: Resource id of the virtual machine.
-     * 
-     * @param virtualMachineResourceId the virtualMachineResourceId value to set.
-     * @return the StandbyVirtualMachineResourceProperties object itself.
-     */
-    public StandbyVirtualMachineResourceProperties withVirtualMachineResourceId(String virtualMachineResourceId) {
-        this.virtualMachineResourceId = virtualMachineResourceId;
-        return this;
     }
 
     /**

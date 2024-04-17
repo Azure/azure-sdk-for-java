@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.standbypool.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.standbypool.models.ActionType;
 import com.azure.resourcemanager.standbypool.models.OperationDisplay;
 import com.azure.resourcemanager.standbypool.models.Origin;
@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Details of a REST API operation, returned from the Resource Provider Operations API.
  */
-@Fluent
+@Immutable
 public final class OperationInner {
     /*
      * The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
@@ -48,7 +48,7 @@ public final class OperationInner {
     /**
      * Creates an instance of OperationInner class.
      */
-    public OperationInner() {
+    private OperationInner() {
     }
 
     /**
@@ -81,17 +81,6 @@ public final class OperationInner {
     }
 
     /**
-     * Set the display property: Localized display information for this particular operation.
-     * 
-     * @param display the display value to set.
-     * @return the OperationInner object itself.
-     */
-    public OperationInner withDisplay(OperationDisplay display) {
-        this.display = display;
-        return this;
-    }
-
-    /**
      * Get the origin property: The intended executor of the operation; as in Resource Based Access Control (RBAC) and
      * audit logs UX. Default value is "user,system".
      * 
@@ -109,18 +98,6 @@ public final class OperationInner {
      */
     public ActionType actionType() {
         return this.actionType;
-    }
-
-    /**
-     * Set the actionType property: Enum. Indicates the action type. "Internal" refers to actions that are for internal
-     * only APIs.
-     * 
-     * @param actionType the actionType value to set.
-     * @return the OperationInner object itself.
-     */
-    public OperationInner withActionType(ActionType actionType) {
-        this.actionType = actionType;
-        return this;
     }
 
     /**

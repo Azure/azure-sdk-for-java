@@ -5,14 +5,8 @@
 package com.azure.resourcemanager.standbypool.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.standbypool.fluent.models.StandbyVirtualMachinePoolResourceInner;
-import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolElasticityProfile;
-import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceListResult;
-import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceProperties;
+import com.azure.resourcemanager.standbypool.implementation.models.StandbyVirtualMachinePoolResourceListResult;
 import com.azure.resourcemanager.standbypool.models.VirtualMachineState;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class StandbyVirtualMachinePoolResourceListResultTests {
@@ -29,57 +23,5 @@ public final class StandbyVirtualMachinePoolResourceListResultTests {
             model.value().get(0).properties().virtualMachineState());
         Assertions.assertEquals("jsprozvcpute", model.value().get(0).properties().attachedVirtualMachineScaleSetId());
         Assertions.assertEquals("lssai", model.nextLink());
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        StandbyVirtualMachinePoolResourceListResult model
-            = new StandbyVirtualMachinePoolResourceListResult()
-                .withValue(Arrays.asList(
-                    new StandbyVirtualMachinePoolResourceInner().withLocation("mfdatscmdvpj")
-                        .withTags(mapOf("kjozkrwfnd", "suuv", "vwryoqpso", "odjpslwejd", "yffdfdos", "cctazakljlahbc",
-                            "hcrzevd", "gexpaojakhmsbz"))
-                        .withProperties(new StandbyVirtualMachinePoolResourceProperties()
-                            .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile()
-                                .withMaxReadyCapacity(795979604807829548L))
-                            .withVirtualMachineState(VirtualMachineState.DEALLOCATED)
-                            .withAttachedVirtualMachineScaleSetId("jsprozvcpute")),
-                    new StandbyVirtualMachinePoolResourceInner().withLocation("it")
-                        .withTags(
-                            mapOf("jlxofpdvhpfxxyp", "eqfpj", "kpode", "ninmayhuyb", "ognarxzxtheotus", "ooginuvamih"))
-                        .withProperties(new StandbyVirtualMachinePoolResourceProperties()
-                            .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile()
-                                .withMaxReadyCapacity(4223016472097191780L))
-                            .withVirtualMachineState(VirtualMachineState.DEALLOCATED)
-                            .withAttachedVirtualMachineScaleSetId("tfell")),
-                    new StandbyVirtualMachinePoolResourceInner().withLocation("ufubl")
-                        .withTags(mapOf("v", "xqeofjaeqjhqjba", "zgcwrw", "smjqulngsntnbyb"))
-                        .withProperties(new StandbyVirtualMachinePoolResourceProperties()
-                            .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile()
-                                .withMaxReadyCapacity(9010569490634453588L))
-                            .withVirtualMachineState(VirtualMachineState.DEALLOCATED)
-                            .withAttachedVirtualMachineScaleSetId("emv"))))
-                .withNextLink("lssai");
-        model = BinaryData.fromObject(model).toObject(StandbyVirtualMachinePoolResourceListResult.class);
-        Assertions.assertEquals("mfdatscmdvpj", model.value().get(0).location());
-        Assertions.assertEquals("suuv", model.value().get(0).tags().get("kjozkrwfnd"));
-        Assertions.assertEquals(795979604807829548L,
-            model.value().get(0).properties().elasticityProfile().maxReadyCapacity());
-        Assertions.assertEquals(VirtualMachineState.DEALLOCATED,
-            model.value().get(0).properties().virtualMachineState());
-        Assertions.assertEquals("jsprozvcpute", model.value().get(0).properties().attachedVirtualMachineScaleSetId());
-        Assertions.assertEquals("lssai", model.nextLink());
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
     }
 }
