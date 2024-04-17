@@ -6,9 +6,6 @@ package io.clientcore.core.implementation.http.rest;
 import io.clientcore.core.annotation.ServiceInterface;
 import io.clientcore.core.http.annotation.HttpRequestInformation;
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.implementation.http.rest.MissingRequiredAnnotationException;
-import io.clientcore.core.implementation.http.rest.SwaggerInterfaceParser;
-import io.clientcore.core.implementation.http.rest.SwaggerMethodParser;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;

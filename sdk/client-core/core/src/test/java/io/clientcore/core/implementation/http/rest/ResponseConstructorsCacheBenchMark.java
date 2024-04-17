@@ -6,7 +6,6 @@ package io.clientcore.core.implementation.http.rest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.TypeUtil;
-import io.clientcore.core.implementation.http.rest.ResponseConstructorsCache;
 import org.openjdk.jmh.Main;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;

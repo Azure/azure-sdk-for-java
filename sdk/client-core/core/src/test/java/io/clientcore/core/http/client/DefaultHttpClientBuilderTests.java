@@ -3,8 +3,6 @@
 
 package io.clientcore.core.http.client;
 
-import io.clientcore.core.http.client.DefaultHttpClientBuilder;
-import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.ProxyOptions;

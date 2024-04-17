@@ -5,11 +5,6 @@ package io.clientcore.core.http.models;
 
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
 import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

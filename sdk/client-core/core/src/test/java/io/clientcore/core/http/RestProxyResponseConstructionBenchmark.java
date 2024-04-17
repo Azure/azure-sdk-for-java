@@ -3,7 +3,6 @@
 
 package io.clientcore.core.http;
 
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
