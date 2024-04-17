@@ -654,6 +654,8 @@ public class EventProcessorClientBuilder implements
      * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
      * EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder&#40;&#41;
      *     .consumerGroup&#40;EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME&#41;
+     *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+     *         credential&#41;
      *     .checkpointStore&#40;new SampleCheckpointStore&#40;&#41;&#41;
      *     .processEventBatch&#40;eventBatchContext -&gt; &#123;
      *         eventBatchContext.getEvents&#40;&#41;.forEach&#40;eventData -&gt; &#123;
