@@ -28,7 +28,7 @@ autorest README-recordingstoragetype.md --java --v4 --use=@autorest/java@4.1.14 
 ``` yaml
 tag: package-2024-04-15
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/9d72a9a68dfa75d24a03cbeb7ff3a55fd8548869/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/fdb69687a59b89fe0716782b94e5c8c61f20428b/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
