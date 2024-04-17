@@ -85,12 +85,12 @@ public class PartitionKey {
 
 
     /**
-     * Returns the PartitionKey extracted from the item map
+     * Returns the PartitionKey extracted from the item
      * @param item The JsonSerializable object to get the PartitionKey value from
      * @param partitionKeyDefinition The PartitionKeyDefinition to use to extract the PartitionKey value
      * @return The PartitionKey
      */
-    public static PartitionKey fromMap(
+    public static PartitionKey fromItem(
         Map<String, Object> item,
         PartitionKeyDefinition partitionKeyDefinition) {
         checkNotNull(item, "Argument 'item' must not be null.");
