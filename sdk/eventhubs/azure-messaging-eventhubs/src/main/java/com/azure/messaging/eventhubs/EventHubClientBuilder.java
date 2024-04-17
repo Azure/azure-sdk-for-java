@@ -324,6 +324,13 @@ public class EventHubClientBuilder implements
         return this;
     }
 
+    /**
+     * Creates a TokenCredential from the {@link ConnectionStringProperties}.
+     *
+     * @param properties Connection string components to create TokenCredential from.
+     *
+     * @return A {@link TokenCredential} represented by the connection string properties.
+     */
     private TokenCredential getTokenCredential(ConnectionStringProperties properties) {
         TokenCredential tokenCredential;
         if (properties.getSharedAccessSignature() == null) {
@@ -348,7 +355,7 @@ public class EventHubClientBuilder implements
     }
 
     /***
-     * Package-private method to get client options.
+     * Gets the client options.
      */
     ClientOptions getClientOptions() {
         return clientOptions;
@@ -398,10 +405,10 @@ public class EventHubClientBuilder implements
 
     /**
      * Sets the configuration store that is used during construction of the service client.
-     *
+     * <p>
      * If not specified, the default configuration store is used to configure the {@link EventHubAsyncClient}. Use
      * {@link Configuration#NONE} to bypass using configuration settings during construction.
-     *
+     * </p>
      * @param configuration The configuration store used to configure the {@link EventHubAsyncClient}.
      *
      * @return The updated {@link EventHubClientBuilder} object.
@@ -413,7 +420,7 @@ public class EventHubClientBuilder implements
     }
 
     /**
-     * Package private class to get configuration.
+     * Gets the configuration to use.
      */
     Configuration getConfiguration() {
         return configuration;
@@ -680,7 +687,7 @@ public class EventHubClientBuilder implements
     }
 
     /**
-     * Package-private method to get credentials set on builder.
+     * Gets the credentials.
      */
     TokenCredential getCredentials() {
         return credentials;
@@ -721,6 +728,11 @@ public class EventHubClientBuilder implements
         return this;
     }
 
+    /**
+     * Gets the transport type.
+     *
+     * @return The transport type.
+     */
     AmqpTransportType getTransportType() {
         return transport;
     }
@@ -808,7 +820,7 @@ public class EventHubClientBuilder implements
     }
 
     /**
-     * Package-private method that gets the prefetch count.
+     * Gets the prefetch count.
      *
      * @return Gets the prefetch count or {@code null} if it has not been set.
      * @see #DEFAULT_PREFETCH_COUNT for default prefetch count.
@@ -818,7 +830,7 @@ public class EventHubClientBuilder implements
     }
 
     /**
-     * Package-private method that sets the scheduler for the created Event Hub client.
+     * Sets the scheduler for the created Event Hub client.
      *
      * @param scheduler Scheduler to set.
      *
@@ -829,12 +841,17 @@ public class EventHubClientBuilder implements
         return this;
     }
 
+    /**
+     * Gets the scheduler used to subscribe Event Hub operations on.
+     *
+     * @return The scheduler.
+     */
     Scheduler getScheduler() {
         return this.scheduler;
     }
 
     /**
-     * Package-private method that sets the verify mode for this connection.
+     * Sets the verify mode for this connection.
      *
      * @param verifyMode The verification mode.
      * @return The updated {@link EventHubClientBuilder} object.

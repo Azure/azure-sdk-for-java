@@ -139,7 +139,7 @@ public class EventProcessorClient {
     }
 
     /**
-     * Package-private to get processor options.
+     * Gets the processor options.
      *
      * @return Gets the processor options set.
      */
@@ -148,7 +148,7 @@ public class EventProcessorClient {
     }
 
     /**
-     * Package-private to get the consumer group.
+     * Gets the consumer group.
      *
      * @return The consumer group.
      */
@@ -157,7 +157,7 @@ public class EventProcessorClient {
     }
 
     /**
-     * Package-private to get the Event Hub name.
+     * Gets the Event Hub name.
      *
      * @return the Event Hub name.
      */
@@ -166,7 +166,7 @@ public class EventProcessorClient {
     }
 
     /**
-     * Package-private to get the fully-qualified namespace.
+     * Gets the fully-qualified namespace.
      *
      * @return The fully-qualified namespace.
      */
