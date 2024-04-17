@@ -924,7 +924,13 @@ public class EventProcessorClientBuilder implements
     private static EventHubClientBuilder copyOptions(EventHubClientBuilder source) {
         final EventHubClientBuilder builder = new EventHubClientBuilder()
             .clientOptions(source.getClientOptions())
-            .configuration(source.getConfiguration());
+            .configuration(source.getConfiguration())
+            .consumerGroup(source.getConsumerGroup())
+            .proxyOptions(source.getProxyOptions())
+            .retryOptions(source.getRetryOptions())
+            .scheduler(source.getScheduler())
+            .transportType(source.getTransportType())
+            .verifyMode(source.getVerifyMode());
 
         if (!Objects.isNull(source.getCredentials())) {
             builder.credential(source.getCredentials());
@@ -942,17 +948,9 @@ public class EventProcessorClientBuilder implements
             builder.eventHubName(source.getEventHubName());
         }
 
-        builder.proxyOptions(source.getProxyOptions())
-            .transportType(source.getTransportType())
-            .retryOptions(source.getRetryOptions())
-            .consumerGroup(source.getConsumerGroup());
-
         if (source.getPrefetchCount() != null) {
             builder.prefetchCount(source.getPrefetchCount());
         }
-
-        builder.scheduler(source.getScheduler())
-            .verifyMode(source.getVerifyMode());
 
         return builder;
     }
