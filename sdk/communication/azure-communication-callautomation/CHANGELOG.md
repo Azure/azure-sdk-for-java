@@ -2,15 +2,14 @@
 
 ## 1.2.0-beta.1 (2024-04-15)
 
-- Introduced `TeamsRecordingStateChanged` and `TeamsComplianceRecordingStateChanged` events.
-
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Support for Build Your Own Storage
+- Support for PauseOnStart
 
 ### Other Changes
+
+- Added MicrosoftTeamsAppIdentifier
 
 ## 1.1.2 (2024-02-20)
 
