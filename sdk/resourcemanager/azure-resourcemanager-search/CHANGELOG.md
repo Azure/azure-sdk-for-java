@@ -6,12 +6,6 @@
 
 - Supported disabling public network access in `SearchService` via `disablePublicNetworkAccess()`, for private link feature.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 2.38.0 (2024-04-16)
 
 ### Other Changes

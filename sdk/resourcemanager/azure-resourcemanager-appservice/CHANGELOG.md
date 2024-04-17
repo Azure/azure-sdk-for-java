@@ -8,12 +8,6 @@
 - Supported disabling public network access in `DeploymentSlot` via `disablePublicNetworkAccess()`, for private link feature.
 - Supported disabling public network access in `FunctionDeploymentSlot` via `disablePublicNetworkAccess()`, for private link feature.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 2.38.0 (2024-04-16)
 
 ### Features Added
