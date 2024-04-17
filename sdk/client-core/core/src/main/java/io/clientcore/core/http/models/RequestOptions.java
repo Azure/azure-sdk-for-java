@@ -126,6 +126,7 @@ public final class RequestOptions {
     private Context context;
     private ResponseBodyMode responseBodyMode;
     private boolean locked;
+    private ClientLogger logger;
 
     /**
      * Creates a new instance of {@link RequestOptions}.
@@ -161,6 +162,15 @@ public final class RequestOptions {
      */
     public ResponseBodyMode getResponseBodyMode() {
         return responseBodyMode;
+    }
+
+    /**
+     * Gets the {@link ClientLogger} used to log the request and response.
+     *
+     * @return The {@link ClientLogger} used to log the request and response.
+     */
+    public ClientLogger getLogger() {
+        return logger;
     }
 
     /**
@@ -341,6 +351,26 @@ public final class RequestOptions {
         }
 
         this.responseBodyMode = responseBodyMode;
+
+        return this;
+    }
+
+    /**
+     * Sets the {@link ClientLogger} used to log the request and response.
+     *
+     * @param logger The {@link ClientLogger} used to log the request and response.
+     *
+     * @return The updated {@link RequestOptions} object.
+     *
+     * @throws IllegalStateException if this instance is {@link RequestOptions#NONE RequestOptions.NONE}.
+     */
+    public RequestOptions setLogger(ClientLogger logger) {
+        if (locked) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("RequestOptions.NONE is immutable. Cannot set logger."));
+        }
+
+        this.logger = logger;
 
         return this;
     }

@@ -80,7 +80,11 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             return next.process();
         }
 
-        ClientLogger logger = HttpRequestAccessHelper.getLogger(httpRequest);
+        ClientLogger logger = null;
+
+        if (httpRequest.getRequestOptions() != null) {
+             logger = httpRequest.getRequestOptions().getLogger();
+        }
 
         if (logger == null) {
             logger = LOGGER;

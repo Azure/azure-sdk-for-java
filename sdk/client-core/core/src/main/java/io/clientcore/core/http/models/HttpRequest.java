@@ -34,16 +34,6 @@ public class HttpRequest {
             public HttpRequest setRetryCount(HttpRequest httpRequest, int retryCount) {
                 return httpRequest.setRetryCount(retryCount);
             }
-
-            @Override
-            public ClientLogger getLogger(HttpRequest httpRequest) {
-                return httpRequest.getLogger();
-            }
-
-            @Override
-            public HttpRequest setLogger(HttpRequest httpRequest, ClientLogger logger) {
-                return httpRequest.setLogger(logger);
-            }
         });
     }
 
@@ -54,7 +44,6 @@ public class HttpRequest {
     private ServerSentEventListener serverSentEventListener;
     private RequestOptions requestOptions;
     private int retryCount;
-    private ClientLogger requestLogger;
 
     /**
      * Create a new {@link HttpRequest} instance.
@@ -273,28 +262,6 @@ public class HttpRequest {
      */
     private HttpRequest setRetryCount(int retryCount) {
         this.retryCount = retryCount;
-
-        return this;
-    }
-
-    /**
-     * Gets the {@link ClientLogger} used to log the request and response.
-     *
-     * @return The {@link ClientLogger} used to log the request and response.
-     */
-    private ClientLogger getLogger() {
-        return requestLogger;
-    }
-
-    /**
-     * Sets the {@link ClientLogger} used to log the request and response.
-     *
-     * @param requestLogger The {@link ClientLogger} used to log the request and response.
-     *
-     * @return The updated {@link HttpRequest} object.
-     */
-    private HttpRequest setLogger(ClientLogger requestLogger) {
-        this.requestLogger = requestLogger;
 
         return this;
     }

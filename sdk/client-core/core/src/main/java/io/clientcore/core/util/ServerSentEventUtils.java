@@ -9,7 +9,6 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.ServerSentEvent;
 import io.clientcore.core.http.models.ServerSentEventListener;
-import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.implementation.util.ServerSentEventHelper;
 
 import java.io.BufferedReader;
@@ -28,6 +27,7 @@ import java.util.regex.Pattern;
  * Utility class for Server Sent Event handling.
  */
 public final class ServerSentEventUtils {
+    private static final ClientLogger LOGGER = new ClientLogger(ServerSentEventUtils.class);
     private static final String DEFAULT_EVENT = "message";
     private static final Pattern DIGITS_ONLY = Pattern.compile("^[\\d]*$");
     private static final HttpHeaderName LAST_EVENT_ID = HttpHeaderName.fromString("Last-Event-Id");
@@ -72,7 +72,17 @@ public final class ServerSentEventUtils {
                 httpClient.send(httpRequest);
             }
         } catch (IOException e) {
-            throw HttpRequestAccessHelper.getLogger(httpRequest).logThrowableAsError(new UncheckedIOException(e));
+            ClientLogger logger = null;
+
+            if (httpRequest.getRequestOptions() != null) {
+                logger = httpRequest.getRequestOptions().getLogger();
+            }
+
+            if (logger == null) {
+                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+            } else {
+                throw logger.logThrowableAsError(new UncheckedIOException(e));
+            }
         }
     }
 

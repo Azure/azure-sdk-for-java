@@ -15,7 +15,6 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.ReflectionSerializable;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.TypeUtil;
-import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.MalformedValueException;
 import io.clientcore.core.implementation.util.UrlBuilder;
@@ -62,8 +61,6 @@ public abstract class RestProxyBase {
         try {
             HttpRequest request = createHttpRequest(methodParser, serializer, args)
                 .setRequestOptions(options);
-
-            HttpRequestAccessHelper.setLogger(request, methodParser.getMethodLogger());
 
             return invoke(proxy, methodParser, request);
         } catch (IOException e) {
