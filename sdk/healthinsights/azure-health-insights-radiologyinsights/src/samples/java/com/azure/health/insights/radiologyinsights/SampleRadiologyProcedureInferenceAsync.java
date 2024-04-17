@@ -122,6 +122,7 @@ public class SampleRadiologyProcedureInferenceAsync {
      * @param radiologyInsightsResult The response for the Radiology Insights
      *                                request.
      */
+    // BEGIN: com.azure.health.insights.radiologyinsights.displayresults.radiologyprocedure
     private static void displayRadiologyProcedures(RadiologyInsightsInferenceResult radiologyInsightsResult) {
         List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
         for (RadiologyInsightsPatientResult patientResult : patientResults) {
@@ -173,6 +174,7 @@ public class SampleRadiologyProcedureInferenceAsync {
             }
         }
     }
+    // END: com.azure.health.insights.radiologyinsights.displayresults.radiologyprocedure
     
     /**
      * Creates a RadiologyInsightsJob object to use in the Radiology Insights job

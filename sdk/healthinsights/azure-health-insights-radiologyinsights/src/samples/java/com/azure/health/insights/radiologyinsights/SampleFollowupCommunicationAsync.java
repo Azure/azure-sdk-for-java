@@ -123,6 +123,7 @@ public class SampleFollowupCommunicationAsync {
      * @param radiologyInsightsResult The response for the Radiology Insights
      *                                request.
      */
+    // BEGIN: com.azure.health.insights.radiologyinsights.displayresults.followupcommunication
     private static void displayFollowupCommunications(RadiologyInsightsInferenceResult radiologyInsightsResult) {
         List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
         for (RadiologyInsightsPatientResult patientResult : patientResults) {
@@ -148,6 +149,7 @@ public class SampleFollowupCommunicationAsync {
             }
         }
     }
+    // END: com.azure.health.insights.radiologyinsights.displayresults.followupcommunication
     
     /**
      * Creates a RadiologyInsightsJob object to use in the Radiology Insights job

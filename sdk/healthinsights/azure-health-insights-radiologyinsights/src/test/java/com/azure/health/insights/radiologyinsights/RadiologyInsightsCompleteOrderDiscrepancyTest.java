@@ -91,7 +91,7 @@ public class RadiologyInsightsCompleteOrderDiscrepancyTest extends RadiologyInsi
                     assertEquals(0, missingBodyParts.size());
 
                     List<FhirR4CodeableConcept> missingBodyPartMeasurements = completeOrderDiscrepancyInference.getMissingBodyPartMeasurements();
-                    System.out.println("   Missing body part measurements:");
+//                    System.out.println("   Missing body part measurements:");
 //                    for (FhirR4CodeableConcept missingBodyPartMeasurement : missingBodyPartMeasurements) {
 //                        System.out.println(getCodeStrings(missingBodyPartMeasurement));
 //                    }

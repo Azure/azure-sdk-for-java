@@ -107,6 +107,7 @@ public class SampleLateralityDiscrepancyInferenceAsync {
      * @param radiologyInsightsResult The response for the Radiology Insights
      *                                request.
      */
+    // BEGIN: com.azure.health.insights.radiologyinsights.displayresults.lateralitydiscrepancy
     private static void displayLateralityDiscrepancies(RadiologyInsightsInferenceResult radiologyInsightsResult) {
         List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
         for (RadiologyInsightsPatientResult patientResult : patientResults) {
@@ -125,6 +126,7 @@ public class SampleLateralityDiscrepancyInferenceAsync {
             }
         }
     }
+    // END: com.azure.health.insights.radiologyinsights.displayresults.lateralitydiscrepancy
 
     /**
      * Creates a RadiologyInsightsJob object to use in the Radiology Insights job
