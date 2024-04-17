@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported disabling public network access in `SqlServer` via `disablePublicNetworkAccess()`, for private link feature.
 
 ## 2.38.0 (2024-04-16)
 

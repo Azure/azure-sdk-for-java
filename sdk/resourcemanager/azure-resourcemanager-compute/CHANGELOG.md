@@ -4,11 +4,8 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported disabling public network access in `Disk` via `disablePublicNetworkAccess()`, for private link feature.
+- Supported disabling public network access in `Snapshot` via `disablePublicNetworkAccess()`, for private link feature.
 
 ## 2.38.0 (2024-04-16)
 
