@@ -19,6 +19,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.CloseContext;
@@ -141,6 +142,7 @@ public class EventProcessorClientBuilder implements
 
     private static final ClientLogger LOGGER = new ClientLogger(EventProcessorClientBuilder.class);
 
+    // Builder used to hold intermediate Event Hub related configuration changes.
     private final EventHubClientBuilder eventHubClientBuilder;
     private String consumerGroup;
     private CheckpointStore checkpointStore;
@@ -869,7 +871,10 @@ public class EventProcessorClientBuilder implements
                     + numberOfTimesSet + " times."));
         }
 
-        return new EventProcessorClient(eventHubClientBuilder, getPartitionProcessorSupplier(), checkpointStore,
+        // Create a copy of the options, so it does not change if another processor is created from the same instance.
+        final EventHubClientBuilder builder = copyOptions(eventHubClientBuilder);
+
+        return new EventProcessorClient(builder, getPartitionProcessorSupplier(), checkpointStore,
             processError, eventHubClientBuilder.createTracer(), processorOptions);
     }
 
@@ -916,4 +921,37 @@ public class EventProcessorClientBuilder implements
         };
     }
 
+    private static EventHubClientBuilder copyOptions(EventHubClientBuilder source) {
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .clientOptions(source.getClientOptions())
+            .configuration(source.getConfiguration())
+            .consumerGroup(source.getConsumerGroup())
+            .proxyOptions(source.getProxyOptions())
+            .retryOptions(source.getRetryOptions())
+            .scheduler(source.getScheduler())
+            .transportType(source.getTransportType())
+            .verifyMode(source.getVerifyMode());
+
+        if (!Objects.isNull(source.getCredentials())) {
+            builder.credential(source.getCredentials());
+        }
+
+        if (!Objects.isNull(source.getCustomEndpointAddress())) {
+            builder.customEndpointAddress(source.getCustomEndpointAddress().toString());
+        }
+
+        if (!CoreUtils.isNullOrEmpty(source.getFullyQualifiedNamespace())) {
+            builder.fullyQualifiedNamespace(source.getFullyQualifiedNamespace());
+        }
+
+        if (!CoreUtils.isNullOrEmpty(source.getEventHubName())) {
+            builder.eventHubName(source.getEventHubName());
+        }
+
+        if (source.getPrefetchCount() != null) {
+            builder.prefetchCount(source.getPrefetchCount());
+        }
+
+        return builder;
+    }
 }
