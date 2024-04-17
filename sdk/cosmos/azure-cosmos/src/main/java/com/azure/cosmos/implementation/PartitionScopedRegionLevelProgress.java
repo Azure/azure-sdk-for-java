@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.routing.RegionNameToRegionIdMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -22,10 +23,13 @@ public class PartitionScopedRegionLevelProgress {
 
     private final ConcurrentHashMap<String, ConcurrentHashMap<String, RegionLevelProgress>> partitionKeyRangeIdToRegionLevelProgress;
 
+    private final HashMap<String, String> normalizedRegionLookupMap;
+
     public final static String GlobalProgressKey = "global";
 
     public PartitionScopedRegionLevelProgress() {
         this.partitionKeyRangeIdToRegionLevelProgress = new ConcurrentHashMap<>();
+        this.normalizedRegionLookupMap = new HashMap<>();
     }
 
     public ConcurrentHashMap<String, ConcurrentHashMap<String, RegionLevelProgress>> getPartitionKeyRangeIdToRegionLevelProgress() {
@@ -59,7 +63,10 @@ public class PartitionScopedRegionLevelProgress {
 
                 // identify whether regionRoutedTo has a regionId mapping in session token
                 UnmodifiableMap<Integer, Long> localLsnByRegion = vectorSessionToken.getLocalLsnByRegion();
-                String normalizedRegionRoutedTo = regionRoutedTo.toLowerCase(Locale.ROOT).trim().replace(" ", "");
+
+                this.normalizedRegionLookupMap.computeIfAbsent(regionRoutedTo, (regionRoutedToAsVal) -> regionRoutedToAsVal.toLowerCase(Locale.ROOT).trim().replace(" ", ""));
+
+                String normalizedRegionRoutedTo = this.normalizedRegionLookupMap.get(regionRoutedTo);
 
                 int regionId = RegionNameToRegionIdMap.getRegionId(normalizedRegionRoutedTo);
 
