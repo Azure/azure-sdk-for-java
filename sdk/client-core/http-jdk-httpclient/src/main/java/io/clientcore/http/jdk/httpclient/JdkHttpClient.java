@@ -159,7 +159,7 @@ class JdkHttpClient implements HttpClient {
     }
 
     private Response<?> processResponse(HttpRequest request, HttpResponse<InputStream> response,
-                                        HttpHeaders coreHeaders, String contentType) throws IOException {
+        HttpHeaders coreHeaders, String contentType) throws IOException {
         RequestOptions options = request.getRequestOptions();
         ResponseBodyMode responseBodyMode = null;
 
@@ -186,10 +186,12 @@ class JdkHttpClient implements HttpClient {
                 response.body().close();
 
                 break;
+
             case STREAM:
                 body = BinaryData.fromStream(response.body());
 
                 break;
+
             case BUFFER:
             case DESERIALIZE: // Deserialization will occur at a later point in HttpResponseBodyDecoder.
             default:
