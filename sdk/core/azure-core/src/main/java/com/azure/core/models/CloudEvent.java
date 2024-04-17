@@ -479,6 +479,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
     /**
      * Set the time associated with the occurrence of the event.
+     * <p>
      * At creation, the time is set to the current UTC time. It can be unset by setting it to null.
      *
      * @param time the time to set.
