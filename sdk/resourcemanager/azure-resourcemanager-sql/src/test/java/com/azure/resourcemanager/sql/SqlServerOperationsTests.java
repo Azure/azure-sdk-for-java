@@ -29,6 +29,7 @@ import com.azure.resourcemanager.sql.models.ReadWriteEndpointFailoverPolicy;
 import com.azure.resourcemanager.sql.models.RegionCapabilities;
 import com.azure.resourcemanager.sql.models.ReplicationLink;
 import com.azure.resourcemanager.sql.models.SampleName;
+import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
 import com.azure.resourcemanager.sql.models.ServiceObjectiveName;
@@ -1759,5 +1760,32 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .append(", ")
                 .append(sku.size() == null ? null : "\"" + sku.size() + "\"")
                 .append(");");
+    }
+
+    @Test
+    public void canCreateAndUpdatePublicNetworkAccess() {
+        // Create
+        SqlServer sqlServer =
+            sqlServerManager
+                .sqlServers()
+                .define(sqlServerName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withAdministratorLogin("userName")
+                .withAdministratorPassword("P@ssword~1")
+                .withoutAccessFromAzureServices()
+                .disablePublicNetworkAccess()
+                .create();
+
+        sqlServer.refresh();
+        Assertions.assertEquals(ServerNetworkAccessFlag.DISABLED, sqlServer.publicNetworkAccess());
+
+        sqlServer.update().enablePublicNetworkAccess().apply();
+        sqlServer.refresh();
+        Assertions.assertEquals(ServerNetworkAccessFlag.ENABLED, sqlServer.publicNetworkAccess());
+
+        sqlServer.update().disablePublicNetworkAccess().apply();
+        sqlServer.refresh();
+        Assertions.assertEquals(ServerNetworkAccessFlag.DISABLED, sqlServer.publicNetworkAccess());
     }
 }

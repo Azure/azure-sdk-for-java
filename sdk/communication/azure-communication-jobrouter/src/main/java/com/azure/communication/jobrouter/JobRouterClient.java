@@ -36,11 +36,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import java.time.OffsetDateTime;
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterJobConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWorkerConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
 import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterQueueStatistics;
@@ -78,7 +77,7 @@ public final class JobRouterClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -132,9 +131,9 @@ public final class JobRouterClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -355,7 +354,7 @@ public final class JobRouterClient {
     }
 
     /**
-     * Creates or updates a router job.
+     * Updates a router job.
      *
      * <p>
      * <strong>Header Parameters</strong>
@@ -495,11 +494,54 @@ public final class JobRouterClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return BinaryData.
+     * @return a unit of work to be routed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData updateJob(String jobId, BinaryData resource, RequestOptions requestOptions) {
-        return this.updateJobWithResponse(jobId, resource, requestOptions).getValue();
+        return this.serviceClient.upsertJobWithResponse(jobId, resource, requestOptions).getValue();
+    }
+
+    /**
+     * Creates or updates a router job.
+     *
+     * <p>
+     * <strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param jobId The jobId of the job.
+     * @param job The job instance to update.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the updated job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouterJob updateJob(String jobId, RouterJob job) {
+        return this.updateJobWithResponse(jobId, BinaryData.fromObject(job), null).getValue().toObject(RouterJob.class);
     }
 
     /**
@@ -513,15 +555,12 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createJobWithResponse(CreateJobOptions createJobOptions,
-        RequestOptions requestOptions) {
-        // Note: Update return type to Response<RouterJob> in version 2.
+    public Response<RouterJob> createJobWithResponse(CreateJobOptions createJobOptions, RequestOptions requestOptions) {
         RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
         Response<BinaryData> response = this.serviceClient.upsertJobWithResponse(createJobOptions.getJobId(),
             BinaryData.fromObject(routerJob), requestOptions);
-        return new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            BinaryData
-                .fromObject(RouterJobConstructorProxy.create(response.getValue().toObject(RouterJobInternal.class))));
+        return new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            response.getValue().toObject(RouterJob.class));
     }
 
     /**
@@ -536,13 +575,53 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterJob createJob(CreateJobOptions createJobOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return this.createJobWithResponse(createJobOptions, requestOptions).getValue().toObject(RouterJob.class);
+        return this.createJobWithResponse(createJobOptions, requestOptions).getValue();
+    }
+
+    /**
+     * Create a job using a classification policy.
+     *
+     * @param createJobWithClassificationPolicyOptions Options to create a RouterJob using a classification policy.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a unit of work to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RouterJob> createJobWithClassificationPolicyWithResponse(
+        CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions,
+        RequestOptions requestOptions) {
+        RouterJobInternal routerJob = JobAdapter
+            .convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
+        Response<BinaryData> response = this.serviceClient.upsertJobWithResponse(
+            createJobWithClassificationPolicyOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions);
+        return new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            response.getValue().toObject(RouterJob.class));
+    }
+
+    /**
+     * Convenience method to create a job using a classification policy.
+     *
+     * @param createJobWithClassificationPolicyOptions Options to create a RouterJob using a classification policy.
+     * @return a unit of work to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouterJob createJobWithClassificationPolicy(
+        CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        return this
+            .createJobWithClassificationPolicyWithResponse(createJobWithClassificationPolicyOptions, requestOptions)
+            .getValue();
     }
 
     /**
      * Retrieves an existing job by Id.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -779,7 +858,7 @@ public final class JobRouterClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -850,7 +929,7 @@ public final class JobRouterClient {
     /**
      * Gets a job's position details.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     jobId: String (Required)
@@ -878,15 +957,15 @@ public final class JobRouterClient {
     /**
      * Unassign a job.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     suspendMatching: Boolean (Optional)
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     jobId: String (Required)
@@ -913,7 +992,7 @@ public final class JobRouterClient {
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     assignmentId: String (Required)
@@ -1011,7 +1090,7 @@ public final class JobRouterClient {
     /**
      * Retrieves a queue's statistics.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     queueId: String (Required)
@@ -1050,7 +1129,7 @@ public final class JobRouterClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1095,9 +1174,9 @@ public final class JobRouterClient {
      *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1232,6 +1311,7 @@ public final class JobRouterClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
+     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1278,6 +1358,7 @@ public final class JobRouterClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
+     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1369,6 +1450,7 @@ public final class JobRouterClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
+     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1415,6 +1497,7 @@ public final class JobRouterClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
+     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1425,11 +1508,29 @@ public final class JobRouterClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return BinaryData.
+     * @return an entity for jobs to be routed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData updateWorker(String workerId, BinaryData resource, RequestOptions requestOptions) {
-        return this.updateWorkerWithResponse(workerId, resource, requestOptions).getValue();
+        return this.serviceClient.upsertWorkerWithResponse(workerId, resource, requestOptions).getValue();
+    }
+
+    /**
+     * Updates a worker.
+     *
+     * @param workerId Id of the worker.
+     * @param worker The worker to update.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return an entity for jobs to be routed to.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouterWorker updateWorker(String workerId, RouterWorker worker) {
+        return this.updateWorkerWithResponse(workerId, BinaryData.fromObject(worker), null)
+            .getValue()
+            .toObject(RouterWorker.class);
     }
 
     /**
@@ -1449,7 +1550,7 @@ public final class JobRouterClient {
         Response<BinaryData> response = this.serviceClient.upsertWorkerWithResponse(createWorkerOptions.getWorkerId(),
             BinaryData.fromObject(routerWorker), requestOptions);
         return new SimpleResponse<RouterWorker>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            RouterWorkerConstructorProxy.create(response.getValue().toObject(RouterWorkerInternal.class)));
+            response.getValue().toObject(RouterWorker.class));
     }
 
     /**
@@ -1470,7 +1571,7 @@ public final class JobRouterClient {
     /**
      * Retrieves an existing worker by Id.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1566,7 +1667,7 @@ public final class JobRouterClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1639,7 +1740,6 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterJob getJob(String jobId) {
-        // Generated convenience method for getJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getJobWithResponse(jobId, requestOptions).getValue().toObject(RouterJob.class);
     }
@@ -1704,7 +1804,6 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RouterJob> listJobs(RouterJobStatusSelector status, String queueId, String channelId,
         String classificationPolicyId, OffsetDateTime scheduledBefore, OffsetDateTime scheduledAfter) {
-        // Generated convenience method for listJobs
         RequestOptions requestOptions = new RequestOptions();
         if (status != null) {
             requestOptions.addQueryParam("status", status.toString(), false);
@@ -1739,7 +1838,6 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RouterJob> listJobs() {
-        // Generated convenience method for listJobs
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listJobs(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(RouterJob.class));
     }
@@ -1865,8 +1963,7 @@ public final class JobRouterClient {
     public RouterWorker getWorker(String workerId) {
         // Generated convenience method for getWorkerWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return RouterWorkerConstructorProxy
-            .create(getWorkerWithResponse(workerId, requestOptions).getValue().toObject(RouterWorkerInternal.class));
+        return getWorkerWithResponse(workerId, requestOptions).getValue().toObject(RouterWorker.class);
     }
 
     /**

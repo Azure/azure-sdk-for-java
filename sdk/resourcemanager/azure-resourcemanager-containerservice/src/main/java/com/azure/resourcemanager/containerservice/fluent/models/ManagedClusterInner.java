@@ -21,6 +21,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMoni
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterMetricsProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterOidcIssuerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
@@ -1057,6 +1058,29 @@ public final class ManagedClusterInner extends Resource {
      */
     public String resourceUid() {
         return this.innerProperties() == null ? null : this.innerProperties().resourceUid();
+    }
+
+    /**
+     * Get the metricsProfile property: Optional cluster metrics configuration.
+     * 
+     * @return the metricsProfile value.
+     */
+    public ManagedClusterMetricsProfile metricsProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().metricsProfile();
+    }
+
+    /**
+     * Set the metricsProfile property: Optional cluster metrics configuration.
+     * 
+     * @param metricsProfile the metricsProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withMetricsProfile(ManagedClusterMetricsProfile metricsProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withMetricsProfile(metricsProfile);
+        return this;
     }
 
     /**

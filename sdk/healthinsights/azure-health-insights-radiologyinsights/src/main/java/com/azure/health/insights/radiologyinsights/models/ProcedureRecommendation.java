@@ -26,14 +26,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Immutable
 public class ProcedureRecommendation {
 
-    /**
-     * Creates an instance of ProcedureRecommendation class.
-     */
-    @Generated
-    protected ProcedureRecommendation() {
-        this.kind = "ProcedureRecommendation";
-    }
-
     /*
      * Procedure type : generic.
      */
@@ -41,6 +33,14 @@ public class ProcedureRecommendation {
     @JsonTypeId
     @JsonProperty(value = "kind")
     private String kind;
+
+    /**
+     * Creates an instance of ProcedureRecommendation class.
+     */
+    @Generated
+    protected ProcedureRecommendation() {
+        this.kind = "ProcedureRecommendation";
+    }
 
     /**
      * Get the kind property: Procedure type : generic.

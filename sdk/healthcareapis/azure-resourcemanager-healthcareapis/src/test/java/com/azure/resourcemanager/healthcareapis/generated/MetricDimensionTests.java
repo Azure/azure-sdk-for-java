@@ -12,21 +12,21 @@ public final class MetricDimensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricDimension model = BinaryData
-            .fromString(
-                "{\"name\":\"jxeznoigbrnjwmw\",\"displayName\":\"nbsazejjoqkag\",\"toBeExportedForShoebox\":false}")
+            .fromString("{\"name\":\"jygvjayvbl\",\"displayName\":\"vkzuhbxvvyhgso\",\"toBeExportedForShoebox\":true}")
             .toObject(MetricDimension.class);
-        Assertions.assertEquals("jxeznoigbrnjwmw", model.name());
-        Assertions.assertEquals("nbsazejjoqkag", model.displayName());
-        Assertions.assertEquals(false, model.toBeExportedForShoebox());
+        Assertions.assertEquals("jygvjayvbl", model.name());
+        Assertions.assertEquals("vkzuhbxvvyhgso", model.displayName());
+        Assertions.assertEquals(true, model.toBeExportedForShoebox());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricDimension model = new MetricDimension().withName("jxeznoigbrnjwmw").withDisplayName("nbsazejjoqkag")
-            .withToBeExportedForShoebox(false);
+        MetricDimension model = new MetricDimension().withName("jygvjayvbl")
+            .withDisplayName("vkzuhbxvvyhgso")
+            .withToBeExportedForShoebox(true);
         model = BinaryData.fromObject(model).toObject(MetricDimension.class);
-        Assertions.assertEquals("jxeznoigbrnjwmw", model.name());
-        Assertions.assertEquals("nbsazejjoqkag", model.displayName());
-        Assertions.assertEquals(false, model.toBeExportedForShoebox());
+        Assertions.assertEquals("jygvjayvbl", model.name());
+        Assertions.assertEquals("vkzuhbxvvyhgso", model.displayName());
+        Assertions.assertEquals(true, model.toBeExportedForShoebox());
     }
 }

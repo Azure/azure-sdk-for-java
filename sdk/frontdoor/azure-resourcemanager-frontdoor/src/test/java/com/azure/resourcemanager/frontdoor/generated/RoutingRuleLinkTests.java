@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class RoutingRuleLinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RoutingRuleLink model = BinaryData.fromString("{\"id\":\"ouskcqvkocrc\"}").toObject(RoutingRuleLink.class);
-        Assertions.assertEquals("ouskcqvkocrc", model.id());
+        RoutingRuleLink model = BinaryData.fromString("{\"id\":\"cgyncocpecf\"}").toObject(RoutingRuleLink.class);
+        Assertions.assertEquals("cgyncocpecf", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoutingRuleLink model = new RoutingRuleLink().withId("ouskcqvkocrc");
+        RoutingRuleLink model = new RoutingRuleLink().withId("cgyncocpecf");
         model = BinaryData.fromObject(model).toObject(RoutingRuleLink.class);
-        Assertions.assertEquals("ouskcqvkocrc", model.id());
+        Assertions.assertEquals("cgyncocpecf", model.id());
     }
 }

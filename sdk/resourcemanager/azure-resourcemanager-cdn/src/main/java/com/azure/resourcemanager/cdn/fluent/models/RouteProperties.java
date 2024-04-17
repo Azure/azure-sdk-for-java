@@ -18,7 +18,9 @@ import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The JSON object that contains the properties of the Routes to create. */
+/**
+ * The JSON object that contains the properties of the Routes to create.
+ */
 @Fluent
 public final class RouteProperties extends RouteUpdatePropertiesParameters {
     /*
@@ -33,13 +35,15 @@ public final class RouteProperties extends RouteUpdatePropertiesParameters {
     @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentStatus deploymentStatus;
 
-    /** Creates an instance of RouteProperties class. */
+    /**
+     * Creates an instance of RouteProperties class.
+     */
     public RouteProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AfdProvisioningState provisioningState() {
@@ -48,84 +52,106 @@ public final class RouteProperties extends RouteUpdatePropertiesParameters {
 
     /**
      * Get the deploymentStatus property: The deploymentStatus property.
-     *
+     * 
      * @return the deploymentStatus value.
      */
     public DeploymentStatus deploymentStatus() {
         return this.deploymentStatus;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RouteProperties withCustomDomains(List<ActivatedResourceReference> customDomains) {
         super.withCustomDomains(customDomains);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RouteProperties withOriginGroup(ResourceReference originGroup) {
         super.withOriginGroup(originGroup);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RouteProperties withOriginPath(String originPath) {
         super.withOriginPath(originPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RouteProperties withRuleSets(List<ResourceReference> ruleSets) {
         super.withRuleSets(ruleSets);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RouteProperties withSupportedProtocols(List<AfdEndpointProtocols> supportedProtocols) {
         super.withSupportedProtocols(supportedProtocols);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RouteProperties withPatternsToMatch(List<String> patternsToMatch) {
         super.withPatternsToMatch(patternsToMatch);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RouteProperties withCacheConfiguration(AfdRouteCacheConfiguration cacheConfiguration) {
         super.withCacheConfiguration(cacheConfiguration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RouteProperties withForwardingProtocol(ForwardingProtocol forwardingProtocol) {
         super.withForwardingProtocol(forwardingProtocol);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RouteProperties withLinkToDefaultDomain(LinkToDefaultDomain linkToDefaultDomain) {
         super.withLinkToDefaultDomain(linkToDefaultDomain);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RouteProperties withHttpsRedirect(HttpsRedirect httpsRedirect) {
         super.withHttpsRedirect(httpsRedirect);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RouteProperties withEnabledState(EnabledState enabledState) {
         super.withEnabledState(enabledState);
@@ -134,7 +160,7 @@ public final class RouteProperties extends RouteUpdatePropertiesParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
