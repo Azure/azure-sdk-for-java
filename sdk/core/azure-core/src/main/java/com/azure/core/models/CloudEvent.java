@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -307,7 +306,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
         this.id = CoreUtils.randomUuid().toString();
         this.specVersion = CloudEvent.SPEC_VERSION;
         this.binaryData = data;
-        this.time = Instant.now().atOffset(ZoneOffset.UTC);
+        this.time = OffsetDateTime.now(ZoneOffset.UTC);
     }
 
     private CloudEvent() {
