@@ -51,7 +51,9 @@ public final class ServerSentEventUtil {
     }
 
     /**
-     * Processes the text event stream
+     * Processes the text event stream.
+     * <p>
+     * The passed {@link InputStream} will be closed by this method.
      *
      * @param httpRequest The HTTP Request
      * @param httpRequestConsumer The HTTP Request consumer
