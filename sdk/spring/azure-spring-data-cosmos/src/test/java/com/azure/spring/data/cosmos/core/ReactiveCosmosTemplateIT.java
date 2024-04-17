@@ -67,6 +67,8 @@ import java.util.UUID;
 import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
 import static com.azure.spring.data.cosmos.common.TestConstants.AGE;
 import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.NEW_FIRST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.TRANSIENT_PROPERTY;
 import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_1;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
@@ -97,6 +99,8 @@ public class ReactiveCosmosTemplateIT {
     private static final Person TEST_PERSON_4 = new Person(TestConstants.ID_4, TestConstants.NEW_FIRST_NAME,
         TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
+    private static final Person TEST_PERSON_5 = new Person(TestConstants.ID_4, TestConstants.NEW_FIRST_NAME,
+        TestConstants.NEW_LAST_NAME, TRANSIENT_PROPERTY, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
     private static final BasicItem BASIC_ITEM = new BasicItem(ID_1);
     private static final String PRECONDITION_IS_NOT_MET = "is not met";
     private static final String WRONG_ETAG = "WRONG_ETAG";
@@ -196,6 +200,15 @@ public class ReactiveCosmosTemplateIT {
                     .verify();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+    }
+
+    @Test
+    public void testInsertDocShouldNotPersistTransientFields() {
+        final Person personWithTransientField = TEST_PERSON_5;
+        assertThat(personWithTransientField.getTransientProperty()).isNotNull();
+        final Mono<Person> insertedPerson = cosmosTemplate.insert(Person.class.getSimpleName(), personWithTransientField, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_5)));
+        final Mono<Person> retrievedPerson = cosmosTemplate.findById(Person.class.getSimpleName(), insertedPerson.block().getId(), Person.class);
+        assertThat(retrievedPerson.block().getTransientProperty()).isNull();
     }
 
     @Test
@@ -339,6 +352,25 @@ public class ReactiveCosmosTemplateIT {
 
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+    }
+
+    @Test
+    public void testUpsertNewDocumentIgnoresTransientFields() {
+        final String firstName = NEW_FIRST_NAME
+            + "_"
+            + UUID.randomUUID();
+        final Person newPerson = new Person(TEST_PERSON_5.getId(), firstName, NEW_FIRST_NAME, TRANSIENT_PROPERTY, null,  null,
+            AGE, PASSPORT_IDS_BY_COUNTRY);
+
+        assertThat(newPerson.getTransientProperty()).isNotNull();
+
+        final Mono<Person> person = cosmosTemplate.upsert(Person.class.getSimpleName(), newPerson);
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+
+        final Mono<Person> retrievedPerson = cosmosTemplate.findById(Person.class.getSimpleName(), person.block().getId(), Person.class);
+        assertThat(retrievedPerson.block().getTransientProperty()).isNull();
     }
 
     @Test

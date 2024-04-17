@@ -22,6 +22,7 @@ import com.azure.spring.data.cosmos.core.mapping.GeneratedValue;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.repository.core.support.AbstractEntityInformation;
@@ -64,6 +65,12 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private final Field id;
     private final Field partitionKeyField;
     private final Field versionField;
+
+    public List<String> getTransientFields() {
+        return transientFields;
+    }
+
+    private final List<String> transientFields;
     private final String containerName;
     private final String partitionKeyPath;
     private final Integer requestUnit;
@@ -94,6 +101,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         this.partitionKeyPath = CosmosEntityInformationHelper.getPartitionKeyPathAnnotationValue(domainType);
 
         this.partitionKeyField = CosmosEntityInformationHelper.getPartitionKeyField(domainType);
+        this.transientFields = CosmosEntityInformationHelper.getTransientFields(domainType);
         if (this.partitionKeyField != null) {
             ReflectionUtils.makeAccessible(this.partitionKeyField);
         }
@@ -300,6 +308,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         }
     }
 
+
+
     /**
      * Check if auto creating container is allowed
      *
@@ -491,6 +501,11 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
                     + "only one field with @PartitionKey annotation!");
             }
             return partitionKey;
+        }
+
+        private static List<String> getTransientFields(Class<?> domainType) {
+            final List<Field> fields = FieldUtils.getFieldsListWithAnnotation(domainType, Transient.class);
+            return fields.stream().map(Field::getName).collect(Collectors.toList());
         }
 
         /**

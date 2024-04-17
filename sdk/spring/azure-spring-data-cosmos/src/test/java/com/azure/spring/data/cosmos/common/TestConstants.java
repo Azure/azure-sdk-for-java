@@ -67,6 +67,8 @@ public final class TestConstants {
     public static final String ID_5 = "id-5";
     public static final String NEW_FIRST_NAME = "new_first_name";
     public static final String NEW_LAST_NAME = "new_last_name";
+
+    public static final String TRANSIENT_PROPERTY = "transient_property";
     public static final Integer NEW_ZIP_CODE = 67890;
     public static final String UPDATED_FIRST_NAME = "updated_first_name";
     public static final String UPDATED_LAST_NAME = "updated_last_name";

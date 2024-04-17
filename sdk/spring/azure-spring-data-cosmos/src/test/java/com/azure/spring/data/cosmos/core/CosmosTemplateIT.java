@@ -73,9 +73,11 @@ import static com.azure.spring.data.cosmos.common.TestConstants.HOBBY1;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_1;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_2;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_3;
+import static com.azure.spring.data.cosmos.common.TestConstants.ID_4;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.NEW_FIRST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.NEW_LAST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.TRANSIENT_PROPERTY;
 import static com.azure.spring.data.cosmos.common.TestConstants.NEW_PASSPORT_IDS_BY_COUNTRY;
 import static com.azure.spring.data.cosmos.common.TestConstants.NOT_EXIST_ID;
 import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_1;
@@ -104,6 +106,9 @@ public class CosmosTemplateIT {
         ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
     private static final Person TEST_PERSON_3 = new Person(ID_3, NEW_FIRST_NAME, NEW_LAST_NAME, HOBBIES,
+        ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+
+    private static final Person TEST_PERSON_4 = new Person(ID_4, NEW_FIRST_NAME, NEW_LAST_NAME, TRANSIENT_PROPERTY, HOBBIES,
         ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
     private static final BasicItem BASIC_ITEM = new BasicItem(ID_1);
@@ -197,6 +202,15 @@ public class CosmosTemplateIT {
             assertThat(ex.getCosmosException().getStatusCode()).isEqualTo(TestConstants.CONFLICT_STATUS_CODE);
             assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         }
+    }
+
+    @Test
+    public void testInsertDocShouldNotPersistTransientFields() {
+        final Person personWithTransientField = TEST_PERSON_4;
+        assertThat(personWithTransientField.getTransientProperty()).isNotNull();
+        final Person insertedPerson = cosmosTemplate.insert(Person.class.getSimpleName(), personWithTransientField, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_4)));
+        final Person retrievedPerson = cosmosTemplate.findById(Person.class.getSimpleName(), insertedPerson.getId(), Person.class);
+        assertThat(retrievedPerson.getTransientProperty()).isNull();
     }
 
 
@@ -304,13 +318,34 @@ public class CosmosTemplateIT {
         final String firstName = NEW_FIRST_NAME
             + "_"
             + UUID.randomUUID();
-        final Person newPerson = new Person(TEST_PERSON.getId(), firstName, NEW_FIRST_NAME, null, null,
+        final Person newPerson = new Person(TEST_PERSON.getId(), firstName, NEW_FIRST_NAME, null,  null,
             AGE, PASSPORT_IDS_BY_COUNTRY);
 
         final Person person = cosmosTemplate.upsertAndReturnEntity(Person.class.getSimpleName(), newPerson);
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+
+        assertEquals(person.getFirstName(), firstName);
+    }
+
+    @Test
+    public void testUpsertNewDocumentIgnoresTransientFields() {
+        final String firstName = NEW_FIRST_NAME
+            + "_"
+            + UUID.randomUUID();
+        final Person newPerson = new Person(TEST_PERSON_4.getId(), firstName, NEW_FIRST_NAME, TRANSIENT_PROPERTY, null,  null,
+            AGE, PASSPORT_IDS_BY_COUNTRY);
+
+        assertThat(newPerson.getTransientProperty()).isNotNull();
+
+        final Person person = cosmosTemplate.upsertAndReturnEntity(Person.class.getSimpleName(), newPerson);
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+
+        final Person retrievedPerson = cosmosTemplate.findById(Person.class.getSimpleName(), person.getId(), Person.class);
+        assertThat(retrievedPerson.getTransientProperty()).isNull();
 
         assertEquals(person.getFirstName(), firstName);
     }

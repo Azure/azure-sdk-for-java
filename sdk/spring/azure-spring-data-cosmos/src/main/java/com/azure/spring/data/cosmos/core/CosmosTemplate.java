@@ -44,6 +44,7 @@ import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.exception.CosmosExceptionUtils;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -61,6 +62,7 @@ import org.springframework.util.ReflectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -210,16 +212,27 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * @return the inserted item
      */
     public <T> T insert(String containerName, T objectToSave, PartitionKey partitionKey) {
+
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(objectToSave, "objectToSave should not be null");
 
         @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) objectToSave.getClass();
-        containerName = getContainerName(domainType);
 
         markAuditedIfConfigured(objectToSave);
         generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
 
-        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
+        JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
+
+        containerName = getContainerName(domainType);
+
+        CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
+        List<String> transientFields =  entityInfo.getTransientFields();
+        Boolean anyTransientFieldsSet = false;
+        if (!transientFields.isEmpty()) {
+            //strip fields with @Transient annotation from the JsonNode so they are not persisted.
+            originalItem = stripTransientFields(originalItem, transientFields);
+            anyTransientFieldsSet = transientFields.stream().anyMatch(originalItem::hasNonNull);
+        }
 
         LOGGER.debug("execute createItem in database {} container {}", this.getDatabaseName(),
             containerName);
@@ -241,8 +254,15 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .block();
 
         assert response != null;
+        if(anyTransientFieldsSet) {
+            // recapitulate fields with @Transient annotation from originalItem so they remain serialized in the domain object
+            return toDomainObject(domainType,recapitulateTransientFields(originalItem, response.getItem(), transientFields));
+        }
         return toDomainObject(domainType, response.getItem());
     }
+
+
+
 
     /**
      * Insert all items with bulk.
@@ -264,6 +284,12 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         entities.forEach(entity -> {
             generateIdIfNullAndAutoGenerationEnabled(entity, domainType);
             JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
+            CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
+            List<String> transientFields =  entityInfo.getTransientFields();
+            if (!transientFields.isEmpty()) {
+                //strip fields with @Transient annotation from the JsonNode so they are not persisted.
+                originalItem = stripTransientFields(originalItem, transientFields);
+            }
             PartitionKey partitionKey = new PartitionKey(information.getPartitionKeyFieldValue(entity));
             final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
             applyBulkVersioning(domainType, originalItem, options);
@@ -482,13 +508,22 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         containerName = getContainerName(object.getClass());
         markAuditedIfConfigured(object);
 
-        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object);
+        JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object);
 
         LOGGER.debug("execute upsert item in database {} container {}", this.getDatabaseName(),
             containerName);
 
         @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) object.getClass();
         containerName = getContainerName(domainType);
+
+        CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
+        List<String> transientFields =  entityInfo.getTransientFields();
+        Boolean anyTransientFieldsSet = false;
+        if (!transientFields.isEmpty()) {
+            //strip fields with @Transient annotation from the JsonNode so they are not persisted.
+            originalItem = stripTransientFields(originalItem, transientFields);
+            anyTransientFieldsSet = transientFields.stream().anyMatch(originalItem::hasNonNull);
+        }
 
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         applyVersioning(domainType, originalItem, options);
@@ -506,6 +541,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .block();
 
         assert cosmosItemResponse != null;
+        if(anyTransientFieldsSet) {
+            // recapitulate fields with @Transient annotation from originalItem so they remain serialized in the domain object
+            return toDomainObject(domainType,recapitulateTransientFields(originalItem, cosmosItemResponse.getItem(), transientFields));
+        }
         return toDomainObject(domainType, cosmosItemResponse.getItem());
     }
 
@@ -1113,6 +1152,27 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(returnType, getContainerName(domainType), jsonNode))
             .collectList()
             .block();
+    }
+
+    private JsonNode stripTransientFields(JsonNode originalItem, List<String> transientFields) {
+        JsonNode updatedItem = originalItem.deepCopy();
+        Iterator<String> fieldNames = updatedItem.fieldNames();
+        while (fieldNames.hasNext()) {
+            String fieldName = fieldNames.next();
+            if (transientFields.contains(fieldName)) {
+                fieldNames.remove();
+                ((ObjectNode) updatedItem).remove(fieldName);
+            }
+        }
+        return updatedItem;
+    }
+
+    private JsonNode recapitulateTransientFields(JsonNode originalItem, JsonNode responseItem, List<String> transientFields) {
+        JsonNode updatedItem = responseItem.deepCopy();
+        for (String fieldName : transientFields) {
+            ((ObjectNode) updatedItem).set(fieldName, originalItem.get(fieldName));
+        }
+        return updatedItem;
     }
 
     private void markAuditedIfConfigured(Object object) {
