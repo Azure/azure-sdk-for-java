@@ -792,7 +792,7 @@ public class EventHubClientBuilder implements
      */
     String getConsumerGroup() {
         return consumerGroup;
-   }
+    }
 
     /**
      * Sets the count used by the receiver to control the number of events per partition the Event Hub consumer will actively receive
