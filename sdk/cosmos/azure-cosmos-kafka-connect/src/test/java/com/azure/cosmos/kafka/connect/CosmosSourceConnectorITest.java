@@ -55,25 +55,25 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
 
         Map<String, String> sourceConnectorConfig = new HashMap<>();
         sourceConnectorConfig.put("connector.class", "com.azure.cosmos.kafka.connect.CosmosSourceConnector");
-        sourceConnectorConfig.put("kafka.connect.cosmos.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
-        sourceConnectorConfig.put("kafka.connect.cosmos.applicationName", "Test");
-        sourceConnectorConfig.put("kafka.connect.cosmos.source.database.name", databaseName);
-        sourceConnectorConfig.put("kafka.connect.cosmos.source.containers.includeAll", "false");
-        sourceConnectorConfig.put("kafka.connect.cosmos.source.containers.includedList", singlePartitionContainerName);
-        sourceConnectorConfig.put("kafka.connect.cosmos.source.containers.topicMap", topicName + "#" + singlePartitionContainerName);
+        sourceConnectorConfig.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sourceConnectorConfig.put("azure.cosmos.applicationName", "Test");
+        sourceConnectorConfig.put("azure.cosmos.source.database.name", databaseName);
+        sourceConnectorConfig.put("azure.cosmos.source.containers.includeAll", "false");
+        sourceConnectorConfig.put("azure.cosmos.source.containers.includedList", singlePartitionContainerName);
+        sourceConnectorConfig.put("azure.cosmos.source.containers.topicMap", topicName + "#" + singlePartitionContainerName);
 
         if (useMasterKey) {
-            sourceConnectorConfig.put("kafka.connect.cosmos.accountKey", KafkaCosmosTestConfigurations.MASTER_KEY);
+            sourceConnectorConfig.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
         } else {
-            sourceConnectorConfig.put("kafka.connect.cosmos.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
-            sourceConnectorConfig.put("kafka.connect.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
-            sourceConnectorConfig.put("kafka.connect.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
-            sourceConnectorConfig.put("kafka.connect.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
+            sourceConnectorConfig.put("azure.cosmos.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
+            sourceConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
+            sourceConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
+            sourceConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
         }
 
         if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
-            sourceConnectorConfig.put("kafka.connect.cosmos.source.metadata.storage.name", metadataStorageName);
-            sourceConnectorConfig.put("kafka.connect.cosmos.source.metadata.storage.type", CosmosMetadataStorageType.COSMOS.getName());
+            sourceConnectorConfig.put("azure.cosmos.source.metadata.storage.name", metadataStorageName);
+            sourceConnectorConfig.put("azure.cosmos.source.metadata.storage.type", CosmosMetadataStorageType.COSMOS.getName());
         }
 
         // Create topic ahead of time
