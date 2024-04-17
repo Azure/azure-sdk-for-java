@@ -143,7 +143,7 @@ public class EventProcessorClientBuilder implements
     private static final ClientLogger LOGGER = new ClientLogger(EventProcessorClientBuilder.class);
 
     // Builder used to hold intermediate Event Hub related configuration changes.
-    private final EventHubClientBuilder eventHubClientOptions;
+    private final EventHubClientBuilder eventHubClientBuilder;
     private String consumerGroup;
     private CheckpointStore checkpointStore;
     private Consumer<EventContext> processEvent;
@@ -164,7 +164,7 @@ public class EventProcessorClientBuilder implements
      * Creates a new instance of {@link EventProcessorClientBuilder}.
      */
     public EventProcessorClientBuilder() {
-        eventHubClientOptions = new EventHubClientBuilder();
+        eventHubClientBuilder = new EventHubClientBuilder();
     }
 
     /**
@@ -179,7 +179,7 @@ public class EventProcessorClientBuilder implements
      * @throws NullPointerException if {@code fullyQualifiedNamespace} is null.
      */
     public EventProcessorClientBuilder fullyQualifiedNamespace(String fullyQualifiedNamespace) {
-        eventHubClientOptions.fullyQualifiedNamespace(fullyQualifiedNamespace);
+        eventHubClientBuilder.fullyQualifiedNamespace(fullyQualifiedNamespace);
         return this;
     }
 
@@ -194,7 +194,7 @@ public class EventProcessorClientBuilder implements
      * @throws NullPointerException if {@code eventHubName} is null.
      */
     public EventProcessorClientBuilder eventHubName(String eventHubName) {
-        eventHubClientOptions.eventHubName(eventHubName);
+        eventHubClientBuilder.eventHubName(eventHubName);
         return this;
     }
 
@@ -226,7 +226,7 @@ public class EventProcessorClientBuilder implements
      */
     @Override
     public EventProcessorClientBuilder connectionString(String connectionString) {
-        eventHubClientOptions.connectionString(connectionString);
+        eventHubClientBuilder.connectionString(connectionString);
         return this;
     }
 
@@ -248,7 +248,7 @@ public class EventProcessorClientBuilder implements
      *     connection string.
      */
     public EventProcessorClientBuilder connectionString(String connectionString, String eventHubName) {
-        eventHubClientOptions.connectionString(connectionString, eventHubName);
+        eventHubClientBuilder.connectionString(connectionString, eventHubName);
         return this;
     }
 
@@ -264,7 +264,7 @@ public class EventProcessorClientBuilder implements
      */
     @Override
     public EventProcessorClientBuilder configuration(Configuration configuration) {
-        eventHubClientOptions.configuration(configuration);
+        eventHubClientBuilder.configuration(configuration);
         return this;
     }
 
@@ -286,7 +286,7 @@ public class EventProcessorClientBuilder implements
      */
     public EventProcessorClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
         TokenCredential credential) {
-        eventHubClientOptions.credential(fullyQualifiedNamespace, eventHubName, credential);
+        eventHubClientBuilder.credential(fullyQualifiedNamespace, eventHubName, credential);
         return this;
     }
 
@@ -304,7 +304,7 @@ public class EventProcessorClientBuilder implements
      */
     @Override
     public EventProcessorClientBuilder credential(TokenCredential credential) {
-        eventHubClientOptions.credential(credential);
+        eventHubClientBuilder.credential(credential);
         return this;
     }
 
@@ -326,7 +326,7 @@ public class EventProcessorClientBuilder implements
      */
     public EventProcessorClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
         AzureNamedKeyCredential credential) {
-        eventHubClientOptions.credential(fullyQualifiedNamespace, eventHubName, credential);
+        eventHubClientBuilder.credential(fullyQualifiedNamespace, eventHubName, credential);
         return this;
     }
 
@@ -342,7 +342,7 @@ public class EventProcessorClientBuilder implements
      */
     @Override
     public EventProcessorClientBuilder credential(AzureNamedKeyCredential credential) {
-        eventHubClientOptions.credential(credential);
+        eventHubClientBuilder.credential(credential);
         return this;
     }
 
@@ -364,7 +364,7 @@ public class EventProcessorClientBuilder implements
      */
     public EventProcessorClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
         AzureSasCredential credential) {
-        eventHubClientOptions.credential(fullyQualifiedNamespace, eventHubName, credential);
+        eventHubClientBuilder.credential(fullyQualifiedNamespace, eventHubName, credential);
         return this;
     }
 
@@ -380,7 +380,7 @@ public class EventProcessorClientBuilder implements
      */
     @Override
     public EventProcessorClientBuilder credential(AzureSasCredential credential) {
-        eventHubClientOptions.credential(credential);
+        eventHubClientBuilder.credential(credential);
         return this;
     }
 
@@ -399,7 +399,7 @@ public class EventProcessorClientBuilder implements
      * @throws IllegalArgumentException if {@code customEndpointAddress} cannot be parsed into a valid {@link URL}.
      */
     public EventProcessorClientBuilder customEndpointAddress(String customEndpointAddress) {
-        eventHubClientOptions.customEndpointAddress(customEndpointAddress);
+        eventHubClientBuilder.customEndpointAddress(customEndpointAddress);
         return this;
     }
 
@@ -413,7 +413,7 @@ public class EventProcessorClientBuilder implements
      */
     @Override
     public EventProcessorClientBuilder proxyOptions(ProxyOptions proxyOptions) {
-        eventHubClientOptions.proxyOptions(proxyOptions);
+        eventHubClientBuilder.proxyOptions(proxyOptions);
         return this;
     }
 
@@ -427,7 +427,7 @@ public class EventProcessorClientBuilder implements
      */
     @Override
     public EventProcessorClientBuilder transportType(AmqpTransportType transport) {
-        eventHubClientOptions.transportType(transport);
+        eventHubClientBuilder.transportType(transport);
         return this;
     }
 
@@ -442,7 +442,7 @@ public class EventProcessorClientBuilder implements
      */
     @Deprecated
     public EventProcessorClientBuilder retry(AmqpRetryOptions retryOptions) {
-        eventHubClientOptions.retryOptions(retryOptions);
+        eventHubClientBuilder.retryOptions(retryOptions);
         return this;
     }
 
@@ -455,7 +455,7 @@ public class EventProcessorClientBuilder implements
      */
     @Override
     public EventProcessorClientBuilder retryOptions(AmqpRetryOptions retryOptions) {
-        eventHubClientOptions.retryOptions(retryOptions);
+        eventHubClientBuilder.retryOptions(retryOptions);
         return this;
     }
 
@@ -470,7 +470,7 @@ public class EventProcessorClientBuilder implements
      */
     @Override
     public EventProcessorClientBuilder clientOptions(ClientOptions clientOptions) {
-        eventHubClientOptions.clientOptions(clientOptions);
+        eventHubClientBuilder.clientOptions(clientOptions);
         return this;
     }
 
@@ -582,7 +582,7 @@ public class EventProcessorClientBuilder implements
      * @throws IllegalArgumentException if {@code prefetchCount} is less than 1 or greater than 8000.
      */
     public EventProcessorClientBuilder prefetchCount(int prefetchCount) {
-        eventHubClientOptions.prefetchCount(prefetchCount);
+        eventHubClientBuilder.prefetchCount(prefetchCount);
         return this;
     }
 
@@ -872,10 +872,10 @@ public class EventProcessorClientBuilder implements
         }
 
         // Create a copy of the options, so it does not change if another processor is created from the same instance.
-        final EventHubClientBuilder builder = copyOptions(eventHubClientOptions);
+        final EventHubClientBuilder builder = copyOptions(eventHubClientBuilder);
 
         return new EventProcessorClient(builder, getPartitionProcessorSupplier(), checkpointStore,
-            processError, eventHubClientOptions.createTracer(), processorOptions);
+            processError, eventHubClientBuilder.createTracer(), processorOptions);
     }
 
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {
