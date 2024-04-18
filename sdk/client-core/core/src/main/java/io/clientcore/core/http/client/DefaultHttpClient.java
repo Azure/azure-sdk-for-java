@@ -25,10 +25,11 @@ import io.clientcore.core.util.binarydata.BinaryData;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
-import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UncheckedIOException;
@@ -39,6 +40,7 @@ import java.net.Proxy;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -94,7 +96,7 @@ class DefaultHttpClient implements HttpClient {
             ? Integer.parseInt(maxConnectionsString)
             : 5;
         this.socketConnectionCache = SocketConnectionCache.getInstance(keepConnectionAlive, maxConnections,
-            connectionTimeout == null ? -1 : (int) connectionTimeout.toMillis());
+            readTimeout == null ? -1 : (int) readTimeout.toMillis());
     }
 
     @Override
@@ -431,7 +433,7 @@ class DefaultHttpClient implements HttpClient {
         }
 
 
-        public SocketConnection get(SocketConnectionProperties socketConnectionProperties) throws SocketException {
+        private SocketConnection get(SocketConnectionProperties socketConnectionProperties) throws SocketException {
             SocketConnection connection = null;
             // Try-Get a connection from the cache
             synchronized (connectionPool) {
@@ -467,10 +469,11 @@ class DefaultHttpClient implements HttpClient {
             return connection;
         }
 
-        void reuseConnection(SocketConnection connection) {
+        private void reuseConnection(SocketConnection connection) throws IOException {
 
             if (maxConnections > 0 && connection.canBeReused()) {
                 SocketConnectionProperties connectionProperties = connection.getConnectionProperties();
+                InputStream in = connection.getSocketInputStream();
                 synchronized (connectionPool) {
                     List<SocketConnection> connections = connectionPool.get(connectionProperties);
                     if (connections == null) {
@@ -479,11 +482,13 @@ class DefaultHttpClient implements HttpClient {
                     }
                     if (connections.size() < maxConnections) {
                         if (keepConnectionAlive) {
+                            do {
+                                in.skip(Long.MAX_VALUE);
+                            } while (in.read() != -1);
                             // mark the connection as available for reuse
                             connection.markAvailableForReuse();
                             connections.add(connection);
                             connectionPool.put(connectionProperties, connections);
-
                         }
                     }
                     return; // keep the connection open
@@ -508,7 +513,7 @@ class DefaultHttpClient implements HttpClient {
             } catch (IOException e) {
                 throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
             }
-            socket.setSoTimeout(connectionTimeout);
+           // socket.setSoTimeout(connectionTimeout);
             connection = new SocketConnection(socket, socketConnectionProperties);
 
             return connection;
@@ -527,6 +532,10 @@ class DefaultHttpClient implements HttpClient {
             SocketConnection(Socket socket, SocketConnectionProperties socketConnectionProperties) {
                 this.socket = socket;
                 this.connectionProperties = socketConnectionProperties;
+            }
+
+            public Socket getSocket() {
+                return socket;
             }
 
             OutputStream getSocketOutputStream() {
@@ -650,25 +659,25 @@ class DefaultHttpClient implements HttpClient {
         private static Response<?> sendPatchRequest(HttpRequest httpRequest, InputStream inputStream, OutputStream outputStream) throws IOException {
             httpRequest.getHeaders().set(HttpHeaderName.HOST, httpRequest.getUrl().getHost());
 
-            BufferedInputStream in = new BufferedInputStream(inputStream);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
             OutputStreamWriter out = new OutputStreamWriter(outputStream);
 
-                buildAndSend(httpRequest, out);
-                Response<?> response = buildResponse(httpRequest, in);
+            buildAndSend(httpRequest, out);
+            Response<?> response = buildResponse(httpRequest, reader);
 
-                HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);
-                String redirectLocation = (locationHeader == null) ? null : locationHeader.getValue();
+            HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);
+            String redirectLocation = (locationHeader == null) ? null : locationHeader.getValue();
 
-                if (redirectLocation != null) {
-                    if (redirectLocation.startsWith("http")) {
-                        httpRequest.setUrl(redirectLocation);
-                    } else {
-                        httpRequest.setUrl(new URL(httpRequest.getUrl(), redirectLocation));
-                    }
-                    return sendPatchRequest(httpRequest, inputStream, outputStream);
+            if (redirectLocation != null) {
+                if (redirectLocation.startsWith("http")) {
+                    httpRequest.setUrl(redirectLocation);
+                } else {
+                    httpRequest.setUrl(new URL(httpRequest.getUrl(), redirectLocation));
                 }
+                return sendPatchRequest(httpRequest, inputStream, outputStream);
+            }
 
-                return response;
+            return response;
 
         }
 
@@ -703,74 +712,55 @@ class DefaultHttpClient implements HttpClient {
          * Response
          *
          * @param httpRequest The HTTP Request being sent
-         * @param in the input stream from the socket
+         * @param reader the input stream from the socket
          * @return an instance of Response
          * @throws IOException If an I/O error occurs
          */
-        private static Response<?> buildResponse(HttpRequest httpRequest, BufferedInputStream in) throws IOException {
+        private static Response<?> buildResponse(HttpRequest httpRequest, BufferedReader reader) throws IOException {
             // Parse Http response from socket:
             // Status Line
             // Response Headers
             // Blank Line
             // Response Body
 
-            int statusCode = readStatusCode(in);
+            int statusCode = readStatusCode(reader);
 
-            HttpHeaders headers = readResponseHeaders(in);
+            HttpHeaders headers = readResponseHeaders(reader);
             HttpHeader contentLengthHeader = headers.get(CONTENT_LENGTH);
+            String line;
             // read body if present
             if (headers.getSize() != 0 && contentLengthHeader != null && contentLengthHeader.getValue() != null) {
-                int contentLength = Integer.parseInt(contentLengthHeader.getValue());
-                byte[] body = new byte[contentLength];
-                in.read(body, 0, contentLength);
-                return new HttpResponse<>(httpRequest, statusCode, headers, BinaryData.fromBytes(body));
+                StringBuilder bodyString = new StringBuilder();
+                while ((line = reader.readLine()) != null) {
+                    bodyString.append(line);
+                }
+
+                return new HttpResponse<>(httpRequest, statusCode, headers,
+                    BinaryData.fromString(bodyString.toString()));
             }
             return new HttpResponse<>(httpRequest, statusCode, headers, null);
         }
 
-        private static int readStatusCode(BufferedInputStream in) throws IOException {
-            StringBuilder statusLine = new StringBuilder();
-            int singleByte;
-            while ((singleByte = in.read()) != -1) {
-                char singleChar = (char) singleByte;
-                if (singleChar == '\n') {
-                    break;
-                }
-                statusLine.append(singleChar);
-            }
-
+        private static int readStatusCode(BufferedReader reader) throws IOException {
+            String statusLine = reader.readLine();
             if (statusLine.toString().isEmpty()) {
                 throw LOGGER.logThrowableAsError(new IllegalStateException("Unexpected response from server."));
             }
-
-            int length = statusLine.length();
-            if (length > 0 && statusLine.charAt(length - 1) == '\r') {
-                statusLine.setLength(length - 1);
-            }
-
-            int dotIndex = statusLine.indexOf(".");
+            int dotIndex = statusLine.indexOf('.');
             return Integer.parseInt(statusLine.substring(dotIndex + 3, dotIndex + 6));
         }
 
-        private static HttpHeaders readResponseHeaders(InputStream inputStream) throws IOException {
+        private static HttpHeaders readResponseHeaders(BufferedReader reader) throws IOException {
             HttpHeaders headers = new HttpHeaders();
-            StringBuilder line = new StringBuilder();
-            int c;
-            while ((c = inputStream.read()) != -1) {
-                if (c == '\n' || c == '\r') { // End of line, process the header
-                    if (line.length() == 0) { // Empty line, end of headers section
-                        break;
-                    }
-                    int separator = line.indexOf(":");
-                    if (separator != -1) {
-                        String name = line.substring(0, separator).trim();
-                        String value = line.substring(separator + 1).trim();
-                        headers.add(HttpHeaderName.fromString(name), value);
-                    }
-                    line.setLength(0); // Clear the line for the next header
-                } else {
-                    line.append((char) c);
-                }
+            String line;
+            while ((line = reader.readLine()) != null && !line.isEmpty()) {
+                // Headers may have optional leading and trailing whitespace around the header value.
+                // https://tools.ietf.org/html/rfc7230#section-3.2
+                // Process this accordingly.
+                int split = line.indexOf(':'); // Find ':' to split the header name and value.
+                String key = line.substring(0, split); // Get the header name.
+                String value = line.substring(split + 1).trim(); // Get the header value and trim whitespace.
+                headers.add(HttpHeaderName.fromString(key), value);
             }
             return headers;
         }

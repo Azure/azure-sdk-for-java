@@ -13,5 +13,5 @@ matrix:
     get:
       imageBuildDir: ..\..\..\
       testDurationMin: 30
-      testScenario: httpget
+      testScenario: httppatch
       concurrency: 75
