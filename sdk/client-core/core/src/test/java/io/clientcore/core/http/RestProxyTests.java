@@ -76,7 +76,7 @@ public class RestProxyTests {
     }
 
     @Test
-    public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() {
+    public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() throws IOException {
         HttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -84,10 +84,10 @@ public class RestProxyTests {
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         byte[] bytes = "hello".getBytes();
-        Response<Void> response =
-            testInterface.testMethod(ByteBuffer.wrap(bytes), "application/json", (long) bytes.length);
-
-        assertEquals(200, response.getStatusCode());
+        try (Response<Void> response =
+            testInterface.testMethod(ByteBuffer.wrap(bytes), "application/json", (long) bytes.length)) {
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     // TODO (vcolin7): Re-enable this test if we ever compose HttpResponse into a stream Response type.
@@ -188,7 +188,7 @@ public class RestProxyTests {
     }
 
     @Test
-    public void responseVoidReturningApiBuffersResponseBody() {
+    public void responseVoidReturningApiBuffersResponseBody() throws IOException {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -196,13 +196,13 @@ public class RestProxyTests {
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
 
-        testInterface.testMethodReturnsResponseVoid();
+        testInterface.testMethodReturnsResponseVoid().close();
 
         assertEquals(BUFFER, client.getLastHttpRequest().getRequestOptions().getResponseBodyMode());
     }
 
     @Test
-    public void streamingResponseDoesNotEagerlyDeserializeResponse() {
+    public void streamingResponseDoesNotEagerlyDeserializeResponse() throws IOException {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -210,7 +210,7 @@ public class RestProxyTests {
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
 
-        testInterface.testDownload();
+        testInterface.testDownload().close();
 
         assertEquals(STREAM, client.getLastHttpRequest().getRequestOptions().getResponseBodyMode());
     }
@@ -267,7 +267,7 @@ public class RestProxyTests {
     }
 
     @Test
-    public void doesNotChangeEncodedPath() {
+    public void doesNotChangeEncodedPath() throws IOException {
         String nextLinkUrl =
             "https://management.azure.com:443/subscriptions/000/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines?api-version=2021-11-01&$skiptoken=Mzk4YzFjMzMtM2IwMC00OWViLWI2NGYtNjg4ZTRmZGQ1Nzc2IS9TdWJzY3JpcHRpb25zL2VjMGFhNWY3LTllNzgtNDBjOS04NWNkLTUzNWM2MzA1YjM4MC9SZXNvdXJjZUdyb3Vwcy9SRy1XRUlEWFUtVk1TUy9WTVNjYWxlU2V0cy9WTVNTMS9WTXMvNzc=";
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -280,6 +280,6 @@ public class RestProxyTests {
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
 
-        testInterface.testListNext(nextLinkUrl);
+        testInterface.testListNext(nextLinkUrl).close();
     }
 }

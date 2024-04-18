@@ -185,7 +185,7 @@ public class BinaryDataJavaDocCodeSnippet {
     /**
      * Codesnippets for {@link BinaryData#toObject(Type)}.
      */
-    public void toObjectTypeDefaultJsonSerializer() {
+    public void toObjectTypeDefaultJsonSerializer() throws IOException {
         // BEGIN: io.clientcore.core.util.BinaryData.toObject#Type
         final Person data = new Person().setName("John");
 
@@ -205,7 +205,7 @@ public class BinaryDataJavaDocCodeSnippet {
     /**
      * Codesnippets for {@link BinaryData#toObject(Type)}.
      */
-    public void toObjectTypeDefaultJsonSerializerWithGenerics() {
+    public void toObjectTypeDefaultJsonSerializerWithGenerics() throws IOException {
         // BEGIN: io.clientcore.core.util.BinaryData.toObject#Type-generic
         final Person person1 = new Person().setName("John");
         final Person person2 = new Person().setName("Jack");
@@ -248,7 +248,7 @@ public class BinaryDataJavaDocCodeSnippet {
     /**
      * Codesnippets for {@link BinaryData#toObject(Type, ObjectSerializer)}.
      */
-    public void toObjectTypeObjectSerializer() {
+    public void toObjectTypeObjectSerializer() throws IOException {
         // BEGIN: io.clientcore.core.util.BinaryData.toObject#Type-ObjectSerializer
         final Person data = new Person().setName("John");
 
@@ -267,7 +267,7 @@ public class BinaryDataJavaDocCodeSnippet {
     /**
      * Codesnippets for {@link BinaryData#toObject(Type, ObjectSerializer)} that uses generics.
      */
-    public void toObjectTypeObjectSerializerWithGenerics() {
+    public void toObjectTypeObjectSerializerWithGenerics() throws IOException {
         // BEGIN: io.clientcore.core.util.BinaryData.toObject#Type-ObjectSerializer-generic
         final Person person1 = new Person().setName("John");
         final Person person2 = new Person().setName("Jack");

@@ -14,7 +14,8 @@ import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
 import io.clientcore.core.implementation.util.UrlBuilder;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
-import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
@@ -104,11 +105,11 @@ class ResponseConstructorsCacheBenchMarkTestData {
     }
 
     private static byte[] asJsonByteArray(Object object) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-        SERIALIZER.serializeToStream(stream, object);
-
-        return stream.toByteArray();
+        try {
+            return SERIALIZER.serializeToBytes(object);
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 
     static class Input {

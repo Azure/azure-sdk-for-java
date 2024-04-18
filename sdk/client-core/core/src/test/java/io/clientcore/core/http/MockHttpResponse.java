@@ -10,7 +10,8 @@ import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
-import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 
 import static io.clientcore.core.util.TestUtils.cloneByteArray;
 
@@ -90,10 +91,10 @@ public class MockHttpResponse extends HttpResponse<BinaryData> {
     }
 
     private static byte[] serialize(Object serializable) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-        SERIALIZER.serializeToStream(stream, serializable);
-
-        return stream.toByteArray();
+        try {
+            return SERIALIZER.serializeToBytes(serializable);
+        } catch (IOException ex) {
+            throw new UncheckedIOException("Failed to serialize object.", ex);
+        }
     }
 }

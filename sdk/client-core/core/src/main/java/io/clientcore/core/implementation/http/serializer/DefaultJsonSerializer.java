@@ -4,18 +4,17 @@
 package io.clientcore.core.implementation.http.serializer;
 
 import io.clientcore.core.implementation.TypeUtil;
-import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.serializer.JsonSerializer;
 import io.clientcore.core.json.JsonProviders;
 import io.clientcore.core.json.JsonReader;
 import io.clientcore.core.json.JsonSerializable;
 import io.clientcore.core.json.JsonWriter;
+import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.serializer.JsonSerializer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UncheckedIOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 
@@ -28,7 +27,7 @@ public class DefaultJsonSerializer implements JsonSerializer {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T deserializeFromBytes(byte[] bytes, Type type) {
+    public <T> T deserializeFromBytes(byte[] bytes, Type type) throws IOException {
         try (JsonReader jsonReader = JsonProviders.createReader(bytes)) {
             if (type instanceof Class<?> && JsonSerializable.class.isAssignableFrom(TypeUtil.getRawClass(type))) {
                 Class<T> clazz = (Class<T>) type;
@@ -37,8 +36,6 @@ public class DefaultJsonSerializer implements JsonSerializer {
             } else {
                 return (T) jsonReader.readUntyped();
             }
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }
@@ -46,7 +43,7 @@ public class DefaultJsonSerializer implements JsonSerializer {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T deserializeFromStream(InputStream stream, Type type) {
+    public <T> T deserializeFromStream(InputStream stream, Type type) throws IOException {
         try (JsonReader jsonReader = JsonProviders.createReader(stream)) {
             if (type instanceof Class<?> && JsonSerializable.class.isAssignableFrom(TypeUtil.getRawClass(type))) {
                 Class<T> clazz = (Class<T>) type;
@@ -55,15 +52,13 @@ public class DefaultJsonSerializer implements JsonSerializer {
             } else {
                 return (T) jsonReader.readUntyped();
             }
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }
     }
 
     @Override
-    public byte[] serializeToBytes(Object value) {
+    public byte[] serializeToBytes(Object value) throws IOException {
         if (value == null) {
             return null;
         }
@@ -75,21 +70,17 @@ public class DefaultJsonSerializer implements JsonSerializer {
             jsonWriter.flush();
 
             return byteArrayOutputStream.toByteArray();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
     @Override
-    public void serializeToStream(OutputStream stream, Object value) {
+    public void serializeToStream(OutputStream stream, Object value) throws IOException {
         if (value == null) {
             return;
         }
 
         try (JsonWriter jsonWriter = JsonProviders.createWriter(stream)) {
             jsonWriter.writeUntyped(value);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 }

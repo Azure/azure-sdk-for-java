@@ -3,24 +3,22 @@
 
 package io.clientcore.core.implementation.util;
 
+import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.ServerSentEvent;
 import io.clientcore.core.http.models.ServerSentEventListener;
-import io.clientcore.core.util.ClientLogger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 /**
@@ -59,19 +57,17 @@ public final class ServerSentEventUtil {
      * @param httpRequestConsumer The HTTP Request consumer
      * @param inputStream The input stream
      * @param listener The listener object attached with the httpRequest
-     * @param logger The logger object
+     * @throws IOException If an I/O error occurs
      */
-    public static void processTextEventStream(HttpRequest httpRequest, Consumer<HttpRequest> httpRequestConsumer,
-        InputStream inputStream, ServerSentEventListener listener, ClientLogger logger) {
+    public static void processTextEventStream(HttpRequest httpRequest, HttpClient httpRequestConsumer,
+        InputStream inputStream, ServerSentEventListener listener) throws IOException {
         RetrySSEResult retrySSEResult;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             retrySSEResult = processBuffer(reader, listener);
             if (retrySSEResult != null && !retryExceptionForSSE(retrySSEResult, listener, httpRequest)
                     && !Thread.currentThread().isInterrupted()) {
-                httpRequestConsumer.accept(httpRequest);
+                httpRequestConsumer.send(httpRequest);
             }
-        } catch (IOException e) {
-            throw logger.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 

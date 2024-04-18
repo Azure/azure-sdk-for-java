@@ -38,8 +38,8 @@ public class CredentialsTests {
 
     @ParameterizedTest
     @ArgumentsSource(InvalidInputsArgumentProvider.class)
-    public void keyCredentialsInvalidArgumentTest(String key, Class<Exception> excepionType) {
-        Assertions.assertThrows(excepionType, () -> new KeyCredential(key));
+    public void keyCredentialsInvalidArgumentTest(String key, Class<Exception> exceptionType) {
+        Assertions.assertThrows(exceptionType, () -> new KeyCredential(key));
     }
 
     @Test

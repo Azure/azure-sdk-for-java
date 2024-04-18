@@ -41,7 +41,7 @@ public class DefaultJsonSerializerTests {
     private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
 
     @Test
-    public void mapWithEmptyKeyAndNullValue() {
+    public void mapWithEmptyKeyAndNullValue() throws IOException {
         final MapHolder mapHolder = new MapHolder();
 
         mapHolder.map(new HashMap<>());
@@ -51,7 +51,7 @@ public class DefaultJsonSerializerTests {
     }
 
     @Test
-    public void mapWithEmptyKeyAndEmptyValue() {
+    public void mapWithEmptyKeyAndEmptyValue() throws IOException {
         final MapHolder mapHolder = new MapHolder();
 
         mapHolder.map = new HashMap<>();
@@ -101,7 +101,7 @@ public class DefaultJsonSerializerTests {
 
     @ParameterizedTest
     @MethodSource("deserializeJsonSupplier")
-    public void deserializeJson(String json, DateTimeWrapper expected) {
+    public void deserializeJson(String json, DateTimeWrapper expected) throws IOException {
         DateTimeWrapper actual = new DefaultJsonSerializer()
             .deserializeFromBytes(json.getBytes(), DateTimeWrapper.class);
 
@@ -164,7 +164,7 @@ public class DefaultJsonSerializerTests {
 
     @ParameterizedTest
     @MethodSource("textSerializationSupplier")
-    public void textToStringSerialization(Object value, String expected) {
+    public void textToStringSerialization(Object value, String expected) throws IOException {
         if (expected == null) {
             assertNull(value);
         } else {
@@ -174,7 +174,7 @@ public class DefaultJsonSerializerTests {
 
     @ParameterizedTest
     @MethodSource("textSerializationSupplier")
-    public void textToBytesSerialization(Object value, String expected) {
+    public void textToBytesSerialization(Object value, String expected) throws IOException {
         byte[] actual = SERIALIZER.serializeToBytes(value);
 
         if (expected == null) {
@@ -186,7 +186,7 @@ public class DefaultJsonSerializerTests {
 
     @ParameterizedTest
     @MethodSource("textSerializationSupplier")
-    public void textToOutputStreamSerialization(Object value, String expected) {
+    public void textToOutputStreamSerialization(Object value, String expected) throws IOException {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         SERIALIZER.serializeToStream(outputStream, value);
 
@@ -216,7 +216,7 @@ public class DefaultJsonSerializerTests {
 
     @ParameterizedTest
     @MethodSource("bytesDeserializationSupplier")
-    public void stringToTextDeserialization(byte[] stringBytes, Class<?> type, Object expected) {
+    public void stringToTextDeserialization(byte[] stringBytes, Class<?> type, Object expected) throws IOException {
         Object actual = SERIALIZER.deserializeFromBytes(stringBytes, type);
 
         if (type == byte[].class) {
@@ -228,7 +228,7 @@ public class DefaultJsonSerializerTests {
 
     @ParameterizedTest
     @MethodSource("bytesDeserializationSupplier")
-    public void bytesToTextDeserialization(byte[] bytes, Class<?> type, Object expected) {
+    public void bytesToTextDeserialization(byte[] bytes, Class<?> type, Object expected) throws IOException {
         Object actual = SERIALIZER.deserializeFromBytes(bytes, type);
 
         if (type == byte[].class) {
@@ -240,7 +240,8 @@ public class DefaultJsonSerializerTests {
 
     @ParameterizedTest
     @MethodSource("bytesDeserializationSupplier")
-    public void inputStreamToTextDeserialization(byte[] inputStreamBytes, Class<?> type, Object expected) {
+    public void inputStreamToTextDeserialization(byte[] inputStreamBytes, Class<?> type, Object expected)
+        throws IOException {
         Object actual =
             SERIALIZER.deserializeFromStream(new ByteArrayInputStream(inputStreamBytes), type);
 

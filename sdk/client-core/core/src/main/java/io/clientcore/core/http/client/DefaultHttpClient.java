@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.UncheckedIOException;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
@@ -73,26 +72,16 @@ class DefaultHttpClient implements HttpClient {
         this.proxyOptions = proxyOptions;
     }
 
-    /**
-     * Synchronously send the HttpRequest.
-     *
-     * @param httpRequest The HTTP request being sent
-     * @return The Response object
-     */
     @Override
-    public Response<?> send(HttpRequest httpRequest) {
-        try {
-            if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
-                return SocketClient.sendPatchRequest(httpRequest);
-            }
-
-            HttpURLConnection connection = connect(httpRequest);
-            sendBody(httpRequest, connection);
-
-            return receiveResponse(httpRequest, connection);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+    public Response<?> send(HttpRequest httpRequest) throws IOException {
+        if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
+            return SocketClient.sendPatchRequest(httpRequest);
         }
+
+        HttpURLConnection connection = connect(httpRequest);
+        sendBody(httpRequest, connection);
+
+        return receiveResponse(httpRequest, connection);
     }
 
     /**
@@ -210,8 +199,7 @@ class DefaultHttpClient implements HttpClient {
                 throw LOGGER.logThrowableAsError(new RuntimeException(NO_LISTENER_ERROR_MESSAGE));
             }
 
-            processTextEventStream(httpRequest, httpRequestConsumer -> this.send(httpRequest),
-                connection.getInputStream(), listener, LOGGER);
+            processTextEventStream(httpRequest, this, connection.getInputStream(), listener);
         } else {
             ResponseBodyMode responseBodyMode = httpRequest.getRequestOptions().getResponseBodyMode();
 

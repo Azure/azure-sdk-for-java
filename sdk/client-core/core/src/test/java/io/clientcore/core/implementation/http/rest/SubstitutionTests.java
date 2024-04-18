@@ -6,6 +6,7 @@ package io.clientcore.core.implementation.http.rest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SubstitutionTests {
     @Test
@@ -14,7 +15,7 @@ public class SubstitutionTests {
 
         assertEquals("A", s.getUrlParameterName());
         assertEquals(2, s.getMethodParameterIndex());
-        assertEquals(true, s.shouldEncode());
+        assertTrue(s.shouldEncode());
     }
 
     @Test
@@ -23,7 +24,7 @@ public class SubstitutionTests {
 
         assertEquals("A", s.getUrlParameterName());
         assertEquals(2, s.getMethodParameterIndex());
-        assertEquals(true, s.shouldEncode());
-        assertEquals(true, s.mergeParameters());
+        assertTrue(s.shouldEncode());
+        assertTrue(s.mergeParameters());
     }
 }

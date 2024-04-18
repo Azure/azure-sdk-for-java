@@ -146,9 +146,7 @@ public abstract class BinaryData implements Closeable {
      * <!-- end io.clientcore.core.util.BinaryData.fromStream#InputStream -->
      *
      * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
-     *
      * @return A {@link BinaryData} representing the {@link InputStream}.
-     *
      * @throws UncheckedIOException If any error happens while reading the {@link InputStream}.
      * @throws NullPointerException If {@code inputStream} is null.
      */
@@ -177,9 +175,7 @@ public abstract class BinaryData implements Closeable {
      *
      * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
      * @param length The length of {@code data} in bytes.
-     *
      * @return A {@link BinaryData} representing the {@link InputStream}.
-     *
      * @throws UncheckedIOException If any error happens while reading the {@link InputStream}.
      * @throws NullPointerException If {@code inputStream} is null.
      */
@@ -205,9 +201,7 @@ public abstract class BinaryData implements Closeable {
      * <!-- end io.clientcore.core.util.BinaryData.fromString#String -->
      *
      * @param data The {@link String} that {@link BinaryData} will represent.
-     *
      * @return A {@link BinaryData} representing the {@link String}.
-     *
      * @throws NullPointerException If {@code data} is null.
      */
     public static BinaryData fromString(String data) {
@@ -233,9 +227,7 @@ public abstract class BinaryData implements Closeable {
      * <!-- end io.clientcore.core.util.BinaryData.fromBytes#byte -->
      *
      * @param data The byte array that {@link BinaryData} will represent.
-     *
      * @return A {@link BinaryData} representing the byte array.
-     *
      * @throws NullPointerException If {@code data} is null.
      */
     public static BinaryData fromBytes(byte[] data) {
@@ -290,7 +282,6 @@ public abstract class BinaryData implements Closeable {
      * <!-- end io.clientcore.core.util.BinaryData.fromListByteBuffer#List -->
      *
      * @param data The {@link List} of {@link ByteBuffer} that {@link BinaryData} will represent.
-     *
      * @return A {@link BinaryData} representing the {@link List} of {@link ByteBuffer}.
      */
     public static BinaryData fromListByteBuffer(List<ByteBuffer> data) {
@@ -317,9 +308,7 @@ public abstract class BinaryData implements Closeable {
      * <!-- end io.clientcore.core.util.BinaryData.fromObject#Object -->
      *
      * @param data The object that will be JSON serialized that {@link BinaryData} will represent.
-     *
      * @return A {@link BinaryData} representing the JSON serialized object.
-     *
      * @throws NullPointerException If {@code data} is null.
      * @see ObjectSerializer
      */
@@ -353,9 +342,7 @@ public abstract class BinaryData implements Closeable {
      * @param data The object that will be serialized that {@link BinaryData} will represent. The {@code serializer}
      * determines how {@code null} data is serialized.
      * @param serializer The {@link ObjectSerializer} used to serialize object.
-     *
      * @return A {@link BinaryData} representing the serialized object.
-     *
      * @throws NullPointerException If {@code serializer} is null.
      * @see ObjectSerializer
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
@@ -381,9 +368,7 @@ public abstract class BinaryData implements Closeable {
      * <!-- end io.clientcore.core.util.BinaryData.fromFile -->
      *
      * @param file The {@link Path} that will be the {@link BinaryData} data.
-     *
      * @return A new {@link BinaryData}.
-     *
      * @throws NullPointerException If {@code file} is null.
      */
     public static BinaryData fromFile(Path file) {
@@ -406,9 +391,7 @@ public abstract class BinaryData implements Closeable {
      *
      * @param file The {@link Path} that will be the {@link BinaryData} data.
      * @param chunkSize The requested size for each read of the path.
-     *
      * @return A new {@link BinaryData}.
-     *
      * @throws NullPointerException If {@code file} is null.
      * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus
      * {@code length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
@@ -440,9 +423,7 @@ public abstract class BinaryData implements Closeable {
      * @param file The {@link Path} that will be the {@link BinaryData} data.
      * @param position Position, or offset, within the path where reading begins.
      * @param length Maximum number of bytes to be read from the path.
-     *
      * @return A new {@link BinaryData}.
-     *
      * @throws NullPointerException If {@code file} is null.
      * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus
      * {@code length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
@@ -474,9 +455,7 @@ public abstract class BinaryData implements Closeable {
      * @param position Position, or offset, within the path where reading begins.
      * @param length Maximum number of bytes to be read from the path.
      * @param chunkSize The requested size for each read of the path.
-     *
      * @return A new {@link BinaryData}.
-     *
      * @throws NullPointerException If {@code file} is null.
      * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus
      * {@code length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
@@ -498,7 +477,6 @@ public abstract class BinaryData implements Closeable {
      * {@link IllegalStateException}.</p>
      *
      * @return A byte array representing this {@link BinaryData}.
-     *
      * @throws IllegalStateException If the {@link BinaryData} is larger than the maximum size allowed for a
      * {@code byte[]}.
      */
@@ -512,7 +490,6 @@ public abstract class BinaryData implements Closeable {
      * {@link IllegalStateException}.</p>
      *
      * @return A {@link String} representing this {@link BinaryData}.
-     *
      * @throws IllegalStateException If the {@link BinaryData} is larger than the maximum size allowed for a
      * {@link String}.
      */
@@ -590,13 +567,12 @@ public abstract class BinaryData implements Closeable {
      *
      * @param type The {@link Type} representing the Object's type.
      * @param <T> Type of the deserialized Object.
-     *
      * @return An {@link Object} representing the JSON deserialized {@link BinaryData}.
-     *
      * @throws NullPointerException If {@code type} is null.
+     * @throws IOException If deserialization fails.
      * @see ObjectSerializer
      */
-    public <T> T toObject(Type type) {
+    public <T> T toObject(Type type) throws IOException {
         return toObject(type, SERIALIZER);
     }
 
@@ -669,14 +645,13 @@ public abstract class BinaryData implements Closeable {
      * @param type The {@link Type} representing the Object's type.
      * @param serializer The {@link ObjectSerializer} used to deserialize the object.
      * @param <T> Type of the deserialized Object.
-     *
      * @return An {@link Object} representing the deserialized {@link BinaryData}.
-     *
      * @throws NullPointerException If {@code type} or {@code serializer} is null.
+     * @throws IOException If deserialization fails.
      * @see ObjectSerializer
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
-    public abstract <T> T toObject(Type type, ObjectSerializer serializer);
+    public abstract <T> T toObject(Type type, ObjectSerializer serializer) throws IOException;
 
     /**
      * Returns an {@link InputStream} representation of this {@link BinaryData}.

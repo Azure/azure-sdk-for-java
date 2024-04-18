@@ -49,6 +49,7 @@ public final class RestProxy implements InvocationHandler {
     private SwaggerMethodParser getMethodParser(Method method) {
         return interfaceParser.getMethodParser(method);
     }
+
     @Override
     public Object invoke(Object proxy, final Method method, Object[] args) {
         // Note: request options need to be evaluated here, as it is a public class with package private methods.

@@ -3,11 +3,13 @@
 
 package io.clientcore.core.util.binarydata;
 
+import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -18,6 +20,8 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * A {@link BinaryData} implementation backed by a serializable object.
  */
 public final class SerializableBinaryData extends BinaryData {
+    private static final ClientLogger LOGGER = new ClientLogger(SerializableBinaryData.class);
+
     private final Object content;
     private final ObjectSerializer serializer;
 
@@ -54,7 +58,7 @@ public final class SerializableBinaryData extends BinaryData {
     }
 
     @Override
-    public <T> T toObject(Type type, ObjectSerializer serializer) {
+    public <T> T toObject(Type type, ObjectSerializer serializer) throws IOException {
         return serializer.deserializeFromBytes(toBytes(), type);
     }
 
@@ -79,7 +83,11 @@ public final class SerializableBinaryData extends BinaryData {
     }
 
     private byte[] getBytes() {
-        return serializer.serializeToBytes(content);
+        try {
+            return serializer.serializeToBytes(content);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException("Failed to serialize the content.", e));
+        }
     }
 
     @Override

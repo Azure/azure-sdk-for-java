@@ -27,7 +27,6 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 
 import static io.clientcore.core.http.models.ContentType.APPLICATION_OCTET_STREAM;
 import static io.clientcore.core.http.models.HttpHeaderName.CONTENT_TYPE;
@@ -48,16 +47,11 @@ class OkHttpHttpClient implements HttpClient {
     }
 
     @Override
-    public Response<?> send(HttpRequest request) {
+    public Response<?> send(HttpRequest request) throws IOException {
         Request okHttpRequest = toOkHttpRequest(request);
+        okhttp3.Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
 
-        try {
-            okhttp3.Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
-
-            return toResponse(request, okHttpResponse);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        return toResponse(request, okHttpResponse);
     }
 
     /**
@@ -146,7 +140,7 @@ class OkHttpHttpClient implements HttpClient {
             ServerSentEventListener listener = request.getServerSentEventListener();
 
             if (listener != null) {
-                processTextEventStream(request, this::send, response.body().byteStream(), listener, LOGGER);
+                processTextEventStream(request, this, response.body().byteStream(), listener);
             } else {
                 throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtil.NO_LISTENER_ERROR_MESSAGE));
             }

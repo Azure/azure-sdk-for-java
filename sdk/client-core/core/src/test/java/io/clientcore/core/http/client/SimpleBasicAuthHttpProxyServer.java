@@ -79,7 +79,7 @@ public final class SimpleBasicAuthHttpProxyServer {
         }
     }
 
-    static class ProxyEndpoint {
+    public static final class ProxyEndpoint {
         private final String host;
         private final int port;
 
