@@ -11,6 +11,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
@@ -1070,6 +1072,21 @@ class FileApiTests extends FileShareTestBase {
         }
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void uploadRangeFromURLSourceErrorAndStatusCode() {
+        primaryFileClient.create(1024);
+        ShareFileClient destinationClient = shareClient.getFileClient(generatePathName());
+        destinationClient.create(1024);
+
+        ShareStorageException e = assertThrows(ShareStorageException.class,
+            () -> destinationClient.uploadRangeFromUrl(5, 0, 0, primaryFileClient.getFileUrl()));
+
+        assertTrue(e.getStatusCode() == 401);
+        assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
+        assertTrue(e.getServiceMessage().contains("Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void uploadRangeFromURLOAuth() {
@@ -1314,6 +1331,21 @@ class FileApiTests extends FileShareTestBase {
         SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy("some url", testMetadata, null);
         ShareStorageException e = assertThrows(ShareStorageException.class, poller::waitForCompletion);
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.INVALID_HEADER_VALUE);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void startCopySourceErrorAndStatusCode() {
+        primaryFileClient.create(1024);
+
+        ShareStorageException e = assertThrows(ShareStorageException.class, () -> {
+            SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy("https://error.file.core.windows.net/garbage", testMetadata, null);
+            poller.waitForCompletion();
+        });
+
+        assertTrue(e.getStatusCode() == 400);
+        assertTrue(e.getServiceMessage().contains("InvalidUri"));
+        assertTrue(e.getServiceMessage().contains("The requested URI does not represent any resource on the server."));
     }
 
     @ParameterizedTest

@@ -530,6 +530,19 @@ public class AppendBlobApiTests extends BlobTestBase {
         validateBasicHeaders(response.getHeaders());
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void appendBlockFromURLSourceErrorAndStatusCode() {
+        AppendBlobClient destBlob = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        destBlob.createIfNotExists();
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.appendBlockFromUrl(bc.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)));
+
+        assertTrue(e.getStatusCode() == 409);
+        assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
+        assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
+    }
+
     @Test
     public void appendBlockFromURLRange() {
         byte[] data = getRandomByteArray(4 * 1024);

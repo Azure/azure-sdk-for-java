@@ -4,6 +4,7 @@
 package com.azure.storage.common.policy;
 
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -151,7 +152,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             boolean newConsiderSecondary = considerSecondary;
             int statusCode = response.getStatusCode();
 
-            boolean retry = shouldStatusCodeBeRetried(statusCode, tryingPrimary);
+            boolean retry = shouldResponseBeRetried(statusCode, tryingPrimary, response);
             if (!tryingPrimary && statusCode == 404) {
                 newConsiderSecondary = false;
             }
@@ -266,7 +267,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
 
             boolean newConsiderSecondary = considerSecondary;
             int statusCode = response.getStatusCode();
-            boolean retry = shouldStatusCodeBeRetried(statusCode, tryingPrimary);
+            boolean retry = shouldResponseBeRetried(statusCode, tryingPrimary, response);
             if (!tryingPrimary && statusCode == 404) {
                 newConsiderSecondary = false;
             }
@@ -377,12 +378,26 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         return new ExceptionRetryStatus(false, unwrappedThrowable);
     }
 
-    static boolean shouldStatusCodeBeRetried(int statusCode, boolean isPrimary) {
+    static boolean shouldResponseBeRetried(int statusCode, boolean isPrimary, HttpResponse response) {
         /*
          * Retry the request if the server had an error (500), was unavailable (503), or requested a backoff (429),
          * or if the secondary was being tried and the resources didn't exist there (404). Only the secondary can retry
          * if the resource wasn't found as there may be a delay in replication from the primary.
          */
+        if (response != null) {
+            String headerValue = response.getHeaders().getValue(HttpHeaderName.fromString("x-ms-copy-source-error-code"));
+            if (response.getStatusCode() >= 400 && headerValue != null) {
+                switch (headerValue) {
+                    case "" + 429:
+                    case "" + 500:
+                    case "" + 503:
+                        return true;
+                    case "" + 404:
+                        if(!isPrimary) return true;
+                }
+            }
+            return false;
+        }
         return (statusCode == 429 || statusCode == 500 || statusCode == 503)
             || (!isPrimary && statusCode == 404);
     }

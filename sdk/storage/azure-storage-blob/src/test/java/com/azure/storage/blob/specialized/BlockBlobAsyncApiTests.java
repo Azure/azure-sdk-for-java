@@ -422,6 +422,22 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void stageBlockFromUrlSourceErrorAndStatusCode() {
+        BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+
+        String blockID = getBlockID();
+
+        StepVerifier.create(destBlob.stageBlockFromUrl(blockID, blockBlobAsyncClient.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)))
+            .verifyErrorSatisfies(r -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+                assertTrue(e.getStatusCode() == 409);
+                assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
+                assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
+            });
+    }
+
     @Test
     public void stageBlockFromUrlMin() {
         BlockBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
@@ -2351,6 +2367,20 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blobAsyncClient.downloadStream()))
             .assertNext(r -> TestUtils.assertArraysEqual(DATA.getDefaultBytes(), r))
             .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void uploadFromUrlSourceErrorAndStatusCode() {
+        BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+
+        StepVerifier.create(destBlob.uploadFromUrl(blockBlobAsyncClient.getBlobUrl()))
+            .verifyErrorSatisfies(r -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+                assertTrue(e.getStatusCode() == 409);
+                assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
+                assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
+            });
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")

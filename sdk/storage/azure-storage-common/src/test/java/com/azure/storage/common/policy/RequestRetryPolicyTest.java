@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.policy;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -250,7 +251,17 @@ public class RequestRetryPolicyTest {
     @ParameterizedTest
     @MethodSource("retryPolicyRetriesStatusCodeSupplier")
     public void retryPolicyRetriesStatusCode(int statusCode, boolean isPrimary, boolean shouldBeRetried) {
-        assertEquals(shouldBeRetried, RequestRetryPolicy.shouldStatusCodeBeRetried(statusCode, isPrimary));
+        assertEquals(shouldBeRetried, RequestRetryPolicy.shouldResponseBeRetried(statusCode, isPrimary, null));
+    }
+
+    @ParameterizedTest
+    @MethodSource("retryPolicyRetriesStatusCodeSupplier")
+    public void retryPolicyRetriesResponse(int statusCode, boolean isPrimary, boolean shouldBeRetried) {
+        MockHttpResponse response = new MockHttpResponse(null, 404,
+            new HttpHeaders().set(HttpHeaderName.fromString("x-ms-copy-source-error-code"), "" + statusCode));
+
+        assertEquals(shouldBeRetried, RequestRetryPolicy.shouldResponseBeRetried(0, isPrimary, response));
+
     }
 
     private static Mono<HttpResponse> sendRequest(HttpPipeline pipeline) {

@@ -1524,8 +1524,7 @@ public final class BlobContainerAsyncClient {
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return this.azureBlobStorage.getContainers().getAccountInfoWithResponseAsync(containerName, null,
-            null, context)
+        return this.azureBlobStorage.getContainers().getAccountInfoWithResponseAsync(containerName, context)
             .map(rb -> {
                 ContainersGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
                 return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind()));
