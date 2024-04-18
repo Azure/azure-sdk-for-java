@@ -39,10 +39,5 @@ COPY --from=builder /stress/sdk/template/azure-template-stress/target .
 COPY --from=builder /stress/sdk/template/azure-template-stress/src/main/resources/simplehttpserver.crt ./simplehttpserver.crt
 RUN keytool -import -alias test -file ./simplehttpserver.crt -keystore ${JAVA_HOME}/lib/security/cacerts -noprompt -keypass changeit -storepass changeit
 
-# Import fault injector pfxcert
-COPY --from=builder /stress/sdk/template/azure-template-stress/src/main/resources/http-fault-injector.pfx http-fault-injector.pfx
-# RUN keytool -import -alias test -file ./http-fault-injector.pfx -keystore ${JAVA_HOME}/lib/security/cacerts -noprompt -keypass changeit -storepass changeit
-RUN keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias HttpFaultInject -file http-fault-injector.pfx -storepass changeit
-
 # This is never executed (since job yaml overrides it)
 ENTRYPOINT ["bash"]
