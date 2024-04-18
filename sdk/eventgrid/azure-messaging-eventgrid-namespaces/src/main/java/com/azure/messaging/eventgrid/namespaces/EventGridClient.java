@@ -505,7 +505,7 @@ public final class EventGridClient {
             requestOptions.setHeader(HttpHeaderName.fromString("ce-specversion"), "1.0");
             if (event.getTime() != null) {
                 requestOptions.setHeader(HttpHeaderName.fromString("ce-time"),
-                        event.getTime().format(DateTimeFormatter.ISO_DATE_TIME));
+                    event.getTime().format(DateTimeFormatter.ISO_DATE_TIME));
             }
             requestOptions.setHeader(HttpHeaderName.fromString("ce-source"), event.getSource());
             if (event.getSubject() != null) {
@@ -537,8 +537,8 @@ public final class EventGridClient {
             publishCloudEventWithResponse(topicName, event.getData(), requestOptions);
         } else {
             try {
-                BinaryData binaryEvent = BinaryData.fromString(
-                        SERIALIZER.serialize(BinaryData.fromObject(event).toObject(CloudEvent.class), SerializerEncoding.JSON));
+                BinaryData binaryEvent = BinaryData.fromString(SERIALIZER
+                    .serialize(BinaryData.fromObject(event).toObject(CloudEvent.class), SerializerEncoding.JSON));
                 publishCloudEventWithResponse(topicName, binaryEvent, requestOptions);
             } catch (IOException e) {
                 throw logger.logThrowableAsError(new UncheckedIOException(e));

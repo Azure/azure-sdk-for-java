@@ -512,7 +512,7 @@ public final class EventGridAsyncClient {
             requestOptions.setHeader(HttpHeaderName.fromString("ce-specversion"), "1.0");
             if (event.getTime() != null) {
                 requestOptions.setHeader(HttpHeaderName.fromString("ce-time"),
-                        event.getTime().format(DateTimeFormatter.ISO_DATE_TIME));
+                    event.getTime().format(DateTimeFormatter.ISO_DATE_TIME));
             }
             requestOptions.setHeader(HttpHeaderName.fromString("ce-source"), event.getSource());
             if (event.getSubject() != null) {
