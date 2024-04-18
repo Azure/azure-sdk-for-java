@@ -6,16 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Referenced tumbling window trigger dependency.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = TumblingWindowTriggerDependencyReference.class,
+    visible = true)
 @JsonTypeName("TumblingWindowTriggerDependencyReference")
 @Fluent
 public final class TumblingWindowTriggerDependencyReference extends TriggerDependencyReference {
+    /*
+     * The type of dependency reference.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "TumblingWindowTriggerDependencyReference";
+
     /*
      * Timespan applied to the start time of a tumbling window when evaluating dependency.
      */
@@ -23,8 +35,7 @@ public final class TumblingWindowTriggerDependencyReference extends TriggerDepen
     private String offset;
 
     /*
-     * The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be
-     * used.
+     * The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used.
      */
     @JsonProperty(value = "size")
     private String size;
@@ -33,6 +44,16 @@ public final class TumblingWindowTriggerDependencyReference extends TriggerDepen
      * Creates an instance of TumblingWindowTriggerDependencyReference class.
      */
     public TumblingWindowTriggerDependencyReference() {
+    }
+
+    /**
+     * Get the type property: The type of dependency reference.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

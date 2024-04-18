@@ -17,8 +17,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * PrivateEndpointConnectionOperationsClient.
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionOperationsClient.
  */
 public interface PrivateEndpointConnectionOperationsClient {
     /**

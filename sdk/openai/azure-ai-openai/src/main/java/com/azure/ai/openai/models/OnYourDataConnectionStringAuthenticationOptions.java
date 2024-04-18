@@ -7,13 +7,18 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The authentication options for Azure OpenAI On Your Data when using a connection string.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = OnYourDataConnectionStringAuthenticationOptions.class,
+    visible = true)
 @JsonTypeName("connection_string")
 @Immutable
 public final class OnYourDataConnectionStringAuthenticationOptions extends OnYourDataAuthenticationOptions {
@@ -23,7 +28,7 @@ public final class OnYourDataConnectionStringAuthenticationOptions extends OnYou
      */
     @Generated
     @JsonProperty(value = "connection_string")
-    private String connectionString;
+    private final String connectionString;
 
     /**
      * Creates an instance of OnYourDataConnectionStringAuthenticationOptions class.
@@ -45,5 +50,24 @@ public final class OnYourDataConnectionStringAuthenticationOptions extends OnYou
     @Generated
     public String getConnectionString() {
         return this.connectionString;
+    }
+
+    /*
+     * The authentication type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
+    private OnYourDataAuthenticationType type = OnYourDataAuthenticationType.CONNECTION_STRING;
+
+    /**
+     * Get the type property: The authentication type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public OnYourDataAuthenticationType getType() {
+        return this.type;
     }
 }

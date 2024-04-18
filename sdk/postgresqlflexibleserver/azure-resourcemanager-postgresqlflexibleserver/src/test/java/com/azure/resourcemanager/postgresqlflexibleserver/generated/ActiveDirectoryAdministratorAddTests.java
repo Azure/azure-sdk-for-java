@@ -23,8 +23,10 @@ public final class ActiveDirectoryAdministratorAddTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ActiveDirectoryAdministratorAdd model = new ActiveDirectoryAdministratorAdd()
-            .withPrincipalType(PrincipalType.UNKNOWN).withPrincipalName("uv").withTenantId("xpyb");
+        ActiveDirectoryAdministratorAdd model
+            = new ActiveDirectoryAdministratorAdd().withPrincipalType(PrincipalType.UNKNOWN)
+                .withPrincipalName("uv")
+                .withTenantId("xpyb");
         model = BinaryData.fromObject(model).toObject(ActiveDirectoryAdministratorAdd.class);
         Assertions.assertEquals(PrincipalType.UNKNOWN, model.principalType());
         Assertions.assertEquals("uv", model.principalName());

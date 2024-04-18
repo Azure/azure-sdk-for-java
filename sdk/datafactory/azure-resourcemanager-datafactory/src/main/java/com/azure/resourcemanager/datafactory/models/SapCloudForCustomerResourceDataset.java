@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SapCloudForCustomerResourceDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * The path of the SAP Cloud for Customer OData entity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = SapCloudForCustomerResourceDataset.class,
+    visible = true)
 @JsonTypeName("SapCloudForCustomerResource")
 @Fluent
 public final class SapCloudForCustomerResourceDataset extends Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SapCloudForCustomerResource";
+
     /*
      * SAP Cloud For Customer OData resource dataset properties.
      */
@@ -31,6 +43,16 @@ public final class SapCloudForCustomerResourceDataset extends Dataset {
      * Creates an instance of SapCloudForCustomerResourceDataset class.
      */
     public SapCloudForCustomerResourceDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -139,8 +161,9 @@ public final class SapCloudForCustomerResourceDataset extends Dataset {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model SapCloudForCustomerResourceDataset"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model SapCloudForCustomerResourceDataset"));
         } else {
             innerTypeProperties().validate();
         }

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -14,10 +15,21 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * A WebLinkedService that uses client certificate based authentication to communicate with an HTTP endpoint. This
  * scheme follows mutual authentication; the server must also provide valid credentials to the client.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authenticationType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "authenticationType",
+    defaultImpl = WebClientCertificateAuthentication.class,
+    visible = true)
 @JsonTypeName("ClientCertificate")
 @Fluent
 public final class WebClientCertificateAuthentication extends WebLinkedServiceTypeProperties {
+    /*
+     * Type of authentication used to connect to the web table source.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "authenticationType", required = true)
+    private WebAuthenticationType authenticationType = WebAuthenticationType.CLIENT_CERTIFICATE;
+
     /*
      * Base64-encoded contents of a PFX file.
      */
@@ -34,6 +46,16 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
      * Creates an instance of WebClientCertificateAuthentication class.
      */
     public WebClientCertificateAuthentication() {
+    }
+
+    /**
+     * Get the authenticationType property: Type of authentication used to connect to the web table source.
+     * 
+     * @return the authenticationType value.
+     */
+    @Override
+    public WebAuthenticationType authenticationType() {
+        return this.authenticationType;
     }
 
     /**
@@ -94,14 +116,16 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
     public void validate() {
         super.validate();
         if (pfx() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property pfx in model WebClientCertificateAuthentication"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property pfx in model WebClientCertificateAuthentication"));
         } else {
             pfx().validate();
         }
         if (password() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property password in model WebClientCertificateAuthentication"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property password in model WebClientCertificateAuthentication"));
         } else {
             password().validate();
         }
