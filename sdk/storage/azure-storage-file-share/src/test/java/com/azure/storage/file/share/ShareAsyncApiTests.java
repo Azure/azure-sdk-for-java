@@ -91,6 +91,23 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void createShareSasError() {
+        ShareServiceAsyncClient unauthorizedServiceClient = fileServiceBuilderHelper()
+            .sasToken("sig=dummyToken")
+            .buildAsyncClient();
+
+        ShareAsyncClient share = unauthorizedServiceClient.getShareAsyncClient(generateShareName());
+
+        StepVerifier.create(share.create())
+            .verifyErrorSatisfies(r -> {
+                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
+                assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
+                assertTrue(e.getServiceMessage().contains("AuthenticationErrorDetail"));
+            });
+    }
+
     @ParameterizedTest
     @MethodSource("createShareWithArgsSupplier")
     public void createShareWithArgs(Map<String, String> metadata, Integer quota) {

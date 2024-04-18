@@ -154,6 +154,20 @@ public class ShareApiTests extends FileShareTestBase {
             201);
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void createShareSasError() {
+        ShareServiceClient unauthorizedServiceClient = fileServiceBuilderHelper()
+            .sasToken("sig=dummyToken")
+            .buildClient();
+
+        ShareClient share = unauthorizedServiceClient.getShareClient(generateShareName());
+
+        ShareStorageException e = assertThrows(ShareStorageException.class, share::create);
+        assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
+        assertTrue(e.getServiceMessage().contains("AuthenticationErrorDetail"));
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("createShareWithArgsSupplier")
