@@ -20,7 +20,7 @@ public final class AzureGroundingEnhancement {
      */
     @Generated
     @JsonProperty(value = "lines")
-    private List<AzureGroundingEnhancementLine> lines;
+    private final List<AzureGroundingEnhancementLine> lines;
 
     /**
      * Creates an instance of AzureGroundingEnhancement class.
