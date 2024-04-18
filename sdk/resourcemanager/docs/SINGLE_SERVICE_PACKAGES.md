@@ -227,6 +227,8 @@ service
 <details>
 <summary> batch </summary>
 
+* [package-2024-02](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager#tag-package-2024-02)
+    * [1.1.0-beta.4](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-batch/1.1.0-beta.4)
 * [package-2023-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager#tag-package-2023-11)
     * [1.1.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-batch/1.1.0-beta.3)
 * [package-2023-05](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager#tag-package-2023-05)
@@ -401,6 +403,8 @@ service
 <details>
 <summary> containerservicefleet </summary>
 
+* [package-2024-02-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet#tag-package-2024-02-preview)
+    * [1.1.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-containerservicefleet/1.1.0-beta.1)
 * [package-2023-10](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet#tag-package-2023-10)
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-containerservicefleet/1.0.0)
 * [package-2023-08-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet#tag-package-2023-08-preview)
@@ -831,6 +835,8 @@ service
 <details>
 <summary> frontdoor </summary>
 
+* [package-2024-02](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/frontdoor/resource-manager#tag-package-2024-02)
+    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-frontdoor/1.0.0)
 * [package-2022-05](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/frontdoor/resource-manager#tag-package-2022-05)
     * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-frontdoor/1.0.0-beta.3)
 * [package-2020-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/frontdoor/resource-manager#tag-package-2020-11)
@@ -887,6 +893,8 @@ service
 <details>
 <summary> hdinsight-containers </summary>
 
+* [package-preview-2023-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks#tag-package-preview-2023-11)
+    * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hdinsight-containers/1.0.0-beta.2)
 * [package-2023-06-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks#tag-package-2023-06-preview)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hdinsight-containers/1.0.0-beta.1)
 </details>
@@ -904,6 +912,8 @@ service
 <details>
 <summary> healthcareapis </summary>
 
+* [package-2024-03-31](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager#tag-package-2024-03-31)
+    * [1.1.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-healthcareapis/1.1.0)
 * [package-2023-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager#tag-package-2023-11)
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-healthcareapis/1.0.0)
 * [package-2021-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager#tag-package-2021-11)
@@ -1236,6 +1246,14 @@ service
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mediaservices/1.0.0)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mediaservices/1.0.0-beta.2)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mediaservices/1.0.0-beta.1)
+</details>
+
+<br/>
+<details>
+<summary> migrationdiscoverysap </summary>
+
+* [package-preview-2023-10](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/workloads/resource-manager/Microsoft.Workloads/SAPDiscoverySites#tag-package-preview-2023-10)
+    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-migrationdiscoverysap/1.0.0-beta.1)
 </details>
 
 <br/>
@@ -1823,6 +1841,8 @@ service
 <details>
 <summary> sphere </summary>
 
+* [package-2024-04-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sphere/resource-manager#tag-package-2024-04-01)
+    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-sphere/1.0.0)
 * [package-2022-09-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sphere/resource-manager#tag-package-2022-09-01-preview)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-sphere/1.0.0-beta.1)
 </details>
@@ -2034,4 +2054,12 @@ service
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-workloads/1.0.0-beta.2)
 * [package-2021-12-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/workloads/resource-manager#tag-package-2021-12-01-preview)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-workloads/1.0.0-beta.1)
+</details>
+
+<br/>
+<details>
+<summary> workloadssapvirtualinstance </summary>
+
+* [package-preview-2023-10](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance#tag-package-preview-2023-10)
+    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-workloadssapvirtualinstance/1.0.0-beta.1)
 </details>

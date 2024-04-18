@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixes the ServiceBusProcessorClient to signal intermediate errors to the processor handler. ([#39669](https://github.com/Azure/azure-sdk-for-java/issues/39669))
+
 ### Other Changes
 
 ## 7.16.0-beta.1 (2024-03-14)
