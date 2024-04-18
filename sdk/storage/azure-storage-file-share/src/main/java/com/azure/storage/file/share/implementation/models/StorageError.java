@@ -19,6 +19,7 @@ public final class StorageError {
     private String message;
 
     /*
+<<<<<<< HEAD
      * The CopySourceStatusCode property.
      */
     @JsonProperty(value = "CopySourceStatusCode")
@@ -35,6 +36,12 @@ public final class StorageError {
      */
     @JsonProperty(value = "CopySourceErrorMessage")
     private String copySourceErrorMessage;
+
+    /*
+     * The AuthenticationErrorDetail property.
+     */
+    @JsonProperty(value = "AuthenticationErrorDetail")
+    private String authenticationErrorDetail;
 
     /** Creates an instance of StorageError class. */
     public StorageError() {}
@@ -60,6 +67,7 @@ public final class StorageError {
     }
 
     /**
+<<<<<<< HEAD
      * Get the copySourceStatusCode property: The CopySourceStatusCode property.
      *
      * @return the copySourceStatusCode value.
@@ -116,6 +124,26 @@ public final class StorageError {
      */
     public StorageError setCopySourceErrorMessage(String copySourceErrorMessage) {
         this.copySourceErrorMessage = copySourceErrorMessage;
+        return this;
+    }
+
+    /**
+     * Get the authenticationErrorDetail property: The AuthenticationErrorDetail property.
+     *
+     * @return the authenticationErrorDetail value.
+     */
+    public String getAuthenticationErrorDetail() {
+        return this.authenticationErrorDetail;
+    }
+
+    /**
+     * Set the authenticationErrorDetail property: The AuthenticationErrorDetail property.
+     *
+     * @param authenticationErrorDetail the authenticationErrorDetail value to set.
+     * @return the StorageError object itself.
+     */
+    public StorageError setAuthenticationErrorDetail(String authenticationErrorDetail) {
+        this.authenticationErrorDetail = authenticationErrorDetail;
         return this;
     }
 }

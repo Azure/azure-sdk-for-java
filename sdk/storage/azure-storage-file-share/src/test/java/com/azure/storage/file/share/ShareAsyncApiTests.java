@@ -6,6 +6,7 @@ package com.azure.storage.file.share;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareAudience;
@@ -86,6 +87,23 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     public void createShare() {
         StepVerifier.create(primaryShareAsyncClient.createWithResponse(null, (Integer) null))
             .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201)).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void createShareSasError() {
+        ShareServiceAsyncClient unauthorizedServiceClient = fileServiceBuilderHelper()
+            .sasToken("sig=dummyToken")
+            .buildAsyncClient();
+
+        ShareAsyncClient share = unauthorizedServiceClient.getShareAsyncClient(generateShareName());
+
+        StepVerifier.create(share.create())
+            .verifyErrorSatisfies(r -> {
+                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
+                assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
+                assertTrue(e.getServiceMessage().contains("AuthenticationErrorDetail"));
+            });
     }
 
     @ParameterizedTest
