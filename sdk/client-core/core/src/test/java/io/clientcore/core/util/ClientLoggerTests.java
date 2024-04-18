@@ -5,7 +5,8 @@ package io.clientcore.core.util;
 
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.util.DefaultLogger;
-import io.clientcore.core.json.implementation.jackson.core.io.JsonStringEncoder;
+import io.clientcore.core.json.JsonProviders;
+import io.clientcore.core.json.JsonWriter;
 import io.clientcore.core.util.ClientLogger.LogLevel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -34,8 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests for {@link ClientLogger}.
  */
 public class ClientLoggerTests {
-    private static final JsonStringEncoder JSON_STRING_ENCODER = JsonStringEncoder.getInstance();
-    private static final String ESCAPED_NEW_LINE = new String(JSON_STRING_ENCODER.quoteAsString(System.lineSeparator()));
+    private static final String ESCAPED_NEW_LINE = encodedJsonStringNoWrappingQuotes(System.lineSeparator());
     private final AccessibleByteArrayOutputStream logCaptureStream;
     private final Map<String, Object> globalContext;
 
@@ -670,7 +671,7 @@ public class ClientLoggerTests {
         String message = "{\"message\":\"Don't format strings when writing logs, please!\",\"connectionId\":\"foo\",\"linkName\":\"bar\",\"exception.message\":\"" + exceptionMessage + "\"}";
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
             message = message.substring(0, message.length() - 1);
-            message += ",\"exception.stacktrace\":\""  + stackTraceToString(runtimeException) + "\"}";
+            message += ",\"exception.stacktrace\":"  + stackTraceToString(runtimeException) + "}";
         }
 
         assertMessage(
@@ -699,8 +700,7 @@ public class ClientLoggerTests {
         String message = "{\"message\":\"hello world\",\"connectionId\":\"foo\",\"linkName\":\"bar\",\"exception.message\":\"" + exceptionMessage + "\"}";
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
             message = message.substring(0, message.length() - 1);
-            StringBuilder stackTrace = new StringBuilder();
-            message += ",\"exception.stacktrace\":\""  + stackTraceToString(ioException) + "\"}";
+            message += ",\"exception.stacktrace\":"  + stackTraceToString(ioException) + "}";
         }
 
         assertMessage(
@@ -732,7 +732,7 @@ public class ClientLoggerTests {
         String expectedMessage = "{\"message\":\"hello world, \\\"and\\\" {more}\",\"connection\\tId\":\"foo\",\"linkName\":\"\\rbar\",\"exception.message\":\"" + escapedExceptionMessage + "\"}";
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
             expectedMessage = expectedMessage.substring(0, expectedMessage.length() - 1);
-            expectedMessage += ",\"exception.stacktrace\":\""  + stackTraceToString(runtimeException) + "\"}";
+            expectedMessage += ",\"exception.stacktrace\":"  + stackTraceToString(runtimeException) + "}";
         }
 
         assertMessage(
@@ -761,7 +761,7 @@ public class ClientLoggerTests {
         String message = "{\"message\":\"\",\"connectionId\":\"foo\",\"linkName\":\"bar\",\"exception.message\":\"" + exceptionMessage + "\"}";
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
             message = message.substring(0, message.length() - 1);
-            message += ",\"exception.stacktrace\":\"" + stackTraceToString(runtimeException) + "\"}";
+            message += ",\"exception.stacktrace\":" + stackTraceToString(runtimeException) + "}";
         }
 
         assertMessage(
@@ -790,7 +790,7 @@ public class ClientLoggerTests {
         String message = "{\"message\":\"\",\"connectionId\":\"foo\",\"linkName\":\"bar\",\"exception.message\":\"" + exceptionMessage + "\"}";
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
             message = message.substring(0, message.length() - 1);
-            message += ",\"exception.stacktrace\":\""  + stackTraceToString(ioException) + "\"}";
+            message += ",\"exception.stacktrace\":"  + stackTraceToString(ioException) + "}";
         }
 
         assertMessage(
@@ -834,9 +834,23 @@ public class ClientLoggerTests {
     private String stackTraceToString(Throwable exception) {
         StringWriter stringWriter = new StringWriter();
         exception.printStackTrace(new PrintWriter(stringWriter));
-        StringBuilder sb = new StringBuilder();
-        JSON_STRING_ENCODER.quoteAsString(stringWriter.toString().trim(), sb);
-        return sb.toString();
+        return encodedJsonString(stringWriter.toString().trim());
+    }
+
+    private static String encodedJsonStringNoWrappingQuotes(String toEncode) {
+        String encoded = encodedJsonString(toEncode);
+        return encoded.substring(1, encoded.length() - 1);
+    }
+
+    private static String encodedJsonString(String toEncode) {
+        try (AccessibleByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
+            JsonWriter jsonWriter = JsonProviders.createWriter(stream)) {
+            jsonWriter.writeString(toEncode).flush();
+
+            return stream.toString(StandardCharsets.UTF_8);
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 
     private ClientLogger setupLogLevelAndGetLogger(LogLevel logLevelToSet) {
