@@ -140,8 +140,12 @@ public final class RetryUtil {
                     break;
 
                 default:
-                    LOGGER.warning("Unknown: '{}'. Using exponential delay. Delay: {}. Max Delay: {}. Max Retries: {}.",
-                        options.getMode(), options.getDelay(), options.getMaxDelay(), options.getMaxRetries());
+                    LOGGER.atWarning()
+                        .addKeyValue("retryMode", options.getMode())
+                        .addKeyValue("delay", options.getDelay())
+                        .addKeyValue("maxDelay", options.getMaxDelay())
+                        .addKeyValue("maxRetries", options.getMaxRetries())
+                        .log("Unknown retry mode. Using Exponential.");
 
                     retryPolicy = new ExponentialAmqpRetryPolicy(options);
                     break;
