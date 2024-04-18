@@ -393,7 +393,11 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                     case "" + 503:
                         return true;
                     case "" + 404:
-                        if(!isPrimary) return true;
+                        if (!isPrimary) {
+                            return true;
+                        }
+                    default:
+                        return false;
                 }
             }
             return false;
