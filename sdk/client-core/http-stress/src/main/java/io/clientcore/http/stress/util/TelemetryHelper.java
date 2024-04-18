@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.sdk.template.stress.util;
+package io.clientcore.http.stress.util;
 
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
-import com.azure.sdk.template.stress.StressOptions;
+import io.clientcore.http.stress.StressOptions;
 import io.clientcore.core.util.ClientLogger;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;

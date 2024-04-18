@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.sdk.template.stress;
+package io.clientcore.http.stress;
 
 import com.azure.perf.test.core.PerfStressOptions;
-import com.azure.sdk.template.stress.util.TelemetryHelper;
+import io.clientcore.http.stress.util.TelemetryHelper;
 import io.clientcore.core.http.client.DefaultHttpClientBuilder;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpLogOptions;
@@ -76,7 +76,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
 
     private HttpRequest createRequest() {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.getHeaders().set(HttpHeaderName.USER_AGENT, "azsdk-java-stress");
+        request.getHeaders().set(HttpHeaderName.USER_AGENT, "azsdk-java-client-core-stress");
         request.getHeaders().set(HttpHeaderName.fromString("x-client-id"), String.valueOf(clientRequestId.incrementAndGet()));
         return request;
     }
