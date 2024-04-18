@@ -14,7 +14,7 @@ public final class SsisEnvironmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SsisEnvironment model = BinaryData.fromString(
-            "{\"type\":\"Folder\",\"folderId\":6476730301086416593,\"variables\":[{\"id\":1857416707926036492,\"name\":\"zuwwzc\",\"description\":\"gbj\",\"dataType\":\"lnqalbsoqxaj\",\"sensitive\":false,\"value\":\"aibqjb\",\"sensitiveValue\":\"bwxuypcuriwll\"}],\"id\":7858141306545546483,\"name\":\"dqtzs\",\"description\":\"lwjxrymiysgh\"}")
+            "{\"type\":\"Environment\",\"folderId\":6476730301086416593,\"variables\":[{\"id\":1857416707926036492,\"name\":\"zuwwzc\",\"description\":\"gbj\",\"dataType\":\"lnqalbsoqxaj\",\"sensitive\":false,\"value\":\"aibqjb\",\"sensitiveValue\":\"bwxuypcuriwll\"}],\"id\":7858141306545546483,\"name\":\"dqtzs\",\"description\":\"lwjxrymiysgh\"}")
             .toObject(SsisEnvironment.class);
         Assertions.assertEquals(7858141306545546483L, model.id());
         Assertions.assertEquals("dqtzs", model.name());
