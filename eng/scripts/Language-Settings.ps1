@@ -163,7 +163,7 @@ function Get-java-DocsMsDevLanguageSpecificPackageInfo($packageInfo, $packageSou
     # through the javadoc, like track 1 libraries whose javadoc.jar files don't contain anything, in
     # the metadata json files.
     # JRS-REMOVE this if statement, it's for diagnostics only
-    if (!($namespaces | Get-Member Count) {
+    if (!($namespaces | Get-Member Count)) {
       LogWarning "Namespaces return from Fetch-Namespaces-From-Javadoc had no Count property. namespaces=$namespaces"
     }
     if ($namespaces.Count -gt 0) {
