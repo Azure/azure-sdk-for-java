@@ -4,6 +4,7 @@
 
 #### Features Added
 * Exposing the `indexQueryMetrics` to the `CosmosConfig` via the `application.properties` configuration file - See [PR 39433](https://github.com/Azure/azure-sdk-for-java/pull/39433).
+* Added support for @Transient annotation - see [PR 39760](https://github.com/Azure/azure-sdk-for-java/pull/39760).
 
 #### Breaking Changes
 
