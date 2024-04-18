@@ -222,18 +222,9 @@ function Fetch-Namespaces-From-Javadoc($package, $groupId, $version) {
         }
     }
 
-    # JRS-REMOVE check the type of namespaces before and after the sort object to ensure that
-    # it's returning an array
-    Write-Host "before Sort-Object, namespaces.GetType().FullName=$($namespaces.GetType().FullName)"
-
     # Ensure that Sort-Object returns an array even if there's only a single object.
     $namespaces = @($namespaces | Sort-Object -Unique)
 
-    # JRS-REMOVE
-    Write-Host "after Sort-Object, namespaces.GetType().FullName=$($namespaces.GetType().FullName)"
-
-    # JRS-REMOVE or possibly leave this in? Right now, it's for diagnostics purposes.
-    Write-Host "Fetching Namespaces returning:"
     $namespaces | Write-Host
     # Make sure this always returns an array
     Write-Output -NoEnumerate $namespaces

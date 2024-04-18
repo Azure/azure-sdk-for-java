@@ -153,8 +153,7 @@ function Get-java-DocsMsDevLanguageSpecificPackageInfo($packageInfo, $packageSou
     if ($packageInfo.DevVersion) {
       $version = $packageInfo.DevVersion
     }
-    $namespaces = @()
-    $namespaces += Fetch-Namespaces-From-Javadoc $packageInfo.Name $packageInfo.Group $version
+    $namespaces = Fetch-Namespaces-From-Javadoc $packageInfo.Name $packageInfo.Group $version
     Write-Host "in Get-java-DocsMsDevLanguageSpecificPackageInfo, namespaces.GetType().FullName=$($namespaces.GetType().FullName)"
     # If there are namespaces found from the javadoc.jar then add them to the packageInfo which
     # will later update the metadata json file in the docs repository. If there aren't any namespaces
@@ -164,12 +163,12 @@ function Get-java-DocsMsDevLanguageSpecificPackageInfo($packageInfo, $packageSou
     # them from the metadata. This allows us to set the namespaces for things that can't be figured out
     # through the javadoc, like track 1 libraries whose javadoc.jar files don't contain anything, in
     # the metadata json files.
-    # JRS-REMOVE this if statement, it's for diagnostics only
-    if (!($namespaces | Get-Member Count)) {
-      LogWarning "Namespaces return from Fetch-Namespaces-From-Javadoc had no Count property. namespaces=$namespaces"
-    }
     if ($namespaces.Count -gt 0) {
+      # JRS-REMOVE this if statement, it's for diagnostics only
+      Write-Host "Get-java-DocsMsDevLanguageSpecificPackageInfo:adding namespaces property"
       $packageInfo | Add-Member -Type NoteProperty -Name "Namespaces" -Value $namespaces
+    } else {
+      Write-Host "Get-java-DocsMsDevLanguageSpecificPackageInfo: no namespaces to add"
     }
   }
   return $packageInfo
