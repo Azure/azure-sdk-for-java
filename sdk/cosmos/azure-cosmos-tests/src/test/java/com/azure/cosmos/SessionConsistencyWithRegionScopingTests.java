@@ -33,6 +33,7 @@ import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -508,6 +509,104 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         } catch (Exception ex) {
             logger.error("Exception occurred : ", ex);
             fail("Document replace operation should have succeeded...");
+        } finally {
+            safeClose(client);
+        }
+    }
+
+    @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
+    public void readYourPatchYourCreate() throws InterruptedException {
+        List<String> preferredRegions = new ArrayList<>(this.writeRegionMap.keySet());
+
+        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
+        CosmosAsyncContainer containerWithSinglePartition = getSharedSinglePartitionCosmosContainer(client);
+
+        Thread.sleep(10_000);
+
+        try {
+            TestObject testObjectToBeCreated = TestObject.create();
+
+            String id = testObjectToBeCreated.getId();
+            String pk = testObjectToBeCreated.getMypk();
+
+            CosmosItemResponse<TestObject> itemResponse = containerWithSinglePartition.createItem(testObjectToBeCreated).block();
+
+            assertThat(itemResponse).isNotNull();
+            assertThat(itemResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
+
+            CosmosPatchOperations patchOperations = CosmosPatchOperations.create().add("/" + "newProperty", "newVal");
+            CosmosItemResponse<TestObject> patchOperationResponse = containerWithSinglePartition.patchItem(id, new PartitionKey(pk), patchOperations, TestObject.class).block();
+
+            assertThat(patchOperationResponse).isNotNull();
+            assertThat(patchOperationResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
+
+            CosmosItemResponse<JsonNode> readOperationResponse = containerWithSinglePartition.readItem(id, new PartitionKey(pk), JsonNode.class).block();
+
+            assertThat(readOperationResponse).isNotNull();
+            assertThat(readOperationResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
+
+            JsonNode itemReadAsJsonNode = readOperationResponse.getItem();
+
+            assertThat(itemReadAsJsonNode).isNotNull();
+            assertThat(itemReadAsJsonNode.get("newProperty")).isNotNull();
+            assertThat(itemReadAsJsonNode.get("newProperty").asText()).isNotNull();
+            assertThat(itemReadAsJsonNode.get("newProperty").asText()).isEqualTo("newVal");
+        } catch (Exception ex) {
+            logger.error("Exception occurred : ", ex);
+            fail("Document patch should have succeeded...");
+        } finally {
+            safeClose(client);
+        }
+    }
+
+    @Test(groups = {"multi-master"}, timeOut = TIMEOUT)
+    public void readYourPatchYourCreate_createInSecondPreferredRegion_readAndPatchInFirstPreferredRegion() throws InterruptedException {
+        List<String> preferredRegions = new ArrayList<>(this.writeRegionMap.keySet());
+
+        assertThat(preferredRegions.size()).isGreaterThan(1);
+
+        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
+        CosmosAsyncContainer containerWithSinglePartition = getSharedSinglePartitionCosmosContainer(client);
+
+        Thread.sleep(10_000);
+
+        try {
+            TestObject testObjectToBeCreated = TestObject.create();
+
+            String id = testObjectToBeCreated.getId();
+            String pk = testObjectToBeCreated.getMypk();
+
+            CosmosItemResponse<TestObject> itemResponse = containerWithSinglePartition
+                .createItem(
+                    testObjectToBeCreated,
+                    new CosmosItemRequestOptions()
+                        .setExcludedRegions(ImmutableList.of(preferredRegions.get(0)))
+                )
+                .block();
+
+            assertThat(itemResponse).isNotNull();
+            assertThat(itemResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
+
+            CosmosPatchOperations patchOperations = CosmosPatchOperations.create().add("/" + "newProperty", "newVal");
+            CosmosItemResponse<TestObject> patchOperationResponse = containerWithSinglePartition.patchItem(id, new PartitionKey(pk), patchOperations, TestObject.class).block();
+
+            assertThat(patchOperationResponse).isNotNull();
+            assertThat(patchOperationResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
+
+            CosmosItemResponse<JsonNode> readOperationResponse = containerWithSinglePartition.readItem(id, new PartitionKey(pk), JsonNode.class).block();
+
+            assertThat(readOperationResponse).isNotNull();
+            assertThat(readOperationResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
+
+            JsonNode itemReadAsJsonNode = readOperationResponse.getItem();
+
+            assertThat(itemReadAsJsonNode).isNotNull();
+            assertThat(itemReadAsJsonNode.get("newProperty")).isNotNull();
+            assertThat(itemReadAsJsonNode.get("newProperty").asText()).isNotNull();
+            assertThat(itemReadAsJsonNode.get("newProperty").asText()).isEqualTo("newVal");
+        } catch (Exception ex) {
+            logger.error("Exception occurred : ", ex);
+            fail("Document patch should have succeeded...");
         } finally {
             safeClose(client);
         }
