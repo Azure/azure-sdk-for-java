@@ -5,27 +5,28 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An environment variable to be set on a Task process.
  */
 @Fluent
-public final class EnvironmentSetting {
+public final class EnvironmentSetting implements JsonSerializable<EnvironmentSetting> {
 
     /*
      * The name of the environment variable.
      */
     @Generated
-    @JsonProperty(value = "name")
     private final String name;
 
     /*
      * The value of the environment variable.
      */
     @Generated
-    @JsonProperty(value = "value")
     private String value;
 
     /**
@@ -34,8 +35,7 @@ public final class EnvironmentSetting {
      * @param name the name value to set.
      */
     @Generated
-    @JsonCreator
-    public EnvironmentSetting(@JsonProperty(value = "name") String name) {
+    public EnvironmentSetting(String name) {
         this.name = name;
     }
 
@@ -69,5 +69,48 @@ public final class EnvironmentSetting {
     public EnvironmentSetting setValue(String value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentSetting from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentSetting if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EnvironmentSetting.
+     */
+    @Generated
+    public static EnvironmentSetting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            String value = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            EnvironmentSetting deserializedEnvironmentSetting = new EnvironmentSetting(name);
+            deserializedEnvironmentSetting.value = value;
+            return deserializedEnvironmentSetting;
+        });
     }
 }

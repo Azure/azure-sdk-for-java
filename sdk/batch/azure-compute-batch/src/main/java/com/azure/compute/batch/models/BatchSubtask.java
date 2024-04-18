@@ -5,97 +5,90 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Information about an Azure Batch subtask.
  */
 @Immutable
-public final class BatchSubtask {
+public final class BatchSubtask implements JsonSerializable<BatchSubtask> {
 
     /*
      * The ID of the subtask.
      */
     @Generated
-    @JsonProperty(value = "id")
     private Integer id;
 
     /*
      * Information about the Compute Node on which the subtask ran.
      */
     @Generated
-    @JsonProperty(value = "nodeInfo")
     private BatchNodeInfo nodeInfo;
 
     /*
      * The time at which the subtask started running. If the subtask has been restarted or retried, this is the most recent time at which the subtask started running.
      */
     @Generated
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The time at which the subtask completed. This property is set only if the subtask is in the Completed state.
      */
     @Generated
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * The exit code of the program specified on the subtask command line. This property is set only if the subtask is in the completed state. In general, the exit code for a process reflects the specific convention implemented by the application developer for that process. If you use the exit code value to make decisions in your code, be sure that you know the exit code convention used by the application process. However, if the Batch service terminates the subtask (due to timeout, or user termination via the API) you may see an operating system-defined exit code.
      */
     @Generated
-    @JsonProperty(value = "exitCode")
     private Integer exitCode;
 
     /*
      * Information about the container under which the Task is executing. This property is set only if the Task runs in a container context.
      */
     @Generated
-    @JsonProperty(value = "containerInfo")
     private BatchTaskContainerExecutionInfo containerInfo;
 
     /*
      * Information describing the Task failure, if any. This property is set only if the Task is in the completed state and encountered a failure.
      */
     @Generated
-    @JsonProperty(value = "failureInfo")
     private BatchTaskFailureInfo failureInfo;
 
     /*
      * The current state of the subtask.
      */
     @Generated
-    @JsonProperty(value = "state")
     private BatchSubtaskState state;
 
     /*
      * The time at which the subtask entered its current state.
      */
     @Generated
-    @JsonProperty(value = "stateTransitionTime")
     private OffsetDateTime stateTransitionTime;
 
     /*
      * The previous state of the subtask. This property is not set if the subtask is in its initial running state.
      */
     @Generated
-    @JsonProperty(value = "previousState")
     private BatchSubtaskState previousState;
 
     /*
      * The time at which the subtask entered its previous state. This property is not set if the subtask is in its initial running state.
      */
     @Generated
-    @JsonProperty(value = "previousStateTransitionTime")
     private OffsetDateTime previousStateTransitionTime;
 
     /*
      * The result of the Task execution. If the value is 'failed', then the details of the failure can be found in the failureInfo property.
      */
     @Generated
-    @JsonProperty(value = "result")
     private BatchTaskExecutionResult result;
 
     /**
@@ -235,5 +228,86 @@ public final class BatchSubtask {
     @Generated
     public BatchTaskExecutionResult getResult() {
         return this.result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("id", this.id);
+        jsonWriter.writeJsonField("nodeInfo", this.nodeInfo);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeNumberField("exitCode", this.exitCode);
+        jsonWriter.writeJsonField("containerInfo", this.containerInfo);
+        jsonWriter.writeJsonField("failureInfo", this.failureInfo);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("stateTransitionTime",
+            this.stateTransitionTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.stateTransitionTime));
+        jsonWriter.writeStringField("previousState", this.previousState == null ? null : this.previousState.toString());
+        jsonWriter.writeStringField("previousStateTransitionTime",
+            this.previousStateTransitionTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.previousStateTransitionTime));
+        jsonWriter.writeStringField("result", this.result == null ? null : this.result.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchSubtask from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchSubtask if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchSubtask.
+     */
+    @Generated
+    public static BatchSubtask fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchSubtask deserializedBatchSubtask = new BatchSubtask();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    deserializedBatchSubtask.id = reader.getNullable(JsonReader::getInt);
+                } else if ("nodeInfo".equals(fieldName)) {
+                    deserializedBatchSubtask.nodeInfo = BatchNodeInfo.fromJson(reader);
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedBatchSubtask.startTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedBatchSubtask.endTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("exitCode".equals(fieldName)) {
+                    deserializedBatchSubtask.exitCode = reader.getNullable(JsonReader::getInt);
+                } else if ("containerInfo".equals(fieldName)) {
+                    deserializedBatchSubtask.containerInfo = BatchTaskContainerExecutionInfo.fromJson(reader);
+                } else if ("failureInfo".equals(fieldName)) {
+                    deserializedBatchSubtask.failureInfo = BatchTaskFailureInfo.fromJson(reader);
+                } else if ("state".equals(fieldName)) {
+                    deserializedBatchSubtask.state = BatchSubtaskState.fromString(reader.getString());
+                } else if ("stateTransitionTime".equals(fieldName)) {
+                    deserializedBatchSubtask.stateTransitionTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("previousState".equals(fieldName)) {
+                    deserializedBatchSubtask.previousState = BatchSubtaskState.fromString(reader.getString());
+                } else if ("previousStateTransitionTime".equals(fieldName)) {
+                    deserializedBatchSubtask.previousStateTransitionTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("result".equals(fieldName)) {
+                    deserializedBatchSubtask.result = BatchTaskExecutionResult.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedBatchSubtask;
+        });
     }
 }

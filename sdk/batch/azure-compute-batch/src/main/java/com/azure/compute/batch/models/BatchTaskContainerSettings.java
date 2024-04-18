@@ -5,41 +5,40 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The container settings for a Task.
  */
 @Fluent
-public final class BatchTaskContainerSettings {
+public final class BatchTaskContainerSettings implements JsonSerializable<BatchTaskContainerSettings> {
 
     /*
      * Additional options to the container create command. These additional options are supplied as arguments to the "docker create" command, in addition to those controlled by the Batch Service.
      */
     @Generated
-    @JsonProperty(value = "containerRunOptions")
     private String containerRunOptions;
 
     /*
      * The Image to use to create the container in which the Task will run. This is the full Image reference, as would be specified to "docker pull". If no tag is provided as part of the Image name, the tag ":latest" is used as a default.
      */
     @Generated
-    @JsonProperty(value = "imageName")
     private final String imageName;
 
     /*
      * The private registry which contains the container Image. This setting can be omitted if was already provided at Pool creation.
      */
     @Generated
-    @JsonProperty(value = "registry")
     private ContainerRegistry registry;
 
     /*
      * The location of the container Task working directory. The default is 'taskWorkingDirectory'.
      */
     @Generated
-    @JsonProperty(value = "workingDirectory")
     private ContainerWorkingDirectory workingDirectory;
 
     /**
@@ -48,8 +47,7 @@ public final class BatchTaskContainerSettings {
      * @param imageName the imageName value to set.
      */
     @Generated
-    @JsonCreator
-    public BatchTaskContainerSettings(@JsonProperty(value = "imageName") String imageName) {
+    public BatchTaskContainerSettings(String imageName) {
         this.imageName = imageName;
     }
 
@@ -137,5 +135,60 @@ public final class BatchTaskContainerSettings {
     public BatchTaskContainerSettings setWorkingDirectory(ContainerWorkingDirectory workingDirectory) {
         this.workingDirectory = workingDirectory;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("imageName", this.imageName);
+        jsonWriter.writeStringField("containerRunOptions", this.containerRunOptions);
+        jsonWriter.writeJsonField("registry", this.registry);
+        jsonWriter.writeStringField("workingDirectory",
+            this.workingDirectory == null ? null : this.workingDirectory.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchTaskContainerSettings from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchTaskContainerSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchTaskContainerSettings.
+     */
+    @Generated
+    public static BatchTaskContainerSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String imageName = null;
+            String containerRunOptions = null;
+            ContainerRegistry registry = null;
+            ContainerWorkingDirectory workingDirectory = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("imageName".equals(fieldName)) {
+                    imageName = reader.getString();
+                } else if ("containerRunOptions".equals(fieldName)) {
+                    containerRunOptions = reader.getString();
+                } else if ("registry".equals(fieldName)) {
+                    registry = ContainerRegistry.fromJson(reader);
+                } else if ("workingDirectory".equals(fieldName)) {
+                    workingDirectory = ContainerWorkingDirectory.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BatchTaskContainerSettings deserializedBatchTaskContainerSettings
+                = new BatchTaskContainerSettings(imageName);
+            deserializedBatchTaskContainerSettings.containerRunOptions = containerRunOptions;
+            deserializedBatchTaskContainerSettings.registry = registry;
+            deserializedBatchTaskContainerSettings.workingDirectory = workingDirectory;
+            return deserializedBatchTaskContainerSettings;
+        });
     }
 }

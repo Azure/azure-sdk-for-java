@@ -5,48 +5,47 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Specifies how the Batch service should respond when the Task completes.
  */
 @Fluent
-public final class ExitConditions {
+public final class ExitConditions implements JsonSerializable<ExitConditions> {
 
     /*
      * A list of individual Task exit codes and how the Batch service should respond to them.
      */
     @Generated
-    @JsonProperty(value = "exitCodes")
     private List<ExitCodeMapping> exitCodes;
 
     /*
      * A list of Task exit code ranges and how the Batch service should respond to them.
      */
     @Generated
-    @JsonProperty(value = "exitCodeRanges")
     private List<ExitCodeRangeMapping> exitCodeRanges;
 
     /*
      * How the Batch service should respond if the Task fails to start due to an error.
      */
     @Generated
-    @JsonProperty(value = "preProcessingError")
     private ExitOptions preProcessingError;
 
     /*
      * How the Batch service should respond if a file upload error occurs. If the Task exited with an exit code that was specified via exitCodes or exitCodeRanges, and then encountered a file upload error, then the action specified by the exit code takes precedence.
      */
     @Generated
-    @JsonProperty(value = "fileUploadError")
     private ExitOptions fileUploadError;
 
     /*
      * How the Batch service should respond if the Task fails with an exit condition not covered by any of the other properties. This value is used if the Task exits with any nonzero exit code not listed in the exitCodes or exitCodeRanges collection, with a pre-processing error if the preProcessingError property is not present, or with a file upload error if the fileUploadError property is not present. If you want non-default behavior on exit code 0, you must list it explicitly using the exitCodes or exitCodeRanges collection.
      */
     @Generated
-    @JsonProperty(value = "default")
     private ExitOptions defaultProperty;
 
     /**
@@ -184,5 +183,57 @@ public final class ExitConditions {
     public ExitConditions setDefaultProperty(ExitOptions defaultProperty) {
         this.defaultProperty = defaultProperty;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("exitCodes", this.exitCodes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("exitCodeRanges", this.exitCodeRanges,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("preProcessingError", this.preProcessingError);
+        jsonWriter.writeJsonField("fileUploadError", this.fileUploadError);
+        jsonWriter.writeJsonField("default", this.defaultProperty);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExitConditions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExitConditions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExitConditions.
+     */
+    @Generated
+    public static ExitConditions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExitConditions deserializedExitConditions = new ExitConditions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("exitCodes".equals(fieldName)) {
+                    List<ExitCodeMapping> exitCodes = reader.readArray(reader1 -> ExitCodeMapping.fromJson(reader1));
+                    deserializedExitConditions.exitCodes = exitCodes;
+                } else if ("exitCodeRanges".equals(fieldName)) {
+                    List<ExitCodeRangeMapping> exitCodeRanges
+                        = reader.readArray(reader1 -> ExitCodeRangeMapping.fromJson(reader1));
+                    deserializedExitConditions.exitCodeRanges = exitCodeRanges;
+                } else if ("preProcessingError".equals(fieldName)) {
+                    deserializedExitConditions.preProcessingError = ExitOptions.fromJson(reader);
+                } else if ("fileUploadError".equals(fieldName)) {
+                    deserializedExitConditions.fileUploadError = ExitOptions.fromJson(reader);
+                } else if ("default".equals(fieldName)) {
+                    deserializedExitConditions.defaultProperty = ExitOptions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedExitConditions;
+        });
     }
 }

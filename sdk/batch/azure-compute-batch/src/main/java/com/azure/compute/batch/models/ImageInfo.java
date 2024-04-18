@@ -5,9 +5,13 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -15,48 +19,42 @@ import java.util.List;
  * information about the Image.
  */
 @Immutable
-public final class ImageInfo {
+public final class ImageInfo implements JsonSerializable<ImageInfo> {
 
     /*
      * The ID of the Compute Node agent SKU which the Image supports.
      */
     @Generated
-    @JsonProperty(value = "nodeAgentSKUId")
     private final String nodeAgentSkuId;
 
     /*
      * The reference to the Azure Virtual Machine's Marketplace Image.
      */
     @Generated
-    @JsonProperty(value = "imageReference")
     private final ImageReference imageReference;
 
     /*
      * The type of operating system (e.g. Windows or Linux) of the Image.
      */
     @Generated
-    @JsonProperty(value = "osType")
     private final OSType osType;
 
     /*
      * The capabilities or features which the Image supports. Not every capability of the Image is listed. Capabilities in this list are considered of special interest and are generally related to integration with other features in the Azure Batch service.
      */
     @Generated
-    @JsonProperty(value = "capabilities")
     private List<String> capabilities;
 
     /*
      * The time when the Azure Batch service will stop accepting create Pool requests for the Image.
      */
     @Generated
-    @JsonProperty(value = "batchSupportEndOfLife")
     private OffsetDateTime batchSupportEndOfLife;
 
     /*
      * Whether the Azure Batch service actively verifies that the Image is compatible with the associated Compute Node agent SKU.
      */
     @Generated
-    @JsonProperty(value = "verificationType")
     private final ImageVerificationType verificationType;
 
     /**
@@ -68,11 +66,8 @@ public final class ImageInfo {
      * @param verificationType the verificationType value to set.
      */
     @Generated
-    @JsonCreator
-    private ImageInfo(@JsonProperty(value = "nodeAgentSKUId") String nodeAgentSkuId,
-        @JsonProperty(value = "imageReference") ImageReference imageReference,
-        @JsonProperty(value = "osType") OSType osType,
-        @JsonProperty(value = "verificationType") ImageVerificationType verificationType) {
+    private ImageInfo(String nodeAgentSkuId, ImageReference imageReference, OSType osType,
+        ImageVerificationType verificationType) {
         this.nodeAgentSkuId = nodeAgentSkuId;
         this.imageReference = imageReference;
         this.osType = osType;
@@ -141,5 +136,70 @@ public final class ImageInfo {
     @Generated
     public ImageVerificationType getVerificationType() {
         return this.verificationType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nodeAgentSKUId", this.nodeAgentSkuId);
+        jsonWriter.writeJsonField("imageReference", this.imageReference);
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
+        jsonWriter.writeStringField("verificationType",
+            this.verificationType == null ? null : this.verificationType.toString());
+        jsonWriter.writeArrayField("capabilities", this.capabilities, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("batchSupportEndOfLife",
+            this.batchSupportEndOfLife == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.batchSupportEndOfLife));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageInfo from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageInfo if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageInfo.
+     */
+    @Generated
+    public static ImageInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String nodeAgentSkuId = null;
+            ImageReference imageReference = null;
+            OSType osType = null;
+            ImageVerificationType verificationType = null;
+            List<String> capabilities = null;
+            OffsetDateTime batchSupportEndOfLife = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("nodeAgentSKUId".equals(fieldName)) {
+                    nodeAgentSkuId = reader.getString();
+                } else if ("imageReference".equals(fieldName)) {
+                    imageReference = ImageReference.fromJson(reader);
+                } else if ("osType".equals(fieldName)) {
+                    osType = OSType.fromString(reader.getString());
+                } else if ("verificationType".equals(fieldName)) {
+                    verificationType = ImageVerificationType.fromString(reader.getString());
+                } else if ("capabilities".equals(fieldName)) {
+                    capabilities = reader.readArray(reader1 -> reader1.getString());
+                } else if ("batchSupportEndOfLife".equals(fieldName)) {
+                    batchSupportEndOfLife
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ImageInfo deserializedImageInfo = new ImageInfo(nodeAgentSkuId, imageReference, osType, verificationType);
+            deserializedImageInfo.capabilities = capabilities;
+            deserializedImageInfo.batchSupportEndOfLife = batchSupportEndOfLife;
+            return deserializedImageInfo;
+        });
     }
 }

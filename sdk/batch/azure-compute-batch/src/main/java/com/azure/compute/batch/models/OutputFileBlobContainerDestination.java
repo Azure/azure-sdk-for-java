@@ -5,42 +5,41 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Specifies a file upload destination within an Azure blob storage container.
  */
 @Fluent
-public final class OutputFileBlobContainerDestination {
+public final class OutputFileBlobContainerDestination implements JsonSerializable<OutputFileBlobContainerDestination> {
 
     /*
      * The destination blob or virtual directory within the Azure Storage container. If filePattern refers to a specific file (i.e. contains no wildcards), then path is the name of the blob to which to upload that file. If filePattern contains one or more wildcards (and therefore may match multiple files), then path is the name of the blob virtual directory (which is prepended to each blob name) to which to upload the file(s). If omitted, file(s) are uploaded to the root of the container with a blob name matching their file name.
      */
     @Generated
-    @JsonProperty(value = "path")
     private String path;
 
     /*
      * The URL of the container within Azure Blob Storage to which to upload the file(s). If not using a managed identity, the URL must include a Shared Access Signature (SAS) granting write permissions to the container.
      */
     @Generated
-    @JsonProperty(value = "containerUrl")
     private final String containerUrl;
 
     /*
      * The reference to the user assigned identity to use to access Azure Blob Storage specified by containerUrl. The identity must have write access to the Azure Blob Storage container.
      */
     @Generated
-    @JsonProperty(value = "identityReference")
     private BatchNodeIdentityReference identityReference;
 
     /*
      * A list of name-value pairs for headers to be used in uploading output files. These headers will be specified when uploading files to Azure Storage. Official document on allowed headers when uploading blobs: https://docs.microsoft.com/en-us/rest/api/storageservices/put-blob#request-headers-all-blob-types.
      */
     @Generated
-    @JsonProperty(value = "uploadHeaders")
     private List<HttpHeader> uploadHeaders;
 
     /**
@@ -49,8 +48,7 @@ public final class OutputFileBlobContainerDestination {
      * @param containerUrl the containerUrl value to set.
      */
     @Generated
-    @JsonCreator
-    public OutputFileBlobContainerDestination(@JsonProperty(value = "containerUrl") String containerUrl) {
+    public OutputFileBlobContainerDestination(String containerUrl) {
         this.containerUrl = containerUrl;
     }
 
@@ -146,5 +144,59 @@ public final class OutputFileBlobContainerDestination {
     public OutputFileBlobContainerDestination setUploadHeaders(List<HttpHeader> uploadHeaders) {
         this.uploadHeaders = uploadHeaders;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("containerUrl", this.containerUrl);
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeJsonField("identityReference", this.identityReference);
+        jsonWriter.writeArrayField("uploadHeaders", this.uploadHeaders, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OutputFileBlobContainerDestination from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OutputFileBlobContainerDestination if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OutputFileBlobContainerDestination.
+     */
+    @Generated
+    public static OutputFileBlobContainerDestination fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String containerUrl = null;
+            String path = null;
+            BatchNodeIdentityReference identityReference = null;
+            List<HttpHeader> uploadHeaders = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("containerUrl".equals(fieldName)) {
+                    containerUrl = reader.getString();
+                } else if ("path".equals(fieldName)) {
+                    path = reader.getString();
+                } else if ("identityReference".equals(fieldName)) {
+                    identityReference = BatchNodeIdentityReference.fromJson(reader);
+                } else if ("uploadHeaders".equals(fieldName)) {
+                    uploadHeaders = reader.readArray(reader1 -> HttpHeader.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            OutputFileBlobContainerDestination deserializedOutputFileBlobContainerDestination
+                = new OutputFileBlobContainerDestination(containerUrl);
+            deserializedOutputFileBlobContainerDestination.path = path;
+            deserializedOutputFileBlobContainerDestination.identityReference = identityReference;
+            deserializedOutputFileBlobContainerDestination.uploadHeaders = uploadHeaders;
+            return deserializedOutputFileBlobContainerDestination;
+        });
     }
 }

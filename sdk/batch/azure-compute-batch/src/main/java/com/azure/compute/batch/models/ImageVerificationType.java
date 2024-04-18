@@ -5,7 +5,6 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -44,7 +43,6 @@ public final class ImageVerificationType extends ExpandableStringEnum<ImageVerif
      * @return the corresponding ImageVerificationType.
      */
     @Generated
-    @JsonCreator
     public static ImageVerificationType fromString(String name) {
         return fromString(name, ImageVerificationType.class);
     }

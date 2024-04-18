@@ -5,27 +5,28 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Task and TaskSlot counts for a Job.
  */
 @Immutable
-public final class BatchTaskCountsResult {
+public final class BatchTaskCountsResult implements JsonSerializable<BatchTaskCountsResult> {
 
     /*
      * The number of Tasks per state.
      */
     @Generated
-    @JsonProperty(value = "taskCounts")
     private final BatchTaskCounts taskCounts;
 
     /*
      * The number of TaskSlots required by Tasks per state.
      */
     @Generated
-    @JsonProperty(value = "taskSlotCounts")
     private final BatchTaskSlotCounts taskSlotCounts;
 
     /**
@@ -35,9 +36,7 @@ public final class BatchTaskCountsResult {
      * @param taskSlotCounts the taskSlotCounts value to set.
      */
     @Generated
-    @JsonCreator
-    private BatchTaskCountsResult(@JsonProperty(value = "taskCounts") BatchTaskCounts taskCounts,
-        @JsonProperty(value = "taskSlotCounts") BatchTaskSlotCounts taskSlotCounts) {
+    private BatchTaskCountsResult(BatchTaskCounts taskCounts, BatchTaskSlotCounts taskSlotCounts) {
         this.taskCounts = taskCounts;
         this.taskSlotCounts = taskSlotCounts;
     }
@@ -60,5 +59,46 @@ public final class BatchTaskCountsResult {
     @Generated
     public BatchTaskSlotCounts getTaskSlotCounts() {
         return this.taskSlotCounts;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("taskCounts", this.taskCounts);
+        jsonWriter.writeJsonField("taskSlotCounts", this.taskSlotCounts);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchTaskCountsResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchTaskCountsResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchTaskCountsResult.
+     */
+    @Generated
+    public static BatchTaskCountsResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchTaskCounts taskCounts = null;
+            BatchTaskSlotCounts taskSlotCounts = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("taskCounts".equals(fieldName)) {
+                    taskCounts = BatchTaskCounts.fromJson(reader);
+                } else if ("taskSlotCounts".equals(fieldName)) {
+                    taskSlotCounts = BatchTaskSlotCounts.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new BatchTaskCountsResult(taskCounts, taskSlotCounts);
+        });
     }
 }

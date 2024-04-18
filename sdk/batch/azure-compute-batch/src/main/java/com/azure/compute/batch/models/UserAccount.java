@@ -5,49 +5,47 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties used to create a user used to execute Tasks on an Azure Batch
  * Compute Node.
  */
 @Fluent
-public final class UserAccount {
+public final class UserAccount implements JsonSerializable<UserAccount> {
 
     /*
      * The name of the user Account. Names can contain any Unicode characters up to a maximum length of 20.
      */
     @Generated
-    @JsonProperty(value = "name")
     private final String name;
 
     /*
      * The password for the user Account.
      */
     @Generated
-    @JsonProperty(value = "password")
     private final String password;
 
     /*
      * The elevation level of the user Account. The default value is nonAdmin.
      */
     @Generated
-    @JsonProperty(value = "elevationLevel")
     private ElevationLevel elevationLevel;
 
     /*
      * The Linux-specific user configuration for the user Account. This property is ignored if specified on a Windows Pool. If not specified, the user is created with the default options.
      */
     @Generated
-    @JsonProperty(value = "linuxUserConfiguration")
     private LinuxUserConfiguration linuxUserConfiguration;
 
     /*
      * The Windows-specific user configuration for the user Account. This property can only be specified if the user is on a Windows Pool. If not specified and on a Windows Pool, the user is created with the default options.
      */
     @Generated
-    @JsonProperty(value = "windowsUserConfiguration")
     private WindowsUserConfiguration windowsUserConfiguration;
 
     /**
@@ -57,8 +55,7 @@ public final class UserAccount {
      * @param password the password value to set.
      */
     @Generated
-    @JsonCreator
-    public UserAccount(@JsonProperty(value = "name") String name, @JsonProperty(value = "password") String password) {
+    public UserAccount(String name, String password) {
         this.name = name;
         this.password = password;
     }
@@ -156,5 +153,63 @@ public final class UserAccount {
     public UserAccount setWindowsUserConfiguration(WindowsUserConfiguration windowsUserConfiguration) {
         this.windowsUserConfiguration = windowsUserConfiguration;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("elevationLevel",
+            this.elevationLevel == null ? null : this.elevationLevel.toString());
+        jsonWriter.writeJsonField("linuxUserConfiguration", this.linuxUserConfiguration);
+        jsonWriter.writeJsonField("windowsUserConfiguration", this.windowsUserConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserAccount from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserAccount if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserAccount.
+     */
+    @Generated
+    public static UserAccount fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            String password = null;
+            ElevationLevel elevationLevel = null;
+            LinuxUserConfiguration linuxUserConfiguration = null;
+            WindowsUserConfiguration windowsUserConfiguration = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    password = reader.getString();
+                } else if ("elevationLevel".equals(fieldName)) {
+                    elevationLevel = ElevationLevel.fromString(reader.getString());
+                } else if ("linuxUserConfiguration".equals(fieldName)) {
+                    linuxUserConfiguration = LinuxUserConfiguration.fromJson(reader);
+                } else if ("windowsUserConfiguration".equals(fieldName)) {
+                    windowsUserConfiguration = WindowsUserConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            UserAccount deserializedUserAccount = new UserAccount(name, password);
+            deserializedUserAccount.elevationLevel = elevationLevel;
+            deserializedUserAccount.linuxUserConfiguration = linuxUserConfiguration;
+            deserializedUserAccount.windowsUserConfiguration = windowsUserConfiguration;
+            return deserializedUserAccount;
+        });
     }
 }

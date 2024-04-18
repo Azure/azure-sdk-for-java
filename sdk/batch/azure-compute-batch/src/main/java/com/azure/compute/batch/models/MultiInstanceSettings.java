@@ -5,8 +5,11 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -16,27 +19,24 @@ import java.util.List;
  * terminated and retried, up to its retry limit.
  */
 @Fluent
-public final class MultiInstanceSettings {
+public final class MultiInstanceSettings implements JsonSerializable<MultiInstanceSettings> {
 
     /*
      * The number of Compute Nodes required by the Task. If omitted, the default is 1.
      */
     @Generated
-    @JsonProperty(value = "numberOfInstances")
     private Integer numberOfInstances;
 
     /*
      * The command line to run on all the Compute Nodes to enable them to coordinate when the primary runs the main Task command. A typical coordination command line launches a background service and verifies that the service is ready to process inter-node messages.
      */
     @Generated
-    @JsonProperty(value = "coordinationCommandLine")
     private final String coordinationCommandLine;
 
     /*
      * A list of files that the Batch service will download before running the coordination command line. The difference between common resource files and Task resource files is that common resource files are downloaded for all subtasks including the primary, whereas Task resource files are downloaded only for the primary. Also note that these resource files are not downloaded to the Task working directory, but instead are downloaded to the Task root directory (one directory above the working directory).  There is a maximum size for the list of resource files.  When the max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
      */
     @Generated
-    @JsonProperty(value = "commonResourceFiles")
     private List<ResourceFile> commonResourceFiles;
 
     /**
@@ -45,8 +45,7 @@ public final class MultiInstanceSettings {
      * @param coordinationCommandLine the coordinationCommandLine value to set.
      */
     @Generated
-    @JsonCreator
-    public MultiInstanceSettings(@JsonProperty(value = "coordinationCommandLine") String coordinationCommandLine) {
+    public MultiInstanceSettings(String coordinationCommandLine) {
         this.coordinationCommandLine = coordinationCommandLine;
     }
 
@@ -120,5 +119,55 @@ public final class MultiInstanceSettings {
     public MultiInstanceSettings setCommonResourceFiles(List<ResourceFile> commonResourceFiles) {
         this.commonResourceFiles = commonResourceFiles;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("coordinationCommandLine", this.coordinationCommandLine);
+        jsonWriter.writeNumberField("numberOfInstances", this.numberOfInstances);
+        jsonWriter.writeArrayField("commonResourceFiles", this.commonResourceFiles,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MultiInstanceSettings from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MultiInstanceSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MultiInstanceSettings.
+     */
+    @Generated
+    public static MultiInstanceSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String coordinationCommandLine = null;
+            Integer numberOfInstances = null;
+            List<ResourceFile> commonResourceFiles = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("coordinationCommandLine".equals(fieldName)) {
+                    coordinationCommandLine = reader.getString();
+                } else if ("numberOfInstances".equals(fieldName)) {
+                    numberOfInstances = reader.getNullable(JsonReader::getInt);
+                } else if ("commonResourceFiles".equals(fieldName)) {
+                    commonResourceFiles = reader.readArray(reader1 -> ResourceFile.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            MultiInstanceSettings deserializedMultiInstanceSettings
+                = new MultiInstanceSettings(coordinationCommandLine);
+            deserializedMultiInstanceSettings.numberOfInstances = numberOfInstances;
+            deserializedMultiInstanceSettings.commonResourceFiles = commonResourceFiles;
+            return deserializedMultiInstanceSettings;
+        });
     }
 }

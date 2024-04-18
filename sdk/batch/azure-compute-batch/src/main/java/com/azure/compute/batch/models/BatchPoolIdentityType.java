@@ -5,7 +5,6 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class BatchPoolIdentityType extends ExpandableStringEnum<BatchPoolI
      * @return the corresponding BatchPoolIdentityType.
      */
     @Generated
-    @JsonCreator
     public static BatchPoolIdentityType fromString(String name) {
         return fromString(name, BatchPoolIdentityType.class);
     }

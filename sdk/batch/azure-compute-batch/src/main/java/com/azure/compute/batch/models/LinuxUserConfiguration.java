@@ -5,33 +5,34 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties used to create a user Account on a Linux Compute Node.
  */
 @Fluent
-public final class LinuxUserConfiguration {
+public final class LinuxUserConfiguration implements JsonSerializable<LinuxUserConfiguration> {
 
     /*
      * The user ID of the user Account. The uid and gid properties must be specified together or not at all. If not specified the underlying operating system picks the uid.
      */
     @Generated
-    @JsonProperty(value = "uid")
     private Integer uid;
 
     /*
      * The group ID for the user Account. The uid and gid properties must be specified together or not at all. If not specified the underlying operating system picks the gid.
      */
     @Generated
-    @JsonProperty(value = "gid")
     private Integer gid;
 
     /*
      * The SSH private key for the user Account. The private key must not be password protected. The private key is used to automatically configure asymmetric-key based authentication for SSH between Compute Nodes in a Linux Pool when the Pool's enableInterNodeCommunication property is true (it is ignored if enableInterNodeCommunication is false). It does this by placing the key pair into the user's .ssh directory. If not specified, password-less SSH is not configured between Compute Nodes (no modification of the user's .ssh directory is done).
      */
     @Generated
-    @JsonProperty(value = "sshPrivateKey")
     private String sshPrivateKey;
 
     /**
@@ -119,5 +120,47 @@ public final class LinuxUserConfiguration {
     public LinuxUserConfiguration setSshPrivateKey(String sshPrivateKey) {
         this.sshPrivateKey = sshPrivateKey;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("uid", this.uid);
+        jsonWriter.writeNumberField("gid", this.gid);
+        jsonWriter.writeStringField("sshPrivateKey", this.sshPrivateKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinuxUserConfiguration from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinuxUserConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinuxUserConfiguration.
+     */
+    @Generated
+    public static LinuxUserConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinuxUserConfiguration deserializedLinuxUserConfiguration = new LinuxUserConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("uid".equals(fieldName)) {
+                    deserializedLinuxUserConfiguration.uid = reader.getNullable(JsonReader::getInt);
+                } else if ("gid".equals(fieldName)) {
+                    deserializedLinuxUserConfiguration.gid = reader.getNullable(JsonReader::getInt);
+                } else if ("sshPrivateKey".equals(fieldName)) {
+                    deserializedLinuxUserConfiguration.sshPrivateKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedLinuxUserConfiguration;
+        });
     }
 }

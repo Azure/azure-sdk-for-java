@@ -5,20 +5,23 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies the ephemeral Disk Settings for the operating system disk used by the
  * compute node (VM).
  */
 @Fluent
-public final class DiffDiskSettings {
+public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings> {
 
     /*
      * Specifies the ephemeral disk placement for operating system disk for all VMs in the pool. This property can be used by user in the request to choose the location e.g., cache disk space for Ephemeral OS disk provisioning. For more information on Ephemeral OS disk size requirements, please refer to Ephemeral OS disk size requirements for Windows VMs at https://docs.microsoft.com/en-us/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements and Linux VMs at https://docs.microsoft.com/en-us/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements.
      */
     @Generated
-    @JsonProperty(value = "placement")
     private DiffDiskPlacement placement;
 
     /**
@@ -58,5 +61,41 @@ public final class DiffDiskSettings {
     public DiffDiskSettings setPlacement(DiffDiskPlacement placement) {
         this.placement = placement;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("placement", this.placement == null ? null : this.placement.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiffDiskSettings from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiffDiskSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiffDiskSettings.
+     */
+    @Generated
+    public static DiffDiskSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiffDiskSettings deserializedDiffDiskSettings = new DiffDiskSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("placement".equals(fieldName)) {
+                    deserializedDiffDiskSettings.placement = DiffDiskPlacement.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedDiffDiskSettings;
+        });
     }
 }

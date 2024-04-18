@@ -5,33 +5,34 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The configuration for virtual machine extension instance view.
  */
 @Immutable
-public final class BatchNodeVMExtension {
+public final class BatchNodeVMExtension implements JsonSerializable<BatchNodeVMExtension> {
 
     /*
      * The provisioning state of the virtual machine extension.
      */
     @Generated
-    @JsonProperty(value = "provisioningState")
     private String provisioningState;
 
     /*
      * The virtual machine extension.
      */
     @Generated
-    @JsonProperty(value = "vmExtension")
     private VMExtension vmExtension;
 
     /*
      * The vm extension instance view.
      */
     @Generated
-    @JsonProperty(value = "instanceView")
     private VMExtensionInstanceView instanceView;
 
     /**
@@ -69,5 +70,47 @@ public final class BatchNodeVMExtension {
     @Generated
     public VMExtensionInstanceView getInstanceView() {
         return this.instanceView;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provisioningState", this.provisioningState);
+        jsonWriter.writeJsonField("vmExtension", this.vmExtension);
+        jsonWriter.writeJsonField("instanceView", this.instanceView);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchNodeVMExtension from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchNodeVMExtension if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchNodeVMExtension.
+     */
+    @Generated
+    public static BatchNodeVMExtension fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchNodeVMExtension deserializedBatchNodeVMExtension = new BatchNodeVMExtension();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedBatchNodeVMExtension.provisioningState = reader.getString();
+                } else if ("vmExtension".equals(fieldName)) {
+                    deserializedBatchNodeVMExtension.vmExtension = VMExtension.fromJson(reader);
+                } else if ("instanceView".equals(fieldName)) {
+                    deserializedBatchNodeVMExtension.instanceView = VMExtensionInstanceView.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedBatchNodeVMExtension;
+        });
     }
 }

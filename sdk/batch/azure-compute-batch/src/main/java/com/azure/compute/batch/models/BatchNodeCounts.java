@@ -5,111 +5,100 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The number of Compute Nodes in each Compute Node state.
  */
 @Immutable
-public final class BatchNodeCounts {
+public final class BatchNodeCounts implements JsonSerializable<BatchNodeCounts> {
 
     /*
      * The number of Compute Nodes in the creating state.
      */
     @Generated
-    @JsonProperty(value = "creating")
     private final int creating;
 
     /*
      * The number of Compute Nodes in the idle state.
      */
     @Generated
-    @JsonProperty(value = "idle")
     private final int idle;
 
     /*
      * The number of Compute Nodes in the offline state.
      */
     @Generated
-    @JsonProperty(value = "offline")
     private final int offline;
 
     /*
      * The number of Compute Nodes in the preempted state.
      */
     @Generated
-    @JsonProperty(value = "preempted")
     private final int preempted;
 
     /*
      * The count of Compute Nodes in the rebooting state.
      */
     @Generated
-    @JsonProperty(value = "rebooting")
     private final int rebooting;
 
     /*
      * The number of Compute Nodes in the reimaging state.
      */
     @Generated
-    @JsonProperty(value = "reimaging")
     private final int reimaging;
 
     /*
      * The number of Compute Nodes in the running state.
      */
     @Generated
-    @JsonProperty(value = "running")
     private final int running;
 
     /*
      * The number of Compute Nodes in the starting state.
      */
     @Generated
-    @JsonProperty(value = "starting")
     private final int starting;
 
     /*
      * The number of Compute Nodes in the startTaskFailed state.
      */
     @Generated
-    @JsonProperty(value = "startTaskFailed")
     private final int startTaskFailed;
 
     /*
      * The number of Compute Nodes in the leavingPool state.
      */
     @Generated
-    @JsonProperty(value = "leavingPool")
     private final int leavingPool;
 
     /*
      * The number of Compute Nodes in the unknown state.
      */
     @Generated
-    @JsonProperty(value = "unknown")
     private final int unknown;
 
     /*
      * The number of Compute Nodes in the unusable state.
      */
     @Generated
-    @JsonProperty(value = "unusable")
     private final int unusable;
 
     /*
      * The number of Compute Nodes in the waitingForStartTask state.
      */
     @Generated
-    @JsonProperty(value = "waitingForStartTask")
     private final int waitingForStartTask;
 
     /*
      * The total number of Compute Nodes.
      */
     @Generated
-    @JsonProperty(value = "total")
     private final int total;
 
     /**
@@ -272,16 +261,9 @@ public final class BatchNodeCounts {
      * @param upgradingOs the upgradingOs value to set.
      */
     @Generated
-    @JsonCreator
-    private BatchNodeCounts(@JsonProperty(value = "creating") int creating, @JsonProperty(value = "idle") int idle,
-        @JsonProperty(value = "offline") int offline, @JsonProperty(value = "preempted") int preempted,
-        @JsonProperty(value = "rebooting") int rebooting, @JsonProperty(value = "reimaging") int reimaging,
-        @JsonProperty(value = "running") int running, @JsonProperty(value = "starting") int starting,
-        @JsonProperty(value = "startTaskFailed") int startTaskFailed,
-        @JsonProperty(value = "leavingPool") int leavingPool, @JsonProperty(value = "unknown") int unknown,
-        @JsonProperty(value = "unusable") int unusable,
-        @JsonProperty(value = "waitingForStartTask") int waitingForStartTask, @JsonProperty(value = "total") int total,
-        @JsonProperty(value = "upgradingOS") int upgradingOs) {
+    private BatchNodeCounts(int creating, int idle, int offline, int preempted, int rebooting, int reimaging,
+        int running, int starting, int startTaskFailed, int leavingPool, int unknown, int unusable,
+        int waitingForStartTask, int total, int upgradingOs) {
         this.creating = creating;
         this.idle = idle;
         this.offline = offline;
@@ -303,7 +285,6 @@ public final class BatchNodeCounts {
      * The number of Compute Nodes in the upgradingOS state.
      */
     @Generated
-    @JsonProperty(value = "upgradingOS")
     private final int upgradingOs;
 
     /**
@@ -314,5 +295,99 @@ public final class BatchNodeCounts {
     @Generated
     public int getUpgradingOs() {
         return this.upgradingOs;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("creating", this.creating);
+        jsonWriter.writeIntField("idle", this.idle);
+        jsonWriter.writeIntField("offline", this.offline);
+        jsonWriter.writeIntField("preempted", this.preempted);
+        jsonWriter.writeIntField("rebooting", this.rebooting);
+        jsonWriter.writeIntField("reimaging", this.reimaging);
+        jsonWriter.writeIntField("running", this.running);
+        jsonWriter.writeIntField("starting", this.starting);
+        jsonWriter.writeIntField("startTaskFailed", this.startTaskFailed);
+        jsonWriter.writeIntField("leavingPool", this.leavingPool);
+        jsonWriter.writeIntField("unknown", this.unknown);
+        jsonWriter.writeIntField("unusable", this.unusable);
+        jsonWriter.writeIntField("waitingForStartTask", this.waitingForStartTask);
+        jsonWriter.writeIntField("total", this.total);
+        jsonWriter.writeIntField("upgradingOS", this.upgradingOs);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchNodeCounts from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchNodeCounts if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchNodeCounts.
+     */
+    @Generated
+    public static BatchNodeCounts fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            int creating = 0;
+            int idle = 0;
+            int offline = 0;
+            int preempted = 0;
+            int rebooting = 0;
+            int reimaging = 0;
+            int running = 0;
+            int starting = 0;
+            int startTaskFailed = 0;
+            int leavingPool = 0;
+            int unknown = 0;
+            int unusable = 0;
+            int waitingForStartTask = 0;
+            int total = 0;
+            int upgradingOs = 0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("creating".equals(fieldName)) {
+                    creating = reader.getInt();
+                } else if ("idle".equals(fieldName)) {
+                    idle = reader.getInt();
+                } else if ("offline".equals(fieldName)) {
+                    offline = reader.getInt();
+                } else if ("preempted".equals(fieldName)) {
+                    preempted = reader.getInt();
+                } else if ("rebooting".equals(fieldName)) {
+                    rebooting = reader.getInt();
+                } else if ("reimaging".equals(fieldName)) {
+                    reimaging = reader.getInt();
+                } else if ("running".equals(fieldName)) {
+                    running = reader.getInt();
+                } else if ("starting".equals(fieldName)) {
+                    starting = reader.getInt();
+                } else if ("startTaskFailed".equals(fieldName)) {
+                    startTaskFailed = reader.getInt();
+                } else if ("leavingPool".equals(fieldName)) {
+                    leavingPool = reader.getInt();
+                } else if ("unknown".equals(fieldName)) {
+                    unknown = reader.getInt();
+                } else if ("unusable".equals(fieldName)) {
+                    unusable = reader.getInt();
+                } else if ("waitingForStartTask".equals(fieldName)) {
+                    waitingForStartTask = reader.getInt();
+                } else if ("total".equals(fieldName)) {
+                    total = reader.getInt();
+                } else if ("upgradingOS".equals(fieldName)) {
+                    upgradingOs = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new BatchNodeCounts(creating, idle, offline, preempted, rebooting, reimaging, running, starting,
+                startTaskFailed, leavingPool, unknown, unusable, waitingForStartTask, total, upgradingOs);
+        });
     }
 }

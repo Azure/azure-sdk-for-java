@@ -5,36 +5,38 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Statistics related to Pool usage information.
  */
 @Immutable
-public final class BatchPoolUsageStatistics {
+public final class BatchPoolUsageStatistics implements JsonSerializable<BatchPoolUsageStatistics> {
 
     /*
      * The start time of the time range covered by the statistics.
      */
     @Generated
-    @JsonProperty(value = "startTime")
     private final OffsetDateTime startTime;
 
     /*
      * The time at which the statistics were last updated. All statistics are limited to the range between startTime and lastUpdateTime.
      */
     @Generated
-    @JsonProperty(value = "lastUpdateTime")
     private final OffsetDateTime lastUpdateTime;
 
     /*
      * The aggregated wall-clock time of the dedicated Compute Node cores being part of the Pool.
      */
     @Generated
-    @JsonProperty(value = "dedicatedCoreTime")
     private final Duration dedicatedCoreTime;
 
     /**
@@ -45,10 +47,8 @@ public final class BatchPoolUsageStatistics {
      * @param dedicatedCoreTime the dedicatedCoreTime value to set.
      */
     @Generated
-    @JsonCreator
-    private BatchPoolUsageStatistics(@JsonProperty(value = "startTime") OffsetDateTime startTime,
-        @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
-        @JsonProperty(value = "dedicatedCoreTime") Duration dedicatedCoreTime) {
+    private BatchPoolUsageStatistics(OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
+        Duration dedicatedCoreTime) {
         this.startTime = startTime;
         this.lastUpdateTime = lastUpdateTime;
         this.dedicatedCoreTime = dedicatedCoreTime;
@@ -84,5 +84,53 @@ public final class BatchPoolUsageStatistics {
     @Generated
     public Duration getDedicatedCoreTime() {
         return this.dedicatedCoreTime;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("lastUpdateTime",
+            this.lastUpdateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdateTime));
+        jsonWriter.writeStringField("dedicatedCoreTime", CoreUtils.durationToStringWithDays(this.dedicatedCoreTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchPoolUsageStatistics from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchPoolUsageStatistics if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchPoolUsageStatistics.
+     */
+    @Generated
+    public static BatchPoolUsageStatistics fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OffsetDateTime startTime = null;
+            OffsetDateTime lastUpdateTime = null;
+            Duration dedicatedCoreTime = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("startTime".equals(fieldName)) {
+                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("lastUpdateTime".equals(fieldName)) {
+                    lastUpdateTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("dedicatedCoreTime".equals(fieldName)) {
+                    dedicatedCoreTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new BatchPoolUsageStatistics(startTime, lastUpdateTime, dedicatedCoreTime);
+        });
     }
 }

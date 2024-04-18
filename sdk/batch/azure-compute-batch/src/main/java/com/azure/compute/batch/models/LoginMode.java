@@ -5,7 +5,6 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -46,7 +45,6 @@ public final class LoginMode extends ExpandableStringEnum<LoginMode> {
      * @return the corresponding LoginMode.
      */
     @Generated
-    @JsonCreator
     public static LoginMode fromString(String name) {
         return fromString(name, LoginMode.class);
     }

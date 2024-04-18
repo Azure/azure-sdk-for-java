@@ -5,42 +5,42 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The Azure Batch service log files upload parameters for a Compute Node.
  */
 @Fluent
-public final class UploadBatchServiceLogsContent {
+public final class UploadBatchServiceLogsContent implements JsonSerializable<UploadBatchServiceLogsContent> {
 
     /*
      * The URL of the container within Azure Blob Storage to which to upload the Batch Service log file(s). If a user assigned managed identity is not being used, the URL must include a Shared Access Signature (SAS) granting write permissions to the container. The SAS duration must allow enough time for the upload to finish. The start time for SAS is optional and recommended to not be specified.
      */
     @Generated
-    @JsonProperty(value = "containerUrl")
     private final String containerUrl;
 
     /*
      * The start of the time range from which to upload Batch Service log file(s). Any log file containing a log message in the time range will be uploaded. This means that the operation might retrieve more logs than have been requested since the entire log file is always uploaded, but the operation should not retrieve fewer logs than have been requested.
      */
     @Generated
-    @JsonProperty(value = "startTime")
     private final OffsetDateTime startTime;
 
     /*
      * The end of the time range from which to upload Batch Service log file(s). Any log file containing a log message in the time range will be uploaded. This means that the operation might retrieve more logs than have been requested since the entire log file is always uploaded, but the operation should not retrieve fewer logs than have been requested. If omitted, the default is to upload all logs available after the startTime.
      */
     @Generated
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * The reference to the user assigned identity to use to access Azure Blob Storage specified by containerUrl. The identity must have write access to the Azure Blob Storage container.
      */
     @Generated
-    @JsonProperty(value = "identityReference")
     private BatchNodeIdentityReference identityReference;
 
     /**
@@ -50,9 +50,7 @@ public final class UploadBatchServiceLogsContent {
      * @param startTime the startTime value to set.
      */
     @Generated
-    @JsonCreator
-    public UploadBatchServiceLogsContent(@JsonProperty(value = "containerUrl") String containerUrl,
-        @JsonProperty(value = "startTime") OffsetDateTime startTime) {
+    public UploadBatchServiceLogsContent(String containerUrl, OffsetDateTime startTime) {
         this.containerUrl = containerUrl;
         this.startTime = startTime;
     }
@@ -133,5 +131,60 @@ public final class UploadBatchServiceLogsContent {
     public UploadBatchServiceLogsContent setIdentityReference(BatchNodeIdentityReference identityReference) {
         this.identityReference = identityReference;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("containerUrl", this.containerUrl);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeJsonField("identityReference", this.identityReference);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UploadBatchServiceLogsContent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UploadBatchServiceLogsContent if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UploadBatchServiceLogsContent.
+     */
+    @Generated
+    public static UploadBatchServiceLogsContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String containerUrl = null;
+            OffsetDateTime startTime = null;
+            OffsetDateTime endTime = null;
+            BatchNodeIdentityReference identityReference = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("containerUrl".equals(fieldName)) {
+                    containerUrl = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    endTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("identityReference".equals(fieldName)) {
+                    identityReference = BatchNodeIdentityReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            UploadBatchServiceLogsContent deserializedUploadBatchServiceLogsContent
+                = new UploadBatchServiceLogsContent(containerUrl, startTime);
+            deserializedUploadBatchServiceLogsContent.endTime = endTime;
+            deserializedUploadBatchServiceLogsContent.identityReference = identityReference;
+            return deserializedUploadBatchServiceLogsContent;
+        });
     }
 }

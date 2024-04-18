@@ -5,7 +5,6 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -36,7 +35,6 @@ public final class DiffDiskPlacement extends ExpandableStringEnum<DiffDiskPlacem
      * @return the corresponding DiffDiskPlacement.
      */
     @Generated
-    @JsonCreator
     public static DiffDiskPlacement fromString(String name) {
         return fromString(name, DiffDiskPlacement.class);
     }

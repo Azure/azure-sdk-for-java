@@ -5,7 +5,11 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,20 +18,18 @@ import java.util.List;
  * scheduled.
  */
 @Fluent
-public final class BatchTaskDependencies {
+public final class BatchTaskDependencies implements JsonSerializable<BatchTaskDependencies> {
 
     /*
      * The list of Task IDs that this Task depends on. All Tasks in this list must complete successfully before the dependent Task can be scheduled. The taskIds collection is limited to 64000 characters total (i.e. the combined length of all Task IDs). If the taskIds collection exceeds the maximum length, the Add Task request fails with error code TaskDependencyListTooLong. In this case consider using Task ID ranges instead.
      */
     @Generated
-    @JsonProperty(value = "taskIds")
     private List<String> taskIds;
 
     /*
      * The list of Task ID ranges that this Task depends on. All Tasks in all ranges must complete successfully before the dependent Task can be scheduled.
      */
     @Generated
-    @JsonProperty(value = "taskIdRanges")
     private List<BatchTaskIdRange> taskIdRanges;
 
     /**
@@ -87,5 +89,47 @@ public final class BatchTaskDependencies {
     public BatchTaskDependencies setTaskIdRanges(List<BatchTaskIdRange> taskIdRanges) {
         this.taskIdRanges = taskIdRanges;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("taskIds", this.taskIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("taskIdRanges", this.taskIdRanges, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchTaskDependencies from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchTaskDependencies if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchTaskDependencies.
+     */
+    @Generated
+    public static BatchTaskDependencies fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchTaskDependencies deserializedBatchTaskDependencies = new BatchTaskDependencies();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("taskIds".equals(fieldName)) {
+                    List<String> taskIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBatchTaskDependencies.taskIds = taskIds;
+                } else if ("taskIdRanges".equals(fieldName)) {
+                    List<BatchTaskIdRange> taskIdRanges
+                        = reader.readArray(reader1 -> BatchTaskIdRange.fromJson(reader1));
+                    deserializedBatchTaskDependencies.taskIdRanges = taskIdRanges;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedBatchTaskDependencies;
+        });
     }
 }

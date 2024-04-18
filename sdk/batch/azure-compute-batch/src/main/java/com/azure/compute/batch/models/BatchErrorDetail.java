@@ -5,26 +5,28 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An item of additional information included in an Azure Batch error response.
  */
 @Immutable
-public final class BatchErrorDetail {
+public final class BatchErrorDetail implements JsonSerializable<BatchErrorDetail> {
 
     /*
      * An identifier specifying the meaning of the Value property.
      */
     @Generated
-    @JsonProperty(value = "key")
     private String key;
 
     /*
      * The additional information included with the error response.
      */
     @Generated
-    @JsonProperty(value = "value")
     private String value;
 
     /**
@@ -52,5 +54,44 @@ public final class BatchErrorDetail {
     @Generated
     public String getValue() {
         return this.value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchErrorDetail from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchErrorDetail if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchErrorDetail.
+     */
+    @Generated
+    public static BatchErrorDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchErrorDetail deserializedBatchErrorDetail = new BatchErrorDetail();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("key".equals(fieldName)) {
+                    deserializedBatchErrorDetail.key = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedBatchErrorDetail.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedBatchErrorDetail;
+        });
     }
 }

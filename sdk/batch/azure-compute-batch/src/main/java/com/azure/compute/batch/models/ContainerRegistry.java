@@ -5,40 +5,40 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A private container registry.
  */
 @Fluent
-public final class ContainerRegistry {
+public final class ContainerRegistry implements JsonSerializable<ContainerRegistry> {
 
     /*
      * The user name to log into the registry server.
      */
     @Generated
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * The password to log into the registry server.
      */
     @Generated
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * The registry URL. If omitted, the default is "docker.io".
      */
     @Generated
-    @JsonProperty(value = "registryServer")
     private String registryServer;
 
     /*
      * The reference to the user assigned identity to use to access an Azure Container Registry instead of username and password.
      */
     @Generated
-    @JsonProperty(value = "identityReference")
     private BatchNodeIdentityReference identityReference;
 
     /**
@@ -136,5 +136,50 @@ public final class ContainerRegistry {
     public ContainerRegistry setIdentityReference(BatchNodeIdentityReference identityReference) {
         this.identityReference = identityReference;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("registryServer", this.registryServer);
+        jsonWriter.writeJsonField("identityReference", this.identityReference);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerRegistry from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerRegistry if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerRegistry.
+     */
+    @Generated
+    public static ContainerRegistry fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerRegistry deserializedContainerRegistry = new ContainerRegistry();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("username".equals(fieldName)) {
+                    deserializedContainerRegistry.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedContainerRegistry.password = reader.getString();
+                } else if ("registryServer".equals(fieldName)) {
+                    deserializedContainerRegistry.registryServer = reader.getString();
+                } else if ("identityReference".equals(fieldName)) {
+                    deserializedContainerRegistry.identityReference = BatchNodeIdentityReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedContainerRegistry;
+        });
     }
 }

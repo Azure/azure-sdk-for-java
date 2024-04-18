@@ -5,19 +5,22 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Parameters for rebooting an Azure Batch Compute Node.
  */
 @Fluent
-public final class BatchNodeRebootContent {
+public final class BatchNodeRebootContent implements JsonSerializable<BatchNodeRebootContent> {
 
     /*
      * When to reboot the Compute Node and what to do with currently running Tasks. The default value is requeue.
      */
     @Generated
-    @JsonProperty(value = "nodeRebootOption")
     private BatchNodeRebootOption nodeRebootOption;
 
     /**
@@ -49,5 +52,43 @@ public final class BatchNodeRebootContent {
     public BatchNodeRebootContent setNodeRebootOption(BatchNodeRebootOption nodeRebootOption) {
         this.nodeRebootOption = nodeRebootOption;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nodeRebootOption",
+            this.nodeRebootOption == null ? null : this.nodeRebootOption.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchNodeRebootContent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchNodeRebootContent if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchNodeRebootContent.
+     */
+    @Generated
+    public static BatchNodeRebootContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchNodeRebootContent deserializedBatchNodeRebootContent = new BatchNodeRebootContent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("nodeRebootOption".equals(fieldName)) {
+                    deserializedBatchNodeRebootContent.nodeRebootOption
+                        = BatchNodeRebootOption.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedBatchNodeRebootContent;
+        });
     }
 }

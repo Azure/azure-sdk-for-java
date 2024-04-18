@@ -5,20 +5,22 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Parameters for evaluating an automatic scaling formula on an Azure Batch Pool.
  */
 @Immutable
-public final class BatchPoolEvaluateAutoScaleContent {
+public final class BatchPoolEvaluateAutoScaleContent implements JsonSerializable<BatchPoolEvaluateAutoScaleContent> {
 
     /*
      * The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
      */
     @Generated
-    @JsonProperty(value = "autoScaleFormula")
     private final String autoScaleFormula;
 
     /**
@@ -27,8 +29,7 @@ public final class BatchPoolEvaluateAutoScaleContent {
      * @param autoScaleFormula the autoScaleFormula value to set.
      */
     @Generated
-    @JsonCreator
-    public BatchPoolEvaluateAutoScaleContent(@JsonProperty(value = "autoScaleFormula") String autoScaleFormula) {
+    public BatchPoolEvaluateAutoScaleContent(String autoScaleFormula) {
         this.autoScaleFormula = autoScaleFormula;
     }
 
@@ -44,5 +45,42 @@ public final class BatchPoolEvaluateAutoScaleContent {
     @Generated
     public String getAutoScaleFormula() {
         return this.autoScaleFormula;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("autoScaleFormula", this.autoScaleFormula);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchPoolEvaluateAutoScaleContent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchPoolEvaluateAutoScaleContent if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchPoolEvaluateAutoScaleContent.
+     */
+    @Generated
+    public static BatchPoolEvaluateAutoScaleContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String autoScaleFormula = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("autoScaleFormula".equals(fieldName)) {
+                    autoScaleFormula = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new BatchPoolEvaluateAutoScaleContent(autoScaleFormula);
+        });
     }
 }

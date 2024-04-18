@@ -5,48 +5,48 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The instance view status.
  */
 @Immutable
-public final class InstanceViewStatus {
+public final class InstanceViewStatus implements JsonSerializable<InstanceViewStatus> {
 
     /*
      * The status code.
      */
     @Generated
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * The localized label for the status.
      */
     @Generated
-    @JsonProperty(value = "displayStatus")
     private String displayStatus;
 
     /*
      * Level code.
      */
     @Generated
-    @JsonProperty(value = "level")
     private StatusLevelTypes level;
 
     /*
      * The detailed status message.
      */
     @Generated
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * The time of the status.
      */
     @Generated
-    @JsonProperty(value = "time")
     private OffsetDateTime time;
 
     /**
@@ -104,5 +104,55 @@ public final class InstanceViewStatus {
     @Generated
     public OffsetDateTime getTime() {
         return this.time;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("displayStatus", this.displayStatus);
+        jsonWriter.writeStringField("level", this.level == null ? null : this.level.toString());
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("time",
+            this.time == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.time));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InstanceViewStatus from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InstanceViewStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InstanceViewStatus.
+     */
+    @Generated
+    public static InstanceViewStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InstanceViewStatus deserializedInstanceViewStatus = new InstanceViewStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("code".equals(fieldName)) {
+                    deserializedInstanceViewStatus.code = reader.getString();
+                } else if ("displayStatus".equals(fieldName)) {
+                    deserializedInstanceViewStatus.displayStatus = reader.getString();
+                } else if ("level".equals(fieldName)) {
+                    deserializedInstanceViewStatus.level = StatusLevelTypes.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedInstanceViewStatus.message = reader.getString();
+                } else if ("time".equals(fieldName)) {
+                    deserializedInstanceViewStatus.time
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedInstanceViewStatus;
+        });
     }
 }

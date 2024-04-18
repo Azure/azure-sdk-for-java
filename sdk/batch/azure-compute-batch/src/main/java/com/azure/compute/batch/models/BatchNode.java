@@ -5,133 +5,121 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * A Compute Node in the Batch service.
  */
 @Immutable
-public final class BatchNode {
+public final class BatchNode implements JsonSerializable<BatchNode> {
 
     /*
      * The ID of the Compute Node. Every Compute Node that is added to a Pool is assigned a unique ID. Whenever a Compute Node is removed from a Pool, all of its local files are deleted, and the ID is reclaimed and could be reused for new Compute Nodes.
      */
     @Generated
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The URL of the Compute Node.
      */
     @Generated
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * The current state of the Compute Node. The Spot/Low-priority Compute Node has been preempted. Tasks which were running on the Compute Node when it was preempted will be rescheduled when another Compute Node becomes available.
      */
     @Generated
-    @JsonProperty(value = "state")
     private BatchNodeState state;
 
     /*
      * Whether the Compute Node is available for Task scheduling.
      */
     @Generated
-    @JsonProperty(value = "schedulingState")
     private SchedulingState schedulingState;
 
     /*
      * The time at which the Compute Node entered its current state.
      */
     @Generated
-    @JsonProperty(value = "stateTransitionTime")
     private OffsetDateTime stateTransitionTime;
 
     /*
      * The last time at which the Compute Node was started. This property may not be present if the Compute Node state is unusable.
      */
     @Generated
-    @JsonProperty(value = "lastBootTime")
     private OffsetDateTime lastBootTime;
 
     /*
      * The time at which this Compute Node was allocated to the Pool. This is the time when the Compute Node was initially allocated and doesn't change once set. It is not updated when the Compute Node is service healed or preempted.
      */
     @Generated
-    @JsonProperty(value = "allocationTime")
     private OffsetDateTime allocationTime;
 
     /*
      * The IP address that other Nodes can use to communicate with this Compute Node. Every Compute Node that is added to a Pool is assigned a unique IP address. Whenever a Compute Node is removed from a Pool, all of its local files are deleted, and the IP address is reclaimed and could be reused for new Compute Nodes.
      */
     @Generated
-    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /*
      * An identifier which can be passed when adding a Task to request that the Task be scheduled on this Compute Node. Note that this is just a soft affinity. If the target Compute Node is busy or unavailable at the time the Task is scheduled, then the Task will be scheduled elsewhere.
      */
     @Generated
-    @JsonProperty(value = "affinityId")
     private String affinityId;
 
     /*
      * The size of the virtual machine hosting the Compute Node. For information about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
      */
     @Generated
-    @JsonProperty(value = "vmSize")
     private String vmSize;
 
     /*
      * The total number of Job Tasks completed on the Compute Node. This includes Job Manager Tasks and normal Tasks, but not Job Preparation, Job Release or Start Tasks.
      */
     @Generated
-    @JsonProperty(value = "totalTasksRun")
     private Integer totalTasksRun;
 
     /*
      * The total number of currently running Job Tasks on the Compute Node. This includes Job Manager Tasks and normal Tasks, but not Job Preparation, Job Release or Start Tasks.
      */
     @Generated
-    @JsonProperty(value = "runningTasksCount")
     private Integer runningTasksCount;
 
     /*
      * The total number of scheduling slots used by currently running Job Tasks on the Compute Node. This includes Job Manager Tasks and normal Tasks, but not Job Preparation, Job Release or Start Tasks.
      */
     @Generated
-    @JsonProperty(value = "runningTaskSlotsCount")
     private Integer runningTaskSlotsCount;
 
     /*
      * The total number of Job Tasks which completed successfully (with exitCode 0) on the Compute Node. This includes Job Manager Tasks and normal Tasks, but not Job Preparation, Job Release or Start Tasks.
      */
     @Generated
-    @JsonProperty(value = "totalTasksSucceeded")
     private Integer totalTasksSucceeded;
 
     /*
      * A list of Tasks whose state has recently changed. This property is present only if at least one Task has run on this Compute Node since it was assigned to the Pool.
      */
     @Generated
-    @JsonProperty(value = "recentTasks")
     private List<BatchTaskInfo> recentTasks;
 
     /*
      * The Task specified to run on the Compute Node as it joins the Pool.
      */
     @Generated
-    @JsonProperty(value = "startTask")
     private BatchStartTask startTask;
 
     /*
      * Runtime information about the execution of the StartTask on the Compute Node.
      */
     @Generated
-    @JsonProperty(value = "startTaskInfo")
     private BatchStartTaskInfo startTaskInfo;
 
     /*
@@ -141,42 +129,36 @@ public final class BatchNode {
      * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      */
     @Generated
-    @JsonProperty(value = "certificateReferences")
     private List<BatchCertificateReference> certificateReferences;
 
     /*
      * The list of errors that are currently being encountered by the Compute Node.
      */
     @Generated
-    @JsonProperty(value = "errors")
     private List<BatchNodeError> errors;
 
     /*
      * Whether this Compute Node is a dedicated Compute Node. If false, the Compute Node is a Spot/Low-priority Compute Node.
      */
     @Generated
-    @JsonProperty(value = "isDedicated")
     private Boolean isDedicated;
 
     /*
      * The endpoint configuration for the Compute Node.
      */
     @Generated
-    @JsonProperty(value = "endpointConfiguration")
     private BatchNodeEndpointConfiguration endpointConfiguration;
 
     /*
      * Information about the Compute Node agent version and the time the Compute Node upgraded to a new version.
      */
     @Generated
-    @JsonProperty(value = "nodeAgentInfo")
     private BatchNodeAgentInfo nodeAgentInfo;
 
     /*
      * Info about the current state of the virtual machine.
      */
     @Generated
-    @JsonProperty(value = "virtualMachineInfo")
     private VirtualMachineInfo virtualMachineInfo;
 
     /**
@@ -444,5 +426,121 @@ public final class BatchNode {
     @Generated
     public VirtualMachineInfo getVirtualMachineInfo() {
         return this.virtualMachineInfo;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("schedulingState",
+            this.schedulingState == null ? null : this.schedulingState.toString());
+        jsonWriter.writeStringField("stateTransitionTime",
+            this.stateTransitionTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.stateTransitionTime));
+        jsonWriter.writeStringField("lastBootTime",
+            this.lastBootTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastBootTime));
+        jsonWriter.writeStringField("allocationTime",
+            this.allocationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.allocationTime));
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        jsonWriter.writeStringField("affinityId", this.affinityId);
+        jsonWriter.writeStringField("vmSize", this.vmSize);
+        jsonWriter.writeNumberField("totalTasksRun", this.totalTasksRun);
+        jsonWriter.writeNumberField("runningTasksCount", this.runningTasksCount);
+        jsonWriter.writeNumberField("runningTaskSlotsCount", this.runningTaskSlotsCount);
+        jsonWriter.writeNumberField("totalTasksSucceeded", this.totalTasksSucceeded);
+        jsonWriter.writeArrayField("recentTasks", this.recentTasks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("startTask", this.startTask);
+        jsonWriter.writeJsonField("startTaskInfo", this.startTaskInfo);
+        jsonWriter.writeArrayField("certificateReferences", this.certificateReferences,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("isDedicated", this.isDedicated);
+        jsonWriter.writeJsonField("endpointConfiguration", this.endpointConfiguration);
+        jsonWriter.writeJsonField("nodeAgentInfo", this.nodeAgentInfo);
+        jsonWriter.writeJsonField("virtualMachineInfo", this.virtualMachineInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchNode from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchNode if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the BatchNode.
+     */
+    @Generated
+    public static BatchNode fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchNode deserializedBatchNode = new BatchNode();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    deserializedBatchNode.id = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedBatchNode.url = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedBatchNode.state = BatchNodeState.fromString(reader.getString());
+                } else if ("schedulingState".equals(fieldName)) {
+                    deserializedBatchNode.schedulingState = SchedulingState.fromString(reader.getString());
+                } else if ("stateTransitionTime".equals(fieldName)) {
+                    deserializedBatchNode.stateTransitionTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("lastBootTime".equals(fieldName)) {
+                    deserializedBatchNode.lastBootTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("allocationTime".equals(fieldName)) {
+                    deserializedBatchNode.allocationTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedBatchNode.ipAddress = reader.getString();
+                } else if ("affinityId".equals(fieldName)) {
+                    deserializedBatchNode.affinityId = reader.getString();
+                } else if ("vmSize".equals(fieldName)) {
+                    deserializedBatchNode.vmSize = reader.getString();
+                } else if ("totalTasksRun".equals(fieldName)) {
+                    deserializedBatchNode.totalTasksRun = reader.getNullable(JsonReader::getInt);
+                } else if ("runningTasksCount".equals(fieldName)) {
+                    deserializedBatchNode.runningTasksCount = reader.getNullable(JsonReader::getInt);
+                } else if ("runningTaskSlotsCount".equals(fieldName)) {
+                    deserializedBatchNode.runningTaskSlotsCount = reader.getNullable(JsonReader::getInt);
+                } else if ("totalTasksSucceeded".equals(fieldName)) {
+                    deserializedBatchNode.totalTasksSucceeded = reader.getNullable(JsonReader::getInt);
+                } else if ("recentTasks".equals(fieldName)) {
+                    List<BatchTaskInfo> recentTasks = reader.readArray(reader1 -> BatchTaskInfo.fromJson(reader1));
+                    deserializedBatchNode.recentTasks = recentTasks;
+                } else if ("startTask".equals(fieldName)) {
+                    deserializedBatchNode.startTask = BatchStartTask.fromJson(reader);
+                } else if ("startTaskInfo".equals(fieldName)) {
+                    deserializedBatchNode.startTaskInfo = BatchStartTaskInfo.fromJson(reader);
+                } else if ("certificateReferences".equals(fieldName)) {
+                    List<BatchCertificateReference> certificateReferences
+                        = reader.readArray(reader1 -> BatchCertificateReference.fromJson(reader1));
+                    deserializedBatchNode.certificateReferences = certificateReferences;
+                } else if ("errors".equals(fieldName)) {
+                    List<BatchNodeError> errors = reader.readArray(reader1 -> BatchNodeError.fromJson(reader1));
+                    deserializedBatchNode.errors = errors;
+                } else if ("isDedicated".equals(fieldName)) {
+                    deserializedBatchNode.isDedicated = reader.getNullable(JsonReader::getBoolean);
+                } else if ("endpointConfiguration".equals(fieldName)) {
+                    deserializedBatchNode.endpointConfiguration = BatchNodeEndpointConfiguration.fromJson(reader);
+                } else if ("nodeAgentInfo".equals(fieldName)) {
+                    deserializedBatchNode.nodeAgentInfo = BatchNodeAgentInfo.fromJson(reader);
+                } else if ("virtualMachineInfo".equals(fieldName)) {
+                    deserializedBatchNode.virtualMachineInfo = VirtualMachineInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedBatchNode;
+        });
     }
 }

@@ -5,8 +5,11 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
@@ -14,90 +17,78 @@ import java.time.OffsetDateTime;
  * authenticate operations on the machine.
  */
 @Fluent
-public final class BatchCertificate {
+public final class BatchCertificate implements JsonSerializable<BatchCertificate> {
 
     /*
      * The X.509 thumbprint of the Certificate. This is a sequence of up to 40 hex digits (it may include spaces but these are removed).
      */
     @Generated
-    @JsonProperty(value = "thumbprint")
     private final String thumbprint;
 
     /*
      * The algorithm used to derive the thumbprint. This must be sha1.
      */
     @Generated
-    @JsonProperty(value = "thumbprintAlgorithm")
     private final String thumbprintAlgorithm;
 
     /*
      * The URL of the Certificate.
      */
     @Generated
-    @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 
     /*
      * The state of the Certificate.
      */
     @Generated
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private BatchCertificateState state;
 
     /*
      * The time at which the Certificate entered its current state.
      */
     @Generated
-    @JsonProperty(value = "stateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime stateTransitionTime;
 
     /*
      * The previous state of the Certificate. This property is not set if the Certificate is in its initial active state.
      */
     @Generated
-    @JsonProperty(value = "previousState", access = JsonProperty.Access.WRITE_ONLY)
     private BatchCertificateState previousState;
 
     /*
      * The time at which the Certificate entered its previous state. This property is not set if the Certificate is in its initial Active state.
      */
     @Generated
-    @JsonProperty(value = "previousStateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime previousStateTransitionTime;
 
     /*
      * The public part of the Certificate as a base-64 encoded .cer file.
      */
     @Generated
-    @JsonProperty(value = "publicData", access = JsonProperty.Access.WRITE_ONLY)
     private String publicData;
 
     /*
      * The error that occurred on the last attempt to delete this Certificate. This property is set only if the Certificate is in the DeleteFailed state.
      */
     @Generated
-    @JsonProperty(value = "deleteCertificateError", access = JsonProperty.Access.WRITE_ONLY)
     private DeleteBatchCertificateError deleteCertificateError;
 
     /*
      * The base64-encoded contents of the Certificate. The maximum size is 10KB.
      */
     @Generated
-    @JsonProperty(value = "data")
     private final String data;
 
     /*
      * The format of the Certificate data.
      */
     @Generated
-    @JsonProperty(value = "certificateFormat")
     private BatchCertificateFormat certificateFormat;
 
     /*
      * The password to access the Certificate's private key. This must be omitted if the Certificate format is cer.
      */
     @Generated
-    @JsonProperty(value = "password")
     private String password;
 
     /**
@@ -108,10 +99,7 @@ public final class BatchCertificate {
      * @param data the data value to set.
      */
     @Generated
-    @JsonCreator
-    public BatchCertificate(@JsonProperty(value = "thumbprint") String thumbprint,
-        @JsonProperty(value = "thumbprintAlgorithm") String thumbprintAlgorithm,
-        @JsonProperty(value = "data") String data) {
+    public BatchCertificate(String thumbprint, String thumbprintAlgorithm, String data) {
         this.thumbprint = thumbprint;
         this.thumbprintAlgorithm = thumbprintAlgorithm;
         this.data = data;
@@ -265,5 +253,92 @@ public final class BatchCertificate {
     public BatchCertificate setPassword(String password) {
         this.password = password;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("thumbprint", this.thumbprint);
+        jsonWriter.writeStringField("thumbprintAlgorithm", this.thumbprintAlgorithm);
+        jsonWriter.writeStringField("data", this.data);
+        jsonWriter.writeStringField("certificateFormat",
+            this.certificateFormat == null ? null : this.certificateFormat.toString());
+        jsonWriter.writeStringField("password", this.password);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchCertificate from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchCertificate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchCertificate.
+     */
+    @Generated
+    public static BatchCertificate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String thumbprint = null;
+            String thumbprintAlgorithm = null;
+            String data = null;
+            String url = null;
+            BatchCertificateState state = null;
+            OffsetDateTime stateTransitionTime = null;
+            BatchCertificateState previousState = null;
+            OffsetDateTime previousStateTransitionTime = null;
+            String publicData = null;
+            DeleteBatchCertificateError deleteCertificateError = null;
+            BatchCertificateFormat certificateFormat = null;
+            String password = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("thumbprint".equals(fieldName)) {
+                    thumbprint = reader.getString();
+                } else if ("thumbprintAlgorithm".equals(fieldName)) {
+                    thumbprintAlgorithm = reader.getString();
+                } else if ("data".equals(fieldName)) {
+                    data = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    url = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    state = BatchCertificateState.fromString(reader.getString());
+                } else if ("stateTransitionTime".equals(fieldName)) {
+                    stateTransitionTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("previousState".equals(fieldName)) {
+                    previousState = BatchCertificateState.fromString(reader.getString());
+                } else if ("previousStateTransitionTime".equals(fieldName)) {
+                    previousStateTransitionTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("publicData".equals(fieldName)) {
+                    publicData = reader.getString();
+                } else if ("deleteCertificateError".equals(fieldName)) {
+                    deleteCertificateError = DeleteBatchCertificateError.fromJson(reader);
+                } else if ("certificateFormat".equals(fieldName)) {
+                    certificateFormat = BatchCertificateFormat.fromString(reader.getString());
+                } else if ("password".equals(fieldName)) {
+                    password = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BatchCertificate deserializedBatchCertificate = new BatchCertificate(thumbprint, thumbprintAlgorithm, data);
+            deserializedBatchCertificate.url = url;
+            deserializedBatchCertificate.state = state;
+            deserializedBatchCertificate.stateTransitionTime = stateTransitionTime;
+            deserializedBatchCertificate.previousState = previousState;
+            deserializedBatchCertificate.previousStateTransitionTime = previousStateTransitionTime;
+            deserializedBatchCertificate.publicData = publicData;
+            deserializedBatchCertificate.deleteCertificateError = deleteCertificateError;
+            deserializedBatchCertificate.certificateFormat = certificateFormat;
+            deserializedBatchCertificate.password = password;
+            return deserializedBatchCertificate;
+        });
     }
 }

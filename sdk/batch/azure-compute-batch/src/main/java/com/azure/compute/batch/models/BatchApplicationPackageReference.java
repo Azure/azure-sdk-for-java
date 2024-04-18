@@ -5,27 +5,28 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A reference to an Package to be deployed to Compute Nodes.
  */
 @Fluent
-public final class BatchApplicationPackageReference {
+public final class BatchApplicationPackageReference implements JsonSerializable<BatchApplicationPackageReference> {
 
     /*
      * The ID of the application to deploy. When creating a pool, the package's application ID must be fully qualified (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).
      */
     @Generated
-    @JsonProperty(value = "applicationId")
     private final String applicationId;
 
     /*
      * The version of the application to deploy. If omitted, the default version is deployed. If this is omitted on a Pool, and no default version is specified for this application, the request fails with the error code InvalidApplicationPackageReferences and HTTP status code 409. If this is omitted on a Task, and no default version is specified for this application, the Task fails with a pre-processing error.
      */
     @Generated
-    @JsonProperty(value = "version")
     private String version;
 
     /**
@@ -34,8 +35,7 @@ public final class BatchApplicationPackageReference {
      * @param applicationId the applicationId value to set.
      */
     @Generated
-    @JsonCreator
-    public BatchApplicationPackageReference(@JsonProperty(value = "applicationId") String applicationId) {
+    public BatchApplicationPackageReference(String applicationId) {
         this.applicationId = applicationId;
     }
 
@@ -77,5 +77,49 @@ public final class BatchApplicationPackageReference {
     public BatchApplicationPackageReference setVersion(String version) {
         this.version = version;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("applicationId", this.applicationId);
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchApplicationPackageReference from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchApplicationPackageReference if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchApplicationPackageReference.
+     */
+    @Generated
+    public static BatchApplicationPackageReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String applicationId = null;
+            String version = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("applicationId".equals(fieldName)) {
+                    applicationId = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BatchApplicationPackageReference deserializedBatchApplicationPackageReference
+                = new BatchApplicationPackageReference(applicationId);
+            deserializedBatchApplicationPackageReference.version = version;
+            return deserializedBatchApplicationPackageReference;
+        });
     }
 }

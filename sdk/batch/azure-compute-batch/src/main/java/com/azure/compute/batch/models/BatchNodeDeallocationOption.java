@@ -5,7 +5,6 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -58,7 +57,6 @@ public final class BatchNodeDeallocationOption extends ExpandableStringEnum<Batc
      * @return the corresponding BatchNodeDeallocationOption.
      */
     @Generated
-    @JsonCreator
     public static BatchNodeDeallocationOption fromString(String name) {
         return fromString(name, BatchNodeDeallocationOption.class);
     }

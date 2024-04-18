@@ -5,28 +5,29 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * How the Batch service should respond if a Task exits with a particular exit
  * code.
  */
 @Immutable
-public final class ExitCodeMapping {
+public final class ExitCodeMapping implements JsonSerializable<ExitCodeMapping> {
 
     /*
      * A process exit code.
      */
     @Generated
-    @JsonProperty(value = "code")
     private final int code;
 
     /*
      * How the Batch service should respond if the Task exits with this exit code.
      */
     @Generated
-    @JsonProperty(value = "exitOptions")
     private final ExitOptions exitOptions;
 
     /**
@@ -36,9 +37,7 @@ public final class ExitCodeMapping {
      * @param exitOptions the exitOptions value to set.
      */
     @Generated
-    @JsonCreator
-    public ExitCodeMapping(@JsonProperty(value = "code") int code,
-        @JsonProperty(value = "exitOptions") ExitOptions exitOptions) {
+    public ExitCodeMapping(int code, ExitOptions exitOptions) {
         this.code = code;
         this.exitOptions = exitOptions;
     }
@@ -61,5 +60,46 @@ public final class ExitCodeMapping {
     @Generated
     public ExitOptions getExitOptions() {
         return this.exitOptions;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("code", this.code);
+        jsonWriter.writeJsonField("exitOptions", this.exitOptions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExitCodeMapping from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExitCodeMapping if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExitCodeMapping.
+     */
+    @Generated
+    public static ExitCodeMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            int code = 0;
+            ExitOptions exitOptions = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("code".equals(fieldName)) {
+                    code = reader.getInt();
+                } else if ("exitOptions".equals(fieldName)) {
+                    exitOptions = ExitOptions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new ExitCodeMapping(code, exitOptions);
+        });
     }
 }

@@ -5,7 +5,6 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -49,7 +48,6 @@ public final class BatchTaskAddStatus extends ExpandableStringEnum<BatchTaskAddS
      * @return the corresponding BatchTaskAddStatus.
      */
     @Generated
-    @JsonCreator
     public static BatchTaskAddStatus fromString(String name) {
         return fromString(name, BatchTaskAddStatus.class);
     }

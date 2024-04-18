@@ -5,20 +5,22 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies how Tasks should be distributed across Compute Nodes.
  */
 @Immutable
-public final class BatchTaskSchedulingPolicy {
+public final class BatchTaskSchedulingPolicy implements JsonSerializable<BatchTaskSchedulingPolicy> {
 
     /*
      * How Tasks are distributed across Compute Nodes in a Pool. If not specified, the default is spread.
      */
     @Generated
-    @JsonProperty(value = "nodeFillType")
     private final BatchNodeFillType nodeFillType;
 
     /**
@@ -27,8 +29,7 @@ public final class BatchTaskSchedulingPolicy {
      * @param nodeFillType the nodeFillType value to set.
      */
     @Generated
-    @JsonCreator
-    public BatchTaskSchedulingPolicy(@JsonProperty(value = "nodeFillType") BatchNodeFillType nodeFillType) {
+    public BatchTaskSchedulingPolicy(BatchNodeFillType nodeFillType) {
         this.nodeFillType = nodeFillType;
     }
 
@@ -41,5 +42,42 @@ public final class BatchTaskSchedulingPolicy {
     @Generated
     public BatchNodeFillType getNodeFillType() {
         return this.nodeFillType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nodeFillType", this.nodeFillType == null ? null : this.nodeFillType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchTaskSchedulingPolicy from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchTaskSchedulingPolicy if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchTaskSchedulingPolicy.
+     */
+    @Generated
+    public static BatchTaskSchedulingPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchNodeFillType nodeFillType = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("nodeFillType".equals(fieldName)) {
+                    nodeFillType = BatchNodeFillType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new BatchTaskSchedulingPolicy(nodeFillType);
+        });
     }
 }

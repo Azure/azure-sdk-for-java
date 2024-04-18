@@ -5,8 +5,11 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -35,90 +38,78 @@ import java.util.List;
  * checkpointing.
  */
 @Fluent
-public final class BatchJobManagerTask {
+public final class BatchJobManagerTask implements JsonSerializable<BatchJobManagerTask> {
 
     /*
      * A string that uniquely identifies the Job Manager Task within the Job. The ID can contain any combination of alphanumeric characters including hyphens and underscores and cannot contain more than 64 characters.
      */
     @Generated
-    @JsonProperty(value = "id")
     private final String id;
 
     /*
      * The display name of the Job Manager Task. It need not be unique and can contain any Unicode characters up to a maximum length of 1024.
      */
     @Generated
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The command line of the Job Manager Task. The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the Task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
      */
     @Generated
-    @JsonProperty(value = "commandLine")
     private final String commandLine;
 
     /*
      * The settings for the container under which the Job Manager Task runs. If the Pool that will run this Task has containerConfiguration set, this must be set as well. If the Pool that will run this Task doesn't have containerConfiguration set, this must not be set. When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all Task environment variables are mapped into the container, and the Task command line is executed in the container. Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning that Batch file APIs will not be able to access those files.
      */
     @Generated
-    @JsonProperty(value = "containerSettings")
     private BatchTaskContainerSettings containerSettings;
 
     /*
      * A list of files that the Batch service will download to the Compute Node before running the command line. Files listed under this element are located in the Task's working directory. There is a maximum size for the list of resource files.  When the max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
      */
     @Generated
-    @JsonProperty(value = "resourceFiles")
     private List<ResourceFile> resourceFiles;
 
     /*
      * A list of files that the Batch service will upload from the Compute Node after running the command line. For multi-instance Tasks, the files will only be uploaded from the Compute Node on which the primary Task is executed.
      */
     @Generated
-    @JsonProperty(value = "outputFiles")
     private List<OutputFile> outputFiles;
 
     /*
      * A list of environment variable settings for the Job Manager Task.
      */
     @Generated
-    @JsonProperty(value = "environmentSettings")
     private List<EnvironmentSetting> environmentSettings;
 
     /*
      * Constraints that apply to the Job Manager Task.
      */
     @Generated
-    @JsonProperty(value = "constraints")
     private BatchTaskConstraints constraints;
 
     /*
      * The number of scheduling slots that the Task requires to run. The default is 1. A Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available. For multi-instance Tasks, this property is not supported and must not be specified.
      */
     @Generated
-    @JsonProperty(value = "requiredSlots")
     private Integer requiredSlots;
 
     /*
      * Whether completion of the Job Manager Task signifies completion of the entire Job. If true, when the Job Manager Task completes, the Batch service marks the Job as complete. If any Tasks are still running at this time (other than Job Release), those Tasks are terminated. If false, the completion of the Job Manager Task does not affect the Job status. In this case, you should either use the onAllTasksComplete attribute to terminate the Job, or have a client or user terminate the Job explicitly. An example of this is if the Job Manager creates a set of Tasks but then takes no further role in their execution. The default value is true. If you are using the onAllTasksComplete and onTaskFailure attributes to control Job lifetime, and using the Job Manager Task only to create the Tasks for the Job (not to monitor progress), then it is important to set killJobOnCompletion to false.
      */
     @Generated
-    @JsonProperty(value = "killJobOnCompletion")
     private Boolean killJobOnCompletion;
 
     /*
      * The user identity under which the Job Manager Task runs. If omitted, the Task runs as a non-administrative user unique to the Task.
      */
     @Generated
-    @JsonProperty(value = "userIdentity")
     private UserIdentity userIdentity;
 
     /*
      * Whether the Job Manager Task requires exclusive use of the Compute Node where it runs. If true, no other Tasks will run on the same Node for as long as the Job Manager is running. If false, other Tasks can run simultaneously with the Job Manager on a Compute Node. The Job Manager Task counts normally against the Compute Node's concurrent Task limit, so this is only relevant if the Compute Node allows multiple concurrent Tasks. The default value is true.
      */
     @Generated
-    @JsonProperty(value = "runExclusive")
     private Boolean runExclusive;
 
     /*
@@ -132,21 +123,18 @@ public final class BatchJobManagerTask {
      * or because download failed, the Task fails.
      */
     @Generated
-    @JsonProperty(value = "applicationPackageReferences")
     private List<BatchApplicationPackageReference> applicationPackageReferences;
 
     /*
      * The settings for an authentication token that the Task can use to perform Batch service operations. If this property is set, the Batch service provides the Task with an authentication token which can be used to authenticate Batch service operations without requiring an Account access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that the Task can carry out using the token depend on the settings. For example, a Task can request Job permissions in order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the Job.
      */
     @Generated
-    @JsonProperty(value = "authenticationTokenSettings")
     private AuthenticationTokenSettings authenticationTokenSettings;
 
     /*
      * Whether the Job Manager Task may run on a Spot/Low-priority Compute Node. The default value is true.
      */
     @Generated
-    @JsonProperty(value = "allowLowPriorityNode")
     private Boolean allowLowPriorityNode;
 
     /**
@@ -156,9 +144,7 @@ public final class BatchJobManagerTask {
      * @param commandLine the commandLine value to set.
      */
     @Generated
-    @JsonCreator
-    public BatchJobManagerTask(@JsonProperty(value = "id") String id,
-        @JsonProperty(value = "commandLine") String commandLine) {
+    public BatchJobManagerTask(String id, String commandLine) {
         this.id = id;
         this.commandLine = commandLine;
     }
@@ -559,5 +545,115 @@ public final class BatchJobManagerTask {
     public BatchJobManagerTask setAllowLowPriorityNode(Boolean allowLowPriorityNode) {
         this.allowLowPriorityNode = allowLowPriorityNode;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("commandLine", this.commandLine);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeJsonField("containerSettings", this.containerSettings);
+        jsonWriter.writeArrayField("resourceFiles", this.resourceFiles, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputFiles", this.outputFiles, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("environmentSettings", this.environmentSettings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("constraints", this.constraints);
+        jsonWriter.writeNumberField("requiredSlots", this.requiredSlots);
+        jsonWriter.writeBooleanField("killJobOnCompletion", this.killJobOnCompletion);
+        jsonWriter.writeJsonField("userIdentity", this.userIdentity);
+        jsonWriter.writeBooleanField("runExclusive", this.runExclusive);
+        jsonWriter.writeArrayField("applicationPackageReferences", this.applicationPackageReferences,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("authenticationTokenSettings", this.authenticationTokenSettings);
+        jsonWriter.writeBooleanField("allowLowPriorityNode", this.allowLowPriorityNode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchJobManagerTask from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchJobManagerTask if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchJobManagerTask.
+     */
+    @Generated
+    public static BatchJobManagerTask fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            String commandLine = null;
+            String displayName = null;
+            BatchTaskContainerSettings containerSettings = null;
+            List<ResourceFile> resourceFiles = null;
+            List<OutputFile> outputFiles = null;
+            List<EnvironmentSetting> environmentSettings = null;
+            BatchTaskConstraints constraints = null;
+            Integer requiredSlots = null;
+            Boolean killJobOnCompletion = null;
+            UserIdentity userIdentity = null;
+            Boolean runExclusive = null;
+            List<BatchApplicationPackageReference> applicationPackageReferences = null;
+            AuthenticationTokenSettings authenticationTokenSettings = null;
+            Boolean allowLowPriorityNode = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("commandLine".equals(fieldName)) {
+                    commandLine = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    displayName = reader.getString();
+                } else if ("containerSettings".equals(fieldName)) {
+                    containerSettings = BatchTaskContainerSettings.fromJson(reader);
+                } else if ("resourceFiles".equals(fieldName)) {
+                    resourceFiles = reader.readArray(reader1 -> ResourceFile.fromJson(reader1));
+                } else if ("outputFiles".equals(fieldName)) {
+                    outputFiles = reader.readArray(reader1 -> OutputFile.fromJson(reader1));
+                } else if ("environmentSettings".equals(fieldName)) {
+                    environmentSettings = reader.readArray(reader1 -> EnvironmentSetting.fromJson(reader1));
+                } else if ("constraints".equals(fieldName)) {
+                    constraints = BatchTaskConstraints.fromJson(reader);
+                } else if ("requiredSlots".equals(fieldName)) {
+                    requiredSlots = reader.getNullable(JsonReader::getInt);
+                } else if ("killJobOnCompletion".equals(fieldName)) {
+                    killJobOnCompletion = reader.getNullable(JsonReader::getBoolean);
+                } else if ("userIdentity".equals(fieldName)) {
+                    userIdentity = UserIdentity.fromJson(reader);
+                } else if ("runExclusive".equals(fieldName)) {
+                    runExclusive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("applicationPackageReferences".equals(fieldName)) {
+                    applicationPackageReferences
+                        = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
+                } else if ("authenticationTokenSettings".equals(fieldName)) {
+                    authenticationTokenSettings = AuthenticationTokenSettings.fromJson(reader);
+                } else if ("allowLowPriorityNode".equals(fieldName)) {
+                    allowLowPriorityNode = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BatchJobManagerTask deserializedBatchJobManagerTask = new BatchJobManagerTask(id, commandLine);
+            deserializedBatchJobManagerTask.displayName = displayName;
+            deserializedBatchJobManagerTask.containerSettings = containerSettings;
+            deserializedBatchJobManagerTask.resourceFiles = resourceFiles;
+            deserializedBatchJobManagerTask.outputFiles = outputFiles;
+            deserializedBatchJobManagerTask.environmentSettings = environmentSettings;
+            deserializedBatchJobManagerTask.constraints = constraints;
+            deserializedBatchJobManagerTask.requiredSlots = requiredSlots;
+            deserializedBatchJobManagerTask.killJobOnCompletion = killJobOnCompletion;
+            deserializedBatchJobManagerTask.userIdentity = userIdentity;
+            deserializedBatchJobManagerTask.runExclusive = runExclusive;
+            deserializedBatchJobManagerTask.applicationPackageReferences = applicationPackageReferences;
+            deserializedBatchJobManagerTask.authenticationTokenSettings = authenticationTokenSettings;
+            deserializedBatchJobManagerTask.allowLowPriorityNode = allowLowPriorityNode;
+            return deserializedBatchJobManagerTask;
+        });
     }
 }

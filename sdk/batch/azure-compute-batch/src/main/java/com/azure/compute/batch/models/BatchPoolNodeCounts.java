@@ -5,34 +5,34 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The number of Compute Nodes in each state for a Pool.
  */
 @Immutable
-public final class BatchPoolNodeCounts {
+public final class BatchPoolNodeCounts implements JsonSerializable<BatchPoolNodeCounts> {
 
     /*
      * The ID of the Pool.
      */
     @Generated
-    @JsonProperty(value = "poolId")
     private final String poolId;
 
     /*
      * The number of dedicated Compute Nodes in each state.
      */
     @Generated
-    @JsonProperty(value = "dedicated")
     private BatchNodeCounts dedicated;
 
     /*
      * The number of Spot/Low-priority Compute Nodes in each state.
      */
     @Generated
-    @JsonProperty(value = "lowPriority")
     private BatchNodeCounts lowPriority;
 
     /**
@@ -41,8 +41,7 @@ public final class BatchPoolNodeCounts {
      * @param poolId the poolId value to set.
      */
     @Generated
-    @JsonCreator
-    private BatchPoolNodeCounts(@JsonProperty(value = "poolId") String poolId) {
+    private BatchPoolNodeCounts(String poolId) {
         this.poolId = poolId;
     }
 
@@ -74,5 +73,53 @@ public final class BatchPoolNodeCounts {
     @Generated
     public BatchNodeCounts getLowPriority() {
         return this.lowPriority;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("poolId", this.poolId);
+        jsonWriter.writeJsonField("dedicated", this.dedicated);
+        jsonWriter.writeJsonField("lowPriority", this.lowPriority);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchPoolNodeCounts from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchPoolNodeCounts if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchPoolNodeCounts.
+     */
+    @Generated
+    public static BatchPoolNodeCounts fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String poolId = null;
+            BatchNodeCounts dedicated = null;
+            BatchNodeCounts lowPriority = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("poolId".equals(fieldName)) {
+                    poolId = reader.getString();
+                } else if ("dedicated".equals(fieldName)) {
+                    dedicated = BatchNodeCounts.fromJson(reader);
+                } else if ("lowPriority".equals(fieldName)) {
+                    lowPriority = BatchNodeCounts.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BatchPoolNodeCounts deserializedBatchPoolNodeCounts = new BatchPoolNodeCounts(poolId);
+            deserializedBatchPoolNodeCounts.dedicated = dedicated;
+            deserializedBatchPoolNodeCounts.lowPriority = lowPriority;
+            return deserializedBatchPoolNodeCounts;
+        });
     }
 }

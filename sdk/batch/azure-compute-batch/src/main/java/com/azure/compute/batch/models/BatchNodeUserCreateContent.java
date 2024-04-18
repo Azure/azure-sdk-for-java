@@ -5,49 +5,48 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Parameters for creating a user account for RDP or SSH access on an Azure Batch Compute Node.
  */
 @Fluent
-public final class BatchNodeUserCreateContent {
+public final class BatchNodeUserCreateContent implements JsonSerializable<BatchNodeUserCreateContent> {
 
     /*
      * The user name of the Account.
      */
     @Generated
-    @JsonProperty(value = "name")
     private final String name;
 
     /*
      * Whether the Account should be an administrator on the Compute Node. The default value is false.
      */
     @Generated
-    @JsonProperty(value = "isAdmin")
     private Boolean isAdmin;
 
     /*
      * The time at which the Account should expire. If omitted, the default is 1 day from the current time. For Linux Compute Nodes, the expiryTime has a precision up to a day.
      */
     @Generated
-    @JsonProperty(value = "expiryTime")
     private OffsetDateTime expiryTime;
 
     /*
      * The password of the Account. The password is required for Windows Compute Nodes (those created with 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey property.
      */
     @Generated
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * The SSH public key that can be used for remote login to the Compute Node. The public key should be compatible with OpenSSH encoding and should be base 64 encoded. This property can be specified only for Linux Compute Nodes. If this is specified for a Windows Compute Node, then the Batch service rejects the request; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      */
     @Generated
-    @JsonProperty(value = "sshPublicKey")
     private String sshPublicKey;
 
     /**
@@ -56,8 +55,7 @@ public final class BatchNodeUserCreateContent {
      * @param name the name value to set.
      */
     @Generated
-    @JsonCreator
-    public BatchNodeUserCreateContent(@JsonProperty(value = "name") String name) {
+    public BatchNodeUserCreateContent(String name) {
         this.name = name;
     }
 
@@ -171,5 +169,64 @@ public final class BatchNodeUserCreateContent {
     public BatchNodeUserCreateContent setSshPublicKey(String sshPublicKey) {
         this.sshPublicKey = sshPublicKey;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("isAdmin", this.isAdmin);
+        jsonWriter.writeStringField("expiryTime",
+            this.expiryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiryTime));
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("sshPublicKey", this.sshPublicKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchNodeUserCreateContent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchNodeUserCreateContent if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchNodeUserCreateContent.
+     */
+    @Generated
+    public static BatchNodeUserCreateContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            Boolean isAdmin = null;
+            OffsetDateTime expiryTime = null;
+            String password = null;
+            String sshPublicKey = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("isAdmin".equals(fieldName)) {
+                    isAdmin = reader.getNullable(JsonReader::getBoolean);
+                } else if ("expiryTime".equals(fieldName)) {
+                    expiryTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("password".equals(fieldName)) {
+                    password = reader.getString();
+                } else if ("sshPublicKey".equals(fieldName)) {
+                    sshPublicKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BatchNodeUserCreateContent deserializedBatchNodeUserCreateContent = new BatchNodeUserCreateContent(name);
+            deserializedBatchNodeUserCreateContent.isAdmin = isAdmin;
+            deserializedBatchNodeUserCreateContent.expiryTime = expiryTime;
+            deserializedBatchNodeUserCreateContent.password = password;
+            deserializedBatchNodeUserCreateContent.sshPublicKey = sshPublicKey;
+            return deserializedBatchNodeUserCreateContent;
+        });
     }
 }

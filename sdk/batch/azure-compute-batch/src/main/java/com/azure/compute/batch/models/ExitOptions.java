@@ -5,26 +5,28 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies how the Batch service responds to a particular exit condition.
  */
 @Fluent
-public final class ExitOptions {
+public final class ExitOptions implements JsonSerializable<ExitOptions> {
 
     /*
      * An action to take on the Job containing the Task, if the Task completes with the given exit condition and the Job's onTaskFailed property is 'performExitOptionsJobAction'. The default is none for exit code 0 and terminate for all other exit conditions. If the Job's onTaskFailed property is noaction, then specifying this property returns an error and the add Task request fails with an invalid property value error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      */
     @Generated
-    @JsonProperty(value = "jobAction")
     private BatchJobAction jobAction;
 
     /*
      * An action that the Batch service performs on Tasks that depend on this Task. Possible values are 'satisfy' (allowing dependent tasks to progress) and 'block' (dependent tasks continue to wait). Batch does not yet support cancellation of dependent tasks.
      */
     @Generated
-    @JsonProperty(value = "dependencyAction")
     private DependencyAction dependencyAction;
 
     /**
@@ -88,5 +90,45 @@ public final class ExitOptions {
     public ExitOptions setDependencyAction(DependencyAction dependencyAction) {
         this.dependencyAction = dependencyAction;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobAction", this.jobAction == null ? null : this.jobAction.toString());
+        jsonWriter.writeStringField("dependencyAction",
+            this.dependencyAction == null ? null : this.dependencyAction.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExitOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExitOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExitOptions.
+     */
+    @Generated
+    public static ExitOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExitOptions deserializedExitOptions = new ExitOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("jobAction".equals(fieldName)) {
+                    deserializedExitOptions.jobAction = BatchJobAction.fromString(reader.getString());
+                } else if ("dependencyAction".equals(fieldName)) {
+                    deserializedExitOptions.dependencyAction = DependencyAction.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedExitOptions;
+        });
     }
 }

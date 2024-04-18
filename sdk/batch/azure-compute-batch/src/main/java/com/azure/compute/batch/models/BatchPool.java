@@ -5,7 +5,11 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,181 +19,156 @@ import java.util.Map;
  * A Pool in the Azure Batch service.
  */
 @Immutable
-public final class BatchPool {
+public final class BatchPool implements JsonSerializable<BatchPool> {
 
     /*
      * A string that uniquely identifies the Pool within the Account. The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
      */
     @Generated
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The display name for the Pool. The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
      */
     @Generated
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * The URL of the Pool.
      */
     @Generated
-    @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 
     /*
      * The ETag of the Pool. This is an opaque string. You can use it to detect whether the Pool has changed between requests. In particular, you can be pass the ETag when updating a Pool to specify that your changes should take effect only if nobody else has modified the Pool in the meantime.
      */
     @Generated
-    @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String eTag;
 
     /*
      * The last modified time of the Pool. This is the last time at which the Pool level data, such as the targetDedicatedNodes or enableAutoscale settings, changed. It does not factor in node-level changes such as a Compute Node changing state.
      */
     @Generated
-    @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
     /*
      * The creation time of the Pool.
      */
     @Generated
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * The current state of the Pool.
      */
     @Generated
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private BatchPoolState state;
 
     /*
      * The time at which the Pool entered its current state.
      */
     @Generated
-    @JsonProperty(value = "stateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime stateTransitionTime;
 
     /*
      * Whether the Pool is resizing.
      */
     @Generated
-    @JsonProperty(value = "allocationState", access = JsonProperty.Access.WRITE_ONLY)
     private AllocationState allocationState;
 
     /*
      * The time at which the Pool entered its current allocation state.
      */
     @Generated
-    @JsonProperty(value = "allocationStateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime allocationStateTransitionTime;
 
     /*
      * The size of virtual machines in the Pool. All virtual machines in a Pool are the same size. For information about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
      */
     @Generated
-    @JsonProperty(value = "vmSize", access = JsonProperty.Access.WRITE_ONLY)
     private String vmSize;
 
     /*
      * The virtual machine configuration for the Pool. This property must be specified.
      */
     @Generated
-    @JsonProperty(value = "virtualMachineConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
     /*
      * The timeout for allocation of Compute Nodes to the Pool. This is the timeout for the most recent resize operation. (The initial sizing when the Pool is created counts as a resize.) The default value is 15 minutes.
      */
     @Generated
-    @JsonProperty(value = "resizeTimeout", access = JsonProperty.Access.WRITE_ONLY)
     private Duration resizeTimeout;
 
     /*
      * A list of errors encountered while performing the last resize on the Pool. This property is set only if one or more errors occurred during the last Pool resize, and only when the Pool allocationState is Steady.
      */
     @Generated
-    @JsonProperty(value = "resizeErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResizeError> resizeErrors;
 
     /*
      * The number of dedicated Compute Nodes currently in the Pool.
      */
     @Generated
-    @JsonProperty(value = "currentDedicatedNodes", access = JsonProperty.Access.WRITE_ONLY)
     private Integer currentDedicatedNodes;
 
     /*
      * The number of Spot/Low-priority Compute Nodes currently in the Pool. Spot/Low-priority Compute Nodes which have been preempted are included in this count.
      */
     @Generated
-    @JsonProperty(value = "currentLowPriorityNodes", access = JsonProperty.Access.WRITE_ONLY)
     private Integer currentLowPriorityNodes;
 
     /*
      * The desired number of dedicated Compute Nodes in the Pool.
      */
     @Generated
-    @JsonProperty(value = "targetDedicatedNodes", access = JsonProperty.Access.WRITE_ONLY)
     private Integer targetDedicatedNodes;
 
     /*
      * The desired number of Spot/Low-priority Compute Nodes in the Pool.
      */
     @Generated
-    @JsonProperty(value = "targetLowPriorityNodes", access = JsonProperty.Access.WRITE_ONLY)
     private Integer targetLowPriorityNodes;
 
     /*
      * Whether the Pool size should automatically adjust over time. If false, at least one of targetDedicatedNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula property is required and the Pool automatically resizes according to the formula. The default value is false.
      */
     @Generated
-    @JsonProperty(value = "enableAutoScale", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean enableAutoScale;
 
     /*
      * A formula for the desired number of Compute Nodes in the Pool. This property is set only if the Pool automatically scales, i.e. enableAutoScale is true.
      */
     @Generated
-    @JsonProperty(value = "autoScaleFormula", access = JsonProperty.Access.WRITE_ONLY)
     private String autoScaleFormula;
 
     /*
      * The time interval at which to automatically adjust the Pool size according to the autoscale formula. This property is set only if the Pool automatically scales, i.e. enableAutoScale is true.
      */
     @Generated
-    @JsonProperty(value = "autoScaleEvaluationInterval", access = JsonProperty.Access.WRITE_ONLY)
     private Duration autoScaleEvaluationInterval;
 
     /*
      * The results and errors from the last execution of the autoscale formula. This property is set only if the Pool automatically scales, i.e. enableAutoScale is true.
      */
     @Generated
-    @JsonProperty(value = "autoScaleRun", access = JsonProperty.Access.WRITE_ONLY)
     private AutoScaleRun autoScaleRun;
 
     /*
      * Whether the Pool permits direct communication between Compute Nodes. This imposes restrictions on which Compute Nodes can be assigned to the Pool. Specifying this value can reduce the chance of the requested number of Compute Nodes to be allocated in the Pool.
      */
     @Generated
-    @JsonProperty(value = "enableInterNodeCommunication", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean enableInterNodeCommunication;
 
     /*
      * The network configuration for the Pool.
      */
     @Generated
-    @JsonProperty(value = "networkConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkConfiguration networkConfiguration;
 
     /*
      * A Task specified to run on each Compute Node as it joins the Pool.
      */
     @Generated
-    @JsonProperty(value = "startTask")
     private BatchStartTask startTask;
 
     /*
@@ -199,77 +178,66 @@ public final class BatchPool {
      * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      */
     @Generated
-    @JsonProperty(value = "certificateReferences", access = JsonProperty.Access.WRITE_ONLY)
     private List<BatchCertificateReference> certificateReferences;
 
     /*
      * The list of Packages to be installed on each Compute Node in the Pool. Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any given Pool.
      */
     @Generated
-    @JsonProperty(value = "applicationPackageReferences", access = JsonProperty.Access.WRITE_ONLY)
     private List<BatchApplicationPackageReference> applicationPackageReferences;
 
     /*
      * The number of task slots that can be used to run concurrent tasks on a single compute node in the pool. The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.
      */
     @Generated
-    @JsonProperty(value = "taskSlotsPerNode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer taskSlotsPerNode;
 
     /*
      * How Tasks are distributed across Compute Nodes in a Pool. If not specified, the default is spread.
      */
     @Generated
-    @JsonProperty(value = "taskSchedulingPolicy", access = JsonProperty.Access.WRITE_ONLY)
     private BatchTaskSchedulingPolicy taskSchedulingPolicy;
 
     /*
      * The list of user Accounts to be created on each Compute Node in the Pool.
      */
     @Generated
-    @JsonProperty(value = "userAccounts", access = JsonProperty.Access.WRITE_ONLY)
     private List<UserAccount> userAccounts;
 
     /*
      * A list of name-value pairs associated with the Pool as metadata.
      */
     @Generated
-    @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
     private List<MetadataItem> metadata;
 
     /*
      * Utilization and resource usage statistics for the entire lifetime of the Pool. This property is populated only if the CloudPool was retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
      */
     @Generated
-    @JsonProperty(value = "stats", access = JsonProperty.Access.WRITE_ONLY)
     private BatchPoolStatistics stats;
 
     /*
      * A list of file systems to mount on each node in the pool. This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
      */
     @Generated
-    @JsonProperty(value = "mountConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private List<MountConfiguration> mountConfiguration;
 
     /*
      * The identity of the Batch pool, if configured. The list of user identities associated with the Batch pool. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      */
     @Generated
-    @JsonProperty(value = "identity", access = JsonProperty.Access.WRITE_ONLY)
     private BatchPoolIdentity identity;
 
     /*
      * The desired node communication mode for the pool. If omitted, the default value is Default.
      */
     @Generated
-    @JsonProperty(value = "targetNodeCommunicationMode")
     private BatchNodeCommunicationMode targetNodeCommunicationMode;
 
     /*
      * The current state of the pool communication mode.
      */
     @Generated
-    @JsonProperty(value = "currentNodeCommunicationMode", access = JsonProperty.Access.WRITE_ONLY)
     private BatchNodeCommunicationMode currentNodeCommunicationMode;
 
     /**
@@ -687,7 +655,6 @@ public final class BatchPool {
      * The user-specified tags associated with the pool. The user-defined tags to be associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This property can only be specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.
      */
     @Generated
-    @JsonProperty(value = "resourceTags", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, String> resourceTags;
 
     /**
@@ -707,7 +674,6 @@ public final class BatchPool {
      * The upgrade policy for the Pool. Describes an upgrade policy - automatic, manual, or rolling.
      */
     @Generated
-    @JsonProperty(value = "upgradePolicy")
     private UpgradePolicy upgradePolicy;
 
     /**
@@ -719,5 +685,136 @@ public final class BatchPool {
     @Generated
     public UpgradePolicy getUpgradePolicy() {
         return this.upgradePolicy;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("startTask", this.startTask);
+        jsonWriter.writeStringField("targetNodeCommunicationMode",
+            this.targetNodeCommunicationMode == null ? null : this.targetNodeCommunicationMode.toString());
+        jsonWriter.writeJsonField("upgradePolicy", this.upgradePolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchPool from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchPool if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the BatchPool.
+     */
+    @Generated
+    public static BatchPool fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchPool deserializedBatchPool = new BatchPool();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    deserializedBatchPool.id = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedBatchPool.displayName = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedBatchPool.url = reader.getString();
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedBatchPool.eTag = reader.getString();
+                } else if ("lastModified".equals(fieldName)) {
+                    deserializedBatchPool.lastModified
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedBatchPool.creationTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    deserializedBatchPool.state = BatchPoolState.fromString(reader.getString());
+                } else if ("stateTransitionTime".equals(fieldName)) {
+                    deserializedBatchPool.stateTransitionTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("allocationState".equals(fieldName)) {
+                    deserializedBatchPool.allocationState = AllocationState.fromString(reader.getString());
+                } else if ("allocationStateTransitionTime".equals(fieldName)) {
+                    deserializedBatchPool.allocationStateTransitionTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("vmSize".equals(fieldName)) {
+                    deserializedBatchPool.vmSize = reader.getString();
+                } else if ("virtualMachineConfiguration".equals(fieldName)) {
+                    deserializedBatchPool.virtualMachineConfiguration = VirtualMachineConfiguration.fromJson(reader);
+                } else if ("resizeTimeout".equals(fieldName)) {
+                    deserializedBatchPool.resizeTimeout
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("resizeErrors".equals(fieldName)) {
+                    List<ResizeError> resizeErrors = reader.readArray(reader1 -> ResizeError.fromJson(reader1));
+                    deserializedBatchPool.resizeErrors = resizeErrors;
+                } else if ("resourceTags".equals(fieldName)) {
+                    Map<String, String> resourceTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBatchPool.resourceTags = resourceTags;
+                } else if ("currentDedicatedNodes".equals(fieldName)) {
+                    deserializedBatchPool.currentDedicatedNodes = reader.getNullable(JsonReader::getInt);
+                } else if ("currentLowPriorityNodes".equals(fieldName)) {
+                    deserializedBatchPool.currentLowPriorityNodes = reader.getNullable(JsonReader::getInt);
+                } else if ("targetDedicatedNodes".equals(fieldName)) {
+                    deserializedBatchPool.targetDedicatedNodes = reader.getNullable(JsonReader::getInt);
+                } else if ("targetLowPriorityNodes".equals(fieldName)) {
+                    deserializedBatchPool.targetLowPriorityNodes = reader.getNullable(JsonReader::getInt);
+                } else if ("enableAutoScale".equals(fieldName)) {
+                    deserializedBatchPool.enableAutoScale = reader.getNullable(JsonReader::getBoolean);
+                } else if ("autoScaleFormula".equals(fieldName)) {
+                    deserializedBatchPool.autoScaleFormula = reader.getString();
+                } else if ("autoScaleEvaluationInterval".equals(fieldName)) {
+                    deserializedBatchPool.autoScaleEvaluationInterval
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("autoScaleRun".equals(fieldName)) {
+                    deserializedBatchPool.autoScaleRun = AutoScaleRun.fromJson(reader);
+                } else if ("enableInterNodeCommunication".equals(fieldName)) {
+                    deserializedBatchPool.enableInterNodeCommunication = reader.getNullable(JsonReader::getBoolean);
+                } else if ("networkConfiguration".equals(fieldName)) {
+                    deserializedBatchPool.networkConfiguration = NetworkConfiguration.fromJson(reader);
+                } else if ("startTask".equals(fieldName)) {
+                    deserializedBatchPool.startTask = BatchStartTask.fromJson(reader);
+                } else if ("certificateReferences".equals(fieldName)) {
+                    List<BatchCertificateReference> certificateReferences
+                        = reader.readArray(reader1 -> BatchCertificateReference.fromJson(reader1));
+                    deserializedBatchPool.certificateReferences = certificateReferences;
+                } else if ("applicationPackageReferences".equals(fieldName)) {
+                    List<BatchApplicationPackageReference> applicationPackageReferences
+                        = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
+                    deserializedBatchPool.applicationPackageReferences = applicationPackageReferences;
+                } else if ("taskSlotsPerNode".equals(fieldName)) {
+                    deserializedBatchPool.taskSlotsPerNode = reader.getNullable(JsonReader::getInt);
+                } else if ("taskSchedulingPolicy".equals(fieldName)) {
+                    deserializedBatchPool.taskSchedulingPolicy = BatchTaskSchedulingPolicy.fromJson(reader);
+                } else if ("userAccounts".equals(fieldName)) {
+                    List<UserAccount> userAccounts = reader.readArray(reader1 -> UserAccount.fromJson(reader1));
+                    deserializedBatchPool.userAccounts = userAccounts;
+                } else if ("metadata".equals(fieldName)) {
+                    List<MetadataItem> metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                    deserializedBatchPool.metadata = metadata;
+                } else if ("stats".equals(fieldName)) {
+                    deserializedBatchPool.stats = BatchPoolStatistics.fromJson(reader);
+                } else if ("mountConfiguration".equals(fieldName)) {
+                    List<MountConfiguration> mountConfiguration
+                        = reader.readArray(reader1 -> MountConfiguration.fromJson(reader1));
+                    deserializedBatchPool.mountConfiguration = mountConfiguration;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedBatchPool.identity = BatchPoolIdentity.fromJson(reader);
+                } else if ("targetNodeCommunicationMode".equals(fieldName)) {
+                    deserializedBatchPool.targetNodeCommunicationMode
+                        = BatchNodeCommunicationMode.fromString(reader.getString());
+                } else if ("currentNodeCommunicationMode".equals(fieldName)) {
+                    deserializedBatchPool.currentNodeCommunicationMode
+                        = BatchNodeCommunicationMode.fromString(reader.getString());
+                } else if ("upgradePolicy".equals(fieldName)) {
+                    deserializedBatchPool.upgradePolicy = UpgradePolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedBatchPool;
+        });
     }
 }

@@ -5,20 +5,22 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The managed disk parameters.
  */
 @Immutable
-public final class ManagedDisk {
+public final class ManagedDisk implements JsonSerializable<ManagedDisk> {
 
     /*
      * The storage account type for managed disk.
      */
     @Generated
-    @JsonProperty(value = "storageAccountType")
     private final StorageAccountType storageAccountType;
 
     /**
@@ -27,8 +29,7 @@ public final class ManagedDisk {
      * @param storageAccountType the storageAccountType value to set.
      */
     @Generated
-    @JsonCreator
-    public ManagedDisk(@JsonProperty(value = "storageAccountType") StorageAccountType storageAccountType) {
+    public ManagedDisk(StorageAccountType storageAccountType) {
         this.storageAccountType = storageAccountType;
     }
 
@@ -40,5 +41,43 @@ public final class ManagedDisk {
     @Generated
     public StorageAccountType getStorageAccountType() {
         return this.storageAccountType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageAccountType",
+            this.storageAccountType == null ? null : this.storageAccountType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedDisk from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedDisk if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedDisk.
+     */
+    @Generated
+    public static ManagedDisk fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountType storageAccountType = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("storageAccountType".equals(fieldName)) {
+                    storageAccountType = StorageAccountType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new ManagedDisk(storageAccountType);
+        });
     }
 }

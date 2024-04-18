@@ -5,19 +5,22 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties used to create a user Account on a Windows Compute Node.
  */
 @Fluent
-public final class WindowsUserConfiguration {
+public final class WindowsUserConfiguration implements JsonSerializable<WindowsUserConfiguration> {
 
     /*
      * The login mode for the user. The default value for VirtualMachineConfiguration Pools is 'batch'.
      */
     @Generated
-    @JsonProperty(value = "loginMode")
     private LoginMode loginMode;
 
     /**
@@ -49,5 +52,41 @@ public final class WindowsUserConfiguration {
     public WindowsUserConfiguration setLoginMode(LoginMode loginMode) {
         this.loginMode = loginMode;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("loginMode", this.loginMode == null ? null : this.loginMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WindowsUserConfiguration from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WindowsUserConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WindowsUserConfiguration.
+     */
+    @Generated
+    public static WindowsUserConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WindowsUserConfiguration deserializedWindowsUserConfiguration = new WindowsUserConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("loginMode".equals(fieldName)) {
+                    deserializedWindowsUserConfiguration.loginMode = LoginMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedWindowsUserConfiguration;
+        });
     }
 }

@@ -5,28 +5,29 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The start and end of the range are inclusive. For example, if a range has start
  * 9 and end 12, then it represents Tasks '9', '10', '11' and '12'.
  */
 @Immutable
-public final class BatchTaskIdRange {
+public final class BatchTaskIdRange implements JsonSerializable<BatchTaskIdRange> {
 
     /*
      * The first Task ID in the range.
      */
     @Generated
-    @JsonProperty(value = "start")
     private final int start;
 
     /*
      * The last Task ID in the range.
      */
     @Generated
-    @JsonProperty(value = "end")
     private final int end;
 
     /**
@@ -36,8 +37,7 @@ public final class BatchTaskIdRange {
      * @param end the end value to set.
      */
     @Generated
-    @JsonCreator
-    public BatchTaskIdRange(@JsonProperty(value = "start") int start, @JsonProperty(value = "end") int end) {
+    public BatchTaskIdRange(int start, int end) {
         this.start = start;
         this.end = end;
     }
@@ -60,5 +60,46 @@ public final class BatchTaskIdRange {
     @Generated
     public int getEnd() {
         return this.end;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("start", this.start);
+        jsonWriter.writeIntField("end", this.end);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchTaskIdRange from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchTaskIdRange if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchTaskIdRange.
+     */
+    @Generated
+    public static BatchTaskIdRange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            int start = 0;
+            int end = 0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("start".equals(fieldName)) {
+                    start = reader.getInt();
+                } else if ("end".equals(fieldName)) {
+                    end = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new BatchTaskIdRange(start, end);
+        });
     }
 }

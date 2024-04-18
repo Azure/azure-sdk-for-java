@@ -5,7 +5,6 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class CachingType extends ExpandableStringEnum<CachingType> {
      * @return the corresponding CachingType.
      */
     @Generated
-    @JsonCreator
     public static CachingType fromString(String name) {
         return fromString(name, CachingType.class);
     }

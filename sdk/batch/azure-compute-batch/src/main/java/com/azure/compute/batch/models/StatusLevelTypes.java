@@ -5,7 +5,6 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class StatusLevelTypes extends ExpandableStringEnum<StatusLevelType
      * @return the corresponding StatusLevelTypes.
      */
     @Generated
-    @JsonCreator
     public static StatusLevelTypes fromString(String name) {
         return fromString(name, StatusLevelTypes.class);
     }

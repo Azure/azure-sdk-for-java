@@ -5,49 +5,48 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Usage metrics for a Pool across an aggregation interval.
  */
 @Immutable
-public final class BatchPoolUsageMetrics {
+public final class BatchPoolUsageMetrics implements JsonSerializable<BatchPoolUsageMetrics> {
 
     /*
      * The ID of the Pool whose metrics are aggregated in this entry.
      */
     @Generated
-    @JsonProperty(value = "poolId")
     private final String poolId;
 
     /*
      * The start time of the aggregation interval covered by this entry.
      */
     @Generated
-    @JsonProperty(value = "startTime")
     private final OffsetDateTime startTime;
 
     /*
      * The end time of the aggregation interval covered by this entry.
      */
     @Generated
-    @JsonProperty(value = "endTime")
     private final OffsetDateTime endTime;
 
     /*
      * The size of virtual machines in the Pool. All VMs in a Pool are the same size. For information about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
      */
     @Generated
-    @JsonProperty(value = "vmSize")
     private final String vmSize;
 
     /*
      * The total core hours used in the Pool during this aggregation interval.
      */
     @Generated
-    @JsonProperty(value = "totalCoreHours")
     private final double totalCoreHours;
 
     /**
@@ -60,11 +59,8 @@ public final class BatchPoolUsageMetrics {
      * @param totalCoreHours the totalCoreHours value to set.
      */
     @Generated
-    @JsonCreator
-    private BatchPoolUsageMetrics(@JsonProperty(value = "poolId") String poolId,
-        @JsonProperty(value = "startTime") OffsetDateTime startTime,
-        @JsonProperty(value = "endTime") OffsetDateTime endTime, @JsonProperty(value = "vmSize") String vmSize,
-        @JsonProperty(value = "totalCoreHours") double totalCoreHours) {
+    private BatchPoolUsageMetrics(String poolId, OffsetDateTime startTime, OffsetDateTime endTime, String vmSize,
+        double totalCoreHours) {
         this.poolId = poolId;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -122,5 +118,60 @@ public final class BatchPoolUsageMetrics {
     @Generated
     public double getTotalCoreHours() {
         return this.totalCoreHours;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("poolId", this.poolId);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("vmSize", this.vmSize);
+        jsonWriter.writeDoubleField("totalCoreHours", this.totalCoreHours);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchPoolUsageMetrics from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchPoolUsageMetrics if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchPoolUsageMetrics.
+     */
+    @Generated
+    public static BatchPoolUsageMetrics fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String poolId = null;
+            OffsetDateTime startTime = null;
+            OffsetDateTime endTime = null;
+            String vmSize = null;
+            double totalCoreHours = 0.0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("poolId".equals(fieldName)) {
+                    poolId = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    endTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("vmSize".equals(fieldName)) {
+                    vmSize = reader.getString();
+                } else if ("totalCoreHours".equals(fieldName)) {
+                    totalCoreHours = reader.getDouble();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new BatchPoolUsageMetrics(poolId, startTime, endTime, vmSize, totalCoreHours);
+        });
     }
 }

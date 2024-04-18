@@ -5,7 +5,6 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class BatchCertificateStoreLocation extends ExpandableStringEnum<Ba
      * @return the corresponding BatchCertificateStoreLocation.
      */
     @Generated
-    @JsonCreator
     public static BatchCertificateStoreLocation fromString(String name) {
         return fromString(name, BatchCertificateStoreLocation.class);
     }

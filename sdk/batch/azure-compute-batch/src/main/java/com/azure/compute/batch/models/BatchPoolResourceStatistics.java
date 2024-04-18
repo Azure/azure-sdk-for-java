@@ -5,105 +5,96 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Statistics related to resource consumption by Compute Nodes in a Pool.
  */
 @Immutable
-public final class BatchPoolResourceStatistics {
+public final class BatchPoolResourceStatistics implements JsonSerializable<BatchPoolResourceStatistics> {
 
     /*
      * The start time of the time range covered by the statistics.
      */
     @Generated
-    @JsonProperty(value = "startTime")
     private final OffsetDateTime startTime;
 
     /*
      * The time at which the statistics were last updated. All statistics are limited to the range between startTime and lastUpdateTime.
      */
     @Generated
-    @JsonProperty(value = "lastUpdateTime")
     private final OffsetDateTime lastUpdateTime;
 
     /*
      * The average CPU usage across all Compute Nodes in the Pool (percentage per node).
      */
     @Generated
-    @JsonProperty(value = "avgCPUPercentage")
     private final double avgCpuPercentage;
 
     /*
      * The average memory usage in GiB across all Compute Nodes in the Pool.
      */
     @Generated
-    @JsonProperty(value = "avgMemoryGiB")
     private final double avgMemoryGiB;
 
     /*
      * The peak memory usage in GiB across all Compute Nodes in the Pool.
      */
     @Generated
-    @JsonProperty(value = "peakMemoryGiB")
     private final double peakMemoryGiB;
 
     /*
      * The average used disk space in GiB across all Compute Nodes in the Pool.
      */
     @Generated
-    @JsonProperty(value = "avgDiskGiB")
     private final double avgDiskGiB;
 
     /*
      * The peak used disk space in GiB across all Compute Nodes in the Pool.
      */
     @Generated
-    @JsonProperty(value = "peakDiskGiB")
     private final double peakDiskGiB;
 
     /*
      * The total number of disk read operations across all Compute Nodes in the Pool.
      */
     @Generated
-    @JsonProperty(value = "diskReadIOps")
     private final long diskReadIOps;
 
     /*
      * The total number of disk write operations across all Compute Nodes in the Pool.
      */
     @Generated
-    @JsonProperty(value = "diskWriteIOps")
     private final long diskWriteIOps;
 
     /*
      * The total amount of data in GiB of disk reads across all Compute Nodes in the Pool.
      */
     @Generated
-    @JsonProperty(value = "diskReadGiB")
     private final double diskReadGiB;
 
     /*
      * The total amount of data in GiB of disk writes across all Compute Nodes in the Pool.
      */
     @Generated
-    @JsonProperty(value = "diskWriteGiB")
     private final double diskWriteGiB;
 
     /*
      * The total amount of data in GiB of network reads across all Compute Nodes in the Pool.
      */
     @Generated
-    @JsonProperty(value = "networkReadGiB")
     private final double networkReadGiB;
 
     /*
      * The total amount of data in GiB of network writes across all Compute Nodes in the Pool.
      */
     @Generated
-    @JsonProperty(value = "networkWriteGiB")
     private final double networkWriteGiB;
 
     /**
@@ -259,19 +250,10 @@ public final class BatchPoolResourceStatistics {
      * @param networkWriteGiB the networkWriteGiB value to set.
      */
     @Generated
-    @JsonCreator
-    private BatchPoolResourceStatistics(@JsonProperty(value = "startTime") OffsetDateTime startTime,
-        @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
-        @JsonProperty(value = "avgCPUPercentage") double avgCpuPercentage,
-        @JsonProperty(value = "avgMemoryGiB") double avgMemoryGiB,
-        @JsonProperty(value = "peakMemoryGiB") double peakMemoryGiB,
-        @JsonProperty(value = "avgDiskGiB") double avgDiskGiB, @JsonProperty(value = "peakDiskGiB") double peakDiskGiB,
-        @JsonProperty(value = "diskReadIOps") long diskReadIOps,
-        @JsonProperty(value = "diskWriteIOps") long diskWriteIOps,
-        @JsonProperty(value = "diskReadGiB") double diskReadGiB,
-        @JsonProperty(value = "diskWriteGiB") double diskWriteGiB,
-        @JsonProperty(value = "networkReadGiB") double networkReadGiB,
-        @JsonProperty(value = "networkWriteGiB") double networkWriteGiB) {
+    private BatchPoolResourceStatistics(OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
+        double avgCpuPercentage, double avgMemoryGiB, double peakMemoryGiB, double avgDiskGiB, double peakDiskGiB,
+        long diskReadIOps, long diskWriteIOps, double diskReadGiB, double diskWriteGiB, double networkReadGiB,
+        double networkWriteGiB) {
         this.startTime = startTime;
         this.lastUpdateTime = lastUpdateTime;
         this.avgCpuPercentage = avgCpuPercentage;
@@ -285,5 +267,95 @@ public final class BatchPoolResourceStatistics {
         this.diskWriteGiB = diskWriteGiB;
         this.networkReadGiB = networkReadGiB;
         this.networkWriteGiB = networkWriteGiB;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("lastUpdateTime",
+            this.lastUpdateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdateTime));
+        jsonWriter.writeDoubleField("avgCPUPercentage", this.avgCpuPercentage);
+        jsonWriter.writeDoubleField("avgMemoryGiB", this.avgMemoryGiB);
+        jsonWriter.writeDoubleField("peakMemoryGiB", this.peakMemoryGiB);
+        jsonWriter.writeDoubleField("avgDiskGiB", this.avgDiskGiB);
+        jsonWriter.writeDoubleField("peakDiskGiB", this.peakDiskGiB);
+        jsonWriter.writeLongField("diskReadIOps", this.diskReadIOps);
+        jsonWriter.writeLongField("diskWriteIOps", this.diskWriteIOps);
+        jsonWriter.writeDoubleField("diskReadGiB", this.diskReadGiB);
+        jsonWriter.writeDoubleField("diskWriteGiB", this.diskWriteGiB);
+        jsonWriter.writeDoubleField("networkReadGiB", this.networkReadGiB);
+        jsonWriter.writeDoubleField("networkWriteGiB", this.networkWriteGiB);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchPoolResourceStatistics from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchPoolResourceStatistics if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchPoolResourceStatistics.
+     */
+    @Generated
+    public static BatchPoolResourceStatistics fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OffsetDateTime startTime = null;
+            OffsetDateTime lastUpdateTime = null;
+            double avgCpuPercentage = 0.0;
+            double avgMemoryGiB = 0.0;
+            double peakMemoryGiB = 0.0;
+            double avgDiskGiB = 0.0;
+            double peakDiskGiB = 0.0;
+            long diskReadIOps = 0L;
+            long diskWriteIOps = 0L;
+            double diskReadGiB = 0.0;
+            double diskWriteGiB = 0.0;
+            double networkReadGiB = 0.0;
+            double networkWriteGiB = 0.0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("startTime".equals(fieldName)) {
+                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("lastUpdateTime".equals(fieldName)) {
+                    lastUpdateTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("avgCPUPercentage".equals(fieldName)) {
+                    avgCpuPercentage = reader.getDouble();
+                } else if ("avgMemoryGiB".equals(fieldName)) {
+                    avgMemoryGiB = reader.getDouble();
+                } else if ("peakMemoryGiB".equals(fieldName)) {
+                    peakMemoryGiB = reader.getDouble();
+                } else if ("avgDiskGiB".equals(fieldName)) {
+                    avgDiskGiB = reader.getDouble();
+                } else if ("peakDiskGiB".equals(fieldName)) {
+                    peakDiskGiB = reader.getDouble();
+                } else if ("diskReadIOps".equals(fieldName)) {
+                    diskReadIOps = reader.getLong();
+                } else if ("diskWriteIOps".equals(fieldName)) {
+                    diskWriteIOps = reader.getLong();
+                } else if ("diskReadGiB".equals(fieldName)) {
+                    diskReadGiB = reader.getDouble();
+                } else if ("diskWriteGiB".equals(fieldName)) {
+                    diskWriteGiB = reader.getDouble();
+                } else if ("networkReadGiB".equals(fieldName)) {
+                    networkReadGiB = reader.getDouble();
+                } else if ("networkWriteGiB".equals(fieldName)) {
+                    networkWriteGiB = reader.getDouble();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new BatchPoolResourceStatistics(startTime, lastUpdateTime, avgCpuPercentage, avgMemoryGiB,
+                peakMemoryGiB, avgDiskGiB, peakDiskGiB, diskReadIOps, diskWriteIOps, diskReadGiB, diskWriteGiB,
+                networkReadGiB, networkWriteGiB);
+        });
     }
 }

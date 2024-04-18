@@ -5,99 +5,92 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Resource usage statistics for a Job Schedule.
  */
 @Immutable
-public final class BatchJobScheduleStatistics {
+public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJobScheduleStatistics> {
 
     /*
      * The URL of the statistics.
      */
     @Generated
-    @JsonProperty(value = "url")
     private final String url;
 
     /*
      * The start time of the time range covered by the statistics.
      */
     @Generated
-    @JsonProperty(value = "startTime")
     private final OffsetDateTime startTime;
 
     /*
      * The time at which the statistics were last updated. All statistics are limited to the range between startTime and lastUpdateTime.
      */
     @Generated
-    @JsonProperty(value = "lastUpdateTime")
     private final OffsetDateTime lastUpdateTime;
 
     /*
      * The total wall clock time of all the Tasks in all the Jobs created under the schedule. The wall clock time is the elapsed time from when the Task started running on a Compute Node to when it finished (or to the last time the statistics were updated, if the Task had not finished by then). If a Task was retried, this includes the wall clock time of all the Task retries.
      */
     @Generated
-    @JsonProperty(value = "wallClockTime")
     private final Duration wallClockTime;
 
     /*
      * The total number of disk read operations made by all Tasks in all Jobs created under the schedule.
      */
     @Generated
-    @JsonProperty(value = "readIOps")
     private final long readIOps;
 
     /*
      * The total number of disk write operations made by all Tasks in all Jobs created under the schedule.
      */
     @Generated
-    @JsonProperty(value = "writeIOps")
     private final long writeIOps;
 
     /*
      * The total gibibytes read from disk by all Tasks in all Jobs created under the schedule.
      */
     @Generated
-    @JsonProperty(value = "readIOGiB")
     private final double readIOGiB;
 
     /*
      * The total gibibytes written to disk by all Tasks in all Jobs created under the schedule.
      */
     @Generated
-    @JsonProperty(value = "writeIOGiB")
     private final double writeIOGiB;
 
     /*
      * The total number of Tasks successfully completed during the given time range in Jobs created under the schedule. A Task completes successfully if it returns exit code 0.
      */
     @Generated
-    @JsonProperty(value = "numSucceededTasks")
     private final long numSucceededTasks;
 
     /*
      * The total number of Tasks that failed during the given time range in Jobs created under the schedule. A Task fails if it exhausts its maximum retry count without returning exit code 0.
      */
     @Generated
-    @JsonProperty(value = "numFailedTasks")
     private final long numFailedTasks;
 
     /*
      * The total number of retries during the given time range on all Tasks in all Jobs created under the schedule.
      */
     @Generated
-    @JsonProperty(value = "numTaskRetries")
     private final long numTaskRetries;
 
     /*
      * The total wait time of all Tasks in all Jobs created under the schedule. The wait time for a Task is defined as the elapsed time between the creation of the Task and the start of Task execution. (If the Task is retried due to failures, the wait time is the time to the most recent Task execution.). This value is only reported in the Account lifetime statistics; it is not included in the Job statistics.
      */
     @Generated
-    @JsonProperty(value = "waitTime")
     private final Duration waitTime;
 
     /**
@@ -238,7 +231,6 @@ public final class BatchJobScheduleStatistics {
      * The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in all Jobs created under the schedule.
      */
     @Generated
-    @JsonProperty(value = "kernelCPUTime")
     private final Duration kernelCpuTime;
 
     /**
@@ -256,7 +248,6 @@ public final class BatchJobScheduleStatistics {
      * The total user mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in all Jobs created under the schedule.
      */
     @Generated
-    @JsonProperty(value = "userCPUTime")
     private final Duration userCpuTime;
 
     /**
@@ -289,19 +280,10 @@ public final class BatchJobScheduleStatistics {
      * @param waitTime the waitTime value to set.
      */
     @Generated
-    @JsonCreator
-    private BatchJobScheduleStatistics(@JsonProperty(value = "url") String url,
-        @JsonProperty(value = "startTime") OffsetDateTime startTime,
-        @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
-        @JsonProperty(value = "userCPUTime") Duration userCpuTime,
-        @JsonProperty(value = "kernelCPUTime") Duration kernelCpuTime,
-        @JsonProperty(value = "wallClockTime") Duration wallClockTime, @JsonProperty(value = "readIOps") long readIOps,
-        @JsonProperty(value = "writeIOps") long writeIOps, @JsonProperty(value = "readIOGiB") double readIOGiB,
-        @JsonProperty(value = "writeIOGiB") double writeIOGiB,
-        @JsonProperty(value = "numSucceededTasks") long numSucceededTasks,
-        @JsonProperty(value = "numFailedTasks") long numFailedTasks,
-        @JsonProperty(value = "numTaskRetries") long numTaskRetries,
-        @JsonProperty(value = "waitTime") Duration waitTime) {
+    private BatchJobScheduleStatistics(String url, OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
+        Duration userCpuTime, Duration kernelCpuTime, Duration wallClockTime, long readIOps, long writeIOps,
+        double readIOGiB, double writeIOGiB, long numSucceededTasks, long numFailedTasks, long numTaskRetries,
+        Duration waitTime) {
         this.url = url;
         this.startTime = startTime;
         this.lastUpdateTime = lastUpdateTime;
@@ -316,5 +298,99 @@ public final class BatchJobScheduleStatistics {
         this.numFailedTasks = numFailedTasks;
         this.numTaskRetries = numTaskRetries;
         this.waitTime = waitTime;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("lastUpdateTime",
+            this.lastUpdateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdateTime));
+        jsonWriter.writeStringField("userCPUTime", CoreUtils.durationToStringWithDays(this.userCpuTime));
+        jsonWriter.writeStringField("kernelCPUTime", CoreUtils.durationToStringWithDays(this.kernelCpuTime));
+        jsonWriter.writeStringField("wallClockTime", CoreUtils.durationToStringWithDays(this.wallClockTime));
+        jsonWriter.writeLongField("readIOps", this.readIOps);
+        jsonWriter.writeLongField("writeIOps", this.writeIOps);
+        jsonWriter.writeDoubleField("readIOGiB", this.readIOGiB);
+        jsonWriter.writeDoubleField("writeIOGiB", this.writeIOGiB);
+        jsonWriter.writeLongField("numSucceededTasks", this.numSucceededTasks);
+        jsonWriter.writeLongField("numFailedTasks", this.numFailedTasks);
+        jsonWriter.writeLongField("numTaskRetries", this.numTaskRetries);
+        jsonWriter.writeStringField("waitTime", CoreUtils.durationToStringWithDays(this.waitTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchJobScheduleStatistics from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchJobScheduleStatistics if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchJobScheduleStatistics.
+     */
+    @Generated
+    public static BatchJobScheduleStatistics fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String url = null;
+            OffsetDateTime startTime = null;
+            OffsetDateTime lastUpdateTime = null;
+            Duration userCpuTime = null;
+            Duration kernelCpuTime = null;
+            Duration wallClockTime = null;
+            long readIOps = 0L;
+            long writeIOps = 0L;
+            double readIOGiB = 0.0;
+            double writeIOGiB = 0.0;
+            long numSucceededTasks = 0L;
+            long numFailedTasks = 0L;
+            long numTaskRetries = 0L;
+            Duration waitTime = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("url".equals(fieldName)) {
+                    url = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("lastUpdateTime".equals(fieldName)) {
+                    lastUpdateTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("userCPUTime".equals(fieldName)) {
+                    userCpuTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("kernelCPUTime".equals(fieldName)) {
+                    kernelCpuTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("wallClockTime".equals(fieldName)) {
+                    wallClockTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("readIOps".equals(fieldName)) {
+                    readIOps = reader.getLong();
+                } else if ("writeIOps".equals(fieldName)) {
+                    writeIOps = reader.getLong();
+                } else if ("readIOGiB".equals(fieldName)) {
+                    readIOGiB = reader.getDouble();
+                } else if ("writeIOGiB".equals(fieldName)) {
+                    writeIOGiB = reader.getDouble();
+                } else if ("numSucceededTasks".equals(fieldName)) {
+                    numSucceededTasks = reader.getLong();
+                } else if ("numFailedTasks".equals(fieldName)) {
+                    numFailedTasks = reader.getLong();
+                } else if ("numTaskRetries".equals(fieldName)) {
+                    numTaskRetries = reader.getLong();
+                } else if ("waitTime".equals(fieldName)) {
+                    waitTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new BatchJobScheduleStatistics(url, startTime, lastUpdateTime, userCpuTime, kernelCpuTime,
+                wallClockTime, readIOps, writeIOps, readIOGiB, writeIOGiB, numSucceededTasks, numFailedTasks,
+                numTaskRetries, waitTime);
+        });
     }
 }

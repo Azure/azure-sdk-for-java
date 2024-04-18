@@ -5,77 +5,72 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Information about a StartTask running on a Compute Node.
  */
 @Immutable
-public final class BatchStartTaskInfo {
+public final class BatchStartTaskInfo implements JsonSerializable<BatchStartTaskInfo> {
 
     /*
      * The state of the StartTask on the Compute Node.
      */
     @Generated
-    @JsonProperty(value = "state")
     private final BatchStartTaskState state;
 
     /*
      * The time at which the StartTask started running. This value is reset every time the Task is restarted or retried (that is, this is the most recent time at which the StartTask started running).
      */
     @Generated
-    @JsonProperty(value = "startTime")
     private final OffsetDateTime startTime;
 
     /*
      * The time at which the StartTask stopped running. This is the end time of the most recent run of the StartTask, if that run has completed (even if that run failed and a retry is pending). This element is not present if the StartTask is currently running.
      */
     @Generated
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * The exit code of the program specified on the StartTask command line. This property is set only if the StartTask is in the completed state. In general, the exit code for a process reflects the specific convention implemented by the application developer for that process. If you use the exit code value to make decisions in your code, be sure that you know the exit code convention used by the application process. However, if the Batch service terminates the StartTask (due to timeout, or user termination via the API) you may see an operating system-defined exit code.
      */
     @Generated
-    @JsonProperty(value = "exitCode")
     private Integer exitCode;
 
     /*
      * Information about the container under which the Task is executing. This property is set only if the Task runs in a container context.
      */
     @Generated
-    @JsonProperty(value = "containerInfo")
     private BatchTaskContainerExecutionInfo containerInfo;
 
     /*
      * Information describing the Task failure, if any. This property is set only if the Task is in the completed state and encountered a failure.
      */
     @Generated
-    @JsonProperty(value = "failureInfo")
     private BatchTaskFailureInfo failureInfo;
 
     /*
      * The number of times the Task has been retried by the Batch service. Task application failures (non-zero exit code) are retried, pre-processing errors (the Task could not be run) and file upload errors are not retried. The Batch service will retry the Task up to the limit specified by the constraints.
      */
     @Generated
-    @JsonProperty(value = "retryCount")
     private final int retryCount;
 
     /*
      * The most recent time at which a retry of the Task started running. This element is present only if the Task was retried (i.e. retryCount is nonzero). If present, this is typically the same as startTime, but may be different if the Task has been restarted for reasons other than retry; for example, if the Compute Node was rebooted during a retry, then the startTime is updated but the lastRetryTime is not.
      */
     @Generated
-    @JsonProperty(value = "lastRetryTime")
     private OffsetDateTime lastRetryTime;
 
     /*
      * The result of the Task execution. If the value is 'failed', then the details of the failure can be found in the failureInfo property.
      */
     @Generated
-    @JsonProperty(value = "result")
     private BatchTaskExecutionResult result;
 
     /**
@@ -86,10 +81,7 @@ public final class BatchStartTaskInfo {
      * @param retryCount the retryCount value to set.
      */
     @Generated
-    @JsonCreator
-    private BatchStartTaskInfo(@JsonProperty(value = "state") BatchStartTaskState state,
-        @JsonProperty(value = "startTime") OffsetDateTime startTime,
-        @JsonProperty(value = "retryCount") int retryCount) {
+    private BatchStartTaskInfo(BatchStartTaskState state, OffsetDateTime startTime, int retryCount) {
         this.state = state;
         this.startTime = startTime;
         this.retryCount = retryCount;
@@ -199,5 +191,85 @@ public final class BatchStartTaskInfo {
     @Generated
     public BatchTaskExecutionResult getResult() {
         return this.result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeIntField("retryCount", this.retryCount);
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeNumberField("exitCode", this.exitCode);
+        jsonWriter.writeJsonField("containerInfo", this.containerInfo);
+        jsonWriter.writeJsonField("failureInfo", this.failureInfo);
+        jsonWriter.writeStringField("lastRetryTime",
+            this.lastRetryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastRetryTime));
+        jsonWriter.writeStringField("result", this.result == null ? null : this.result.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchStartTaskInfo from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchStartTaskInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchStartTaskInfo.
+     */
+    @Generated
+    public static BatchStartTaskInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchStartTaskState state = null;
+            OffsetDateTime startTime = null;
+            int retryCount = 0;
+            OffsetDateTime endTime = null;
+            Integer exitCode = null;
+            BatchTaskContainerExecutionInfo containerInfo = null;
+            BatchTaskFailureInfo failureInfo = null;
+            OffsetDateTime lastRetryTime = null;
+            BatchTaskExecutionResult result = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("state".equals(fieldName)) {
+                    state = BatchStartTaskState.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("retryCount".equals(fieldName)) {
+                    retryCount = reader.getInt();
+                } else if ("endTime".equals(fieldName)) {
+                    endTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("exitCode".equals(fieldName)) {
+                    exitCode = reader.getNullable(JsonReader::getInt);
+                } else if ("containerInfo".equals(fieldName)) {
+                    containerInfo = BatchTaskContainerExecutionInfo.fromJson(reader);
+                } else if ("failureInfo".equals(fieldName)) {
+                    failureInfo = BatchTaskFailureInfo.fromJson(reader);
+                } else if ("lastRetryTime".equals(fieldName)) {
+                    lastRetryTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("result".equals(fieldName)) {
+                    result = BatchTaskExecutionResult.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BatchStartTaskInfo deserializedBatchStartTaskInfo = new BatchStartTaskInfo(state, startTime, retryCount);
+            deserializedBatchStartTaskInfo.endTime = endTime;
+            deserializedBatchStartTaskInfo.exitCode = exitCode;
+            deserializedBatchStartTaskInfo.containerInfo = containerInfo;
+            deserializedBatchStartTaskInfo.failureInfo = failureInfo;
+            deserializedBatchStartTaskInfo.lastRetryTime = lastRetryTime;
+            deserializedBatchStartTaskInfo.result = result;
+            return deserializedBatchStartTaskInfo;
+        });
     }
 }

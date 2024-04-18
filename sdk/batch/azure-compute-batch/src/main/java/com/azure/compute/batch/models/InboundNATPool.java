@@ -5,8 +5,11 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,48 +17,42 @@ import java.util.List;
  * in a Batch Pool externally.
  */
 @Fluent
-public final class InboundNATPool {
+public final class InboundNATPool implements JsonSerializable<InboundNATPool> {
 
     /*
      * The name of the endpoint. The name must be unique within a Batch Pool, can contain letters, numbers, underscores, periods, and hyphens. Names must start with a letter or number, must end with a letter, number, or underscore, and cannot exceed 77 characters.  If any invalid values are provided the request fails with HTTP status code 400.
      */
     @Generated
-    @JsonProperty(value = "name")
     private final String name;
 
     /*
      * The protocol of the endpoint.
      */
     @Generated
-    @JsonProperty(value = "protocol")
     private final InboundEndpointProtocol protocol;
 
     /*
      * The port number on the Compute Node. This must be unique within a Batch Pool. Acceptable values are between 1 and 65535 except for 22, 3389, 29876 and 29877 as these are reserved. If any reserved values are provided the request fails with HTTP status code 400.
      */
     @Generated
-    @JsonProperty(value = "backendPort")
     private final int backendPort;
 
     /*
      * The first port number in the range of external ports that will be used to provide inbound access to the backendPort on individual Compute Nodes. Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved. All ranges within a Pool must be distinct and cannot overlap. Each range must contain at least 40 ports. If any reserved or overlapping values are provided the request fails with HTTP status code 400.
      */
     @Generated
-    @JsonProperty(value = "frontendPortRangeStart")
     private final int frontendPortRangeStart;
 
     /*
      * The last port number in the range of external ports that will be used to provide inbound access to the backendPort on individual Compute Nodes. Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved by the Batch service. All ranges within a Pool must be distinct and cannot overlap. Each range must contain at least 40 ports. If any reserved or overlapping values are provided the request fails with HTTP status code 400.
      */
     @Generated
-    @JsonProperty(value = "frontendPortRangeEnd")
     private final int frontendPortRangeEnd;
 
     /*
      * A list of network security group rules that will be applied to the endpoint. The maximum number of rules that can be specified across all the endpoints on a Batch Pool is 25. If no network security group rules are specified, a default rule will be created to allow inbound access to the specified backendPort. If the maximum number of network security group rules is exceeded the request fails with HTTP status code 400.
      */
     @Generated
-    @JsonProperty(value = "networkSecurityGroupRules")
     private List<NetworkSecurityGroupRule> networkSecurityGroupRules;
 
     /**
@@ -68,12 +65,8 @@ public final class InboundNATPool {
      * @param frontendPortRangeEnd the frontendPortRangeEnd value to set.
      */
     @Generated
-    @JsonCreator
-    public InboundNATPool(@JsonProperty(value = "name") String name,
-        @JsonProperty(value = "protocol") InboundEndpointProtocol protocol,
-        @JsonProperty(value = "backendPort") int backendPort,
-        @JsonProperty(value = "frontendPortRangeStart") int frontendPortRangeStart,
-        @JsonProperty(value = "frontendPortRangeEnd") int frontendPortRangeEnd) {
+    public InboundNATPool(String name, InboundEndpointProtocol protocol, int backendPort, int frontendPortRangeStart,
+        int frontendPortRangeEnd) {
         this.name = name;
         this.protocol = protocol;
         this.backendPort = backendPort;
@@ -172,5 +165,66 @@ public final class InboundNATPool {
     public InboundNATPool setNetworkSecurityGroupRules(List<NetworkSecurityGroupRule> networkSecurityGroupRules) {
         this.networkSecurityGroupRules = networkSecurityGroupRules;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeIntField("backendPort", this.backendPort);
+        jsonWriter.writeIntField("frontendPortRangeStart", this.frontendPortRangeStart);
+        jsonWriter.writeIntField("frontendPortRangeEnd", this.frontendPortRangeEnd);
+        jsonWriter.writeArrayField("networkSecurityGroupRules", this.networkSecurityGroupRules,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InboundNATPool from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InboundNATPool if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InboundNATPool.
+     */
+    @Generated
+    public static InboundNATPool fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            InboundEndpointProtocol protocol = null;
+            int backendPort = 0;
+            int frontendPortRangeStart = 0;
+            int frontendPortRangeEnd = 0;
+            List<NetworkSecurityGroupRule> networkSecurityGroupRules = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("protocol".equals(fieldName)) {
+                    protocol = InboundEndpointProtocol.fromString(reader.getString());
+                } else if ("backendPort".equals(fieldName)) {
+                    backendPort = reader.getInt();
+                } else if ("frontendPortRangeStart".equals(fieldName)) {
+                    frontendPortRangeStart = reader.getInt();
+                } else if ("frontendPortRangeEnd".equals(fieldName)) {
+                    frontendPortRangeEnd = reader.getInt();
+                } else if ("networkSecurityGroupRules".equals(fieldName)) {
+                    networkSecurityGroupRules = reader.readArray(reader1 -> NetworkSecurityGroupRule.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            InboundNATPool deserializedInboundNATPool
+                = new InboundNATPool(name, protocol, backendPort, frontendPortRangeStart, frontendPortRangeEnd);
+            deserializedInboundNATPool.networkSecurityGroupRules = networkSecurityGroupRules;
+            return deserializedInboundNATPool;
+        });
     }
 }

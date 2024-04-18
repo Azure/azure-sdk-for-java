@@ -5,62 +5,58 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information used to connect to an Azure Storage Container using Blobfuse.
  */
 @Fluent
-public final class AzureBlobFileSystemConfiguration {
+public final class AzureBlobFileSystemConfiguration implements JsonSerializable<AzureBlobFileSystemConfiguration> {
 
     /*
      * The Azure Storage Account name.
      */
     @Generated
-    @JsonProperty(value = "accountName")
     private final String accountName;
 
     /*
      * The Azure Blob Storage Container name.
      */
     @Generated
-    @JsonProperty(value = "containerName")
     private final String containerName;
 
     /*
      * The Azure Storage Account key. This property is mutually exclusive with both sasKey and identity; exactly one must be specified.
      */
     @Generated
-    @JsonProperty(value = "accountKey")
     private String accountKey;
 
     /*
      * The Azure Storage SAS token. This property is mutually exclusive with both accountKey and identity; exactly one must be specified.
      */
     @Generated
-    @JsonProperty(value = "sasKey")
     private String sasKey;
 
     /*
      * Additional command line options to pass to the mount command. These are 'net use' options in Windows and 'mount' options in Linux.
      */
     @Generated
-    @JsonProperty(value = "blobfuseOptions")
     private String blobfuseOptions;
 
     /*
      * The relative path on the compute node where the file system will be mounted. All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable.
      */
     @Generated
-    @JsonProperty(value = "relativeMountPath")
     private final String relativeMountPath;
 
     /*
      * The reference to the user assigned identity to use to access containerName. This property is mutually exclusive with both accountKey and sasKey; exactly one must be specified.
      */
     @Generated
-    @JsonProperty(value = "identityReference")
     private BatchNodeIdentityReference identityReference;
 
     /**
@@ -71,10 +67,7 @@ public final class AzureBlobFileSystemConfiguration {
      * @param relativeMountPath the relativeMountPath value to set.
      */
     @Generated
-    @JsonCreator
-    public AzureBlobFileSystemConfiguration(@JsonProperty(value = "accountName") String accountName,
-        @JsonProperty(value = "containerName") String containerName,
-        @JsonProperty(value = "relativeMountPath") String relativeMountPath) {
+    public AzureBlobFileSystemConfiguration(String accountName, String containerName, String relativeMountPath) {
         this.accountName = accountName;
         this.containerName = containerName;
         this.relativeMountPath = relativeMountPath;
@@ -206,5 +199,72 @@ public final class AzureBlobFileSystemConfiguration {
     public AzureBlobFileSystemConfiguration setIdentityReference(BatchNodeIdentityReference identityReference) {
         this.identityReference = identityReference;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accountName", this.accountName);
+        jsonWriter.writeStringField("containerName", this.containerName);
+        jsonWriter.writeStringField("relativeMountPath", this.relativeMountPath);
+        jsonWriter.writeStringField("accountKey", this.accountKey);
+        jsonWriter.writeStringField("sasKey", this.sasKey);
+        jsonWriter.writeStringField("blobfuseOptions", this.blobfuseOptions);
+        jsonWriter.writeJsonField("identityReference", this.identityReference);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBlobFileSystemConfiguration from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBlobFileSystemConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureBlobFileSystemConfiguration.
+     */
+    @Generated
+    public static AzureBlobFileSystemConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String accountName = null;
+            String containerName = null;
+            String relativeMountPath = null;
+            String accountKey = null;
+            String sasKey = null;
+            String blobfuseOptions = null;
+            BatchNodeIdentityReference identityReference = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("accountName".equals(fieldName)) {
+                    accountName = reader.getString();
+                } else if ("containerName".equals(fieldName)) {
+                    containerName = reader.getString();
+                } else if ("relativeMountPath".equals(fieldName)) {
+                    relativeMountPath = reader.getString();
+                } else if ("accountKey".equals(fieldName)) {
+                    accountKey = reader.getString();
+                } else if ("sasKey".equals(fieldName)) {
+                    sasKey = reader.getString();
+                } else if ("blobfuseOptions".equals(fieldName)) {
+                    blobfuseOptions = reader.getString();
+                } else if ("identityReference".equals(fieldName)) {
+                    identityReference = BatchNodeIdentityReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            AzureBlobFileSystemConfiguration deserializedAzureBlobFileSystemConfiguration
+                = new AzureBlobFileSystemConfiguration(accountName, containerName, relativeMountPath);
+            deserializedAzureBlobFileSystemConfiguration.accountKey = accountKey;
+            deserializedAzureBlobFileSystemConfiguration.sasKey = sasKey;
+            deserializedAzureBlobFileSystemConfiguration.blobfuseOptions = blobfuseOptions;
+            deserializedAzureBlobFileSystemConfiguration.identityReference = identityReference;
+            return deserializedAzureBlobFileSystemConfiguration;
+        });
     }
 }

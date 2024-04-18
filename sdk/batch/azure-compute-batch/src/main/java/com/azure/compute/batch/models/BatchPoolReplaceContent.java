@@ -5,21 +5,23 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Parameters for replacing properties on an Azure Batch Pool.
  */
 @Fluent
-public final class BatchPoolReplaceContent {
+public final class BatchPoolReplaceContent implements JsonSerializable<BatchPoolReplaceContent> {
 
     /*
      * A Task to run on each Compute Node as it joins the Pool. The Task runs when the Compute Node is added to the Pool or when the Compute Node is restarted. If this element is present, it overwrites any existing StartTask. If omitted, any existing StartTask is removed from the Pool.
      */
     @Generated
-    @JsonProperty(value = "startTask")
     private BatchStartTask startTask;
 
     /*
@@ -31,28 +33,24 @@ public final class BatchPoolReplaceContent {
      * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      */
     @Generated
-    @JsonProperty(value = "certificateReferences")
     private final List<BatchCertificateReference> certificateReferences;
 
     /*
      * The list of Application Packages to be installed on each Compute Node in the Pool. The list replaces any existing Application Package references on the Pool. Changes to Application Package references affect all new Compute Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Application Package references on any given Pool. If omitted, or if you specify an empty collection, any existing Application Packages references are removed from the Pool. A maximum of 10 references may be specified on a given Pool.
      */
     @Generated
-    @JsonProperty(value = "applicationPackageReferences")
     private final List<BatchApplicationPackageReference> applicationPackageReferences;
 
     /*
      * A list of name-value pairs associated with the Pool as metadata. This list replaces any existing metadata configured on the Pool. If omitted, or if you specify an empty collection, any existing metadata is removed from the Pool.
      */
     @Generated
-    @JsonProperty(value = "metadata")
     private final List<MetadataItem> metadata;
 
     /*
      * The desired node communication mode for the pool. This setting replaces any existing targetNodeCommunication setting on the Pool. If omitted, the existing setting is default.
      */
     @Generated
-    @JsonProperty(value = "targetNodeCommunicationMode")
     private BatchNodeCommunicationMode targetNodeCommunicationMode;
 
     /**
@@ -63,12 +61,8 @@ public final class BatchPoolReplaceContent {
      * @param metadata the metadata value to set.
      */
     @Generated
-    @JsonCreator
-    public BatchPoolReplaceContent(
-        @JsonProperty(value = "certificateReferences") List<BatchCertificateReference> certificateReferences,
-        @JsonProperty(
-            value = "applicationPackageReferences") List<BatchApplicationPackageReference> applicationPackageReferences,
-        @JsonProperty(value = "metadata") List<MetadataItem> metadata) {
+    public BatchPoolReplaceContent(List<BatchCertificateReference> certificateReferences,
+        List<BatchApplicationPackageReference> applicationPackageReferences, List<MetadataItem> metadata) {
         this.certificateReferences = certificateReferences;
         this.applicationPackageReferences = applicationPackageReferences;
         this.metadata = metadata;
@@ -169,5 +163,66 @@ public final class BatchPoolReplaceContent {
         setTargetNodeCommunicationMode(BatchNodeCommunicationMode targetNodeCommunicationMode) {
         this.targetNodeCommunicationMode = targetNodeCommunicationMode;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("certificateReferences", this.certificateReferences,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("applicationPackageReferences", this.applicationPackageReferences,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("startTask", this.startTask);
+        jsonWriter.writeStringField("targetNodeCommunicationMode",
+            this.targetNodeCommunicationMode == null ? null : this.targetNodeCommunicationMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchPoolReplaceContent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchPoolReplaceContent if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchPoolReplaceContent.
+     */
+    @Generated
+    public static BatchPoolReplaceContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<BatchCertificateReference> certificateReferences = null;
+            List<BatchApplicationPackageReference> applicationPackageReferences = null;
+            List<MetadataItem> metadata = null;
+            BatchStartTask startTask = null;
+            BatchNodeCommunicationMode targetNodeCommunicationMode = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("certificateReferences".equals(fieldName)) {
+                    certificateReferences = reader.readArray(reader1 -> BatchCertificateReference.fromJson(reader1));
+                } else if ("applicationPackageReferences".equals(fieldName)) {
+                    applicationPackageReferences
+                        = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                } else if ("startTask".equals(fieldName)) {
+                    startTask = BatchStartTask.fromJson(reader);
+                } else if ("targetNodeCommunicationMode".equals(fieldName)) {
+                    targetNodeCommunicationMode = BatchNodeCommunicationMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BatchPoolReplaceContent deserializedBatchPoolReplaceContent
+                = new BatchPoolReplaceContent(certificateReferences, applicationPackageReferences, metadata);
+            deserializedBatchPoolReplaceContent.startTask = startTask;
+            deserializedBatchPoolReplaceContent.targetNodeCommunicationMode = targetNodeCommunicationMode;
+            return deserializedBatchPoolReplaceContent;
+        });
     }
 }

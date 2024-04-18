@@ -5,7 +5,6 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -36,7 +35,6 @@ public final class AccessScope extends ExpandableStringEnum<AccessScope> {
      * @return the corresponding AccessScope.
      */
     @Generated
-    @JsonCreator
     public static AccessScope fromString(String name) {
         return fromString(name, AccessScope.class);
     }

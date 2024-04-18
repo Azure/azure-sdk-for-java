@@ -5,49 +5,48 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Contains utilization and resource usage statistics for the lifetime of a Pool.
  */
 @Immutable
-public final class BatchPoolStatistics {
+public final class BatchPoolStatistics implements JsonSerializable<BatchPoolStatistics> {
 
     /*
      * The URL for the statistics.
      */
     @Generated
-    @JsonProperty(value = "url")
     private final String url;
 
     /*
      * The start time of the time range covered by the statistics.
      */
     @Generated
-    @JsonProperty(value = "startTime")
     private final OffsetDateTime startTime;
 
     /*
      * The time at which the statistics were last updated. All statistics are limited to the range between startTime and lastUpdateTime.
      */
     @Generated
-    @JsonProperty(value = "lastUpdateTime")
     private final OffsetDateTime lastUpdateTime;
 
     /*
      * Statistics related to Pool usage, such as the amount of core-time used.
      */
     @Generated
-    @JsonProperty(value = "usageStats")
     private BatchPoolUsageStatistics usageStats;
 
     /*
      * Statistics related to resource consumption by Compute Nodes in the Pool.
      */
     @Generated
-    @JsonProperty(value = "resourceStats")
     private BatchPoolResourceStatistics resourceStats;
 
     /**
@@ -58,10 +57,7 @@ public final class BatchPoolStatistics {
      * @param lastUpdateTime the lastUpdateTime value to set.
      */
     @Generated
-    @JsonCreator
-    private BatchPoolStatistics(@JsonProperty(value = "url") String url,
-        @JsonProperty(value = "startTime") OffsetDateTime startTime,
-        @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime) {
+    private BatchPoolStatistics(String url, OffsetDateTime startTime, OffsetDateTime lastUpdateTime) {
         this.url = url;
         this.startTime = startTime;
         this.lastUpdateTime = lastUpdateTime;
@@ -116,5 +112,65 @@ public final class BatchPoolStatistics {
     @Generated
     public BatchPoolResourceStatistics getResourceStats() {
         return this.resourceStats;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("lastUpdateTime",
+            this.lastUpdateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdateTime));
+        jsonWriter.writeJsonField("usageStats", this.usageStats);
+        jsonWriter.writeJsonField("resourceStats", this.resourceStats);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchPoolStatistics from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchPoolStatistics if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchPoolStatistics.
+     */
+    @Generated
+    public static BatchPoolStatistics fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String url = null;
+            OffsetDateTime startTime = null;
+            OffsetDateTime lastUpdateTime = null;
+            BatchPoolUsageStatistics usageStats = null;
+            BatchPoolResourceStatistics resourceStats = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("url".equals(fieldName)) {
+                    url = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("lastUpdateTime".equals(fieldName)) {
+                    lastUpdateTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("usageStats".equals(fieldName)) {
+                    usageStats = BatchPoolUsageStatistics.fromJson(reader);
+                } else if ("resourceStats".equals(fieldName)) {
+                    resourceStats = BatchPoolResourceStatistics.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BatchPoolStatistics deserializedBatchPoolStatistics
+                = new BatchPoolStatistics(url, startTime, lastUpdateTime);
+            deserializedBatchPoolStatistics.usageStats = usageStats;
+            deserializedBatchPoolStatistics.resourceStats = resourceStats;
+            return deserializedBatchPoolStatistics;
+        });
     }
 }

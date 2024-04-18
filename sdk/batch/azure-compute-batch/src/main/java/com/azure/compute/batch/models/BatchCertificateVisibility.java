@@ -5,7 +5,6 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -49,7 +48,6 @@ public final class BatchCertificateVisibility extends ExpandableStringEnum<Batch
      * @return the corresponding BatchCertificateVisibility.
      */
     @Generated
-    @JsonCreator
     public static BatchCertificateVisibility fromString(String name) {
         return fromString(name, BatchCertificateVisibility.class);
     }

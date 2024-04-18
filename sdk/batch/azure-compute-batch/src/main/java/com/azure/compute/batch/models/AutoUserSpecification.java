@@ -5,26 +5,28 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies the options for the auto user that runs an Azure Batch Task.
  */
 @Fluent
-public final class AutoUserSpecification {
+public final class AutoUserSpecification implements JsonSerializable<AutoUserSpecification> {
 
     /*
      * The scope for the auto user. The default value is pool. If the pool is running Windows a value of Task should be specified if stricter isolation between tasks is required. For example, if the task mutates the registry in a way which could impact other tasks, or if certificates have been specified on the pool which should not be accessible by normal tasks but should be accessible by StartTasks.
      */
     @Generated
-    @JsonProperty(value = "scope")
     private AutoUserScope scope;
 
     /*
      * The elevation level of the auto user. The default value is nonAdmin.
      */
     @Generated
-    @JsonProperty(value = "elevationLevel")
     private ElevationLevel elevationLevel;
 
     /**
@@ -82,5 +84,45 @@ public final class AutoUserSpecification {
     public AutoUserSpecification setElevationLevel(ElevationLevel elevationLevel) {
         this.elevationLevel = elevationLevel;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scope", this.scope == null ? null : this.scope.toString());
+        jsonWriter.writeStringField("elevationLevel",
+            this.elevationLevel == null ? null : this.elevationLevel.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoUserSpecification from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoUserSpecification if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutoUserSpecification.
+     */
+    @Generated
+    public static AutoUserSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoUserSpecification deserializedAutoUserSpecification = new AutoUserSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("scope".equals(fieldName)) {
+                    deserializedAutoUserSpecification.scope = AutoUserScope.fromString(reader.getString());
+                } else if ("elevationLevel".equals(fieldName)) {
+                    deserializedAutoUserSpecification.elevationLevel = ElevationLevel.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedAutoUserSpecification;
+        });
     }
 }

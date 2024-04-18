@@ -5,40 +5,40 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The file system to mount on each node.
  */
 @Fluent
-public final class MountConfiguration {
+public final class MountConfiguration implements JsonSerializable<MountConfiguration> {
 
     /*
      * The Azure Storage Container to mount using blob FUSE on each node. This property is mutually exclusive with all other properties.
      */
     @Generated
-    @JsonProperty(value = "azureBlobFileSystemConfiguration")
     private AzureBlobFileSystemConfiguration azureBlobFileSystemConfiguration;
 
     /*
      * The NFS file system to mount on each node. This property is mutually exclusive with all other properties.
      */
     @Generated
-    @JsonProperty(value = "nfsMountConfiguration")
     private NfsMountConfiguration nfsMountConfiguration;
 
     /*
      * The CIFS/SMB file system to mount on each node. This property is mutually exclusive with all other properties.
      */
     @Generated
-    @JsonProperty(value = "cifsMountConfiguration")
     private CifsMountConfiguration cifsMountConfiguration;
 
     /*
      * The Azure File Share to mount on each node. This property is mutually exclusive with all other properties.
      */
     @Generated
-    @JsonProperty(value = "azureFileShareConfiguration")
     private AzureFileShareConfiguration azureFileShareConfiguration;
 
     /**
@@ -143,5 +143,52 @@ public final class MountConfiguration {
     public MountConfiguration setAzureFileShareConfiguration(AzureFileShareConfiguration azureFileShareConfiguration) {
         this.azureFileShareConfiguration = azureFileShareConfiguration;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("azureBlobFileSystemConfiguration", this.azureBlobFileSystemConfiguration);
+        jsonWriter.writeJsonField("nfsMountConfiguration", this.nfsMountConfiguration);
+        jsonWriter.writeJsonField("cifsMountConfiguration", this.cifsMountConfiguration);
+        jsonWriter.writeJsonField("azureFileShareConfiguration", this.azureFileShareConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MountConfiguration from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MountConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MountConfiguration.
+     */
+    @Generated
+    public static MountConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MountConfiguration deserializedMountConfiguration = new MountConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("azureBlobFileSystemConfiguration".equals(fieldName)) {
+                    deserializedMountConfiguration.azureBlobFileSystemConfiguration
+                        = AzureBlobFileSystemConfiguration.fromJson(reader);
+                } else if ("nfsMountConfiguration".equals(fieldName)) {
+                    deserializedMountConfiguration.nfsMountConfiguration = NfsMountConfiguration.fromJson(reader);
+                } else if ("cifsMountConfiguration".equals(fieldName)) {
+                    deserializedMountConfiguration.cifsMountConfiguration = CifsMountConfiguration.fromJson(reader);
+                } else if ("azureFileShareConfiguration".equals(fieldName)) {
+                    deserializedMountConfiguration.azureFileShareConfiguration
+                        = AzureFileShareConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedMountConfiguration;
+        });
     }
 }

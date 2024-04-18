@@ -5,33 +5,34 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Contains information about the container which a Task is executing.
  */
 @Immutable
-public final class BatchTaskContainerExecutionInfo {
+public final class BatchTaskContainerExecutionInfo implements JsonSerializable<BatchTaskContainerExecutionInfo> {
 
     /*
      * The ID of the container.
      */
     @Generated
-    @JsonProperty(value = "containerId")
     private String containerId;
 
     /*
      * The state of the container. This is the state of the container according to the Docker service. It is equivalent to the status field returned by "docker inspect".
      */
     @Generated
-    @JsonProperty(value = "state")
     private String state;
 
     /*
      * Detailed error information about the container. This is the detailed error string from the Docker service, if available. It is equivalent to the error field returned by "docker inspect".
      */
     @Generated
-    @JsonProperty(value = "error")
     private String error;
 
     /**
@@ -71,5 +72,48 @@ public final class BatchTaskContainerExecutionInfo {
     @Generated
     public String getError() {
         return this.error;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("containerId", this.containerId);
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeStringField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchTaskContainerExecutionInfo from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchTaskContainerExecutionInfo if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchTaskContainerExecutionInfo.
+     */
+    @Generated
+    public static BatchTaskContainerExecutionInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchTaskContainerExecutionInfo deserializedBatchTaskContainerExecutionInfo
+                = new BatchTaskContainerExecutionInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("containerId".equals(fieldName)) {
+                    deserializedBatchTaskContainerExecutionInfo.containerId = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedBatchTaskContainerExecutionInfo.state = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedBatchTaskContainerExecutionInfo.error = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedBatchTaskContainerExecutionInfo;
+        });
     }
 }

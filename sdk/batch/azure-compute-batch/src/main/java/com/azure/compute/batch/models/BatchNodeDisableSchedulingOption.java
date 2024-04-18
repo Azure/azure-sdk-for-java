@@ -5,7 +5,6 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -51,7 +50,6 @@ public final class BatchNodeDisableSchedulingOption extends ExpandableStringEnum
      * @return the corresponding BatchNodeDisableSchedulingOption.
      */
     @Generated
-    @JsonCreator
     public static BatchNodeDisableSchedulingOption fromString(String name) {
         return fromString(name, BatchNodeDisableSchedulingOption.class);
     }

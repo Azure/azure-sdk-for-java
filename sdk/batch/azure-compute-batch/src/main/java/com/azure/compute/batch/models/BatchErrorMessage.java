@@ -5,26 +5,28 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An error message received in an Azure Batch error response.
  */
 @Immutable
-public final class BatchErrorMessage {
+public final class BatchErrorMessage implements JsonSerializable<BatchErrorMessage> {
 
     /*
      * The language code of the error message.
      */
     @Generated
-    @JsonProperty(value = "lang")
     private String lang;
 
     /*
      * The text of the message.
      */
     @Generated
-    @JsonProperty(value = "value")
     private String value;
 
     /**
@@ -52,5 +54,44 @@ public final class BatchErrorMessage {
     @Generated
     public String getValue() {
         return this.value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("lang", this.lang);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchErrorMessage from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchErrorMessage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchErrorMessage.
+     */
+    @Generated
+    public static BatchErrorMessage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchErrorMessage deserializedBatchErrorMessage = new BatchErrorMessage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("lang".equals(fieldName)) {
+                    deserializedBatchErrorMessage.lang = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedBatchErrorMessage.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedBatchErrorMessage;
+        });
     }
 }

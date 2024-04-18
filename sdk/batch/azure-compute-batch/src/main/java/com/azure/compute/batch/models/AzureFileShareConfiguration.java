@@ -5,48 +5,46 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information used to connect to an Azure Fileshare.
  */
 @Fluent
-public final class AzureFileShareConfiguration {
+public final class AzureFileShareConfiguration implements JsonSerializable<AzureFileShareConfiguration> {
 
     /*
      * The Azure Storage account name.
      */
     @Generated
-    @JsonProperty(value = "accountName")
     private final String accountName;
 
     /*
      * The Azure Files URL. This is of the form 'https://{account}.file.core.windows.net/'.
      */
     @Generated
-    @JsonProperty(value = "azureFileUrl")
     private final String azureFileUrl;
 
     /*
      * The Azure Storage account key.
      */
     @Generated
-    @JsonProperty(value = "accountKey")
     private final String accountKey;
 
     /*
      * The relative path on the compute node where the file system will be mounted. All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable.
      */
     @Generated
-    @JsonProperty(value = "relativeMountPath")
     private final String relativeMountPath;
 
     /*
      * Additional command line options to pass to the mount command. These are 'net use' options in Windows and 'mount' options in Linux.
      */
     @Generated
-    @JsonProperty(value = "mountOptions")
     private String mountOptions;
 
     /**
@@ -58,11 +56,8 @@ public final class AzureFileShareConfiguration {
      * @param relativeMountPath the relativeMountPath value to set.
      */
     @Generated
-    @JsonCreator
-    public AzureFileShareConfiguration(@JsonProperty(value = "accountName") String accountName,
-        @JsonProperty(value = "azureFileUrl") String azureFileUrl,
-        @JsonProperty(value = "accountKey") String accountKey,
-        @JsonProperty(value = "relativeMountPath") String relativeMountPath) {
+    public AzureFileShareConfiguration(String accountName, String azureFileUrl, String accountKey,
+        String relativeMountPath) {
         this.accountName = accountName;
         this.azureFileUrl = azureFileUrl;
         this.accountKey = accountKey;
@@ -134,5 +129,61 @@ public final class AzureFileShareConfiguration {
     public AzureFileShareConfiguration setMountOptions(String mountOptions) {
         this.mountOptions = mountOptions;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accountName", this.accountName);
+        jsonWriter.writeStringField("azureFileUrl", this.azureFileUrl);
+        jsonWriter.writeStringField("accountKey", this.accountKey);
+        jsonWriter.writeStringField("relativeMountPath", this.relativeMountPath);
+        jsonWriter.writeStringField("mountOptions", this.mountOptions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFileShareConfiguration from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFileShareConfiguration if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureFileShareConfiguration.
+     */
+    @Generated
+    public static AzureFileShareConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String accountName = null;
+            String azureFileUrl = null;
+            String accountKey = null;
+            String relativeMountPath = null;
+            String mountOptions = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("accountName".equals(fieldName)) {
+                    accountName = reader.getString();
+                } else if ("azureFileUrl".equals(fieldName)) {
+                    azureFileUrl = reader.getString();
+                } else if ("accountKey".equals(fieldName)) {
+                    accountKey = reader.getString();
+                } else if ("relativeMountPath".equals(fieldName)) {
+                    relativeMountPath = reader.getString();
+                } else if ("mountOptions".equals(fieldName)) {
+                    mountOptions = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            AzureFileShareConfiguration deserializedAzureFileShareConfiguration
+                = new AzureFileShareConfiguration(accountName, azureFileUrl, accountKey, relativeMountPath);
+            deserializedAzureFileShareConfiguration.mountOptions = mountOptions;
+            return deserializedAzureFileShareConfiguration;
+        });
     }
 }

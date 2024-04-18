@@ -5,49 +5,47 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Parameters for creating an Azure Batch Job Schedule.
  */
 @Fluent
-public final class BatchJobScheduleCreateContent {
+public final class BatchJobScheduleCreateContent implements JsonSerializable<BatchJobScheduleCreateContent> {
 
     /*
      * A string that uniquely identifies the schedule within the Account. The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
      */
     @Generated
-    @JsonProperty(value = "id")
     private final String id;
 
     /*
      * The display name for the schedule. The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
      */
     @Generated
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The schedule according to which Jobs will be created. All times are fixed respective to UTC and are not impacted by daylight saving time.
      */
     @Generated
-    @JsonProperty(value = "schedule")
     private final BatchJobScheduleConfiguration schedule;
 
     /*
      * The details of the Jobs to be created on this schedule.
      */
     @Generated
-    @JsonProperty(value = "jobSpecification")
     private final BatchJobSpecification jobSpecification;
 
     /*
      * A list of name-value pairs associated with the schedule as metadata. The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
      */
     @Generated
-    @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
     /**
@@ -58,10 +56,8 @@ public final class BatchJobScheduleCreateContent {
      * @param jobSpecification the jobSpecification value to set.
      */
     @Generated
-    @JsonCreator
-    public BatchJobScheduleCreateContent(@JsonProperty(value = "id") String id,
-        @JsonProperty(value = "schedule") BatchJobScheduleConfiguration schedule,
-        @JsonProperty(value = "jobSpecification") BatchJobSpecification jobSpecification) {
+    public BatchJobScheduleCreateContent(String id, BatchJobScheduleConfiguration schedule,
+        BatchJobSpecification jobSpecification) {
         this.id = id;
         this.schedule = schedule;
         this.jobSpecification = jobSpecification;
@@ -147,5 +143,62 @@ public final class BatchJobScheduleCreateContent {
     public BatchJobScheduleCreateContent setMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("schedule", this.schedule);
+        jsonWriter.writeJsonField("jobSpecification", this.jobSpecification);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchJobScheduleCreateContent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchJobScheduleCreateContent if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchJobScheduleCreateContent.
+     */
+    @Generated
+    public static BatchJobScheduleCreateContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            BatchJobScheduleConfiguration schedule = null;
+            BatchJobSpecification jobSpecification = null;
+            String displayName = null;
+            List<MetadataItem> metadata = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("schedule".equals(fieldName)) {
+                    schedule = BatchJobScheduleConfiguration.fromJson(reader);
+                } else if ("jobSpecification".equals(fieldName)) {
+                    jobSpecification = BatchJobSpecification.fromJson(reader);
+                } else if ("displayName".equals(fieldName)) {
+                    displayName = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BatchJobScheduleCreateContent deserializedBatchJobScheduleCreateContent
+                = new BatchJobScheduleCreateContent(id, schedule, jobSpecification);
+            deserializedBatchJobScheduleCreateContent.displayName = displayName;
+            deserializedBatchJobScheduleCreateContent.metadata = metadata;
+            return deserializedBatchJobScheduleCreateContent;
+        });
     }
 }

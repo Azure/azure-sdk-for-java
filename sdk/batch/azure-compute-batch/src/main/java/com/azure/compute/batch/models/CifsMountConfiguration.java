@@ -5,48 +5,46 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information used to connect to a CIFS file system.
  */
 @Fluent
-public final class CifsMountConfiguration {
+public final class CifsMountConfiguration implements JsonSerializable<CifsMountConfiguration> {
 
     /*
      * The user to use for authentication against the CIFS file system.
      */
     @Generated
-    @JsonProperty(value = "username")
     private final String username;
 
     /*
      * The URI of the file system to mount.
      */
     @Generated
-    @JsonProperty(value = "source")
     private final String source;
 
     /*
      * The relative path on the compute node where the file system will be mounted. All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable.
      */
     @Generated
-    @JsonProperty(value = "relativeMountPath")
     private final String relativeMountPath;
 
     /*
      * Additional command line options to pass to the mount command. These are 'net use' options in Windows and 'mount' options in Linux.
      */
     @Generated
-    @JsonProperty(value = "mountOptions")
     private String mountOptions;
 
     /*
      * The password to use for authentication against the CIFS file system.
      */
     @Generated
-    @JsonProperty(value = "password")
     private final String password;
 
     /**
@@ -58,11 +56,7 @@ public final class CifsMountConfiguration {
      * @param password the password value to set.
      */
     @Generated
-    @JsonCreator
-    public CifsMountConfiguration(@JsonProperty(value = "username") String username,
-        @JsonProperty(value = "source") String source,
-        @JsonProperty(value = "relativeMountPath") String relativeMountPath,
-        @JsonProperty(value = "password") String password) {
+    public CifsMountConfiguration(String username, String source, String relativeMountPath, String password) {
         this.username = username;
         this.source = source;
         this.relativeMountPath = relativeMountPath;
@@ -133,5 +127,61 @@ public final class CifsMountConfiguration {
     @Generated
     public String getPassword() {
         return this.password;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("source", this.source);
+        jsonWriter.writeStringField("relativeMountPath", this.relativeMountPath);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("mountOptions", this.mountOptions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CifsMountConfiguration from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CifsMountConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CifsMountConfiguration.
+     */
+    @Generated
+    public static CifsMountConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String username = null;
+            String source = null;
+            String relativeMountPath = null;
+            String password = null;
+            String mountOptions = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("username".equals(fieldName)) {
+                    username = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    source = reader.getString();
+                } else if ("relativeMountPath".equals(fieldName)) {
+                    relativeMountPath = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    password = reader.getString();
+                } else if ("mountOptions".equals(fieldName)) {
+                    mountOptions = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            CifsMountConfiguration deserializedCifsMountConfiguration
+                = new CifsMountConfiguration(username, source, relativeMountPath, password);
+            deserializedCifsMountConfiguration.mountOptions = mountOptions;
+            return deserializedCifsMountConfiguration;
+        });
     }
 }

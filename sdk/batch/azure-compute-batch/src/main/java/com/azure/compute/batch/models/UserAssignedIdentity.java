@@ -5,34 +5,34 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The user assigned Identity.
  */
 @Immutable
-public final class UserAssignedIdentity {
+public final class UserAssignedIdentity implements JsonSerializable<UserAssignedIdentity> {
 
     /*
      * The ARM resource id of the user assigned identity.
      */
     @Generated
-    @JsonProperty(value = "resourceId")
     private final String resourceId;
 
     /*
      * The client id of the user assigned identity.
      */
     @Generated
-    @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
 
     /*
      * The principal id of the user assigned identity.
      */
     @Generated
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /**
@@ -41,8 +41,7 @@ public final class UserAssignedIdentity {
      * @param resourceId the resourceId value to set.
      */
     @Generated
-    @JsonCreator
-    private UserAssignedIdentity(@JsonProperty(value = "resourceId") String resourceId) {
+    private UserAssignedIdentity(String resourceId) {
         this.resourceId = resourceId;
     }
 
@@ -74,5 +73,51 @@ public final class UserAssignedIdentity {
     @Generated
     public String getPrincipalId() {
         return this.principalId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserAssignedIdentity from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserAssignedIdentity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserAssignedIdentity.
+     */
+    @Generated
+    public static UserAssignedIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String resourceId = null;
+            String clientId = null;
+            String principalId = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("resourceId".equals(fieldName)) {
+                    resourceId = reader.getString();
+                } else if ("clientId".equals(fieldName)) {
+                    clientId = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    principalId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            UserAssignedIdentity deserializedUserAssignedIdentity = new UserAssignedIdentity(resourceId);
+            deserializedUserAssignedIdentity.clientId = clientId;
+            deserializedUserAssignedIdentity.principalId = principalId;
+            return deserializedUserAssignedIdentity;
+        });
     }
 }

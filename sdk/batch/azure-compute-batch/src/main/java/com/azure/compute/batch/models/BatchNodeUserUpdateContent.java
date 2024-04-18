@@ -5,34 +5,36 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Parameters for updating a user account for RDP or SSH access on an Azure Batch Compute Node.
  */
 @Fluent
-public final class BatchNodeUserUpdateContent {
+public final class BatchNodeUserUpdateContent implements JsonSerializable<BatchNodeUserUpdateContent> {
 
     /*
      * The password of the Account. The password is required for Windows Compute Nodes (those created with 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey property. If omitted, any existing password is removed.
      */
     @Generated
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * The time at which the Account should expire. If omitted, the default is 1 day from the current time. For Linux Compute Nodes, the expiryTime has a precision up to a day.
      */
     @Generated
-    @JsonProperty(value = "expiryTime")
     private OffsetDateTime expiryTime;
 
     /*
      * The SSH public key that can be used for remote login to the Compute Node. The public key should be compatible with OpenSSH encoding and should be base 64 encoded. This property can be specified only for Linux Compute Nodes. If this is specified for a Windows Compute Node, then the Batch service rejects the request; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). If omitted, any existing SSH public key is removed.
      */
     @Generated
-    @JsonProperty(value = "sshPublicKey")
     private String sshPublicKey;
 
     /**
@@ -122,5 +124,49 @@ public final class BatchNodeUserUpdateContent {
     public BatchNodeUserUpdateContent setSshPublicKey(String sshPublicKey) {
         this.sshPublicKey = sshPublicKey;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("expiryTime",
+            this.expiryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiryTime));
+        jsonWriter.writeStringField("sshPublicKey", this.sshPublicKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchNodeUserUpdateContent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchNodeUserUpdateContent if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchNodeUserUpdateContent.
+     */
+    @Generated
+    public static BatchNodeUserUpdateContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchNodeUserUpdateContent deserializedBatchNodeUserUpdateContent = new BatchNodeUserUpdateContent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("password".equals(fieldName)) {
+                    deserializedBatchNodeUserUpdateContent.password = reader.getString();
+                } else if ("expiryTime".equals(fieldName)) {
+                    deserializedBatchNodeUserUpdateContent.expiryTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("sshPublicKey".equals(fieldName)) {
+                    deserializedBatchNodeUserUpdateContent.sshPublicKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedBatchNodeUserUpdateContent;
+        });
     }
 }

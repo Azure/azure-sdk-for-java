@@ -5,7 +5,6 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -45,7 +44,6 @@ public final class BatchPoolLifetimeOption extends ExpandableStringEnum<BatchPoo
      * @return the corresponding BatchPoolLifetimeOption.
      */
     @Generated
-    @JsonCreator
     public static BatchPoolLifetimeOption fromString(String name) {
         return fromString(name, BatchPoolLifetimeOption.class);
     }

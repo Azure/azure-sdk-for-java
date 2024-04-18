@@ -5,8 +5,11 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -15,111 +18,96 @@ import java.util.List;
  * specification used to create each Job.
  */
 @Fluent
-public final class BatchJobSchedule {
+public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule> {
 
     /*
      * A string that uniquely identifies the schedule within the Account.
      */
     @Generated
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The display name for the schedule.
      */
     @Generated
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * The URL of the Job Schedule.
      */
     @Generated
-    @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 
     /*
      * The ETag of the Job Schedule. This is an opaque string. You can use it to detect whether the Job Schedule has changed between requests. In particular, you can be pass the ETag with an Update Job Schedule request to specify that your changes should take effect only if nobody else has modified the schedule in the meantime.
      */
     @Generated
-    @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String eTag;
 
     /*
      * The last modified time of the Job Schedule. This is the last time at which the schedule level data, such as the Job specification or recurrence information, changed. It does not factor in job-level changes such as new Jobs being created or Jobs changing state.
      */
     @Generated
-    @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
     /*
      * The creation time of the Job Schedule.
      */
     @Generated
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * The current state of the Job Schedule.
      */
     @Generated
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private BatchJobScheduleState state;
 
     /*
      * The time at which the Job Schedule entered the current state.
      */
     @Generated
-    @JsonProperty(value = "stateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime stateTransitionTime;
 
     /*
      * The previous state of the Job Schedule. This property is not present if the Job Schedule is in its initial active state.
      */
     @Generated
-    @JsonProperty(value = "previousState", access = JsonProperty.Access.WRITE_ONLY)
     private BatchJobScheduleState previousState;
 
     /*
      * The time at which the Job Schedule entered its previous state. This property is not present if the Job Schedule is in its initial active state.
      */
     @Generated
-    @JsonProperty(value = "previousStateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime previousStateTransitionTime;
 
     /*
      * The schedule according to which Jobs will be created. All times are fixed respective to UTC and are not impacted by daylight saving time.
      */
     @Generated
-    @JsonProperty(value = "schedule")
     private BatchJobScheduleConfiguration schedule;
 
     /*
      * The details of the Jobs to be created on this schedule.
      */
     @Generated
-    @JsonProperty(value = "jobSpecification")
     private final BatchJobSpecification jobSpecification;
 
     /*
      * Information about Jobs that have been and will be run under this schedule.
      */
     @Generated
-    @JsonProperty(value = "executionInfo", access = JsonProperty.Access.WRITE_ONLY)
     private BatchJobScheduleExecutionInfo executionInfo;
 
     /*
      * A list of name-value pairs associated with the schedule as metadata. The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
      */
     @Generated
-    @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
     /*
      * The lifetime resource usage statistics for the Job Schedule. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
      */
     @Generated
-    @JsonProperty(value = "stats", access = JsonProperty.Access.WRITE_ONLY)
     private BatchJobScheduleStatistics stats;
 
     /**
@@ -302,8 +290,7 @@ public final class BatchJobSchedule {
      * @param jobSpecification the jobSpecification value to set.
      */
     @Generated
-    @JsonCreator
-    public BatchJobSchedule(@JsonProperty(value = "jobSpecification") BatchJobSpecification jobSpecification) {
+    public BatchJobSchedule(BatchJobSpecification jobSpecification) {
         this.jobSpecification = jobSpecification;
     }
 
@@ -318,5 +305,103 @@ public final class BatchJobSchedule {
     public BatchJobSchedule setSchedule(BatchJobScheduleConfiguration schedule) {
         this.schedule = schedule;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("jobSpecification", this.jobSpecification);
+        jsonWriter.writeJsonField("schedule", this.schedule);
+        jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchJobSchedule from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchJobSchedule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchJobSchedule.
+     */
+    @Generated
+    public static BatchJobSchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchJobSpecification jobSpecification = null;
+            String id = null;
+            String displayName = null;
+            String url = null;
+            String eTag = null;
+            OffsetDateTime lastModified = null;
+            OffsetDateTime creationTime = null;
+            BatchJobScheduleState state = null;
+            OffsetDateTime stateTransitionTime = null;
+            BatchJobScheduleState previousState = null;
+            OffsetDateTime previousStateTransitionTime = null;
+            BatchJobScheduleConfiguration schedule = null;
+            BatchJobScheduleExecutionInfo executionInfo = null;
+            List<MetadataItem> metadata = null;
+            BatchJobScheduleStatistics stats = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("jobSpecification".equals(fieldName)) {
+                    jobSpecification = BatchJobSpecification.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    displayName = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    url = reader.getString();
+                } else if ("eTag".equals(fieldName)) {
+                    eTag = reader.getString();
+                } else if ("lastModified".equals(fieldName)) {
+                    lastModified = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("creationTime".equals(fieldName)) {
+                    creationTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    state = BatchJobScheduleState.fromString(reader.getString());
+                } else if ("stateTransitionTime".equals(fieldName)) {
+                    stateTransitionTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("previousState".equals(fieldName)) {
+                    previousState = BatchJobScheduleState.fromString(reader.getString());
+                } else if ("previousStateTransitionTime".equals(fieldName)) {
+                    previousStateTransitionTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("schedule".equals(fieldName)) {
+                    schedule = BatchJobScheduleConfiguration.fromJson(reader);
+                } else if ("executionInfo".equals(fieldName)) {
+                    executionInfo = BatchJobScheduleExecutionInfo.fromJson(reader);
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                } else if ("stats".equals(fieldName)) {
+                    stats = BatchJobScheduleStatistics.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BatchJobSchedule deserializedBatchJobSchedule = new BatchJobSchedule(jobSpecification);
+            deserializedBatchJobSchedule.id = id;
+            deserializedBatchJobSchedule.displayName = displayName;
+            deserializedBatchJobSchedule.url = url;
+            deserializedBatchJobSchedule.eTag = eTag;
+            deserializedBatchJobSchedule.lastModified = lastModified;
+            deserializedBatchJobSchedule.creationTime = creationTime;
+            deserializedBatchJobSchedule.state = state;
+            deserializedBatchJobSchedule.stateTransitionTime = stateTransitionTime;
+            deserializedBatchJobSchedule.previousState = previousState;
+            deserializedBatchJobSchedule.previousStateTransitionTime = previousStateTransitionTime;
+            deserializedBatchJobSchedule.schedule = schedule;
+            deserializedBatchJobSchedule.executionInfo = executionInfo;
+            deserializedBatchJobSchedule.metadata = metadata;
+            deserializedBatchJobSchedule.stats = stats;
+            return deserializedBatchJobSchedule;
+        });
     }
 }

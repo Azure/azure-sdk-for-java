@@ -5,34 +5,35 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Parameters for updating an Azure Batch Job Schedule.
  */
 @Fluent
-public final class BatchJobScheduleUpdateContent {
+public final class BatchJobScheduleUpdateContent implements JsonSerializable<BatchJobScheduleUpdateContent> {
 
     /*
      * The schedule according to which Jobs will be created. All times are fixed respective to UTC and are not impacted by daylight saving time. If you do not specify this element, the existing schedule is left unchanged.
      */
     @Generated
-    @JsonProperty(value = "schedule")
     private BatchJobScheduleConfiguration schedule;
 
     /*
      * The details of the Jobs to be created on this schedule. Updates affect only Jobs that are started after the update has taken place. Any currently active Job continues with the older specification.
      */
     @Generated
-    @JsonProperty(value = "jobSpecification")
     private BatchJobSpecification jobSpecification;
 
     /*
      * A list of name-value pairs associated with the Job Schedule as metadata. If you do not specify this element, existing metadata is left unchanged.
      */
     @Generated
-    @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
     /**
@@ -116,5 +117,49 @@ public final class BatchJobScheduleUpdateContent {
     public BatchJobScheduleUpdateContent setMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("schedule", this.schedule);
+        jsonWriter.writeJsonField("jobSpecification", this.jobSpecification);
+        jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchJobScheduleUpdateContent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchJobScheduleUpdateContent if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchJobScheduleUpdateContent.
+     */
+    @Generated
+    public static BatchJobScheduleUpdateContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchJobScheduleUpdateContent deserializedBatchJobScheduleUpdateContent
+                = new BatchJobScheduleUpdateContent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("schedule".equals(fieldName)) {
+                    deserializedBatchJobScheduleUpdateContent.schedule = BatchJobScheduleConfiguration.fromJson(reader);
+                } else if ("jobSpecification".equals(fieldName)) {
+                    deserializedBatchJobScheduleUpdateContent.jobSpecification = BatchJobSpecification.fromJson(reader);
+                } else if ("metadata".equals(fieldName)) {
+                    List<MetadataItem> metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                    deserializedBatchJobScheduleUpdateContent.metadata = metadata;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedBatchJobScheduleUpdateContent;
+        });
     }
 }

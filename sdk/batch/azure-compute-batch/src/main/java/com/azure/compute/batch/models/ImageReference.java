@@ -5,7 +5,11 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A reference to an Azure Virtual Machines Marketplace Image or a Azure Compute Gallery Image.
@@ -13,48 +17,42 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * ' List Supported Images ' operation.
  */
 @Fluent
-public final class ImageReference {
+public final class ImageReference implements JsonSerializable<ImageReference> {
 
     /*
      * The publisher of the Azure Virtual Machines Marketplace Image. For example, Canonical or MicrosoftWindowsServer.
      */
     @Generated
-    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
      * The offer type of the Azure Virtual Machines Marketplace Image. For example, UbuntuServer or WindowsServer.
      */
     @Generated
-    @JsonProperty(value = "offer")
     private String offer;
 
     /*
      * The SKU of the Azure Virtual Machines Marketplace Image. For example, 18.04-LTS or 2019-Datacenter.
      */
     @Generated
-    @JsonProperty(value = "sku")
     private String sku;
 
     /*
      * The version of the Azure Virtual Machines Marketplace Image. A value of 'latest' can be specified to select the latest version of an Image. If omitted, the default is 'latest'.
      */
     @Generated
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * The ARM resource identifier of the Azure Compute Gallery Image. Compute Nodes in the Pool will be created using this Image Id. This is of the form /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName}/versions/{VersionId} or /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName} for always defaulting to the latest image version. This property is mutually exclusive with other ImageReference properties. The Azure Compute Gallery Image must have replicas in the same region and must be in the same subscription as the Azure Batch account. If the image version is not specified in the imageId, the latest version will be used. For information about the firewall settings for the Batch Compute Node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      */
     @Generated
-    @JsonProperty(value = "virtualMachineImageId")
     private String virtualMachineImageId;
 
     /*
      * The specific version of the platform image or marketplace image used to create the node. This read-only field differs from 'version' only if the value specified for 'version' when the pool was created was 'latest'.
      */
     @Generated
-    @JsonProperty(value = "exactVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String exactVersion;
 
     /**
@@ -212,5 +210,55 @@ public final class ImageReference {
     @Generated
     public String getExactVersion() {
         return this.exactVersion;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("offer", this.offer);
+        jsonWriter.writeStringField("sku", this.sku);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("virtualMachineImageId", this.virtualMachineImageId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageReference from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageReference.
+     */
+    @Generated
+    public static ImageReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageReference deserializedImageReference = new ImageReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("publisher".equals(fieldName)) {
+                    deserializedImageReference.publisher = reader.getString();
+                } else if ("offer".equals(fieldName)) {
+                    deserializedImageReference.offer = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedImageReference.sku = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedImageReference.version = reader.getString();
+                } else if ("virtualMachineImageId".equals(fieldName)) {
+                    deserializedImageReference.virtualMachineImageId = reader.getString();
+                } else if ("exactVersion".equals(fieldName)) {
+                    deserializedImageReference.exactVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedImageReference;
+        });
     }
 }

@@ -5,8 +5,11 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Settings which will be used by the data disks associated to Compute Nodes in
@@ -14,27 +17,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * disks from within a VM to use them.
  */
 @Fluent
-public final class DataDisk {
+public final class DataDisk implements JsonSerializable<DataDisk> {
 
     /*
      * The type of caching to be enabled for the data disks. The default value for caching is readwrite. For information about the caching options see: https://blogs.msdn.microsoft.com/windowsazurestorage/2012/06/27/exploring-windows-azure-drives-disks-and-images/.
      */
     @Generated
-    @JsonProperty(value = "caching")
     private CachingType caching;
 
     /*
      * The initial disk size in gigabytes.
      */
     @Generated
-    @JsonProperty(value = "diskSizeGB")
     private final int diskSizeGb;
 
     /*
      * The storage Account type to be used for the data disk. If omitted, the default is "standard_lrs".
      */
     @Generated
-    @JsonProperty(value = "storageAccountType")
     private StorageAccountType storageAccountType;
 
     /**
@@ -44,9 +44,7 @@ public final class DataDisk {
      * @param diskSizeGb the diskSizeGb value to set.
      */
     @Generated
-    @JsonCreator
-    public DataDisk(@JsonProperty(value = "lun") int logicalUnitNumber,
-        @JsonProperty(value = "diskSizeGB") int diskSizeGb) {
+    public DataDisk(int logicalUnitNumber, int diskSizeGb) {
         this.logicalUnitNumber = logicalUnitNumber;
         this.diskSizeGb = diskSizeGb;
     }
@@ -115,7 +113,6 @@ public final class DataDisk {
      * The logical unit number. The logicalUnitNumber is used to uniquely identify each data disk. If attaching multiple disks, each should have a distinct logicalUnitNumber. The value must be between 0 and 63, inclusive.
      */
     @Generated
-    @JsonProperty(value = "lun")
     private final int logicalUnitNumber;
 
     /**
@@ -128,5 +125,58 @@ public final class DataDisk {
     @Generated
     public int getLogicalUnitNumber() {
         return this.logicalUnitNumber;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("lun", this.logicalUnitNumber);
+        jsonWriter.writeIntField("diskSizeGB", this.diskSizeGb);
+        jsonWriter.writeStringField("caching", this.caching == null ? null : this.caching.toString());
+        jsonWriter.writeStringField("storageAccountType",
+            this.storageAccountType == null ? null : this.storageAccountType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataDisk from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataDisk if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataDisk.
+     */
+    @Generated
+    public static DataDisk fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            int logicalUnitNumber = 0;
+            int diskSizeGb = 0;
+            CachingType caching = null;
+            StorageAccountType storageAccountType = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("lun".equals(fieldName)) {
+                    logicalUnitNumber = reader.getInt();
+                } else if ("diskSizeGB".equals(fieldName)) {
+                    diskSizeGb = reader.getInt();
+                } else if ("caching".equals(fieldName)) {
+                    caching = CachingType.fromString(reader.getString());
+                } else if ("storageAccountType".equals(fieldName)) {
+                    storageAccountType = StorageAccountType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            DataDisk deserializedDataDisk = new DataDisk(logicalUnitNumber, diskSizeGb);
+            deserializedDataDisk.caching = caching;
+            deserializedDataDisk.storageAccountType = storageAccountType;
+            return deserializedDataDisk;
+        });
     }
 }

@@ -5,27 +5,30 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
 /**
  * Parameters for enabling automatic scaling on an Azure Batch Pool.
  */
 @Fluent
-public final class BatchPoolEnableAutoScaleContent {
+public final class BatchPoolEnableAutoScaleContent implements JsonSerializable<BatchPoolEnableAutoScaleContent> {
 
     /*
      * The formula for the desired number of Compute Nodes in the Pool. The formula is checked for validity before it is applied to the Pool. If the formula is not valid, the Batch service rejects the request with detailed error information. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
      */
     @Generated
-    @JsonProperty(value = "autoScaleFormula")
     private String autoScaleFormula;
 
     /*
      * The time interval at which to automatically adjust the Pool size according to the autoscale formula. The default value is 15 minutes. The minimum and maximum value are 5 minutes and 168 hours respectively. If you specify a value less than 5 minutes or greater than 168 hours, the Batch service rejects the request with an invalid property value error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). If you specify a new interval, then the existing autoscale evaluation schedule will be stopped and a new autoscale evaluation schedule will be started, with its starting time being the time when this request was issued.
      */
     @Generated
-    @JsonProperty(value = "autoScaleEvaluationInterval")
     private Duration autoScaleEvaluationInterval;
 
     /**
@@ -97,5 +100,47 @@ public final class BatchPoolEnableAutoScaleContent {
     public BatchPoolEnableAutoScaleContent setAutoScaleEvaluationInterval(Duration autoScaleEvaluationInterval) {
         this.autoScaleEvaluationInterval = autoScaleEvaluationInterval;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("autoScaleFormula", this.autoScaleFormula);
+        jsonWriter.writeStringField("autoScaleEvaluationInterval",
+            CoreUtils.durationToStringWithDays(this.autoScaleEvaluationInterval));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchPoolEnableAutoScaleContent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchPoolEnableAutoScaleContent if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchPoolEnableAutoScaleContent.
+     */
+    @Generated
+    public static BatchPoolEnableAutoScaleContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchPoolEnableAutoScaleContent deserializedBatchPoolEnableAutoScaleContent
+                = new BatchPoolEnableAutoScaleContent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("autoScaleFormula".equals(fieldName)) {
+                    deserializedBatchPoolEnableAutoScaleContent.autoScaleFormula = reader.getString();
+                } else if ("autoScaleEvaluationInterval".equals(fieldName)) {
+                    deserializedBatchPoolEnableAutoScaleContent.autoScaleEvaluationInterval
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedBatchPoolEnableAutoScaleContent;
+        });
     }
 }

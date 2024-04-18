@@ -5,8 +5,11 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -14,188 +17,162 @@ import java.util.List;
  * An Azure Batch Job.
  */
 @Fluent
-public final class BatchJob {
+public final class BatchJob implements JsonSerializable<BatchJob> {
 
     /*
      * A string that uniquely identifies the Job within the Account. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
      */
     @Generated
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The display name for the Job.
      */
     @Generated
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Whether Tasks in the Job can define dependencies on each other. The default is false.
      */
     @Generated
-    @JsonProperty(value = "usesTaskDependencies", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean usesTaskDependencies;
 
     /*
      * The URL of the Job.
      */
     @Generated
-    @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 
     /*
      * The ETag of the Job. This is an opaque string. You can use it to detect whether the Job has changed between requests. In particular, you can be pass the ETag when updating a Job to specify that your changes should take effect only if nobody else has modified the Job in the meantime.
      */
     @Generated
-    @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String eTag;
 
     /*
      * The last modified time of the Job. This is the last time at which the Job level data, such as the Job state or priority, changed. It does not factor in task-level changes such as adding new Tasks or Tasks changing state.
      */
     @Generated
-    @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
     /*
      * The creation time of the Job.
      */
     @Generated
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * The current state of the Job.
      */
     @Generated
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private BatchJobState state;
 
     /*
      * The time at which the Job entered its current state.
      */
     @Generated
-    @JsonProperty(value = "stateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime stateTransitionTime;
 
     /*
      * The previous state of the Job. This property is not set if the Job is in its initial Active state.
      */
     @Generated
-    @JsonProperty(value = "previousState", access = JsonProperty.Access.WRITE_ONLY)
     private BatchJobState previousState;
 
     /*
      * The time at which the Job entered its previous state. This property is not set if the Job is in its initial Active state.
      */
     @Generated
-    @JsonProperty(value = "previousStateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime previousStateTransitionTime;
 
     /*
      * The priority of the Job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. The default value is 0.
      */
     @Generated
-    @JsonProperty(value = "priority")
     private Integer priority;
 
     /*
      * Whether Tasks in this job can be preempted by other high priority jobs. If the value is set to True, other high priority jobs submitted to the system will take precedence and will be able requeue tasks from this job. You can update a job's allowTaskPreemption after it has been created using the update job API.
      */
     @Generated
-    @JsonProperty(value = "allowTaskPreemption")
     private Boolean allowTaskPreemption;
 
     /*
      * The maximum number of tasks that can be executed in parallel for the job. The value of maxParallelTasks must be -1 or greater than 0 if specified. If not specified, the default value is -1, which means there's no limit to the number of tasks that can be run at once. You can update a job's maxParallelTasks after it has been created using the update job API.
      */
     @Generated
-    @JsonProperty(value = "maxParallelTasks")
     private Integer maxParallelTasks;
 
     /*
      * The execution constraints for the Job.
      */
     @Generated
-    @JsonProperty(value = "constraints")
     private BatchJobConstraints constraints;
 
     /*
      * Details of a Job Manager Task to be launched when the Job is started.
      */
     @Generated
-    @JsonProperty(value = "jobManagerTask", access = JsonProperty.Access.WRITE_ONLY)
     private BatchJobManagerTask jobManagerTask;
 
     /*
      * The Job Preparation Task. The Job Preparation Task is a special Task run on each Compute Node before any other Task of the Job.
      */
     @Generated
-    @JsonProperty(value = "jobPreparationTask", access = JsonProperty.Access.WRITE_ONLY)
     private BatchJobPreparationTask jobPreparationTask;
 
     /*
      * The Job Release Task. The Job Release Task is a special Task run at the end of the Job on each Compute Node that has run any other Task of the Job.
      */
     @Generated
-    @JsonProperty(value = "jobReleaseTask", access = JsonProperty.Access.WRITE_ONLY)
     private BatchJobReleaseTask jobReleaseTask;
 
     /*
      * The list of common environment variable settings. These environment variables are set for all Tasks in the Job (including the Job Manager, Job Preparation and Job Release Tasks). Individual Tasks can override an environment setting specified here by specifying the same setting name with a different value.
      */
     @Generated
-    @JsonProperty(value = "commonEnvironmentSettings", access = JsonProperty.Access.WRITE_ONLY)
     private List<EnvironmentSetting> commonEnvironmentSettings;
 
     /*
      * The Pool settings associated with the Job.
      */
     @Generated
-    @JsonProperty(value = "poolInfo")
     private final BatchPoolInfo poolInfo;
 
     /*
      * The action the Batch service should take when all Tasks in the Job are in the completed state. The default is noaction.
      */
     @Generated
-    @JsonProperty(value = "onAllTasksComplete")
     private OnAllBatchTasksComplete onAllTasksComplete;
 
     /*
      * The action the Batch service should take when any Task in the Job fails. A Task is considered to have failed if has a failureInfo. A failureInfo is set if the Task completes with a non-zero exit code after exhausting its retry count, or if there was an error starting the Task, for example due to a resource file download error. The default is noaction.
      */
     @Generated
-    @JsonProperty(value = "onTaskFailure", access = JsonProperty.Access.WRITE_ONLY)
     private OnBatchTaskFailure onTaskFailure;
 
     /*
      * The network configuration for the Job.
      */
     @Generated
-    @JsonProperty(value = "networkConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private BatchJobNetworkConfiguration networkConfiguration;
 
     /*
      * A list of name-value pairs associated with the Job as metadata. The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
      */
     @Generated
-    @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
     /*
      * The execution information for the Job.
      */
     @Generated
-    @JsonProperty(value = "executionInfo", access = JsonProperty.Access.WRITE_ONLY)
     private BatchJobExecutionInfo executionInfo;
 
     /*
      * Resource usage statistics for the entire lifetime of the Job. This property is populated only if the CloudJob was retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
      */
     @Generated
-    @JsonProperty(value = "stats", access = JsonProperty.Access.WRITE_ONLY)
     private BatchJobStatistics stats;
 
     /**
@@ -204,8 +181,7 @@ public final class BatchJob {
      * @param poolInfo the poolInfo value to set.
      */
     @Generated
-    @JsonCreator
-    public BatchJob(@JsonProperty(value = "poolInfo") BatchPoolInfo poolInfo) {
+    public BatchJob(BatchPoolInfo poolInfo) {
         this.poolInfo = poolInfo;
     }
 
@@ -576,5 +552,152 @@ public final class BatchJob {
     @Generated
     public BatchJobStatistics getStats() {
         return this.stats;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("poolInfo", this.poolInfo);
+        jsonWriter.writeNumberField("priority", this.priority);
+        jsonWriter.writeBooleanField("allowTaskPreemption", this.allowTaskPreemption);
+        jsonWriter.writeNumberField("maxParallelTasks", this.maxParallelTasks);
+        jsonWriter.writeJsonField("constraints", this.constraints);
+        jsonWriter.writeStringField("onAllTasksComplete",
+            this.onAllTasksComplete == null ? null : this.onAllTasksComplete.toString());
+        jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchJob from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchJob if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchJob.
+     */
+    @Generated
+    public static BatchJob fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchPoolInfo poolInfo = null;
+            String id = null;
+            String displayName = null;
+            Boolean usesTaskDependencies = null;
+            String url = null;
+            String eTag = null;
+            OffsetDateTime lastModified = null;
+            OffsetDateTime creationTime = null;
+            BatchJobState state = null;
+            OffsetDateTime stateTransitionTime = null;
+            BatchJobState previousState = null;
+            OffsetDateTime previousStateTransitionTime = null;
+            Integer priority = null;
+            Boolean allowTaskPreemption = null;
+            Integer maxParallelTasks = null;
+            BatchJobConstraints constraints = null;
+            BatchJobManagerTask jobManagerTask = null;
+            BatchJobPreparationTask jobPreparationTask = null;
+            BatchJobReleaseTask jobReleaseTask = null;
+            List<EnvironmentSetting> commonEnvironmentSettings = null;
+            OnAllBatchTasksComplete onAllTasksComplete = null;
+            OnBatchTaskFailure onTaskFailure = null;
+            BatchJobNetworkConfiguration networkConfiguration = null;
+            List<MetadataItem> metadata = null;
+            BatchJobExecutionInfo executionInfo = null;
+            BatchJobStatistics stats = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("poolInfo".equals(fieldName)) {
+                    poolInfo = BatchPoolInfo.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    displayName = reader.getString();
+                } else if ("usesTaskDependencies".equals(fieldName)) {
+                    usesTaskDependencies = reader.getNullable(JsonReader::getBoolean);
+                } else if ("url".equals(fieldName)) {
+                    url = reader.getString();
+                } else if ("eTag".equals(fieldName)) {
+                    eTag = reader.getString();
+                } else if ("lastModified".equals(fieldName)) {
+                    lastModified = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("creationTime".equals(fieldName)) {
+                    creationTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    state = BatchJobState.fromString(reader.getString());
+                } else if ("stateTransitionTime".equals(fieldName)) {
+                    stateTransitionTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("previousState".equals(fieldName)) {
+                    previousState = BatchJobState.fromString(reader.getString());
+                } else if ("previousStateTransitionTime".equals(fieldName)) {
+                    previousStateTransitionTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("priority".equals(fieldName)) {
+                    priority = reader.getNullable(JsonReader::getInt);
+                } else if ("allowTaskPreemption".equals(fieldName)) {
+                    allowTaskPreemption = reader.getNullable(JsonReader::getBoolean);
+                } else if ("maxParallelTasks".equals(fieldName)) {
+                    maxParallelTasks = reader.getNullable(JsonReader::getInt);
+                } else if ("constraints".equals(fieldName)) {
+                    constraints = BatchJobConstraints.fromJson(reader);
+                } else if ("jobManagerTask".equals(fieldName)) {
+                    jobManagerTask = BatchJobManagerTask.fromJson(reader);
+                } else if ("jobPreparationTask".equals(fieldName)) {
+                    jobPreparationTask = BatchJobPreparationTask.fromJson(reader);
+                } else if ("jobReleaseTask".equals(fieldName)) {
+                    jobReleaseTask = BatchJobReleaseTask.fromJson(reader);
+                } else if ("commonEnvironmentSettings".equals(fieldName)) {
+                    commonEnvironmentSettings = reader.readArray(reader1 -> EnvironmentSetting.fromJson(reader1));
+                } else if ("onAllTasksComplete".equals(fieldName)) {
+                    onAllTasksComplete = OnAllBatchTasksComplete.fromString(reader.getString());
+                } else if ("onTaskFailure".equals(fieldName)) {
+                    onTaskFailure = OnBatchTaskFailure.fromString(reader.getString());
+                } else if ("networkConfiguration".equals(fieldName)) {
+                    networkConfiguration = BatchJobNetworkConfiguration.fromJson(reader);
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                } else if ("executionInfo".equals(fieldName)) {
+                    executionInfo = BatchJobExecutionInfo.fromJson(reader);
+                } else if ("stats".equals(fieldName)) {
+                    stats = BatchJobStatistics.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BatchJob deserializedBatchJob = new BatchJob(poolInfo);
+            deserializedBatchJob.id = id;
+            deserializedBatchJob.displayName = displayName;
+            deserializedBatchJob.usesTaskDependencies = usesTaskDependencies;
+            deserializedBatchJob.url = url;
+            deserializedBatchJob.eTag = eTag;
+            deserializedBatchJob.lastModified = lastModified;
+            deserializedBatchJob.creationTime = creationTime;
+            deserializedBatchJob.state = state;
+            deserializedBatchJob.stateTransitionTime = stateTransitionTime;
+            deserializedBatchJob.previousState = previousState;
+            deserializedBatchJob.previousStateTransitionTime = previousStateTransitionTime;
+            deserializedBatchJob.priority = priority;
+            deserializedBatchJob.allowTaskPreemption = allowTaskPreemption;
+            deserializedBatchJob.maxParallelTasks = maxParallelTasks;
+            deserializedBatchJob.constraints = constraints;
+            deserializedBatchJob.jobManagerTask = jobManagerTask;
+            deserializedBatchJob.jobPreparationTask = jobPreparationTask;
+            deserializedBatchJob.jobReleaseTask = jobReleaseTask;
+            deserializedBatchJob.commonEnvironmentSettings = commonEnvironmentSettings;
+            deserializedBatchJob.onAllTasksComplete = onAllTasksComplete;
+            deserializedBatchJob.onTaskFailure = onTaskFailure;
+            deserializedBatchJob.networkConfiguration = networkConfiguration;
+            deserializedBatchJob.metadata = metadata;
+            deserializedBatchJob.executionInfo = executionInfo;
+            deserializedBatchJob.stats = stats;
+            return deserializedBatchJob;
+        });
     }
 }

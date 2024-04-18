@@ -5,42 +5,41 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * An error encountered by the Batch service when scheduling a Job.
  */
 @Immutable
-public final class BatchJobSchedulingError {
+public final class BatchJobSchedulingError implements JsonSerializable<BatchJobSchedulingError> {
 
     /*
      * The category of the Job scheduling error.
      */
     @Generated
-    @JsonProperty(value = "category")
     private final ErrorCategory category;
 
     /*
      * An identifier for the Job scheduling error. Codes are invariant and are intended to be consumed programmatically.
      */
     @Generated
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * A message describing the Job scheduling error, intended to be suitable for display in a user interface.
      */
     @Generated
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * A list of additional error details related to the scheduling error.
      */
     @Generated
-    @JsonProperty(value = "details")
     private List<NameValuePair> details;
 
     /**
@@ -49,8 +48,7 @@ public final class BatchJobSchedulingError {
      * @param category the category value to set.
      */
     @Generated
-    @JsonCreator
-    private BatchJobSchedulingError(@JsonProperty(value = "category") ErrorCategory category) {
+    private BatchJobSchedulingError(ErrorCategory category) {
         this.category = category;
     }
 
@@ -94,5 +92,58 @@ public final class BatchJobSchedulingError {
     @Generated
     public List<NameValuePair> getDetails() {
         return this.details;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("category", this.category == null ? null : this.category.toString());
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchJobSchedulingError from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchJobSchedulingError if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchJobSchedulingError.
+     */
+    @Generated
+    public static BatchJobSchedulingError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ErrorCategory category = null;
+            String code = null;
+            String message = null;
+            List<NameValuePair> details = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("category".equals(fieldName)) {
+                    category = ErrorCategory.fromString(reader.getString());
+                } else if ("code".equals(fieldName)) {
+                    code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    message = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    details = reader.readArray(reader1 -> NameValuePair.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BatchJobSchedulingError deserializedBatchJobSchedulingError = new BatchJobSchedulingError(category);
+            deserializedBatchJobSchedulingError.code = code;
+            deserializedBatchJobSchedulingError.message = message;
+            deserializedBatchJobSchedulingError.details = details;
+            return deserializedBatchJobSchedulingError;
+        });
     }
 }

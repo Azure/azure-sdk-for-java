@@ -5,20 +5,23 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The reference to a user assigned identity associated with the Batch pool which
  * a compute node will use.
  */
 @Fluent
-public final class BatchNodeIdentityReference {
+public final class BatchNodeIdentityReference implements JsonSerializable<BatchNodeIdentityReference> {
 
     /*
      * The ARM resource id of the user assigned identity.
      */
     @Generated
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /**
@@ -48,5 +51,41 @@ public final class BatchNodeIdentityReference {
     public BatchNodeIdentityReference setResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchNodeIdentityReference from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchNodeIdentityReference if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchNodeIdentityReference.
+     */
+    @Generated
+    public static BatchNodeIdentityReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchNodeIdentityReference deserializedBatchNodeIdentityReference = new BatchNodeIdentityReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("resourceId".equals(fieldName)) {
+                    deserializedBatchNodeIdentityReference.resourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedBatchNodeIdentityReference;
+        });
     }
 }

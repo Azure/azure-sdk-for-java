@@ -5,126 +5,113 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Parameters for creating an Azure Batch Task.
  */
 @Fluent
-public final class BatchTaskCreateContent {
+public final class BatchTaskCreateContent implements JsonSerializable<BatchTaskCreateContent> {
 
     /*
      * A string that uniquely identifies the Task within the Job. The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within a Job that differ only by case).
      */
     @Generated
-    @JsonProperty(value = "id")
     private final String id;
 
     /*
      * A display name for the Task. The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
      */
     @Generated
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * How the Batch service should respond when the Task completes.
      */
     @Generated
-    @JsonProperty(value = "exitConditions")
     private ExitConditions exitConditions;
 
     /*
      * The command line of the Task. For multi-instance Tasks, the command line is executed as the primary Task, after the primary Task and all subtasks have finished executing the coordination command line. The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the Task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
      */
     @Generated
-    @JsonProperty(value = "commandLine")
     private final String commandLine;
 
     /*
      * The settings for the container under which the Task runs. If the Pool that will run this Task has containerConfiguration set, this must be set as well. If the Pool that will run this Task doesn't have containerConfiguration set, this must not be set. When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all Task environment variables are mapped into the container, and the Task command line is executed in the container. Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning that Batch file APIs will not be able to access those files.
      */
     @Generated
-    @JsonProperty(value = "containerSettings")
     private BatchTaskContainerSettings containerSettings;
 
     /*
      * A list of files that the Batch service will download to the Compute Node before running the command line. For multi-instance Tasks, the resource files will only be downloaded to the Compute Node on which the primary Task is executed. There is a maximum size for the list of resource files.  When the max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
      */
     @Generated
-    @JsonProperty(value = "resourceFiles")
     private List<ResourceFile> resourceFiles;
 
     /*
      * A list of files that the Batch service will upload from the Compute Node after running the command line. For multi-instance Tasks, the files will only be uploaded from the Compute Node on which the primary Task is executed.
      */
     @Generated
-    @JsonProperty(value = "outputFiles")
     private List<OutputFile> outputFiles;
 
     /*
      * A list of environment variable settings for the Task.
      */
     @Generated
-    @JsonProperty(value = "environmentSettings")
     private List<EnvironmentSetting> environmentSettings;
 
     /*
      * A locality hint that can be used by the Batch service to select a Compute Node on which to start the new Task.
      */
     @Generated
-    @JsonProperty(value = "affinityInfo")
     private AffinityInfo affinityInfo;
 
     /*
      * The execution constraints that apply to this Task. If you do not specify constraints, the maxTaskRetryCount is the maxTaskRetryCount specified for the Job, the maxWallClockTime is infinite, and the retentionTime is 7 days.
      */
     @Generated
-    @JsonProperty(value = "constraints")
     private BatchTaskConstraints constraints;
 
     /*
      * The number of scheduling slots that the Task required to run. The default is 1. A Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available. For multi-instance Tasks, this must be 1.
      */
     @Generated
-    @JsonProperty(value = "requiredSlots")
     private Integer requiredSlots;
 
     /*
      * The user identity under which the Task runs. If omitted, the Task runs as a non-administrative user unique to the Task.
      */
     @Generated
-    @JsonProperty(value = "userIdentity")
     private UserIdentity userIdentity;
 
     /*
      * An object that indicates that the Task is a multi-instance Task, and contains information about how to run the multi-instance Task.
      */
     @Generated
-    @JsonProperty(value = "multiInstanceSettings")
     private MultiInstanceSettings multiInstanceSettings;
 
     /*
      * The Tasks that this Task depends on. This Task will not be scheduled until all Tasks that it depends on have completed successfully. If any of those Tasks fail and exhaust their retry counts, this Task will never be scheduled. If the Job does not have usesTaskDependencies set to true, and this element is present, the request fails with error code TaskDependenciesNotSpecifiedOnJob.
      */
     @Generated
-    @JsonProperty(value = "dependsOn")
     private BatchTaskDependencies dependsOn;
 
     /*
      * A list of Packages that the Batch service will deploy to the Compute Node before running the command line. Application packages are downloaded and deployed to a shared directory, not the Task working directory. Therefore, if a referenced package is already on the Node, and is up to date, then it is not re-downloaded; the existing copy on the Compute Node is used. If a referenced Package cannot be installed, for example because the package has been deleted or because download failed, the Task fails.
      */
     @Generated
-    @JsonProperty(value = "applicationPackageReferences")
     private List<BatchApplicationPackageReference> applicationPackageReferences;
 
     /*
      * The settings for an authentication token that the Task can use to perform Batch service operations. If this property is set, the Batch service provides the Task with an authentication token which can be used to authenticate Batch service operations without requiring an Account access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that the Task can carry out using the token depend on the settings. For example, a Task can request Job permissions in order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the Job.
      */
     @Generated
-    @JsonProperty(value = "authenticationTokenSettings")
     private AuthenticationTokenSettings authenticationTokenSettings;
 
     /**
@@ -134,9 +121,7 @@ public final class BatchTaskCreateContent {
      * @param commandLine the commandLine value to set.
      */
     @Generated
-    @JsonCreator
-    public BatchTaskCreateContent(@JsonProperty(value = "id") String id,
-        @JsonProperty(value = "commandLine") String commandLine) {
+    public BatchTaskCreateContent(String id, String commandLine) {
         this.id = id;
         this.commandLine = commandLine;
     }
@@ -545,5 +530,120 @@ public final class BatchTaskCreateContent {
         setAuthenticationTokenSettings(AuthenticationTokenSettings authenticationTokenSettings) {
         this.authenticationTokenSettings = authenticationTokenSettings;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("commandLine", this.commandLine);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeJsonField("exitConditions", this.exitConditions);
+        jsonWriter.writeJsonField("containerSettings", this.containerSettings);
+        jsonWriter.writeArrayField("resourceFiles", this.resourceFiles, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputFiles", this.outputFiles, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("environmentSettings", this.environmentSettings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("affinityInfo", this.affinityInfo);
+        jsonWriter.writeJsonField("constraints", this.constraints);
+        jsonWriter.writeNumberField("requiredSlots", this.requiredSlots);
+        jsonWriter.writeJsonField("userIdentity", this.userIdentity);
+        jsonWriter.writeJsonField("multiInstanceSettings", this.multiInstanceSettings);
+        jsonWriter.writeJsonField("dependsOn", this.dependsOn);
+        jsonWriter.writeArrayField("applicationPackageReferences", this.applicationPackageReferences,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("authenticationTokenSettings", this.authenticationTokenSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchTaskCreateContent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchTaskCreateContent if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchTaskCreateContent.
+     */
+    @Generated
+    public static BatchTaskCreateContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            String commandLine = null;
+            String displayName = null;
+            ExitConditions exitConditions = null;
+            BatchTaskContainerSettings containerSettings = null;
+            List<ResourceFile> resourceFiles = null;
+            List<OutputFile> outputFiles = null;
+            List<EnvironmentSetting> environmentSettings = null;
+            AffinityInfo affinityInfo = null;
+            BatchTaskConstraints constraints = null;
+            Integer requiredSlots = null;
+            UserIdentity userIdentity = null;
+            MultiInstanceSettings multiInstanceSettings = null;
+            BatchTaskDependencies dependsOn = null;
+            List<BatchApplicationPackageReference> applicationPackageReferences = null;
+            AuthenticationTokenSettings authenticationTokenSettings = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("commandLine".equals(fieldName)) {
+                    commandLine = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    displayName = reader.getString();
+                } else if ("exitConditions".equals(fieldName)) {
+                    exitConditions = ExitConditions.fromJson(reader);
+                } else if ("containerSettings".equals(fieldName)) {
+                    containerSettings = BatchTaskContainerSettings.fromJson(reader);
+                } else if ("resourceFiles".equals(fieldName)) {
+                    resourceFiles = reader.readArray(reader1 -> ResourceFile.fromJson(reader1));
+                } else if ("outputFiles".equals(fieldName)) {
+                    outputFiles = reader.readArray(reader1 -> OutputFile.fromJson(reader1));
+                } else if ("environmentSettings".equals(fieldName)) {
+                    environmentSettings = reader.readArray(reader1 -> EnvironmentSetting.fromJson(reader1));
+                } else if ("affinityInfo".equals(fieldName)) {
+                    affinityInfo = AffinityInfo.fromJson(reader);
+                } else if ("constraints".equals(fieldName)) {
+                    constraints = BatchTaskConstraints.fromJson(reader);
+                } else if ("requiredSlots".equals(fieldName)) {
+                    requiredSlots = reader.getNullable(JsonReader::getInt);
+                } else if ("userIdentity".equals(fieldName)) {
+                    userIdentity = UserIdentity.fromJson(reader);
+                } else if ("multiInstanceSettings".equals(fieldName)) {
+                    multiInstanceSettings = MultiInstanceSettings.fromJson(reader);
+                } else if ("dependsOn".equals(fieldName)) {
+                    dependsOn = BatchTaskDependencies.fromJson(reader);
+                } else if ("applicationPackageReferences".equals(fieldName)) {
+                    applicationPackageReferences
+                        = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
+                } else if ("authenticationTokenSettings".equals(fieldName)) {
+                    authenticationTokenSettings = AuthenticationTokenSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BatchTaskCreateContent deserializedBatchTaskCreateContent = new BatchTaskCreateContent(id, commandLine);
+            deserializedBatchTaskCreateContent.displayName = displayName;
+            deserializedBatchTaskCreateContent.exitConditions = exitConditions;
+            deserializedBatchTaskCreateContent.containerSettings = containerSettings;
+            deserializedBatchTaskCreateContent.resourceFiles = resourceFiles;
+            deserializedBatchTaskCreateContent.outputFiles = outputFiles;
+            deserializedBatchTaskCreateContent.environmentSettings = environmentSettings;
+            deserializedBatchTaskCreateContent.affinityInfo = affinityInfo;
+            deserializedBatchTaskCreateContent.constraints = constraints;
+            deserializedBatchTaskCreateContent.requiredSlots = requiredSlots;
+            deserializedBatchTaskCreateContent.userIdentity = userIdentity;
+            deserializedBatchTaskCreateContent.multiInstanceSettings = multiInstanceSettings;
+            deserializedBatchTaskCreateContent.dependsOn = dependsOn;
+            deserializedBatchTaskCreateContent.applicationPackageReferences = applicationPackageReferences;
+            deserializedBatchTaskCreateContent.authenticationTokenSettings = authenticationTokenSettings;
+            return deserializedBatchTaskCreateContent;
+        });
     }
 }

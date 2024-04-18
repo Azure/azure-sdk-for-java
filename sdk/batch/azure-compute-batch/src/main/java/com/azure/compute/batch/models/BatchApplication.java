@@ -5,35 +5,35 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Contains information about an application in an Azure Batch Account.
  */
 @Immutable
-public final class BatchApplication {
+public final class BatchApplication implements JsonSerializable<BatchApplication> {
 
     /*
      * A string that uniquely identifies the application within the Account.
      */
     @Generated
-    @JsonProperty(value = "id")
     private final String id;
 
     /*
      * The display name for the application.
      */
     @Generated
-    @JsonProperty(value = "displayName")
     private final String displayName;
 
     /*
      * The list of available versions of the application.
      */
     @Generated
-    @JsonProperty(value = "versions")
     private final List<String> versions;
 
     /**
@@ -44,10 +44,7 @@ public final class BatchApplication {
      * @param versions the versions value to set.
      */
     @Generated
-    @JsonCreator
-    private BatchApplication(@JsonProperty(value = "id") String id,
-        @JsonProperty(value = "displayName") String displayName,
-        @JsonProperty(value = "versions") List<String> versions) {
+    private BatchApplication(String id, String displayName, List<String> versions) {
         this.id = id;
         this.displayName = displayName;
         this.versions = versions;
@@ -81,5 +78,50 @@ public final class BatchApplication {
     @Generated
     public List<String> getVersions() {
         return this.versions;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeArrayField("versions", this.versions, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchApplication from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchApplication if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchApplication.
+     */
+    @Generated
+    public static BatchApplication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            String displayName = null;
+            List<String> versions = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    displayName = reader.getString();
+                } else if ("versions".equals(fieldName)) {
+                    versions = reader.readArray(reader1 -> reader1.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new BatchApplication(id, displayName, versions);
+        });
     }
 }

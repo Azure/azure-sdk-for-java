@@ -5,19 +5,22 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Settings for the operating system disk of the compute node (VM).
  */
 @Fluent
-public final class OSDisk {
+public final class OSDisk implements JsonSerializable<OSDisk> {
 
     /*
      * Specifies the ephemeral Disk Settings for the operating system disk used by the compute node (VM).
      */
     @Generated
-    @JsonProperty(value = "ephemeralOSDiskSettings")
     private DiffDiskSettings ephemeralOSDiskSettings;
 
     /**
@@ -55,28 +58,24 @@ public final class OSDisk {
      * Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The default values are: None for Standard storage. ReadOnly for Premium storage.
      */
     @Generated
-    @JsonProperty(value = "caching")
     private CachingType caching;
 
     /*
      * The initial disk size in GB when creating new OS disk.
      */
     @Generated
-    @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
 
     /*
      * The managed disk parameters.
      */
     @Generated
-    @JsonProperty(value = "managedDisk")
     private ManagedDisk managedDisk;
 
     /*
      * Specifies whether writeAccelerator should be enabled or disabled on the disk.
      */
     @Generated
-    @JsonProperty(value = "writeAcceleratorEnabled")
     private Boolean writeAcceleratorEnabled;
 
     /**
@@ -169,5 +168,53 @@ public final class OSDisk {
     public OSDisk setWriteAcceleratorEnabled(Boolean writeAcceleratorEnabled) {
         this.writeAcceleratorEnabled = writeAcceleratorEnabled;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("ephemeralOSDiskSettings", this.ephemeralOSDiskSettings);
+        jsonWriter.writeStringField("caching", this.caching == null ? null : this.caching.toString());
+        jsonWriter.writeNumberField("diskSizeGB", this.diskSizeGB);
+        jsonWriter.writeJsonField("managedDisk", this.managedDisk);
+        jsonWriter.writeBooleanField("writeAcceleratorEnabled", this.writeAcceleratorEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OSDisk from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OSDisk if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the OSDisk.
+     */
+    @Generated
+    public static OSDisk fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OSDisk deserializedOSDisk = new OSDisk();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("ephemeralOSDiskSettings".equals(fieldName)) {
+                    deserializedOSDisk.ephemeralOSDiskSettings = DiffDiskSettings.fromJson(reader);
+                } else if ("caching".equals(fieldName)) {
+                    deserializedOSDisk.caching = CachingType.fromString(reader.getString());
+                } else if ("diskSizeGB".equals(fieldName)) {
+                    deserializedOSDisk.diskSizeGB = reader.getNullable(JsonReader::getInt);
+                } else if ("managedDisk".equals(fieldName)) {
+                    deserializedOSDisk.managedDisk = ManagedDisk.fromJson(reader);
+                } else if ("writeAcceleratorEnabled".equals(fieldName)) {
+                    deserializedOSDisk.writeAcceleratorEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedOSDisk;
+        });
     }
 }

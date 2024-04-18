@@ -5,7 +5,6 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -51,7 +50,6 @@ public final class UpgradeMode extends ExpandableStringEnum<UpgradeMode> {
      * @return the corresponding UpgradeMode.
      */
     @Generated
-    @JsonCreator
     public static UpgradeMode fromString(String name) {
         return fromString(name, UpgradeMode.class);
     }

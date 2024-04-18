@@ -5,40 +5,40 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about a file or directory on a Compute Node.
  */
 @Immutable
-public final class BatchNodeFile {
+public final class BatchNodeFile implements JsonSerializable<BatchNodeFile> {
 
     /*
      * The file path.
      */
     @Generated
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The URL of the file.
      */
     @Generated
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * Whether the object represents a directory.
      */
     @Generated
-    @JsonProperty(value = "isDirectory")
     private Boolean isDirectory;
 
     /*
      * The file properties.
      */
     @Generated
-    @JsonProperty(value = "properties")
     private FileProperties properties;
 
     /**
@@ -86,5 +86,50 @@ public final class BatchNodeFile {
     @Generated
     public FileProperties getProperties() {
         return this.properties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeBooleanField("isDirectory", this.isDirectory);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchNodeFile from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchNodeFile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchNodeFile.
+     */
+    @Generated
+    public static BatchNodeFile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchNodeFile deserializedBatchNodeFile = new BatchNodeFile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    deserializedBatchNodeFile.name = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedBatchNodeFile.url = reader.getString();
+                } else if ("isDirectory".equals(fieldName)) {
+                    deserializedBatchNodeFile.isDirectory = reader.getNullable(JsonReader::getBoolean);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBatchNodeFile.properties = FileProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedBatchNodeFile;
+        });
     }
 }

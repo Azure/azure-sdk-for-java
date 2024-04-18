@@ -5,55 +5,52 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An inbound endpoint on a Compute Node.
  */
 @Immutable
-public final class InboundEndpoint {
+public final class InboundEndpoint implements JsonSerializable<InboundEndpoint> {
 
     /*
      * The name of the endpoint.
      */
     @Generated
-    @JsonProperty(value = "name")
     private final String name;
 
     /*
      * The protocol of the endpoint.
      */
     @Generated
-    @JsonProperty(value = "protocol")
     private final InboundEndpointProtocol protocol;
 
     /*
      * The public IP address of the Compute Node.
      */
     @Generated
-    @JsonProperty(value = "publicIPAddress")
     private final String publicIpAddress;
 
     /*
      * The public fully qualified domain name for the Compute Node.
      */
     @Generated
-    @JsonProperty(value = "publicFQDN")
     private final String publicFQDN;
 
     /*
      * The public port number of the endpoint.
      */
     @Generated
-    @JsonProperty(value = "frontendPort")
     private final int frontendPort;
 
     /*
      * The backend port number of the endpoint.
      */
     @Generated
-    @JsonProperty(value = "backendPort")
     private final int backendPort;
 
     /**
@@ -67,12 +64,8 @@ public final class InboundEndpoint {
      * @param backendPort the backendPort value to set.
      */
     @Generated
-    @JsonCreator
-    private InboundEndpoint(@JsonProperty(value = "name") String name,
-        @JsonProperty(value = "protocol") InboundEndpointProtocol protocol,
-        @JsonProperty(value = "publicIPAddress") String publicIpAddress,
-        @JsonProperty(value = "publicFQDN") String publicFQDN, @JsonProperty(value = "frontendPort") int frontendPort,
-        @JsonProperty(value = "backendPort") int backendPort) {
+    private InboundEndpoint(String name, InboundEndpointProtocol protocol, String publicIpAddress, String publicFQDN,
+        int frontendPort, int backendPort) {
         this.name = name;
         this.protocol = protocol;
         this.publicIpAddress = publicIpAddress;
@@ -139,5 +132,62 @@ public final class InboundEndpoint {
     @Generated
     public int getBackendPort() {
         return this.backendPort;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeStringField("publicIPAddress", this.publicIpAddress);
+        jsonWriter.writeStringField("publicFQDN", this.publicFQDN);
+        jsonWriter.writeIntField("frontendPort", this.frontendPort);
+        jsonWriter.writeIntField("backendPort", this.backendPort);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InboundEndpoint from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InboundEndpoint if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InboundEndpoint.
+     */
+    @Generated
+    public static InboundEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            InboundEndpointProtocol protocol = null;
+            String publicIpAddress = null;
+            String publicFQDN = null;
+            int frontendPort = 0;
+            int backendPort = 0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("protocol".equals(fieldName)) {
+                    protocol = InboundEndpointProtocol.fromString(reader.getString());
+                } else if ("publicIPAddress".equals(fieldName)) {
+                    publicIpAddress = reader.getString();
+                } else if ("publicFQDN".equals(fieldName)) {
+                    publicFQDN = reader.getString();
+                } else if ("frontendPort".equals(fieldName)) {
+                    frontendPort = reader.getInt();
+                } else if ("backendPort".equals(fieldName)) {
+                    backendPort = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new InboundEndpoint(name, protocol, publicIpAddress, publicFQDN, frontendPort, backendPort);
+        });
     }
 }

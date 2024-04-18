@@ -5,7 +5,6 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class BatchNodeFillType extends ExpandableStringEnum<BatchNodeFillT
      * @return the corresponding BatchNodeFillType.
      */
     @Generated
-    @JsonCreator
     public static BatchNodeFillType fromString(String name) {
         return fromString(name, BatchNodeFillType.class);
     }

@@ -5,41 +5,42 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
 /**
  * Parameters for changing the size of an Azure Batch Pool.
  */
 @Fluent
-public final class BatchPoolResizeContent {
+public final class BatchPoolResizeContent implements JsonSerializable<BatchPoolResizeContent> {
 
     /*
      * The desired number of dedicated Compute Nodes in the Pool.
      */
     @Generated
-    @JsonProperty(value = "targetDedicatedNodes")
     private Integer targetDedicatedNodes;
 
     /*
      * The desired number of Spot/Low-priority Compute Nodes in the Pool.
      */
     @Generated
-    @JsonProperty(value = "targetLowPriorityNodes")
     private Integer targetLowPriorityNodes;
 
     /*
      * The timeout for allocation of Nodes to the Pool or removal of Compute Nodes from the Pool. The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      */
     @Generated
-    @JsonProperty(value = "resizeTimeout")
     private Duration resizeTimeout;
 
     /*
      * Determines what to do with a Compute Node and its running task(s) if the Pool size is decreasing. The default value is requeue.
      */
     @Generated
-    @JsonProperty(value = "nodeDeallocationOption")
     private BatchNodeDeallocationOption nodeDeallocationOption;
 
     /**
@@ -143,5 +144,53 @@ public final class BatchPoolResizeContent {
     public BatchPoolResizeContent setNodeDeallocationOption(BatchNodeDeallocationOption nodeDeallocationOption) {
         this.nodeDeallocationOption = nodeDeallocationOption;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("targetDedicatedNodes", this.targetDedicatedNodes);
+        jsonWriter.writeNumberField("targetLowPriorityNodes", this.targetLowPriorityNodes);
+        jsonWriter.writeStringField("resizeTimeout", CoreUtils.durationToStringWithDays(this.resizeTimeout));
+        jsonWriter.writeStringField("nodeDeallocationOption",
+            this.nodeDeallocationOption == null ? null : this.nodeDeallocationOption.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchPoolResizeContent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchPoolResizeContent if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchPoolResizeContent.
+     */
+    @Generated
+    public static BatchPoolResizeContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchPoolResizeContent deserializedBatchPoolResizeContent = new BatchPoolResizeContent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("targetDedicatedNodes".equals(fieldName)) {
+                    deserializedBatchPoolResizeContent.targetDedicatedNodes = reader.getNullable(JsonReader::getInt);
+                } else if ("targetLowPriorityNodes".equals(fieldName)) {
+                    deserializedBatchPoolResizeContent.targetLowPriorityNodes = reader.getNullable(JsonReader::getInt);
+                } else if ("resizeTimeout".equals(fieldName)) {
+                    deserializedBatchPoolResizeContent.resizeTimeout
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("nodeDeallocationOption".equals(fieldName)) {
+                    deserializedBatchPoolResizeContent.nodeDeallocationOption
+                        = BatchNodeDeallocationOption.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedBatchPoolResizeContent;
+        });
     }
 }

@@ -5,8 +5,11 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,69 +17,60 @@ import java.util.Map;
  * The configuration for virtual machine extensions.
  */
 @Fluent
-public final class VMExtension {
+public final class VMExtension implements JsonSerializable<VMExtension> {
 
     /*
      * The name of the virtual machine extension.
      */
     @Generated
-    @JsonProperty(value = "name")
     private final String name;
 
     /*
      * The name of the extension handler publisher.
      */
     @Generated
-    @JsonProperty(value = "publisher")
     private final String publisher;
 
     /*
      * The type of the extension.
      */
     @Generated
-    @JsonProperty(value = "type")
     private final String type;
 
     /*
      * The version of script handler.
      */
     @Generated
-    @JsonProperty(value = "typeHandlerVersion")
     private String typeHandlerVersion;
 
     /*
      * Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true.
      */
     @Generated
-    @JsonProperty(value = "autoUpgradeMinorVersion")
     private Boolean autoUpgradeMinorVersion;
 
     /*
      * Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of the extension available.
      */
     @Generated
-    @JsonProperty(value = "enableAutomaticUpgrade")
     private Boolean enableAutomaticUpgrade;
 
     /*
      * JSON formatted public settings for the extension.
      */
     @Generated
-    @JsonProperty(value = "settings")
     private Map<String, String> settings;
 
     /*
      * The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
      */
     @Generated
-    @JsonProperty(value = "protectedSettings")
     private Map<String, String> protectedSettings;
 
     /*
      * The collection of extension names. Collection of extension names after which this extension needs to be provisioned.
      */
     @Generated
-    @JsonProperty(value = "provisionAfterExtensions")
     private List<String> provisionAfterExtensions;
 
     /**
@@ -87,9 +81,7 @@ public final class VMExtension {
      * @param type the type value to set.
      */
     @Generated
-    @JsonCreator
-    public VMExtension(@JsonProperty(value = "name") String name, @JsonProperty(value = "publisher") String publisher,
-        @JsonProperty(value = "type") String type) {
+    public VMExtension(String name, String publisher, String type) {
         this.name = name;
         this.publisher = publisher;
         this.type = type;
@@ -265,5 +257,83 @@ public final class VMExtension {
     public VMExtension setProvisionAfterExtensions(List<String> provisionAfterExtensions) {
         this.provisionAfterExtensions = provisionAfterExtensions;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("typeHandlerVersion", this.typeHandlerVersion);
+        jsonWriter.writeBooleanField("autoUpgradeMinorVersion", this.autoUpgradeMinorVersion);
+        jsonWriter.writeBooleanField("enableAutomaticUpgrade", this.enableAutomaticUpgrade);
+        jsonWriter.writeMapField("settings", this.settings, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("protectedSettings", this.protectedSettings,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("provisionAfterExtensions", this.provisionAfterExtensions,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMExtension from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMExtension if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VMExtension.
+     */
+    @Generated
+    public static VMExtension fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            String publisher = null;
+            String type = null;
+            String typeHandlerVersion = null;
+            Boolean autoUpgradeMinorVersion = null;
+            Boolean enableAutomaticUpgrade = null;
+            Map<String, String> settings = null;
+            Map<String, String> protectedSettings = null;
+            List<String> provisionAfterExtensions = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    publisher = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
+                } else if ("typeHandlerVersion".equals(fieldName)) {
+                    typeHandlerVersion = reader.getString();
+                } else if ("autoUpgradeMinorVersion".equals(fieldName)) {
+                    autoUpgradeMinorVersion = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableAutomaticUpgrade".equals(fieldName)) {
+                    enableAutomaticUpgrade = reader.getNullable(JsonReader::getBoolean);
+                } else if ("settings".equals(fieldName)) {
+                    settings = reader.readMap(reader1 -> reader1.getString());
+                } else if ("protectedSettings".equals(fieldName)) {
+                    protectedSettings = reader.readMap(reader1 -> reader1.getString());
+                } else if ("provisionAfterExtensions".equals(fieldName)) {
+                    provisionAfterExtensions = reader.readArray(reader1 -> reader1.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            VMExtension deserializedVMExtension = new VMExtension(name, publisher, type);
+            deserializedVMExtension.typeHandlerVersion = typeHandlerVersion;
+            deserializedVMExtension.autoUpgradeMinorVersion = autoUpgradeMinorVersion;
+            deserializedVMExtension.enableAutomaticUpgrade = enableAutomaticUpgrade;
+            deserializedVMExtension.settings = settings;
+            deserializedVMExtension.protectedSettings = protectedSettings;
+            deserializedVMExtension.provisionAfterExtensions = provisionAfterExtensions;
+            return deserializedVMExtension;
+        });
     }
 }

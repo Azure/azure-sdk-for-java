@@ -5,55 +5,52 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about a Task running on a Compute Node.
  */
 @Immutable
-public final class BatchTaskInfo {
+public final class BatchTaskInfo implements JsonSerializable<BatchTaskInfo> {
 
     /*
      * The URL of the Task.
      */
     @Generated
-    @JsonProperty(value = "taskUrl")
     private String taskUrl;
 
     /*
      * The ID of the Job to which the Task belongs.
      */
     @Generated
-    @JsonProperty(value = "jobId")
     private String jobId;
 
     /*
      * The ID of the Task.
      */
     @Generated
-    @JsonProperty(value = "taskId")
     private String taskId;
 
     /*
      * The ID of the subtask if the Task is a multi-instance Task.
      */
     @Generated
-    @JsonProperty(value = "subtaskId")
     private Integer subtaskId;
 
     /*
      * The current state of the Task.
      */
     @Generated
-    @JsonProperty(value = "taskState")
     private final BatchTaskState taskState;
 
     /*
      * Information about the execution of the Task.
      */
     @Generated
-    @JsonProperty(value = "executionInfo")
     private BatchTaskExecutionInfo executionInfo;
 
     /**
@@ -62,8 +59,7 @@ public final class BatchTaskInfo {
      * @param taskState the taskState value to set.
      */
     @Generated
-    @JsonCreator
-    private BatchTaskInfo(@JsonProperty(value = "taskState") BatchTaskState taskState) {
+    private BatchTaskInfo(BatchTaskState taskState) {
         this.taskState = taskState;
     }
 
@@ -125,5 +121,68 @@ public final class BatchTaskInfo {
     @Generated
     public BatchTaskExecutionInfo getExecutionInfo() {
         return this.executionInfo;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("taskState", this.taskState == null ? null : this.taskState.toString());
+        jsonWriter.writeStringField("taskUrl", this.taskUrl);
+        jsonWriter.writeStringField("jobId", this.jobId);
+        jsonWriter.writeStringField("taskId", this.taskId);
+        jsonWriter.writeNumberField("subtaskId", this.subtaskId);
+        jsonWriter.writeJsonField("executionInfo", this.executionInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchTaskInfo from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchTaskInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchTaskInfo.
+     */
+    @Generated
+    public static BatchTaskInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchTaskState taskState = null;
+            String taskUrl = null;
+            String jobId = null;
+            String taskId = null;
+            Integer subtaskId = null;
+            BatchTaskExecutionInfo executionInfo = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("taskState".equals(fieldName)) {
+                    taskState = BatchTaskState.fromString(reader.getString());
+                } else if ("taskUrl".equals(fieldName)) {
+                    taskUrl = reader.getString();
+                } else if ("jobId".equals(fieldName)) {
+                    jobId = reader.getString();
+                } else if ("taskId".equals(fieldName)) {
+                    taskId = reader.getString();
+                } else if ("subtaskId".equals(fieldName)) {
+                    subtaskId = reader.getNullable(JsonReader::getInt);
+                } else if ("executionInfo".equals(fieldName)) {
+                    executionInfo = BatchTaskExecutionInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BatchTaskInfo deserializedBatchTaskInfo = new BatchTaskInfo(taskState);
+            deserializedBatchTaskInfo.taskUrl = taskUrl;
+            deserializedBatchTaskInfo.jobId = jobId;
+            deserializedBatchTaskInfo.taskId = taskId;
+            deserializedBatchTaskInfo.subtaskId = subtaskId;
+            deserializedBatchTaskInfo.executionInfo = executionInfo;
+            return deserializedBatchTaskInfo;
+        });
     }
 }

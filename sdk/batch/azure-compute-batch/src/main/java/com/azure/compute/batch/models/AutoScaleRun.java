@@ -5,35 +5,36 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The results and errors from an execution of a Pool autoscale formula.
  */
 @Immutable
-public final class AutoScaleRun {
+public final class AutoScaleRun implements JsonSerializable<AutoScaleRun> {
 
     /*
      * The time at which the autoscale formula was last evaluated.
      */
     @Generated
-    @JsonProperty(value = "timestamp")
     private final OffsetDateTime timestamp;
 
     /*
      * The final values of all variables used in the evaluation of the autoscale formula. Each variable value is returned in the form $variable=value, and variables are separated by semicolons.
      */
     @Generated
-    @JsonProperty(value = "results")
     private String results;
 
     /*
      * Details of the error encountered evaluating the autoscale formula on the Pool, if the evaluation was unsuccessful.
      */
     @Generated
-    @JsonProperty(value = "error")
     private AutoScaleRunError error;
 
     /**
@@ -42,8 +43,7 @@ public final class AutoScaleRun {
      * @param timestamp the timestamp value to set.
      */
     @Generated
-    @JsonCreator
-    private AutoScaleRun(@JsonProperty(value = "timestamp") OffsetDateTime timestamp) {
+    private AutoScaleRun(OffsetDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -77,5 +77,54 @@ public final class AutoScaleRun {
     @Generated
     public AutoScaleRunError getError() {
         return this.error;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timestamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeStringField("results", this.results);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoScaleRun from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoScaleRun if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutoScaleRun.
+     */
+    @Generated
+    public static AutoScaleRun fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OffsetDateTime timestamp = null;
+            String results = null;
+            AutoScaleRunError error = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("timestamp".equals(fieldName)) {
+                    timestamp = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("results".equals(fieldName)) {
+                    results = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    error = AutoScaleRunError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            AutoScaleRun deserializedAutoScaleRun = new AutoScaleRun(timestamp);
+            deserializedAutoScaleRun.results = results;
+            deserializedAutoScaleRun.error = error;
+            return deserializedAutoScaleRun;
+        });
     }
 }

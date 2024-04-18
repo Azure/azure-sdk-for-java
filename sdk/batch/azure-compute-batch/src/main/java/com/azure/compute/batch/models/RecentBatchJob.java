@@ -5,26 +5,28 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about the most recent Job to run under the Job Schedule.
  */
 @Immutable
-public final class RecentBatchJob {
+public final class RecentBatchJob implements JsonSerializable<RecentBatchJob> {
 
     /*
      * The ID of the Job.
      */
     @Generated
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The URL of the Job.
      */
     @Generated
-    @JsonProperty(value = "url")
     private String url;
 
     /**
@@ -52,5 +54,44 @@ public final class RecentBatchJob {
     @Generated
     public String getUrl() {
         return this.url;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("url", this.url);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecentBatchJob from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecentBatchJob if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecentBatchJob.
+     */
+    @Generated
+    public static RecentBatchJob fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecentBatchJob deserializedRecentBatchJob = new RecentBatchJob();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    deserializedRecentBatchJob.id = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedRecentBatchJob.url = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedRecentBatchJob;
+        });
     }
 }

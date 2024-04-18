@@ -5,47 +5,47 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The status of the Job Preparation and Job Release Tasks on a Compute Node.
  */
 @Immutable
-public final class BatchJobPreparationAndReleaseTaskStatus {
+public final class BatchJobPreparationAndReleaseTaskStatus
+    implements JsonSerializable<BatchJobPreparationAndReleaseTaskStatus> {
 
     /*
      * The ID of the Pool containing the Compute Node to which this entry refers.
      */
     @Generated
-    @JsonProperty(value = "poolId")
     private String poolId;
 
     /*
      * The ID of the Compute Node to which this entry refers.
      */
     @Generated
-    @JsonProperty(value = "nodeId")
     private String nodeId;
 
     /*
      * The URL of the Compute Node to which this entry refers.
      */
     @Generated
-    @JsonProperty(value = "nodeUrl")
     private String nodeUrl;
 
     /*
      * Information about the execution status of the Job Preparation Task on this Compute Node.
      */
     @Generated
-    @JsonProperty(value = "jobPreparationTaskExecutionInfo")
     private BatchJobPreparationTaskExecutionInfo jobPreparationTaskExecutionInfo;
 
     /*
      * Information about the execution status of the Job Release Task on this Compute Node. This property is set only if the Job Release Task has run on the Compute Node.
      */
     @Generated
-    @JsonProperty(value = "jobReleaseTaskExecutionInfo")
     private BatchJobReleaseTaskExecutionInfo jobReleaseTaskExecutionInfo;
 
     /**
@@ -105,5 +105,56 @@ public final class BatchJobPreparationAndReleaseTaskStatus {
     @Generated
     public BatchJobReleaseTaskExecutionInfo getJobReleaseTaskExecutionInfo() {
         return this.jobReleaseTaskExecutionInfo;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("poolId", this.poolId);
+        jsonWriter.writeStringField("nodeId", this.nodeId);
+        jsonWriter.writeStringField("nodeUrl", this.nodeUrl);
+        jsonWriter.writeJsonField("jobPreparationTaskExecutionInfo", this.jobPreparationTaskExecutionInfo);
+        jsonWriter.writeJsonField("jobReleaseTaskExecutionInfo", this.jobReleaseTaskExecutionInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchJobPreparationAndReleaseTaskStatus from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchJobPreparationAndReleaseTaskStatus if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchJobPreparationAndReleaseTaskStatus.
+     */
+    @Generated
+    public static BatchJobPreparationAndReleaseTaskStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchJobPreparationAndReleaseTaskStatus deserializedBatchJobPreparationAndReleaseTaskStatus
+                = new BatchJobPreparationAndReleaseTaskStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("poolId".equals(fieldName)) {
+                    deserializedBatchJobPreparationAndReleaseTaskStatus.poolId = reader.getString();
+                } else if ("nodeId".equals(fieldName)) {
+                    deserializedBatchJobPreparationAndReleaseTaskStatus.nodeId = reader.getString();
+                } else if ("nodeUrl".equals(fieldName)) {
+                    deserializedBatchJobPreparationAndReleaseTaskStatus.nodeUrl = reader.getString();
+                } else if ("jobPreparationTaskExecutionInfo".equals(fieldName)) {
+                    deserializedBatchJobPreparationAndReleaseTaskStatus.jobPreparationTaskExecutionInfo
+                        = BatchJobPreparationTaskExecutionInfo.fromJson(reader);
+                } else if ("jobReleaseTaskExecutionInfo".equals(fieldName)) {
+                    deserializedBatchJobPreparationAndReleaseTaskStatus.jobReleaseTaskExecutionInfo
+                        = BatchJobReleaseTaskExecutionInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedBatchJobPreparationAndReleaseTaskStatus;
+        });
     }
 }

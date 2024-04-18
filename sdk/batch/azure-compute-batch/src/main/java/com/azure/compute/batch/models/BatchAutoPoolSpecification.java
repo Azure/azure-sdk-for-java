@@ -5,42 +5,41 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies characteristics for a temporary 'auto pool'. The Batch service will
  * create this auto Pool when the Job is submitted.
  */
 @Fluent
-public final class BatchAutoPoolSpecification {
+public final class BatchAutoPoolSpecification implements JsonSerializable<BatchAutoPoolSpecification> {
 
     /*
      * A prefix to be added to the unique identifier when a Pool is automatically created. The Batch service assigns each auto Pool a unique identifier on creation. To distinguish between Pools created for different purposes, you can specify this element to add a prefix to the ID that is assigned. The prefix can be up to 20 characters long.
      */
     @Generated
-    @JsonProperty(value = "autoPoolIdPrefix")
     private String autoPoolIdPrefix;
 
     /*
      * The minimum lifetime of created auto Pools, and how multiple Jobs on a schedule are assigned to Pools.
      */
     @Generated
-    @JsonProperty(value = "poolLifetimeOption")
     private final BatchPoolLifetimeOption poolLifetimeOption;
 
     /*
      * Whether to keep an auto Pool alive after its lifetime expires. If false, the Batch service deletes the Pool once its lifetime (as determined by the poolLifetimeOption setting) expires; that is, when the Job or Job Schedule completes. If true, the Batch service does not delete the Pool automatically. It is up to the user to delete auto Pools created with this option.
      */
     @Generated
-    @JsonProperty(value = "keepAlive")
     private Boolean keepAlive;
 
     /*
      * The Pool specification for the auto Pool.
      */
     @Generated
-    @JsonProperty(value = "pool")
     private BatchPoolSpecification pool;
 
     /**
@@ -49,9 +48,7 @@ public final class BatchAutoPoolSpecification {
      * @param poolLifetimeOption the poolLifetimeOption value to set.
      */
     @Generated
-    @JsonCreator
-    public BatchAutoPoolSpecification(
-        @JsonProperty(value = "poolLifetimeOption") BatchPoolLifetimeOption poolLifetimeOption) {
+    public BatchAutoPoolSpecification(BatchPoolLifetimeOption poolLifetimeOption) {
         this.poolLifetimeOption = poolLifetimeOption;
     }
 
@@ -142,5 +139,60 @@ public final class BatchAutoPoolSpecification {
     public BatchAutoPoolSpecification setPool(BatchPoolSpecification pool) {
         this.pool = pool;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("poolLifetimeOption",
+            this.poolLifetimeOption == null ? null : this.poolLifetimeOption.toString());
+        jsonWriter.writeStringField("autoPoolIdPrefix", this.autoPoolIdPrefix);
+        jsonWriter.writeBooleanField("keepAlive", this.keepAlive);
+        jsonWriter.writeJsonField("pool", this.pool);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchAutoPoolSpecification from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchAutoPoolSpecification if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchAutoPoolSpecification.
+     */
+    @Generated
+    public static BatchAutoPoolSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchPoolLifetimeOption poolLifetimeOption = null;
+            String autoPoolIdPrefix = null;
+            Boolean keepAlive = null;
+            BatchPoolSpecification pool = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("poolLifetimeOption".equals(fieldName)) {
+                    poolLifetimeOption = BatchPoolLifetimeOption.fromString(reader.getString());
+                } else if ("autoPoolIdPrefix".equals(fieldName)) {
+                    autoPoolIdPrefix = reader.getString();
+                } else if ("keepAlive".equals(fieldName)) {
+                    keepAlive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("pool".equals(fieldName)) {
+                    pool = BatchPoolSpecification.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BatchAutoPoolSpecification deserializedBatchAutoPoolSpecification
+                = new BatchAutoPoolSpecification(poolLifetimeOption);
+            deserializedBatchAutoPoolSpecification.autoPoolIdPrefix = autoPoolIdPrefix;
+            deserializedBatchAutoPoolSpecification.keepAlive = keepAlive;
+            deserializedBatchAutoPoolSpecification.pool = pool;
+            return deserializedBatchAutoPoolSpecification;
+        });
     }
 }

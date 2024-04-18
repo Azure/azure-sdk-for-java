@@ -5,48 +5,46 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Task counts for a Job.
  */
 @Immutable
-public final class BatchTaskCounts {
+public final class BatchTaskCounts implements JsonSerializable<BatchTaskCounts> {
 
     /*
      * The number of Tasks in the active state.
      */
     @Generated
-    @JsonProperty(value = "active")
     private final int active;
 
     /*
      * The number of Tasks in the running or preparing state.
      */
     @Generated
-    @JsonProperty(value = "running")
     private final int running;
 
     /*
      * The number of Tasks in the completed state.
      */
     @Generated
-    @JsonProperty(value = "completed")
     private final int completed;
 
     /*
      * The number of Tasks which succeeded. A Task succeeds if its result (found in the executionInfo property) is 'success'.
      */
     @Generated
-    @JsonProperty(value = "succeeded")
     private final int succeeded;
 
     /*
      * The number of Tasks which failed. A Task fails if its result (found in the executionInfo property) is 'failure'.
      */
     @Generated
-    @JsonProperty(value = "failed")
     private final int failed;
 
     /**
@@ -59,10 +57,7 @@ public final class BatchTaskCounts {
      * @param failed the failed value to set.
      */
     @Generated
-    @JsonCreator
-    private BatchTaskCounts(@JsonProperty(value = "active") int active, @JsonProperty(value = "running") int running,
-        @JsonProperty(value = "completed") int completed, @JsonProperty(value = "succeeded") int succeeded,
-        @JsonProperty(value = "failed") int failed) {
+    private BatchTaskCounts(int active, int running, int completed, int succeeded, int failed) {
         this.active = active;
         this.running = running;
         this.completed = completed;
@@ -120,5 +115,58 @@ public final class BatchTaskCounts {
     @Generated
     public int getFailed() {
         return this.failed;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("active", this.active);
+        jsonWriter.writeIntField("running", this.running);
+        jsonWriter.writeIntField("completed", this.completed);
+        jsonWriter.writeIntField("succeeded", this.succeeded);
+        jsonWriter.writeIntField("failed", this.failed);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchTaskCounts from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchTaskCounts if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchTaskCounts.
+     */
+    @Generated
+    public static BatchTaskCounts fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            int active = 0;
+            int running = 0;
+            int completed = 0;
+            int succeeded = 0;
+            int failed = 0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("active".equals(fieldName)) {
+                    active = reader.getInt();
+                } else if ("running".equals(fieldName)) {
+                    running = reader.getInt();
+                } else if ("completed".equals(fieldName)) {
+                    completed = reader.getInt();
+                } else if ("succeeded".equals(fieldName)) {
+                    succeeded = reader.getInt();
+                } else if ("failed".equals(fieldName)) {
+                    failed = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new BatchTaskCounts(active, running, completed, succeeded, failed);
+        });
     }
 }

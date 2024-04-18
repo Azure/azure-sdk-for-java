@@ -5,54 +5,52 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about the Compute Node on which a Task ran.
  */
 @Immutable
-public final class BatchNodeInfo {
+public final class BatchNodeInfo implements JsonSerializable<BatchNodeInfo> {
 
     /*
      * An identifier for the Node on which the Task ran, which can be passed when adding a Task to request that the Task be scheduled on this Compute Node.
      */
     @Generated
-    @JsonProperty(value = "affinityId")
     private String affinityId;
 
     /*
      * The URL of the Compute Node on which the Task ran.
      */
     @Generated
-    @JsonProperty(value = "nodeUrl")
     private String nodeUrl;
 
     /*
      * The ID of the Pool on which the Task ran.
      */
     @Generated
-    @JsonProperty(value = "poolId")
     private String poolId;
 
     /*
      * The ID of the Compute Node on which the Task ran.
      */
     @Generated
-    @JsonProperty(value = "nodeId")
     private String nodeId;
 
     /*
      * The root directory of the Task on the Compute Node.
      */
     @Generated
-    @JsonProperty(value = "taskRootDirectory")
     private String taskRootDirectory;
 
     /*
      * The URL to the root directory of the Task on the Compute Node.
      */
     @Generated
-    @JsonProperty(value = "taskRootDirectoryUrl")
     private String taskRootDirectoryUrl;
 
     /**
@@ -121,5 +119,56 @@ public final class BatchNodeInfo {
     @Generated
     public String getTaskRootDirectoryUrl() {
         return this.taskRootDirectoryUrl;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("affinityId", this.affinityId);
+        jsonWriter.writeStringField("nodeUrl", this.nodeUrl);
+        jsonWriter.writeStringField("poolId", this.poolId);
+        jsonWriter.writeStringField("nodeId", this.nodeId);
+        jsonWriter.writeStringField("taskRootDirectory", this.taskRootDirectory);
+        jsonWriter.writeStringField("taskRootDirectoryUrl", this.taskRootDirectoryUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchNodeInfo from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchNodeInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchNodeInfo.
+     */
+    @Generated
+    public static BatchNodeInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchNodeInfo deserializedBatchNodeInfo = new BatchNodeInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("affinityId".equals(fieldName)) {
+                    deserializedBatchNodeInfo.affinityId = reader.getString();
+                } else if ("nodeUrl".equals(fieldName)) {
+                    deserializedBatchNodeInfo.nodeUrl = reader.getString();
+                } else if ("poolId".equals(fieldName)) {
+                    deserializedBatchNodeInfo.poolId = reader.getString();
+                } else if ("nodeId".equals(fieldName)) {
+                    deserializedBatchNodeInfo.nodeId = reader.getString();
+                } else if ("taskRootDirectory".equals(fieldName)) {
+                    deserializedBatchNodeInfo.taskRootDirectory = reader.getString();
+                } else if ("taskRootDirectoryUrl".equals(fieldName)) {
+                    deserializedBatchNodeInfo.taskRootDirectoryUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedBatchNodeInfo;
+        });
     }
 }

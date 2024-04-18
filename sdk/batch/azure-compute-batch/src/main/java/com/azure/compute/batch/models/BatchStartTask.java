@@ -5,8 +5,11 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -25,55 +28,48 @@ import java.util.List;
  * block Batch from being able to re-run the StartTask.
  */
 @Fluent
-public final class BatchStartTask {
+public final class BatchStartTask implements JsonSerializable<BatchStartTask> {
 
     /*
      * The command line of the StartTask. The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the Task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
      */
     @Generated
-    @JsonProperty(value = "commandLine")
     private final String commandLine;
 
     /*
      * The settings for the container under which the StartTask runs. When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all Task environment variables are mapped into the container, and the Task command line is executed in the container. Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning that Batch file APIs will not be able to access those files.
      */
     @Generated
-    @JsonProperty(value = "containerSettings")
     private BatchTaskContainerSettings containerSettings;
 
     /*
      * A list of files that the Batch service will download to the Compute Node before running the command line.  There is a maximum size for the list of resource files. When the max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers. Files listed under this element are located in the Task's working directory.
      */
     @Generated
-    @JsonProperty(value = "resourceFiles")
     private List<ResourceFile> resourceFiles;
 
     /*
      * A list of environment variable settings for the StartTask.
      */
     @Generated
-    @JsonProperty(value = "environmentSettings")
     private List<EnvironmentSetting> environmentSettings;
 
     /*
      * The user identity under which the StartTask runs. If omitted, the Task runs as a non-administrative user unique to the Task.
      */
     @Generated
-    @JsonProperty(value = "userIdentity")
     private UserIdentity userIdentity;
 
     /*
      * The maximum number of times the Task may be retried. The Batch service retries a Task if its exit code is nonzero. Note that this value specifically controls the number of retries. The Batch service will try the Task once, and may then retry up to this limit. For example, if the maximum retry count is 3, Batch tries the Task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0, the Batch service does not retry the Task. If the maximum retry count is -1, the Batch service retries the Task without limit, however this is not recommended for a start task or any task. The default value is 0 (no retries).
      */
     @Generated
-    @JsonProperty(value = "maxTaskRetryCount")
     private Integer maxTaskRetryCount;
 
     /*
      * Whether the Batch service should wait for the StartTask to complete successfully (that is, to exit with exit code 0) before scheduling any Tasks on the Compute Node. If true and the StartTask fails on a Node, the Batch service retries the StartTask up to its maximum retry count (maxTaskRetryCount). If the Task has still not completed successfully after all retries, then the Batch service marks the Node unusable, and will not schedule Tasks to it. This condition can be detected via the Compute Node state and failure info details. If false, the Batch service will not wait for the StartTask to complete. In this case, other Tasks can start executing on the Compute Node while the StartTask is still running; and even if the StartTask fails, new Tasks will continue to be scheduled on the Compute Node. The default is true.
      */
     @Generated
-    @JsonProperty(value = "waitForSuccess")
     private Boolean waitForSuccess;
 
     /**
@@ -82,8 +78,7 @@ public final class BatchStartTask {
      * @param commandLine the commandLine value to set.
      */
     @Generated
-    @JsonCreator
-    public BatchStartTask(@JsonProperty(value = "commandLine") String commandLine) {
+    public BatchStartTask(String commandLine) {
         this.commandLine = commandLine;
     }
 
@@ -274,5 +269,74 @@ public final class BatchStartTask {
     public BatchStartTask setWaitForSuccess(Boolean waitForSuccess) {
         this.waitForSuccess = waitForSuccess;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("commandLine", this.commandLine);
+        jsonWriter.writeJsonField("containerSettings", this.containerSettings);
+        jsonWriter.writeArrayField("resourceFiles", this.resourceFiles, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("environmentSettings", this.environmentSettings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("userIdentity", this.userIdentity);
+        jsonWriter.writeNumberField("maxTaskRetryCount", this.maxTaskRetryCount);
+        jsonWriter.writeBooleanField("waitForSuccess", this.waitForSuccess);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchStartTask from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchStartTask if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchStartTask.
+     */
+    @Generated
+    public static BatchStartTask fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String commandLine = null;
+            BatchTaskContainerSettings containerSettings = null;
+            List<ResourceFile> resourceFiles = null;
+            List<EnvironmentSetting> environmentSettings = null;
+            UserIdentity userIdentity = null;
+            Integer maxTaskRetryCount = null;
+            Boolean waitForSuccess = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("commandLine".equals(fieldName)) {
+                    commandLine = reader.getString();
+                } else if ("containerSettings".equals(fieldName)) {
+                    containerSettings = BatchTaskContainerSettings.fromJson(reader);
+                } else if ("resourceFiles".equals(fieldName)) {
+                    resourceFiles = reader.readArray(reader1 -> ResourceFile.fromJson(reader1));
+                } else if ("environmentSettings".equals(fieldName)) {
+                    environmentSettings = reader.readArray(reader1 -> EnvironmentSetting.fromJson(reader1));
+                } else if ("userIdentity".equals(fieldName)) {
+                    userIdentity = UserIdentity.fromJson(reader);
+                } else if ("maxTaskRetryCount".equals(fieldName)) {
+                    maxTaskRetryCount = reader.getNullable(JsonReader::getInt);
+                } else if ("waitForSuccess".equals(fieldName)) {
+                    waitForSuccess = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BatchStartTask deserializedBatchStartTask = new BatchStartTask(commandLine);
+            deserializedBatchStartTask.containerSettings = containerSettings;
+            deserializedBatchStartTask.resourceFiles = resourceFiles;
+            deserializedBatchStartTask.environmentSettings = environmentSettings;
+            deserializedBatchStartTask.userIdentity = userIdentity;
+            deserializedBatchStartTask.maxTaskRetryCount = maxTaskRetryCount;
+            deserializedBatchStartTask.waitForSuccess = waitForSuccess;
+            return deserializedBatchStartTask;
+        });
     }
 }
