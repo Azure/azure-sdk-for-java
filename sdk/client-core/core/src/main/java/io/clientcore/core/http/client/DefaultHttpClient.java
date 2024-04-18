@@ -25,11 +25,10 @@ import io.clientcore.core.util.binarydata.BinaryData;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
-import java.io.BufferedReader;
+import java.io.BufferedInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UncheckedIOException;
@@ -38,9 +37,8 @@ import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -50,6 +48,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static io.clientcore.core.http.models.ContentType.APPLICATION_OCTET_STREAM;
+import static io.clientcore.core.http.models.HttpHeaderName.CONTENT_LENGTH;
 import static io.clientcore.core.http.models.HttpHeaderName.CONTENT_TYPE;
 import static io.clientcore.core.http.models.HttpMethod.HEAD;
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
@@ -77,8 +76,8 @@ class DefaultHttpClient implements HttpClient {
     private final ProxyOptions proxyOptions;
     private final SSLSocketFactory sslSocketFactory;
     private static int maxConnections;
-    private static boolean keepConnectionAlive;
-    private final SocketConnectionCache httpConnectionCache;
+    private static boolean keepConnectionAlive = true;
+    private final SocketConnectionCache socketConnectionCache;
 
     DefaultHttpClient(Duration connectionTimeout, Duration readTimeout, ProxyOptions proxyOptions,
         SSLSocketFactory sslSocketFactory) {
@@ -94,25 +93,25 @@ class DefaultHttpClient implements HttpClient {
         maxConnections = maxConnectionsString != null
             ? Integer.parseInt(maxConnectionsString)
             : 5;
-        this.httpConnectionCache = SocketConnectionCache.getInstance(keepConnectionAlive, maxConnections);
+        this.socketConnectionCache = SocketConnectionCache.getInstance(keepConnectionAlive, maxConnections,
+            connectionTimeout == null ? -1 : (int) connectionTimeout.toMillis());
     }
 
     @Override
     public Response<?> send(HttpRequest httpRequest) throws IOException {
         if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
-
             SocketConnectionCache.SocketConnection connection
-                = httpConnectionCache.get(new SocketConnectionProperties(httpRequest,
+                = socketConnectionCache.get(new SocketConnectionProperties(httpRequest,
                 httpRequest.getUrl().getHost(),
                 String.valueOf(httpRequest.getUrl().getPort())));
 
+
             Response<?> response
                 = SocketClient.sendPatchRequest(httpRequest, connection.getSocketInputStream(),
-                connection.getSocketOutputStream(), getSslSocketFactory());
-
-            // Handle connection reusing
-            httpConnectionCache.reuseConnection(connection);
-            return response;
+                connection.getSocketOutputStream());
+                // Handle connection reusing
+                socketConnectionCache.reuseConnection(connection);
+                return response;
         } else {
             HttpURLConnection connection = connect(httpRequest);
             sendBody(httpRequest, connection);
@@ -413,24 +412,26 @@ class DefaultHttpClient implements HttpClient {
         private final int maxConnections;
         private final Map<SocketConnectionProperties, List<SocketConnection>> connectionPool
             = new HashMap<SocketConnectionProperties, List<SocketConnection>>();
+        private final int connectionTimeout;
 
-        private SocketConnectionCache(boolean connectionKeepAlive, int maximumConnections) {
+        private SocketConnectionCache(boolean connectionKeepAlive, int maximumConnections, int connectionTimeout) {
             if (!connectionKeepAlive) {
                 maxConnections = 0;
             } else {
                 this.maxConnections = maximumConnections;
             }
+            this.connectionTimeout = connectionTimeout;
         }
 
-        public static synchronized SocketConnectionCache getInstance(boolean connectionKeepAlive, int maximumConnections) {
+        public static synchronized SocketConnectionCache getInstance(boolean connectionKeepAlive, int maximumConnections, int connectionTimeout) {
             if (INSTANCE == null) {
-                INSTANCE = new SocketConnectionCache(connectionKeepAlive, maximumConnections);
+                INSTANCE = new SocketConnectionCache(connectionKeepAlive, maximumConnections, connectionTimeout);
             }
             return INSTANCE;
         }
 
 
-        public SocketConnection get(SocketConnectionProperties socketConnectionProperties) {
+        public SocketConnection get(SocketConnectionProperties socketConnectionProperties) throws SocketException {
             SocketConnection connection = null;
             // Try-Get a connection from the cache
             synchronized (connectionPool) {
@@ -440,6 +441,8 @@ class DefaultHttpClient implements HttpClient {
                     if (connections.isEmpty()) {
                         connectionPool.remove(socketConnectionProperties);
                         connections = null;
+                    } else {
+                        connectionPool.put(socketConnectionProperties, connections);
                     }
                     // keep removing connections from list until we find a use-able one, disregard other connections in use
                     if (connection.canBeReused()) {
@@ -451,7 +454,7 @@ class DefaultHttpClient implements HttpClient {
             // If no connection is available, create a new one
             if (connection == null) {
                 // If the request is a PATCH request, we need to use a socket connection
-                connection = getSocketSocketConnection(socketConnectionProperties);
+                connection = getSocketSocketConnection(socketConnectionProperties, connectionTimeout);
             }
 
             synchronized (connectionPool) {
@@ -479,9 +482,11 @@ class DefaultHttpClient implements HttpClient {
                             // mark the connection as available for reuse
                             connection.markAvailableForReuse();
                             connections.add(connection);
-                            return; // keep the connection open
+                            connectionPool.put(connectionProperties, connections);
+
                         }
                     }
+                    return; // keep the connection open
                 }
             }
 
@@ -489,7 +494,7 @@ class DefaultHttpClient implements HttpClient {
             connection.closeSocketAndStreams();
         }
 
-        private static SocketConnection getSocketSocketConnection(SocketConnectionProperties socketConnectionProperties) {
+        private static SocketConnection getSocketSocketConnection(SocketConnectionProperties socketConnectionProperties, int connectionTimeout) throws SocketException {
             SocketConnection connection;
             URL requestUrl = socketConnectionProperties.getHttpRequest().getUrl();
             String protocol = requestUrl.getProtocol();
@@ -503,6 +508,7 @@ class DefaultHttpClient implements HttpClient {
             } catch (IOException e) {
                 throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
             }
+            socket.setSoTimeout(connectionTimeout);
             connection = new SocketConnection(socket, socketConnectionProperties);
 
             return connection;
@@ -526,7 +532,8 @@ class DefaultHttpClient implements HttpClient {
             OutputStream getSocketOutputStream() {
                 if (socketOutputStream == null) {
                     try {
-                        return socket.getOutputStream();
+                        socketOutputStream = socket.getOutputStream();
+                        return socketOutputStream;
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -538,7 +545,8 @@ class DefaultHttpClient implements HttpClient {
             InputStream getSocketInputStream() {
                 if (socketInputStream == null) {
                     try {
-                        return socket.getInputStream();
+                        socketInputStream = socket.getInputStream();
+                        return socketInputStream;
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -616,10 +624,9 @@ class DefaultHttpClient implements HttpClient {
             }
             return false;
         }
+
         @Override public int hashCode() {
-            int result = 17;
-            result = 31 * result + (port != null ? port.hashCode() : 0);
-            return result;
+            return Objects.hash(host, port);
         }
 
         public HttpRequest getHttpRequest() {
@@ -631,17 +638,24 @@ class DefaultHttpClient implements HttpClient {
 
         private static final String HTTP_VERSION = " HTTP/1.1";
 
-        private static Response<?> sendPatchRequest(HttpRequest httpRequest, InputStream inputStream,
-            OutputStream outputStream, SSLSocketFactory sslSocketFactory) {
+        /**
+         * Calls buildAndSend to send a String representation of the request across the output stream, then calls
+         * buildResponse to get an instance of HttpUrlConnectionResponse from the input stream
+         *
+         * @param httpRequest  The HTTP Request being sent
+         * @param inputStream  the input stream from the socket
+         * @param outputStream the output stream from the socket for writing the request
+         * @return an instance of Response
+         */
+        private static Response<?> sendPatchRequest(HttpRequest httpRequest, InputStream inputStream, OutputStream outputStream) throws IOException {
             httpRequest.getHeaders().set(HttpHeaderName.HOST, httpRequest.getUrl().getHost());
 
-            try (BufferedReader in = new BufferedReader(
-                new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-                 OutputStreamWriter out = new OutputStreamWriter(outputStream)) {
+            BufferedInputStream in = new BufferedInputStream(inputStream);
+            OutputStreamWriter out = new OutputStreamWriter(outputStream);
 
                 buildAndSend(httpRequest, out);
-
                 Response<?> response = buildResponse(httpRequest, in);
+
                 HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);
                 String redirectLocation = (locationHeader == null) ? null : locationHeader.getValue();
 
@@ -651,19 +665,18 @@ class DefaultHttpClient implements HttpClient {
                     } else {
                         httpRequest.setUrl(new URL(httpRequest.getUrl(), redirectLocation));
                     }
-                    return sendPatchRequest(httpRequest, inputStream, outputStream, sslSocketFactory);
+                    return sendPatchRequest(httpRequest, inputStream, outputStream);
                 }
+
                 return response;
-            }  catch (IOException e) {
-                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-            }
+
         }
 
         /**
          * Converts an instance of HttpRequest to a String representation for sending over the output stream
          *
          * @param httpRequest The HTTP Request being sent
-         * @param out output stream for writing the request
+         * @param out         output stream for writing the request
          * @throws IOException If an I/O error occurs
          */
         private static void buildAndSend(HttpRequest httpRequest, OutputStreamWriter out) throws IOException {
@@ -690,38 +703,76 @@ class DefaultHttpClient implements HttpClient {
          * Response
          *
          * @param httpRequest The HTTP Request being sent
-         * @param reader the input stream from the socket
+         * @param in the input stream from the socket
          * @return an instance of Response
          * @throws IOException If an I/O error occurs
          */
-        private static Response<?> buildResponse(HttpRequest httpRequest, BufferedReader reader) throws IOException {
-            String statusLine = reader.readLine();
-            if (statusLine == null) {
+        private static Response<?> buildResponse(HttpRequest httpRequest, BufferedInputStream in) throws IOException {
+            // Parse Http response from socket:
+            // Status Line
+            // Response Headers
+            // Blank Line
+            // Response Body
+
+            int statusCode = readStatusCode(in);
+
+            HttpHeaders headers = readResponseHeaders(in);
+            HttpHeader contentLengthHeader = headers.get(CONTENT_LENGTH);
+            // read body if present
+            if (headers.getSize() != 0 && contentLengthHeader != null && contentLengthHeader.getValue() != null) {
+                int contentLength = Integer.parseInt(contentLengthHeader.getValue());
+                byte[] body = new byte[contentLength];
+                in.read(body, 0, contentLength);
+                return new HttpResponse<>(httpRequest, statusCode, headers, BinaryData.fromBytes(body));
+            }
+            return new HttpResponse<>(httpRequest, statusCode, headers, null);
+        }
+
+        private static int readStatusCode(BufferedInputStream in) throws IOException {
+            StringBuilder statusLine = new StringBuilder();
+            int singleByte;
+            while ((singleByte = in.read()) != -1) {
+                char singleChar = (char) singleByte;
+                if (singleChar == '\n') {
+                    break;
+                }
+                statusLine.append(singleChar);
+            }
+
+            if (statusLine.toString().isEmpty()) {
                 throw LOGGER.logThrowableAsError(new IllegalStateException("Unexpected response from server."));
             }
-            int dotIndex = statusLine.indexOf('.');
-            int statusCode = Integer.parseInt(statusLine.substring(dotIndex + 3, dotIndex + 6));
 
+            int length = statusLine.length();
+            if (length > 0 && statusLine.charAt(length - 1) == '\r') {
+                statusLine.setLength(length - 1);
+            }
+
+            int dotIndex = statusLine.indexOf(".");
+            return Integer.parseInt(statusLine.substring(dotIndex + 3, dotIndex + 6));
+        }
+
+        private static HttpHeaders readResponseHeaders(InputStream inputStream) throws IOException {
             HttpHeaders headers = new HttpHeaders();
-            String line;
-            while ((line = reader.readLine()) != null && !line.isEmpty()) {
-                // Headers may have optional leading and trailing whitespace around the header value.
-                // https://tools.ietf.org/html/rfc7230#section-3.2
-                // Process this accordingly.
-                int split = line.indexOf(':'); // Find ':' to split the header name and value.
-                String key = line.substring(0, split); // Get the header name.
-                String value = line.substring(split + 1).trim(); // Get the header value and trim whitespace.
-                headers.add(HttpHeaderName.fromString(key), value);
+            StringBuilder line = new StringBuilder();
+            int c;
+            while ((c = inputStream.read()) != -1) {
+                if (c == '\n' || c == '\r') { // End of line, process the header
+                    if (line.length() == 0) { // Empty line, end of headers section
+                        break;
+                    }
+                    int separator = line.indexOf(":");
+                    if (separator != -1) {
+                        String name = line.substring(0, separator).trim();
+                        String value = line.substring(separator + 1).trim();
+                        headers.add(HttpHeaderName.fromString(name), value);
+                    }
+                    line.setLength(0); // Clear the line for the next header
+                } else {
+                    line.append((char) c);
+                }
             }
-
-            StringBuilder bodyString = new StringBuilder();
-            while ((line = reader.readLine()) != null) {
-                bodyString.append(line);
-            }
-
-            BinaryData body = BinaryData.fromByteBuffer(ByteBuffer.wrap(bodyString.toString().getBytes()));
-
-            return new HttpResponse<>(httpRequest, statusCode, headers, body);
+            return headers;
         }
     }
 }
