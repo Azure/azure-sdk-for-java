@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed issue where SERVER_BUSY_WAIT_TIME was applied for every retry. ([#38596](https://github.com/Azure/azure-sdk-for-java/issues/38596))
+
 ### Other Changes
 
 ## 2.9.4 (2024-05-01)
