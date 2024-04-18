@@ -9,27 +9,26 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 import reactor.util.retry.Retry;
-import reactor.util.retry.RetryBackoffSpec;
 
 import java.time.Duration;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import static com.azure.core.amqp.implementation.ClientConstants.SERVER_BUSY_WAIT_TIME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -64,10 +63,16 @@ public class RetryUtilTest {
         // Arrange
         final String timeoutMessage = "Operation timed out.";
         final Duration timeout = Duration.ofMillis(1500);
-        final AmqpRetryOptions options
-            = new AmqpRetryOptions().setDelay(Duration.ofSeconds(1)).setMaxRetries(2).setTryTimeout(timeout);
-        final Duration totalWaitTime
-            = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds()).plus(timeout);
+        final AmqpRetryOptions options = new AmqpRetryOptions()
+            .setDelay(Duration.ofSeconds(1))
+            .setMode(AmqpRetryMode.FIXED)
+            .setMaxRetries(2)
+            .setTryTimeout(timeout);
+        final Duration totalWaitTime = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds()).plus(timeout);
+
+        // + 1: First subscription to the Flux.
+        // + 1: AmqpRetryPolicy uses > rather than >=, so there is one more retry than in RetrySpec.
+        final int expectedNumberOfSubscribes = options.getMaxRetries() + 1 + 1;
 
         final AtomicInteger resubscribe = new AtomicInteger();
         final Flux<AmqpTransportType> neverFlux
@@ -80,7 +85,7 @@ public class RetryUtilTest {
             .expectErrorSatisfies(error -> assertTrue(error.getCause() instanceof TimeoutException))
             .verify();
 
-        assertEquals(options.getMaxRetries() + 1, resubscribe.get());
+        assertEquals(expectedNumberOfSubscribes, resubscribe.get());
     }
 
     /**
@@ -91,9 +96,16 @@ public class RetryUtilTest {
         // Arrange
         final String timeoutMessage = "Operation timed out.";
         final Duration timeout = Duration.ofMillis(500);
-        final AmqpRetryOptions options
-            = new AmqpRetryOptions().setDelay(Duration.ofSeconds(1)).setMaxRetries(2).setTryTimeout(timeout);
+        final AmqpRetryOptions options = new AmqpRetryOptions()
+            .setDelay(Duration.ofSeconds(1))
+            .setMaxRetries(2)
+            .setMode(AmqpRetryMode.FIXED)
+            .setTryTimeout(timeout);
         final Duration totalWaitTime = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds());
+
+        // + 1: First subscription to the Mono.
+        // + 1: AmqpRetryPolicy uses > rather than >=, so there is one more retry than in RetrySpec.
+        final int expectedNumberOfSubscribes = options.getMaxRetries() + 1 + 1;
 
         final AtomicInteger resubscribe = new AtomicInteger();
         final Mono<AmqpTransportType> neverFlux
@@ -106,7 +118,7 @@ public class RetryUtilTest {
             .expectErrorSatisfies(error -> assertTrue(error.getCause() instanceof TimeoutException))
             .verify();
 
-        assertEquals(options.getMaxRetries() + 1, resubscribe.get());
+        assertEquals(expectedNumberOfSubscribes, resubscribe.get());
     }
 
     static Stream<Throwable> withTransientError() {
@@ -146,61 +158,160 @@ public class RetryUtilTest {
             .verify();
     }
 
-    static Stream<AmqpRetryOptions> createRetry() {
-        final AmqpRetryOptions fixed = new AmqpRetryOptions().setMode(AmqpRetryMode.FIXED)
-            .setDelay(Duration.ofSeconds(10))
+    /**
+     * Verifies that the retry calculated from {@link RetryUtil#withRetry(Flux, AmqpRetryOptions, String)}
+     * matches existing behaviour of {@link AmqpRetryPolicy}.
+     */
+    @Test
+    void testRetrySpecServerBusy() {
+        // Arrange
+        final AmqpRetryOptions fixedOptions = new AmqpRetryOptions()
+            .setMode(AmqpRetryMode.FIXED)
+            .setDelay(Duration.ofSeconds(1))
             .setMaxRetries(2)
-            .setMaxDelay(Duration.ofSeconds(90));
-        final AmqpRetryOptions exponential = new AmqpRetryOptions().setMode(AmqpRetryMode.EXPONENTIAL)
-            .setDelay(Duration.ofSeconds(5))
-            .setMaxRetries(5)
-            .setMaxDelay(Duration.ofSeconds(35));
+            .setMaxDelay(Duration.ofSeconds(15));
+        final Retry actualRetry = RetryUtil.createRetry(fixedOptions);
 
-        return Stream.of(fixed, exponential);
+        final Throwable exception = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Message",
+            new AmqpErrorContext("namespace-foo-bar"));
+        final Retry.RetrySignal retrySignal  = new ImmutableRetrySignal(0, 0, exception);
+
+        // Act & Assert
+        final TestPublisher<Retry.RetrySignal> publisher = TestPublisher.createCold();
+
+        StepVerifier.create(actualRetry.generateCompanion(publisher.flux()))
+            .then(() -> publisher.emit(retrySignal))
+            .expectNoEvent(SERVER_BUSY_WAIT_TIME)
+            .expectNextCount(1)
+            .expectComplete()
+            .verify();
+    }
+
+    static Stream<Throwable> testRetrySpecNonServerBusyExceptions() {
+        return Stream.of(
+            new AmqpException(true, AmqpErrorCondition.INTERNAL_ERROR, "Message",
+                new AmqpErrorContext("namespace-foo-bar")),
+            new TimeoutException("Timeout exception test.")
+        );
     }
 
     /**
-     * Verifies retry options are correctly mapped to a retry spec.
+     * Verifies errors that are not {@link AmqpErrorCondition#SERVER_BUSY_ERROR} do not have the server busy wait time
+     * applied to them.
      */
     @MethodSource
     @ParameterizedTest
-    void createRetry(AmqpRetryOptions options) {
-        // Act
-        final Retry actual = RetryUtil.createRetry(options);
+    void testRetrySpecNonServerBusyExceptions(Throwable exception) {
+        // Arrange
+        // The delay is 4x longer than the SERVER_BUSY_WAIT_TIME.
+        final AmqpRetryOptions fixedOptions = new AmqpRetryOptions()
+            .setMode(AmqpRetryMode.FIXED)
+            .setDelay(Duration.ofSeconds(1))
+            .setMaxRetries(2)
+            .setMaxDelay(Duration.ofSeconds(15));
+        final Retry actualRetry = RetryUtil.createRetry(fixedOptions);
 
-        // Assert
-        assertTrue(actual instanceof RetryBackoffSpec);
+        final Retry.RetrySignal retrySignal  = new ImmutableRetrySignal(0, 0, exception);
 
-        final RetryBackoffSpec retrySpec = (RetryBackoffSpec) actual;
-        assertEquals(options.getMaxRetries(), retrySpec.maxAttempts);
-        assertEquals(options.getMaxDelay(), retrySpec.maxBackoff);
-        assertTrue(options.getDelay().compareTo(retrySpec.minBackoff) < 0);
-        assertTrue(retrySpec.jitterFactor > 0);
+        // Act & Assert
+        final TestPublisher<Retry.RetrySignal> publisher = TestPublisher.createCold();
+
+        // Set an explicit timeout because the server busy time is 4x longer than the delay.   We shouldn't be
+        // adding the SERVER_BUSY_WAIT_TIME to non-server busy errors.
+        StepVerifier.create(actualRetry.generateCompanion(publisher.flux()))
+            .then(() -> publisher.emit(retrySignal))
+            .expectNextCount(1)
+            .expectComplete()
+            .verify(SERVER_BUSY_WAIT_TIME);
     }
 
-    static Stream<Arguments> retryFilter() {
-        return Stream.of(Arguments.of(new TimeoutException("Something"), true),
-            Arguments.of(new AmqpException(true, "foo message", new AmqpErrorContext("test-namespace")), true),
-            Arguments.of(new AmqpException(false, "foo message", new AmqpErrorContext("test-ns")), false),
-            Arguments.of(new IllegalArgumentException("invalid"), false));
+    /**
+     * Error is returned if retries are exhausted.
+     */
+    @Test
+    void testRetryExhausted() {
+        // Arrange
+        final AmqpRetryOptions fixedOptions = new AmqpRetryOptions()
+            .setMode(AmqpRetryMode.FIXED)
+            .setDelay(Duration.ofSeconds(1))
+            .setMaxRetries(2)
+            .setMaxDelay(Duration.ofSeconds(15));
+        final Throwable exception = new AmqpException(true, AmqpErrorCondition.INTERNAL_ERROR, "Message",
+            new AmqpErrorContext("namespace-foo-bar"));
+        final Retry actualRetry = RetryUtil.createRetry(fixedOptions);
+        final int retries = fixedOptions.getMaxRetries() + 1;
+        final Retry.RetrySignal retrySignal  = new ImmutableRetrySignal(retries, retries, exception);
+
+        // Act & Assert
+        final TestPublisher<Retry.RetrySignal> publisher = TestPublisher.createCold();
+
+        // Set an explicit timeout because the server busy time is 4x longer than the delay.   We shouldn't be
+        // adding the SERVER_BUSY_WAIT_TIME to non-server busy errors.
+        StepVerifier.create(actualRetry.generateCompanion(publisher.flux()))
+            .then(() -> publisher.emit(retrySignal))
+            .expectError()
+            .verify();
     }
 
+    static Stream<Throwable> testRetryWhenExceptionDoesNotMatch() {
+        return Stream.of(
+            new AmqpException(false, AmqpErrorCondition.INTERNAL_ERROR, "Message",
+                new AmqpErrorContext("namespace-foo-bar")),
+            new IllegalArgumentException("Illegal state exception")
+        );
+    }
+
+    /**
+     * Error is returned when the exception is an AmqpException that is not retriable nor is it a TimeoutException.
+     */
     @MethodSource
     @ParameterizedTest
-    void retryFilter(Throwable throwable, boolean expected) {
+    void testRetryWhenExceptionDoesNotMatch(Throwable exception) {
         // Arrange
-        final AmqpRetryOptions options = new AmqpRetryOptions().setMode(AmqpRetryMode.EXPONENTIAL);
-        final Retry retry = RetryUtil.createRetry(options);
+        final AmqpRetryOptions fixedOptions = new AmqpRetryOptions()
+            .setMode(AmqpRetryMode.FIXED)
+            .setDelay(Duration.ofSeconds(1))
+            .setMaxRetries(2)
+            .setMaxDelay(Duration.ofSeconds(15));
+        final Retry actualRetry = RetryUtil.createRetry(fixedOptions);
+        final int retries = fixedOptions.getMaxRetries() + 1;
+        final Retry.RetrySignal retrySignal  = new ImmutableRetrySignal(retries, retries, exception);
 
-        assertTrue(retry instanceof RetryBackoffSpec);
+        // Act & Assert
+        final TestPublisher<Retry.RetrySignal> publisher = TestPublisher.createCold();
 
-        final RetryBackoffSpec retrySpec = (RetryBackoffSpec) retry;
-        final Predicate<Throwable> errorFilter = retrySpec.errorFilter;
+        // Set an explicit timeout because the server busy time is 4x longer than the delay.   We shouldn't be
+        // adding the SERVER_BUSY_WAIT_TIME to non-server busy errors.
+        StepVerifier.create(actualRetry.generateCompanion(publisher.flux()))
+            .then(() -> publisher.emit(retrySignal))
+            .expectError()
+            .verify();
+    }
 
-        // Act
-        final boolean actual = errorFilter.test(throwable);
+    private static class ImmutableRetrySignal implements Retry.RetrySignal {
+        private final int totalRetries;
+        private final int totalRetriesInARow;
+        private final Throwable throwable;
 
-        // Assert
-        assertEquals(expected, actual);
+        ImmutableRetrySignal(int totalRetries, int totalRetriesInARow, Throwable throwable) {
+            this.totalRetries = totalRetries;
+            this.totalRetriesInARow = totalRetriesInARow;
+            this.throwable = throwable;
+        }
+
+        @Override
+        public long totalRetries() {
+            return totalRetries;
+        }
+
+        @Override
+        public long totalRetriesInARow() {
+            return totalRetriesInARow;
+        }
+
+        @Override
+        public Throwable failure() {
+            return throwable;
+        }
     }
 }
