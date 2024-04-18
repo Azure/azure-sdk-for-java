@@ -32,6 +32,7 @@ import com.azure.spring.data.cosmos.domain.AuditableEntity;
 import com.azure.spring.data.cosmos.domain.AutoScaleSample;
 import com.azure.spring.data.cosmos.domain.BasicItem;
 import com.azure.spring.data.cosmos.domain.GenIdEntity;
+import com.azure.spring.data.cosmos.domain.IntegerIdDomain;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
@@ -40,6 +41,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.util.Lists;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -63,7 +65,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
 import static com.azure.spring.data.cosmos.common.TestConstants.AGE;
@@ -209,8 +214,31 @@ public class CosmosTemplateIT {
         final Person personWithTransientField = TEST_PERSON_4;
         assertThat(personWithTransientField.getTransientProperty()).isNotNull();
         final Person insertedPerson = cosmosTemplate.insert(Person.class.getSimpleName(), personWithTransientField, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_4)));
+        Assert.assertEquals(TRANSIENT_PROPERTY, insertedPerson.getTransientProperty());
         final Person retrievedPerson = cosmosTemplate.findById(Person.class.getSimpleName(), insertedPerson.getId(), Person.class);
         assertThat(retrievedPerson.getTransientProperty()).isNull();
+    }
+
+    @Test
+    public void testSaveAllAndFindAllWithTransientField() {
+        final Iterable<Person> entitiesToSave = Collections.singleton(TEST_PERSON_4);
+        for (Person entity : entitiesToSave) {
+            assertThat(entity.getTransientProperty()).isNotNull();
+        }
+        final CosmosEntityInformation<Person, String> personInfo =
+            new CosmosEntityInformation<>(Person.class);
+
+        Iterable<Person> insertAllResponse = cosmosTemplate.insertAll(personInfo, entitiesToSave);
+        //check that the transient field is retained in the response
+        for (Person person : insertAllResponse) {
+            Assert.assertEquals(TRANSIENT_PROPERTY, person.getTransientProperty());
+        }
+
+        Iterable<Person> findByIdsResponse = cosmosTemplate.findByIds(Arrays.asList(TEST_PERSON_4.getId()), Person.class, containerName);
+        for (Person person : findByIdsResponse) {
+            assertThat(person.getTransientProperty()).isNull();
+        }
+
     }
 
 
@@ -340,6 +368,8 @@ public class CosmosTemplateIT {
         assertThat(newPerson.getTransientProperty()).isNotNull();
 
         final Person person = cosmosTemplate.upsertAndReturnEntity(Person.class.getSimpleName(), newPerson);
+
+        Assert.assertEquals(TRANSIENT_PROPERTY, person.getTransientProperty());
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();

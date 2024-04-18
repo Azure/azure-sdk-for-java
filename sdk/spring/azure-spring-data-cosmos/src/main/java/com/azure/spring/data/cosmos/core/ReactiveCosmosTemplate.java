@@ -53,10 +53,13 @@ import org.springframework.util.ReflectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Template class of reactive cosmos
@@ -445,13 +448,14 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         markAuditedIfConfigured(objectToSave);
         generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
         JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
+        JsonNode preStrippedItem = originalItem.deepCopy();
         CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
         List<String> transientFields =  entityInfo.getTransientFields();
         Boolean anyTransientFieldsSet;
         if (!transientFields.isEmpty()) {
             //strip fields with @Transient annotation from the JsonNode so they are not persisted.
-            originalItem = stripTransientFields(originalItem, transientFields);
             anyTransientFieldsSet = transientFields.stream().anyMatch(originalItem::hasNonNull);
+            originalItem = stripTransientFields(originalItem, transientFields);
         } else {
             anyTransientFieldsSet = false;
         }
@@ -471,7 +475,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                     cosmosItemResponse.getDiagnostics(), null);
                 if (anyTransientFieldsSet) {
                     // recapitulate fields with @Transient annotation from originalItem so they remain serialized in the domain object
-                    return Mono.just(toDomainObject(domainType, recapitulateTransientFields(finalOriginalItem, cosmosItemResponse.getItem(), transientFields)));
+                    return Mono.just(toDomainObject(domainType, recapitulateTransientFields(preStrippedItem, cosmosItemResponse.getItem(), transientFields)));
                 }
                 return Mono.just(toDomainObject(domainType, cosmosItemResponse.getItem()));
             });
@@ -517,14 +521,18 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
         String containerName = entityInformation.getContainerName();
         Class<T> domainType = entityInformation.getJavaType();
-
+        Map<String, JsonNode> entitiesMap = new HashMap<>();
+        AtomicBoolean anyTransientFieldsSet = new AtomicBoolean(false);
+        CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
+        List<String> transientFields =  entityInfo.getTransientFields();
         Flux<CosmosItemOperation> cosmosItemOperationsFlux = entities.map(entity -> {
             generateIdIfNullAndAutoGenerationEnabled(entity, domainType);
             JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
-            CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
-            List<String> transientFields =  entityInfo.getTransientFields();
+            JsonNode preStrippedItem = originalItem.deepCopy();
             if (!transientFields.isEmpty()) {
                 //strip fields with @Transient annotation from the JsonNode so they are not persisted.
+                entitiesMap.put(originalItem.get("id").asText(), preStrippedItem);
+                anyTransientFieldsSet.set(transientFields.stream().anyMatch(originalItem::hasNonNull));
                 originalItem = stripTransientFields(originalItem, transientFields);
             }
             PartitionKey partitionKey = new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity));
@@ -550,6 +558,10 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                  CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                      r.getResponse().getCosmosDiagnostics(), null);
                                  JsonNode responseItem = r.getResponse().getItem(JsonNode.class);
+                                 if (anyTransientFieldsSet.get()) {
+                                     // recapitulate fields with @Transient annotation from originalItem so they remain serialized in the domain object
+                                     return Flux.just(toDomainObject(domainType, recapitulateTransientFields(entitiesMap.get(responseItem.get("id").asText()), responseItem, transientFields)));
+                                 }
                                  return responseItem != null ? Flux.just(toDomainObject(domainType, responseItem)) : Flux.empty();
                              });
     }
@@ -643,13 +655,14 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         final Class<T> domainType = (Class<T>) object.getClass();
         markAuditedIfConfigured(object);
         JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object);
+        JsonNode preStrippedItem = originalItem.deepCopy();
         CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
         List<String> transientFields =  entityInfo.getTransientFields();
         Boolean anyTransientFieldsSet;
         if (!transientFields.isEmpty()) {
             //strip fields with @Transient annotation from the JsonNode so they are not persisted.
-            originalItem = stripTransientFields(originalItem, transientFields);
             anyTransientFieldsSet = transientFields.stream().anyMatch(originalItem::hasNonNull);
+            originalItem = stripTransientFields(originalItem, transientFields);
         } else {
             anyTransientFieldsSet = false;
         }
@@ -667,7 +680,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                         cosmosItemResponse.getDiagnostics(), null);
                                     if (anyTransientFieldsSet) {
                                         // recapitulate fields with @Transient annotation from originalItem so they remain serialized in the domain object
-                                        return Mono.just(toDomainObject(domainType, recapitulateTransientFields(finalOriginalItem, cosmosItemResponse.getItem(), transientFields)));
+                                        return Mono.just(toDomainObject(domainType, recapitulateTransientFields(preStrippedItem, cosmosItemResponse.getItem(), transientFields)));
                                     }
                                     return Mono.just(toDomainObject(domainType,
                                         cosmosItemResponse.getItem()));

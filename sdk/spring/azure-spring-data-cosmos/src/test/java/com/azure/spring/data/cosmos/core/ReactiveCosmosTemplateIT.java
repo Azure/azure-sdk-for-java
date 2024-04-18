@@ -207,8 +207,30 @@ public class ReactiveCosmosTemplateIT {
         final Person personWithTransientField = TEST_PERSON_5;
         assertThat(personWithTransientField.getTransientProperty()).isNotNull();
         final Mono<Person> insertedPerson = cosmosTemplate.insert(Person.class.getSimpleName(), personWithTransientField, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_5)));
-        final Mono<Person> retrievedPerson = cosmosTemplate.findById(Person.class.getSimpleName(), insertedPerson.block().getId(), Person.class);
+        Assert.assertEquals(TRANSIENT_PROPERTY, insertedPerson.block().getTransientProperty());
+        final Mono<Person> retrievedPerson = cosmosTemplate.findById(Person.class.getSimpleName(), personWithTransientField.getId(), Person.class);
         assertThat(retrievedPerson.block().getTransientProperty()).isNull();
+    }
+
+    @Test
+    public void testSaveAllAndFindAllWithTransientField() {
+        final Iterable<Person> entitiesToSave = Collections.singleton(TEST_PERSON_5);
+        for (Person entity : entitiesToSave) {
+            assertThat(entity.getTransientProperty()).isNotNull();
+        }
+        final CosmosEntityInformation<Person, String> personInfo =
+            new CosmosEntityInformation<>(Person.class);
+
+        Flux<Person> insertAllResponse = cosmosTemplate.insertAll(personInfo, entitiesToSave);
+
+        //check that the transient field is retained in the response
+        insertAllResponse.subscribe(person -> {
+            assertThat(person.getTransientProperty()).isEqualTo(TRANSIENT_PROPERTY);
+        });
+
+        //check it is not persisted
+        Mono<Person> findByIdResponse = cosmosTemplate.findById(Person.class.getSimpleName(), TEST_PERSON_5.getId(), Person.class);
+        assertThat(findByIdResponse.block().getTransientProperty()).isNull();
     }
 
     @Test
@@ -348,8 +370,6 @@ public class ReactiveCosmosTemplateIT {
         p.setHobbies(hobbies);
         final Mono<Person> upsert = cosmosTemplate.upsert(p);
         StepVerifier.create(upsert).expectNextCount(1).verifyComplete();
-
-
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
     }
@@ -366,10 +386,12 @@ public class ReactiveCosmosTemplateIT {
 
         final Mono<Person> person = cosmosTemplate.upsert(Person.class.getSimpleName(), newPerson);
 
+        Assert.assertEquals(TRANSIENT_PROPERTY, person.block().getTransientProperty());
+
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
 
-        final Mono<Person> retrievedPerson = cosmosTemplate.findById(Person.class.getSimpleName(), person.block().getId(), Person.class);
+        final Mono<Person> retrievedPerson = cosmosTemplate.findById(Person.class.getSimpleName(), TEST_PERSON_5.getId(), Person.class);
         assertThat(retrievedPerson.block().getTransientProperty()).isNull();
     }
 
