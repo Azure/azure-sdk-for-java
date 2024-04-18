@@ -12,6 +12,7 @@ import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
 import io.clientcore.core.implementation.util.UrlBuilder;
+import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayOutputStream;
@@ -80,7 +81,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
     private static final Response<?> VOID_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
         RESPONSE_HEADERS, null);
     private static final Response<?> FOO_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
-        RESPONSE_HEADERS, FOO_BYTE_ARRAY);
+        RESPONSE_HEADERS, BinaryData.fromBytes(FOO_BYTE_ARRAY));
 
     // ARRAY HOLDING TEST DATA
     private final Input[] inputs;

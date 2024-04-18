@@ -10,13 +10,14 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.ProxyOptions;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
-import io.clientcore.core.implementation.util.ServerSentEventUtil;
 import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.ServerSentEventUtils;
 import io.clientcore.core.util.binarydata.BinaryData;
 
 import javax.net.ssl.SSLSocket;
@@ -44,10 +45,12 @@ import java.util.Map;
 
 import static io.clientcore.core.http.models.ContentType.APPLICATION_OCTET_STREAM;
 import static io.clientcore.core.http.models.HttpHeaderName.CONTENT_TYPE;
+import static io.clientcore.core.http.models.HttpMethod.HEAD;
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
+import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
-import static io.clientcore.core.implementation.util.ServerSentEventUtil.NO_LISTENER_ERROR_MESSAGE;
-import static io.clientcore.core.implementation.util.ServerSentEventUtil.processTextEventStream;
+import static io.clientcore.core.util.ServerSentEventUtils.NO_LISTENER_ERROR_MESSAGE;
+import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStream;
 
 /**
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
@@ -60,7 +63,6 @@ class DefaultHttpClient implements HttpClient {
     // In the scenario we receive an error response stream, keep alive won't be honored as the connection received an
     // error status and it will be handled appropriately.
 
-    private static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
     private static final ClientLogger LOGGER = new ClientLogger(DefaultHttpClient.class);
 
     private final long connectionTimeout;
@@ -186,7 +188,7 @@ class DefaultHttpClient implements HttpClient {
     /**
      * Receive the response from the remote server
      *
-     * @param httpRequest The HTTP Request being sent
+     * @param request The HTTP Request being sent
      * @param connection The HttpURLConnection being sent to
      * @return A HttpResponse object
      */
@@ -210,29 +212,32 @@ class DefaultHttpClient implements HttpClient {
                 throw LOGGER.logThrowableAsError(new RuntimeException(NO_LISTENER_ERROR_MESSAGE));
             }
 
-            processTextEventStream(httpRequest, httpRequestConsumer -> this.send(httpRequest),
-                connection.getInputStream(), listener, LOGGER);
+            processTextEventStream(this, httpRequest, connection.getInputStream(), listener);
         } else {
-            ResponseBodyMode responseBodyMode = httpRequest.getRequestOptions().getResponseBodyMode();
+            RequestOptions options = httpRequest.getRequestOptions();
+            ResponseBodyMode responseBodyMode = null;
+
+            if (options != null) {
+                responseBodyMode = options.getResponseBodyMode();
+            }
 
             if (responseBodyMode == null) {
                 HttpHeader contentType = httpResponse.getHeaders().get(CONTENT_TYPE);
 
-                if (contentType != null && APPLICATION_OCTET_STREAM.regionMatches(true, 0, contentType.getValue(), 0,
-                    APPLICATION_OCTET_STREAM.length())) {
+                if (httpRequest.getHttpMethod() == HEAD) {
+                    responseBodyMode = IGNORE;
+                } else if (contentType != null && APPLICATION_OCTET_STREAM
+                    .regionMatches(true, 0, contentType.getValue(), 0, APPLICATION_OCTET_STREAM.length())) {
 
                     responseBodyMode = STREAM;
                 } else {
                     responseBodyMode = BUFFER;
                 }
-
-                httpRequest.getRequestOptions()
-                    .setResponseBodyMode(responseBodyMode); // We only change this if it was null.
             }
 
             switch (responseBodyMode) {
                 case IGNORE:
-                    HttpResponseAccessHelper.setBody(httpResponse, EMPTY_BODY);
+                    HttpResponseAccessHelper.setBody(httpResponse, BinaryData.EMPTY);
 
                     // Close the response InputStream rather than using disconnect. Disconnect will close the Socket
                     // connection when the InputStream is still open, which can result in keep alive handling not being
@@ -261,13 +266,15 @@ class DefaultHttpClient implements HttpClient {
 
     private static boolean isTextEventStream(HttpHeaders responseHeaders) {
         if (responseHeaders != null) {
-            return ServerSentEventUtil.isTextEventStreamContentType(responseHeaders.getValue(CONTENT_TYPE));
+            return ServerSentEventUtils.isTextEventStreamContentType(responseHeaders.getValue(CONTENT_TYPE));
         }
+
         return false;
     }
 
     private static void streamResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection)
         throws IOException {
+
         HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromStream(connection.getInputStream()));
     }
 

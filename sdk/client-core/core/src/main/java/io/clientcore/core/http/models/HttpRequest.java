@@ -50,12 +50,14 @@ public class HttpRequest {
      *
      * @param httpMethod The request {@link HttpMethod}.
      * @param url The target address to send the request to as a {@link URL}.
+     *
+     * @throws NullPointerException if {@code url} is {@code null}.
      */
     public HttpRequest(HttpMethod httpMethod, URL url) {
-        this.httpMethod = httpMethod;
-        this.url = url;
+        this.httpMethod = Objects.requireNonNull(httpMethod, "'httpMethod' cannot be null");
+        this.url = Objects.requireNonNull(url, "'url' cannot be null");
         this.headers = new HttpHeaders();
-        this.requestOptions = new RequestOptions();
+        this.requestOptions = RequestOptions.NONE;
     }
 
     /**
@@ -68,12 +70,12 @@ public class HttpRequest {
      * @throws IllegalArgumentException If {@code url} cannot be parsed into a valid {@link URL}.
      */
     public HttpRequest(HttpMethod httpMethod, String url) {
-        this.httpMethod = httpMethod;
+        this.httpMethod = Objects.requireNonNull(httpMethod, "'httpMethod' cannot be null");
 
         setUrl(url);
 
         this.headers = new HttpHeaders();
-        this.requestOptions = new RequestOptions();
+        this.requestOptions = RequestOptions.NONE;
     }
 
     /**
@@ -95,9 +97,7 @@ public class HttpRequest {
      * @throws NullPointerException if {@code httpMethod} is {@code null}.
      */
     public HttpRequest setHttpMethod(HttpMethod httpMethod) {
-        Objects.requireNonNull(httpMethod, "'httpMethod' cannot be null");
-
-        this.httpMethod = httpMethod;
+        this.httpMethod = Objects.requireNonNull(httpMethod, "'httpMethod' cannot be null");
 
         return this;
     }
@@ -121,9 +121,7 @@ public class HttpRequest {
      * @throws NullPointerException if {@code url} is {@code null}.
      */
     public HttpRequest setUrl(URL url) {
-        Objects.requireNonNull(url, "'url' cannot be null");
-
-        this.url = url;
+        this.url = Objects.requireNonNull(url, "'url' cannot be null");
 
         return this;
     }
@@ -136,13 +134,12 @@ public class HttpRequest {
      * @return The updated {@link HttpRequest}.
      *
      * @throws NullPointerException if {@code url} is {@code null}.
+     * @throws IllegalArgumentException If {@code url} cannot be parsed into a valid {@link URL}.
      */
     @SuppressWarnings("deprecation")
     public HttpRequest setUrl(String url) {
-        Objects.requireNonNull(url, "'url' cannot be null");
-
         try {
-            this.url = new URL(url);
+            this.url = new URL(Objects.requireNonNull(url, "'url' cannot be null"));
         } catch (MalformedURLException ex) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("'url' must be a valid URL.", ex));
         }
@@ -221,8 +218,6 @@ public class HttpRequest {
      * @return The updated {@link HttpRequest}.
      */
     public HttpRequest setRequestOptions(RequestOptions requestOptions) {
-        Objects.requireNonNull(requestOptions, "'requestOptions' cannot be null");
-
         this.requestOptions = requestOptions;
 
         return this;

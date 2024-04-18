@@ -1,14 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.implementation.util;
+package io.clientcore.core.util;
 
+import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.ServerSentEvent;
 import io.clientcore.core.http.models.ServerSentEventListener;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.implementation.util.ServerSentEventHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,31 +21,33 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 /**
- * Utility class for Server Sent Event handling
+ * Utility class for Server Sent Event handling.
  */
-public final class ServerSentEventUtil {
+public final class ServerSentEventUtils {
+    private static final ClientLogger LOGGER = new ClientLogger(ServerSentEventUtils.class);
     private static final String DEFAULT_EVENT = "message";
     private static final Pattern DIGITS_ONLY = Pattern.compile("^[\\d]*$");
-    private static final String LAST_EVENT_ID = "Last-Event-Id";
+    private static final HttpHeaderName LAST_EVENT_ID = HttpHeaderName.fromString("Last-Event-Id");
     public static final String NO_LISTENER_ERROR_MESSAGE = "No ServerSentEventListener attached to HttpRequest to "
-            + "handle the text/event-stream response";
+        + "handle the text/event-stream response";
 
-    private ServerSentEventUtil() {
+    private ServerSentEventUtils() {
     }
 
     /**
-     * Checks if the content type is a text event stream
+     * Checks if the {@code Content-Type} is a text event stream.
      *
-     * @param contentType The content type
-     * @return True if the content type is a text event stream
+     * @param contentType The content type.
+     *
+     * @return {@code true} if the content type is a text event stream.
      */
     public static boolean isTextEventStreamContentType(String contentType) {
         if (contentType != null) {
-            return ContentType.TEXT_EVENT_STREAM.regionMatches(true, 0, contentType, 0, ContentType.TEXT_EVENT_STREAM.length());
+            return ContentType.TEXT_EVENT_STREAM.regionMatches(true, 0, contentType, 0,
+                ContentType.TEXT_EVENT_STREAM.length());
         } else {
             return false;
         }
@@ -55,81 +58,97 @@ public final class ServerSentEventUtil {
      * <p>
      * The passed {@link InputStream} will be closed by this method.
      *
-     * @param httpRequest The HTTP Request
-     * @param httpRequestConsumer The HTTP Request consumer
-     * @param inputStream The input stream
-     * @param listener The listener object attached with the httpRequest
-     * @param logger The logger object
+     * @param httpClient The {@link HttpClient} to send the {@code httpRequest} through.
+     * @param httpRequest The {@link HttpRequest} to send.
+     * @param inputStream The {@link InputStream} to read data from.
+     * @param listener The {@link ServerSentEventListener event listener} attached to the {@link HttpRequest}.
      */
-    public static void processTextEventStream(HttpRequest httpRequest, Consumer<HttpRequest> httpRequestConsumer,
-        InputStream inputStream, ServerSentEventListener listener, ClientLogger logger) {
-        RetrySSEResult retrySSEResult;
+    public static void processTextEventStream(HttpClient httpClient, HttpRequest httpRequest,
+                                              InputStream inputStream, ServerSentEventListener listener) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-            retrySSEResult = processBuffer(reader, listener);
+            RetrySSEResult retrySSEResult = processBuffer(reader, listener);
+
             if (retrySSEResult != null && !retryExceptionForSSE(retrySSEResult, listener, httpRequest)
-                    && !Thread.currentThread().isInterrupted()) {
-                httpRequestConsumer.accept(httpRequest);
+                && !Thread.currentThread().isInterrupted()) {
+
+                httpClient.send(httpRequest);
             }
         } catch (IOException e) {
-            throw logger.logThrowableAsError(new UncheckedIOException(e));
+            ClientLogger logger = null;
+
+            if (httpRequest.getRequestOptions() != null) {
+                logger = httpRequest.getRequestOptions().getLogger();
+            }
+
+            if (logger == null) {
+                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+            } else {
+                throw logger.logThrowableAsError(new UncheckedIOException(e));
+            }
         }
     }
 
     private static boolean isEndOfBlock(StringBuilder sb) {
-        // blocks of data are separated by double newlines
-        // add more end of blocks here if needed
+        // Add more end of blocks here if needed. Blocks of data are separated by double newlines.
         return sb.lastIndexOf("\n\n") >= 0;
     }
 
     /**
-     * Processes the sse buffer and dispatches the event
+     * Processes the SSE buffer and dispatches the event.
      *
-     * @param reader The BufferedReader object
-     * @param listener The listener object attached with the httpRequest
+     * @param reader The {@link BufferedReader} to read data from.
+     * @param listener The {@link ServerSentEventListener} object attached to the {@link HttpRequest}.
      */
     private static RetrySSEResult processBuffer(BufferedReader reader, ServerSentEventListener listener) {
-        StringBuilder collectedData = new StringBuilder();
         ServerSentEvent event = null;
+
         try {
+            StringBuilder collectedData = new StringBuilder();
             String line;
+
             while ((line = reader.readLine()) != null) {
                 collectedData.append(line).append("\n");
+
                 if (isEndOfBlock(collectedData)) {
                     event = processLines(collectedData.toString().split("\n"));
+
                     if (!Objects.equals(event.getEvent(), DEFAULT_EVENT) || event.getData() != null) {
                         listener.onEvent(event);
                     }
+
                     collectedData = new StringBuilder(); // clear the collected data
                 }
             }
+
             listener.onClose();
         } catch (IOException e) {
-            return new RetrySSEResult(e,
-                    event != null ? event.getId() : -1,
-                    event != null ? ServerSentEventHelper.getRetryAfter(event) : null);
+            return new RetrySSEResult(e, event != null ? event.getId() : -1,
+                event != null ? ServerSentEventHelper.getRetryAfter(event) : null);
         }
+
         return null;
     }
 
     /**
-     * Retries the request if the listener allows it
+     * Retries the {@link HttpRequest} if the listener allows it.
      *
-     * @param retrySSEResult  the result of the retry
-     * @param listener The listener object attached with the httpRequest
-     * @param httpRequest the HTTP Request being sent
+     * @param retrySSEResult The {@link RetrySSEResult result} of the retry.
+     * @param listener The listener object attached with the {@link HttpRequest}.
+     * @param httpRequest The {@link HttpRequest} to send.
      */
-    private static boolean retryExceptionForSSE(RetrySSEResult retrySSEResult, ServerSentEventListener listener, HttpRequest httpRequest) {
-        if (Thread.currentThread().isInterrupted()
-                || !listener.shouldRetry(retrySSEResult.getException(),
-                retrySSEResult.getRetryAfter(),
-                retrySSEResult.getLastEventId())) {
+    private static boolean retryExceptionForSSE(RetrySSEResult retrySSEResult, ServerSentEventListener listener,
+                                                HttpRequest httpRequest) {
+        if (Thread.currentThread().isInterrupted() || !listener.shouldRetry(retrySSEResult.getException(),
+            retrySSEResult.getRetryAfter(), retrySSEResult.getLastEventId())) {
+
             listener.onError(retrySSEResult.getException());
+
             return true;
         }
 
         if (retrySSEResult.getLastEventId() != -1) {
             httpRequest.getHeaders()
-                    .add(HttpHeaderName.fromString(LAST_EVENT_ID), String.valueOf(retrySSEResult.getLastEventId()));
+                .add(LAST_EVENT_ID, String.valueOf(retrySSEResult.getLastEventId()));
         }
 
         try {
@@ -139,6 +158,7 @@ public final class ServerSentEventUtil {
         } catch (InterruptedException ignored) {
             return true;
         }
+
         return false;
     }
 
@@ -148,35 +168,43 @@ public final class ServerSentEventUtil {
 
         for (String line : lines) {
             int idx = line.indexOf(':');
+
             if (idx == 0) {
                 ServerSentEventHelper.setComment(event, line.substring(1).trim());
+
                 continue;
             }
+
             String field = line.substring(0, idx < 0 ? lines.length : idx).trim().toLowerCase();
             String value = idx < 0 ? "" : line.substring(idx + 1).trim();
 
             switch (field) {
                 case "event":
                     ServerSentEventHelper.setEvent(event, value);
+
                     break;
                 case "data":
                     if (eventData == null) {
                         eventData = new ArrayList<>();
                     }
+
                     eventData.add(value);
+
                     break;
                 case "id":
                     if (!value.isEmpty()) {
                         ServerSentEventHelper.setId(event, Long.parseLong(value));
                     }
+
                     break;
                 case "retry":
                     if (!value.isEmpty() && DIGITS_ONLY.matcher(value).matches()) {
                         ServerSentEventHelper.setRetryAfter(event, Duration.ofMillis(Long.parseLong(value)));
                     }
+
                     break;
                 default:
-                    // ignore unknown fields
+                    // Ignore unknown fields.
                     break;
             }
         }
@@ -184,6 +212,7 @@ public final class ServerSentEventUtil {
         if (event.getEvent() == null) {
             ServerSentEventHelper.setEvent(event, DEFAULT_EVENT);
         }
+
         if (eventData != null) {
             ServerSentEventHelper.setData(event, eventData);
         }
@@ -192,7 +221,7 @@ public final class ServerSentEventUtil {
     }
 
     /**
-     * Inner Class to hold the result for a retry of an SSE request
+     * Inner class to hold the result for a retry of an SSE request.
      */
     private static class RetrySSEResult {
         private final long lastEventId;
@@ -217,5 +246,4 @@ public final class ServerSentEventUtil {
             return ioException;
         }
     }
-
 }

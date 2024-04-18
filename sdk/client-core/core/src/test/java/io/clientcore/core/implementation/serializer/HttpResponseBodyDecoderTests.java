@@ -66,10 +66,7 @@ public class HttpResponseBodyDecoderTests {
             Arguments.of((Response<?>) null),
 
             // Response without a request.
-            Arguments.of(new MockHttpResponse(null, 200)),
-
-            // Response with a request that is missing the HttpMethod.
-            Arguments.of(new MockHttpResponse(new HttpRequest(null, "https://example.com"), 200))
+            Arguments.of(new MockHttpResponse(null, 200))
         );
     }
 

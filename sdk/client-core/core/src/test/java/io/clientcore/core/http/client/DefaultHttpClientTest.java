@@ -9,6 +9,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.util.Context;
@@ -237,9 +238,8 @@ public class DefaultHttpClientTest {
     }
 
     private static Response<?> getResponse(HttpClient client, String path, Context context) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
-
-        request.getRequestOptions().setContext(context);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path))
+            .setRequestOptions(new RequestOptions().setContext(context));
 
         return client.send(request);
     }

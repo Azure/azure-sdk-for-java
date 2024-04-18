@@ -15,8 +15,6 @@ import okhttp3.ResponseBody;
  * Base response class for OkHttp with implementations for response metadata.
  */
 public class OkHttpResponse extends HttpResponse<BinaryData> {
-    private static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
-
     private final ResponseBody responseBody;
     private BinaryData body;
 
@@ -70,7 +68,7 @@ public class OkHttpResponse extends HttpResponse<BinaryData> {
     public BinaryData getBody() {
         if (body == null) {
             if (super.getValue() == null) {
-                body = EMPTY_BODY;
+                body = BinaryData.EMPTY;
             } else {
                 body = super.getValue();
             }
