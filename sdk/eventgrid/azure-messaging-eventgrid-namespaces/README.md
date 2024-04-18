@@ -1,4 +1,4 @@
-# Azure EventGrid client library for Java
+# Azure EventGrid Namespaces client library for Java
 
 Azure EventGrid client library for Java.
 

@@ -32,8 +32,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class EventGridClientTests extends EventGridClientTestBase {
 
-    public static final String TOPIC_NAME = Configuration.getGlobalConfiguration().get(EVENTGRID_TOPIC_NAME);
-    public static final String EVENT_SUBSCRIPTION_NAME = Configuration.getGlobalConfiguration().get(EVENTGRID_EVENT_SUBSCRIPTION_NAME);
+    public static final String TOPIC_NAME = Configuration.getGlobalConfiguration().get(EVENTGRID_TOPIC_NAME, "testtopic1");
+    public static final String EVENT_SUBSCRIPTION_NAME = Configuration.getGlobalConfiguration().get(EVENTGRID_EVENT_SUBSCRIPTION_NAME, "testsubscription1");
 
     private EventGridClientBuilder asyncBuilder;
     private EventGridClientBuilder syncBuilder;

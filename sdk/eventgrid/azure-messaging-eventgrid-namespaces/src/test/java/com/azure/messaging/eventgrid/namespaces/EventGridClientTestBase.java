@@ -23,29 +23,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class EventGridClientTestBase extends TestProxyTestBase {
-    // Event Grid endpoint for a topic accepting EventGrid schema events
-    static final String EVENTGRID_TOPIC_ENDPOINT = "EVENTGRID_TOPIC_ENDPOINT";
-
-    // Event Grid endpoint for a topic accepting CloudEvents schema events
-    static final String EVENTGRID_CLOUDEVENT_TOPIC_ENDPOINT = "EVENTGRID_CLOUD_EVENT_TOPIC_ENDPOINT";
-
-    // Event Grid endpoint for a topic accepting custom schema events
-    static final String EVENTGRID_CUSTOMEVENT_TOPIC_ENDPOINT = "EVENTGRID_CUSTOM_EVENT_TOPIC_ENDPOINT";
-
-    // Event Grid access key for a topic accepting EventGrid schema events
-    static final String EVENTGRID_TOPIC_KEY = "EVENTGRID_TOPIC_KEY";
-
-    // Event Grid access key for a topic accepting CloudEvents schema events
-    static final String EVENTGRID_CLOUDEVENT_TOPIC_KEY = "EVENTGRID_CLOUD_EVENT_TOPIC_KEY";
-
-    // Event Grid access key for a topic accepting custom schema events
-    static final String EVENTGRID_CUSTOMEVENT_TOPIC_KEY = "EVENTGRID_CUSTOM_EVENT_TOPIC_KEY";
-
-    // Endpoint, key and channel name for publishing to partner topic
-    static final String EVENTGRID_PARTNER_NAMESPACE_TOPIC_ENDPOINT = "EVENTGRID_PARTNER_NAMESPACE_TOPIC_ENDPOINT";
-    static final String EVENTGRID_PARTNER_NAMESPACE_TOPIC_KEY = "EVENTGRID_PARTNER_NAMESPACE_TOPIC_KEY";
-    static final String EVENTGRID_PARTNER_CHANNEL_NAME = "EVENTGRID_PARTNER_CHANNEL_NAME";
-
     static final String EVENTGRID_TOPIC_NAME = "EVENTGRID_TOPIC_NAME";
 
     static final String EVENTGRID_EVENT_SUBSCRIPTION_NAME = "EVENTGRID_EVENT_SUBSCRIPTION_NAME";
