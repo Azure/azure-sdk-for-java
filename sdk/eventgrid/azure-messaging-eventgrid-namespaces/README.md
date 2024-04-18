@@ -20,11 +20,11 @@ Various documentation is available to help you get started
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-messaging-eventgrid-standard-http;current})
+[//]: # ({x-version-update-start;com.azure:azure-messaging-eventgrid-namespaces;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-messaging-eventgrid-standard-http</artifactId>
+    <artifactId>azure-messaging-eventgrid-namespaces</artifactId>
     <version>1.0.0-beta.1</version>
 </dependency>
 ```
@@ -62,4 +62,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventgrid%2Fazure-messaging-eventgrid-standard-http%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventgrid%2Fazure-messaging-eventgrid-namespaces%2FREADME.png)
