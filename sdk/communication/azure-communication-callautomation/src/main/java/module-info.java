@@ -4,6 +4,7 @@
 module com.azure.communication.callautomation {
 
     requires transitive com.azure.communication.common;
+    requires com.fasterxml.jackson.annotation;
 
     // public API surface area
     exports com.azure.communication.callautomation;

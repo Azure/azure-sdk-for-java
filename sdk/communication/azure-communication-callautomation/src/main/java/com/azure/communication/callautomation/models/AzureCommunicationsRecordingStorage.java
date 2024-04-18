@@ -1,13 +1,21 @@
 package com.azure.communication.callautomation.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /** The AzureBlobContainerRecordingStorage model. */
 public class AzureCommunicationsRecordingStorage extends RecordingStorage {
+
+    /*
+     * Defines the kind of recording storage
+     */
+    @JsonProperty(value = "recordingStorageType", required = true)
+    private RecordingStorageType recordingStorageType;
 
     /** 
      * Creates an instance of AzureBlobContainerRecordingStorage class. 
      */
     public AzureCommunicationsRecordingStorage() {
-        this.setRecordingStorageType(RecordingStorageType.fromString("AzureCommunicationServices"));
+        this.recordingStorageType = RecordingStorageType.fromString("AzureCommunicationServices");
     }
 
     /**

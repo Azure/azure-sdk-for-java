@@ -1,15 +1,29 @@
 package com.azure.communication.callautomation.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /** The AzureCommunicationRecordingStorage model. */
 public class AzureBlobContainerRecordingStorage extends RecordingStorage {
+
+    /*
+     * Defines the kind of recording storage
+     */
+    @JsonProperty(value = "recordingStorageType", required = true)
+    private RecordingStorageType recordingStorageType;
+
+    /*
+     * Uri of a container or a location within a container
+     */
+    @JsonProperty(value = "recordingDestinationContainerUrl")
+    private String recordingDestinationContainerUrl;
 
     /** Creates an instance of AzureCommunicationRecordingStorage class. 
      * 
      * @param recordingDestinationContainerUrl the recordingDestinationContainerUrl value to set.
     */
     public AzureBlobContainerRecordingStorage(String recordingDestinationContainerUrl) {
-        this.setRecordingStorageType(RecordingStorageType.fromString("AzureBlobStorage"));
-        this.setRecordingDestinationContainerUrl(recordingDestinationContainerUrl);
+        this.recordingStorageType = RecordingStorageType.fromString("AzureBlobStorage");
+        this.recordingDestinationContainerUrl = recordingDestinationContainerUrl;
     }
 
     /**
@@ -20,18 +34,7 @@ public class AzureBlobContainerRecordingStorage extends RecordingStorage {
     public String getRecordingDestinationContainerUrl() {
         return this.recordingDestinationContainerUrl;
     }
-
-    /**
-     * Set the recordingDestinationContainerUrl property: Uri of a container or a location within a container.
-     *
-     * @param recordingDestinationContainerUrl the recordingDestinationContainerUrl value to set.
-     * @return the StorageInternal object itself.
-     */
-    public RecordingStorage setRecordingDestinationContainerUrl(String recordingDestinationContainerUrl) {
-        super.recordingDestinationContainerUrl = recordingDestinationContainerUrl;
-        return this;
-    }
-
+    
     /**
      * Get the recordingStorageType property: Defines the kind of external storage.
      *

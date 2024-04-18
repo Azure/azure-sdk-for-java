@@ -16,6 +16,7 @@ import com.azure.communication.callautomation.implementation.models.RecordingFor
 import com.azure.communication.callautomation.implementation.models.RecordingStorageInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingStorageTypeInternal;
 import com.azure.communication.callautomation.implementation.models.StartCallRecordingRequestInternal;
+import com.azure.communication.callautomation.models.AzureBlobContainerRecordingStorage;
 import com.azure.communication.callautomation.models.CallLocator;
 import com.azure.communication.callautomation.models.CallLocatorKind;
 import com.azure.communication.callautomation.models.ChannelAffinity;
@@ -160,9 +161,10 @@ public final class CallRecordingAsync {
             request.setRecordingStateCallbackUri(options.getRecordingStateCallbackUrl());
         }
         if (options.getRecordingStorage() != null) {
-            if (options.getRecordingStorage().getRecordingStorageType() == RecordingStorageType.AZURE_BLOB_STORAGE) {
+            if (options.getRecordingStorage() instanceof AzureBlobContainerRecordingStorage) {
+                AzureBlobContainerRecordingStorage blobStorage = (AzureBlobContainerRecordingStorage) options.getRecordingStorage();
                 RecordingStorageInternal recordingStorageInternal = new RecordingStorageInternal()
-                    .setRecordingDestinationContainerUrl(options.getRecordingStorage().getRecordingDestinationContainerUrl())
+                    .setRecordingDestinationContainerUrl(blobStorage.getRecordingDestinationContainerUrl())
                     .setRecordingStorageKind(RecordingStorageTypeInternal.AZURE_BLOB_STORAGE);
                 request.setExternalStorage(recordingStorageInternal); 
             } else if (options.getRecordingStorage().getRecordingStorageType() == RecordingStorageType.ACS) {} 
