@@ -7,12 +7,12 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
+import org.reactivestreams.Publisher;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
-import reactor.util.retry.RetryBackoffSpec;
 
 import java.time.Duration;
 import java.util.Locale;
@@ -106,27 +106,55 @@ public final class RetryUtil {
         return withRetry(source, retryOptions, timeoutMessage, false);
     }
 
+    /**
+     * Creates the Retry strategy from the AmqpRetryOptions.
+     *
+     * @param options AmqpRetryOptions.
+     * @return The retry strategy.
+     */
     static Retry createRetry(AmqpRetryOptions options) {
-        final Duration delay = options.getDelay().plus(SERVER_BUSY_WAIT_TIME);
-        final RetryBackoffSpec retrySpec;
-        switch (options.getMode()) {
-            case FIXED:
-                retrySpec = Retry.fixedDelay(options.getMaxRetries(), delay);
-                break;
+        return new AmqpRetrySpec(options);
+    }
 
-            case EXPONENTIAL:
-                retrySpec = Retry.backoff(options.getMaxRetries(), delay);
-                break;
+    /**
+     * {@link AmqpRetryPolicy} wrapped as a Retry.
+     */
+    static class AmqpRetrySpec extends Retry {
+        private final AmqpRetryPolicy retryPolicy;
 
-            default:
-                LOGGER.warning("Unknown: '{}'. Using exponential delay. Delay: {}. Max Delay: {}. Max Retries: {}.",
-                    options.getMode(), options.getDelay(), options.getMaxDelay(), options.getMaxRetries());
-                retrySpec = Retry.backoff(options.getMaxRetries(), delay);
-                break;
+        AmqpRetrySpec(AmqpRetryOptions options) {
+            switch (options.getMode()) {
+                case FIXED:
+                    retryPolicy = new FixedAmqpRetryPolicy(options);
+                    break;
+
+                case EXPONENTIAL:
+                    retryPolicy = new ExponentialAmqpRetryPolicy(options);
+                    break;
+
+                default:
+                    LOGGER.warning("Unknown: '{}'. Using exponential delay. Delay: {}. Max Delay: {}. Max Retries: {}.",
+                        options.getMode(), options.getDelay(), options.getMaxDelay(), options.getMaxRetries());
+
+                    retryPolicy = new ExponentialAmqpRetryPolicy(options);
+                    break;
+            }
         }
-        return retrySpec.jitter(JITTER_FACTOR)
-            .maxBackoff(options.getMaxDelay())
-            .filter(error -> error instanceof TimeoutException
-                || (error instanceof AmqpException && ((AmqpException) error).isTransient()));
+
+        @Override
+        public Publisher<?> generateCompanion(Flux<RetrySignal> retrySignals) {
+            return retrySignals.concatMap(retrySignal -> {
+                final RetrySignal copy = retrySignal.copy();
+                final Throwable currentFailure = copy.failure();
+
+                final Duration duration = retryPolicy.calculateRetryDelay(currentFailure, (int) copy.totalRetriesInARow());
+
+                if (duration == null) {
+                    return Mono.error(Exceptions.retryExhausted("Retries exhausted.", currentFailure));
+                } else {
+                    return Mono.delay(duration);
+                }
+            }).onErrorStop();
+        }
     }
 }
