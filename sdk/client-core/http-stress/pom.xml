@@ -12,8 +12,8 @@
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
-  <groupId>com.azure</groupId>
-  <artifactId>azure-template-stress</artifactId>
+  <groupId>io.clientcore</groupId>
+  <artifactId>http-stress</artifactId>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-template-stress;current} -->
   <packaging>jar</packaging>
 
@@ -33,17 +33,17 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core;current} -->
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>http-jdk-httpclient</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:http-jdk-httpclient;current} -->
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:http-jdk-httpclient;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>http-okhttp3</artifactId>
-      <version>1.0.0-beta.1</version>  <!-- {x-version-update;io.clientcore:http-okhttp3;current} -->
+      <version>1.0.0-beta.1</version>  <!-- {x-version-update;io.clientcore:http-okhttp3;dependency} -->
     </dependency>
     <!-- logging, tracing, metrics -->
     <dependency>
@@ -52,32 +52,6 @@
       <version>1.36.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
     </dependency>
 
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-netty</artifactId>
-      <version>1.14.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.11.19</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-jdk-httpclient</artifactId>
-      <version>1.0.0-beta.11</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-vertx</artifactId>
-      <version>1.0.0-beta.16</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-codegen</artifactId>
-      <version>4.5.7</version> <!-- {x-version-update;io.vertx:vertx-codegen;external_dependency} -->
-      <scope>provided</scope>
-    </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>perf-test-core</artifactId>
@@ -115,7 +89,6 @@
                 <include>io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0:[2.2.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-api:[1.36.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
                 <include>ch.qos.logback:logback-classic:[1.3.14]</include> <!-- {x-include-update;ch.qos.logback:logback-classic;external_dependency} -->
-                <include>io.vertx:vertx-codegen:[4.5.7]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -136,7 +109,7 @@
         <configuration>
           <transformers>
             <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-              <mainClass>com.azure.sdk.template.stress.App</mainClass>
+              <mainClass>io.clientcore.http.stress.App</mainClass>
             </transformer>
             <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
           </transformers>
@@ -158,4 +131,20 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>java12plus</id>
+      <activation>
+        <jdk>[12,)</jdk>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>io.clientcore</groupId>
+          <artifactId>http-jdk-httpclient</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:http-jdk-httpclient;dependency} -->
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 </project>

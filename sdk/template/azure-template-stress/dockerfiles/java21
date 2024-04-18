@@ -27,7 +27,8 @@ mvn -f /stress/sdk/parents/azure-perf-test-parent/pom.xml clean install ${SKIP_C
 mvn -f /stress/sdk/tools/pom.xml clean install ${SKIP_CHECKS} && \
 mvn -f /stress/sdk/client-core/core-json/pom.xml clean install ${SKIP_CHECKS} && \
 mvn -f /stress/sdk/client-core/core/pom.xml clean install ${SKIP_CHECKS} && \
-mvn -f /stress/sdk/client-core/http-okhttp/pom.xml clean install ${SKIP_CHECKS} && \
+mvn -f /stress/sdk/client-core/http-jdk-httpclient/pom.xml clean install ${SKIP_CHECKS} && \
+mvn -f /stress/sdk/client-core/http-okhttp3/pom.xml clean install ${SKIP_CHECKS} && \
 mvn -f /stress/sdk/template/azure-template-stress/pom.xml clean install ${SKIP_CHECKS}
 
 FROM mcr.microsoft.com/openjdk/jdk:${JRE_VERSION}-mariner
