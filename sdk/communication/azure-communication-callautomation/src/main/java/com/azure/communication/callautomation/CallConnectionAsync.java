@@ -50,9 +50,7 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
-import java.time.OffsetDateTime;
 import java.util.Collections;
-import java.util.UUID;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;

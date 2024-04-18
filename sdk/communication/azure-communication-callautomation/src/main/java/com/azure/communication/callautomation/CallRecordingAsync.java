@@ -52,12 +52,10 @@ import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.security.InvalidParameterException;
-import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -166,13 +164,8 @@ public final class CallRecordingAsync {
                 RecordingStorageInternal recordingStorageInternal = new RecordingStorageInternal()
                     .setRecordingDestinationContainerUrl(blobStorage.getRecordingDestinationContainerUrl())
                     .setRecordingStorageKind(RecordingStorageTypeInternal.AZURE_BLOB_STORAGE);
-                request.setExternalStorage(recordingStorageInternal); 
-            } else if (options.getRecordingStorage().getRecordingStorageType() == RecordingStorageType.ACS) {} 
-            
-            else {
-                throw logger.logExceptionAsError(new InvalidParameterException("Recording storage has invalid type."));
+                request.setExternalStorage(recordingStorageInternal);
             }
-                
         }
         if (options.getAudioChannelParticipantOrdering() != null) {
             List<CommunicationIdentifierModel> audioChannelParticipantOrdering = options.getAudioChannelParticipantOrdering()
