@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Publisher;
 import reactor.core.Exceptions;
@@ -22,14 +23,20 @@ import java.util.concurrent.TimeoutException;
  * Helper class to help with retry policies.
  */
 public final class RetryUtil {
-    private static final double JITTER_FACTOR = 0.08;
-    // Base sleep wait time.
-    private static final Duration SERVER_BUSY_WAIT_TIME = Duration.ofSeconds(4);
-
     private static final ClientLogger LOGGER = new ClientLogger(RetryUtil.class);
 
     // So this class can't be instantiated.
     private RetryUtil() {
+    }
+
+    /**
+     * Check if the existing exception is a retriable exception.
+     *
+     * @param exception An exception that was observed for the operation to be retried.
+     * @return true if the exception is a retriable exception, otherwise false.
+     */
+    public static boolean isRetriableException(Throwable exception) {
+        return (exception instanceof AmqpException) && ((AmqpException) exception).isTransient();
     }
 
     /**
@@ -147,12 +154,17 @@ public final class RetryUtil {
                 final RetrySignal copy = retrySignal.copy();
                 final Throwable currentFailure = copy.failure();
 
-                final Duration duration = retryPolicy.calculateRetryDelay(currentFailure, (int) copy.totalRetriesInARow());
+                final Duration retryDelay
+                    = retryPolicy.calculateRetryDelay(currentFailure, (int) copy.totalRetriesInARow());
 
-                if (duration == null) {
+                if (retryDelay != null) {
+                    return Mono.delay(retryDelay);
+                }
+
+                if (isRetriableException(currentFailure)) {
                     return Mono.error(Exceptions.retryExhausted("Retries exhausted.", currentFailure));
                 } else {
-                    return Mono.delay(duration);
+                    return Mono.error(currentFailure);
                 }
             }).onErrorStop();
         }
