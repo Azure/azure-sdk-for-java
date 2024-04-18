@@ -18,6 +18,12 @@ public final class StorageError {
     @JsonProperty(value = "Message")
     private String message;
 
+    /*
+     * The AuthenticationErrorDetail property.
+     */
+    @JsonProperty(value = "AuthenticationErrorDetail")
+    private String authenticationErrorDetail;
+
     /** Creates an instance of StorageError class. */
     public StorageError() {}
 
@@ -38,6 +44,26 @@ public final class StorageError {
      */
     public StorageError setMessage(String message) {
         this.message = message;
+        return this;
+    }
+
+    /**
+     * Get the authenticationErrorDetail property: The AuthenticationErrorDetail property.
+     *
+     * @return the authenticationErrorDetail value.
+     */
+    public String getAuthenticationErrorDetail() {
+        return this.authenticationErrorDetail;
+    }
+
+    /**
+     * Set the authenticationErrorDetail property: The AuthenticationErrorDetail property.
+     *
+     * @param authenticationErrorDetail the authenticationErrorDetail value to set.
+     * @return the StorageError object itself.
+     */
+    public StorageError setAuthenticationErrorDetail(String authenticationErrorDetail) {
+        this.authenticationErrorDetail = authenticationErrorDetail;
         return this;
     }
 }
