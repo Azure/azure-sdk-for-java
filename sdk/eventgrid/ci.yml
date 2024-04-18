@@ -64,7 +64,7 @@ extends:
         groupId: com.azure
         safeName: azuremessagingeventgrid
         releaseInBatch: ${{ parameters.release_azuremessagingeventgrid }}
-      - name: azure-messaging-eventgrid
+      - name: azure-messaging-eventgrid-namespaces
         groupId: com.azure
         safeName: azuremessagingeventgridnamespaces
         releaseInBatch: ${{ parameters.release_azuremessagingeventgridnamespaces }}        
