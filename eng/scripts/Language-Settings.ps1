@@ -430,7 +430,7 @@ function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidatio
     Set-Location $tempDirectory
     try {
       Write-Host "Calling java2docfx for $artifact"
-      Write-Host "java -jar $java2docfxJar -p ""$java2docfxJar"" -"
+      Write-Host "java -jar $java2docfxJar -p ""$artifact"""
       $java2docfxResults = java `
       -jar $java2docfxJar`
       -p "$artifact"

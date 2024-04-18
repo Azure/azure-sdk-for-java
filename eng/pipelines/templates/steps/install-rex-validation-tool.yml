@@ -6,4 +6,7 @@ steps:
       $java2docfxDir = Join-Path $(Build.BinariesDirectory) "java2docfx"
       Write-Host "mvn dependency:copy -Dartifact=""com.microsoft:java2docfx:$java2docfxVer"" -DoutputDirectory=""$java2docfxDir"""
       mvn dependency:copy -Dartifact="com.microsoft:java2docfx:$java2docfxVer" -DoutputDirectory="$java2docfxDir"
+      $java2docfxJarLoc = Join-Path $java2docfxDir -ChildPath "java2docfx-$java2docfxVer.jar"
+      Write-Host "Testing the install, running java -jar $java2docfxJarLoc -h"
+      java -jar $java2docfxJarLoc -h
     displayName: Install java2docfx for package validation
