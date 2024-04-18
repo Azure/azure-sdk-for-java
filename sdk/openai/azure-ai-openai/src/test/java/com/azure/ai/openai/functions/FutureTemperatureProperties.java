@@ -3,15 +3,53 @@
 
 package com.azure.ai.openai.functions;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
-public class FutureTemperatureProperties {
-    @JsonProperty
+import java.io.IOException;
+
+public final class FutureTemperatureProperties implements JsonSerializable<FutureTemperatureProperties> {
     private StringField date = new StringField("The date of the weather forecast.");
 
-    @JsonProperty
     private StringField locationName = new StringField("The name of the location to forecast the weather for.");
 
-    @JsonProperty
     private StringField unit = new StringField("The unit of measurement for the temperature.");
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("date", this.date);
+        jsonWriter.writeJsonField("locationName", this.locationName);
+        jsonWriter.writeJsonField("unit", this.unit);
+        return jsonWriter.writeEndObject();
+    }
+
+    public static FutureTemperatureProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StringField date = null;
+            StringField locationName = null;
+            StringField unit = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("date".equals(fieldName)) {
+                    date = StringField.fromJson(jsonReader);
+                } else if ("locationName".equals(fieldName)) {
+                    locationName = StringField.fromJson(jsonReader);
+                } else if ("unit".equals(fieldName)) {
+                    unit = StringField.fromJson(jsonReader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            FutureTemperatureProperties model = new FutureTemperatureProperties();
+            model.date = date;
+            model.locationName = locationName;
+            model.unit = unit;
+            return model;
+        });
+    }
+
 }

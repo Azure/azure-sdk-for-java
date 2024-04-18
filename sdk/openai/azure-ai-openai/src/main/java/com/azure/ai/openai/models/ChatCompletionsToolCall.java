@@ -10,8 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonGetter;
 
 /**
  * An abstract representation of a tool call that must be resolved in a subsequent request to perform the requested
@@ -26,7 +24,10 @@ public class ChatCompletionsToolCall implements JsonSerializable<ChatCompletions
     @Generated
     private final String id;
 
-    @JsonProperty("type")
+    /*
+     * The object type.
+     */
+    @Generated
     private String type;
 
     /**
@@ -40,11 +41,11 @@ public class ChatCompletionsToolCall implements JsonSerializable<ChatCompletions
     }
 
     /**
-     * Get the type property: The type pf the tool call.
+     * Get the type property: The object type.
      *
      * @return the type value.
      */
-    @JsonGetter
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -82,6 +83,9 @@ public class ChatCompletionsToolCall implements JsonSerializable<ChatCompletions
                     readerToUse.nextToken();
                     if ("type".equals(fieldName)) {
                         discriminatorValue = readerToUse.getString();
+                        break;
+                    } else if ("function".equals(fieldName)) {
+                        discriminatorValue = "function";
                         break;
                     } else {
                         readerToUse.skipChildren();

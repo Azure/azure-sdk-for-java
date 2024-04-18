@@ -14,7 +14,6 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Representation of the response data from a completions request.
@@ -85,27 +84,15 @@ public final class Completions implements JsonSerializable<Completions> {
     private List<ContentFilterResultsForPrompt> promptFilterResults;
 
     /**
-     * Backing member for the prompt filtering result during the rename transition. More details <a
-     * href="https://github.com/Azure/azure-rest-api-specs/pull/25880">here</a>
-     *
-     * @deprecated This field is only used for deserialization.
-     */
-    @Deprecated
-    @JsonProperty(value = "prompt_annotations")
-    private List<ContentFilterResultsForPrompt> promptAnnotations;
-
-    /**
      * Get the promptFilterResults property: Content filtering results for zero or more prompts in the request. In a
      * streaming request,
      * results for different prompts may arrive at different times or in different orders.
      *
      * @return the promptFilterResults value.
      */
+    @Generated
     public List<ContentFilterResultsForPrompt> getPromptFilterResults() {
-        if (this.promptFilterResults != null) {
-            return this.promptFilterResults;
-        }
-        return this.promptAnnotations;
+        return this.promptFilterResults;
     }
 
     /*

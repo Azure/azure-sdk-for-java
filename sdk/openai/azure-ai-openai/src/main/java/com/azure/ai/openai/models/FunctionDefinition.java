@@ -5,6 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -33,8 +34,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
     /*
      * The parameters the function accepts, described as a JSON Schema object.
      */
-    @Generated
-    private Object parameters;
+    private BinaryData parameters;
 
     /**
      * Creates an instance of FunctionDefinition class.
@@ -87,9 +87,19 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
      *
      * @return the parameters value.
      */
-    @Generated
-    public Object getParameters() {
+    public BinaryData getParameters() {
         return this.parameters;
+    }
+
+    /**
+     * Set the parameters property: The parameters the function accepts, described as a JSON Schema object.
+     *
+     * @param parameters the parameters value to set.
+     * @return the FunctionDefinition object itself.
+     */
+    public FunctionDefinition setParameters(BinaryData parameters) {
+        this.parameters = parameters;
+        return this;
     }
 
     /**
@@ -135,20 +145,8 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
             }
             FunctionDefinition deserializedFunctionDefinition = new FunctionDefinition(name);
             deserializedFunctionDefinition.description = description;
-            deserializedFunctionDefinition.parameters = parameters;
+            deserializedFunctionDefinition.parameters = BinaryData.fromObject(parameters);
             return deserializedFunctionDefinition;
         });
-    }
-
-    /**
-     * Set the parameters property: The parameters the function accepts, described as a JSON Schema object.
-     *
-     * @param parameters the parameters value to set.
-     * @return the FunctionDefinition object itself.
-     */
-    @Generated
-    public FunctionDefinition setParameters(Object parameters) {
-        this.parameters = parameters;
-        return this;
     }
 }

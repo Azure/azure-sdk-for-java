@@ -41,7 +41,7 @@ public class GetEmbeddingsSample {
             System.out.printf("Index: %d.%n", item.getPromptIndex());
             System.out.println("Embedding as base64 encoded string: " +  item.getEmbeddingAsString());
             System.out.println("Embedding as list of floats: ");
-            for (Double embedding : item.getEmbedding()) {
+            for (Float embedding : item.getEmbedding()) {
                 System.out.printf("%f;", embedding);
             }
         }

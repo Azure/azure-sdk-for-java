@@ -3,58 +3,80 @@
 
 package com.azure.ai.openai.functions;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
-public class FutureTemperatureArguments {
+import java.io.IOException;
 
-    @JsonProperty(value = "date")
+public final class FutureTemperatureArguments implements JsonSerializable<FutureTemperatureArguments> {
+
     private String date;
 
-    @JsonProperty(value = "locationName")
     private String locationName;
 
-    @JsonProperty(value = "unit")
     private String unit;
 
-    @JsonCreator
-    public FutureTemperatureArguments(@JsonProperty(value = "locationName") String locationName,
-                                      @JsonProperty(value = "date") String date,
-                                      @JsonProperty(value = "unit") String unit) {
+    public FutureTemperatureArguments(String locationName, String date, String unit) {
         this.locationName = locationName;
         this.date = date;
         this.unit = unit;
     }
 
-    @JsonGetter
     public String getDate() {
         return date;
     }
 
-    @JsonSetter
     public void setDate(String date) {
         this.date = date;
     }
 
-    @JsonGetter
     public String getLocationName() {
         return locationName;
     }
 
-    @JsonSetter
     public void setLocationName(String locationName) {
         this.locationName = locationName;
     }
 
-    @JsonGetter
     public String getUnit() {
         return unit;
     }
 
-    @JsonSetter
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("date", this.date);
+        jsonWriter.writeStringField("locationName", this.locationName);
+        jsonWriter.writeStringField("unit", this.unit);
+        return jsonWriter.writeEndObject();
+    }
+
+    public static FutureTemperatureArguments fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String locationName = null;
+            String date = null;
+            String unit = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("locationName".equals(fieldName)) {
+                    locationName = reader.getString();
+                } else if ("date".equals(fieldName)) {
+                    date = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    unit = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new FutureTemperatureArguments(locationName, date, unit);
+        });
     }
 }

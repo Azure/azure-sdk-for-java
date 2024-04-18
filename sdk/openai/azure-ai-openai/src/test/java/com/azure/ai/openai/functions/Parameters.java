@@ -3,50 +3,66 @@
 
 package com.azure.ai.openai.functions;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
-public class Parameters {
+import java.io.IOException;
 
-    @JsonProperty(value = "type")
+public final class Parameters implements JsonSerializable<Parameters> {
+
     private String type = "object";
 
-    @JsonProperty(value = "properties")
     private Properties properties = new Properties();
 
-    @JsonCreator
-    public Parameters(
-        @JsonProperty(value = "type")
-        String type,
-        @JsonProperty(value = "properties")
-        Properties properties
-    ) {
+    public Parameters(String type, Properties properties) {
         this.type = type;
         this.properties = properties;
     }
 
-    @JsonCreator
     public Parameters() {}
 
-    @JsonGetter
     public String getType() {
         return type;
     }
 
-    @JsonSetter
     public void setType(String type) {
         this.type = type;
     }
 
-    @JsonGetter
     public Properties getProperties() {
         return properties;
     }
 
-    @JsonSetter
     public void setProperties(Properties properties) {
         this.properties = properties;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", "object");
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    public static Parameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String type = null;
+            Properties properties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("type".equals(fieldName)) {
+                    type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    properties = Properties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new Parameters(type, properties);
+        });
     }
 }

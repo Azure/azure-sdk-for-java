@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import com.azure.ai.openai.implementation.models.FunctionCallPreset;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * The configuration information for a chat completions request.
@@ -465,7 +464,6 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     /*
      * Field not used for serialization. This is a convenience helper field for the serialization of "function_call".
      */
-    @JsonIgnore
     private FunctionCallConfig functionCallConfig;
 
     /**

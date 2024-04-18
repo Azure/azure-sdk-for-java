@@ -3,44 +3,61 @@
 
 package com.azure.ai.openai.functions;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
-public class StringField {
+import java.io.IOException;
 
-    @JsonProperty(value = "type")
+public final class StringField implements JsonSerializable<StringField > {
+
     private String type = "string";
 
-    @JsonProperty(value = "description")
     private String description;
 
-    @JsonCreator
-    public StringField(
-            @JsonProperty(value = "description")
-            String description
-    ) {
+    public StringField(String description) {
         this.description = description;
     }
 
-    @JsonGetter
     public String getType() {
         return type;
     }
 
-    @JsonSetter
     public void setType(String type) {
         this.type = type;
     }
 
-    @JsonGetter
     public String getDescription() {
         return description;
     }
 
-    @JsonSetter
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    public static StringField fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String description = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("type".equals(fieldName)) {
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new StringField(description);
+        });
     }
 }

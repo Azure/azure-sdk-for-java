@@ -5,6 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -12,18 +13,13 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
+import static com.azure.ai.openai.implementation.EmbeddingsUtils.convertBase64ToFloatList;
+
 /**
  * Representation of a single embeddings relatedness comparison.
  */
 @Immutable
 public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
-
-    /*
-     * List of embeddings value for the input prompt. These represent a measurement of the
-     * vector-based relatedness of the provided input.
-     */
-    @Generated
-    private final List<Double> embedding;
 
     private String embeddingBase64;
 
@@ -33,9 +29,8 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
      *
      * @return the embedding value.
      */
-    @Generated
-    public List<Double> getEmbedding() {
-        return this.embedding;
+    public List<Float> getEmbedding() {
+        return convertBase64ToFloatList(embeddingBase64);
     }
 
     /**
@@ -66,11 +61,10 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("embedding", this.embedding, (writer, element) -> writer.writeDouble(element));
+        jsonWriter.writeStringField("embedding", this.embeddingBase64);
         jsonWriter.writeIntField("index", this.promptIndex);
         return jsonWriter.writeEndObject();
     }
@@ -84,16 +78,15 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EmbeddingItem.
      */
-    @Generated
     public static EmbeddingItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<Double> embedding = null;
+            String embedding = null;
             int promptIndex = 0;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("embedding".equals(fieldName)) {
-                    embedding = reader.readArray(reader1 -> reader1.getDouble());
+                    embedding = reader.getString();
                 } else if ("index".equals(fieldName)) {
                     promptIndex = reader.getInt();
                 } else {
@@ -107,12 +100,11 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
     /**
      * Creates an instance of EmbeddingItem class.
      *
-     * @param embedding the embedding value to set.
+     * @param embeddingBase64 the embedding value to set.
      * @param promptIndex the promptIndex value to set.
      */
-    @Generated
-    private EmbeddingItem(List<Double> embedding, int promptIndex) {
-        this.embedding = embedding;
+    private EmbeddingItem(String embeddingBase64, int promptIndex) {
+        this.embeddingBase64 = embeddingBase64;
         this.promptIndex = promptIndex;
     }
 }

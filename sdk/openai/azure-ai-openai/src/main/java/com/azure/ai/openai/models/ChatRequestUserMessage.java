@@ -37,8 +37,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      *
      * @param content the content value to set.
      */
-    @Generated
-    public ChatRequestUserMessage(BinaryData content) {
+    private ChatRequestUserMessage(BinaryData content) {
         this.content = content;
     }
 
@@ -125,7 +124,8 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("content", this.content.toObject(Object.class));
+
+        jsonWriter.writeBinaryField("content", this.content.toBytes());
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
