@@ -691,6 +691,7 @@ public final class OpenAIClient {
      * <p>
      * <strong>Code Samples</strong>
      * </p>
+     * <!-- @formatter:off -->
      * <!-- src_embed com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
      * <pre>
      * openAIClient.getChatCompletionsStream&#40;deploymentOrModelId, new ChatCompletionsOptions&#40;chatMessages&#41;&#41;
@@ -709,6 +710,7 @@ public final class OpenAIClient {
      *         &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
+     * <!-- @formatter:on -->
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -741,6 +743,7 @@ public final class OpenAIClient {
      * <p>
      * <strong>Code Samples</strong>
      * </p>
+     * <!-- @formatter:off -->
      * <!-- src_embed com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload
      * -->
      *
@@ -765,6 +768,7 @@ public final class OpenAIClient {
      * </pre>
      *
      * <!-- end com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload -->
+     * <!-- @formatter:on -->
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -1056,7 +1060,7 @@ public final class OpenAIClient {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -1112,7 +1116,7 @@ public final class OpenAIClient {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * String
      * }</pre>
@@ -1139,7 +1143,7 @@ public final class OpenAIClient {
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -1188,7 +1192,7 @@ public final class OpenAIClient {
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * String
      * }</pre>
