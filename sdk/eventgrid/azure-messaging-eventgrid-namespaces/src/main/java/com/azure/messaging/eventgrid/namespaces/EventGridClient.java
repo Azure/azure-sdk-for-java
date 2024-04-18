@@ -14,12 +14,10 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.models.CloudEvent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.messaging.eventgrid.namespaces.implementation.EventGridClientImpl;
 import com.azure.messaging.eventgrid.namespaces.models.AcknowledgeOptions;
 import com.azure.messaging.eventgrid.namespaces.models.AcknowledgeResult;
@@ -31,15 +29,16 @@ import com.azure.messaging.eventgrid.namespaces.models.ReleaseOptions;
 import com.azure.messaging.eventgrid.namespaces.models.ReleaseResult;
 import com.azure.messaging.eventgrid.namespaces.models.RenewCloudEventLocksResult;
 import com.azure.messaging.eventgrid.namespaces.models.RenewLockOptions;
-
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.net.URI;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Base64;
 import java.util.List;
+import com.azure.core.models.CloudEvent;
+import com.azure.core.util.serializer.SerializerEncoding;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.net.URI;
+import java.util.Base64;
 
 /**
  * Initializes a new instance of the synchronous EventGridClient type.
@@ -70,7 +69,7 @@ public final class EventGridClient {
      * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
      * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -85,9 +84,9 @@ public final class EventGridClient {
      *     subject: String (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * { }
      * }</pre>
@@ -114,7 +113,7 @@ public final class EventGridClient {
      * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
      * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -131,9 +130,9 @@ public final class EventGridClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * { }
      * }</pre>
@@ -169,7 +168,7 @@ public final class EventGridClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     value (Required): [
@@ -217,7 +216,7 @@ public final class EventGridClient {
      * other failed lockTokens with their corresponding error information. Successfully acknowledged events will no
      * longer be available to any consumer.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -225,9 +224,9 @@ public final class EventGridClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -284,7 +283,7 @@ public final class EventGridClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -292,9 +291,9 @@ public final class EventGridClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -343,7 +342,7 @@ public final class EventGridClient {
      * accepted. The response body will include the set of successfully rejected lockTokens, along with other failed
      * lockTokens with their corresponding error information.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -351,9 +350,9 @@ public final class EventGridClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -402,7 +401,7 @@ public final class EventGridClient {
      * successfully accepted. The response body will include the set of successfully renewed lockTokens, along with
      * other failed lockTokens with their corresponding error information.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -410,9 +409,9 @@ public final class EventGridClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
