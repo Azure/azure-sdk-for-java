@@ -386,7 +386,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
          */
         if (response != null) {
             String headerValue = response.getHeaders().getValue(HttpHeaderName.fromString("x-ms-copy-source-error-code"));
-            if (response.getStatusCode() >= 400 && headerValue != null) {
+            if (headerValue != null) {
                 switch (headerValue) {
                     case "" + 429:
                     case "" + 500:
@@ -395,10 +395,9 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                     case "" + 404:
                         return !isPrimary;
                     default:
-                        return false;
+                        break;
                 }
             }
-            return false;
         }
         return (statusCode == 429 || statusCode == 500 || statusCode == 503)
             || (!isPrimary && statusCode == 404);
