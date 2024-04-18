@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 
 import static com.azure.core.amqp.implementation.ClientConstants.SERVER_BUSY_WAIT_TIME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class RetryUtilTest {
     @Test
@@ -68,7 +68,8 @@ public class RetryUtilTest {
             .setMode(AmqpRetryMode.FIXED)
             .setMaxRetries(2)
             .setTryTimeout(timeout);
-        final Duration totalWaitTime = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds()).plus(timeout);
+        final Duration totalWaitTime
+            = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds()).plus(timeout);
 
         // + 1: First subscription to the Flux.
         // + 1: AmqpRetryPolicy uses > rather than >=, so there is one more retry than in RetrySpec.
@@ -82,7 +83,7 @@ public class RetryUtilTest {
         StepVerifier.create(RetryUtil.withRetry(neverFlux, options, timeoutMessage))
             .expectSubscription()
             .thenAwait(totalWaitTime)
-            .expectErrorSatisfies(error -> assertTrue(error.getCause() instanceof TimeoutException))
+            .expectErrorSatisfies(error -> assertInstanceOf(TimeoutException.class, error))
             .verify();
 
         assertEquals(expectedNumberOfSubscribes, resubscribe.get());
@@ -115,7 +116,7 @@ public class RetryUtilTest {
         StepVerifier.create(RetryUtil.withRetry(neverFlux, options, timeoutMessage))
             .expectSubscription()
             .thenAwait(totalWaitTime)
-            .expectErrorSatisfies(error -> assertTrue(error.getCause() instanceof TimeoutException))
+            .expectErrorSatisfies(error -> assertInstanceOf(TimeoutException.class, error))
             .verify();
 
         assertEquals(expectedNumberOfSubscribes, resubscribe.get());
@@ -174,7 +175,7 @@ public class RetryUtilTest {
 
         final Throwable exception = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Message",
             new AmqpErrorContext("namespace-foo-bar"));
-        final Retry.RetrySignal retrySignal  = new ImmutableRetrySignal(0, 0, exception);
+        final Retry.RetrySignal retrySignal = new ImmutableRetrySignal(0, 0, exception);
 
         // Act & Assert
         final TestPublisher<Retry.RetrySignal> publisher = TestPublisher.createCold();
@@ -211,7 +212,7 @@ public class RetryUtilTest {
             .setMaxDelay(Duration.ofSeconds(15));
         final Retry actualRetry = RetryUtil.createRetry(fixedOptions);
 
-        final Retry.RetrySignal retrySignal  = new ImmutableRetrySignal(0, 0, exception);
+        final Retry.RetrySignal retrySignal = new ImmutableRetrySignal(0, 0, exception);
 
         // Act & Assert
         final TestPublisher<Retry.RetrySignal> publisher = TestPublisher.createCold();
@@ -240,7 +241,7 @@ public class RetryUtilTest {
             new AmqpErrorContext("namespace-foo-bar"));
         final Retry actualRetry = RetryUtil.createRetry(fixedOptions);
         final int retries = fixedOptions.getMaxRetries() + 1;
-        final Retry.RetrySignal retrySignal  = new ImmutableRetrySignal(retries, retries, exception);
+        final Retry.RetrySignal retrySignal = new ImmutableRetrySignal(retries, retries, exception);
 
         // Act & Assert
         final TestPublisher<Retry.RetrySignal> publisher = TestPublisher.createCold();
@@ -275,7 +276,7 @@ public class RetryUtilTest {
             .setMaxDelay(Duration.ofSeconds(15));
         final Retry actualRetry = RetryUtil.createRetry(fixedOptions);
         final int retries = fixedOptions.getMaxRetries() + 1;
-        final Retry.RetrySignal retrySignal  = new ImmutableRetrySignal(retries, retries, exception);
+        final Retry.RetrySignal retrySignal = new ImmutableRetrySignal(retries, retries, exception);
 
         // Act & Assert
         final TestPublisher<Retry.RetrySignal> publisher = TestPublisher.createCold();
