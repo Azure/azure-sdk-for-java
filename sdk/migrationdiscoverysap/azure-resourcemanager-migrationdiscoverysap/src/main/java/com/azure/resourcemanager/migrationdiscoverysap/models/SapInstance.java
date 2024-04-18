@@ -50,57 +50,18 @@ public interface SapInstance {
     Map<String, String> tags();
 
     /**
+     * Gets the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
+     */
+    SapInstanceProperties properties();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
     SystemData systemData();
-
-    /**
-     * Gets the systemSid property: This is the SID of SAP System. Keeping this not equal to ID as different landscapes
-     * can have repeated System SID IDs.
-     * 
-     * @return the systemSid value.
-     */
-    String systemSid();
-
-    /**
-     * Gets the environment property: The Environment; PRD, QA, DEV, etc to which SAP system belongs to. Select from the
-     * list of available dropdown values.
-     * 
-     * @return the environment value.
-     */
-    SapInstanceEnvironment environment();
-
-    /**
-     * Gets the landscapeSid property: This is the SID of the production system in a landscape. An SAP system could
-     * itself be a production SID or a part of a landscape with a different Production SID. This field can be used to
-     * relate non-prod SIDs, other components, SID (WEBDISP) to the prod SID. Enter the value of Production SID.
-     * 
-     * @return the landscapeSid value.
-     */
-    String landscapeSid();
-
-    /**
-     * Gets the application property: Enter a business function/department identifier to group multiple SIDs.
-     * 
-     * @return the application value.
-     */
-    String application();
-
-    /**
-     * Gets the provisioningState property: Defines the provisioning states.
-     * 
-     * @return the provisioningState value.
-     */
-    ProvisioningState provisioningState();
-
-    /**
-     * Gets the errors property: Defines the errors related to SAP Instance resource.
-     * 
-     * @return the errors value.
-     */
-    SapMigrateError errors();
 
     /**
      * Gets the region of the resource.
@@ -186,7 +147,7 @@ public interface SapInstance {
          * The stage of the SapInstance definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              * 
@@ -214,6 +175,19 @@ public interface SapInstance {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the SapInstance definition allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
+             * @return the next definition stage.
+             */
+            WithCreate withProperties(SapInstanceProperties properties);
         }
     }
 

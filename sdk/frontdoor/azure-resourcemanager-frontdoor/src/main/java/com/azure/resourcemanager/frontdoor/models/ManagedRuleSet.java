@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines a managed rule set. */
+/**
+ * Defines a managed rule set.
+ */
 @Fluent
 public final class ManagedRuleSet {
     /*
@@ -42,13 +44,15 @@ public final class ManagedRuleSet {
     @JsonProperty(value = "ruleGroupOverrides")
     private List<ManagedRuleGroupOverride> ruleGroupOverrides;
 
-    /** Creates an instance of ManagedRuleSet class. */
+    /**
+     * Creates an instance of ManagedRuleSet class.
+     */
     public ManagedRuleSet() {
     }
 
     /**
      * Get the ruleSetType property: Defines the rule set type to use.
-     *
+     * 
      * @return the ruleSetType value.
      */
     public String ruleSetType() {
@@ -57,7 +61,7 @@ public final class ManagedRuleSet {
 
     /**
      * Set the ruleSetType property: Defines the rule set type to use.
-     *
+     * 
      * @param ruleSetType the ruleSetType value to set.
      * @return the ManagedRuleSet object itself.
      */
@@ -68,7 +72,7 @@ public final class ManagedRuleSet {
 
     /**
      * Get the ruleSetVersion property: Defines the version of the rule set to use.
-     *
+     * 
      * @return the ruleSetVersion value.
      */
     public String ruleSetVersion() {
@@ -77,7 +81,7 @@ public final class ManagedRuleSet {
 
     /**
      * Set the ruleSetVersion property: Defines the version of the rule set to use.
-     *
+     * 
      * @param ruleSetVersion the ruleSetVersion value to set.
      * @return the ManagedRuleSet object itself.
      */
@@ -88,7 +92,7 @@ public final class ManagedRuleSet {
 
     /**
      * Get the ruleSetAction property: Defines the rule set action.
-     *
+     * 
      * @return the ruleSetAction value.
      */
     public ManagedRuleSetActionType ruleSetAction() {
@@ -97,7 +101,7 @@ public final class ManagedRuleSet {
 
     /**
      * Set the ruleSetAction property: Defines the rule set action.
-     *
+     * 
      * @param ruleSetAction the ruleSetAction value to set.
      * @return the ManagedRuleSet object itself.
      */
@@ -108,7 +112,7 @@ public final class ManagedRuleSet {
 
     /**
      * Get the exclusions property: Describes the exclusions that are applied to all rules in the set.
-     *
+     * 
      * @return the exclusions value.
      */
     public List<ManagedRuleExclusion> exclusions() {
@@ -117,7 +121,7 @@ public final class ManagedRuleSet {
 
     /**
      * Set the exclusions property: Describes the exclusions that are applied to all rules in the set.
-     *
+     * 
      * @param exclusions the exclusions value to set.
      * @return the ManagedRuleSet object itself.
      */
@@ -128,7 +132,7 @@ public final class ManagedRuleSet {
 
     /**
      * Get the ruleGroupOverrides property: Defines the rule group overrides to apply to the rule set.
-     *
+     * 
      * @return the ruleGroupOverrides value.
      */
     public List<ManagedRuleGroupOverride> ruleGroupOverrides() {
@@ -137,7 +141,7 @@ public final class ManagedRuleSet {
 
     /**
      * Set the ruleGroupOverrides property: Defines the rule group overrides to apply to the rule set.
-     *
+     * 
      * @param ruleGroupOverrides the ruleGroupOverrides value to set.
      * @return the ManagedRuleSet object itself.
      */
@@ -148,19 +152,17 @@ public final class ManagedRuleSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleSetType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ruleSetType in model ManagedRuleSet"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ruleSetType in model ManagedRuleSet"));
         }
         if (ruleSetVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ruleSetVersion in model ManagedRuleSet"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ruleSetVersion in model ManagedRuleSet"));
         }
         if (exclusions() != null) {
             exclusions().forEach(e -> e.validate());

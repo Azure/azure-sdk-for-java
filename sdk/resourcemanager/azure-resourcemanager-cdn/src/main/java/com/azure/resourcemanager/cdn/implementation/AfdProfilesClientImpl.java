@@ -45,22 +45,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AfdProfilesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AfdProfilesClient.
+ */
 public final class AfdProfilesClientImpl implements AfdProfilesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AfdProfilesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CdnManagementClientImpl client;
 
     /**
      * Initializes an instance of AfdProfilesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AfdProfilesClientImpl(CdnManagementClientImpl client) {
-        this.service =
-            RestProxy.create(AfdProfilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(AfdProfilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -71,120 +77,89 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientA")
     public interface AfdProfilesService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/checkEndpointNameAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/checkEndpointNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckEndpointNameAvailabilityOutputInner>> checkEndpointNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/usages")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/usages")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UsagesListResult>> listResourceUsage(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<UsagesListResult>> listResourceUsage(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/checkHostNameAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/checkHostNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameAvailabilityOutputInner>> checkHostnameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<CheckNameAvailabilityOutputInner>> checkHostnameAvailability(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckHostnameAvailabilityInput checkHostnameAvailabilityInput,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/validateSecret")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/validateSecret")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ValidateSecretOutputInner>> validateSecret(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<ValidateSecretOutputInner>> validateSecret(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ValidateSecretInput validateSecretInput,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/upgrade")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/upgrade")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> upgrade(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> upgrade(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ProfileUpgradeParameters profileUpgradeParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<UsagesListResult>> listResourceUsageNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Check the availability of an afdx endpoint name, and return the globally unique endpoint host name.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param checkEndpointNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of check name availability API along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CheckEndpointNameAvailabilityOutputInner>> checkEndpointNameAvailabilityWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
+        String resourceGroupName, String profileName,
         CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -194,61 +169,44 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (checkEndpointNameAvailabilityInput == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkEndpointNameAvailabilityInput is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter checkEndpointNameAvailabilityInput is required and cannot be null."));
         } else {
             checkEndpointNameAvailabilityInput.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkEndpointNameAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            profileName,
-                            this.client.getApiVersion(),
-                            checkEndpointNameAvailabilityInput,
-                            accept,
-                            context))
+            .withContext(context -> service.checkEndpointNameAvailability(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, profileName, this.client.getApiVersion(),
+                checkEndpointNameAvailabilityInput, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Check the availability of an afdx endpoint name, and return the globally unique endpoint host name.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param checkEndpointNameAvailabilityInput Input to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of check name availability API along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckEndpointNameAvailabilityOutputInner>> checkEndpointNameAvailabilityWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput,
-        Context context) {
+        String resourceGroupName, String profileName,
+        CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -258,33 +216,24 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (checkEndpointNameAvailabilityInput == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkEndpointNameAvailabilityInput is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter checkEndpointNameAvailabilityInput is required and cannot be null."));
         } else {
             checkEndpointNameAvailabilityInput.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkEndpointNameAvailability(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                profileName,
-                this.client.getApiVersion(),
-                checkEndpointNameAvailabilityInput,
-                accept,
-                context);
+        return service.checkEndpointNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, profileName, this.client.getApiVersion(), checkEndpointNameAvailabilityInput, accept,
+            context);
     }
 
     /**
      * Check the availability of an afdx endpoint name, and return the globally unique endpoint host name.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param checkEndpointNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -292,21 +241,18 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
      * @return output of check name availability API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckEndpointNameAvailabilityOutputInner> checkEndpointNameAvailabilityAsync(
-        String resourceGroupName,
-        String profileName,
-        CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput) {
-        return checkEndpointNameAvailabilityWithResponseAsync(
-                resourceGroupName, profileName, checkEndpointNameAvailabilityInput)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<CheckEndpointNameAvailabilityOutputInner> checkEndpointNameAvailabilityAsync(String resourceGroupName,
+        String profileName, CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput) {
+        return checkEndpointNameAvailabilityWithResponseAsync(resourceGroupName, profileName,
+            checkEndpointNameAvailabilityInput).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Check the availability of an afdx endpoint name, and return the globally unique endpoint host name.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param checkEndpointNameAvailabilityInput Input to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -316,21 +262,18 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckEndpointNameAvailabilityOutputInner> checkEndpointNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String profileName,
-        CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput,
-        Context context) {
-        return checkEndpointNameAvailabilityWithResponseAsync(
-                resourceGroupName, profileName, checkEndpointNameAvailabilityInput, context)
-            .block();
+        String resourceGroupName, String profileName,
+        CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput, Context context) {
+        return checkEndpointNameAvailabilityWithResponseAsync(resourceGroupName, profileName,
+            checkEndpointNameAvailabilityInput, context).block();
     }
 
     /**
      * Check the availability of an afdx endpoint name, and return the globally unique endpoint host name.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param checkEndpointNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -338,35 +281,30 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckEndpointNameAvailabilityOutputInner checkEndpointNameAvailability(
-        String resourceGroupName,
-        String profileName,
-        CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput) {
-        return checkEndpointNameAvailabilityWithResponse(
-                resourceGroupName, profileName, checkEndpointNameAvailabilityInput, Context.NONE)
-            .getValue();
+    public CheckEndpointNameAvailabilityOutputInner checkEndpointNameAvailability(String resourceGroupName,
+        String profileName, CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput) {
+        return checkEndpointNameAvailabilityWithResponse(resourceGroupName, profileName,
+            checkEndpointNameAvailabilityInput, Context.NONE).getValue();
     }
 
     /**
      * Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the list usages operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UsageInner>> listResourceUsageSinglePageAsync(
-        String resourceGroupName, String profileName) {
+    private Mono<PagedResponse<UsageInner>> listResourceUsageSinglePageAsync(String resourceGroupName,
+        String profileName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -376,57 +314,37 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listResourceUsage(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<UsageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listResourceUsage(this.client.getEndpoint(), resourceGroupName, profileName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<UsageInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the list usages operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UsageInner>> listResourceUsageSinglePageAsync(
-        String resourceGroupName, String profileName, Context context) {
+    private Mono<PagedResponse<UsageInner>> listResourceUsageSinglePageAsync(String resourceGroupName,
+        String profileName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -436,39 +354,24 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listResourceUsage(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listResourceUsage(this.client.getEndpoint(), resourceGroupName, profileName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -476,17 +379,16 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UsageInner> listResourceUsageAsync(String resourceGroupName, String profileName) {
-        return new PagedFlux<>(
-            () -> listResourceUsageSinglePageAsync(resourceGroupName, profileName),
+        return new PagedFlux<>(() -> listResourceUsageSinglePageAsync(resourceGroupName, profileName),
             nextLink -> listResourceUsageNextSinglePageAsync(nextLink));
     }
 
     /**
      * Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -494,19 +396,18 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
      * @return the list usages operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<UsageInner> listResourceUsageAsync(
-        String resourceGroupName, String profileName, Context context) {
-        return new PagedFlux<>(
-            () -> listResourceUsageSinglePageAsync(resourceGroupName, profileName, context),
+    private PagedFlux<UsageInner> listResourceUsageAsync(String resourceGroupName, String profileName,
+        Context context) {
+        return new PagedFlux<>(() -> listResourceUsageSinglePageAsync(resourceGroupName, profileName, context),
             nextLink -> listResourceUsageNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -519,10 +420,10 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
 
     /**
      * Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -536,25 +437,23 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
 
     /**
      * Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint in DNS.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param checkHostnameAvailabilityInput Custom domain to be validated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of check name availability API along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CheckNameAvailabilityOutputInner>> checkHostnameAvailabilityWithResponseAsync(
         String resourceGroupName, String profileName, CheckHostnameAvailabilityInput checkHostnameAvailabilityInput) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -564,61 +463,44 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (checkHostnameAvailabilityInput == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkHostnameAvailabilityInput is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter checkHostnameAvailabilityInput is required and cannot be null."));
         } else {
             checkHostnameAvailabilityInput.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkHostnameAvailability(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            checkHostnameAvailabilityInput,
-                            accept,
-                            context))
+            .withContext(context -> service.checkHostnameAvailability(this.client.getEndpoint(), resourceGroupName,
+                profileName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                checkHostnameAvailabilityInput, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint in DNS.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param checkHostnameAvailabilityInput Custom domain to be validated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of check name availability API along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityOutputInner>> checkHostnameAvailabilityWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        CheckHostnameAvailabilityInput checkHostnameAvailabilityInput,
+        String resourceGroupName, String profileName, CheckHostnameAvailabilityInput checkHostnameAvailabilityInput,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -628,39 +510,28 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (checkHostnameAvailabilityInput == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkHostnameAvailabilityInput is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter checkHostnameAvailabilityInput is required and cannot be null."));
         } else {
             checkHostnameAvailabilityInput.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkHostnameAvailability(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                checkHostnameAvailabilityInput,
-                accept,
-                context);
+        return service.checkHostnameAvailability(this.client.getEndpoint(), resourceGroupName, profileName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), checkHostnameAvailabilityInput, accept,
+            context);
     }
 
     /**
      * Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint in DNS.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param checkHostnameAvailabilityInput Custom domain to be validated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -668,19 +539,18 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
      * @return output of check name availability API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckNameAvailabilityOutputInner> checkHostnameAvailabilityAsync(
-        String resourceGroupName, String profileName, CheckHostnameAvailabilityInput checkHostnameAvailabilityInput) {
-        return checkHostnameAvailabilityWithResponseAsync(
-                resourceGroupName, profileName, checkHostnameAvailabilityInput)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<CheckNameAvailabilityOutputInner> checkHostnameAvailabilityAsync(String resourceGroupName,
+        String profileName, CheckHostnameAvailabilityInput checkHostnameAvailabilityInput) {
+        return checkHostnameAvailabilityWithResponseAsync(resourceGroupName, profileName,
+            checkHostnameAvailabilityInput).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint in DNS.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param checkHostnameAvailabilityInput Custom domain to be validated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -689,22 +559,18 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
      * @return output of check name availability API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityOutputInner> checkHostnameAvailabilityWithResponse(
-        String resourceGroupName,
-        String profileName,
-        CheckHostnameAvailabilityInput checkHostnameAvailabilityInput,
-        Context context) {
-        return checkHostnameAvailabilityWithResponseAsync(
-                resourceGroupName, profileName, checkHostnameAvailabilityInput, context)
-            .block();
+    public Response<CheckNameAvailabilityOutputInner> checkHostnameAvailabilityWithResponse(String resourceGroupName,
+        String profileName, CheckHostnameAvailabilityInput checkHostnameAvailabilityInput, Context context) {
+        return checkHostnameAvailabilityWithResponseAsync(resourceGroupName, profileName,
+            checkHostnameAvailabilityInput, context).block();
     }
 
     /**
      * Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint in DNS.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param checkHostnameAvailabilityInput Custom domain to be validated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -712,19 +578,18 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityOutputInner checkHostnameAvailability(
-        String resourceGroupName, String profileName, CheckHostnameAvailabilityInput checkHostnameAvailabilityInput) {
-        return checkHostnameAvailabilityWithResponse(
-                resourceGroupName, profileName, checkHostnameAvailabilityInput, Context.NONE)
-            .getValue();
+    public CheckNameAvailabilityOutputInner checkHostnameAvailability(String resourceGroupName, String profileName,
+        CheckHostnameAvailabilityInput checkHostnameAvailabilityInput) {
+        return checkHostnameAvailabilityWithResponse(resourceGroupName, profileName, checkHostnameAvailabilityInput,
+            Context.NONE).getValue();
     }
 
     /**
      * Validate a Secret in the profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param validateSecretInput The Secret source.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -732,13 +597,11 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
      * @return output of the validated secret along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ValidateSecretOutputInner>> validateSecretWithResponseAsync(
-        String resourceGroupName, String profileName, ValidateSecretInput validateSecretInput) {
+    public Mono<Response<ValidateSecretOutputInner>> validateSecretWithResponseAsync(String resourceGroupName,
+        String profileName, ValidateSecretInput validateSecretInput) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -748,10 +611,8 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (validateSecretInput == null) {
             return Mono
@@ -761,27 +622,17 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .validateSecret(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            validateSecretInput,
-                            accept,
-                            context))
+            .withContext(context -> service.validateSecret(this.client.getEndpoint(), resourceGroupName, profileName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), validateSecretInput, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Validate a Secret in the profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param validateSecretInput The Secret source.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -790,13 +641,11 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
      * @return output of the validated secret along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ValidateSecretOutputInner>> validateSecretWithResponseAsync(
-        String resourceGroupName, String profileName, ValidateSecretInput validateSecretInput, Context context) {
+    private Mono<Response<ValidateSecretOutputInner>> validateSecretWithResponseAsync(String resourceGroupName,
+        String profileName, ValidateSecretInput validateSecretInput, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -806,10 +655,8 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (validateSecretInput == null) {
             return Mono
@@ -819,24 +666,16 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .validateSecret(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                validateSecretInput,
-                accept,
-                context);
+        return service.validateSecret(this.client.getEndpoint(), resourceGroupName, profileName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), validateSecretInput, accept, context);
     }
 
     /**
      * Validate a Secret in the profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param validateSecretInput The Secret source.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -844,18 +683,18 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
      * @return output of the validated secret on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ValidateSecretOutputInner> validateSecretAsync(
-        String resourceGroupName, String profileName, ValidateSecretInput validateSecretInput) {
+    public Mono<ValidateSecretOutputInner> validateSecretAsync(String resourceGroupName, String profileName,
+        ValidateSecretInput validateSecretInput) {
         return validateSecretWithResponseAsync(resourceGroupName, profileName, validateSecretInput)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Validate a Secret in the profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param validateSecretInput The Secret source.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -864,17 +703,17 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
      * @return output of the validated secret along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ValidateSecretOutputInner> validateSecretWithResponse(
-        String resourceGroupName, String profileName, ValidateSecretInput validateSecretInput, Context context) {
+    public Response<ValidateSecretOutputInner> validateSecretWithResponse(String resourceGroupName, String profileName,
+        ValidateSecretInput validateSecretInput, Context context) {
         return validateSecretWithResponseAsync(resourceGroupName, profileName, validateSecretInput, context).block();
     }
 
     /**
      * Validate a Secret in the profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param validateSecretInput The Secret source.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -882,32 +721,30 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
      * @return output of the validated secret.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateSecretOutputInner validateSecret(
-        String resourceGroupName, String profileName, ValidateSecretInput validateSecretInput) {
+    public ValidateSecretOutputInner validateSecret(String resourceGroupName, String profileName,
+        ValidateSecretInput validateSecretInput) {
         return validateSecretWithResponse(resourceGroupName, profileName, validateSecretInput, Context.NONE).getValue();
     }
 
     /**
      * Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param profileUpgradeParameters Profile upgrade input parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a profile is a logical grouping of endpoints that share the same settings along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(
-        String resourceGroupName, String profileName, ProfileUpgradeParameters profileUpgradeParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName, String profileName,
+        ProfileUpgradeParameters profileUpgradeParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -917,60 +754,43 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (profileUpgradeParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter profileUpgradeParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter profileUpgradeParameters is required and cannot be null."));
         } else {
             profileUpgradeParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .upgrade(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            profileUpgradeParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.upgrade(this.client.getEndpoint(), resourceGroupName, profileName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), profileUpgradeParameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param profileUpgradeParameters Profile upgrade input parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a profile is a logical grouping of endpoints that share the same settings along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        ProfileUpgradeParameters profileUpgradeParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName, String profileName,
+        ProfileUpgradeParameters profileUpgradeParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -980,181 +800,154 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (profileUpgradeParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter profileUpgradeParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter profileUpgradeParameters is required and cannot be null."));
         } else {
             profileUpgradeParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .upgrade(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                profileUpgradeParameters,
-                accept,
-                context);
+        return service.upgrade(this.client.getEndpoint(), resourceGroupName, profileName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), profileUpgradeParameters, accept, context);
     }
 
     /**
      * Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param profileUpgradeParameters Profile upgrade input parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of a profile is a logical grouping of endpoints that share the same
-     *     settings.
+     * settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ProfileInner>, ProfileInner> beginUpgradeAsync(
-        String resourceGroupName, String profileName, ProfileUpgradeParameters profileUpgradeParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            upgradeWithResponseAsync(resourceGroupName, profileName, profileUpgradeParameters);
-        return this
-            .client
-            .<ProfileInner, ProfileInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ProfileInner.class, ProfileInner.class, this.client.getContext());
+    public PollerFlux<PollResult<ProfileInner>, ProfileInner> beginUpgradeAsync(String resourceGroupName,
+        String profileName, ProfileUpgradeParameters profileUpgradeParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = upgradeWithResponseAsync(resourceGroupName, profileName, profileUpgradeParameters);
+        return this.client.<ProfileInner, ProfileInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ProfileInner.class, ProfileInner.class, this.client.getContext());
     }
 
     /**
      * Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param profileUpgradeParameters Profile upgrade input parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of a profile is a logical grouping of endpoints that share the same
-     *     settings.
+     * settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ProfileInner>, ProfileInner> beginUpgradeAsync(
-        String resourceGroupName,
-        String profileName,
-        ProfileUpgradeParameters profileUpgradeParameters,
-        Context context) {
+    private PollerFlux<PollResult<ProfileInner>, ProfileInner> beginUpgradeAsync(String resourceGroupName,
+        String profileName, ProfileUpgradeParameters profileUpgradeParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            upgradeWithResponseAsync(resourceGroupName, profileName, profileUpgradeParameters, context);
-        return this
-            .client
-            .<ProfileInner, ProfileInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ProfileInner.class, ProfileInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = upgradeWithResponseAsync(resourceGroupName, profileName, profileUpgradeParameters, context);
+        return this.client.<ProfileInner, ProfileInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ProfileInner.class, ProfileInner.class, context);
     }
 
     /**
      * Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param profileUpgradeParameters Profile upgrade input parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a profile is a logical grouping of endpoints that share the same
-     *     settings.
+     * settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpgrade(
-        String resourceGroupName, String profileName, ProfileUpgradeParameters profileUpgradeParameters) {
+    public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpgrade(String resourceGroupName, String profileName,
+        ProfileUpgradeParameters profileUpgradeParameters) {
         return this.beginUpgradeAsync(resourceGroupName, profileName, profileUpgradeParameters).getSyncPoller();
     }
 
     /**
      * Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param profileUpgradeParameters Profile upgrade input parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a profile is a logical grouping of endpoints that share the same
-     *     settings.
+     * settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpgrade(
-        String resourceGroupName,
-        String profileName,
-        ProfileUpgradeParameters profileUpgradeParameters,
-        Context context) {
-        return this
-            .beginUpgradeAsync(resourceGroupName, profileName, profileUpgradeParameters, context)
+    public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpgrade(String resourceGroupName, String profileName,
+        ProfileUpgradeParameters profileUpgradeParameters, Context context) {
+        return this.beginUpgradeAsync(resourceGroupName, profileName, profileUpgradeParameters, context)
             .getSyncPoller();
     }
 
     /**
      * Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param profileUpgradeParameters Profile upgrade input parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a profile is a logical grouping of endpoints that share the same settings on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProfileInner> upgradeAsync(
-        String resourceGroupName, String profileName, ProfileUpgradeParameters profileUpgradeParameters) {
-        return beginUpgradeAsync(resourceGroupName, profileName, profileUpgradeParameters)
-            .last()
+    public Mono<ProfileInner> upgradeAsync(String resourceGroupName, String profileName,
+        ProfileUpgradeParameters profileUpgradeParameters) {
+        return beginUpgradeAsync(resourceGroupName, profileName, profileUpgradeParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param profileUpgradeParameters Profile upgrade input parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a profile is a logical grouping of endpoints that share the same settings on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProfileInner> upgradeAsync(
-        String resourceGroupName,
-        String profileName,
-        ProfileUpgradeParameters profileUpgradeParameters,
-        Context context) {
-        return beginUpgradeAsync(resourceGroupName, profileName, profileUpgradeParameters, context)
-            .last()
+    private Mono<ProfileInner> upgradeAsync(String resourceGroupName, String profileName,
+        ProfileUpgradeParameters profileUpgradeParameters, Context context) {
+        return beginUpgradeAsync(resourceGroupName, profileName, profileUpgradeParameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param profileUpgradeParameters Profile upgrade input parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1162,17 +955,17 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
      * @return a profile is a logical grouping of endpoints that share the same settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProfileInner upgrade(
-        String resourceGroupName, String profileName, ProfileUpgradeParameters profileUpgradeParameters) {
+    public ProfileInner upgrade(String resourceGroupName, String profileName,
+        ProfileUpgradeParameters profileUpgradeParameters) {
         return upgradeAsync(resourceGroupName, profileName, profileUpgradeParameters).block();
     }
 
     /**
      * Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param profileUpgradeParameters Profile upgrade input parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1181,24 +974,22 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
      * @return a profile is a logical grouping of endpoints that share the same settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProfileInner upgrade(
-        String resourceGroupName,
-        String profileName,
-        ProfileUpgradeParameters profileUpgradeParameters,
-        Context context) {
+    public ProfileInner upgrade(String resourceGroupName, String profileName,
+        ProfileUpgradeParameters profileUpgradeParameters, Context context) {
         return upgradeAsync(resourceGroupName, profileName, profileUpgradeParameters, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the list usages operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listResourceUsageNextSinglePageAsync(String nextLink) {
@@ -1206,37 +997,29 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listResourceUsageNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<UsageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<UsageInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the list usages operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listResourceUsageNextSinglePageAsync(String nextLink, Context context) {
@@ -1244,23 +1027,13 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listResourceUsageNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listResourceUsageNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

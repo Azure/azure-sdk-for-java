@@ -215,6 +215,45 @@ public class CallMediaUnitTests {
     }
 
     @Test
+    public void holdWithResponseTest() {
+        CallConnection callConnection =
+            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
+                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
+            );
+        callMedia = callConnection.getCallMedia();
+        HoldOptions options = new HoldOptions(new CommunicationUserIdentifier("id"))
+            .setPlaySourceInfo(new TextSource().setText("audio to play"));
+        Response<Void> response = callMedia.holdWithResponse(options, null);
+        assertEquals(response.getStatusCode(), 200);
+    }
+
+    @Test
+    public void holdWithResponseNoPromptTest() {
+        CallConnection callConnection =
+            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
+                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
+            );
+        callMedia = callConnection.getCallMedia();
+        HoldOptions options = new HoldOptions(
+            new CommunicationUserIdentifier("id"));
+        Response<Void> response = callMedia.holdWithResponse(options, null);
+        assertEquals(response.getStatusCode(), 200);
+    }
+
+    @Test
+    public void unholdWithResponseTest() {
+        CallConnection callConnection =
+            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
+                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
+            );
+        callMedia = callConnection.getCallMedia();
+
+        Response<Void> response = callMedia.unholdWithResponse(new CommunicationUserIdentifier("id"),
+            "operationalContext", Context.NONE);
+        assertEquals(response.getStatusCode(), 200);
+    }
+
+    @Test
     public void startTranscriptionWithResponse() {
         StartTranscriptionOptions options = new StartTranscriptionOptions();
         options.setOperationContext("operationContext");

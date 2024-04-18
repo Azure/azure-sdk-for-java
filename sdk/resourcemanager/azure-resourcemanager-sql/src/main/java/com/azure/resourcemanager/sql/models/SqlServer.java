@@ -76,6 +76,13 @@ public interface SqlServer
     SqlFirewallRule enableAccessFromAzureServices();
 
     /**
+     * Whether the SQL Server can be accessed from public network.
+     *
+     * @return whether the SQL Server can be accessed from public network.
+     */
+    ServerNetworkAccessFlag publicNetworkAccess();
+
+    /**
      * Sets the Azure services default access to this server to false.
      *
      * <p>The firewall rule named "AllowAllWindowsAzureIps" will be removed from the SQL server.
@@ -153,6 +160,7 @@ public interface SqlServer
             DefinitionStages.WithElasticPool,
             DefinitionStages.WithDatabase,
             DefinitionStages.WithFirewallRule,
+            DefinitionStages.WithPublicNetworkAccess,
             DefinitionStages.WithCreate {
     }
 
@@ -268,6 +276,17 @@ public interface SqlServer
                 String virtualNetworkRuleName);
         }
 
+
+        /** The stage of SQL Server definition allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Disables public network access for the SQL Server.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
+        }
+
         /**
          * A SQL Server definition with sufficient inputs to create a new SQL Server in the cloud, but exposing
          * additional optional inputs to specify.
@@ -280,6 +299,7 @@ public interface SqlServer
                 WithDatabase,
                 WithFirewallRule,
                 WithVirtualNetworkRule,
+                WithPublicNetworkAccess,
                 DefinitionWithTags<WithCreate> {
         }
     }
@@ -292,6 +312,7 @@ public interface SqlServer
             UpdateStages.WithDatabase,
             UpdateStages.WithFirewallRule,
             UpdateStages.WithSystemAssignedManagedServiceIdentity,
+            UpdateStages.WithPublicNetworkAccess,
             Resource.UpdateWithTags<Update> {
     }
 
@@ -375,6 +396,22 @@ public interface SqlServer
              * @return Next stage of the SQL Server update
              */
             Update withoutFirewallRule(String firewallRuleName);
+        }
+
+        /** The stage of SQL Server update allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Enables public network access for the SQL Server.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+            /**
+             * Disables public network access for the SQL Server.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
         }
     }
 }

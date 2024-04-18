@@ -59,36 +59,20 @@ public final class EntityClient {
      * collections are not well supported. E.g., array&lt;array&lt;int&gt;&gt;, array&lt;map&lt;string,
      * int&gt;&gt;.
      * For each contact type, the maximum number of contacts is 20.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>businessAttributeUpdateBehavior</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Used to define the update behavior for business attributes when updating
-     * entities. Allowed values: "ignore", "replace", "merge".</td>
-     * </tr>
-     * <tr>
-     * <td>collectionId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The collection where entities will be moved to. Only specify a value if you
-     * need to move an entity to another collection.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>businessAttributeUpdateBehavior</td><td>String</td><td>No</td><td>Used to define the update behavior for
+     * business attributes when updating
+     * entities. Allowed values: "ignore", "replace", "merge".</td></tr>
+     * <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection where entities will be moved to. Only
+     * specify a value if you
+     * need to move an entity to another collection.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
@@ -167,9 +151,9 @@ public final class EntityClient {
      *     entity (Optional): (recursive schema, see entity above)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
@@ -255,34 +239,18 @@ public final class EntityClient {
 
     /**
      * List entities in bulk identified by its GUIDs.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>minExtInfo</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether to return minimal information for referred entities.</td>
-     * </tr>
-     * <tr>
-     * <td>ignoreRelationships</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether to ignore relationship attributes.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred
+     * entities.</td></tr>
+     * <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship
+     * attributes.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
@@ -388,36 +356,20 @@ public final class EntityClient {
      * array&lt;map&lt;string, int&gt;&gt;.
      * For each contact type, the maximum number of contacts
      * is 20.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>collectionId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The collection where entities will be moved to. Only specify a value if you
-     * need to move an entity to another collection.</td>
-     * </tr>
-     * <tr>
-     * <td>businessAttributeUpdateBehavior</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Used to define the update behavior for business attributes when updating
-     * entities. Allowed values: "ignore", "replace", "merge".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection where entities will be moved to. Only
+     * specify a value if you
+     * need to move an entity to another collection.</td></tr>
+     * <tr><td>businessAttributeUpdateBehavior</td><td>String</td><td>No</td><td>Used to define the update behavior for
+     * business attributes when updating
+     * entities. Allowed values: "ignore", "replace", "merge".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
@@ -498,9 +450,9 @@ public final class EntityClient {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
@@ -587,9 +539,8 @@ public final class EntityClient {
     /**
      * Delete a list of entities in bulk identified by their GUIDs or unique
      * attributes.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
@@ -673,9 +624,8 @@ public final class EntityClient {
 
     /**
      * Associate a classification to multiple entities in bulk.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classification (Optional): {
@@ -718,34 +668,18 @@ public final class EntityClient {
 
     /**
      * Get complete definition of an entity given its GUID.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>minExtInfo</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether to return minimal information for referred entities.</td>
-     * </tr>
-     * <tr>
-     * <td>ignoreRelationships</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether to ignore relationship attributes.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred
+     * entities.</td></tr>
+     * <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship
+     * attributes.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
@@ -845,15 +779,14 @@ public final class EntityClient {
      * Supports only primitive attribute type and entity references.
      * It does not support updating complex types like arrays, and maps.
      * Null updates are not possible.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * Object
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
@@ -940,9 +873,8 @@ public final class EntityClient {
 
     /**
      * Delete an entity identified by its GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
@@ -1026,9 +958,8 @@ public final class EntityClient {
 
     /**
      * Get classification for a given entity represented by a GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     attributes (Optional): {
@@ -1086,9 +1017,8 @@ public final class EntityClient {
 
     /**
      * List classifications for a given entity represented by a GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     list (Optional): [
@@ -1118,9 +1048,8 @@ public final class EntityClient {
 
     /**
      * Add classifications to an existing entity represented by a GUID.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -1160,9 +1089,8 @@ public final class EntityClient {
 
     /**
      * Update classifications to an existing entity represented by a guid.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -1216,41 +1144,21 @@ public final class EntityClient {
      * The REST request would look something like this:
      * GET
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>minExtInfo</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether to return minimal information for referred entities.</td>
-     * </tr>
-     * <tr>
-     * <td>ignoreRelationships</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether to ignore relationship attributes.</td>
-     * </tr>
-     * <tr>
-     * <td>attr:qualifiedName</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The qualified name of the entity. (This is only an example. qualifiedName can
-     * be changed to other unique attributes)</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred
+     * entities.</td></tr>
+     * <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship
+     * attributes.</td></tr>
+     * <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity. (This is only an
+     * example. qualifiedName can
+     * be changed to other unique attributes)</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
@@ -1374,29 +1282,17 @@ public final class EntityClient {
      * request would look something like this:
      * PUT
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>attr:qualifiedName</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The qualified name of the entity. (This is only an example. qualifiedName can
-     * be changed to other unique attributes)</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity. (This is only an
+     * example. qualifiedName can
+     * be changed to other unique attributes)</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
@@ -1475,9 +1371,9 @@ public final class EntityClient {
      *     entity (Optional): (recursive schema, see entity above)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
@@ -1575,29 +1471,17 @@ public final class EntityClient {
      * request would look something like this:
      * DELETE
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>attr:qualifiedName</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The qualified name of the entity. (This is only an example. qualifiedName can
-     * be changed to other unique attributes)</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity. (This is only an
+     * example. qualifiedName can
+     * be changed to other unique attributes)</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
@@ -1682,24 +1566,13 @@ public final class EntityClient {
     /**
      * Delete a given classification from an entity identified by its type and unique
      * attributes.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>attr:qualifiedName</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The qualified name of the entity. (This is only an example. qualifiedName can
-     * be changed to other unique attributes)</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity. (This is only an
+     * example. qualifiedName can
+     * be changed to other unique attributes)</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * 
@@ -1722,29 +1595,17 @@ public final class EntityClient {
 
     /**
      * Add classification to the entity identified by its type and unique attributes.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>attr:qualifiedName</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The qualified name of the entity. (This is only an example. qualifiedName can
-     * be changed to other unique attributes)</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity. (This is only an
+     * example. qualifiedName can
+     * be changed to other unique attributes)</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -1785,29 +1646,17 @@ public final class EntityClient {
 
     /**
      * Update classification on an entity identified by its type and unique attributes.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>attr:qualifiedName</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The qualified name of the entity. (This is only an example. qualifiedName can
-     * be changed to other unique attributes)</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity. (This is only an
+     * example. qualifiedName can
+     * be changed to other unique attributes)</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -1848,9 +1697,8 @@ public final class EntityClient {
 
     /**
      * Set classifications on entities in bulk.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guidHeaderMap (Optional): {
@@ -1909,9 +1757,9 @@ public final class EntityClient {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *     String (Required)
@@ -1952,42 +1800,22 @@ public final class EntityClient {
      * 
      * Note:
      * at least one unique attribute must be provided.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>minExtInfo</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether to return minimal information for referred entities.</td>
-     * </tr>
-     * <tr>
-     * <td>ignoreRelationships</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether to ignore relationship attributes.</td>
-     * </tr>
-     * <tr>
-     * <td>attr_N:qualifiedName</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Qualified name of an entity. E.g. to find 2 entities you can set
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred
+     * entities.</td></tr>
+     * <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship
+     * attributes.</td></tr>
+     * <tr><td>attr_N:qualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2
+     * entities you can set
      * attrs_1:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1. (This is only an
-     * example. qualifiedName can be changed to other unique attributes)</td>
-     * </tr>
+     * example. qualifiedName can be changed to other unique attributes)</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
@@ -2086,9 +1914,8 @@ public final class EntityClient {
 
     /**
      * Get entity header given its GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     attributes (Optional): {
@@ -2160,9 +1987,8 @@ public final class EntityClient {
 
     /**
      * Remove business metadata from an entity.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     String (Required): {
@@ -2189,29 +2015,17 @@ public final class EntityClient {
 
     /**
      * Add business metadata to an entity.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>isOverwrite</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether to overwrite the existing business metadata on the entity or not,
-     * default is false.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>isOverwrite</td><td>Boolean</td><td>No</td><td>Whether to overwrite the existing business metadata on the
+     * entity or not,
+     * default is false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     String (Required): {
@@ -2238,9 +2052,8 @@ public final class EntityClient {
 
     /**
      * Delete business metadata attributes from an entity.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     String: Object (Required)
@@ -2267,9 +2080,8 @@ public final class EntityClient {
 
     /**
      * Add or update business metadata attributes.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     String: Object (Required)
@@ -2296,9 +2108,8 @@ public final class EntityClient {
 
     /**
      * Get the sample Template for uploading/creating bulk BusinessMetaData.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * BinaryData
      * }</pre>
@@ -2318,9 +2129,8 @@ public final class EntityClient {
 
     /**
      * Upload the file for creating Business Metadata in BULK.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     failedImportInfoList (Optional): [
@@ -2349,16 +2159,14 @@ public final class EntityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> importBusinessMetadataWithResponse(BinaryData businessMetadataOptions,
         RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation
-        // 'importBusinessMetadata' is 'multipart/form-data'
+        // Protocol API requires serialization of parts with content-disposition and data, as operation 'importBusinessMetadata' is 'multipart/form-data'
         return this.serviceClient.importBusinessMetadataWithResponse(businessMetadataOptions, requestOptions);
     }
 
     /**
      * Delete given labels to a given entity.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *     String (Optional)
@@ -2381,9 +2189,8 @@ public final class EntityClient {
 
     /**
      * Set labels to a given entity.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *     String (Optional)
@@ -2406,9 +2213,8 @@ public final class EntityClient {
 
     /**
      * Add given labels to a given entity.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *     String (Optional)
@@ -2443,29 +2249,17 @@ public final class EntityClient {
      * across entities, eg. qualifiedName. The REST request would look something like
      * this: DELETE
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>attr:qualifiedName</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The qualified name of the entity. (This is only an example. qualifiedName can
-     * be changed to other unique attributes)</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity. (This is only an
+     * example. qualifiedName can
+     * be changed to other unique attributes)</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *     String (Optional)
@@ -2502,29 +2296,17 @@ public final class EntityClient {
      * The REST
      * request would look something like this: POST
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>attr:qualifiedName</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The qualified name of the entity. (This is only an example. qualifiedName can
-     * be changed to other unique attributes)</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity. (This is only an
+     * example. qualifiedName can
+     * be changed to other unique attributes)</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *     String (Optional)
@@ -2561,29 +2343,17 @@ public final class EntityClient {
      * The REST
      * request would look something like this: PUT
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>attr:qualifiedName</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The qualified name of the entity. (This is only an example. qualifiedName can
-     * be changed to other unique attributes)</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity. (This is only an
+     * example. qualifiedName can
+     * be changed to other unique attributes)</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *     String (Optional)
@@ -2606,9 +2376,8 @@ public final class EntityClient {
 
     /**
      * Move existing entities to the target collection.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     entityGuids (Optional): [
@@ -2616,9 +2385,9 @@ public final class EntityClient {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
@@ -2859,7 +2628,8 @@ public final class EntityClient {
                 false);
         }
         return batchCreateOrUpdateWithResponse(BinaryData.fromObject(atlasEntitiesWithExtInfo), requestOptions)
-            .getValue().toObject(EntityMutationResult.class);
+            .getValue()
+            .toObject(EntityMutationResult.class);
     }
 
     /**
@@ -2888,7 +2658,8 @@ public final class EntityClient {
         // Generated convenience method for batchCreateOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return batchCreateOrUpdateWithResponse(BinaryData.fromObject(atlasEntitiesWithExtInfo), requestOptions)
-            .getValue().toObject(EntityMutationResult.class);
+            .getValue()
+            .toObject(EntityMutationResult.class);
     }
 
     /**
@@ -3812,7 +3583,8 @@ public final class EntityClient {
         return importBusinessMetadataWithResponse(new MultipartFormDataHelper(requestOptions)
             .serializeFileField("file", businessMetadataOptions.getFile().getContent(),
                 businessMetadataOptions.getFile().getContentType(), businessMetadataOptions.getFile().getFilename())
-            .end().getRequestBody(), requestOptions).getValue().toObject(BulkImportResult.class);
+            .end()
+            .getRequestBody(), requestOptions).getValue().toObject(BulkImportResult.class);
     }
 
     /**

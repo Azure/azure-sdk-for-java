@@ -9,7 +9,9 @@ import com.azure.resourcemanager.frontdoor.fluent.models.ManagedRuleSetDefinitio
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of managed rule set definitions available for use in a policy. */
+/**
+ * List of managed rule set definitions available for use in a policy.
+ */
 @Fluent
 public final class ManagedRuleSetDefinitionList {
     /*
@@ -24,13 +26,15 @@ public final class ManagedRuleSetDefinitionList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ManagedRuleSetDefinitionList class. */
+    /**
+     * Creates an instance of ManagedRuleSetDefinitionList class.
+     */
     public ManagedRuleSetDefinitionList() {
     }
 
     /**
      * Get the value property: List of managed rule set definitions.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedRuleSetDefinitionInner> value() {
@@ -39,7 +43,7 @@ public final class ManagedRuleSetDefinitionList {
 
     /**
      * Get the nextLink property: URL to retrieve next set of managed rule set definitions.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ManagedRuleSetDefinitionList {
 
     /**
      * Set the nextLink property: URL to retrieve next set of managed rule set definitions.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ManagedRuleSetDefinitionList object itself.
      */
@@ -59,7 +63,7 @@ public final class ManagedRuleSetDefinitionList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

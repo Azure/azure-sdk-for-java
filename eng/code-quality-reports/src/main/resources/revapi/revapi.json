@@ -210,17 +210,17 @@
           "new": "(interface|class|enum) com\\.mysql\\.cj\\..*",
           "justification": "Mysql driver classes are allowed to be exposed by dependencies using them."
         },
-		{
+        {
           "code": "java.method.addedToInterface",
           "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionQueue(java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties)",
           "justification": "New method added to support more properties."
         },
-		{
+        {
           "code": "java.method.addedToInterface",
           "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionSubscription(java.lang.String, java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties)",
           "justification": "New method added to support more properties."
         },
-		{
+        {
           "code": "java.method.addedToInterface",
           "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionTopic(java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties)",
           "justification": "New method added to support more properties."
@@ -455,6 +455,58 @@
           "old" : "method java.lang.String com.azure.security.attestation.AttestationClient::attestTpm(java.lang.String)",
           "new" : "method com.azure.security.attestation.models.TpmAttestationResult com.azure.security.attestation.AttestationClient::attestTpm(com.azure.core.util.BinaryData)",
           "justification" : "The return type changed from 'java.lang.String' to  'com.azure.security.attestation.models.TpmAttestationResult'."
+          "regex": true,
+          "code": "java\\.annotation\\.added",
+          "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "new": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Adding missing Jackson annotations to Job Router models."
+        },
+		{
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Remove setter for Value from RouterWorkerSelector/RouterQueueSelector since it's in the constructor."
+        },
+		{
+          "regex": true,
+          "code": "java\\.method\\.numberOfParametersChanged",
+          "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "new": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Make Value mandatory in RouterWorkerSelector/RouterQueueSelector constructor."
+        },
+		{
+          "regex": true,
+          "code": "java\\.annotation\\.attributeValueChanged",
+          "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "new": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Fix incorrect json attributes."
+        },
+		{
+          "regex": true,
+          "code": "java\\.method\\.returnTypeTypeParametersChanged",
+          "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
+          "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Return Router models rather than BinaryData."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.parameterTypeChanged",
+          "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
+          "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Accept Router models rather than BinaryData."
+        },
+		{
+          "regex": true,
+          "code": "java\\.method\\.returnTypeChanged",
+          "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
+          "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Return Router models rather than BinaryData."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.addedStaticField",
+          "new": "field com.azure.data.schemaregistry.SchemaRegistryVersion.V2022_10",
+          "justification": "Another version of Schema Registry API released."
         },
         {
           "code" : "java.method.parameterTypeChanged",
@@ -473,6 +525,45 @@
           "old" : "parameter com.azure.core.http.rest.Response<java.lang.String> com.azure.security.attestation.AttestationClient::attestTpmWithResponse(===java.lang.String===, com.azure.core.util.Context)",
           "new" : "parameter com.azure.core.http.rest.Response<com.azure.security.attestation.models.TpmAttestationResult> com.azure.security.attestation.AttestationClient::attestTpmWithResponse(===com.azure.core.util.BinaryData===, com.azure.core.util.Context)",
           "justification" : "The type of the parameter changed from 'java.lang.String' to 'com.azure.core.util.BinaryData'."
+          "regex": true,
+          "ignore": true,
+          "code": "java.field.addedStaticField",
+          "new": "field com\\.azure\\.data\\.schemaregistry\\.models\\.SchemaFormat\\.(CUSTOM|JSON)",
+          "justification": "Additional schema formats are supported by Schema Registry."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.removed",
+          "package": "com.azure.ai.contentsafety.models",
+          "annotationType": "com.fasterxml.jackson.annotation.JsonProperty",
+          "justification": "Migrate to azure-json."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.removed",
+          "package": "com.azure.ai.contentsafety.models",
+          "annotationType": "com.fasterxml.jackson.annotation.JsonCreator",
+          "justification": "Migrate to azure-json."
+        },
+        {
+          "ignore": true,
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.storage\\.queue\\.models.*",
+          "justification": "Removing Jackson annotations from Storage Queue in transition to stream-style."
+        },
+        {
+          "ignore": true,
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.storage\\.file\\.share\\.models.*",
+          "justification": "Removing Jackson annotations from Storage File Share in transition to stream-style."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.monitor\\.query.*",
+          "justification": "Removing Jackson annotations from Monitor Query in transition to stream-style."
         }
       ]
     }

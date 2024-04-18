@@ -6,19 +6,22 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The payload of autocomplete request.
  */
 @Fluent
-public final class AutoCompleteOptions {
+public final class AutoCompleteOptions implements JsonSerializable<AutoCompleteOptions> {
     /*
      * The keywords applied to all fields that support autocomplete operation. It must
      * be at least 1 character, and no more than 100 characters.
      */
     @Generated
-    @JsonProperty(value = "keywords")
     private String keywords;
 
     /*
@@ -26,14 +29,12 @@ public final class AutoCompleteOptions {
      * The value must be a number between 1 and 100.
      */
     @Generated
-    @JsonProperty(value = "limit")
     private Integer limit;
 
     /*
      * The filter for the autocomplete request.
      */
     @Generated
-    @JsonProperty(value = "filter")
     private Object filter;
 
     /**
@@ -111,5 +112,49 @@ public final class AutoCompleteOptions {
     public AutoCompleteOptions setFilter(Object filter) {
         this.filter = filter;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keywords", this.keywords);
+        jsonWriter.writeNumberField("limit", this.limit);
+        jsonWriter.writeUntypedField("filter", this.filter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoCompleteOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoCompleteOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutoCompleteOptions.
+     */
+    @Generated
+    public static AutoCompleteOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoCompleteOptions deserializedAutoCompleteOptions = new AutoCompleteOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keywords".equals(fieldName)) {
+                    deserializedAutoCompleteOptions.keywords = reader.getString();
+                } else if ("limit".equals(fieldName)) {
+                    deserializedAutoCompleteOptions.limit = reader.getNullable(JsonReader::getInt);
+                } else if ("filter".equals(fieldName)) {
+                    deserializedAutoCompleteOptions.filter = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoCompleteOptions;
+        });
     }
 }

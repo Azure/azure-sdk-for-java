@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Supported protocols for the customer's endpoint. */
+/**
+ * Supported protocols for the customer's endpoint.
+ */
 public final class AfdEndpointProtocols extends ExpandableStringEnum<AfdEndpointProtocols> {
-    /** Static value Http for AfdEndpointProtocols. */
+    /**
+     * Static value Http for AfdEndpointProtocols.
+     */
     public static final AfdEndpointProtocols HTTP = fromString("Http");
 
-    /** Static value Https for AfdEndpointProtocols. */
+    /**
+     * Static value Https for AfdEndpointProtocols.
+     */
     public static final AfdEndpointProtocols HTTPS = fromString("Https");
 
     /**
      * Creates a new instance of AfdEndpointProtocols value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class AfdEndpointProtocols extends ExpandableStringEnum<AfdEndpoint
 
     /**
      * Creates or finds a AfdEndpointProtocols from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AfdEndpointProtocols.
      */
@@ -38,7 +44,7 @@ public final class AfdEndpointProtocols extends ExpandableStringEnum<AfdEndpoint
 
     /**
      * Gets known AfdEndpointProtocols values.
-     *
+     * 
      * @return known AfdEndpointProtocols values.
      */
     public static Collection<AfdEndpointProtocols> values() {

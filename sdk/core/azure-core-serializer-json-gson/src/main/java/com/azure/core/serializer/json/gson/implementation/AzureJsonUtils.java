@@ -6,7 +6,6 @@ package com.azure.core.serializer.json.gson.implementation;
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.core.JsonGenerator;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -127,7 +126,7 @@ public final class AzureJsonUtils {
      * Creates an instance of {@link GsonJsonWriter}.
      *
      * @param writer The {@link com.google.gson.stream.JsonWriter} writing JSON.
-     * @return A {@link GsonJsonWriter} wrapping the {@link JsonGenerator}.
+     * @return A {@link GsonJsonWriter} wrapping the {@link com.google.gson.stream.JsonWriter}.
      */
     public static JsonWriter createWriter(com.google.gson.stream.JsonWriter writer) {
         return new GsonJsonWriter(writer);

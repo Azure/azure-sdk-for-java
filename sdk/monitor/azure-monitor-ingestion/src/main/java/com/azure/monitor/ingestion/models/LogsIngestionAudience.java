@@ -20,12 +20,12 @@ public class LogsIngestionAudience extends ExpandableStringEnum<LogsIngestionAud
     /**
      * Static value for Azure US Government.
      */
-    private static final LogsIngestionAudience AZURE_GOVERNMENT = fromString("https://monitor.azure.us//.default");
+    public static final LogsIngestionAudience AZURE_GOVERNMENT = fromString("https://monitor.azure.us//.default");
 
     /**
      * Static value for Azure China.
      */
-    private static final LogsIngestionAudience AZURE_CHINA = fromString("https://monitor.azure.cn//.default");
+    public static final LogsIngestionAudience AZURE_CHINA = fromString("https://monitor.azure.cn//.default");
 
     /**
      * @deprecated Creates an instance of LogsIngestionAudience.

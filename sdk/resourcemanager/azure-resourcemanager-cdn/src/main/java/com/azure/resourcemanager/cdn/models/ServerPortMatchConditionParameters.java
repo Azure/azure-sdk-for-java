@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines the parameters for ServerPort match conditions. */
+/**
+ * Defines the parameters for ServerPort match conditions.
+ */
 @Fluent
 public final class ServerPortMatchConditionParameters {
     /*
@@ -42,14 +44,15 @@ public final class ServerPortMatchConditionParameters {
     @JsonProperty(value = "transforms")
     private List<Transform> transforms;
 
-    /** Creates an instance of ServerPortMatchConditionParameters class. */
+    /**
+     * Creates an instance of ServerPortMatchConditionParameters class.
+     */
     public ServerPortMatchConditionParameters() {
-        typeName = "DeliveryRuleServerPortConditionParameters";
     }
 
     /**
      * Get the typeName property: The typeName property.
-     *
+     * 
      * @return the typeName value.
      */
     public String typeName() {
@@ -58,7 +61,7 @@ public final class ServerPortMatchConditionParameters {
 
     /**
      * Set the typeName property: The typeName property.
-     *
+     * 
      * @param typeName the typeName value to set.
      * @return the ServerPortMatchConditionParameters object itself.
      */
@@ -69,7 +72,7 @@ public final class ServerPortMatchConditionParameters {
 
     /**
      * Get the operator property: Describes operator to be matched.
-     *
+     * 
      * @return the operator value.
      */
     public ServerPortOperator operator() {
@@ -78,7 +81,7 @@ public final class ServerPortMatchConditionParameters {
 
     /**
      * Set the operator property: Describes operator to be matched.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the ServerPortMatchConditionParameters object itself.
      */
@@ -89,7 +92,7 @@ public final class ServerPortMatchConditionParameters {
 
     /**
      * Get the negateCondition property: Describes if this is negate condition or not.
-     *
+     * 
      * @return the negateCondition value.
      */
     public Boolean negateCondition() {
@@ -98,7 +101,7 @@ public final class ServerPortMatchConditionParameters {
 
     /**
      * Set the negateCondition property: Describes if this is negate condition or not.
-     *
+     * 
      * @param negateCondition the negateCondition value to set.
      * @return the ServerPortMatchConditionParameters object itself.
      */
@@ -109,7 +112,7 @@ public final class ServerPortMatchConditionParameters {
 
     /**
      * Get the matchValues property: The match value for the condition of the delivery rule.
-     *
+     * 
      * @return the matchValues value.
      */
     public List<String> matchValues() {
@@ -118,7 +121,7 @@ public final class ServerPortMatchConditionParameters {
 
     /**
      * Set the matchValues property: The match value for the condition of the delivery rule.
-     *
+     * 
      * @param matchValues the matchValues value to set.
      * @return the ServerPortMatchConditionParameters object itself.
      */
@@ -129,7 +132,7 @@ public final class ServerPortMatchConditionParameters {
 
     /**
      * Get the transforms property: List of transforms.
-     *
+     * 
      * @return the transforms value.
      */
     public List<Transform> transforms() {
@@ -138,7 +141,7 @@ public final class ServerPortMatchConditionParameters {
 
     /**
      * Set the transforms property: List of transforms.
-     *
+     * 
      * @param transforms the transforms value to set.
      * @return the ServerPortMatchConditionParameters object itself.
      */
@@ -149,15 +152,13 @@ public final class ServerPortMatchConditionParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (operator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property operator in model ServerPortMatchConditionParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property operator in model ServerPortMatchConditionParameters"));
         }
     }
 

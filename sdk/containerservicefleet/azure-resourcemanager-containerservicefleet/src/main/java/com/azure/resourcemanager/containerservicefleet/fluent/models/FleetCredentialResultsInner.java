@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerservicefleet.models.FleetCredentialRes
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Credential results response. */
+/**
+ * The Credential results response.
+ */
 @Immutable
 public final class FleetCredentialResultsInner {
     /*
@@ -18,13 +20,15 @@ public final class FleetCredentialResultsInner {
     @JsonProperty(value = "kubeconfigs", access = JsonProperty.Access.WRITE_ONLY)
     private List<FleetCredentialResult> kubeconfigs;
 
-    /** Creates an instance of FleetCredentialResultsInner class. */
+    /**
+     * Creates an instance of FleetCredentialResultsInner class.
+     */
     public FleetCredentialResultsInner() {
     }
 
     /**
      * Get the kubeconfigs property: Array of base64-encoded Kubernetes configuration files.
-     *
+     * 
      * @return the kubeconfigs value.
      */
     public List<FleetCredentialResult> kubeconfigs() {
@@ -33,7 +37,7 @@ public final class FleetCredentialResultsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
