@@ -14,10 +14,13 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.CloudEvent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.messaging.eventgrid.namespaces.implementation.EventGridClientImpl;
 import com.azure.messaging.eventgrid.namespaces.models.AcknowledgeOptions;
 import com.azure.messaging.eventgrid.namespaces.models.AcknowledgeResult;
@@ -29,18 +32,16 @@ import com.azure.messaging.eventgrid.namespaces.models.ReleaseOptions;
 import com.azure.messaging.eventgrid.namespaces.models.ReleaseResult;
 import com.azure.messaging.eventgrid.namespaces.models.RenewCloudEventLocksResult;
 import com.azure.messaging.eventgrid.namespaces.models.RenewLockOptions;
-import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 import reactor.core.publisher.Mono;
-import com.azure.core.models.CloudEvent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.SerializerEncoding;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
+import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
+import java.util.List;
 
 /**
  * Initializes a new instance of the asynchronous EventGridClient type.
@@ -71,7 +72,7 @@ public final class EventGridAsyncClient {
      * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
      * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -86,9 +87,9 @@ public final class EventGridAsyncClient {
      *     subject: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * { }
      * }</pre>
@@ -115,7 +116,7 @@ public final class EventGridAsyncClient {
      * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
      * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -132,9 +133,9 @@ public final class EventGridAsyncClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * { }
      * }</pre>
@@ -170,7 +171,7 @@ public final class EventGridAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     value (Required): [
@@ -219,7 +220,7 @@ public final class EventGridAsyncClient {
      * other failed lockTokens with their corresponding error information. Successfully acknowledged events will no
      * longer be available to any consumer.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -227,9 +228,9 @@ public final class EventGridAsyncClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -287,7 +288,7 @@ public final class EventGridAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -295,9 +296,9 @@ public final class EventGridAsyncClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -346,7 +347,7 @@ public final class EventGridAsyncClient {
      * accepted. The response body will include the set of successfully rejected lockTokens, along with other failed
      * lockTokens with their corresponding error information.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -354,9 +355,9 @@ public final class EventGridAsyncClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -405,7 +406,7 @@ public final class EventGridAsyncClient {
      * successfully accepted. The response body will include the set of successfully renewed lockTokens, along with
      * other failed lockTokens with their corresponding error information.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -413,9 +414,9 @@ public final class EventGridAsyncClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -509,8 +510,10 @@ public final class EventGridAsyncClient {
             }
             requestOptions.setHeader(HttpHeaderName.fromString("ce-id"), event.getId());
             requestOptions.setHeader(HttpHeaderName.fromString("ce-specversion"), "1.0");
-            requestOptions.setHeader(HttpHeaderName.fromString("ce-time"),
-                event.getTime().format(DateTimeFormatter.ISO_DATE_TIME));
+            if (event.getTime() != null) {
+                requestOptions.setHeader(HttpHeaderName.fromString("ce-time"),
+                        event.getTime().format(DateTimeFormatter.ISO_DATE_TIME));
+            }
             requestOptions.setHeader(HttpHeaderName.fromString("ce-source"), event.getSource());
             if (event.getSubject() != null) {
                 requestOptions.setHeader(HttpHeaderName.fromString("ce-subject"), event.getSubject());
