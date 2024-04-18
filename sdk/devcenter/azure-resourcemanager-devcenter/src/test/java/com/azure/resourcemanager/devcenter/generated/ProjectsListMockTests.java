@@ -6,67 +6,44 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
+import com.azure.resourcemanager.devcenter.models.CatalogItemType;
+import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.devcenter.models.Project;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ProjectsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\",\"devCenterUri\":\"a\",\"devCenterId\":\"cfxwmdbox\",\"description\":\"gsftufqobrjlnacg\",\"maxDevBoxesPerUser\":1670865281,\"displayName\":\"nhxk\",\"catalogSettings\":{\"catalogItemSyncTypes\":[\"EnvironmentDefinition\",\"EnvironmentDefinition\",\"EnvironmentDefinition\",\"EnvironmentDefinition\"]}},\"identity\":{\"principalId\":\"9815e8cd-dad8-4152-81fc-39ee94706007\",\"tenantId\":\"33d44728-daaa-4681-91e2-34bbaf5a4740\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"rano\":{\"principalId\":\"dc6119f0-811f-47c8-aa28-d08fc04f4814\",\"clientId\":\"f26c317b-b379-4046-adf9-c492371496ed\"},\"ukkjqnvbroyla\":{\"principalId\":\"4c2d8016-3757-4817-b62c-d1ca36299221\",\"clientId\":\"88e3e855-7a46-4aad-8cbc-71f85eb2f6db\"},\"lcdisd\":{\"principalId\":\"c92234eb-387e-4202-aae1-2d6f564d6468\",\"clientId\":\"61af9015-ded9-4645-bc70-f2e43ba5eee0\"},\"jbjsvgjrwh\":{\"principalId\":\"f037d32b-aaed-4ecb-b24e-c25f3bbe2822\",\"clientId\":\"9b355662-f9f5-4500-96c9-a93936520a89\"}}},\"location\":\"vyc\",\"tags\":{\"xgccknfnw\":\"c\",\"fedxihchrphkm\":\"btmvpdvjdhttza\"},\"id\":\"rjdqnsdfzp\",\"name\":\"gtgkylkdghr\",\"type\":\"euutlwxezwzh\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"devCenterUri\":\"ikvylauya\",\"devCenterId\":\"uwmncs\",\"description\":\"ijf\",\"maxDevBoxesPerUser\":671639646,\"displayName\":\"o\"},\"location\":\"rsg\",\"tags\":{\"nscliqhzvhxnk\":\"dhuzqgnjdgk\"},\"id\":\"mtk\",\"name\":\"bo\",\"type\":\"ppnvdxz\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DevCenterManager manager = DevCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Project> response = manager.projects().list(2009658341, com.azure.core.util.Context.NONE);
 
-        DevCenterManager manager =
-            DevCenterManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Project> response = manager.projects().list(43647677, com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("rsg", response.iterator().next().location());
-        Assertions.assertEquals("dhuzqgnjdgk", response.iterator().next().tags().get("nscliqhzvhxnk"));
-        Assertions.assertEquals("uwmncs", response.iterator().next().devCenterId());
-        Assertions.assertEquals("ijf", response.iterator().next().description());
-        Assertions.assertEquals(671639646, response.iterator().next().maxDevBoxesPerUser());
-        Assertions.assertEquals("o", response.iterator().next().displayName());
+        Assertions.assertEquals("vyc", response.iterator().next().location());
+        Assertions.assertEquals("c", response.iterator().next().tags().get("xgccknfnw"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            response.iterator().next().identity().type());
+        Assertions.assertEquals("cfxwmdbox", response.iterator().next().devCenterId());
+        Assertions.assertEquals("gsftufqobrjlnacg", response.iterator().next().description());
+        Assertions.assertEquals(1670865281, response.iterator().next().maxDevBoxesPerUser());
+        Assertions.assertEquals("nhxk", response.iterator().next().displayName());
+        Assertions.assertEquals(CatalogItemType.ENVIRONMENT_DEFINITION,
+            response.iterator().next().catalogSettings().catalogItemSyncTypes().get(0));
     }
 }

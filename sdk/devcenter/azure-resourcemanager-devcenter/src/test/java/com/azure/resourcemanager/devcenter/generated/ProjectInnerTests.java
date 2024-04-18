@@ -6,6 +6,12 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.ProjectInner;
+import com.azure.resourcemanager.devcenter.models.CatalogItemType;
+import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.devcenter.models.ProjectCatalogSettings;
+import com.azure.resourcemanager.devcenter.models.UserAssignedIdentity;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -13,36 +19,47 @@ import org.junit.jupiter.api.Assertions;
 public final class ProjectInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProjectInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"NotSpecified\",\"devCenterUri\":\"ciqihnhung\",\"devCenterId\":\"jzrnf\",\"description\":\"xgispemvtzfkufu\",\"maxDevBoxesPerUser\":1437097866,\"displayName\":\"fxqeof\"},\"location\":\"e\",\"tags\":{\"jqul\":\"qjbasvms\",\"clxxwrljdo\":\"gsntnbybkzgcwr\",\"wtnhxbnjbiksqr\":\"skcqvkocrcjd\"},\"id\":\"lssai\",\"name\":\"qpjwnzlljfm\",\"type\":\"pee\"}")
-                .toObject(ProjectInner.class);
-        Assertions.assertEquals("e", model.location());
-        Assertions.assertEquals("qjbasvms", model.tags().get("jqul"));
-        Assertions.assertEquals("jzrnf", model.devCenterId());
-        Assertions.assertEquals("xgispemvtzfkufu", model.description());
-        Assertions.assertEquals(1437097866, model.maxDevBoxesPerUser());
-        Assertions.assertEquals("fxqeof", model.displayName());
+        ProjectInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"devCenterUri\":\"jdous\",\"devCenterId\":\"qvkoc\",\"description\":\"jdkwtnhxbnjb\",\"maxDevBoxesPerUser\":703766696,\"displayName\":\"rglssainqpj\",\"catalogSettings\":{\"catalogItemSyncTypes\":[\"EnvironmentDefinition\",\"EnvironmentDefinition\",\"EnvironmentDefinition\"]}},\"identity\":{\"principalId\":\"b4ca7113-41db-4779-90c1-7b827c4bce80\",\"tenantId\":\"b38b17d9-5e9f-4673-831c-c22079977eb9\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"gxsabkyq\":{\"principalId\":\"130da408-198f-4bcd-a80c-e11b0f9264e7\",\"clientId\":\"dfb4b78f-bb68-4688-bf87-9ef0e236315d\"},\"jitcjczdzevn\":{\"principalId\":\"e56d2054-c458-49a7-ad3a-53c817593055\",\"clientId\":\"e4ce5f22-378b-400a-ac6b-b28fd1abacfc\"},\"rwpdappdsbdkvwrw\":{\"principalId\":\"d9f759e7-52b6-461a-954c-662bd8e4c695\",\"clientId\":\"4c744461-1a0a-4be1-9ed1-35bd8366a5dd\"},\"usnhutje\":{\"principalId\":\"849b3843-fa0f-4e47-b09f-702ef0a6b673\",\"clientId\":\"18c4ceb4-860d-47b7-9b63-495b7931e018\"}}},\"location\":\"mrldhu\",\"tags\":{\"ablgphuticndvk\":\"zdatqxhocdg\"},\"id\":\"ozwyiftyhxhuro\",\"name\":\"ftyxolniw\",\"type\":\"wcukjfkgiawxk\"}")
+            .toObject(ProjectInner.class);
+        Assertions.assertEquals("mrldhu", model.location());
+        Assertions.assertEquals("zdatqxhocdg", model.tags().get("ablgphuticndvk"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("qvkoc", model.devCenterId());
+        Assertions.assertEquals("jdkwtnhxbnjb", model.description());
+        Assertions.assertEquals(703766696, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("rglssainqpj", model.displayName());
+        Assertions.assertEquals(CatalogItemType.ENVIRONMENT_DEFINITION,
+            model.catalogSettings().catalogItemSyncTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProjectInner model =
-            new ProjectInner()
-                .withLocation("e")
-                .withTags(mapOf("jqul", "qjbasvms", "clxxwrljdo", "gsntnbybkzgcwr", "wtnhxbnjbiksqr", "skcqvkocrcjd"))
-                .withDevCenterId("jzrnf")
-                .withDescription("xgispemvtzfkufu")
-                .withMaxDevBoxesPerUser(1437097866)
-                .withDisplayName("fxqeof");
+        ProjectInner model
+            = new ProjectInner().withLocation("mrldhu")
+                .withTags(mapOf("ablgphuticndvk", "zdatqxhocdg"))
+                .withIdentity(
+                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("gxsabkyq", new UserAssignedIdentity(), "jitcjczdzevn",
+                            new UserAssignedIdentity(), "rwpdappdsbdkvwrw", new UserAssignedIdentity(), "usnhutje",
+                            new UserAssignedIdentity())))
+                .withDevCenterId("qvkoc")
+                .withDescription("jdkwtnhxbnjb")
+                .withMaxDevBoxesPerUser(703766696)
+                .withDisplayName("rglssainqpj")
+                .withCatalogSettings(new ProjectCatalogSettings()
+                    .withCatalogItemSyncTypes(Arrays.asList(CatalogItemType.ENVIRONMENT_DEFINITION,
+                        CatalogItemType.ENVIRONMENT_DEFINITION, CatalogItemType.ENVIRONMENT_DEFINITION)));
         model = BinaryData.fromObject(model).toObject(ProjectInner.class);
-        Assertions.assertEquals("e", model.location());
-        Assertions.assertEquals("qjbasvms", model.tags().get("jqul"));
-        Assertions.assertEquals("jzrnf", model.devCenterId());
-        Assertions.assertEquals("xgispemvtzfkufu", model.description());
-        Assertions.assertEquals(1437097866, model.maxDevBoxesPerUser());
-        Assertions.assertEquals("fxqeof", model.displayName());
+        Assertions.assertEquals("mrldhu", model.location());
+        Assertions.assertEquals("zdatqxhocdg", model.tags().get("ablgphuticndvk"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("qvkoc", model.devCenterId());
+        Assertions.assertEquals("jdkwtnhxbnjb", model.description());
+        Assertions.assertEquals(703766696, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("rglssainqpj", model.displayName());
+        Assertions.assertEquals(CatalogItemType.ENVIRONMENT_DEFINITION,
+            model.catalogSettings().catalogItemSyncTypes().get(0));
     }
 
     // Use "Map.of" if available
