@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.CosmosDbMongoDbApiLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * Linked service for CosmosDB (MongoDB API) data source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = CosmosDbMongoDbApiLinkedService.class,
+    visible = true)
 @JsonTypeName("CosmosDbMongoDbApi")
 @Fluent
 public final class CosmosDbMongoDbApiLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "CosmosDbMongoDbApi";
+
     /*
      * CosmosDB (MongoDB API) linked service properties.
      */
@@ -31,6 +43,16 @@ public final class CosmosDbMongoDbApiLinkedService extends LinkedService {
      * Creates an instance of CosmosDbMongoDbApiLinkedService class.
      */
     public CosmosDbMongoDbApiLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -162,8 +184,9 @@ public final class CosmosDbMongoDbApiLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model CosmosDbMongoDbApiLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model CosmosDbMongoDbApiLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

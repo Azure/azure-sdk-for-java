@@ -130,16 +130,16 @@ public final class ScriptAction {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model ScriptAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ScriptAction"));
         }
         if (uri() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property uri in model ScriptAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property uri in model ScriptAction"));
         }
         if (roles() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property roles in model ScriptAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property roles in model ScriptAction"));
         }
     }
 

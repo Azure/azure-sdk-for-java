@@ -7,19 +7,19 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.datafactory.models.ManagedIdentityCredential;
+import com.azure.resourcemanager.datafactory.models.Credential;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Credential resource type.
  */
 @Fluent
-public final class ManagedIdentityCredentialResourceInner extends SubResource {
+public class CredentialResourceInner extends SubResource {
     /*
-     * Managed Identity Credential properties.
+     * Properties of credentials.
      */
     @JsonProperty(value = "properties", required = true)
-    private ManagedIdentityCredential properties;
+    private Credential properties;
 
     /*
      * The resource name.
@@ -40,27 +40,27 @@ public final class ManagedIdentityCredentialResourceInner extends SubResource {
     private String etag;
 
     /**
-     * Creates an instance of ManagedIdentityCredentialResourceInner class.
+     * Creates an instance of CredentialResourceInner class.
      */
-    public ManagedIdentityCredentialResourceInner() {
+    public CredentialResourceInner() {
     }
 
     /**
-     * Get the properties property: Managed Identity Credential properties.
+     * Get the properties property: Properties of credentials.
      * 
      * @return the properties value.
      */
-    public ManagedIdentityCredential properties() {
+    public Credential properties() {
         return this.properties;
     }
 
     /**
-     * Set the properties property: Managed Identity Credential properties.
+     * Set the properties property: Properties of credentials.
      * 
      * @param properties the properties value to set.
-     * @return the ManagedIdentityCredentialResourceInner object itself.
+     * @return the CredentialResourceInner object itself.
      */
-    public ManagedIdentityCredentialResourceInner withProperties(ManagedIdentityCredential properties) {
+    public CredentialResourceInner withProperties(Credential properties) {
         this.properties = properties;
         return this;
     }
@@ -96,7 +96,7 @@ public final class ManagedIdentityCredentialResourceInner extends SubResource {
      * {@inheritDoc}
      */
     @Override
-    public ManagedIdentityCredentialResourceInner withId(String id) {
+    public CredentialResourceInner withId(String id) {
         super.withId(id);
         return this;
     }
@@ -108,12 +108,13 @@ public final class ManagedIdentityCredentialResourceInner extends SubResource {
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property properties in model ManagedIdentityCredentialResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model CredentialResourceInner"));
         } else {
             properties().validate();
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedIdentityCredentialResourceInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CredentialResourceInner.class);
 }

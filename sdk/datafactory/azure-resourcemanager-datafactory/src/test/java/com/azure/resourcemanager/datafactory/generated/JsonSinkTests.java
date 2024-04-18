@@ -17,21 +17,25 @@ public final class JsonSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JsonSink model = BinaryData.fromString(
-            "{\"type\":\"JsonSink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"datalnt\",\"disableMetricsCollection\":\"datah\",\"copyBehavior\":\"datatvxghbehhe\",\"metadata\":[{\"name\":\"dataorrvwlc\",\"value\":\"datajlyugzl\"},{\"name\":\"datajirj\",\"value\":\"datarsyfdsgrtke\"}],\"\":{\"gevjman\":\"dataru\",\"vtzdtwxfjlpkoc\":\"datarvvjoklb\",\"uvwlfzjrjgla\":\"dataexfmqfuflu\"}},\"formatSettings\":{\"type\":\"JsonWriteSettings\",\"filePattern\":\"datagzscgslwujk\",\"\":{\"vatujphqv\":\"datapmlrjnnbmodsytq\",\"wpiqkkmpfnw\":\"dataxvvogwghxo\",\"hnrgmg\":\"datarmzwmtsmeaciyp\",\"lsnch\":\"datavcusvidkzbdb\"}},\"writeBatchSize\":\"datarfomlh\",\"writeBatchTimeout\":\"dataiktecs\",\"sinkRetryCount\":\"datacqweydaa\",\"sinkRetryWait\":\"datattmfcx\",\"maxConcurrentConnections\":\"datawfsqjxxbs\",\"disableMetricsCollection\":\"dataqiwl\",\"\":{\"zpr\":\"datatsyjzdasgk\",\"lbddlnzmff\":\"dataqomuzohnpkof\",\"junmgd\":\"datavowlammvazvwzien\"}}")
+            "{\"type\":\"rljmjzyadafec\",\"storeSettings\":{\"type\":\"svpmw\",\"maxConcurrentConnections\":\"dataoqypvplmyzebv\",\"disableMetricsCollection\":\"datahoydehbvbex\",\"copyBehavior\":\"dataynnladdhdklwzz\",\"metadata\":[{\"name\":\"databosacrnpscfkef\",\"value\":\"datatxe\"},{\"name\":\"datamimgjuvjvtgece\",\"value\":\"datannle\"}],\"\":{\"kctdnnqok\":\"dataukfj\",\"uywijnlpeczq\":\"dataeuzslnyj\",\"vphr\":\"datanmzkqydthfcwycm\"}},\"formatSettings\":{\"type\":\"hjdhlskeifw\",\"filePattern\":\"datae\",\"\":{\"xiwpptvbudbnujv\":\"dataow\",\"fzxkqsleokbam\":\"datallyjelnhmuzhxk\",\"gccg\":\"datahn\",\"jahlqoxwqlnxv\":\"datalepamvlbaxda\"}},\"writeBatchSize\":\"dataufldzjcp\",\"writeBatchTimeout\":\"datajbzp\",\"sinkRetryCount\":\"datafejg\",\"sinkRetryWait\":\"datafvboxvwtln\",\"maxConcurrentConnections\":\"datashtujaqpkupnr\",\"disableMetricsCollection\":\"datajeypdk\",\"\":{\"sy\":\"datax\",\"rnihgothy\":\"databdrq\",\"ovsvjxnsor\":\"databwge\"}}")
             .toObject(JsonSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JsonSink model = new JsonSink().withWriteBatchSize("datarfomlh").withWriteBatchTimeout("dataiktecs")
-            .withSinkRetryCount("datacqweydaa").withSinkRetryWait("datattmfcx")
-            .withMaxConcurrentConnections("datawfsqjxxbs").withDisableMetricsCollection("dataqiwl")
-            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("datalnt")
-                .withDisableMetricsCollection("datah").withCopyBehavior("datatvxghbehhe")
-                .withMetadata(Arrays.asList(new MetadataItem().withName("dataorrvwlc").withValue("datajlyugzl"),
-                    new MetadataItem().withName("datajirj").withValue("datarsyfdsgrtke")))
-                .withAdditionalProperties(mapOf("type", "StoreWriteSettings")))
-            .withFormatSettings(new JsonWriteSettings().withFilePattern("datagzscgslwujk"));
+        JsonSink model = new JsonSink().withWriteBatchSize("dataufldzjcp")
+            .withWriteBatchTimeout("datajbzp")
+            .withSinkRetryCount("datafejg")
+            .withSinkRetryWait("datafvboxvwtln")
+            .withMaxConcurrentConnections("datashtujaqpkupnr")
+            .withDisableMetricsCollection("datajeypdk")
+            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("dataoqypvplmyzebv")
+                .withDisableMetricsCollection("datahoydehbvbex")
+                .withCopyBehavior("dataynnladdhdklwzz")
+                .withMetadata(Arrays.asList(new MetadataItem().withName("databosacrnpscfkef").withValue("datatxe"),
+                    new MetadataItem().withName("datamimgjuvjvtgece").withValue("datannle")))
+                .withAdditionalProperties(mapOf("type", "svpmw")))
+            .withFormatSettings(new JsonWriteSettings().withFilePattern("datae"));
         model = BinaryData.fromObject(model).toObject(JsonSink.class);
     }
 

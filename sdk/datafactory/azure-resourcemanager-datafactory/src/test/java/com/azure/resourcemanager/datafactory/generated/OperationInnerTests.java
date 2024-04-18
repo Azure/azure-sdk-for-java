@@ -47,22 +47,32 @@ public final class OperationInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationInner model = new OperationInner().withName("itjz").withOrigin("lusarh")
-            .withDisplay(new OperationDisplay().withDescription("cqhsm").withProvider("rkdtmlxh")
-                .withResource("uksjtxukcdmp").withOperation("cryuan"))
+        OperationInner model = new OperationInner().withName("itjz")
+            .withOrigin("lusarh")
+            .withDisplay(new OperationDisplay().withDescription("cqhsm")
+                .withProvider("rkdtmlxh")
+                .withResource("uksjtxukcdmp")
+                .withOperation("cryuan"))
             .withServiceSpecification(new OperationServiceSpecification()
                 .withLogSpecifications(Arrays.asList(
                     new OperationLogSpecification().withName("xtayr").withDisplayName("m").withBlobDuration("fp"),
-                    new OperationLogSpecification().withName("qobmtukk").withDisplayName("yrtih")
+                    new OperationLogSpecification().withName("qobmtukk")
+                        .withDisplayName("yrtih")
                         .withBlobDuration("tijbpzvgnwzsymgl"),
-                    new OperationLogSpecification().withName("fcyzkohdbihanufh").withDisplayName("bj")
+                    new OperationLogSpecification().withName("fcyzkohdbihanufh")
+                        .withDisplayName("bj")
                         .withBlobDuration("a"),
-                    new OperationLogSpecification().withName("th").withDisplayName("hab")
+                    new OperationLogSpecification().withName("th")
+                        .withDisplayName("hab")
                         .withBlobDuration("pikxwczbyscnpqxu")))
                 .withMetricSpecifications(Arrays.asList(new OperationMetricSpecification().withName("qniwbybrkxvdumj")
-                    .withDisplayName("tfwvukxgaudc").withDisplayDescription("nhsjcnyej").withUnit("ryhtnapczwlokjy")
-                    .withAggregationType("kkvnipjox").withEnableRegionalMdmAccount("nchgej")
-                    .withSourceMdmAccount("odmailzyd").withSourceMdmNamespace("o")
+                    .withDisplayName("tfwvukxgaudc")
+                    .withDisplayDescription("nhsjcnyej")
+                    .withUnit("ryhtnapczwlokjy")
+                    .withAggregationType("kkvnipjox")
+                    .withEnableRegionalMdmAccount("nchgej")
+                    .withSourceMdmAccount("odmailzyd")
+                    .withSourceMdmNamespace("o")
                     .withAvailabilities(
                         Arrays.asList(new OperationMetricAvailability(), new OperationMetricAvailability()))
                     .withDimensions(Arrays.asList(new OperationMetricDimension(), new OperationMetricDimension(),
