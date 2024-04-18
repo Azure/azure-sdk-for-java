@@ -162,6 +162,10 @@ function Get-java-DocsMsDevLanguageSpecificPackageInfo($packageInfo, $packageSou
     # them from the metadata. This allows us to set the namespaces for things that can't be figured out
     # through the javadoc, like track 1 libraries whose javadoc.jar files don't contain anything, in
     # the metadata json files.
+    # JRS-REMOVE this if statement, it's for diagnostics only
+    if (!($namespaces | Get-Member Count) {
+      LogWarning "Namespaces return from Fetch-Namespaces-From-Javadoc had no Count property. namespaces=$namespaces"
+    }
     if ($namespaces.Count -gt 0) {
       $packageInfo | Add-Member -Type NoteProperty -Name "Namespaces" -Value $namespaces
     }

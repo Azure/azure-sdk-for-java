@@ -222,6 +222,9 @@ function Fetch-Namespaces-From-Javadoc($package, $groupId, $version) {
     }
 
     $namespaces = $namespaces | Sort-Object -Unique
+    # JRS-REMOVE or possibly leave this in? Right now, it's for diagnostics purposes.
+    Write-Host "Fetching Namespaces returning:"
+    $namespaces | Write-Host
     # Make sure this always returns an array
     Write-Output -NoEnumerate $namespaces
 }
