@@ -14,22 +14,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CosmosDbMongoDbApiLinkedServiceTypeProperties {
     /*
-     * Whether the CosmosDB (MongoDB API) server version is higher than 3.2. The default value is false. Type: boolean
-     * (or Expression with resultType boolean).
+     * Whether the CosmosDB (MongoDB API) server version is higher than 3.2. The default value is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "isServerVersionAbove32")
     private Object isServerVersionAbove32;
 
     /*
-     * The CosmosDB (MongoDB API) connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type:
-     * string, SecureString or AzureKeyVaultSecretReference.
+     * The CosmosDB (MongoDB API) connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
 
     /*
-     * The name of the CosmosDB (MongoDB API) database that you want to access. Type: string (or Expression with
-     * resultType string).
+     * The name of the CosmosDB (MongoDB API) database that you want to access. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "database", required = true)
     private Object database;
@@ -113,12 +110,14 @@ public final class CosmosDbMongoDbApiLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property connectionString in model CosmosDbMongoDbApiLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectionString in model CosmosDbMongoDbApiLinkedServiceTypeProperties"));
         }
         if (database() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property database in model CosmosDbMongoDbApiLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property database in model CosmosDbMongoDbApiLinkedServiceTypeProperties"));
         }
     }
 

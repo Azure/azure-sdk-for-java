@@ -78,12 +78,14 @@ public final class AdminCredentials {
      */
     public void validate() {
         if (sourceServerPassword() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sourceServerPassword in model AdminCredentials"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceServerPassword in model AdminCredentials"));
         }
         if (targetServerPassword() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property targetServerPassword in model AdminCredentials"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetServerPassword in model AdminCredentials"));
         }
     }
 

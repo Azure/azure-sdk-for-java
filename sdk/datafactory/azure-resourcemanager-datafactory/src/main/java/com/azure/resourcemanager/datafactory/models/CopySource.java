@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
@@ -18,11 +19,7 @@ import java.util.Map;
 /**
  * A copy activity source.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = CopySource.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = CopySource.class, visible = true)
 @JsonTypeName("CopySource")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AvroSource", value = AvroSource.class),
@@ -68,28 +65,32 @@ import java.util.Map;
 @Fluent
 public class CopySource {
     /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type;
+
+    /*
      * Source retry count. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "sourceRetryCount")
     private Object sourceRetryCount;
 
     /*
-     * Source retry wait. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "sourceRetryWait")
     private Object sourceRetryWait;
 
     /*
-     * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType
-     * integer).
+     * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "maxConcurrentConnections")
     private Object maxConcurrentConnections;
 
     /*
-     * If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType
-     * boolean).
+     * If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "disableMetricsCollection")
     private Object disableMetricsCollection;
@@ -104,6 +105,16 @@ public class CopySource {
      * Creates an instance of CopySource class.
      */
     public CopySource() {
+        this.type = "CopySource";
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**

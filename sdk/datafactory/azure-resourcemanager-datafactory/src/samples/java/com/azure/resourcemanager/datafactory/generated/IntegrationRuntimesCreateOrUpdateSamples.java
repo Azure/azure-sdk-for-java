@@ -11,8 +11,7 @@ import com.azure.resourcemanager.datafactory.models.SelfHostedIntegrationRuntime
  */
 public final class IntegrationRuntimesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * IntegrationRuntimes_Create.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Create.json
      */
     /**
      * Sample code: IntegrationRuntimes_Create.
@@ -20,7 +19,8 @@ public final class IntegrationRuntimesCreateOrUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimesCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().define("exampleIntegrationRuntime")
+        manager.integrationRuntimes()
+            .define("exampleIntegrationRuntime")
             .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
             .withProperties(new SelfHostedIntegrationRuntime().withDescription("A selfhosted integration runtime"))
             .create();

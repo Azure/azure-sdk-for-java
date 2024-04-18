@@ -254,7 +254,9 @@ final class ServiceBusProcessor {
                     },
                     true);
             }
-            final Mono<Void> rollingPump = pumping.retryWhen(retrySpecForNextPump());
+            final Mono<Void> rollingPump = pumping
+                .onErrorResume(MessagePumpTerminatedException.class, t -> notifyError(t).then(Mono.error(t)))
+                .retryWhen(retrySpecForNextPump());
             return rollingPump;
         }
 
@@ -264,6 +266,29 @@ final class ServiceBusProcessor {
 
         void dispose() {
             disposable.dispose();
+        }
+
+        /**
+         * Notify the current pump termination cause to the processor handler.
+         * <p>
+         * The processor handler will be called on a worker thread so that application may do blocking calls in
+         * the handler.
+         * </p>
+         * @param t the input error with cause as the reason for pump termination.
+         * @return a Mono that when subscribed invokes the processor handler.
+         */
+        private Mono<Void> notifyError(MessagePumpTerminatedException t) {
+            final ServiceBusErrorContext errorContext = t.getErrorContext();
+            if (errorContext == null) {
+                return Mono.empty();
+            }
+            return Mono.<Void>fromRunnable(() -> {
+                try {
+                    processError.accept(errorContext);
+                } catch (Exception e) {
+                    logger.atVerbose().log("Ignoring error from user processError handler.", e);
+                }
+            }).subscribeOn(Schedulers.boundedElastic());
         }
 
         /**

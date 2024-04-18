@@ -143,7 +143,7 @@ public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
                 add(new RouterChannel("channel2", 5));
             }
         });
-        RouterWorker updatedWorker = routerAsyncClient.updateWorker(workerId, deserialized, null).block();
+        RouterWorker updatedWorker = routerAsyncClient.updateWorker(workerId, deserialized).block();
 
         assertEquals(workerId, updatedWorker.getId());
         assertEquals(updatedWorker.isAvailableForOffers(), true);

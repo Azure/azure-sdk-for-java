@@ -9,8 +9,7 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class ManagedPrivateEndpointsGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * ManagedPrivateEndpoints_Get.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedPrivateEndpoints_Get.json
      */
     /**
      * Sample code: ManagedPrivateEndpoints_Get.
@@ -18,8 +17,8 @@ public final class ManagedPrivateEndpointsGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void managedPrivateEndpointsGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.managedPrivateEndpoints().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleManagedVirtualNetworkName", "exampleManagedPrivateEndpointName", null,
-            com.azure.core.util.Context.NONE);
+        manager.managedPrivateEndpoints()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleManagedVirtualNetworkName",
+                "exampleManagedPrivateEndpointName", null, com.azure.core.util.Context.NONE);
     }
 }

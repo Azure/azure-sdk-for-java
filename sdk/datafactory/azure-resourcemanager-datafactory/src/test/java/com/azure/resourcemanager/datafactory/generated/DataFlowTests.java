@@ -14,19 +14,19 @@ public final class DataFlowTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataFlow model = BinaryData.fromString(
-            "{\"type\":\"DataFlow\",\"description\":\"kyoqufdv\",\"annotations\":[\"dataslzojh\",\"datactfnmdxotng\"],\"folder\":{\"name\":\"ugeyzihgrkyuiza\"}}")
+            "{\"type\":\"fhvfsl\",\"description\":\"ntjlr\",\"annotations\":[\"datakskyrioovzid\",\"dataxwaabzmifrygznmm\"],\"folder\":{\"name\":\"izkzobgo\"}}")
             .toObject(DataFlow.class);
-        Assertions.assertEquals("kyoqufdv", model.description());
-        Assertions.assertEquals("ugeyzihgrkyuiza", model.folder().name());
+        Assertions.assertEquals("ntjlr", model.description());
+        Assertions.assertEquals("izkzobgo", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataFlow model
-            = new DataFlow().withDescription("kyoqufdv").withAnnotations(Arrays.asList("dataslzojh", "datactfnmdxotng"))
-                .withFolder(new DataFlowFolder().withName("ugeyzihgrkyuiza"));
+        DataFlow model = new DataFlow().withDescription("ntjlr")
+            .withAnnotations(Arrays.asList("datakskyrioovzid", "dataxwaabzmifrygznmm"))
+            .withFolder(new DataFlowFolder().withName("izkzobgo"));
         model = BinaryData.fromObject(model).toObject(DataFlow.class);
-        Assertions.assertEquals("kyoqufdv", model.description());
-        Assertions.assertEquals("ugeyzihgrkyuiza", model.folder().name());
+        Assertions.assertEquals("ntjlr", model.description());
+        Assertions.assertEquals("izkzobgo", model.folder().name());
     }
 }

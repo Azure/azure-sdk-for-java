@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.fluent.models.ManagedIdentityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -14,10 +15,21 @@ import java.util.List;
 /**
  * Managed identity credential.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = ManagedIdentityCredential.class,
+    visible = true)
 @JsonTypeName("ManagedIdentity")
 @Fluent
 public final class ManagedIdentityCredential extends Credential {
+    /*
+     * Type of credential.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "ManagedIdentity";
+
     /*
      * Managed identity credential properties.
      */
@@ -28,6 +40,16 @@ public final class ManagedIdentityCredential extends Credential {
      * Creates an instance of ManagedIdentityCredential class.
      */
     public ManagedIdentityCredential() {
+    }
+
+    /**
+     * Get the type property: Type of credential.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

@@ -38,6 +38,12 @@ public final class CommunicationIceServer {
     private RouteType routeType;
 
     /**
+     * Default constructor for CommunicationIceServer.
+     */
+    public CommunicationIceServer() {
+    }
+
+    /**
      * Get the urls property: List of STUN/TURN server URLs.
      *
      * @return the urls value.
