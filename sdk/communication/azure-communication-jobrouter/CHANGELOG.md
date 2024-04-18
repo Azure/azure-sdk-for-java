@@ -6,12 +6,12 @@
 
 - Added `MaxConcurrentOffers` to RouterWorker and CreateWorkerOptions
 - Added createJobWithClassificationPolicy and createJobWithClassificationPolicyWithResponse to JobRouterClient and JobRouterAsyncClient
+- Added updateXX methods that accept and return XX in JobRouterClient, JobRouterAdministrationClient, JobRouterAsyncClient and JobRouterAdministrationAsyncClient
 
 ### Breaking Changes
 
 - Added value to RouterWorkerSelector/RouterQueueSelector constructor, remove setter
 - Change return type of createJobWithResponse to RouterJob instead of BinaryData in JobRouterClient and JobRouterAsyncClient
-- Change return type of updateXX to XX instead of BinaryData in JobRouterClient, JobRouterAdministrationClient, JobRouterAsyncClient and JobRouterAdministrationAsyncClient
 
 ### Bugs Fixed
 

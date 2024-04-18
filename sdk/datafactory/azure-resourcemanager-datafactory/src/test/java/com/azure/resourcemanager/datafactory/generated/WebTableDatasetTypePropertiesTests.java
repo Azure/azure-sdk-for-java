@@ -11,14 +11,14 @@ public final class WebTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WebTableDatasetTypeProperties model
-            = BinaryData.fromString("{\"index\":\"databnunzuysajvvqlho\",\"path\":\"dataon\"}")
+            = BinaryData.fromString("{\"index\":\"datayfyixecmasjnfgng\",\"path\":\"dataojeeyvfxbfckmo\"}")
                 .toObject(WebTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WebTableDatasetTypeProperties model
-            = new WebTableDatasetTypeProperties().withIndex("databnunzuysajvvqlho").withPath("dataon");
+            = new WebTableDatasetTypeProperties().withIndex("datayfyixecmasjnfgng").withPath("dataojeeyvfxbfckmo");
         model = BinaryData.fromObject(model).toObject(WebTableDatasetTypeProperties.class);
     }
 }

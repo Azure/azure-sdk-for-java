@@ -14,6 +14,11 @@ import java.util.Map;
 /** An entity for jobs to be routed to. */
 @Fluent
 public final class RouterWorker {
+    /**
+     * Create new instance
+     */
+    public RouterWorker() {
+    }
 
     /*
      * Id of the worker.

@@ -19,30 +19,32 @@ public final class MongoDbAtlasCollectionDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDbAtlasCollectionDataset model = BinaryData.fromString(
-            "{\"type\":\"MongoDbAtlasCollection\",\"typeProperties\":{\"collection\":\"datafpohimgckycjpeeb\"},\"description\":\"bznxsuloutnpbm\",\"structure\":\"dataoqohgp\",\"schema\":\"datadmwk\",\"linkedServiceName\":{\"referenceName\":\"upf\",\"parameters\":{\"dzauiunyev\":\"datad\",\"uynfxkcgsfcmvh\":\"datayzdsytcikswhcam\",\"atvyrkljqkqws\":\"datadrp\",\"bypnkteiidlbov\":\"datajtvjkowggxawwd\"}},\"parameters\":{\"rekyjulskwwn\":{\"type\":\"String\",\"defaultValue\":\"datargeganihkjcn\"}},\"annotations\":[\"datalqgpwxtvceba\"],\"folder\":{\"name\":\"vxwve\"},\"\":{\"csmwevguy\":\"datalr\",\"rj\":\"datalnxe\",\"owwe\":\"datafzcde\",\"sfqbirtybcelfjn\":\"datahyfkdilbwqlqa\"}}")
+            "{\"type\":\"jrnogykugdl\",\"typeProperties\":{\"collection\":\"datalkyhtrrqwfyybpt\"},\"description\":\"sav\",\"structure\":\"datahk\",\"schema\":\"datageuufkb\",\"linkedServiceName\":{\"referenceName\":\"bfbxj\",\"parameters\":{\"sazdjmofsvpz\":\"datajybdnbycsbto\",\"mlfjymgw\":\"datagnywxu\",\"q\":\"datamszcfy\",\"re\":\"datae\"}},\"parameters\":{\"vrgihl\":{\"type\":\"Array\",\"defaultValue\":\"datapagknxma\"}},\"annotations\":[\"datafewvqk\"],\"folder\":{\"name\":\"cgeipqxxsdyaf\"},\"\":{\"clejqzhpv\":\"datadsmmabh\",\"eullgfyog\":\"dataxpbadj\"}}")
             .toObject(MongoDbAtlasCollectionDataset.class);
-        Assertions.assertEquals("bznxsuloutnpbm", model.description());
-        Assertions.assertEquals("upf", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("rekyjulskwwn").type());
-        Assertions.assertEquals("vxwve", model.folder().name());
+        Assertions.assertEquals("sav", model.description());
+        Assertions.assertEquals("bfbxj", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("vrgihl").type());
+        Assertions.assertEquals("cgeipqxxsdyaf", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDbAtlasCollectionDataset model = new MongoDbAtlasCollectionDataset().withDescription("bznxsuloutnpbm")
-            .withStructure("dataoqohgp").withSchema("datadmwk")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("upf")
-                .withParameters(mapOf("dzauiunyev", "datad", "uynfxkcgsfcmvh", "datayzdsytcikswhcam", "atvyrkljqkqws",
-                    "datadrp", "bypnkteiidlbov", "datajtvjkowggxawwd")))
-            .withParameters(mapOf("rekyjulskwwn",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datargeganihkjcn")))
-            .withAnnotations(Arrays.asList("datalqgpwxtvceba")).withFolder(new DatasetFolder().withName("vxwve"))
-            .withCollection("datafpohimgckycjpeeb");
+        MongoDbAtlasCollectionDataset model = new MongoDbAtlasCollectionDataset().withDescription("sav")
+            .withStructure("datahk")
+            .withSchema("datageuufkb")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("bfbxj")
+                .withParameters(mapOf("sazdjmofsvpz", "datajybdnbycsbto", "mlfjymgw", "datagnywxu", "q", "datamszcfy",
+                    "re", "datae")))
+            .withParameters(mapOf("vrgihl",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datapagknxma")))
+            .withAnnotations(Arrays.asList("datafewvqk"))
+            .withFolder(new DatasetFolder().withName("cgeipqxxsdyaf"))
+            .withCollection("datalkyhtrrqwfyybpt");
         model = BinaryData.fromObject(model).toObject(MongoDbAtlasCollectionDataset.class);
-        Assertions.assertEquals("bznxsuloutnpbm", model.description());
-        Assertions.assertEquals("upf", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("rekyjulskwwn").type());
-        Assertions.assertEquals("vxwve", model.folder().name());
+        Assertions.assertEquals("sav", model.description());
+        Assertions.assertEquals("bfbxj", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("vrgihl").type());
+        Assertions.assertEquals("cgeipqxxsdyaf", model.folder().name());
     }
 
     // Use "Map.of" if available

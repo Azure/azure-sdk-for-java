@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -14,7 +15,11 @@ import java.util.List;
 /**
  * A request chat message representing response or action from the assistant.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "role")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "role",
+    defaultImpl = ChatRequestAssistantMessage.class,
+    visible = true)
 @JsonTypeName("assistant")
 @Fluent
 public final class ChatRequestAssistantMessage extends ChatRequestMessage {
@@ -24,7 +29,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
      */
     @Generated
     @JsonProperty(value = "content")
-    private String content;
+    private final String content;
 
     /*
      * An optional name for the participant.
@@ -119,8 +124,8 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     }
 
     /**
-     * Get the functionCall property: The function call that must be resolved and have its output appended to
-     * subsequent input messages for the chat
+     * Get the functionCall property: The function call that must be resolved and have its output appended to subsequent
+     * input messages for the chat
      * completions request to resolve as configured.
      *
      * @return the functionCall value.
@@ -131,8 +136,8 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     }
 
     /**
-     * Set the functionCall property: The function call that must be resolved and have its output appended to
-     * subsequent input messages for the chat
+     * Set the functionCall property: The function call that must be resolved and have its output appended to subsequent
+     * input messages for the chat
      * completions request to resolve as configured.
      *
      * @param functionCall the functionCall value to set.
@@ -142,5 +147,24 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     public ChatRequestAssistantMessage setFunctionCall(FunctionCall functionCall) {
         this.functionCall = functionCall;
         return this;
+    }
+
+    /*
+     * The chat role associated with this message.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "role")
+    private ChatRole role = ChatRole.ASSISTANT;
+
+    /**
+     * Get the role property: The chat role associated with this message.
+     *
+     * @return the role value.
+     */
+    @Generated
+    @Override
+    public ChatRole getRole() {
+        return this.role;
     }
 }

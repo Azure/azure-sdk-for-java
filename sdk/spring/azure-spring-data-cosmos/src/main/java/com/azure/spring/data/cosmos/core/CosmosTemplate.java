@@ -289,6 +289,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
         List<String> transientFields =  entityInfo.getTransientFields();
         entities.forEach(entity -> {
+            markAuditedIfConfigured(entity);
             generateIdIfNullAndAutoGenerationEnabled(entity, domainType);
             JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
             JsonNode preStrippedItem = originalItem.deepCopy();

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.TwilioLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,17 @@ import java.util.Map;
 /**
  * Linked service for Twilio.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = TwilioLinkedService.class, visible = true)
 @JsonTypeName("Twilio")
 @Fluent
 public final class TwilioLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "Twilio";
+
     /*
      * Twilio linked service properties.
      */
@@ -30,6 +38,16 @@ public final class TwilioLinkedService extends LinkedService {
      * Creates an instance of TwilioLinkedService class.
      */
     public TwilioLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -134,8 +152,9 @@ public final class TwilioLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model TwilioLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model TwilioLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

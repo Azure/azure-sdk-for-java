@@ -6,52 +6,34 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.FlexibleServerCapability;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ServerCapabilitiesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"name\":\"zeyqxtjjfzqlqhyc\",\"supportedServerEditions\":[{\"name\":\"ggxdb\",\"defaultSkuName\":\"smieknlra\",\"supportedStorageEditions\":[{\"name\":\"wiuagydwqf\",\"defaultStorageSizeMb\":3449194025603935215,\"supportedStorageMb\":[{},{},{},{}],\"status\":\"Available\",\"reason\":\"gtcojocqwo\"},{\"name\":\"nzjvusfzldm\",\"defaultStorageSizeMb\":5113876316568872308,\"supportedStorageMb\":[{},{},{},{}],\"status\":\"Disabled\",\"reason\":\"tkad\"},{\"name\":\"s\",\"defaultStorageSizeMb\":7622932669056609531,\"supportedStorageMb\":[{},{},{}],\"status\":\"Available\",\"reason\":\"grjqctojcmi\"},{\"name\":\"fieypefojyqdhcup\",\"defaultStorageSizeMb\":7173629993516943647,\"supportedStorageMb\":[{},{},{},{}],\"status\":\"Disabled\",\"reason\":\"hihlhzdsqtzbs\"}],\"supportedServerSkus\":[{\"name\":\"wcjhfgmv\",\"vCores\":1233183309,\"supportedIops\":404644948,\"supportedMemoryPerVcoreMb\":6561780830584801221,\"supportedZones\":[\"e\",\"owcluqo\"],\"supportedHaMode\":[\"SameZone\",\"ZoneRedundant\"],\"status\":\"Visible\",\"reason\":\"uwifzmpjwyiv\"}],\"status\":\"Default\",\"reason\":\"xcvhrfs\"},{\"name\":\"uagrttikteusqc\",\"defaultSkuName\":\"vyklxuby\",\"supportedStorageEditions\":[{\"name\":\"mmfblcqcuubgqib\",\"defaultStorageSizeMb\":323149241327703760,\"supportedStorageMb\":[{},{},{},{}],\"status\":\"Available\",\"reason\":\"wgdsl\"}],\"supportedServerSkus\":[{\"name\":\"hrmooi\",\"vCores\":1309261520,\"supportedIops\":418488184,\"supportedMemoryPerVcoreMb\":6854004636755290327,\"supportedZones\":[\"cxa\",\"zhyrpeto\",\"e\",\"joxslhvnhla\"],\"supportedHaMode\":[\"SameZone\"],\"status\":\"Default\",\"reason\":\"jcjbt\"},{\"name\":\"aehvvibrxjjstoq\",\"vCores\":449265761,\"supportedIops\":774286462,\"supportedMemoryPerVcoreMb\":4666346090573112474,\"supportedZones\":[\"oobklftidgfcwq\"],\"supportedHaMode\":[\"ZoneRedundant\"],\"status\":\"Available\",\"reason\":\"zhe\"}],\"status\":\"Disabled\",\"reason\":\"ohu\"}],\"supportedServerVersions\":[{\"name\":\"wkozz\",\"supportedVersionsToUpgrade\":[\"lkb\"],\"status\":\"Disabled\",\"reason\":\"ajnjwltlwtjj\"},{\"name\":\"ktalhsnvkcdmxz\",\"supportedVersionsToUpgrade\":[\"aimlnwiaaom\",\"l\"],\"status\":\"Visible\",\"reason\":\"ulcsethwwnpj\"}],\"fastProvisioningSupported\":\"Enabled\",\"supportedFastProvisioningEditions\":[{\"supportedTier\":\"pchwa\",\"supportedSku\":\"bousn\",\"supportedStorageGb\":793996513,\"supportedServerVersions\":\"fewetwlyxgncx\",\"serverCount\":1527837396,\"status\":\"Available\",\"reason\":\"h\"},{\"supportedTier\":\"mmbcxfhbcp\",\"supportedSku\":\"xvxcjzhq\",\"supportedStorageGb\":546914966,\"supportedServerVersions\":\"pxtgqscjav\",\"serverCount\":1896179183,\"status\":\"Disabled\",\"reason\":\"qaz\"},{\"supportedTier\":\"tgguwpijrajcivmm\",\"supportedSku\":\"f\",\"supportedStorageGb\":1851539206,\"supportedServerVersions\":\"rxgkne\",\"serverCount\":942321971,\"status\":\"Default\",\"reason\":\"qodfvp\"},{\"supportedTier\":\"hoxgsgbpf\",\"supportedSku\":\"djtxvzflbq\",\"supportedStorageGb\":879778472,\"supportedServerVersions\":\"vl\",\"serverCount\":617486740,\"status\":\"Default\",\"reason\":\"srdvetn\"}],\"geoBackupSupported\":\"Disabled\",\"zoneRedundantHaSupported\":\"Enabled\",\"zoneRedundantHaAndGeoBackupSupported\":\"Disabled\",\"storageAutoGrowthSupported\":\"Enabled\",\"onlineResizeSupported\":\"Disabled\",\"restricted\":\"Disabled\",\"status\":\"Disabled\",\"reason\":\"hyrmewipmvekdx\"}]}";
+            = "{\"value\":[{\"name\":\"vqikfxcvhrfsphu\",\"supportedServerEditions\":[{\"name\":\"tikteusqczkvykl\",\"defaultSkuName\":\"byjaffmmf\",\"supportedStorageEditions\":[{\"name\":\"cuubgq\",\"defaultStorageSizeMb\":6925699685066088287,\"supportedStorageMb\":[{},{},{},{}],\"status\":\"Disabled\",\"reason\":\"ttwgdsl\"}],\"supportedServerSkus\":[{\"name\":\"hrmooi\",\"vCores\":1309261520,\"supportedIops\":418488184,\"supportedMemoryPerVcoreMb\":6854004636755290327,\"supportedZones\":[\"cxa\",\"zhyrpeto\",\"e\",\"joxslhvnhla\"],\"supportedHaMode\":[\"SameZone\"],\"status\":\"Default\",\"reason\":\"jcjbt\"},{\"name\":\"aehvvibrxjjstoq\",\"vCores\":449265761,\"supportedIops\":774286462,\"supportedMemoryPerVcoreMb\":4666346090573112474,\"supportedZones\":[\"oobklftidgfcwq\"],\"supportedHaMode\":[\"ZoneRedundant\"],\"status\":\"Available\",\"reason\":\"zhe\"}],\"status\":\"Disabled\",\"reason\":\"ohu\"},{\"name\":\"wtwko\",\"defaultSkuName\":\"wculkbaw\",\"supportedStorageEditions\":[{\"name\":\"njwltlwtjjgu\",\"defaultStorageSizeMb\":8518213803289262805,\"supportedStorageMb\":[{}],\"status\":\"Available\",\"reason\":\"cdmxzrpoaiml\"},{\"name\":\"iaaomylweazul\",\"defaultStorageSizeMb\":4118122894986571340,\"supportedStorageMb\":[{},{}],\"status\":\"Disabled\",\"reason\":\"jhlfzswpchwahf\"},{\"name\":\"usnfepgfewet\",\"defaultStorageSizeMb\":7432084644277094724,\"supportedStorageMb\":[{},{},{},{}],\"status\":\"Available\",\"reason\":\"kxhdjhlimmbcx\"}],\"supportedServerSkus\":[{\"name\":\"po\",\"vCores\":2026678131,\"supportedIops\":1548715838,\"supportedMemoryPerVcoreMb\":7495334357568508911,\"supportedZones\":[\"zxfpxtgqsc\",\"avft\"],\"supportedHaMode\":[\"ZoneRedundant\",\"SameZone\",\"ZoneRedundant\",\"ZoneRedundant\"],\"status\":\"Available\",\"reason\":\"gg\"},{\"name\":\"pijrajcivmmghf\",\"vCores\":1851539206,\"supportedIops\":1456716709,\"supportedMemoryPerVcoreMb\":3356451442054441941,\"supportedZones\":[\"uvyinzqodfvpgs\",\"oxgsgbpfgzdjtx\",\"zflbqvg\",\"qvlgafcqusrdvetn\"],\"supportedHaMode\":[\"ZoneRedundant\",\"SameZone\",\"ZoneRedundant\"],\"status\":\"Available\",\"reason\":\"duy\"},{\"name\":\"uzhyrmewipmvekdx\",\"vCores\":1124949924,\"supportedIops\":894303936,\"supportedMemoryPerVcoreMb\":1648370479769908154,\"supportedZones\":[\"n\",\"xgketwz\",\"hzjhf\"],\"supportedHaMode\":[\"SameZone\",\"SameZone\",\"SameZone\"],\"status\":\"Available\",\"reason\":\"pmuneqsx\"},{\"name\":\"hfbuzjyihsasbhud\",\"vCores\":1053625203,\"supportedIops\":719606175,\"supportedMemoryPerVcoreMb\":2798000155301001189,\"supportedZones\":[\"ynsqyrpfoobr\",\"ttymsjny\",\"qdnfwqzdz\"],\"supportedHaMode\":[\"SameZone\",\"SameZone\"],\"status\":\"Disabled\",\"reason\":\"fhqlyvi\"}],\"status\":\"Available\",\"reason\":\"iv\"},{\"name\":\"oyzunbixxr\",\"defaultSkuName\":\"kvcpwpgclr\",\"supportedStorageEditions\":[{\"name\":\"soxfrken\",\"defaultStorageSizeMb\":116533809200901624,\"supportedStorageMb\":[{}],\"status\":\"Default\",\"reason\":\"mpdnqqskawa\"},{\"name\":\"vmm\",\"defaultStorageSizeMb\":118268358895074671,\"supportedStorageMb\":[{}],\"status\":\"Available\",\"reason\":\"kzmegnitgvkxlz\"}],\"supportedServerSkus\":[{\"name\":\"fegcea\",\"vCores\":608530050,\"supportedIops\":1274510165,\"supportedMemoryPerVcoreMb\":4874125909627032017,\"supportedZones\":[\"moy\"],\"supportedHaMode\":[\"SameZone\",\"ZoneRedundant\",\"ZoneRedundant\"],\"status\":\"Default\",\"reason\":\"bkbxgomfa\"}],\"status\":\"Default\",\"reason\":\"sqvdaeyygux\"}],\"supportedServerVersions\":[{\"name\":\"qzhzbezkgimsi\",\"supportedVersionsToUpgrade\":[\"sicddyvv\"],\"status\":\"Default\",\"reason\":\"fmocwahpq\"},{\"name\":\"tjeaahhvjhh\",\"supportedVersionsToUpgrade\":[\"zybbj\"],\"status\":\"Visible\",\"reason\":\"ksyxkyxvxevblbje\"},{\"name\":\"ljlageuaulxu\",\"supportedVersionsToUpgrade\":[\"jbnkpp\",\"ynenlsvxeizz\"],\"status\":\"Default\",\"reason\":\"nsrmffeycx\"}],\"fastProvisioningSupported\":\"Disabled\",\"supportedFastProvisioningEditions\":[{\"supportedTier\":\"merteeammxqiek\",\"supportedSku\":\"zddrt\",\"supportedStorageGb\":550978856,\"supportedServerVersions\":\"jbmxvavre\",\"serverCount\":1844509739,\"status\":\"Default\",\"reason\":\"ecuijpxtxs\"},{\"supportedTier\":\"prtujwsawdd\",\"supportedSku\":\"babxvitit\",\"supportedStorageGb\":1297733750,\"supportedServerVersions\":\"exavoxt\",\"serverCount\":165499088,\"status\":\"Visible\",\"reason\":\"m\"},{\"supportedTier\":\"bwpypqtgsfjacb\",\"supportedSku\":\"hhxud\",\"supportedStorageGb\":1368673691,\"supportedServerVersions\":\"d\",\"serverCount\":1282129926,\"status\":\"Available\",\"reason\":\"ud\"},{\"supportedTier\":\"m\",\"supportedSku\":\"sckdlp\",\"supportedStorageGb\":2009658341,\"supportedServerVersions\":\"cxfailcfxwmdboxd\",\"serverCount\":1260487269,\"status\":\"Disabled\",\"reason\":\"fqob\"}],\"geoBackupSupported\":\"Enabled\",\"zoneRedundantHaSupported\":\"Disabled\",\"zoneRedundantHaAndGeoBackupSupported\":\"Disabled\",\"storageAutoGrowthSupported\":\"Disabled\",\"onlineResizeSupported\":\"Enabled\",\"restricted\":\"Disabled\",\"status\":\"Available\",\"reason\":\"zvytnrzvuljraaer\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        PostgreSqlManager manager = PostgreSqlManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PostgreSqlManager manager = PostgreSqlManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<FlexibleServerCapability> response
-            = manager.serverCapabilities().list("faxvxil", "btgn", com.azure.core.util.Context.NONE);
+            = manager.serverCapabilities().list("uqovekqvgqouwif", "mpjw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zeyqxtjjfzqlqhyc", response.iterator().next().name());
+        Assertions.assertEquals("vqikfxcvhrfsphu", response.iterator().next().name());
     }
 }

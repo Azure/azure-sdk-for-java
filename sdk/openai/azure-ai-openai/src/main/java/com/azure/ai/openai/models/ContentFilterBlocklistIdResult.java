@@ -19,28 +19,14 @@ public final class ContentFilterBlocklistIdResult {
      */
     @Generated
     @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
      * A value indicating whether or not the content has been filtered.
      */
     @Generated
     @JsonProperty(value = "filtered")
-    private boolean filtered;
-
-    /**
-     * Creates an instance of ContentFilterBlocklistIdResult class.
-     *
-     * @param id the id value to set.
-     * @param filtered the filtered value to set.
-     */
-    @Generated
-    @JsonCreator
-    private ContentFilterBlocklistIdResult(@JsonProperty(value = "id") String id,
-        @JsonProperty(value = "filtered") boolean filtered) {
-        this.id = id;
-        this.filtered = filtered;
-    }
+    private final boolean filtered;
 
     /**
      * Get the id property: The ID of the custom blocklist evaluated.
@@ -60,5 +46,19 @@ public final class ContentFilterBlocklistIdResult {
     @Generated
     public boolean isFiltered() {
         return this.filtered;
+    }
+
+    /**
+     * Creates an instance of ContentFilterBlocklistIdResult class.
+     *
+     * @param filtered the filtered value to set.
+     * @param id the id value to set.
+     */
+    @Generated
+    @JsonCreator
+    private ContentFilterBlocklistIdResult(@JsonProperty(value = "filtered") boolean filtered,
+        @JsonProperty(value = "id") String id) {
+        this.filtered = filtered;
+        this.id = id;
     }
 }

@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -12,14 +14,35 @@ import java.util.List;
 /**
  * File server write settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = FileServerWriteSettings.class,
+    visible = true)
 @JsonTypeName("FileServerWriteSettings")
 @Fluent
 public final class FileServerWriteSettings extends StoreWriteSettings {
+    /*
+     * The write setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "FileServerWriteSettings";
+
     /**
      * Creates an instance of FileServerWriteSettings class.
      */
     public FileServerWriteSettings() {
+    }
+
+    /**
+     * Get the type property: The write setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

@@ -526,6 +526,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
         List<String> transientFields =  entityInfo.getTransientFields();
         Flux<CosmosItemOperation> cosmosItemOperationsFlux = entities.map(entity -> {
+            markAuditedIfConfigured(entity);
             generateIdIfNullAndAutoGenerationEnabled(entity, domainType);
             JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
             JsonNode preStrippedItem = originalItem.deepCopy();

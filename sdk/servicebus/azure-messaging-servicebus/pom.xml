@@ -48,6 +48,9 @@
       --add-reads com.azure.messaging.servicebus=com.azure.core.experimental
       --add-reads com.azure.messaging.servicebus=com.azure.core.tracing.opentelemetry
     </javaModulesSurefireArgLine>
+
+    <javadoc.excludePackageNames>com.azure.json,com.azure.xml,com.azure.core.*</javadoc.excludePackageNames>
+    <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../core/azure-core/src/main/java:${basedir}/../../serialization/azure-json/src/main/java:${basedir}/../../serialization/azure-xml/src/main/java</javadoc.sourcepath>
   </properties>
 
   <dependencies>
@@ -64,7 +67,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>2.9.3</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
+      <version>2.10.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-amqp;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

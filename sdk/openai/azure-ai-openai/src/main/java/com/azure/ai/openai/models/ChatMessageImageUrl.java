@@ -19,7 +19,7 @@ public final class ChatMessageImageUrl {
      */
     @Generated
     @JsonProperty(value = "url")
-    private String url;
+    private final String url;
 
     /**
      * Creates an instance of ChatMessageImageUrl class.
