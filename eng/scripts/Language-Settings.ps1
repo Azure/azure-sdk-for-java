@@ -154,7 +154,6 @@ function Get-java-DocsMsDevLanguageSpecificPackageInfo($packageInfo, $packageSou
       $version = $packageInfo.DevVersion
     }
     $namespaces = Fetch-Namespaces-From-Javadoc $packageInfo.Name $packageInfo.Group $version
-    Write-Host "in Get-java-DocsMsDevLanguageSpecificPackageInfo, namespaces.GetType().FullName=$($namespaces.GetType().FullName)"
     # If there are namespaces found from the javadoc.jar then add them to the packageInfo which
     # will later update the metadata json file in the docs repository. If there aren't any namespaces
     # then don't add the namespaces member with an empty list. The reason being is that the
@@ -164,8 +163,8 @@ function Get-java-DocsMsDevLanguageSpecificPackageInfo($packageInfo, $packageSou
     # through the javadoc, like track 1 libraries whose javadoc.jar files don't contain anything, in
     # the metadata json files.
     if ($namespaces.Count -gt 0) {
-      # JRS-REMOVE this if statement, it's for diagnostics only
-      Write-Host "Get-java-DocsMsDevLanguageSpecificPackageInfo:adding namespaces property"
+      Write-Host "Get-java-DocsMsDevLanguageSpecificPackageInfo:adding namespaces property with the following namespaces:"
+      $namespaces | Write-Host
       $packageInfo | Add-Member -Type NoteProperty -Name "Namespaces" -Value $namespaces
     } else {
       Write-Host "Get-java-DocsMsDevLanguageSpecificPackageInfo: no namespaces to add"
@@ -353,6 +352,8 @@ function GetExistingPackageVersions ($PackageName, $GroupId=$null)
   }
 }
 
+# Defined in common.ps1
+# $GetDocsMsMetadataForPackageFn = "Get-${Language}-DocsMsMetadataForPackage"
 function Get-java-DocsMsMetadataForPackage($PackageInfo) {
   $readmeName = $PackageInfo.Name.ToLower()
   Write-Host "Docs.ms Readme name: $($readmeName)"
@@ -404,7 +405,7 @@ function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidatio
     LogError "There should be a java2docfx directory under Env:BUILD_BINARIESDIRECTORY. Ensure that the /eng/pipelines/templates/steps/install-rex-validation-tool.yml template was run prior to whatever step is running this."
     return $false
   }
-  $java2docfxJarLoc = Get-ChildItem -Path $java2docfxDir -File -Filter "java2docfx*.jar"
+  $java2docfxJarLoc = @(Get-ChildItem -Path $java2docfxDir -File -Filter "java2docfx*.jar")
   if (!$java2docfxJarLoc) {
     LogError "The java2docfx jar file should be installed in $java2docfxDir and is not there."
     return $false

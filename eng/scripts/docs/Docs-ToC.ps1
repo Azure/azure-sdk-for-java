@@ -224,8 +224,6 @@ function Fetch-Namespaces-From-Javadoc($package, $groupId, $version) {
 
     # Ensure that Sort-Object returns an array even if there's only a single object.
     $namespaces = @($namespaces | Sort-Object -Unique)
-
-    $namespaces | Write-Host
     # Make sure this always returns an array
     Write-Output -NoEnumerate $namespaces
 }
