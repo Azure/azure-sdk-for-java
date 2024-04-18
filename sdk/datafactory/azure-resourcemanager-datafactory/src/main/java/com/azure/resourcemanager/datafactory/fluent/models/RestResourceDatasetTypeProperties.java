@@ -15,22 +15,19 @@ import java.util.Map;
 @Fluent
 public final class RestResourceDatasetTypeProperties {
     /*
-     * The relative URL to the resource that the RESTful API provides. Type: string (or Expression with resultType
-     * string).
+     * The relative URL to the resource that the RESTful API provides. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "relativeUrl")
     private Object relativeUrl;
 
     /*
-     * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType
-     * string).
+     * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "requestMethod")
     private Object requestMethod;
 
     /*
-     * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType
-     * string).
+     * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "requestBody")
     private Object requestBody;
@@ -100,8 +97,8 @@ public final class RestResourceDatasetTypeProperties {
     }
 
     /**
-     * Get the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string
-     * (or Expression with resultType string).
+     * Get the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
+     * Expression with resultType string).
      * 
      * @return the requestBody value.
      */
@@ -110,8 +107,8 @@ public final class RestResourceDatasetTypeProperties {
     }
 
     /**
-     * Set the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string
-     * (or Expression with resultType string).
+     * Set the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
+     * Expression with resultType string).
      * 
      * @param requestBody the requestBody value to set.
      * @return the RestResourceDatasetTypeProperties object itself.

@@ -46,8 +46,7 @@ public final class ZendeskLinkedServiceTypeProperties {
     private SecretBase apiToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
@@ -161,8 +160,8 @@ public final class ZendeskLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -171,8 +170,8 @@ public final class ZendeskLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the ZendeskLinkedServiceTypeProperties object itself.
@@ -189,12 +188,14 @@ public final class ZendeskLinkedServiceTypeProperties {
      */
     public void validate() {
         if (authenticationType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property authenticationType in model ZendeskLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authenticationType in model ZendeskLinkedServiceTypeProperties"));
         }
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property url in model ZendeskLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property url in model ZendeskLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

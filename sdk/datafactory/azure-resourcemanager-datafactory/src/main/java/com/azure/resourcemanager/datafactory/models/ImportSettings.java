@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
@@ -17,11 +19,7 @@ import java.util.Map;
 /**
  * Import command settings.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = ImportSettings.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = ImportSettings.class, visible = true)
 @JsonTypeName("ImportSettings")
 @JsonSubTypes({
     @JsonSubTypes.Type(
@@ -30,6 +28,13 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "SnowflakeImportCopyCommand", value = SnowflakeImportCopyCommand.class) })
 @Fluent
 public class ImportSettings {
+    /*
+     * The import setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type;
+
     /*
      * Import command settings.
      */
@@ -40,6 +45,16 @@ public class ImportSettings {
      * Creates an instance of ImportSettings class.
      */
     public ImportSettings() {
+        this.type = "ImportSettings";
+    }
+
+    /**
+     * Get the type property: The import setting type.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
