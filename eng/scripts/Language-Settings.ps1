@@ -153,7 +153,8 @@ function Get-java-DocsMsDevLanguageSpecificPackageInfo($packageInfo, $packageSou
     if ($packageInfo.DevVersion) {
       $version = $packageInfo.DevVersion
     }
-    $namespaces = Fetch-Namespaces-From-Javadoc $packageInfo.Name $packageInfo.Group $version
+    $namespaces = @()
+    $namespaces += Fetch-Namespaces-From-Javadoc $packageInfo.Name $packageInfo.Group $version
     Write-Host "in Get-java-DocsMsDevLanguageSpecificPackageInfo, namespaces.GetType().FullName=$($namespaces.GetType().FullName)"
     # If there are namespaces found from the javadoc.jar then add them to the packageInfo which
     # will later update the metadata json file in the docs repository. If there aren't any namespaces
