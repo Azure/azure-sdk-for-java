@@ -9,9 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class AdministratorsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/
-     * AdministratorGet.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/AdministratorGet.json
      */
     /**
      * Sample code: ServerGet.
@@ -19,7 +17,8 @@ public final class AdministratorsGetSamples {
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void serverGet(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.administrators().getWithResponse("testrg", "pgtestsvc1", "oooooooo-oooo-oooo-oooo-oooooooooooo",
-            com.azure.core.util.Context.NONE);
+        manager.administrators()
+            .getWithResponse("testrg", "pgtestsvc1", "oooooooo-oooo-oooo-oooo-oooooooooooo",
+                com.azure.core.util.Context.NONE);
     }
 }

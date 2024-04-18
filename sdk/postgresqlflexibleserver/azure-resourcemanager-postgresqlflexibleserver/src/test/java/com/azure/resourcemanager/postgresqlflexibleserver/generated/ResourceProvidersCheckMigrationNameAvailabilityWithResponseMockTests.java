@@ -10,19 +10,19 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ActiveDirectoryAdministrator;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PrincipalType;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrationNameAvailabilityResourceInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationNameAvailabilityResource;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class AdministratorsCreateMockTests {
+public final class ResourceProvidersCheckMigrationNameAvailabilityWithResponseMockTests {
     @Test
-    public void testCreate() throws Exception {
+    public void testCheckMigrationNameAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"principalType\":\"User\",\"principalName\":\"ywdxsmic\",\"objectId\":\"rwfscjfnynszquj\",\"tenantId\":\"dvoqyt\"},\"id\":\"yo\",\"name\":\"bblgyavut\",\"type\":\"thjoxoism\"}";
+            = "{\"name\":\"fa\",\"type\":\"owa\",\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"lqwzdvpiwhxqsz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,17 +31,13 @@ public final class AdministratorsCreateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ActiveDirectoryAdministrator response = manager.administrators()
-            .define("cubiipuipw")
-            .withExistingFlexibleServer("euzaof", "chvcyyysfgdo")
-            .withPrincipalType(PrincipalType.USER)
-            .withPrincipalName("acjekni")
-            .withTenantId("hqvcimpevfgmblr")
-            .create();
+        MigrationNameAvailabilityResource response = manager.resourceProviders()
+            .checkMigrationNameAvailabilityWithResponse("uyilflqoiquvrehm", "njhvsujztc", "ytqj",
+                new MigrationNameAvailabilityResourceInner().withName("w").withType("auunfprnjletlx"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals(PrincipalType.USER, response.principalType());
-        Assertions.assertEquals("ywdxsmic", response.principalName());
-        Assertions.assertEquals("rwfscjfnynszquj", response.objectId());
-        Assertions.assertEquals("dvoqyt", response.tenantId());
+        Assertions.assertEquals("fa", response.name());
+        Assertions.assertEquals("owa", response.type());
     }
 }

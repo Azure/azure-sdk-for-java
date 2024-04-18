@@ -78,12 +78,14 @@ public final class FirewallRuleProperties {
      */
     public void validate() {
         if (startIpAddress() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property startIpAddress in model FirewallRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property startIpAddress in model FirewallRuleProperties"));
         }
         if (endIpAddress() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property endIpAddress in model FirewallRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endIpAddress in model FirewallRuleProperties"));
         }
     }
 

@@ -30,8 +30,8 @@ public final class MigrationsImpl implements Migrations {
 
     public Response<MigrationResource> getWithResponse(String subscriptionId, String resourceGroupName,
         String targetDbServerName, String migrationName, Context context) {
-        Response<MigrationResourceInner> inner = this.serviceClient().getWithResponse(subscriptionId, resourceGroupName,
-            targetDbServerName, migrationName, context);
+        Response<MigrationResourceInner> inner = this.serviceClient()
+            .getWithResponse(subscriptionId, resourceGroupName, targetDbServerName, migrationName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MigrationResourceImpl(inner.getValue(), this.manager()));
@@ -53,8 +53,8 @@ public final class MigrationsImpl implements Migrations {
 
     public Response<Void> deleteWithResponse(String subscriptionId, String resourceGroupName, String targetDbServerName,
         String migrationName, Context context) {
-        return this.serviceClient().deleteWithResponse(subscriptionId, resourceGroupName, targetDbServerName,
-            migrationName, context);
+        return this.serviceClient()
+            .deleteWithResponse(subscriptionId, resourceGroupName, targetDbServerName, migrationName, context);
     }
 
     public void delete(String subscriptionId, String resourceGroupName, String targetDbServerName,
@@ -71,8 +71,8 @@ public final class MigrationsImpl implements Migrations {
 
     public PagedIterable<MigrationResource> listByTargetServer(String subscriptionId, String resourceGroupName,
         String targetDbServerName, MigrationListFilter migrationListFilter, Context context) {
-        PagedIterable<MigrationResourceInner> inner = this.serviceClient().listByTargetServer(subscriptionId,
-            resourceGroupName, targetDbServerName, migrationListFilter, context);
+        PagedIterable<MigrationResourceInner> inner = this.serviceClient()
+            .listByTargetServer(subscriptionId, resourceGroupName, targetDbServerName, migrationListFilter, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new MigrationResourceImpl(inner1, this.manager()));
     }
 
