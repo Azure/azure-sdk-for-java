@@ -11,21 +11,27 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.shared.LocalTestServer;
+import org.conscrypt.Conscrypt;
+import org.conscrypt.DefaultSSLContextImpl;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
+import javax.net.ssl.SSLSocketFactory;
 import javax.servlet.ServletException;
+import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -163,6 +169,23 @@ public class OkHttpHttpClientTests {
 
         assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName().toString());
         assertLinesMatch(multiValueHeaderValue, multiValueHeader.getValues());
+    }
+
+    @Test
+    public void testCustomSslSocketFactory() throws IOException, GeneralSecurityException {
+        SSLSocketFactory sslSocketFactory = new DefaultSSLContextImpl.TLSv13().engineGetSocketFactory();
+        HttpClient httpClient = new OkHttpHttpClientBuilder()
+            .sslSocketFactory(sslSocketFactory, Conscrypt.getDefaultX509TrustManager())
+            .build();
+
+        String test = "testing a custom SSL socket factory";
+        String base64 = Base64.getEncoder().encodeToString(test.getBytes(StandardCharsets.UTF_8));
+
+        // Use an external service to validate SSLSocketFactory as it's complicated with LocalTestServer.
+        String url = "https://httpbin.org/base64/" + base64;
+        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, url))) {
+            assertEquals(test, response.getBody().toString());
+        }
     }
 
     static URL url(LocalTestServer server, String path) {

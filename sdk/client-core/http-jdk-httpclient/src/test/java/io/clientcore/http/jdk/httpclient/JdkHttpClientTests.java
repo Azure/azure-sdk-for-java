@@ -10,6 +10,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.util.binarydata.BinaryData;
+import org.conscrypt.Conscrypt;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
+import javax.net.ssl.SSLContext;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,10 +30,13 @@ import java.net.http.HttpTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.GeneralSecurityException;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinPool;
@@ -263,6 +268,21 @@ public class JdkHttpClientTests {
         }));
 
         assertInstanceOf(HttpTimeoutException.class, ex.getCause());
+    }
+
+    @Test
+    public void testCustomSslContext() throws IOException, GeneralSecurityException {
+        SSLContext sslContext = SSLContext.getInstance("Default", Conscrypt.newProvider());
+        HttpClient httpClient = new JdkHttpClientBuilder().sslContext(sslContext).build();
+
+        String test = "testing a custom SSL socket factory";
+        String base64 = Base64.getEncoder().encodeToString(test.getBytes(StandardCharsets.UTF_8));
+
+        // Use an external service to validate SSLSocketFactory as it's complicated with LocalTestServer.
+        String url = "https://httpbin.org/base64/" + base64;
+        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, url))) {
+            assertEquals(test, response.getBody().toString());
+        }
     }
 
     @SuppressWarnings("deprecation")

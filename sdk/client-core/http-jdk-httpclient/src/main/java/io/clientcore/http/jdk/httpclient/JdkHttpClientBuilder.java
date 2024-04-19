@@ -9,6 +9,7 @@ import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.configuration.Configuration;
 import io.clientcore.http.jdk.httpclient.implementation.JdkHttpClientProxySelector;
 
+import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.Authenticator;
@@ -75,6 +76,7 @@ public class JdkHttpClientBuilder {
     private ProxyOptions proxyOptions;
     private Configuration configuration;
     private Executor executor;
+    private SSLContext sslContext;
 
     private Duration connectionTimeout;
     private Duration writeTimeout;
@@ -223,6 +225,17 @@ public class JdkHttpClientBuilder {
     }
 
     /**
+     * Sets the {@link SSLContext} to be used when opening secure connections.
+     *
+     * @param sslContext The SSL context to be used.
+     * @return The updated JdkHttpClientBuilder object.
+     */
+    public JdkHttpClientBuilder sslContext(SSLContext sslContext) {
+        this.sslContext = sslContext;
+        return this;
+    }
+
+    /**
      * Sets the configuration store that is used during construction of the HTTP client.
      *
      * @param configuration The configuration store used to
@@ -259,6 +272,10 @@ public class JdkHttpClientBuilder {
 
         if (executor != null) {
             httpClientBuilder.executor(executor);
+        }
+
+        if (sslContext != null) {
+            httpClientBuilder.sslContext(sslContext);
         }
 
         if (buildProxyOptions != null) {

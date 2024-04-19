@@ -13,12 +13,14 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;
+import org.conscrypt.DefaultSSLContextImpl;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
+import javax.net.ssl.SSLSocketFactory;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -26,8 +28,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -35,7 +39,6 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
 import static io.clientcore.core.util.TestUtils.assertArraysEqual;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -160,7 +163,7 @@ public class DefaultHttpClientTest {
         List<Callable<Void>> requests = new ArrayList<>(numRequests);
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {
-                try (Response<?> response = doRequest(client, "/error")) {
+                try (Response<?> response = doRequest(client, "/long")) {
                     byte[] body = response.getBody().toBytes();
                     assertArraysEqual(LONG_BODY, body);
                     return null;
@@ -209,7 +212,7 @@ public class DefaultHttpClientTest {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (Response<?> response = getResponse(client, "/short", Context.EMPTY)) {
-            assertArrayEquals(SHORT_BODY, response.getBody().toBytes());
+            assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
         }
     }
 
@@ -232,7 +235,24 @@ public class DefaultHttpClientTest {
         request.setBody(BinaryData.fromString(contentChunk));
 
         try (Response<?> response = client.send(request)) {
-            assertArrayEquals(SHORT_BODY, response.getBody().toBytes());
+            assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
+        }
+    }
+
+    @Test
+    public void testCustomSslSocketFactory() throws IOException, GeneralSecurityException {
+        SSLSocketFactory sslSocketFactory = new DefaultSSLContextImpl.TLSv13().engineGetSocketFactory();
+        HttpClient httpClient = new DefaultHttpClientBuilder()
+            .sslSocketFactory(sslSocketFactory)
+            .build();
+
+        String test = "testing a custom SSL socket factory";
+        String base64 = Base64.getEncoder().encodeToString(test.getBytes(StandardCharsets.UTF_8));
+
+        // Use an external service to validate SSLSocketFactory as it's complicated with LocalTestServer.
+        String url = "https://httpbin.org/base64/" + base64;
+        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, url))) {
+            assertEquals(test, response.getBody().toString());
         }
     }
 
@@ -263,21 +283,9 @@ public class DefaultHttpClientTest {
         return longBody;
     }
 
-    private static void checkBodyReceived(byte[] expectedBody, String path) throws IOException {
-        HttpClient client = new DefaultHttpClientBuilder().build();
-
-        try (Response<?> response = doRequest(client, path)) {
-            assertArrayEquals(expectedBody, response.getBody().toBytes());
-        }
-    }
-
     private static Response<?> doRequest(HttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
 
         return client.send(request);
-    }
-
-    private HttpClient createHttpClient() {
-        return new DefaultHttpClientBuilder().build();
     }
 }

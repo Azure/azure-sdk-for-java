@@ -5,15 +5,17 @@ package io.clientcore.http.okhttp3;
 
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ProxyOptions;
-import io.clientcore.http.okhttp3.implementation.OkHttpProxySelector;
-import io.clientcore.http.okhttp3.implementation.ProxyAuthenticator;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.configuration.Configuration;
+import io.clientcore.http.okhttp3.implementation.OkHttpProxySelector;
+import io.clientcore.http.okhttp3.implementation.ProxyAuthenticator;
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.X509TrustManager;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,8 @@ public class OkHttpHttpClientBuilder {
     private Duration writeTimeout;
     private List<Interceptor> networkInterceptors = new ArrayList<>();
     private ProxyOptions proxyOptions;
+    private SSLSocketFactory sslSocketFactory;
+    private X509TrustManager trustManager;
 
     /**
      * Creates OkHttpHttpClientBuilder.
@@ -270,6 +274,23 @@ public class OkHttpHttpClientBuilder {
     }
 
     /**
+     * Sets the {@link SSLSocketFactory} to use for HTTPS connections.
+     * <p>
+     * If left unset, or set to null, HTTPS connections will use the default SSL socket factory
+     * ({@link SSLSocketFactory#getDefault()}).
+     *
+     * @param sslSocketFactory The {@link SSLSocketFactory} to use for HTTPS connections.
+     * @param trustManager The {@link X509TrustManager} to use for HTTPS connections.
+     * @return The updated {@link OkHttpHttpClientBuilder} object.
+     */
+    public OkHttpHttpClientBuilder sslSocketFactory(SSLSocketFactory sslSocketFactory, X509TrustManager trustManager) {
+        this.sslSocketFactory = sslSocketFactory;
+        this.trustManager = trustManager;
+
+        return this;
+    }
+
+    /**
      * Creates a new OkHttp-backed {@link HttpClient} instance on every call, using the configuration set in this
      * builder at the time of the {@code build()} method call.
      *
@@ -304,6 +325,10 @@ public class OkHttpHttpClientBuilder {
         // If set use the configured dispatcher.
         if (this.dispatcher != null) {
             httpClientBuilder = httpClientBuilder.dispatcher(dispatcher);
+        }
+
+        if (this.sslSocketFactory != null) {
+            httpClientBuilder = httpClientBuilder.sslSocketFactory(sslSocketFactory, trustManager);
         }
 
         Configuration buildConfiguration = (configuration == null)

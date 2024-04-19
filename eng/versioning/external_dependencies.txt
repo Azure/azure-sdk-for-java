@@ -100,7 +100,7 @@ org.asynchttpclient:async-http-client;2.12.1
 org.codehaus.gmavenplus:gmavenplus-plugin;3.0.2
 org.codehaus.groovy:groovy-jsr223;3.0.19
 org.codehaus.janino:janino;3.1.10
-org.conscrypt:conscrypt-openjdk-uber;2.2.1
+org.conscrypt:conscrypt-openjdk-uber;2.5.2
 org.glassfish.tyrus:tyrus-client;1.16
 org.hibernate.validator:hibernate-validator;6.2.5.Final
 org.javatuples:javatuples;1.2

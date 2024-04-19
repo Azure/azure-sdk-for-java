@@ -7,6 +7,7 @@ import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.configuration.Configuration;
 
+import javax.net.ssl.SSLSocketFactory;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.time.Duration;
@@ -25,6 +26,7 @@ public class DefaultHttpClientBuilder {
     private Duration connectionTimeout;
     private Duration readTimeout;
     private ProxyOptions proxyOptions;
+    private SSLSocketFactory sslSocketFactory;
 
     /**
      * Creates a new instance of the builder with no set configuration.
@@ -118,6 +120,21 @@ public class DefaultHttpClientBuilder {
     }
 
     /**
+     * Sets the {@link SSLSocketFactory} to use for HTTPS connections.
+     * <p>
+     * If left unset, or set to null, HTTPS connections will use the default SSL socket factory
+     * ({@link SSLSocketFactory#getDefault()}).
+     *
+     * @param sslSocketFactory The {@link SSLSocketFactory} to use for HTTPS connections.
+     * @return The updated {@link DefaultHttpClientBuilder} object.
+     */
+    public DefaultHttpClientBuilder sslSocketFactory(SSLSocketFactory sslSocketFactory) {
+        this.sslSocketFactory = sslSocketFactory;
+
+        return this;
+    }
+
+    /**
      * Sets the {@link Configuration} store to configure the {@link HttpClient} during construction.
      *
      * <p>The default configuration store is a clone of the
@@ -162,7 +179,7 @@ public class DefaultHttpClientBuilder {
         }
 
         return new DefaultHttpClient(getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT),
-            getTimeout(readTimeout, DEFAULT_READ_TIMEOUT), buildProxyOptions);
+            getTimeout(readTimeout, DEFAULT_READ_TIMEOUT), buildProxyOptions, sslSocketFactory);
     }
 
     private static class ProxyAuthenticator extends Authenticator {
