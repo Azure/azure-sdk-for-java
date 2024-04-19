@@ -448,7 +448,6 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         //  if the partition key is null, SDK will get the partitionKey from the object
-        JsonNode finalOriginalItem = originalItem;
         return this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
@@ -501,13 +500,9 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      */
     public <S extends T, T> Flux<S> insertAll(CosmosEntityInformation<T, ?> entityInformation, Flux<S> entities) {
         Assert.notNull(entities, "entities to be inserted should not be null");
-
         String containerName = entityInformation.getContainerName();
         Class<T> domainType = entityInformation.getJavaType();
         Map<String, Object> entitiesMap = new HashMap<>();
-        AtomicBoolean anyTransientFieldsSet = new AtomicBoolean(false);
-        CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
-        List<String> transientFields =  entityInfo.getTransientFields();
         Flux<CosmosItemOperation> cosmosItemOperationsFlux = entities.map(entity -> {
             markAuditedIfConfigured(entity);
             generateIdIfNullAndAutoGenerationEnabled(entity, domainType);
@@ -1013,27 +1008,6 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Assert.notNull(containerName, "containerName should not be null");
         return containerName;
     }
-
-/*    private JsonNode stripTransientFields(JsonNode originalItem, List<String> transientFields) {
-        JsonNode updatedItem = originalItem.deepCopy();
-        Iterator<String> fieldNames = updatedItem.fieldNames();
-        while (fieldNames.hasNext()) {
-            String fieldName = fieldNames.next();
-            if (transientFields.contains(fieldName)) {
-                fieldNames.remove();
-                ((ObjectNode) updatedItem).remove(fieldName);
-            }
-        }
-        return updatedItem;
-    }
-
-    private JsonNode recapitulateTransientFields(JsonNode originalItem, JsonNode responseItem, List<String> transientFields) {
-        JsonNode updatedItem = responseItem.deepCopy();
-        for (String fieldName : transientFields) {
-            ((ObjectNode) updatedItem).set(fieldName, originalItem.get(fieldName));
-        }
-        return updatedItem;
-    }*/
 
     private void markAuditedIfConfigured(Object object) {
         if (cosmosAuditingHandler != null) {

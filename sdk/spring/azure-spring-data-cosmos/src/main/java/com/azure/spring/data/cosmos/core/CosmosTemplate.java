@@ -248,17 +248,6 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return toDomainObject(domainType, mappingCosmosConverter.repopulateAnyTransientFields(objectToSave, response.getItem()));
     }
 
-    private JsonNode recapitulateTransientFields(JsonNode originalItem, JsonNode responseItem, List<String> transientFields) {
-        JsonNode updatedItem = responseItem.deepCopy();
-        for (String fieldName : transientFields) {
-            ((ObjectNode) updatedItem).set(fieldName, originalItem.get(fieldName));
-        }
-        return updatedItem;
-    }
-
-
-
-
     /**
      * Insert all items with bulk.
      *
@@ -504,22 +493,12 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         markAuditedIfConfigured(object);
 
         JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object);
-        //JsonNode preStrippedItem = originalItem.deepCopy();
 
         LOGGER.debug("execute upsert item in database {} container {}", this.getDatabaseName(),
             containerName);
 
         @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) object.getClass();
         containerName = getContainerName(domainType);
-        @SuppressWarnings("unchecked")
-/*        CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
-        List<String> transientFields =  entityInfo.getTransientFields();
-        Boolean anyTransientFieldsSet = false;
-        if (!transientFields.isEmpty()) {
-            //strip fields with @Transient annotation from the JsonNode so they are not persisted.
-            anyTransientFieldsSet = transientFields.stream().anyMatch(originalItem::hasNonNull);
-            originalItem = stripTransientFields(originalItem, transientFields);
-        }*/
 
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         applyVersioning(domainType, originalItem, options);
@@ -1145,21 +1124,6 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .collectList()
             .block();
     }
-
-    private JsonNode stripTransientFields(JsonNode originalItem, List<String> transientFields) {
-        JsonNode updatedItem = originalItem.deepCopy();
-        Iterator<String> fieldNames = updatedItem.fieldNames();
-        while (fieldNames.hasNext()) {
-            String fieldName = fieldNames.next();
-            if (transientFields.contains(fieldName)) {
-                fieldNames.remove();
-                ((ObjectNode) updatedItem).remove(fieldName);
-            }
-        }
-        return updatedItem;
-    }
-
-
 
     private void markAuditedIfConfigured(Object object) {
         if (cosmosAuditingHandler != null) {
