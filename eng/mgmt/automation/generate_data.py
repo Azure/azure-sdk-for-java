@@ -23,107 +23,94 @@ DPG_ARGUMENTS = '--sdk-integration --generate-samples --generate-tests'
 YAML_BLOCK_REGEX = r'```\s?(?:yaml|YAML).*?\n(.*?)```'
 
 
-def sdk_automation_typespec(config: dict) -> List[dict]:
+def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
     spec_root = os.path.abspath(config['specFolder'])
-
-    packages = []
-    if 'relatedTypeSpecProjectFolder' not in config:
-        return packages
-
     head_sha: str = config['headSha']
     repo_url: str = config['repoHttpsUrl']
 
-    tsp_projects = config['relatedTypeSpecProjectFolder']
-    if isinstance(tsp_projects, str):
-        tsp_projects = [tsp_projects]
+    tsp_dir = os.path.join(spec_root, tsp_project)
 
-    for tsp_project in tsp_projects:
-        tsp_dir = os.path.join(spec_root, tsp_project)
+    succeeded = False
+    sdk_folder = None
+    service = None
+    module = None
+    try:
+        cmd = ['pwsh', './eng/common/scripts/TypeSpec-Project-Process.ps1', tsp_dir, head_sha, repo_url]
+        logging.info('Command line: ' + ' '.join(cmd))
+        output = subprocess.check_output(cmd, cwd=sdk_root)
+        output_str = str(output, 'utf-8')
+        script_return = output_str.splitlines()[-1] # the path to sdk folder
+        sdk_folder = os.path.relpath(script_return, sdk_root)
+        logging.info('SDK folder: ' + sdk_folder)
+        if sdk_folder:
+            succeeded = True
+    except subprocess.CalledProcessError as error:
+        logging.error(f'TypeSpec-Project-Process.ps1 fail: {error}')
 
-        succeeded = False
-        sdk_folder = None
-        service = None
-        module = None
-        try:
-            cmd = ['pwsh', './eng/common/scripts/TypeSpec-Project-Process.ps1', tsp_dir, head_sha, repo_url]
-            logging.info('Command line: ' + ' '.join(cmd))
-            output = subprocess.check_output(cmd, cwd=sdk_root)
-            output_str = str(output, 'utf-8')
-            script_return = output_str.splitlines()[-1] # the path to sdk folder
-            sdk_folder = os.path.relpath(script_return, sdk_root)
-            logging.info('SDK folder: ' + sdk_folder)
-            if sdk_folder:
-                succeeded = True
-        except subprocess.CalledProcessError as error:
-            logging.error(f'TypeSpec-Project-Process.ps1 fail: {error}')
+    if succeeded:
+        # check require_sdk_integration
+        require_sdk_integration = False
+        cmd = ['git', 'add', '.']
+        check_call(cmd, sdk_root)
+        cmd = ['git', 'status', '--porcelain', os.path.join(sdk_folder, 'pom.xml')]
+        logging.info('Command line: ' + ' '.join(cmd))
+        output = subprocess.check_output(cmd, cwd=sdk_root)
+        output_str = str(output, 'utf-8')
+        git_items = output_str.splitlines()
+        if len(git_items) > 0:
+            git_pom_item = git_items[0]
+            # new pom.xml implies new SDK
+            require_sdk_integration = git_pom_item.startswith('A ')
 
-        if succeeded:
-            # check require_sdk_integration
-            require_sdk_integration = False
-            cmd = ['git', 'add', '.']
-            check_call(cmd, sdk_root)
-            cmd = ['git', 'status', '--porcelain', os.path.join(sdk_folder, 'pom.xml')]
-            logging.info('Command line: ' + ' '.join(cmd))
-            output = subprocess.check_output(cmd, cwd=sdk_root)
-            output_str = str(output, 'utf-8')
-            git_items = output_str.splitlines()
-            if len(git_items) > 0:
-                git_pom_item = git_items[0]
-                # new pom.xml implies new SDK
-                require_sdk_integration = git_pom_item.startswith('A ')
+        # parse service and module
+        match = re.match(r'sdk[\\/](.*)[\\/](.*)', sdk_folder)
+        service = match.group(1)
+        module = match.group(2)
 
-            # parse service and module
-            match = re.match(r'sdk[\\/](.*)[\\/](.*)', sdk_folder)
-            service = match.group(1)
-            module = match.group(2)
+        # TODO (weidxu): move to typespec-java
+        if require_sdk_integration:
+            set_or_default_version(sdk_root, GROUP_ID, module)
+            update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+            update_root_pom(sdk_root, service)
 
-            # TODO (weidxu): move to typespec-java
-            if require_sdk_integration:
-                set_or_default_version(sdk_root, GROUP_ID, module)
-                update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
-                update_root_pom(sdk_root, service)
+        # compile
+        succeeded = compile_package(sdk_root, GROUP_ID, module)
 
-            # compile
-            succeeded = compile_package(sdk_root, GROUP_ID, module)
+    # output
+    if sdk_folder and module and service:
+        artifacts = [
+            '{0}/pom.xml'.format(sdk_folder)
+        ]
+        artifacts += [
+            jar for jar in glob.glob('{0}/target/*.jar'.format(sdk_folder))
+        ]
+        result = 'succeeded' if succeeded else 'failed'
 
-        # output
-        if sdk_folder and module and service:
-            artifacts = [
-                '{0}/pom.xml'.format(sdk_folder)
-            ]
-            artifacts += [
-                jar for jar in glob.glob('{0}/target/*.jar'.format(sdk_folder))
-            ]
-            result = 'succeeded' if succeeded else 'failed'
-
-            packages.append({
-                'packageName': module,
-                'path': [
-                    sdk_folder,
-                    CI_FILE_FORMAT.format(service),
-                    POM_FILE_FORMAT.format(service),
-                    'eng/versioning',
-                    'pom.xml'
-                ],
-                'typespecProject': [tsp_project],
-                'packageFolder': sdk_folder,
-                'artifacts': artifacts,
-                'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(sdk_folder))), None),
-                'language': 'Java',
-                'result': result,
-            })
-        else:
-            # no info about package, abort with result=failed
-            packages.append({
-                'path': [
-                ],
-                'result': 'failed',
-            })
-            break
-
-    return packages
+        return {
+            'packageName': module,
+            'path': [
+                sdk_folder,
+                CI_FILE_FORMAT.format(service),
+                POM_FILE_FORMAT.format(service),
+                'eng/versioning',
+                'pom.xml'
+            ],
+            'typespecProject': [tsp_project],
+            'packageFolder': sdk_folder,
+            'artifacts': artifacts,
+            'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(sdk_folder))), None),
+            'language': 'Java',
+            'result': result,
+        }
+    else:
+        # no info about package, abort with result=failed
+        return {
+            'path': [
+            ],
+            'result': 'failed',
+        }
 
 
 def check_call(cmd: List[str], work_dir: str):
