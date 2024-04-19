@@ -83,7 +83,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         ClientLogger logger = null;
 
         if (httpRequest.getRequestOptions() != null) {
-             logger = httpRequest.getRequestOptions().getLogger();
+            logger = httpRequest.getRequestOptions().getLogger();
         }
 
         if (logger == null) {
