@@ -7,6 +7,8 @@ import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedExceptio
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.math.util.Pair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -580,5 +582,17 @@ public class RegionScopedSessionContainer implements ISessionContainer {
             }
         }
         return StringUtils.EMPTY;
+    }
+
+    public boolean isPartitionKeyResolvedToARegion(
+        PartitionKeyInternal internalPartitionKey,
+        PartitionKeyDefinition partitionKeyDefinition,
+        String collectionId,
+        String normalizedRegion) {
+
+        String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(internalPartitionKey, partitionKeyDefinition);
+        Long collectionRid = this.collectionNameToCollectionResourceId.getOrDefault(collectionId, -1L);
+        return this.partitionKeyBasedBloomFilter.isPartitionKeyResolvedToARegion(
+            effectivePartitionKeyString, normalizedRegion, collectionRid);
     }
 }

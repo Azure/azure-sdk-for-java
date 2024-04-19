@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PartitionKeyBasedBloomFilter {
 
@@ -107,6 +106,15 @@ public class PartitionKeyBasedBloomFilter {
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    public boolean isPartitionKeyResolvedToARegion(
+        String effectivePartitionKeyString,
+        String normalizedRegion,
+        Long collectionRid) {
+
+        return this.pkBasedBloomFilter.mightContain(
+            new PartitionKeyBasedBloomFilterType(effectivePartitionKeyString, normalizedRegion, collectionRid));
     }
 
     // below type represents a bloom filter entry

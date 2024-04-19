@@ -186,6 +186,7 @@ public class ImplementationBridgeHelpers {
 
         public interface PartitionKeyAccessor {
             PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal);
+            PartitionKeyInternal getPartitionKeyInternal(PartitionKey partitionKey);
         }
     }
 

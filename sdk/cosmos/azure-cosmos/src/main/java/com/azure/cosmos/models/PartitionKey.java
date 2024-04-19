@@ -96,6 +96,11 @@ public class PartitionKey {
                 public PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal) {
                     return new PartitionKey(partitionKeyInternal);
                 }
+
+                @Override
+                public PartitionKeyInternal getPartitionKeyInternal(PartitionKey partitionKey) {
+                    return partitionKey.internalPartitionKey;
+                }
             }
         );
     }

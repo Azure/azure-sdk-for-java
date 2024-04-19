@@ -7,24 +7,27 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PartitionKeyBasedBloomFilter;
+import com.azure.cosmos.implementation.RegionScopedSessionContainer;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.guava25.base.Charsets;
+import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
 import com.azure.cosmos.implementation.guava25.hash.BloomFilter;
 import com.azure.cosmos.implementation.guava25.hash.Funnel;
 import com.azure.cosmos.implementation.guava25.hash.PrimitiveSink;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosBatch;
-import com.azure.cosmos.models.CosmosBatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
-import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -33,21 +36,24 @@ import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.databind.JsonNode;
-import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -57,6 +63,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -71,83 +78,47 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
     private static final Logger logger = LoggerFactory.getLogger(SessionConsistencyWithRegionScopingTests.class);
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor cosmosClientBuilderAccessor
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
-    private Map<String, String> writeRegionMap;
-    private Map<String, String> readRegionMap;
+    private static final ImplementationBridgeHelpers.PartitionKeyHelper.PartitionKeyAccessor partitionKeyAccessor
+        = ImplementationBridgeHelpers.PartitionKeyHelper.getPartitionKeyAccessor();
+
+    private static final boolean BLOOM_FILTER_FORCED_ACCESSED_FLAG = true;
+    private static final boolean SPLIT_REQUESTED_FLAG = true;
+    private static final boolean MULTI_PARTITION_CONTAINER_REQUESTED_FLAG = true;
+
+    private List<String> writeRegions;
+    private List<String> readRegions;
 
     @Factory(dataProvider = "clientBuildersWithSessionConsistency")
     public SessionConsistencyWithRegionScopingTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"multi-region", "multi-master"})
-    public void beforeClass() {
+    @DataProvider(name = "readYouWriteWithNoExplicitRegionSwitchingTestContext")
+    public Object[][] readYouWriteWithNoExplicitRegionSwitchingTestContext() {
 
-        try (CosmosAsyncClient tempClient = getClientBuilder().buildAsyncClient()) {
-
-            RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(tempClient);
-            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
-            DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
-
-            this.writeRegionMap = getRegionMap(databaseAccount, true);
-            this.readRegionMap = getRegionMap(databaseAccount, false);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
-    public void pointReadYourPointCreate_BothFromFirstPreferredRegion() throws InterruptedException {
-        List<String> preferredRegions = new ArrayList<>(this.readRegionMap.keySet());
-
-        Thread.sleep(10_000);
-
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncContainer containerWithSinglePartition = getSharedSinglePartitionCosmosContainer(client);
-
-        try {
+        Function<CosmosAsyncContainer, Set<String>> pointReadYourPointCreate_BothFromFirstPreferredRegionFunc = (container) -> {
             TestObject testObjectToBeCreated = TestObject.create();
 
             String id = testObjectToBeCreated.getId();
             String pk = testObjectToBeCreated.getMypk();
 
-            containerWithSinglePartition.createItem(testObjectToBeCreated).block();
-            CosmosItemResponse<TestObject> testObjectFromRead = containerWithSinglePartition.readItem(id, new PartitionKey(pk), TestObject.class).block();
+            container.createItem(testObjectToBeCreated).block();
+            CosmosItemResponse<TestObject> testObjectFromRead = container.readItem(id, new PartitionKey(pk), TestObject.class).block();
 
             assertThat(testObjectFromRead).isNotNull();
             validateTestObjectEquality(testObjectToBeCreated, testObjectFromRead.getItem());
-        } catch (Exception ex) {
-            logger.error("Exception occurred : ", ex);
-            fail("Document read should have succeeded...");
-        } finally {
-            safeClose(client);
-        }
-    }
 
-    @Test(groups = {"multi-region"}, timeOut = 80 * TIMEOUT)
-    public void pointReadAfterPartitionSplitAndPointCreate_BothFromFirstPreferredRegion() throws InterruptedException {
-        List<String> preferredRegions = new ArrayList<>(this.readRegionMap.keySet());
+            return ImmutableSet.of(pk);
+        };
 
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
+        Function<CosmosAsyncContainer, Set<String>> pointReadAfterPartitionSplitAndPointCreate_BothFromFirstPreferredRegionFunc = (container) -> {
 
-        String databaseId = UUID.randomUUID() + "-" + "db";
-        String containerId = UUID.randomUUID() + "-" + "container";
-
-        client.createDatabase(databaseId).block();
-        CosmosAsyncDatabase asyncDatabase = client.getDatabase(databaseId);
-        asyncDatabase.createContainerIfNotExists(new CosmosContainerProperties(containerId, "/mypk")).block();
-        CosmosAsyncContainer asyncContainer = asyncDatabase.getContainer(containerId);
-
-        Thread.sleep(10_000);
-
-        try {
             TestObject testObjectToBeCreated = TestObject.create();
-
-            String id = testObjectToBeCreated.getId();
             String pk = testObjectToBeCreated.getMypk();
 
-            asyncContainer.createItem(testObjectToBeCreated).block();
+            container.createItem(testObjectToBeCreated).block();
 
-            ThroughputResponse throughputResponse = asyncContainer.replaceThroughput(ThroughputProperties.createManualThroughput(10_100)).block();
+            ThroughputResponse throughputResponse = container.replaceThroughput(ThroughputProperties.createManualThroughput(10_100)).block();
 
             while (true) {
                 assert throughputResponse != null;
@@ -156,169 +127,62 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 if (!isReplacePending) {
                     break;
                 }
-                throughputResponse = asyncContainer.readThroughput().block();
-                Thread.sleep(10_000);
-                logger.info("Waiting for split to complete...");
-            }
-
-            logger.info("Split complete!");
-            CosmosItemResponse<TestObject> testObjectFromRead = asyncContainer.readItem(id, new PartitionKey(pk), TestObject.class).block();
-
-            assertThat(testObjectFromRead).isNotNull();
-            validateTestObjectEquality(testObjectToBeCreated, testObjectFromRead.getItem());
-        } catch (Exception ex) {
-            logger.error("Exception occurred : ", ex);
-            fail("Document read should have succeeded...");
-        } finally {
-            safeDeleteCollection(asyncContainer);
-            safeDeleteDatabase(asyncDatabase);
-            safeClose(client);
-        }
-    }
-
-    @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
-    public void pointReadYourPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegion() throws InterruptedException {
-
-        List<String> preferredRegions = new ArrayList<>(this.readRegionMap.keySet());
-
-        Thread.sleep(10_000);
-
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncContainer containerWithSinglePartition = getSharedSinglePartitionCosmosContainer(client);
-
-        try {
-            TestObject testObjectToBeCreated = TestObject.create();
-
-            String id = testObjectToBeCreated.getId();
-            String pk = testObjectToBeCreated.getMypk();
-
-            containerWithSinglePartition.createItem(testObjectToBeCreated).block();
-
-            Thread.sleep(1_000);
-
-            CosmosItemResponse<TestObject> testObjectFromRead = containerWithSinglePartition.readItem(id, new PartitionKey(pk), new CosmosItemRequestOptions().setExcludedRegions(ImmutableList.of(preferredRegions.get(0))), TestObject.class).block();
-
-            assertThat(testObjectFromRead).isNotNull();
-            validateTestObjectEquality(testObjectToBeCreated, testObjectFromRead.getItem());
-        } catch (Exception ex) {
-            logger.error("Exception occurred : ", ex);
-            fail("Document read should have succeeded...");
-        } finally {
-            safeClose(client);
-        }
-    }
-
-    @Test(groups = {"multi-region"}, timeOut = 80 * TIMEOUT)
-    public void pointReadAfterPartitionSplitAndPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegion() throws InterruptedException {
-
-        List<String> preferredRegions = new ArrayList<>(this.readRegionMap.keySet());
-
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-
-        String databaseId = UUID.randomUUID() + "-" + "db";
-        String containerId = UUID.randomUUID() + "-" + "container";
-
-        client.createDatabase(databaseId).block();
-        CosmosAsyncDatabase asyncDatabase = client.getDatabase(databaseId);
-        asyncDatabase.createContainerIfNotExists(new CosmosContainerProperties(containerId, "/mypk")).block();
-        CosmosAsyncContainer asyncContainer = asyncDatabase.getContainer(containerId);
-
-        Thread.sleep(10_000);
-
-        try {
-            TestObject testObjectToBeCreated = TestObject.create();
-
-            String id = testObjectToBeCreated.getId();
-            String pk = testObjectToBeCreated.getMypk();
-
-            asyncContainer.createItem(testObjectToBeCreated).block();
-
-            ThroughputResponse throughputResponse = asyncContainer.replaceThroughput(ThroughputProperties.createManualThroughput(10_100)).block();
-
-            while (true) {
-                assert throughputResponse != null;
-                boolean isReplacePending = throughputResponse.isReplacePending();
-
-                if (!isReplacePending) {
-                    break;
+                throughputResponse = container.readThroughput().block();
+                try {
+                    Thread.sleep(10_000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
-                throughputResponse = asyncContainer.readThroughput().block();
-                Thread.sleep(10_000);
                 logger.info("Waiting for split to complete...");
             }
 
             logger.info("Split complete!");
-            CosmosItemResponse<TestObject> testObjectFromRead = asyncContainer.readItem(id, new PartitionKey(pk), new CosmosItemRequestOptions().setExcludedRegions(ImmutableList.of(preferredRegions.get(0))), TestObject.class).block();
+
+            String id = testObjectToBeCreated.getId();
+            CosmosItemResponse<TestObject> testObjectFromRead = container.readItem(id, new PartitionKey(pk), TestObject.class).block();
 
             assertThat(testObjectFromRead).isNotNull();
             validateTestObjectEquality(testObjectToBeCreated, testObjectFromRead.getItem());
-        } catch (Exception ex) {
-            logger.error("Exception occurred : ", ex);
-            fail("Document read should have succeeded...");
-        } finally {
-            safeDeleteCollection(asyncContainer);
-            safeDeleteDatabase(asyncDatabase);
-            safeClose(client);
-        }
-    }
 
-    @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
-    public void pointReadYourLatestUpsert_UpsertsFromPreferredRegionReadFromPreferredRegion() throws InterruptedException {
-        List<String> preferredRegions = new ArrayList<>(this.readRegionMap.keySet());
+            return ImmutableSet.of(pk);
+        };
 
-        Thread.sleep(10_000);
-
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncContainer containerWithSinglePartition = getSharedSinglePartitionCosmosContainer(client);
-
-        try {
+        Function<CosmosAsyncContainer, Set<String>> pointReadYourLatestUpsert_UpsertsFromPreferredRegionReadFromPreferredRegionFunc = (container) -> {
             TestObject testObjectToBeCreated = TestObject.create();
 
             String id = testObjectToBeCreated.getId();
             String pk = testObjectToBeCreated.getMypk();
 
-            containerWithSinglePartition.createItem(testObjectToBeCreated).block();
+            container.createItem(testObjectToBeCreated).block();
 
             testObjectToBeCreated.setStringProp(UUID.randomUUID().toString());
 
             TestObject testObjectModified = testObjectToBeCreated;
 
-            containerWithSinglePartition.upsertItem(testObjectModified, new PartitionKey(pk), new CosmosItemRequestOptions()).block();
+            container.upsertItem(testObjectModified, new PartitionKey(pk), new CosmosItemRequestOptions()).block();
 
-            CosmosItemResponse<TestObject> testObjectFromRead = containerWithSinglePartition.readItem(id, new PartitionKey(pk), TestObject.class).block();
+            CosmosItemResponse<TestObject> testObjectFromRead = container.readItem(id, new PartitionKey(pk), TestObject.class).block();
 
             assertThat(testObjectFromRead).isNotNull();
             validateTestObjectEquality(testObjectModified, testObjectFromRead.getItem());
-        } catch (Exception ex) {
-            logger.error("Exception occurred : ", ex);
-            fail("Document read should have succeeded...");
-        } finally {
-            safeClose(client);
-        }
-    }
 
-    @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
-    public void queryTargetedToLogicalPartitionFollowingCreates_queryFromFirstPreferredRegionCreateInFirstPreferredRegion() throws InterruptedException {
-        List<String> preferredRegions = new ArrayList<>(this.readRegionMap.keySet());
-        Map<String, TestObject> idToTestObjectsCreated = new HashMap<>();
+            return ImmutableSet.of(pk);
+        };
 
-        Thread.sleep(10_000);
+        Function<CosmosAsyncContainer, Set<String>> queryTargetedToLogicalPartitionFollowingCreates_queryFromFirstPreferredRegionCreateInFirstPreferredRegionFunc = (container) -> {
+            Map<String, TestObject> idToTestObjectsCreated = new HashMap<>();
 
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncContainer containerWithSinglePartition = getSharedSinglePartitionCosmosContainer(client);
-
-        try {
             TestObject testObjectToBeCreated = TestObject.create();
             idToTestObjectsCreated.put(testObjectToBeCreated.getId(), testObjectToBeCreated);
 
             String id = testObjectToBeCreated.getId();
             String pk = testObjectToBeCreated.getMypk();
 
-            containerWithSinglePartition.createItem(testObjectToBeCreated).block();
+            container.createItem(testObjectToBeCreated).block();
 
             SqlQuerySpec querySpec = new SqlQuerySpec("SELECT * FROM c");
 
-            List<TestObject> testObjectsFromQuery = containerWithSinglePartition
+            List<TestObject> testObjectsFromQuery = container
                 .queryItems(querySpec, new CosmosQueryRequestOptions().setPartitionKey(new PartitionKey(pk)), TestObject.class)
                 .collectList()
                 .block();
@@ -335,38 +199,27 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 assertThat(idToTestObjectsFromQuery.containsKey(idOfObjectCreated)).isTrue();
                 validateTestObjectEquality(idToTestObjectsFromQuery.get(idOfObjectCreated), idToTestObjectsCreated.get(idOfObjectCreated));
             }
-        } catch (Exception ex) {
-            logger.error("Exception occurred : ", ex);
-            fail("Document query should have succeeded...");
-        } finally {
-            safeClose(client);
-        }
-    }
 
-    @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
-    public void crossPartitionedQueryFollowingCreates_queryFromFirstPreferredRegionCreatesInFirstPreferredRegion() throws InterruptedException {
-        List<String> preferredRegions = new ArrayList<>(this.readRegionMap.keySet());
-        Map<String, TestObject> idToTestObjectsCreated = new HashMap<>();
+            return ImmutableSet.of(pk);
+        };
 
-        Thread.sleep(10_000);
+        Function<CosmosAsyncContainer, Set<String>> crossPartitionedQueryFollowingCreates_queryFromFirstPreferredRegionCreatesInFirstPreferredRegionFunc = (container) -> {
 
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncContainer containerWithMultiplePartitions = getSharedMultiPartitionCosmosContainer(client);
+            Map<String, TestObject> idToTestObjectsCreated = new HashMap<>();
 
-        try {
             TestObject testObjectToBeCreated1 = TestObject.create();
             idToTestObjectsCreated.put(testObjectToBeCreated1.getId(), testObjectToBeCreated1);
 
-            containerWithMultiplePartitions.createItem(testObjectToBeCreated1).block();
+            container.createItem(testObjectToBeCreated1).block();
 
             TestObject testObjectToBeCreated2 = TestObject.create();
             idToTestObjectsCreated.put(testObjectToBeCreated2.getId(), testObjectToBeCreated2);
 
-            containerWithMultiplePartitions.createItem(testObjectToBeCreated2).block();
+            container.createItem(testObjectToBeCreated2).block();
 
             SqlQuerySpec querySpec = new SqlQuerySpec("SELECT * FROM c");
 
-            List<TestObject> testObjectsFromQuery = containerWithMultiplePartitions
+            List<TestObject> testObjectsFromQuery = container
                 .queryItems(querySpec, TestObject.class)
                 .collectList()
                 .block();
@@ -384,163 +237,63 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 assertThat(idToTestObjectsFromQuery.containsKey(idOfObjectCreated)).isTrue();
                 validateTestObjectEquality(idToTestObjectsFromQuery.get(idOfObjectCreated), idToTestObjectsCreated.get(idOfObjectCreated));
             }
-        } catch (Exception ex) {
-            logger.error("Exception occurred : ", ex);
-            fail("Document query should have succeeded...");
-        } finally {
-            safeClose(client);
-        }
-    }
 
-    @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
-    public void deleteYourLatestUpsert_deleteAndUpsertInFirstPreferredRegion() throws InterruptedException {
-        List<String> preferredRegions = new ArrayList<>(this.readRegionMap.keySet());
+            return ImmutableSet.of(testObjectToBeCreated1.getMypk(), testObjectToBeCreated1.getMypk());
+        };
 
-        Thread.sleep(10_000);
-
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncContainer containerWithSinglePartition = getSharedSinglePartitionCosmosContainer(client);
-
-        try {
+        Function<CosmosAsyncContainer, Set<String>> deleteYourLatestUpsert_deleteAndUpsertInFirstPreferredRegionFunc = (container) -> {
             TestObject testObjectToBeCreated = TestObject.create();
 
             String id = testObjectToBeCreated.getId();
             String pk = testObjectToBeCreated.getMypk();
 
-            containerWithSinglePartition.createItem(testObjectToBeCreated).block();
+            container.createItem(testObjectToBeCreated).block();
 
-            CosmosItemResponse<Object> deleteOperationResponse = containerWithSinglePartition.deleteItem(id, new PartitionKey(pk)).block();
+            CosmosItemResponse<Object> deleteOperationResponse = container.deleteItem(id, new PartitionKey(pk)).block();
 
             assertThat(deleteOperationResponse).isNotNull();
             assertThat(deleteOperationResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NO_CONTENT);
-        } catch (Exception ex) {
-            logger.error("Exception occurred : ", ex);
-            fail("Document delete should have succeeded...");
-        } finally {
-            safeClose(client);
-        }
-    }
 
-    @Test(groups = {"multi-master"}, timeOut = TIMEOUT)
-    public void deleteYourLatestUpsert_deleteInSecondPreferredRegionAndUpsertInFirstPreferredRegion() throws InterruptedException {
-        List<String> preferredRegions = new ArrayList<>(this.writeRegionMap.keySet());
+            return ImmutableSet.of(pk);
+        };
 
-        Thread.sleep(10_000);
-
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncContainer containerWithSinglePartition = getSharedSinglePartitionCosmosContainer(client);
-
-        try {
+        Function<CosmosAsyncContainer, Set<String>> replaceYourLatestUpsert_replaceAndUpsertInFirstPreferredRegionFunc = (container) -> {
             TestObject testObjectToBeCreated = TestObject.create();
 
             String id = testObjectToBeCreated.getId();
             String pk = testObjectToBeCreated.getMypk();
 
-            containerWithSinglePartition.createItem(testObjectToBeCreated).block();
-
-            CosmosItemResponse<Object> deleteOperationResponse = containerWithSinglePartition.deleteItem(id, new PartitionKey(pk), new CosmosItemRequestOptions().setExcludedRegions(ImmutableList.of(preferredRegions.get(0)))).block();
-
-            assertThat(deleteOperationResponse).isNotNull();
-            assertThat(deleteOperationResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NO_CONTENT);
-        } catch (Exception ex) {
-            logger.error("Exception occurred : ", ex);
-            fail("Document delete should have succeeded...");
-        } finally {
-            safeClose(client);
-        }
-    }
-
-    @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
-    public void replaceYourLatestUpsert_replaceAndUpsertInFirstPreferredRegion() throws InterruptedException {
-        List<String> preferredRegions = new ArrayList<>(this.readRegionMap.keySet());
-
-        Thread.sleep(10_000);
-
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncContainer containerWithSinglePartition = getSharedSinglePartitionCosmosContainer(client);
-
-        try {
-            TestObject testObjectToBeCreated = TestObject.create();
-
-            String id = testObjectToBeCreated.getId();
-            String pk = testObjectToBeCreated.getMypk();
-
-            containerWithSinglePartition.createItem(testObjectToBeCreated).block();
+            container.createItem(testObjectToBeCreated).block();
 
             TestObject testObjectReplacement = testObjectToBeCreated;
             testObjectReplacement.setStringProp(UUID.randomUUID().toString());
 
-            CosmosItemResponse<TestObject> replaceOperationResponse = containerWithSinglePartition.replaceItem(testObjectReplacement, id, new PartitionKey(pk)).block();
+            CosmosItemResponse<TestObject> replaceOperationResponse = container.replaceItem(testObjectReplacement, id, new PartitionKey(pk)).block();
 
             assertThat(replaceOperationResponse).isNotNull();
             assertThat(replaceOperationResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
-        } catch (Exception ex) {
-            logger.error("Exception occurred : ", ex);
-            fail("Document replace operation should have succeeded...");
-        } finally {
-            safeClose(client);
-        }
-    }
 
-    @Test(groups = {"multi-master"}, timeOut = TIMEOUT)
-    public void replaceYourLatestUpsert_replaceInSecondPreferredRegionAndUpsertInFirstPreferredRegion() throws InterruptedException {
-        List<String> preferredRegions = new ArrayList<>(this.writeRegionMap.keySet());
+            return ImmutableSet.of(pk);
+        };
 
-        Thread.sleep(10_000);
-
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncContainer containerWithSinglePartition = getSharedSinglePartitionCosmosContainer(client);
-
-        try {
+        Function<CosmosAsyncContainer, Set<String>> readYourPatchYourCreateFunc = (container) -> {
             TestObject testObjectToBeCreated = TestObject.create();
 
             String id = testObjectToBeCreated.getId();
             String pk = testObjectToBeCreated.getMypk();
 
-            containerWithSinglePartition.createItem(testObjectToBeCreated).block();
-
-            TestObject testObjectReplacement = testObjectToBeCreated;
-            testObjectReplacement.setStringProp(UUID.randomUUID().toString());
-
-            CosmosItemResponse<TestObject> replaceOperationResponse = containerWithSinglePartition.replaceItem(testObjectReplacement, id, new PartitionKey(pk), new CosmosItemRequestOptions().setExcludedRegions(ImmutableList.of(preferredRegions.get(0)))).block();
-
-            assertThat(replaceOperationResponse).isNotNull();
-            assertThat(replaceOperationResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
-        } catch (Exception ex) {
-            logger.error("Exception occurred : ", ex);
-            fail("Document replace operation should have succeeded...");
-        } finally {
-            safeClose(client);
-        }
-    }
-
-    @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
-    public void readYourPatchYourCreate() throws InterruptedException {
-        List<String> preferredRegions = new ArrayList<>(this.writeRegionMap.keySet());
-
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncContainer containerWithSinglePartition = getSharedSinglePartitionCosmosContainer(client);
-
-        Thread.sleep(10_000);
-
-        try {
-            TestObject testObjectToBeCreated = TestObject.create();
-
-            String id = testObjectToBeCreated.getId();
-            String pk = testObjectToBeCreated.getMypk();
-
-            CosmosItemResponse<TestObject> itemResponse = containerWithSinglePartition.createItem(testObjectToBeCreated).block();
+            CosmosItemResponse<TestObject> itemResponse = container.createItem(testObjectToBeCreated).block();
 
             assertThat(itemResponse).isNotNull();
             assertThat(itemResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
 
             CosmosPatchOperations patchOperations = CosmosPatchOperations.create().add("/" + "newProperty", "newVal");
-            CosmosItemResponse<TestObject> patchOperationResponse = containerWithSinglePartition.patchItem(id, new PartitionKey(pk), patchOperations, TestObject.class).block();
+            CosmosItemResponse<TestObject> patchOperationResponse = container.patchItem(id, new PartitionKey(pk), patchOperations, TestObject.class).block();
 
             assertThat(patchOperationResponse).isNotNull();
             assertThat(patchOperationResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
 
-            CosmosItemResponse<JsonNode> readOperationResponse = containerWithSinglePartition.readItem(id, new PartitionKey(pk), JsonNode.class).block();
+            CosmosItemResponse<JsonNode> readOperationResponse = container.readItem(id, new PartitionKey(pk), JsonNode.class).block();
 
             assertThat(readOperationResponse).isNotNull();
             assertThat(readOperationResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
@@ -551,185 +304,31 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             assertThat(itemReadAsJsonNode.get("newProperty")).isNotNull();
             assertThat(itemReadAsJsonNode.get("newProperty").asText()).isNotNull();
             assertThat(itemReadAsJsonNode.get("newProperty").asText()).isEqualTo("newVal");
-        } catch (Exception ex) {
-            logger.error("Exception occurred : ", ex);
-            fail("Document patch should have succeeded...");
-        } finally {
-            safeClose(client);
-        }
-    }
 
-    @Test(groups = {"multi-master"}, timeOut = TIMEOUT)
-    public void readYourPatchYourCreate_createInSecondPreferredRegion_readAndPatchInFirstPreferredRegion() throws InterruptedException {
-        List<String> preferredRegions = new ArrayList<>(this.writeRegionMap.keySet());
+            return ImmutableSet.of(pk);
+        };
 
-        assertThat(preferredRegions.size()).isGreaterThan(1);
+        Function<CosmosAsyncContainer, Set<String>> bulkReadYourBulkCreateFunc = (container) -> {
 
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncContainer containerWithSinglePartition = getSharedSinglePartitionCosmosContainer(client);
+            int createOperationCount = 10;
+            List<String> idsToCreate = new ArrayList<>();
 
-        Thread.sleep(10_000);
+            Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
 
-        try {
-            TestObject testObjectToBeCreated = TestObject.create();
+                String documentId = UUID.randomUUID().toString();
+                TestItem testItem = new TestItem(documentId, documentId, documentId);
 
-            String id = testObjectToBeCreated.getId();
-            String pk = testObjectToBeCreated.getMypk();
+                idsToCreate.add(documentId);
 
-            CosmosItemResponse<TestObject> itemResponse = containerWithSinglePartition
-                .createItem(
-                    testObjectToBeCreated,
-                    new CosmosItemRequestOptions()
-                        .setExcludedRegions(ImmutableList.of(preferredRegions.get(0)))
-                )
-                .block();
+                return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
+            });
 
-            assertThat(itemResponse).isNotNull();
-            assertThat(itemResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
+            Flux<CosmosItemOperation> readOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
+                String alreadyCreatedId = idsToCreate.get(i);
+                return CosmosBulkOperations.getReadItemOperation(alreadyCreatedId, new PartitionKey(alreadyCreatedId));
+            });
 
-            CosmosPatchOperations patchOperations = CosmosPatchOperations.create().add("/" + "newProperty", "newVal");
-            CosmosItemResponse<TestObject> patchOperationResponse = containerWithSinglePartition.patchItem(id, new PartitionKey(pk), patchOperations, TestObject.class).block();
-
-            assertThat(patchOperationResponse).isNotNull();
-            assertThat(patchOperationResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
-
-            CosmosItemResponse<JsonNode> readOperationResponse = containerWithSinglePartition.readItem(id, new PartitionKey(pk), JsonNode.class).block();
-
-            assertThat(readOperationResponse).isNotNull();
-            assertThat(readOperationResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
-
-            JsonNode itemReadAsJsonNode = readOperationResponse.getItem();
-
-            assertThat(itemReadAsJsonNode).isNotNull();
-            assertThat(itemReadAsJsonNode.get("newProperty")).isNotNull();
-            assertThat(itemReadAsJsonNode.get("newProperty").asText()).isNotNull();
-            assertThat(itemReadAsJsonNode.get("newProperty").asText()).isEqualTo("newVal");
-        } catch (Exception ex) {
-            logger.error("Exception occurred : ", ex);
-            fail("Document patch should have succeeded...");
-        } finally {
-            safeClose(client);
-        }
-    }
-
-    @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
-    public void readYourCreateGuaranteeWithinBatchOperation() {
-
-        List<String> preferredRegions = new ArrayList<>(writeRegionMap.keySet());
-
-        String documentId = UUID.randomUUID().toString();
-        PartitionKey partitionKey = new PartitionKey(documentId);
-
-        TestObject testObjectToBeCreated = TestObject.create(documentId);
-
-        CosmosBatch batch = CosmosBatch.createCosmosBatch(partitionKey);
-        batch.createItemOperation(testObjectToBeCreated);
-        batch.readItemOperation(testObjectToBeCreated.getId());
-
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncContainer containerWithSinglePartition = getSharedSinglePartitionCosmosContainer(client);
-
-        try {
-
-            CosmosBatchResponse batchResponse = containerWithSinglePartition.executeCosmosBatch(batch).block();
-
-            List<CosmosBatchOperationResult> batchResponseResults = batchResponse.getResults();
-
-            assertThat(batchResponse.getResults()).isNotNull();
-            assertThat(batchResponse.getResults().size()).isEqualTo(2);
-            assertThat(batchResponseResults.get(0).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
-            assertThat(batchResponseResults.get(1).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
-        } catch (Exception ex) {
-            logger.error("Exception occurred : ", ex);
-            fail("Batch operation should have succeeded...");
-        } finally {
-            safeClose(client);
-        }
-    }
-
-    @Test(groups = {"multi-master"}, timeOut = TIMEOUT)
-    public void readYourCreate_readBatchInFirstPreferredRegion_createBatchInSecondPreferredRegion() throws InterruptedException {
-        List<String> preferredRegions = new ArrayList<>(writeRegionMap.keySet());
-        assertThat(preferredRegions.size()).isGreaterThan(1);
-
-        String documentId = UUID.randomUUID().toString();
-        PartitionKey partitionKey = new PartitionKey(documentId);
-
-        TestObject testObjectToBeCreated = TestObject.create(documentId);
-
-        CosmosBatch batchForCreate = CosmosBatch.createCosmosBatch(partitionKey);
-        batchForCreate.createItemOperation(testObjectToBeCreated);
-
-        CosmosBatch batchForRead = CosmosBatch.createCosmosBatch(partitionKey);
-        batchForRead.readItemOperation(testObjectToBeCreated.getId());
-
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncContainer containerWithSinglePartition = getSharedSinglePartitionCosmosContainer(client);
-
-        Thread.sleep(10_000);
-
-        try {
-
-            CosmosBatchResponse batchCreateResponse = containerWithSinglePartition
-                .executeCosmosBatch(
-                    batchForCreate,
-                    new CosmosBatchRequestOptions()
-                        .setExcludedRegions(ImmutableList.of(preferredRegions.get(0)))
-                ).block();
-
-            assertThat(batchCreateResponse).isNotNull();
-            assertThat(batchCreateResponse.getResults()).isNotNull();
-
-            List<CosmosBatchOperationResult> batchCreateResponseResults = batchCreateResponse.getResults();
-
-            assertThat(batchCreateResponseResults.size()).isEqualTo(1);
-            assertThat(batchCreateResponseResults.get(0).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
-
-            CosmosBatchResponse batchReadResponse = containerWithSinglePartition.executeCosmosBatch(batchForRead).block();
-
-            assertThat(batchReadResponse).isNotNull();
-            assertThat(batchReadResponse.getResults()).isNotNull();
-
-            List<CosmosBatchOperationResult> batchReadResponseResults = batchReadResponse.getResults();
-
-            assertThat(batchReadResponseResults.size()).isEqualTo(1);
-            assertThat(batchReadResponseResults.get(0).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
-        } catch (Exception ex) {
-            logger.error("Exception occurred : ", ex);
-            fail("Batch operation should have succeeded...");
-        } finally {
-            safeClose(client);
-        }
-    }
-
-    @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
-    public void bulkReadYourBulkCreate() {
-        List<String> preferredRegions = new ArrayList<>(writeRegionMap.keySet());
-
-        int createOperationCount = 10;
-        List<String> idsToCreate = new ArrayList<>();
-
-        Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
-
-            String documentId = UUID.randomUUID().toString();
-            TestItem testItem = new TestItem(documentId, documentId, documentId);
-
-            idsToCreate.add(documentId);
-
-            return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
-        });
-
-        Flux<CosmosItemOperation> readOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
-            String alreadyCreatedId = idsToCreate.get(i);
-            return CosmosBulkOperations.getReadItemOperation(alreadyCreatedId, new PartitionKey(alreadyCreatedId));
-        });
-
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncContainer containerWithSinglePartition = getSharedSinglePartitionCosmosContainer(client);
-
-        try {
-
-            List<CosmosBulkOperationResponse<Object>> bulkCreateResponses = containerWithSinglePartition.executeBulkOperations(createOperationsFlux).collectList().block();
+            List<CosmosBulkOperationResponse<Object>> bulkCreateResponses = container.executeBulkOperations(createOperationsFlux).collectList().block();
 
             assertThat(bulkCreateResponses).isNotNull();
             assertThat(bulkCreateResponses.size()).isEqualTo(createOperationCount);
@@ -739,7 +338,8 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 assertThat(bulkCreateResponse.getResponse().getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
             });
 
-            List<CosmosBulkOperationResponse<Object>> bulkReadResponses = containerWithSinglePartition.executeBulkOperations(readOperationsFlux).collectList().block();
+            List<CosmosBulkOperationResponse<Object>> bulkReadResponses = container.executeBulkOperations(readOperationsFlux).collectList().block();
+            Set<String> pksRead = new HashSet<>();
 
             assertThat(bulkReadResponses).isNotNull();
             assertThat(bulkReadResponses.size()).isEqualTo(createOperationCount);
@@ -747,97 +347,24 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             bulkReadResponses.forEach(bulkReadResponse -> {
                 assertThat(bulkReadResponse.getResponse()).isNotNull();
                 assertThat(bulkReadResponse.getResponse().getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
-            });
-        } catch (Exception ex) {
-            logger.error("Exception occurred : ", ex);
-            fail("Bulk operation should have succeeded...");
-        } finally {
-            safeClose(client);
-        }
-    }
-
-    @Test(groups = {"multi-master"}, timeOut = TIMEOUT)
-    public void bulkReadFromFirstPreferredRegionYourBulkCreateInSecondPreferredRegion() throws InterruptedException {
-        List<String> preferredRegions = new ArrayList<>(writeRegionMap.keySet());
-        assertThat(preferredRegions.size()).isGreaterThan(1);
-
-        int createOperationCount = 10;
-        List<String> idsToCreate = new ArrayList<>();
-
-        Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
-
-            String documentId = UUID.randomUUID().toString();
-            TestItem testItem = new TestItem(documentId, documentId, documentId);
-
-            idsToCreate.add(documentId);
-
-            return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
-        });
-
-        Flux<CosmosItemOperation> readOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
-            String alreadyCreatedId = idsToCreate.get(i);
-            return CosmosBulkOperations.getReadItemOperation(alreadyCreatedId, new PartitionKey(alreadyCreatedId));
-        });
-
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncContainer containerWithSinglePartition = getSharedSinglePartitionCosmosContainer(client);
-
-        Thread.sleep(10_000);
-
-        try {
-
-            List<CosmosBulkOperationResponse<Object>> bulkCreateResponses = containerWithSinglePartition
-                .executeBulkOperations(
-                    createOperationsFlux,
-                    new CosmosBulkExecutionOptions()
-                        .setExcludedRegions(ImmutableList.of(preferredRegions.get(0))))
-                .collectList().block();
-
-            assertThat(bulkCreateResponses).isNotNull();
-            assertThat(bulkCreateResponses.size()).isEqualTo(createOperationCount);
-
-            bulkCreateResponses.forEach(bulkCreateResponse -> {
-                assertThat(bulkCreateResponse.getResponse()).isNotNull();
-                assertThat(bulkCreateResponse.getResponse().getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
+                pksRead.add(bulkReadResponse.getResponse().getItem(TestItem.class).getMypk());
             });
 
-            List<CosmosBulkOperationResponse<Object>> bulkReadResponses = containerWithSinglePartition.executeBulkOperations(readOperationsFlux).collectList().block();
+            return pksRead;
+        };
 
-            assertThat(bulkReadResponses).isNotNull();
-            assertThat(bulkReadResponses.size()).isEqualTo(createOperationCount);
+        Function<CosmosAsyncContainer, Set<String>> changeFeed_fromBeginning_forFullRange_withSessionGuaranteeFunc = (container) -> {
 
-            bulkReadResponses.forEach(bulkReadResponse -> {
-                assertThat(bulkReadResponse.getResponse()).isNotNull();
-                assertThat(bulkReadResponse.getResponse().getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
+            int createOperationCount = 10;
+            Set<String> idsAddedByBulkCreate = new HashSet<>();
+
+            Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
+                String documentId = UUID.randomUUID().toString();
+                TestItem testItem = new TestItem(documentId, documentId, documentId);
+
+                idsAddedByBulkCreate.add(documentId);
+                return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
             });
-        } catch (Exception ex) {
-            logger.error("Exception occurred : ", ex);
-            fail("Bulk operation should have succeeded...");
-        } finally {
-            safeClose(client);
-        }
-    }
-
-    @Test(groups = {"multi-master"}, timeOut = TIMEOUT)
-    public void changeFeed_fromBeginning_forFullRange_withSessionGuarantee() {
-
-        List<String> preferredRegions = new ArrayList<>(this.writeRegionMap.keySet());
-
-        int createOperationCount = 10;
-        Set<String> idsAddedByBulkCreate = new HashSet<>();
-
-        Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
-            String documentId = UUID.randomUUID().toString();
-            TestItem testItem = new TestItem(documentId, documentId, documentId);
-
-            idsAddedByBulkCreate.add(documentId);
-            return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
-        });
-
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncContainer container = getSharedSinglePartitionCosmosContainer(client);
-
-        try {
 
             List<CosmosBulkOperationResponse<Object>> bulkCreateResponses = container.executeBulkOperations(createOperationsFlux).collectList().block();
 
@@ -882,40 +409,610 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             idsAddedByBulkCreate.forEach(idAddedByBulkCreate ->
                 assertThat(idsReceivedFromChangeFeedRequest.contains(idAddedByBulkCreate)).isTrue());
 
-        } catch (Exception ex) {
-            logger.error("Exception occurred...", ex);
-            fail("Change feed operation should have succeeded...");
-        } finally {
-            safeClose(client);
-        }
+            return idsReceivedFromChangeFeedRequest;
+        };
+
+        Function<CosmosAsyncContainer, Set<String>> readYourCreateGuaranteeWithinBatchFunc = (container) -> {
+            String documentId = UUID.randomUUID().toString();
+            PartitionKey partitionKey = new PartitionKey(documentId);
+
+            TestObject testObjectToBeCreated = TestObject.create(documentId);
+
+            CosmosBatch batch = CosmosBatch.createCosmosBatch(partitionKey);
+            batch.createItemOperation(testObjectToBeCreated);
+            batch.readItemOperation(testObjectToBeCreated.getId());
+
+            CosmosBatchResponse batchResponse = container.executeCosmosBatch(batch).block();
+
+            List<CosmosBatchOperationResult> batchResponseResults = batchResponse.getResults();
+
+            assertThat(batchResponse.getResults()).isNotNull();
+            assertThat(batchResponse.getResults().size()).isEqualTo(2);
+            assertThat(batchResponseResults.get(0).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
+            assertThat(batchResponseResults.get(1).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
+
+            return ImmutableSet.of(documentId);
+        };
+
+        return new Object[][] {
+            {
+                pointReadYourPointCreate_BothFromFirstPreferredRegionFunc,
+                "pointReadYourPointCreate_BothFromFirstPreferredRegion",
+                "Document read should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                pointReadAfterPartitionSplitAndPointCreate_BothFromFirstPreferredRegionFunc,
+                "pointReadAfterPartitionSplitAndPointCreate_BothFromFirstPreferredRegion",
+                "Document read should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                pointReadYourLatestUpsert_UpsertsFromPreferredRegionReadFromPreferredRegionFunc,
+                "pointReadAfterPartitionSplitAndPointCreate_BothFromFirstPreferredRegion",
+                "Document read should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                queryTargetedToLogicalPartitionFollowingCreates_queryFromFirstPreferredRegionCreateInFirstPreferredRegionFunc,
+                "queryTargetedToLogicalPartitionFollowingCreates_queryFromFirstPreferredRegionCreateInFirstPreferredRegion",
+                "Document query should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                crossPartitionedQueryFollowingCreates_queryFromFirstPreferredRegionCreatesInFirstPreferredRegionFunc,
+                "queryTargetedToLogicalPartitionFollowingCreates_queryFromFirstPreferredRegionCreateInFirstPreferredRegion",
+                "Document query should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                deleteYourLatestUpsert_deleteAndUpsertInFirstPreferredRegionFunc,
+                "deleteYourLatestUpsert_deleteAndUpsertInFirstPreferredRegion",
+                "Document query should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                replaceYourLatestUpsert_replaceAndUpsertInFirstPreferredRegionFunc,
+                "replaceYourLatestUpsert_replaceAndUpsertInFirstPreferredRegion",
+                "Document replace operation should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                readYourPatchYourCreateFunc,
+                "readYourPatchYourCreate",
+                "Document patch operation should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                bulkReadYourBulkCreateFunc,
+                "bulkReadYourBulkCreate",
+                "Bulk operation should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                changeFeed_fromBeginning_forFullRange_withSessionGuaranteeFunc,
+                "changeFeed_fromBeginning_forFullRange_withSessionGuarantee",
+                "Change feed operation should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                readYourCreateGuaranteeWithinBatchFunc,
+                "readYourCreateGuaranteeWithinBatch",
+                "Read your create within batch should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            }
+        };
     }
 
-    @Test(groups = {"multi-master"}, timeOut = TIMEOUT)
-    public void changeFeed_fromBeginning_fromFirstPreferredRegion_forFullRange_withCreatesOnSecondPreferredRegion_withSessionGuarantee() {
+    @DataProvider(name = "readManyWithNoExplicitRegionSwitchingTestContext")
+    public Object[][] readManyWithNoExplicitRegionSwitchingTestContext() {
 
-        List<String> preferredRegions = new ArrayList<>(this.writeRegionMap.keySet());
-        assertThat(preferredRegions.size()).isGreaterThan(1);
+        Function<CosmosAsyncContainer, Set<String>> readManyWithSolelyPointReadsFunc = (container) -> {
 
-        int createOperationCount = 10;
-        Set<String> idsAddedByCreates = new HashSet<>();
+            int createOperationCount = 100;
 
-        Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
+            for (int i = 0; i < createOperationCount; i++) {
+
+                TestObject testObject = TestObject.create();
+                String documentId = testObject.getId();
+
+                container.createItem(testObject, new PartitionKey(documentId), new CosmosItemRequestOptions()).block();
+            }
+
+            SqlQuerySpec sqlQuerySpec = new SqlQuerySpec();
+            sqlQuerySpec.setQueryText("SELECT * FROM c OFFSET 0 LIMIT 1");
+
+            List<FeedRange> feedRanges = container.getFeedRanges().block();
+
+            Set<String> idsToUseWithReadMany = new HashSet<>();
+
+            assertThat(feedRanges).isNotNull();
+            int feedRangesCount = feedRanges.size();
+
+            feedRanges.forEach(feedRange -> {
+                Iterator<FeedResponse<TestObject>> responseIterator = container
+                    .queryItems(sqlQuerySpec, new CosmosQueryRequestOptions().setFeedRange(feedRange), TestObject.class)
+                    .byPage()
+                    .toIterable()
+                    .iterator();
+
+                while (responseIterator.hasNext()) {
+                    FeedResponse<TestObject> response = responseIterator.next();
+
+                    assertThat(response).isNotNull();
+                    assertThat(response.getResults()).isNotNull();
+
+                    List<TestObject> results = response.getResults();
+
+                    assertThat(results.size()).isEqualTo(1);
+
+                    idsToUseWithReadMany.add(results.get(0).getId());
+                }
+            });
+
+            if (idsToUseWithReadMany.size() == feedRangesCount) {
+
+                List<CosmosItemIdentity> cosmosItemIdentities = idsToUseWithReadMany
+                    .stream()
+                    .map(id -> new CosmosItemIdentity(new PartitionKey(id), id))
+                    .collect(Collectors.toList());
+
+                FeedResponse<InternalObjectNode> readManyResult = container
+                    .readMany(cosmosItemIdentities, InternalObjectNode.class).block();
+
+                assertThat(readManyResult).isNotNull();
+                assertThat(readManyResult.getResults()).isNotNull();
+                assertThat(readManyResult.getResults().size()).isEqualTo(feedRangesCount);
+            } else {
+                fail("Not all physical partitions have data!");
+            }
+
+            return idsToUseWithReadMany;
+        };
+
+        Function<CosmosAsyncContainer, Set<String>> readManyWithSolelyQueriesFunc = (container) -> {
+
+            int createOperationCount = 100;
+            Set<String> idsToUseWithReadMany = new HashSet<>();
+
+            for (int i = 0; i < createOperationCount; i++) {
+
+                TestObject testObject = TestObject.create();
+                String documentId = testObject.getId();
+
+                container.createItem(testObject, new PartitionKey(documentId), new CosmosItemRequestOptions()).block();
+
+                idsToUseWithReadMany.add(documentId);
+            }
+
+            List<CosmosItemIdentity> cosmosItemIdentities = idsToUseWithReadMany
+                .stream()
+                .map(id -> new CosmosItemIdentity(new PartitionKey(id), id))
+                .collect(Collectors.toList());
+
+            FeedResponse<InternalObjectNode> readManyResult = container
+                .readMany(cosmosItemIdentities, InternalObjectNode.class).block();
+
+            assertThat(readManyResult).isNotNull();
+            assertThat(readManyResult.getResults()).isNotNull();
+            assertThat(readManyResult.getResults().size()).isEqualTo(idsToUseWithReadMany.size());
+
+            return idsToUseWithReadMany;
+        };
+
+        return new Object[][]{
+            {
+                readManyWithSolelyPointReadsFunc,
+                "readManyWithSolelyPointReads",
+                "readMany operation with solely point reads should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG
+            },
+            {
+                readManyWithSolelyQueriesFunc,
+                "readManyWithSolelyQueries",
+                "readMany operation with solely queries should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG
+            }
+        };
+    }
+
+    @DataProvider(name = "readManyWithExplicitRegionSwitchingTestContext")
+    public Object[][] readManyWithExplicitRegionSwitchingTestContext() {
+
+        Function<CosmosAsyncContainer, Set<String>> readManyWithSolelyPointReadFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_Func = (container) -> {
+            int createOperationCount = 100;
+            Set<String> idsWithCreatesInSecondPreferredRegion = new HashSet<>();
+
+            for (int i = 0; i < createOperationCount; i++) {
+
+                TestObject testObject = TestObject.create();
+                String documentId = testObject.getId();
+
+                PartitionKey partitionKey = new PartitionKey(documentId);
+
+                container.createItem(testObject, partitionKey, new CosmosItemRequestOptions())
+                    .doOnSuccess(response -> idsWithCreatesInSecondPreferredRegion.add(response.getItem().getId()))
+                    .block();
+            }
+
+            SqlQuerySpec sqlQuerySpec = new SqlQuerySpec();
+            sqlQuerySpec.setQueryText("SELECT * FROM c OFFSET 0 LIMIT 1");
+
+            List<FeedRange> feedRanges = container.getFeedRanges().block();
+
+            Set<String> idsToUseWithReadMany = new HashSet<>();
+
+            assertThat(feedRanges).isNotNull();
+            int feedRangesCount = feedRanges.size();
+
+            feedRanges.forEach(feedRange -> {
+                Iterator<FeedResponse<TestObject>> responseIterator = container
+                    .queryItems(sqlQuerySpec, new CosmosQueryRequestOptions().setFeedRange(feedRange), TestObject.class)
+                    .byPage()
+                    .toIterable()
+                    .iterator();
+
+                while (responseIterator.hasNext()) {
+                    FeedResponse<TestObject> response = responseIterator.next();
+
+                    assertThat(response).isNotNull();
+                    assertThat(response.getResults()).isNotNull();
+
+                    List<TestObject> results = response.getResults();
+
+                    assertThat(results.size()).isEqualTo(1);
+
+                    idsToUseWithReadMany.add(results.get(0).getId());
+                }
+            });
+
+            if (idsToUseWithReadMany.size() == feedRangesCount) {
+
+                List<CosmosItemIdentity> cosmosItemIdentities = idsToUseWithReadMany
+                    .stream()
+                    .map(id -> new CosmosItemIdentity(new PartitionKey(id), id))
+                    .collect(Collectors.toList());
+
+                FeedResponse<InternalObjectNode> readManyResult = container
+                    .readMany(
+                        cosmosItemIdentities,
+                        new CosmosReadManyRequestOptions().setExcludedRegions(ImmutableList.of(this.writeRegions.get(0))),
+                        InternalObjectNode.class)
+                    .block();
+
+                assertThat(readManyResult).isNotNull();
+                assertThat(readManyResult.getResults()).isNotNull();
+                assertThat(readManyResult.getResults().size()).isEqualTo(feedRangesCount);
+            } else {
+                fail("Not all physical partitions have data!");
+            }
+
+            return idsToUseWithReadMany;
+        };
+
+        Function<CosmosAsyncContainer, Set<String>> readManyWithSolelyQueriesFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_Func = (container) -> {
+
+            Set<String> idsToUseWithReadMany = new HashSet<>();
+            int createOperationCount = 100;
+
+            for (int i = 0; i < createOperationCount; i++) {
+
+                TestObject testObject = TestObject.create();
+                String documentId = testObject.getId();
+
+                container.createItem(testObject, new PartitionKey(documentId), new CosmosItemRequestOptions())
+                    .doOnSuccess(response -> idsToUseWithReadMany.add(response.getItem().getId()))
+                    .block();
+
+                idsToUseWithReadMany.add(documentId);
+            }
+
+            List<CosmosItemIdentity> cosmosItemIdentities = idsToUseWithReadMany
+                .stream()
+                .map(id -> new CosmosItemIdentity(new PartitionKey(id), id))
+                .collect(Collectors.toList());
+
+            FeedResponse<InternalObjectNode> readManyResult = container
+                .readMany(
+                    cosmosItemIdentities,
+                    new CosmosReadManyRequestOptions().setExcludedRegions(ImmutableList.of(this.writeRegions.get(0))),
+                    InternalObjectNode.class)
+                .block();
+
+            assertThat(readManyResult).isNotNull();
+            assertThat(readManyResult.getResults()).isNotNull();
+            assertThat(readManyResult.getResults().size()).isEqualTo(idsToUseWithReadMany.size());
+
+            return idsToUseWithReadMany;
+        };
+
+        return new Object[][] {
+            {
+                readManyWithSolelyPointReadFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_Func,
+                "readManyWithSolelyPointReadFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion",
+                "readMany operation with solely point reads should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG
+            },
+            {
+                readManyWithSolelyQueriesFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_Func,
+                "readManyWithSolelyQueriesFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion",
+                "readMany operation with solely queries should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG
+            }
+        };
+    }
+
+    @DataProvider(name = "readYouWriteWithExplicitRegionSwitchingTestContext")
+    public Object[][] readYouWriteWithExplicitRegionSwitchingTestContext() {
+
+        Function<CosmosAsyncContainer, Set<String>> pointReadYourPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegionFunc = (container) -> {
+            TestObject testObjectToBeCreated = TestObject.create();
+
+            String id = testObjectToBeCreated.getId();
+            String pk = testObjectToBeCreated.getMypk();
+
+            container.createItem(testObjectToBeCreated).block();
+
+            try {
+                Thread.sleep(10_000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            CosmosItemResponse<TestObject> testObjectFromRead = container.readItem(id, new PartitionKey(pk), new CosmosItemRequestOptions().setExcludedRegions(ImmutableList.of(this.writeRegions.get(0))), TestObject.class).block();
+
+            assertThat(testObjectFromRead).isNotNull();
+            validateTestObjectEquality(testObjectToBeCreated, testObjectFromRead.getItem());
+
+            return ImmutableSet.of(pk);
+        };
+
+        Function<CosmosAsyncContainer, Set<String>> pointReadAfterPartitionSplitAndPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegionFunc = (container) -> {
+            TestObject testObjectToBeCreated = TestObject.create();
+
+            String id = testObjectToBeCreated.getId();
+            String pk = testObjectToBeCreated.getMypk();
+
+            container.createItem(testObjectToBeCreated).block();
+
+            ThroughputResponse throughputResponse = container.replaceThroughput(ThroughputProperties.createManualThroughput(10_100)).block();
+
+            while (true) {
+                assert throughputResponse != null;
+                boolean isReplacePending = throughputResponse.isReplacePending();
+
+                if (!isReplacePending) {
+                    break;
+                }
+                throughputResponse = container.readThroughput().block();
+                try {
+                    Thread.sleep(10_000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                logger.info("Waiting for split to complete...");
+            }
+
+            logger.info("Split complete!");
+            CosmosItemResponse<TestObject> testObjectFromRead = container.readItem(id, new PartitionKey(pk), new CosmosItemRequestOptions().setExcludedRegions(ImmutableList.of(this.writeRegions.get(0))), TestObject.class).block();
+
+            assertThat(testObjectFromRead).isNotNull();
+            validateTestObjectEquality(testObjectToBeCreated, testObjectFromRead.getItem());
+
+            return ImmutableSet.of(pk);
+        };
+
+        Function<CosmosAsyncContainer, Set<String>> deleteYourLatestUpsert_deleteInSecondPreferredRegionAndUpsertInFirstPreferredRegionFunc = (container) -> {
+            TestObject testObjectToBeCreated = TestObject.create();
+
+            String id = testObjectToBeCreated.getId();
+            String pk = testObjectToBeCreated.getMypk();
+
+            container.createItem(testObjectToBeCreated).block();
+
+            CosmosItemResponse<Object> deleteOperationResponse = container.deleteItem(id, new PartitionKey(pk), new CosmosItemRequestOptions().setExcludedRegions(ImmutableList.of(this.writeRegions.get(0)))).block();
+
+            assertThat(deleteOperationResponse).isNotNull();
+            assertThat(deleteOperationResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NO_CONTENT);
+
+            return ImmutableSet.of(pk);
+        };
+
+        Function<CosmosAsyncContainer, Set<String>> replaceYourLatestUpsert_replaceInSecondPreferredRegionAndUpsertInFirstPreferredRegionFunc = (container) -> {
+            TestObject testObjectToBeCreated = TestObject.create();
+
+            String id = testObjectToBeCreated.getId();
+            String pk = testObjectToBeCreated.getMypk();
+
+            container.createItem(testObjectToBeCreated).block();
+
+            TestObject testObjectReplacement = testObjectToBeCreated;
+            testObjectReplacement.setStringProp(UUID.randomUUID().toString());
+
+            CosmosItemResponse<TestObject> replaceOperationResponse = container.replaceItem(
+                    testObjectReplacement,
+                    id,
+                    new PartitionKey(pk),
+                    new CosmosItemRequestOptions().setExcludedRegions(ImmutableList.of(this.writeRegions.get(0))))
+                .block();
+
+            assertThat(replaceOperationResponse).isNotNull();
+            assertThat(replaceOperationResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
+
+            return ImmutableSet.of(pk);
+        };
+
+        Function<CosmosAsyncContainer, Set<String>> readYourPatchYourCreate_createInFirstPreferredRegion_readAndPatchInSecondPreferredRegionFunc = (container) -> {
+            TestObject testObjectToBeCreated = TestObject.create();
+
+            String id = testObjectToBeCreated.getId();
+            String pk = testObjectToBeCreated.getMypk();
+
+            CosmosItemResponse<TestObject> itemResponse = container.createItem(testObjectToBeCreated).block();
+
+            assertThat(itemResponse).isNotNull();
+            assertThat(itemResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
+
+            CosmosPatchOperations patchOperations = CosmosPatchOperations.create().add("/" + "newProperty", "newVal");
+            CosmosItemResponse<TestObject> patchOperationResponse = container.patchItem(
+                    id,
+                    new PartitionKey(pk),
+                    patchOperations,
+                    (CosmosPatchItemRequestOptions) new CosmosPatchItemRequestOptions()
+                        .setExcludedRegions(ImmutableList.of(this.writeRegions.get(0))),
+                    TestObject.class)
+                .block();
+
+            assertThat(patchOperationResponse).isNotNull();
+            assertThat(patchOperationResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
+
+            CosmosItemResponse<JsonNode> readOperationResponse = container.readItem(
+                    id,
+                    new PartitionKey(pk),
+                    new CosmosItemRequestOptions().setExcludedRegions(ImmutableList.of(this.writeRegions.get(0))),
+                    JsonNode.class)
+                .block();
+
+            assertThat(readOperationResponse).isNotNull();
+            assertThat(readOperationResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
+
+            JsonNode itemReadAsJsonNode = readOperationResponse.getItem();
+
+            assertThat(itemReadAsJsonNode).isNotNull();
+            assertThat(itemReadAsJsonNode.get("newProperty")).isNotNull();
+            assertThat(itemReadAsJsonNode.get("newProperty").asText()).isNotNull();
+            assertThat(itemReadAsJsonNode.get("newProperty").asText()).isEqualTo("newVal");
+
+            return ImmutableSet.of(pk);
+        };
+
+        Function<CosmosAsyncContainer, Set<String>> readYourCreate_readBatchInSecondPreferredRegion_createBatchInFirstPreferredRegionFunc = (container) -> {
             String documentId = UUID.randomUUID().toString();
-            TestItem testItem = new TestItem(documentId, documentId, documentId);
+            PartitionKey partitionKey = new PartitionKey(documentId);
 
-            idsAddedByCreates.add(documentId);
-            return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
-        });
+            TestObject testObjectToBeCreated = TestObject.create(documentId);
 
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncContainer container = getSharedSinglePartitionCosmosContainer(client);
+            CosmosBatch batchForCreate = CosmosBatch.createCosmosBatch(partitionKey);
+            batchForCreate.createItemOperation(testObjectToBeCreated);
 
-        try {
+            CosmosBatch batchForRead = CosmosBatch.createCosmosBatch(partitionKey);
+            batchForRead.readItemOperation(testObjectToBeCreated.getId());
+
+            CosmosBatchResponse batchCreateResponse = container.executeCosmosBatch(batchForCreate).block();
+
+            assertThat(batchCreateResponse).isNotNull();
+            assertThat(batchCreateResponse.getResults()).isNotNull();
+
+            List<CosmosBatchOperationResult> batchCreateResponseResults = batchCreateResponse.getResults();
+
+            assertThat(batchCreateResponseResults.size()).isEqualTo(1);
+            assertThat(batchCreateResponseResults.get(0).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
+
+            CosmosBatchResponse batchReadResponse = container.executeCosmosBatch(
+                    batchForRead,
+                    new CosmosBatchRequestOptions()
+                        .setExcludedRegions(ImmutableList.of(this.writeRegions.get(0))))
+                .block();
+
+            assertThat(batchReadResponse).isNotNull();
+            assertThat(batchReadResponse.getResults()).isNotNull();
+
+            List<CosmosBatchOperationResult> batchReadResponseResults = batchReadResponse.getResults();
+
+            assertThat(batchReadResponseResults.size()).isEqualTo(1);
+            assertThat(batchReadResponseResults.get(0).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
+
+            return ImmutableSet.of(documentId);
+        };
+
+        Function<CosmosAsyncContainer, Set<String>> bulkReadFromSecondPreferredRegionYourBulkCreateInFirstPreferredRegionFunc = (container) -> {
+            int createOperationCount = 10;
+            List<String> idsToCreate = new ArrayList<>();
+
+            Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
+
+                String documentId = UUID.randomUUID().toString();
+                TestItem testItem = new TestItem(documentId, documentId, documentId);
+
+                idsToCreate.add(documentId);
+
+                return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
+            });
+
+            Flux<CosmosItemOperation> readOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
+                String alreadyCreatedId = idsToCreate.get(i);
+                return CosmosBulkOperations.getReadItemOperation(alreadyCreatedId, new PartitionKey(alreadyCreatedId));
+            });
 
             List<CosmosBulkOperationResponse<Object>> bulkCreateResponses = container
                 .executeBulkOperations(
-                    createOperationsFlux,
-                    new CosmosBulkExecutionOptions().setExcludedRegions(ImmutableList.of(preferredRegions.get(0))))
+                    createOperationsFlux)
+                .collectList().block();
+
+            assertThat(bulkCreateResponses).isNotNull();
+            assertThat(bulkCreateResponses.size()).isEqualTo(createOperationCount);
+
+            bulkCreateResponses.forEach(bulkCreateResponse -> {
+                assertThat(bulkCreateResponse.getResponse()).isNotNull();
+                assertThat(bulkCreateResponse.getResponse().getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
+            });
+
+            List<CosmosBulkOperationResponse<Object>> bulkReadResponses = container.executeBulkOperations(
+                    readOperationsFlux,
+                    new CosmosBulkExecutionOptions().setExcludedRegions(ImmutableList.of(this.writeRegions.get(0))))
+                .collectList()
+                .block();
+
+            assertThat(bulkReadResponses).isNotNull();
+            assertThat(bulkReadResponses.size()).isEqualTo(createOperationCount);
+
+            Set<String> idsRead = new HashSet<>();
+
+            bulkReadResponses.forEach(bulkReadResponse -> {
+                assertThat(bulkReadResponse.getResponse()).isNotNull();
+                assertThat(bulkReadResponse.getResponse().getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
+                idsRead.add(bulkReadResponse.getResponse().getItem(TestObject.class).getId());
+            });
+
+            return idsRead;
+        };
+
+        Function<CosmosAsyncContainer, Set<String>> changeFeed_fromBeginning_fromSecondPreferredRegion_forFullRange_withCreatesOnFirstPreferredRegion_withSessionGuaranteeFunc = (container) -> {
+            int createOperationCount = 10;
+            Set<String> idsAddedByCreates = new HashSet<>();
+
+            Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
+                String documentId = UUID.randomUUID().toString();
+                TestItem testItem = new TestItem(documentId, documentId, documentId);
+
+                idsAddedByCreates.add(documentId);
+                return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
+            });
+
+            List<CosmosBulkOperationResponse<Object>> bulkCreateResponses = container
+                .executeBulkOperations(createOperationsFlux)
                 .collectList()
                 .block();
 
@@ -923,7 +1020,8 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             assertThat(bulkCreateResponses.size()).isEqualTo(createOperationCount);
 
             CosmosChangeFeedRequestOptions changeFeedRequestOptions = CosmosChangeFeedRequestOptions
-                .createForProcessingFromBeginning(FeedRange.forFullRange());
+                .createForProcessingFromBeginning(FeedRange.forFullRange())
+                .setExcludedRegions(ImmutableList.of(this.writeRegions.get(0)));
 
             Iterator<FeedResponse<JsonNode>> responseIterator = container
                 .queryChangeFeed(changeFeedRequestOptions, JsonNode.class)
@@ -958,306 +1056,329 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             idsAddedByCreates.forEach(idAddedByBulkCreate ->
                 assertThat(idsReceivedFromChangeFeedRequest.contains(idAddedByBulkCreate)).isTrue());
 
-        } catch (Exception ex) {
-            logger.error("Exception occurred...", ex);
-            fail("Change feed operation should have succeeded...");
-        } finally {
-            safeClose(client);
+            return idsReceivedFromChangeFeedRequest;
+        };
+
+        return new Object[][] {
+            {
+                pointReadYourPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegionFunc,
+                "pointReadYourPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegion",
+                "Document read should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                pointReadAfterPartitionSplitAndPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegionFunc,
+                "pointReadAfterPartitionSplitAndPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegionFunc",
+                "Document read should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                deleteYourLatestUpsert_deleteInSecondPreferredRegionAndUpsertInFirstPreferredRegionFunc,
+                "deleteYourLatestUpsert_deleteInSecondPreferredRegionAndUpsertInFirstPreferredRegion",
+                "Document read should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                replaceYourLatestUpsert_replaceInSecondPreferredRegionAndUpsertInFirstPreferredRegionFunc,
+                "replaceYourLatestUpsert_replaceInSecondPreferredRegionAndUpsertInFirstPreferredRegion",
+                "Document replace should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                readYourPatchYourCreate_createInFirstPreferredRegion_readAndPatchInSecondPreferredRegionFunc,
+                "readYourPatchYourCreate_createInFirstPreferredRegion_readAndPatchInSecondPreferredRegion",
+                "Document patch or read should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                readYourCreate_readBatchInSecondPreferredRegion_createBatchInFirstPreferredRegionFunc,
+                "readYourCreate_readBatchInSecondPreferredRegion_createBatchInFirstPreferredRegion",
+                "Batch with read operations should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                bulkReadFromSecondPreferredRegionYourBulkCreateInFirstPreferredRegionFunc,
+                "bulkReadFromSecondPreferredRegionYourBulkCreateInFirstPreferredRegion",
+                "Bulk execution with read operations should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                changeFeed_fromBeginning_fromSecondPreferredRegion_forFullRange_withCreatesOnFirstPreferredRegion_withSessionGuaranteeFunc,
+                "changeFeed_fromBeginning_fromSecondPreferredRegion_forFullRange_withCreatesOnFirstPreferredRegion_withSessionGuarantee",
+                "Change feed execution should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                readYourCreate_readBatchInSecondPreferredRegion_createBatchInFirstPreferredRegionFunc,
+                "readYourCreate_readBatchInSecondPreferredRegion_createBatchInFirstPreferredRegion",
+                "Batch with read operations should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            }
+        };
+    }
+
+    @BeforeClass(groups = {"multi-region", "multi-master"})
+    public void beforeClass() {
+
+        try (CosmosAsyncClient tempClient = getClientBuilder().buildAsyncClient()) {
+
+            RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(tempClient);
+            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+            DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+
+            Map<String, String> writeRegionMap = getRegionMap(databaseAccount, true);
+            Map<String, String> readRegionMap = getRegionMap(databaseAccount, false);
+
+            this.readRegions = new ArrayList<>(readRegionMap.keySet());
+            this.writeRegions = new ArrayList<>(writeRegionMap.keySet());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    @Test(groups = {"multi-region"}, timeOut = 3 * TIMEOUT)
-    public void readManyWithSolelyPointReads() throws InterruptedException {
+    @Test(groups = {"multi-region"}, dataProvider = "readYouWriteWithNoExplicitRegionSwitchingTestContext", timeOut = 80 * TIMEOUT)
+    public void readYouWriteWithNoExplicitRegionSwitching(
+        Function<CosmosAsyncContainer, Set<String>> func,
+        String testId,
+        String genericErrorMessage,
+        boolean shouldBloomFilterBeAccessed,
+        boolean shouldSinglePartitionContainerBeSplit,
+        boolean isMultiPartitionContainerRequired) throws InterruptedException {
 
-        List<String> preferredRegions = new ArrayList<>(this.writeRegionMap.keySet());
+        logger.info("Executing test with id : {}", testId);
 
-        int createOperationCount = 100;
-        int readManyContainerProvisionedThroughput = 50_000;
+        assertThat(this.readRegions.size()).isGreaterThan(1);
 
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncDatabase sharedDatabase = getSharedCosmosDatabase(client);
+        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.readRegions, true);
+        CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
+        CosmosContainerProperties expectedCosmosContainerProperties;
 
-        String readManyContainerId = UUID.randomUUID() + "-read-many";
+        CosmosAsyncContainer resolvedContainer;
 
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties(readManyContainerId, "/id");
-        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(readManyContainerProvisionedThroughput);
+        boolean shouldDeleteContainer = false;
 
-        sharedDatabase.createContainer(containerProperties, throughputProperties).block();
-        CosmosAsyncContainer readManyContainer = sharedDatabase.getContainer(readManyContainerId);
+        if (isMultiPartitionContainerRequired) {
+            resolvedContainer = getSharedMultiPartitionCosmosContainer(client);
+            expectedCosmosContainerProperties = new CosmosContainerProperties(resolvedContainer.getId(), "/mypk");
+        } else if (shouldSinglePartitionContainerBeSplit) {
+            String containerId = UUID.randomUUID() + "-" + "container";
+            expectedCosmosContainerProperties = new CosmosContainerProperties(containerId, "/mypk");
+            database.createContainerIfNotExists(expectedCosmosContainerProperties).block();
+            resolvedContainer = database.getContainer(containerId);
+            shouldDeleteContainer = true;
+        } else {
+            resolvedContainer = getSharedSinglePartitionCosmosContainer(client);
+            expectedCosmosContainerProperties = new CosmosContainerProperties(resolvedContainer.getId(), "/mypk");
+        }
 
-        Thread.sleep(60_000);
+        Thread.sleep(10_000);
 
         try {
-            for (int i = 0; i < createOperationCount; i++) {
+            RxDocumentClientImpl documentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
+            String normalizedSecondPreferredRegion = this.readRegions.get(1).toLowerCase(Locale.ROOT).trim().replace(" ", "");
+            Set<String> possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion = func.apply(resolvedContainer);
 
-                TestObject testObject = TestObject.create();
-                String documentId = testObject.getId();
-
-                readManyContainer.createItem(testObject, new PartitionKey(documentId), new CosmosItemRequestOptions()).block();
-            }
-
-            SqlQuerySpec sqlQuerySpec = new SqlQuerySpec();
-            sqlQuerySpec.setQueryText("SELECT * FROM c OFFSET 0 LIMIT 1");
-
-            List<FeedRange> feedRanges = readManyContainer.getFeedRanges().block();
-
-            Set<String> idsToUseWithReadMany = new HashSet<>();
-
-            assertThat(feedRanges).isNotNull();
-            int feedRangesCount = feedRanges.size();
-
-            feedRanges.forEach(feedRange -> {
-                Iterator<FeedResponse<TestObject>> responseIterator = readManyContainer
-                    .queryItems(sqlQuerySpec, new CosmosQueryRequestOptions().setFeedRange(feedRange), TestObject.class)
-                    .byPage()
-                    .toIterable()
-                    .iterator();
-
-                while (responseIterator.hasNext()) {
-                    FeedResponse<TestObject> response = responseIterator.next();
-
-                    assertThat(response).isNotNull();
-                    assertThat(response.getResults()).isNotNull();
-
-                    List<TestObject> results = response.getResults();
-
-                    assertThat(results.size()).isEqualTo(1);
-
-                    idsToUseWithReadMany.add(results.get(0).getId());
-                }
+            possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion.forEach(possiblePartitionKeyWhichSawRequestsInSecondPreferredRegion -> {
+                validateBloomFilterPresence(
+                    shouldBloomFilterBeAccessed,
+                    new PartitionKey(possiblePartitionKeyWhichSawRequestsInSecondPreferredRegion),
+                    expectedCosmosContainerProperties.getPartitionKeyDefinition(),
+                    resolvedContainer.getLinkWithoutTrailingSlash(),
+                    normalizedSecondPreferredRegion,
+                    documentClient
+                );
             });
 
-            if (idsToUseWithReadMany.size() == feedRangesCount) {
+        } catch (Exception ex) {
+            logger.error("Exception occurred : ", ex);
+            fail(genericErrorMessage);
+        } finally {
 
-                List<CosmosItemIdentity> cosmosItemIdentities = idsToUseWithReadMany
-                    .stream()
-                    .map(id -> new CosmosItemIdentity(new PartitionKey(id), id))
-                    .collect(Collectors.toList());
-
-                FeedResponse<InternalObjectNode> readManyResult = readManyContainer
-                    .readMany(cosmosItemIdentities, InternalObjectNode.class).block();
-
-                assertThat(readManyResult).isNotNull();
-                assertThat(readManyResult.getResults()).isNotNull();
-                assertThat(readManyResult.getResults().size()).isEqualTo(feedRangesCount);
-            } else {
-                fail("Not all physical partitions have data!");
+            if (shouldDeleteContainer) {
+                safeDeleteCollection(resolvedContainer);
             }
 
-        } catch (Exception ex) {
-            logger.error("Exception occurred...", ex);
-            fail("readMany operation should have succeeded...");
-        } finally {
-            safeDeleteCollection(readManyContainer);
             safeClose(client);
         }
     }
 
-    @Test(groups = {"multi-region"}, timeOut = 3 * TIMEOUT)
-    public void readManyWithSolelyQueries() throws InterruptedException {
+    @Test(groups = {"multi-master"}, dataProvider = "readYouWriteWithExplicitRegionSwitchingTestContext", timeOut = 80 * TIMEOUT)
+    public void readYouWriteWithExplicitRegionSwitching(
+        Function<CosmosAsyncContainer, Set<String>> func,
+        String testId,
+        String genericErrorMessage,
+        boolean shouldBloomFilterBeAccessed,
+        boolean shouldSinglePartitionContainerBeSplit,
+        boolean isMultiPartitionContainerRequired) throws InterruptedException {
 
-        List<String> preferredRegions = new ArrayList<>(this.writeRegionMap.keySet());
+        logger.info("Executing test with id : {}", testId);
 
-        int createOperationCount = 100;
-        int readManyContainerProvisionedThroughput = 50_000;
+        assertThat(this.writeRegions.size()).isGreaterThan(1);
 
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncDatabase sharedDatabase = getSharedCosmosDatabase(client);
+        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.writeRegions, true);
+        CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
+        CosmosContainerProperties expectedCosmosContainerProperties;
+        CosmosAsyncContainer resolvedContainer;
 
-        String readManyContainerId = UUID.randomUUID() + "-read-many";
+        boolean shouldDeleteContainer = false;
 
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties(readManyContainerId, "/id");
-        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(readManyContainerProvisionedThroughput);
-
-        sharedDatabase.createContainer(containerProperties, throughputProperties).block();
-        CosmosAsyncContainer readManyContainer = sharedDatabase.getContainer(readManyContainerId);
-
-        Thread.sleep(60_000);
-
-        Set<String> idsToUseWithReadMany = new HashSet<>();
-
-        try {
-            for (int i = 0; i < createOperationCount; i++) {
-
-                TestObject testObject = TestObject.create();
-                String documentId = testObject.getId();
-
-                readManyContainer.createItem(testObject, new PartitionKey(documentId), new CosmosItemRequestOptions()).block();
-
-                idsToUseWithReadMany.add(documentId);
-            }
-
-            List<CosmosItemIdentity> cosmosItemIdentities = idsToUseWithReadMany
-                .stream()
-                .map(id -> new CosmosItemIdentity(new PartitionKey(id), id))
-                .collect(Collectors.toList());
-
-            FeedResponse<InternalObjectNode> readManyResult = readManyContainer
-                .readMany(cosmosItemIdentities, InternalObjectNode.class).block();
-
-            assertThat(readManyResult).isNotNull();
-            assertThat(readManyResult.getResults()).isNotNull();
-            assertThat(readManyResult.getResults().size()).isEqualTo(idsToUseWithReadMany.size());
-        } catch (Exception ex) {
-            logger.error("Exception occurred...", ex);
-            fail("readMany operation should have succeeded...");
-        } finally {
-            safeDeleteCollection(readManyContainer);
-            safeClose(client);
+        if (isMultiPartitionContainerRequired) {
+            resolvedContainer = getSharedMultiPartitionCosmosContainer(client);
+            expectedCosmosContainerProperties = new CosmosContainerProperties(resolvedContainer.getId(), "/mypk");
+        } else if (shouldSinglePartitionContainerBeSplit) {
+            String containerId = UUID.randomUUID() + "-" + "container";
+            expectedCosmosContainerProperties = new CosmosContainerProperties(containerId, "/mypk");
+            database.createContainerIfNotExists(expectedCosmosContainerProperties).block();
+            resolvedContainer = database.getContainer(containerId);
+            shouldDeleteContainer = true;
+        } else {
+            resolvedContainer = getSharedSinglePartitionCosmosContainer(client);
+            expectedCosmosContainerProperties = new CosmosContainerProperties(resolvedContainer.getId(), "/mypk");
         }
-    }
 
-    @Test(groups = {"multi-master"}, timeOut = 3 * TIMEOUT)
-    public void readManyWithSolelyPointReadFollowingCreatesOnSecondPreferredRegion() throws InterruptedException {
-        List<String> preferredRegions = new ArrayList<>(this.writeRegionMap.keySet());
-
-        assertThat(preferredRegions.size()).isGreaterThan(1);
-
-        int createOperationCount = 100;
-        int readManyContainerProvisionedThroughput = 50_000;
-
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncDatabase sharedDatabase = getSharedCosmosDatabase(client);
-
-        String readManyContainerId = UUID.randomUUID() + "-read-many";
-
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties(readManyContainerId, "/id");
-        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(readManyContainerProvisionedThroughput);
-
-        sharedDatabase.createContainer(containerProperties, throughputProperties).block();
-        CosmosAsyncContainer readManyContainer = sharedDatabase.getContainer(readManyContainerId);
-
-        Thread.sleep(60_000);
+        Thread.sleep(10_000);
 
         try {
-            for (int i = 0; i < createOperationCount; i++) {
+            RxDocumentClientImpl documentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
+            String normalizedSecondPreferredRegion = this.writeRegions.get(1).toLowerCase(Locale.ROOT).trim().replace(" ", "");
+            Set<String> possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion = func.apply(resolvedContainer);
 
-                TestObject testObject = TestObject.create();
-                String documentId = testObject.getId();
-
-                readManyContainer.createItem(
-                    testObject,
-                    new PartitionKey(documentId),
-                    new CosmosItemRequestOptions()
-                        .setExcludedRegions(ImmutableList.of(preferredRegions.get(0)))
-                ).block();
-            }
-
-            SqlQuerySpec sqlQuerySpec = new SqlQuerySpec();
-            sqlQuerySpec.setQueryText("SELECT * FROM c OFFSET 0 LIMIT 1");
-
-            List<FeedRange> feedRanges = readManyContainer.getFeedRanges().block();
-
-            Set<String> idsToUseWithReadMany = new HashSet<>();
-
-            assertThat(feedRanges).isNotNull();
-            int feedRangesCount = feedRanges.size();
-
-            feedRanges.forEach(feedRange -> {
-                Iterator<FeedResponse<TestObject>> responseIterator = readManyContainer
-                    .queryItems(sqlQuerySpec, new CosmosQueryRequestOptions().setFeedRange(feedRange), TestObject.class)
-                    .byPage()
-                    .toIterable()
-                    .iterator();
-
-                while (responseIterator.hasNext()) {
-                    FeedResponse<TestObject> response = responseIterator.next();
-
-                    assertThat(response).isNotNull();
-                    assertThat(response.getResults()).isNotNull();
-
-                    List<TestObject> results = response.getResults();
-
-                    assertThat(results.size()).isEqualTo(1);
-
-                    idsToUseWithReadMany.add(results.get(0).getId());
-                }
+            possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion.forEach(possiblePartitionKeyWhichSawRequestsInSecondPreferredRegion -> {
+                validateBloomFilterPresence(
+                    shouldBloomFilterBeAccessed,
+                    new PartitionKey(possiblePartitionKeyWhichSawRequestsInSecondPreferredRegion),
+                    expectedCosmosContainerProperties.getPartitionKeyDefinition(),
+                    resolvedContainer.getLinkWithoutTrailingSlash(),
+                    normalizedSecondPreferredRegion,
+                    documentClient
+                );
             });
 
-            if (idsToUseWithReadMany.size() == feedRangesCount) {
+        } catch (Exception ex) {
+            logger.error("Exception occurred : ", ex);
+            fail(genericErrorMessage);
+        } finally {
 
-                List<CosmosItemIdentity> cosmosItemIdentities = idsToUseWithReadMany
-                    .stream()
-                    .map(id -> new CosmosItemIdentity(new PartitionKey(id), id))
-                    .collect(Collectors.toList());
-
-                FeedResponse<InternalObjectNode> readManyResult = readManyContainer
-                    .readMany(cosmosItemIdentities, InternalObjectNode.class).block();
-
-                assertThat(readManyResult).isNotNull();
-                assertThat(readManyResult.getResults()).isNotNull();
-                assertThat(readManyResult.getResults().size()).isEqualTo(feedRangesCount);
-            } else {
-                fail("Not all physical partitions have data!");
+            if (shouldDeleteContainer) {
+                safeDeleteCollection(resolvedContainer);
             }
 
-        } catch (Exception ex) {
-            logger.error("Exception occurred...", ex);
-            fail("readMany operation should have succeeded...");
-        } finally {
-            safeDeleteCollection(readManyContainer);
             safeClose(client);
         }
     }
 
-    @Test(groups = {"multi-region"}, timeOut = 3 * TIMEOUT)
-    public void readManyWithSolelyQueriesFollowingCreatesOnSecondPreferredRegion() throws InterruptedException {
+    @Test(groups = {"multi-region"}, dataProvider = "readManyWithNoExplicitRegionSwitchingTestContext", timeOut = 10 * TIMEOUT)
+    public void readManyWithNoExplicitRegionSwitching(
+        Function<CosmosAsyncContainer, Set<String>> func,
+        String testId,
+        String genericErrorMessage,
+        boolean shouldBloomFilterBeAccessed) throws InterruptedException {
+        logger.info("Executing test with id : {}", testId);
 
-        List<String> preferredRegions = new ArrayList<>(this.writeRegionMap.keySet());
+        assertThat(this.readRegions.size()).isGreaterThan(1);
 
-        assertThat(preferredRegions.size()).isGreaterThan(1);
+        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.readRegions, true);
+        CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
 
-        int createOperationCount = 100;
-        int readManyContainerProvisionedThroughput = 50_000;
+        String containerId = UUID.randomUUID().toString();
+        CosmosContainerProperties expectedCosmosContainerProperties = new CosmosContainerProperties(containerId, "/id");
+        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(50_000);
 
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), preferredRegions, true);
-        CosmosAsyncDatabase sharedDatabase = getSharedCosmosDatabase(client);
+        CosmosAsyncContainer resolvedContainer;
 
-        String readManyContainerId = UUID.randomUUID() + "-read-many";
+        database.createContainerIfNotExists(expectedCosmosContainerProperties, throughputProperties).block();
+        resolvedContainer = database.getContainer(containerId);
 
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties(readManyContainerId, "/id");
-        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(readManyContainerProvisionedThroughput);
-
-        sharedDatabase.createContainer(containerProperties, throughputProperties).block();
-        CosmosAsyncContainer readManyContainer = sharedDatabase.getContainer(readManyContainerId);
-
-        Thread.sleep(60_000);
-
-        Set<String> idsToUseWithReadMany = new HashSet<>();
+        Thread.sleep(30_000);
 
         try {
-            for (int i = 0; i < createOperationCount; i++) {
+            RxDocumentClientImpl documentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
+            String normalizedSecondPreferredRegion = this.readRegions.get(1).toLowerCase(Locale.ROOT).trim().replace(" ", "");
+            Set<String> possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion = func.apply(resolvedContainer);
 
-                TestObject testObject = TestObject.create();
-                String documentId = testObject.getId();
+            possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion.forEach(possiblePartitionKeyWhichSawRequestsInSecondPreferredRegion -> {
+                validateBloomFilterPresence(
+                    shouldBloomFilterBeAccessed,
+                    new PartitionKey(possiblePartitionKeyWhichSawRequestsInSecondPreferredRegion),
+                    expectedCosmosContainerProperties.getPartitionKeyDefinition(),
+                    resolvedContainer.getLinkWithoutTrailingSlash(),
+                    normalizedSecondPreferredRegion,
+                    documentClient
+                );
+            });
 
-                readManyContainer.createItem(
-                    testObject,
-                    new PartitionKey(documentId),
-                    new CosmosItemRequestOptions()
-                        .setExcludedRegions(ImmutableList.of(preferredRegions.get(0))
-                        )
-                ).block();
-
-                idsToUseWithReadMany.add(documentId);
-            }
-
-            List<CosmosItemIdentity> cosmosItemIdentities = idsToUseWithReadMany
-                .stream()
-                .map(id -> new CosmosItemIdentity(new PartitionKey(id), id))
-                .collect(Collectors.toList());
-
-            FeedResponse<InternalObjectNode> readManyResult = readManyContainer
-                .readMany(cosmosItemIdentities, InternalObjectNode.class).block();
-
-            assertThat(readManyResult).isNotNull();
-            assertThat(readManyResult.getResults()).isNotNull();
-            assertThat(readManyResult.getResults().size()).isEqualTo(idsToUseWithReadMany.size());
         } catch (Exception ex) {
-            logger.error("Exception occurred...", ex);
-            fail("readMany operation should have succeeded...");
+            logger.error("Exception occurred : ", ex);
+            fail(genericErrorMessage);
         } finally {
-            safeDeleteCollection(readManyContainer);
+            safeDeleteCollection(resolvedContainer);
+            safeClose(client);
+        }
+    }
+
+    @Test(groups = {"multi-master"}, dataProvider = "readManyWithExplicitRegionSwitchingTestContext", timeOut = 10 * TIMEOUT)
+    public void readManyWithExplicitRegionSwitching(
+        Function<CosmosAsyncContainer, Set<String>> func,
+        String testId,
+        String genericErrorMessage,
+        boolean shouldBloomFilterBeAccessed) throws InterruptedException {
+        logger.info("Executing test with id : {}", testId);
+
+        assertThat(this.writeRegions.size()).isGreaterThan(1);
+
+        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.writeRegions, true);
+        CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
+
+        String containerId = UUID.randomUUID().toString();
+        CosmosContainerProperties expectedCosmosContainerProperties = new CosmosContainerProperties(containerId, "/id");
+        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(50_000);
+
+        CosmosAsyncContainer resolvedContainer;
+
+        database.createContainerIfNotExists(expectedCosmosContainerProperties, throughputProperties).block();
+        resolvedContainer = database.getContainer(containerId);
+
+        Thread.sleep(30_000);
+
+        try {
+            RxDocumentClientImpl documentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
+            String normalizedSecondPreferredRegion = this.writeRegions.get(1).toLowerCase(Locale.ROOT).trim().replace(" ", "");
+            Set<String> possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion = func.apply(resolvedContainer);
+
+            possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion.forEach(possiblePartitionKeyWhichSawRequestsInSecondPreferredRegion -> {
+                validateBloomFilterPresence(
+                    shouldBloomFilterBeAccessed,
+                    new PartitionKey(possiblePartitionKeyWhichSawRequestsInSecondPreferredRegion),
+                    expectedCosmosContainerProperties.getPartitionKeyDefinition(),
+                    resolvedContainer.getLinkWithoutTrailingSlash(),
+                    normalizedSecondPreferredRegion,
+                    documentClient
+                );
+            });
+
+        } catch (Exception ex) {
+            logger.error("Exception occurred : ", ex);
+            fail(genericErrorMessage);
+        } finally {
+            safeDeleteCollection(resolvedContainer);
             safeClose(client);
         }
     }
@@ -1288,7 +1409,11 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
     public void afterClass() {}
 
     private static CosmosAsyncClient buildAsyncClient(CosmosClientBuilder clientBuilder, List<String> preferredRegions, boolean isRegionScopedSessionCapturingEnabled) {
-        clientBuilder = clientBuilder.preferredRegions(preferredRegions);
+        clientBuilder = clientBuilder
+            .preferredRegions(preferredRegions)
+            // override this to ensure a write requests can indeed be routed
+            // to a satellite region in a multi-write account
+            .multipleWriteRegionsEnabled(true);
         cosmosClientBuilderAccessor.setRegionScopedSessionCapturingEnabled(clientBuilder, isRegionScopedSessionCapturingEnabled);
         return clientBuilder.buildAsyncClient();
     }
@@ -1310,5 +1435,40 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         assertThat(testObject1.getId()).isEqualTo(testObject2.getId());
         assertThat(testObject1.getMypk()).isEqualTo(testObject2.getMypk());
         assertThat(testObject1.getStringProp()).isEqualTo(testObject2.getStringProp());
+    }
+
+    private static void validateBloomFilterPresence(
+        boolean shouldPartitionKeyBePresentInBloomFilter,
+        PartitionKey partitionKey,
+        PartitionKeyDefinition partitionKeyDefinition,
+        String collectionNameBasedLink,
+        String normalizedRegion,
+        RxDocumentClientImpl documentClient) {
+
+        PartitionKeyInternal internalPartitionKey = partitionKeyAccessor.getPartitionKeyInternal(partitionKey);
+
+        ISessionContainer sessionContainer = ReflectionUtils.getSessionContainer(documentClient);
+        assertThat(sessionContainer instanceof RegionScopedSessionContainer).isTrue();
+
+        RegionScopedSessionContainer regionScopedSessionContainer = (RegionScopedSessionContainer) sessionContainer;
+
+        if (shouldPartitionKeyBePresentInBloomFilter) {
+            assertThat(
+                regionScopedSessionContainer.isPartitionKeyResolvedToARegion(
+                    internalPartitionKey,
+                    partitionKeyDefinition,
+                    collectionNameBasedLink,
+                    normalizedRegion))
+                .isTrue();
+        } else {
+            assertThat(
+                regionScopedSessionContainer.isPartitionKeyResolvedToARegion(
+                    internalPartitionKey,
+                    partitionKeyDefinition,
+                    collectionNameBasedLink,
+                    normalizedRegion))
+                .isFalse();
+        }
+
     }
 }

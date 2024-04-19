@@ -16,7 +16,10 @@ import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
+import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.PartitionKeyBasedBloomFilter;
+import com.azure.cosmos.implementation.RegionScopedSessionContainer;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxStoreModel;
@@ -445,5 +448,13 @@ public class ReflectionUtils {
 
     public static void setEndpointProvider(RntbdTransportClient rntbdTransportClient, RntbdEndpoint.Provider provider) {
         set(rntbdTransportClient, provider, "endpointProvider");
+    }
+
+    public static ISessionContainer getSessionContainer(RxDocumentClientImpl rxDocumentClient) {
+        return get(ISessionContainer.class, rxDocumentClient, "sessionContainer");
+    }
+
+    public static PartitionKeyBasedBloomFilter getPartitionKeyBasedBloomFilter(RegionScopedSessionContainer regionScopedSessionContainer) {
+        return get(PartitionKeyBasedBloomFilter.class, regionScopedSessionContainer, "partitionKeyBasedBloomFilter");
     }
 }

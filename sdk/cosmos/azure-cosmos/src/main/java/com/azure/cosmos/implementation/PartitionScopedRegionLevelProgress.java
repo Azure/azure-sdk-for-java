@@ -23,13 +23,13 @@ public class PartitionScopedRegionLevelProgress {
 
     private final ConcurrentHashMap<String, ConcurrentHashMap<String, RegionLevelProgress>> partitionKeyRangeIdToRegionLevelProgress;
 
-    private final HashMap<String, String> normalizedRegionLookupMap;
+    private final ConcurrentHashMap<String, String> normalizedRegionLookupMap;
 
     public final static String GlobalProgressKey = "global";
 
     public PartitionScopedRegionLevelProgress() {
         this.partitionKeyRangeIdToRegionLevelProgress = new ConcurrentHashMap<>();
-        this.normalizedRegionLookupMap = new HashMap<>();
+        this.normalizedRegionLookupMap = new ConcurrentHashMap<>();
     }
 
     public ConcurrentHashMap<String, ConcurrentHashMap<String, RegionLevelProgress>> getPartitionKeyRangeIdToRegionLevelProgress() {
