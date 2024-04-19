@@ -203,20 +203,18 @@ jobs:
       # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
       # during testing if tests failed, and linting reports.
       - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-        displayName: 'Capture troubleshooting artifacts'
-        condition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
         parameters:
           ArtifactName: troubleshooting-$(System.StageName)-$(System.JobName)
           ArtifactPath: $(System.DefaultWorkingDirectory)/troubleshooting
           SbomEnabled: false
+          CustomCondition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
 
       - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-        displayName: 'Capture repo state for analysis'
-        condition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
         parameters:
           ArtifactName: 'repository-$(System.JobName)'
           ArtifactPath: '$(System.DefaultWorkingDirectory)'
           SbomEnabled: false
+          CustomCondition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
 
       - template: /eng/common/pipelines/templates/steps/create-apireview.yml
         parameters:
@@ -370,20 +368,18 @@ jobs:
       # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
       # during testing if tests failed, and linting reports.
       - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-        displayName: 'Capture troubleshooting artifacts'
-        condition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
         parameters:
           ArtifactName: troubleshooting-$(System.StageName)-$(System.JobName)
           ArtifactPath: $(System.DefaultWorkingDirectory)/troubleshooting
           SbomEnabled: false
+          CustomCondition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
 
       - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-        displayName: 'Capture repo state for analysis'
-        condition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
         parameters:
           ArtifactName: 'repository-$(System.JobName)'
           ArtifactPath: '$(System.DefaultWorkingDirectory)'
           SbomEnabled: false
+          CustomCondition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
 
   - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
     parameters:
