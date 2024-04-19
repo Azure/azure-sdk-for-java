@@ -26,7 +26,6 @@ import org.springframework.util.Assert;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -160,11 +159,11 @@ public class MappingCosmosConverter
         }
 
         if (stripTransientFields) {
-            @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) sourceEntity.getClass();
+            @SuppressWarnings("unchecked")
+            final Class<T> domainType = (Class<T>) sourceEntity.getClass();
             @SuppressWarnings("unchecked")
             CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
             List<String> transientFields =  entityInfo.getTransientFields();
-
             if (!transientFields.isEmpty()) {
                 //strip fields with @Transient annotation from the JsonNode so they are not persisted.
                 cosmosObjectNode = stripTransientFields(cosmosObjectNode, transientFields);
@@ -187,37 +186,29 @@ public class MappingCosmosConverter
      */
 
     public <T> JsonNode repopulateAnyTransientFields(Object originalObjectToSave, JsonNode responseItem) {
-        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) originalObjectToSave.getClass();
+        @SuppressWarnings("unchecked")
+        Class<T> domainType = (Class<T>) originalObjectToSave.getClass();
         @SuppressWarnings("unchecked")
         CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
-        List<String> transientFields =  entityInfo.getTransientFields();
-        JsonNode updatedItem = responseItem.deepCopy();
-        Boolean anyTransientFieldsSet = false;
-        if (!transientFields.isEmpty()) {
-            JsonNode originalObject = writeJsonNode(originalObjectToSave, false);
-            anyTransientFieldsSet = transientFields.stream().anyMatch(originalObject::hasNonNull);
-            if (anyTransientFieldsSet) {
-                for (Iterator<String> it = originalObject.fieldNames(); it.hasNext();) {
-                    String fieldName = it.next();
-                    ((ObjectNode) updatedItem).set(fieldName, originalObject.get(fieldName));
-                }
-            }
+        List<String> transientFields = entityInfo.getTransientFields();
+        if (transientFields.isEmpty()) {
+            return responseItem;
         }
-        return updatedItem;
+        JsonNode originalObject = writeJsonNode(originalObjectToSave, false);
+        boolean anyTransientFieldsSet = transientFields.stream().anyMatch(originalObject::hasNonNull);
+        if (anyTransientFieldsSet) {
+            ObjectNode updatedItem = (ObjectNode) responseItem;
+            originalObject.fieldNames().forEachRemaining(fieldName -> updatedItem.set(fieldName, originalObject.get(fieldName)));
+            return updatedItem;
+        } else {
+            return responseItem;
+        }
     }
 
     private ObjectNode stripTransientFields(ObjectNode objectNode, List<String> transientFields) {
-        Iterator<String> fieldNames = objectNode.fieldNames();
-        while (fieldNames.hasNext()) {
-            String fieldName = fieldNames.next();
-            if (transientFields.contains(fieldName)) {
-                fieldNames.remove();
-                objectNode.remove(fieldName);
-            }
-        }
+        objectNode.remove(transientFields);
         return objectNode;
     }
-
 
     //the field on the underlying cosmos document will always be _etag, so we map the field that the
     //user has marked with @version to _etag and remove the @version annotated field from the
