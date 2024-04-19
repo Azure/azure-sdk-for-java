@@ -231,8 +231,8 @@
     <!-- Azure core source path is included here and it's packages are excluded as almost all client libraries
     need inherited javadocs from core and explicitly adding this exclusion in each library is not maintainable. So,
     by default, we exclude core packages in the parent pom and in core packages override this exclusion -->
-    <javadoc.excludePackageNames>com.azure.json,com.azure.xml,com.azure.core.*</javadoc.excludePackageNames>
-    <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../core/azure-core/src/main/java:${basedir}/../../serialization/azure-json/src/main/java:${basedir}/../../serialization/azure-xml/src/main/java</javadoc.sourcepath>
+    <javadoc.excludePackageNames>io.clientcore.core*</javadoc.excludePackageNames>
+    <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../clientcore/core/src/main/java:${basedir}/../../clientcore/core-json/src/main/java:${basedir}/../../clientcore/core-okhttp3/src/main/java</javadoc.sourcepath>
 
     <!-- Used to skip maven-shade-plugin. This should only be used as part of CI builds to allow for parallel builds in non-shipping pipelines. -->
     <!-- In the future this should be removed once maven-shade-plugin no longer as a possibility of deadlocking in parallel builds. -->
@@ -1365,8 +1365,8 @@
                 ${defaultSurefireArgLine}
                 ${javaModulesSurefireArgLine}
                 <!-- This is required as the Java 8 based implementation for ReflectionUtils may be loaded by IntelliJ when running tests with later versions of Java. -->
-                <!-- In later versions of Java, java.base doesn't open java.lang.invoke to azure-core, so it needs to be done with this directive. This only affects tests. -->
-                --add-opens java.base/java.lang.invoke=com.azure.core
+                <!-- In later versions of Java, java.base doesn't open java.lang.invoke to azurecore, so it needs to be done with this directive. This only affects tests. -->
+                --add-opens java.base/java.lang.invoke=io.clientcore.core
                 ${additionalSurefireArgLine}
               </argLine>
             </configuration>
@@ -1381,8 +1381,8 @@
                 ${defaultFailsafeArgLine}
                 ${javaModulesFailsafeArgLine}
                 <!-- This is required as the Java 8 based implementation for ReflectionUtils may be loaded by IntelliJ when running tests with later versions of Java. -->
-                <!-- In later versions of Java, java.base doesn't open java.lang.invoke to azure-core, so it needs to be done with this directive. This only affects tests. -->
-                --add-opens java.base/java.lang.invoke=com.azure.core
+                <!-- In later versions of Java, java.base doesn't open java.lang.invoke to core, so it needs to be done with this directive. This only affects tests. -->
+                --add-opens java.base/java.lang.invoke=io.clientcore.core
                 ${additionalFailsafeArgLine}
                 ${java.security.manager.configuration}
               </argLine>
@@ -1530,11 +1530,6 @@
                   <baseDir>.</baseDir>
                   <reportFile>target/dependency-allowlist.json</reportFile>
                   <ignoredGA>
-                    <param>com.azure:azure-cosmos-benchmark</param>
-                    <param>com.azure:azure-core-test</param>
-                    <param>com.azure:azure-e2e</param>
-                    <param>com.azure:azure-storage-perf</param>
-                    <param>com.azure:perf-test-core</param>
                   </ignoredGA>
                 </configuration>
               </execution>
