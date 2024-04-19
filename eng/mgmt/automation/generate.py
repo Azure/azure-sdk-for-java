@@ -6,7 +6,6 @@ import json
 import glob
 import logging
 import argparse
-import subprocess
 from typing import List
 
 pwd = os.getcwd()
@@ -19,7 +18,6 @@ from utils import update_root_pom
 from generate_data import (
     sdk_automation as sdk_automation_data,
     sdk_automation_typespec_project as sdk_automation_typespec_project_data,
-    check_call,
 )
 from generate_utils import (
     compare_with_maven_package,
@@ -28,6 +26,7 @@ from generate_utils import (
     get_and_update_service_from_api_specs,
     get_suffix_from_api_specs,
     update_spec,
+    generate_typespec_project
 )
 
 os.chdir(pwd)
@@ -228,53 +227,17 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
 
 def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
 
-    # TODO(xiaofei) extract common method from sdk_automation_typespec_data,
-    # also, support changelog
+    # TODO(xiaofei) support changelog, etc
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
     spec_root = os.path.abspath(config['specFolder'])
     head_sha: str = config['headSha']
     repo_url: str = config['repoHttpsUrl']
 
-    tsp_dir = os.path.join(spec_root, tsp_project)
-
-    succeeded = False
-    sdk_folder = None
-    service = None
-    module = None
-    try:
-        cmd = ['pwsh', './eng/common/scripts/TypeSpec-Project-Process.ps1', tsp_dir, head_sha, repo_url]
-        logging.info('Command line: ' + ' '.join(cmd))
-        output = subprocess.check_output(cmd, cwd=sdk_root)
-        output_str = str(output, 'utf-8')
-        script_return = output_str.splitlines()[-1] # the path to sdk folder
-        sdk_folder = os.path.relpath(script_return, sdk_root)
-        logging.info('SDK folder: ' + sdk_folder)
-        if sdk_folder:
-            succeeded = True
-    except subprocess.CalledProcessError as error:
-        logging.error(f'TypeSpec-Project-Process.ps1 fail: {error}')
+    succeeded, require_sdk_integration, sdk_folder, service, module \
+        = generate_typespec_project(tsp_project, sdk_root, spec_root, head_sha, repo_url)
 
     if succeeded:
-        # check require_sdk_integration
-        require_sdk_integration = False
-        cmd = ['git', 'add', '.']
-        check_call(cmd, sdk_root)
-        cmd = ['git', 'status', '--porcelain', os.path.join(sdk_folder, 'pom.xml')]
-        logging.info('Command line: ' + ' '.join(cmd))
-        output = subprocess.check_output(cmd, cwd=sdk_root)
-        output_str = str(output, 'utf-8')
-        git_items = output_str.splitlines()
-        if len(git_items) > 0:
-            git_pom_item = git_items[0]
-            # new pom.xml implies new SDK
-            require_sdk_integration = git_pom_item.startswith('A ')
-
-        # parse service and module
-        match = re.match(r'sdk[\\/](.*)[\\/](.*)', sdk_folder)
-        service = match.group(1)
-        module = match.group(2)
-
         # TODO (weidxu): move to typespec-java
         if require_sdk_integration:
             set_or_default_version(sdk_root, GROUP_ID, module)
