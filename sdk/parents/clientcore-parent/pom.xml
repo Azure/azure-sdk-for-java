@@ -5,17 +5,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.clientcore</groupId>
-  <artifactId>clientcore-io-parent</artifactId>
+  <artifactId>clientcore-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0</version> <!-- {x-version-update;io.clientcore:clientcore-io-parent;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:clientcore-parent;current} -->
 
   <name>SDK for Java - Client Libraries</name>
   <description>Parent POM for SDK for Java</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
-  <organization>
-    <name>Microsoft Corporation</name>
-    <url>http://microsoft.com</url>
-  </organization>
 
   <licenses>
     <license>

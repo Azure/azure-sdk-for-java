@@ -21,7 +21,7 @@
         <module>azure-data-sdk-parent</module>
         <module>azure-perf-test-parent</module>
         <module>azure-sdk-parent</module>
-        <module>clientcore-io-parent</module>
+        <module>clientcore-parent</module>
       </modules>
     </profile>
   </profiles>

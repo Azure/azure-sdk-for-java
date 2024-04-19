@@ -7,9 +7,9 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>io.clientcore</groupId>
-    <artifactId>clientcore-io-parent</artifactId>
-    <version>1.0.0</version> <!-- {x-version-update;io.clientcore:clientcore-io-parent;current} -->
-    <relativePath>../../parents/clientcore-io-parent</relativePath>
+    <artifactId>clientcore-parent</artifactId>
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:clientcore-parent;current} -->
+    <relativePath>../../parents/clientcore-parent</relativePath>
   </parent>
 
   <groupId>io.clientcore</groupId>
