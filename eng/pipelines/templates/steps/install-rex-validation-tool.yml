@@ -4,6 +4,7 @@ steps:
   - pwsh: |
       $java2docfxVer = Get-Content eng/scripts/docs/java2docfx.version.txt
       $java2docfxDir = Join-Path $(Build.BinariesDirectory) "java2docfx"
+      New-Item $java2docfxDir -ItemType Directory | Out-Null
       $originLocation = Get-Location
       try {
         # Set the location into the created java2docfx directory . Running mvn from the repository root
