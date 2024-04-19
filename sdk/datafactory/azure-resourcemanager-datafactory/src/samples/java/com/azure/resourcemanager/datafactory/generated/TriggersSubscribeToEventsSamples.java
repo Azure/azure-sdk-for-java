@@ -9,8 +9,7 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class TriggersSubscribeToEventsSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * Triggers_SubscribeToEvents.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_SubscribeToEvents.json
      */
     /**
      * Sample code: Triggers_SubscribeToEvents.
@@ -18,7 +17,8 @@ public final class TriggersSubscribeToEventsSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersSubscribeToEvents(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggers().subscribeToEvents("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
-            com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .subscribeToEvents("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
+                com.azure.core.util.Context.NONE);
     }
 }

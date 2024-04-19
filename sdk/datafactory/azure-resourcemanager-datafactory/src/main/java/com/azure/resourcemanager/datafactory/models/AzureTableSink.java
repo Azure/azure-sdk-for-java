@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Azure Table sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = AzureTableSink.class, visible = true)
 @JsonTypeName("AzureTableSink")
 @Fluent
 public final class AzureTableSink extends CopySink {
+    /*
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureTableSink";
+
     /*
      * Azure Table default partition key value. Type: string (or Expression with resultType string).
      */
@@ -44,6 +52,16 @@ public final class AzureTableSink extends CopySink {
      * Creates an instance of AzureTableSink class.
      */
     public AzureTableSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

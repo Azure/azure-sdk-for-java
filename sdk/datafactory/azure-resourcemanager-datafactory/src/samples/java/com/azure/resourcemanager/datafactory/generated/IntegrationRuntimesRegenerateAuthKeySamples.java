@@ -12,8 +12,7 @@ import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeRegenerate
  */
 public final class IntegrationRuntimesRegenerateAuthKeySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * IntegrationRuntimes_RegenerateAuthKey.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_RegenerateAuthKey.json
      */
     /**
      * Sample code: IntegrationRuntimes_RegenerateAuthKey.
@@ -22,9 +21,9 @@ public final class IntegrationRuntimesRegenerateAuthKeySamples {
      */
     public static void
         integrationRuntimesRegenerateAuthKey(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().regenerateAuthKeyWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime",
-            new IntegrationRuntimeRegenerateKeyParameters().withKeyName(IntegrationRuntimeAuthKeyName.AUTH_KEY2),
-            com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .regenerateAuthKeyWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime",
+                new IntegrationRuntimeRegenerateKeyParameters().withKeyName(IntegrationRuntimeAuthKeyName.AUTH_KEY2),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -19,7 +19,7 @@ public final class AzureChatOCREnhancementConfiguration {
      */
     @Generated
     @JsonProperty(value = "enabled")
-    private boolean enabled;
+    private final boolean enabled;
 
     /**
      * Creates an instance of AzureChatOCREnhancementConfiguration class.

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SqlServerStoredProcedureActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,21 @@ import java.util.List;
 /**
  * SQL stored procedure activity type.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = SqlServerStoredProcedureActivity.class,
+    visible = true)
 @JsonTypeName("SqlServerStoredProcedure")
 @Fluent
 public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
+    /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SqlServerStoredProcedure";
+
     /*
      * SQL stored procedure activity properties.
      */
@@ -30,6 +42,16 @@ public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
      * Creates an instance of SqlServerStoredProcedureActivity class.
      */
     public SqlServerStoredProcedureActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -114,8 +136,7 @@ public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType
-     * string).
+     * Get the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
      * 
      * @return the storedProcedureName value.
      */
@@ -124,8 +145,7 @@ public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType
-     * string).
+     * Set the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
      * 
      * @param storedProcedureName the storedProcedureName value to set.
      * @return the SqlServerStoredProcedureActivity object itself.
@@ -172,8 +192,9 @@ public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model SqlServerStoredProcedureActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model SqlServerStoredProcedureActivity"));
         } else {
             innerTypeProperties().validate();
         }

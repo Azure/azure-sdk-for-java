@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.fluent.models.GenericDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,17 @@ import java.util.Map;
 /**
  * Marketo server dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = MarketoObjectDataset.class, visible = true)
 @JsonTypeName("MarketoObject")
 @Fluent
 public final class MarketoObjectDataset extends Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "MarketoObject";
+
     /*
      * Properties specific to this dataset type.
      */
@@ -29,6 +37,16 @@ public final class MarketoObjectDataset extends Dataset {
      * Creates an instance of MarketoObjectDataset class.
      */
     public MarketoObjectDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

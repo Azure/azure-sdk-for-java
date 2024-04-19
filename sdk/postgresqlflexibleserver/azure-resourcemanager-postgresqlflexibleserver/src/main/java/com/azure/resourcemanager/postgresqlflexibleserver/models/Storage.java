@@ -43,8 +43,7 @@ public final class Storage {
     private Integer throughput;
 
     /*
-     * Storage type for the server. Allowed values are Premium_LRS and PremiumV2_LRS, and default is Premium_LRS if not
-     * specified
+     * Storage type for the server. Allowed values are Premium_LRS and PremiumV2_LRS, and default is Premium_LRS if not specified
      */
     @JsonProperty(value = "type")
     private StorageType type;
@@ -160,8 +159,8 @@ public final class Storage {
     }
 
     /**
-     * Get the type property: Storage type for the server. Allowed values are Premium_LRS and PremiumV2_LRS, and
-     * default is Premium_LRS if not specified.
+     * Get the type property: Storage type for the server. Allowed values are Premium_LRS and PremiumV2_LRS, and default
+     * is Premium_LRS if not specified.
      * 
      * @return the type value.
      */
@@ -170,8 +169,8 @@ public final class Storage {
     }
 
     /**
-     * Set the type property: Storage type for the server. Allowed values are Premium_LRS and PremiumV2_LRS, and
-     * default is Premium_LRS if not specified.
+     * Set the type property: Storage type for the server. Allowed values are Premium_LRS and PremiumV2_LRS, and default
+     * is Premium_LRS if not specified.
      * 
      * @param type the type value to set.
      * @return the Storage object itself.

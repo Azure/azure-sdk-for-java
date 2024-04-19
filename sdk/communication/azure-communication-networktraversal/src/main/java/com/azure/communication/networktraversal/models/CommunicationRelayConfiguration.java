@@ -25,6 +25,12 @@ public final class CommunicationRelayConfiguration {
     private List<CommunicationIceServer> iceServers;
 
     /**
+     * Default constructor for CommunicationRelayConfiguration.
+     */
+    public CommunicationRelayConfiguration() {
+    }
+
+    /**
      * Get the expiresOn property: The date for which the username and credentials are not longer valid. Will be 48
      * hours from request time.
      *

@@ -11,16 +11,19 @@ public final class GoogleBigQueryV2SourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleBigQueryV2Source model = BinaryData.fromString(
-            "{\"type\":\"GoogleBigQueryV2Source\",\"query\":\"datahndfpf\",\"queryTimeout\":\"datafdgf\",\"additionalColumns\":\"dataoeh\",\"sourceRetryCount\":\"datapkssjbw\",\"sourceRetryWait\":\"dataxdgcfcfky\",\"maxConcurrentConnections\":\"datajwxhslrbwwk\",\"disableMetricsCollection\":\"datawodhsodofsxjiky\",\"\":{\"cxdmxhuwldfa\":\"datauhuixqwogg\",\"dkbgsg\":\"datakyft\",\"ayqkg\":\"datapyckmncrutoudjm\"}}")
+            "{\"type\":\"yfubgnm\",\"query\":\"dataarxtd\",\"queryTimeout\":\"datazsdnfp\",\"additionalColumns\":\"datayksu\",\"sourceRetryCount\":\"datajdaxiohulvp\",\"sourceRetryWait\":\"datavcutwngfdsztmqqu\",\"maxConcurrentConnections\":\"dataokpfyojfwvmsf\",\"disableMetricsCollection\":\"datayxt\",\"\":{\"gsa\":\"dataqqzhqgmoexgny\",\"y\":\"datagheicexdxhxpqkcs\"}}")
             .toObject(GoogleBigQueryV2Source.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleBigQueryV2Source model
-            = new GoogleBigQueryV2Source().withSourceRetryCount("datapkssjbw").withSourceRetryWait("dataxdgcfcfky")
-                .withMaxConcurrentConnections("datajwxhslrbwwk").withDisableMetricsCollection("datawodhsodofsxjiky")
-                .withQueryTimeout("datafdgf").withAdditionalColumns("dataoeh").withQuery("datahndfpf");
+        GoogleBigQueryV2Source model = new GoogleBigQueryV2Source().withSourceRetryCount("datajdaxiohulvp")
+            .withSourceRetryWait("datavcutwngfdsztmqqu")
+            .withMaxConcurrentConnections("dataokpfyojfwvmsf")
+            .withDisableMetricsCollection("datayxt")
+            .withQueryTimeout("datazsdnfp")
+            .withAdditionalColumns("datayksu")
+            .withQuery("dataarxtd");
         model = BinaryData.fromObject(model).toObject(GoogleBigQueryV2Source.class);
     }
 }
