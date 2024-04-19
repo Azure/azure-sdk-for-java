@@ -11,7 +11,6 @@ import io.clientcore.core.json.JsonReader;
 import io.clientcore.core.json.JsonSerializable;
 import io.clientcore.core.json.JsonToken;
 import io.clientcore.core.json.JsonWriter;
-import io.clientcore.core.json.implementation.jackson.core.JsonParseException;
 import io.clientcore.core.models.SimpleClass;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -276,13 +275,13 @@ public class DefaultJsonSerializerTests {
 
     private static Stream<Arguments> unsupportedDeserializationSupplier() {
         return Stream.of(
-            Arguments.of(InputStream.class, JsonParseException.class),
+            Arguments.of(InputStream.class, IOException.class),
             // Thrown when the String cannot be parsed by core-json
             Arguments.of(SimpleClass.class, InvocationTargetException.class),
             // Thrown when the class doesn't have a fromJson method
-            Arguments.of(URL.class, JsonParseException.class),
+            Arguments.of(URL.class, IOException.class),
             // Thrown when the String cannot be parsed by core-json
-            Arguments.of(URI.class, JsonParseException.class) // Thrown when the String cannot be parsed by core-json
+            Arguments.of(URI.class, IOException.class) // Thrown when the String cannot be parsed by core-json
         );
     }
 }
