@@ -79,8 +79,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return The updated {@link HttpHeaders} object.
      */
     public HttpHeaders add(HttpHeader header) {
-        return addInternal(HttpHeaderName.fromString(header.getName().getCaseInsensitiveName()),
-            HttpHeaderName.fromString(header.getName().getCaseSensitiveName()), header.getValues());
+        return add(header.getName(), header.getValues());
     }
 
     /**
@@ -93,8 +92,20 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return The updated {@link HttpHeaders} object.
      */
     public HttpHeaders add(HttpHeaderName name, String value) {
-        return addInternal(HttpHeaderName.fromString(name.getCaseInsensitiveName()),
-            HttpHeaderName.fromString(name.getCaseSensitiveName()), value);
+        if (name == null || value == null) {
+            return this;
+        }
+
+        headers.compute(name, (key, header) -> {
+            if (header == null) {
+                return new HttpHeader(name, value);
+            } else {
+                header.addValue(value);
+                return header;
+            }
+        });
+
+        return this;
     }
 
     /**
@@ -106,20 +117,15 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return The updated {@link HttpHeaders} object.
      */
     public HttpHeaders add(HttpHeaderName name, List<String> values) {
-        return addInternal(HttpHeaderName.fromString(name.getCaseInsensitiveName()),
-            HttpHeaderName.fromString(name.getCaseSensitiveName()), values);
-    }
-
-    private HttpHeaders addInternal(HttpHeaderName formattedName, HttpHeaderName name, String value) {
-        if (name == null || value == null) {
+        if (name == null || CoreUtils.isNullOrEmpty(values)) {
             return this;
         }
 
-        headers.compute(formattedName, (key, header) -> {
+        headers.compute(name, (key, header) -> {
             if (header == null) {
-                return new HttpHeader(name, value);
+                return new HttpHeader(name, values);
             } else {
-                header.addValue(value);
+                header.addValues(values);
                 return header;
             }
         });
@@ -142,28 +148,8 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      */
     public HttpHeaders addAll(HttpHeaders headers) {
         if (headers != null) {
-            headers.headers.forEach((headerName, header) ->
-                addInternal(HttpHeaderName.fromString(headerName.getCaseInsensitiveName()),
-                    HttpHeaderName.fromString(header.getName().getCaseSensitiveName()),
-                    header.getValues()));
+            headers.headers.forEach((headerName, header) -> add(headerName, header.getValues()));
         }
-
-        return this;
-    }
-
-    private HttpHeaders addInternal(HttpHeaderName formattedName, HttpHeaderName name, List<String> values) {
-        if (name == null || CoreUtils.isNullOrEmpty(values)) {
-            return this;
-        }
-
-        headers.compute(formattedName, (key, header) -> {
-            if (header == null) {
-                return new HttpHeader(name, values);
-            } else {
-                header.addValues(values);
-                return header;
-            }
-        });
 
         return this;
     }
@@ -179,18 +165,14 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return The updated {@link HttpHeaders} object.
      */
     public HttpHeaders set(HttpHeaderName name, String value) {
-        return setInternal(name.getCaseInsensitiveName(), name.getCaseSensitiveName(), value);
-    }
-
-    private HttpHeaders setInternal(String formattedName, String name, String value) {
         if (name == null) {
             return this;
         }
 
         if (value == null) {
-            removeInternal(name);
+            remove(name);
         } else {
-            headers.put(HttpHeaderName.fromString(formattedName), new HttpHeader(HttpHeaderName.fromString(name), value));
+            headers.put(name, new HttpHeader(name, value));
         }
 
         return this;
@@ -207,18 +189,14 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return The updated {@link HttpHeaders} object.
      */
     public HttpHeaders set(HttpHeaderName name, List<String> values) {
-        return setInternal(name.getCaseInsensitiveName(), name.getCaseSensitiveName(), values);
-    }
-
-    private HttpHeaders setInternal(String formattedName, String name, List<String> values) {
-        if (formattedName == null) {
+        if (name == null) {
             return this;
         }
 
         if (CoreUtils.isNullOrEmpty(values)) {
-            removeInternal(formattedName);
+            remove(name);
         } else {
-            headers.put(HttpHeaderName.fromString(formattedName), new HttpHeader(HttpHeaderName.fromString(name), values));
+            headers.put(name, new HttpHeader(name, values));
         }
 
         return this;
@@ -239,9 +217,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      */
     public HttpHeaders setAll(HttpHeaders headers) {
         if (headers != null) {
-            headers.headers.forEach((headerName, header) ->
-                setInternal(headerName.getCaseInsensitiveName(), header.getName().getCaseSensitiveName(),
-                    header.getValues()));
+            headers.headers.forEach((headerName, header) -> set(headerName, header.getValues()));
         }
 
         return this;
@@ -255,11 +231,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return The {@link HttpHeader} if found, {@code null} otherwise.
      */
     public HttpHeader get(HttpHeaderName name) {
-        return getInternal(name.getCaseInsensitiveName());
-    }
-
-    private HttpHeader getInternal(String formattedName) {
-        return headers.get(HttpHeaderName.fromString(formattedName));
+        return headers.get(name);
     }
 
     /**
@@ -271,11 +243,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return The {@link HttpHeader} if removed, {@code null} otherwise.
      */
     public HttpHeader remove(HttpHeaderName name) {
-        return removeInternal(name.getCaseInsensitiveName());
-    }
-
-    private HttpHeader removeInternal(String formattedName) {
-        return headers.remove(HttpHeaderName.fromString(formattedName));
+        return headers.remove(name);
     }
 
     /**
@@ -287,11 +255,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return The value of the {@link HttpHeader}, or {@code null} if the {@link HttpHeader} isn't found.
      */
     public String getValue(HttpHeaderName name) {
-        return getValueInternal(name.getCaseInsensitiveName());
-    }
-
-    private String getValueInternal(String formattedName) {
-        final HttpHeader header = getInternal(formattedName);
+        final HttpHeader header = get(name);
 
         return header == null ? null : header.getValue();
     }
@@ -307,11 +271,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return The values of the {@link HttpHeader}, or {@code null} if the {@link HttpHeader} isn't found.
      */
     public List<String> getValues(HttpHeaderName name) {
-        return getValuesInternal(name.getCaseInsensitiveName());
-    }
-
-    private List<String> getValuesInternal(String formattedName) {
-        final HttpHeader header = getInternal(formattedName);
+        final HttpHeader header = get(name);
 
         return header == null ? null : header.getValues();
     }
