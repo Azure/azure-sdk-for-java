@@ -1,5 +1,6 @@
 # Release History
 # (Unreleased)
+Upgrade Spring Boot dependencies version to 3.2.5 and Spring Cloud dependencies version to 2023.0.1
 Upgrade Spring Boot dependencies version to 3.2.4 and Spring Cloud dependencies version to 2023.0.0
 
 ## 5.11.0 (2024-03-29)

@@ -96,7 +96,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>2.0.12</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <version>2.0.13</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -188,7 +188,7 @@
     <dependency>
       <groupId>org.awaitility</groupId>
       <artifactId>awaitility</artifactId>
-      <version>4.2.0</version> <!-- {x-version-update;org.awaitility:awaitility;external_dependency} -->
+      <version>4.2.1</version> <!-- {x-version-update;org.awaitility:awaitility;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
