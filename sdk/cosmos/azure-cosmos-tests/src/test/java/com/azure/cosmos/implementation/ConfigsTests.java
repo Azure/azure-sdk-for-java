@@ -39,13 +39,14 @@ public class ConfigsTests {
     }
 
     @Test(groups = { "unit" })
-    public void getMetricsCategory() {
+    public void getMetricsConfig() {
         CosmosMicrometerMetricsConfig metricsConfig = Configs.getMetricsConfig();
         assertThat(metricsConfig.getMetricCategories()).isEqualTo(MetricCategory.DEFAULT_CATEGORIES);
         assertThat(metricsConfig.getTagNames()).isEqualTo(TagName.DEFAULT_TAGS);
         assertThat(metricsConfig.getPercentiles()).contains(0.95, 0.99);
         assertThat(metricsConfig.getEnableHistograms()).isTrue();
         assertThat(metricsConfig.getApplyDiagnosticThresholdsForTransportLevelMeters()).isFalse();
+        assertThat(metricsConfig.getSampleRate()).isEqualTo(1.0);
 
         System.setProperty(
             "COSMOS.METRICS_CONFIG",
@@ -62,6 +63,7 @@ public class ConfigsTests {
             assertThat(metricsConfig.getPercentiles()).contains(0.90, 0.99);
             assertThat(metricsConfig.getEnableHistograms()).isFalse();
             assertThat(metricsConfig.getApplyDiagnosticThresholdsForTransportLevelMeters()).isTrue();
+            assertThat(metricsConfig.getSampleRate()).isEqualTo(0.5);
         } finally {
             System.clearProperty("METRICS_CONFIG");
         }

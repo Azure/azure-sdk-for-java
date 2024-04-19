@@ -150,19 +150,6 @@ Licensed under the MIT License.
     </dependency>
 
     <dependency>
-      <groupId>org.apache.kafka</groupId>
-      <artifactId>connect-runtime</artifactId>
-      <version>3.6.0</version> <!-- {x-version-update;cosmos_org.apache.kafka:connect-runtime;external_dependency} -->
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>jackson-jaxrs-json-provider</artifactId>
-          <groupId>com.fasterxml.jackson.jaxrs</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>7.5.1</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
@@ -311,6 +298,55 @@ Licensed under the MIT License.
         </configuration>
       </plugin>
       <plugin>
+        <groupId>io.confluent</groupId>
+        <version>0.12.0</version> <!-- {x-version-update;cosmos_io.confluent:kafka-connect-maven-plugin;external_dependency} -->
+        <artifactId>kafka-connect-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>kafka-connect</goal>
+            </goals>
+            <configuration>
+              <title>Azure Cosmos DB Connector</title>
+              <documentationUrl>https://github.com/Azure/azure-sdk-for-java/sdk/cosmos/azure-cosmos-kafka-connect/README.md</documentationUrl>
+              <sourceUrl>https://github.com/Azure/azure-sdk-for-java/sdk/cosmos/azure-cosmos-kafka-connect</sourceUrl>
+              <description>
+                The Azure Cosmos DB connectors allow moving data between Azure Cosmos DB and Kafka. The Cosmos DB Sink connector writes data from a Kafka topic to a Cosmos DB container. The Cosmos DB Source connector writes changes from a Cosmos DB container to a Kafka topic.
+              </description>
+              <logo>doc/images/microsoft.png</logo>
+              <version>${project.version}</version>
+              <ownerUsername>microsoftcorporation</ownerUsername>
+              <ownerName>Microsoft Corporation</ownerName>
+              <ownerLogo>doc/images/microsoft.png</ownerLogo>
+              <componentTypes>
+                <componentType>source</componentType>
+                <componentType>sink</componentType>
+              </componentTypes>
+              <tags>
+                <tag>Azure</tag>
+                <tag>Cosmos</tag>
+                <tag>Cosmos DB</tag>
+                <tag>Database</tag>
+                <tag>Source</tag>
+                <tag>Sink</tag>
+                <tag>Kafka Connect</tag>
+              </tags>
+              <confluentControlCenterIntegration>true</confluentControlCenterIntegration>
+              <deliveryGuarantee>
+                <deliveryGuarantee>atLeastOnce</deliveryGuarantee>
+                <deliveryGuarantee>exactlyOnce</deliveryGuarantee>
+              </deliveryGuarantee>
+              <supportProviderName>Microsoft Corporation</supportProviderName>
+              <supportUrl>https://github.com/Azure/azure-sdk-for-java/issues</supportUrl>
+              <supportLogo>doc/images/microsoft.png</supportLogo>
+              <supportProviderName>Microsoft Corporation</supportProviderName>
+              <supportSummary>This project is in preview. File any issues, feature requests, or questions under issues at: https://github.com/Azure/azure-sdk-for-java/issues
+              </supportSummary>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
@@ -322,7 +358,6 @@ Licensed under the MIT License.
               <goal>shade</goal>
             </goals>
             <configuration>
-              <finalName>${project.artifactId}-${project.version}-jar-with-dependencies</finalName>
               <filters>
                 <filter>
                   <artifact>*:*:*:*</artifact>
@@ -342,6 +377,12 @@ Licensed under the MIT License.
                     <exclude>META-INF/license/LICENSE.tomcat-native.txt</exclude>
                     <exclude>META-INF.versions.9.module-info.class</exclude>
                   </excludes>
+                </filter>
+                <filter>
+                  <artifact>io.micrometer:micrometer-core</artifact>
+                  <includes>
+                    <include>**</include>
+                  </includes>
                 </filter>
               </filters>
               <relocations>
@@ -375,10 +416,6 @@ Licensed under the MIT License.
                 <relocation>
                   <pattern>com.thoughtworks.paranamer</pattern>
                   <shadedPattern>${shadingPrefix}.com.thoughtworks.paranamer</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>io.micrometer</pattern>
-                  <shadedPattern>${shadingPrefix}.io.micrometer</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>org.HdrHistogram</pattern>
@@ -449,55 +486,6 @@ Licensed under the MIT License.
               <!-- When true, it will attempt to shade the contents of the java source files when creating the sources jar. -->
               <shadeSourcesContent>true</shadeSourcesContent>
               <createDependencyReducedPom>true</createDependencyReducedPom>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>io.confluent</groupId>
-        <version>0.12.0</version> <!-- {x-version-update;cosmos_io.confluent:kafka-connect-maven-plugin;external_dependency} -->
-        <artifactId>kafka-connect-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>kafka-connect</goal>
-            </goals>
-            <configuration>
-              <title>Azure Cosmos DB Connector</title>
-              <documentationUrl>https://github.com/Azure/azure-sdk-for-java/sdk/cosmos/azure-cosmos-kafka-connect/README.md</documentationUrl>
-              <sourceUrl>https://github.com/Azure/azure-sdk-for-java/sdk/cosmos/azure-cosmos-kafka-connect</sourceUrl>
-              <description>
-                The Azure Cosmos DB connectors allow moving data between Azure Cosmos DB and Kafka. The Cosmos DB Sink connector writes data from a Kafka topic to a Cosmos DB container. The Cosmos DB Source connector writes changes from a Cosmos DB container to a Kafka topic.
-              </description>
-              <logo>doc/images/microsoft.png</logo>
-              <version>${project.version}</version>
-              <ownerUsername>microsoftcorporation</ownerUsername>
-              <ownerName>Microsoft Corporation</ownerName>
-              <ownerLogo>doc/images/microsoft.png</ownerLogo>
-              <componentTypes>
-                <componentType>source</componentType>
-                <componentType>sink</componentType>
-              </componentTypes>
-              <tags>
-                <tag>Azure</tag>
-                <tag>Cosmos</tag>
-                <tag>Cosmos DB</tag>
-                <tag>Database</tag>
-                <tag>Source</tag>
-                <tag>Sink</tag>
-                <tag>Kafka Connect</tag>
-              </tags>
-              <confluentControlCenterIntegration>true</confluentControlCenterIntegration>
-              <deliveryGuarantee>
-                <deliveryGuarantee>atLeastOnce</deliveryGuarantee>
-                <deliveryGuarantee>exactlyOnce</deliveryGuarantee>
-              </deliveryGuarantee>
-              <supportProviderName>Microsoft Corporation</supportProviderName>
-              <supportUrl>https://github.com/Azure/azure-sdk-for-java/issues</supportUrl>
-              <supportLogo>doc/images/microsoft.png</supportLogo>
-              <supportProviderName>Microsoft Corporation</supportProviderName>
-              <supportSummary>This project is in preview. File any issues, feature requests, or questions under issues at: https://github.com/Azure/azure-sdk-for-java/issues
-              </supportSummary>
             </configuration>
           </execution>
         </executions>
