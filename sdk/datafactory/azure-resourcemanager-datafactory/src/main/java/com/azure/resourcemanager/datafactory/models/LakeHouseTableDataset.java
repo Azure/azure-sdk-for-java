@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.fluent.models.LakeHouseTableDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,17 @@ import java.util.Map;
 /**
  * Microsoft Fabric LakeHouse Table.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = LakeHouseTableDataset.class, visible = true)
 @JsonTypeName("LakeHouseTable")
 @Fluent
 public final class LakeHouseTableDataset extends Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "LakeHouseTable";
+
     /*
      * Microsoft Fabric LakeHouse Table dataset properties.
      */
@@ -29,6 +37,16 @@ public final class LakeHouseTableDataset extends Dataset {
      * Creates an instance of LakeHouseTableDataset class.
      */
     public LakeHouseTableDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -104,8 +122,8 @@ public final class LakeHouseTableDataset extends Dataset {
     }
 
     /**
-     * Get the table property: The name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with
-     * resultType string).
+     * Get the table property: The name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the table value.
      */
@@ -114,8 +132,8 @@ public final class LakeHouseTableDataset extends Dataset {
     }
 
     /**
-     * Set the table property: The name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with
-     * resultType string).
+     * Set the table property: The name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with resultType
+     * string).
      * 
      * @param table the table value to set.
      * @return the LakeHouseTableDataset object itself.

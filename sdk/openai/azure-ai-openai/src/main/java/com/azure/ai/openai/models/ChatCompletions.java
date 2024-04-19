@@ -14,7 +14,6 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Representation of the response data from a chat completions request.

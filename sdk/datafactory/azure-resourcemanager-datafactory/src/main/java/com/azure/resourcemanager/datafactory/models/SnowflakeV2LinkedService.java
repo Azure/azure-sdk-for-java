@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SnowflakeLinkedV2ServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * Snowflake linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = SnowflakeV2LinkedService.class,
+    visible = true)
 @JsonTypeName("SnowflakeV2")
 @Fluent
 public final class SnowflakeV2LinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SnowflakeV2";
+
     /*
      * Snowflake linked service properties.
      */
@@ -30,6 +42,16 @@ public final class SnowflakeV2LinkedService extends LinkedService {
      * Creates an instance of SnowflakeV2LinkedService class.
      */
     public SnowflakeV2LinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -293,8 +315,8 @@ public final class SnowflakeV2LinkedService extends LinkedService {
     }
 
     /**
-     * Get the scope property: The scope of the application registered in Azure Active Directory for
-     * AADServicePrincipal authentication.
+     * Get the scope property: The scope of the application registered in Azure Active Directory for AADServicePrincipal
+     * authentication.
      * 
      * @return the scope value.
      */
@@ -303,8 +325,8 @@ public final class SnowflakeV2LinkedService extends LinkedService {
     }
 
     /**
-     * Set the scope property: The scope of the application registered in Azure Active Directory for
-     * AADServicePrincipal authentication.
+     * Set the scope property: The scope of the application registered in Azure Active Directory for AADServicePrincipal
+     * authentication.
      * 
      * @param scope the scope value to set.
      * @return the SnowflakeV2LinkedService object itself.
@@ -366,8 +388,8 @@ public final class SnowflakeV2LinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -376,8 +398,8 @@ public final class SnowflakeV2LinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SnowflakeV2LinkedService object itself.
@@ -399,8 +421,9 @@ public final class SnowflakeV2LinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model SnowflakeV2LinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model SnowflakeV2LinkedService"));
         } else {
             innerTypeProperties().validate();
         }

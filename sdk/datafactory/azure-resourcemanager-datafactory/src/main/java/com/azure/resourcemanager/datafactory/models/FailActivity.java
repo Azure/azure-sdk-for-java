@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.FailActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,13 +16,20 @@ import java.util.List;
 /**
  * This activity will fail within its own scope and output a custom error message and error code. The error message and
  * code can provided either as a string literal or as an expression that can be evaluated to a string at runtime. The
- * activity scope can be the whole pipeline or a control activity (e.g. foreach, switch, until), if the fail activity
- * is contained in it.
+ * activity scope can be the whole pipeline or a control activity (e.g. foreach, switch, until), if the fail activity is
+ * contained in it.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = FailActivity.class, visible = true)
 @JsonTypeName("Fail")
 @Fluent
 public final class FailActivity extends ControlActivity {
+    /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "Fail";
+
     /*
      * Fail activity properties.
      */
@@ -32,6 +40,16 @@ public final class FailActivity extends ControlActivity {
      * Creates an instance of FailActivity class.
      */
     public FailActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -158,8 +176,9 @@ public final class FailActivity extends ControlActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerTypeProperties in model FailActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model FailActivity"));
         } else {
             innerTypeProperties().validate();
         }

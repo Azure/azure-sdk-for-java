@@ -13,16 +13,16 @@ public final class ValidationMessageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationMessage model
-            = BinaryData.fromString("{\"state\":\"Succeeded\",\"message\":\"rvtp\"}").toObject(ValidationMessage.class);
-        Assertions.assertEquals(ValidationState.SUCCEEDED, model.state());
-        Assertions.assertEquals("rvtp", model.message());
+            = BinaryData.fromString("{\"state\":\"Failed\",\"message\":\"ubpaxhe\"}").toObject(ValidationMessage.class);
+        Assertions.assertEquals(ValidationState.FAILED, model.state());
+        Assertions.assertEquals("ubpaxhe", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidationMessage model = new ValidationMessage().withState(ValidationState.SUCCEEDED).withMessage("rvtp");
+        ValidationMessage model = new ValidationMessage().withState(ValidationState.FAILED).withMessage("ubpaxhe");
         model = BinaryData.fromObject(model).toObject(ValidationMessage.class);
-        Assertions.assertEquals(ValidationState.SUCCEEDED, model.state());
-        Assertions.assertEquals("rvtp", model.message());
+        Assertions.assertEquals(ValidationState.FAILED, model.state());
+        Assertions.assertEquals("ubpaxhe", model.message());
     }
 }

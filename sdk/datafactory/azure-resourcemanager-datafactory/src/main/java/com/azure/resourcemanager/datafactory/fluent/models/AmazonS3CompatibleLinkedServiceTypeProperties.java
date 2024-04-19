@@ -14,8 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AmazonS3CompatibleLinkedServiceTypeProperties {
     /*
-     * The access key identifier of the Amazon S3 Compatible Identity and Access Management (IAM) user. Type: string
-     * (or Expression with resultType string).
+     * The access key identifier of the Amazon S3 Compatible Identity and Access Management (IAM) user. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "accessKeyId")
     private Object accessKeyId;
@@ -27,23 +26,19 @@ public final class AmazonS3CompatibleLinkedServiceTypeProperties {
     private SecretBase secretAccessKey;
 
     /*
-     * This value specifies the endpoint to access with the Amazon S3 Compatible Connector. This is an optional
-     * property; change it only if you want to try a different service endpoint or want to switch between https and
-     * http. Type: string (or Expression with resultType string).
+     * This value specifies the endpoint to access with the Amazon S3 Compatible Connector. This is an optional property; change it only if you want to try a different service endpoint or want to switch between https and http. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "serviceUrl")
     private Object serviceUrl;
 
     /*
-     * If true, use S3 path-style access instead of virtual hosted-style access. Default value is false. Type: boolean
-     * (or Expression with resultType boolean).
+     * If true, use S3 path-style access instead of virtual hosted-style access. Default value is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "forcePathStyle")
     private Object forcePathStyle;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
@@ -99,9 +94,9 @@ public final class AmazonS3CompatibleLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the serviceUrl property: This value specifies the endpoint to access with the Amazon S3 Compatible
-     * Connector. This is an optional property; change it only if you want to try a different service endpoint or want
-     * to switch between https and http. Type: string (or Expression with resultType string).
+     * Get the serviceUrl property: This value specifies the endpoint to access with the Amazon S3 Compatible Connector.
+     * This is an optional property; change it only if you want to try a different service endpoint or want to switch
+     * between https and http. Type: string (or Expression with resultType string).
      * 
      * @return the serviceUrl value.
      */
@@ -110,9 +105,9 @@ public final class AmazonS3CompatibleLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the serviceUrl property: This value specifies the endpoint to access with the Amazon S3 Compatible
-     * Connector. This is an optional property; change it only if you want to try a different service endpoint or want
-     * to switch between https and http. Type: string (or Expression with resultType string).
+     * Set the serviceUrl property: This value specifies the endpoint to access with the Amazon S3 Compatible Connector.
+     * This is an optional property; change it only if you want to try a different service endpoint or want to switch
+     * between https and http. Type: string (or Expression with resultType string).
      * 
      * @param serviceUrl the serviceUrl value to set.
      * @return the AmazonS3CompatibleLinkedServiceTypeProperties object itself.
@@ -145,8 +140,8 @@ public final class AmazonS3CompatibleLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -155,8 +150,8 @@ public final class AmazonS3CompatibleLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AmazonS3CompatibleLinkedServiceTypeProperties object itself.

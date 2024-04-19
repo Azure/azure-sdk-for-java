@@ -16,23 +16,29 @@ public final class AmazonRedshiftSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmazonRedshiftSource model = BinaryData.fromString(
-            "{\"type\":\"AmazonRedshiftSource\",\"query\":\"datayipjzgmxqaupy\",\"redshiftUnloadSettings\":{\"s3LinkedServiceName\":{\"referenceName\":\"goyp\",\"parameters\":{\"zjnlfucmhono\":\"dataoyyfysn\",\"elmmx\":\"dataeseuq\"}},\"bucketName\":\"datam\"},\"queryTimeout\":\"dataiyc\",\"additionalColumns\":\"datajswedkfofyfwpu\",\"sourceRetryCount\":\"datapcutzlvxkolvedz\",\"sourceRetryWait\":\"datakrpormvddwgozrd\",\"maxConcurrentConnections\":\"datakmgcxmkrldfoidyh\",\"disableMetricsCollection\":\"datacgv\",\"\":{\"qgysxpaapmt\":\"datasexenywwkdx\",\"ocadtnmqrpjecj\":\"datadqvcifwknlytvxr\"}}")
+            "{\"type\":\"joxwugdzwoczfizf\",\"query\":\"datajc\",\"redshiftUnloadSettings\":{\"s3LinkedServiceName\":{\"referenceName\":\"aaabtxrhemnkyk\",\"parameters\":{\"jpzeeqvku\":\"dataomwyoktzffpcdq\",\"coikstap\":\"dataykiyrfoko\",\"rmugkugwtgfktw\":\"databdh\",\"isatb\":\"datayhauhqvxeyl\"}},\"bucketName\":\"dataghtkdcuf\"},\"queryTimeout\":\"dataernq\",\"additionalColumns\":\"dataiyyys\",\"sourceRetryCount\":\"datapddzzdw\",\"sourceRetryWait\":\"datavmocnfzmuyykxlfl\",\"maxConcurrentConnections\":\"datauwunsnyqpmnyvnbm\",\"disableMetricsCollection\":\"dataomcrev\",\"\":{\"i\":\"dataclilzv\",\"nraeodixoflxv\":\"datadnobxcdx\",\"frbjrbqc\":\"datauhxrctcozfj\",\"icmhhv\":\"datarrwbcycwasmrfbw\"}}")
             .toObject(AmazonRedshiftSource.class);
-        Assertions.assertEquals("goyp", model.redshiftUnloadSettings().s3LinkedServiceName().referenceName());
+        Assertions.assertEquals("aaabtxrhemnkyk", model.redshiftUnloadSettings().s3LinkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmazonRedshiftSource model = new AmazonRedshiftSource().withSourceRetryCount("datapcutzlvxkolvedz")
-            .withSourceRetryWait("datakrpormvddwgozrd").withMaxConcurrentConnections("datakmgcxmkrldfoidyh")
-            .withDisableMetricsCollection("datacgv").withQueryTimeout("dataiyc")
-            .withAdditionalColumns("datajswedkfofyfwpu").withQuery("datayipjzgmxqaupy")
-            .withRedshiftUnloadSettings(new RedshiftUnloadSettings()
-                .withS3LinkedServiceName(new LinkedServiceReference().withReferenceName("goyp")
-                    .withParameters(mapOf("zjnlfucmhono", "dataoyyfysn", "elmmx", "dataeseuq")))
-                .withBucketName("datam"));
+        AmazonRedshiftSource model
+            = new AmazonRedshiftSource().withSourceRetryCount("datapddzzdw")
+                .withSourceRetryWait("datavmocnfzmuyykxlfl")
+                .withMaxConcurrentConnections("datauwunsnyqpmnyvnbm")
+                .withDisableMetricsCollection("dataomcrev")
+                .withQueryTimeout("dataernq")
+                .withAdditionalColumns("dataiyyys")
+                .withQuery("datajc")
+                .withRedshiftUnloadSettings(
+                    new RedshiftUnloadSettings()
+                        .withS3LinkedServiceName(new LinkedServiceReference().withReferenceName("aaabtxrhemnkyk")
+                            .withParameters(mapOf("jpzeeqvku", "dataomwyoktzffpcdq", "coikstap", "dataykiyrfoko",
+                                "rmugkugwtgfktw", "databdh", "isatb", "datayhauhqvxeyl")))
+                        .withBucketName("dataghtkdcuf"));
         model = BinaryData.fromObject(model).toObject(AmazonRedshiftSource.class);
-        Assertions.assertEquals("goyp", model.redshiftUnloadSettings().s3LinkedServiceName().referenceName());
+        Assertions.assertEquals("aaabtxrhemnkyk", model.redshiftUnloadSettings().s3LinkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureDataExplorerLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * Azure Data Explorer (Kusto) linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AzureDataExplorerLinkedService.class,
+    visible = true)
 @JsonTypeName("AzureDataExplorer")
 @Fluent
 public final class AzureDataExplorerLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureDataExplorer";
+
     /*
      * Azure Data Explorer (Kusto) linked service properties.
      */
@@ -31,6 +43,16 @@ public final class AzureDataExplorerLinkedService extends LinkedService {
      * Creates an instance of AzureDataExplorerLinkedService class.
      */
     public AzureDataExplorerLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -79,9 +101,9 @@ public final class AzureDataExplorerLinkedService extends LinkedService {
     }
 
     /**
-     * Get the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the
-     * format https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with
-     * resultType string).
+     * Get the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
+     * https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the endpoint value.
      */
@@ -90,9 +112,9 @@ public final class AzureDataExplorerLinkedService extends LinkedService {
     }
 
     /**
-     * Set the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the
-     * format https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with
-     * resultType string).
+     * Set the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
+     * https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with resultType
+     * string).
      * 
      * @param endpoint the endpoint value to set.
      * @return the AzureDataExplorerLinkedService object itself.
@@ -233,8 +255,9 @@ public final class AzureDataExplorerLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model AzureDataExplorerLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model AzureDataExplorerLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

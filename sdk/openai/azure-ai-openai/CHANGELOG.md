@@ -5,7 +5,7 @@
 ### Features Added
 
 - Added support for service API version, `2024-04-01-preview`. 
-- Note that `AOAI` refers to Azure OpenAI.
+- Note that `AOAI` refers to Azure OpenAI and `OAI` refers to OpenAI.
 
 **Audio**
 

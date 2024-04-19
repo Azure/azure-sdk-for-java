@@ -10,7 +10,13 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 
 /**
- * Unit tests for ChatCompletionsToolCall.
+ * Currently, OpenAI service JSON response missing discriminator property to define if the class type is a
+ * `ChatCompletionsFunctionToolCall`. This is required for deserialization to the correct class type.
+ * Then we have to add a workaround manually using codegen customization to not break the deserialization.
+ * <p>
+ * These tests ensure the `ChatCompletionsToolCall` class meets the requirement that to be
+ * able to serialize and deserialize the `type` properly in the `ChatCompletionsOptions`'s child class,
+ * `ChatCompletionsFunctionToolCall`.
  */
 public class ChatCompletionsToolCallUnitTests {
 

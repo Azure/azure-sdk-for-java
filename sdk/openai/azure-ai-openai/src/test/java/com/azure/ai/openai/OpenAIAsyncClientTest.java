@@ -613,6 +613,42 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
+    public void testAudioTranscriptionDuplicateTimestampGranularity(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
+            transcriptionOptions
+                    .setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON)
+                    .setTimestampGranularities(Arrays.asList(AudioTranscriptionTimestampGranularity.WORD,
+                            AudioTranscriptionTimestampGranularity.WORD));
+
+            StepVerifier.create(client.getAudioTranscription(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions))
+                    .assertNext(transcription -> {
+                        assertNull(transcription.getSegments());
+                        assertAudioTranscriptionWords(transcription.getWords());
+                    })
+                    .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testAudioTranscriptionTimestampGranularityInWrongResponseFormat(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getAudioTranscriptionRunner((modelId, transcriptionOptions) -> {
+            transcriptionOptions
+                    .setResponseFormat(AudioTranscriptionFormat.JSON)
+                    .setTimestampGranularities(Arrays.asList(AudioTranscriptionTimestampGranularity.WORD));
+
+            StepVerifier.create(client.getAudioTranscription(modelId, transcriptionOptions.getFilename(),
+                            transcriptionOptions))
+                    .verifyErrorSatisfies(error -> assertTrue(error instanceof HttpResponseException));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
     public void testGetAudioTranscriptionTextPlain(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 

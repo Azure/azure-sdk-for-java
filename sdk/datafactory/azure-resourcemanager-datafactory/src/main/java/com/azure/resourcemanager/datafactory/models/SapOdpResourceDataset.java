@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SapOdpResourceDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,17 @@ import java.util.Map;
 /**
  * SAP ODP Resource properties.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SapOdpResourceDataset.class, visible = true)
 @JsonTypeName("SapOdpResource")
 @Fluent
 public final class SapOdpResourceDataset extends Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SapOdpResource";
+
     /*
      * SAP ODP Resource properties.
      */
@@ -30,6 +38,16 @@ public final class SapOdpResourceDataset extends Dataset {
      * Creates an instance of SapOdpResourceDataset class.
      */
     public SapOdpResourceDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -105,8 +123,7 @@ public final class SapOdpResourceDataset extends Dataset {
     }
 
     /**
-     * Get the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType
-     * string).
+     * Get the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType string).
      * 
      * @return the context value.
      */
@@ -115,8 +132,7 @@ public final class SapOdpResourceDataset extends Dataset {
     }
 
     /**
-     * Set the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType
-     * string).
+     * Set the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType string).
      * 
      * @param context the context value to set.
      * @return the SapOdpResourceDataset object itself.
@@ -130,8 +146,7 @@ public final class SapOdpResourceDataset extends Dataset {
     }
 
     /**
-     * Get the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType
-     * string).
+     * Get the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType string).
      * 
      * @return the objectName value.
      */
@@ -140,8 +155,7 @@ public final class SapOdpResourceDataset extends Dataset {
     }
 
     /**
-     * Set the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType
-     * string).
+     * Set the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType string).
      * 
      * @param objectName the objectName value to set.
      * @return the SapOdpResourceDataset object itself.
@@ -163,8 +177,9 @@ public final class SapOdpResourceDataset extends Dataset {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model SapOdpResourceDataset"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model SapOdpResourceDataset"));
         } else {
             innerTypeProperties().validate();
         }
