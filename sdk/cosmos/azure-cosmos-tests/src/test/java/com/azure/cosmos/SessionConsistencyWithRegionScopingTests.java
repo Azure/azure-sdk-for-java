@@ -238,7 +238,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 validateTestObjectEquality(idToTestObjectsFromQuery.get(idOfObjectCreated), idToTestObjectsCreated.get(idOfObjectCreated));
             }
 
-            return ImmutableSet.of(testObjectToBeCreated1.getMypk(), testObjectToBeCreated1.getMypk());
+            return ImmutableSet.of(testObjectToBeCreated1.getMypk(), testObjectToBeCreated2.getMypk());
         };
 
         Function<CosmosAsyncContainer, Set<String>> deleteYourLatestUpsert_deleteAndUpsertInFirstPreferredRegionFunc = (container) -> {
