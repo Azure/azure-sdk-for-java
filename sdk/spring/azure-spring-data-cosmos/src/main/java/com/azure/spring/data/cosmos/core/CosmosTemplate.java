@@ -220,7 +220,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         markAuditedIfConfigured(objectToSave);
         generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
 
-        JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
+        JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave, true);
 
         containerName = getContainerName(domainType);
 
@@ -266,7 +266,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         entities.forEach(entity -> {
             markAuditedIfConfigured(entity);
             generateIdIfNullAndAutoGenerationEnabled(entity, domainType);
-            JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
+            JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity, true);
             entitiesMap.put(originalItem.get("id").asText(), entity);
             PartitionKey partitionKey = new PartitionKey(information.getPartitionKeyFieldValue(entity));
             final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
@@ -491,7 +491,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         containerName = getContainerName(object.getClass());
         markAuditedIfConfigured(object);
 
-        JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object);
+        JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object, true);
 
         LOGGER.debug("execute upsert item in database {} container {}", this.getDatabaseName(),
             containerName);

@@ -116,7 +116,7 @@ public class MappingCosmosConverter
      */
 
     public JsonNode writeJsonNode(Object sourceEntity) {
-        return writeJsonNode(sourceEntity, true);
+        return writeJsonNode(sourceEntity, false);
     }
 
     /**
@@ -194,7 +194,7 @@ public class MappingCosmosConverter
         if (transientFields.isEmpty()) {
             return responseItem;
         }
-        JsonNode originalObject = writeJsonNode(originalObjectToSave, false);
+        JsonNode originalObject = writeJsonNode(originalObjectToSave);
         boolean anyTransientFieldsSet = transientFields.stream().anyMatch(originalObject::hasNonNull);
         if (anyTransientFieldsSet) {
             ObjectNode updatedItem = (ObjectNode) responseItem;

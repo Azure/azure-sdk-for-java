@@ -442,7 +442,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         final Class<T> domainType = (Class<T>) objectToSave.getClass();
         markAuditedIfConfigured(objectToSave);
         generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
-        JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
+        JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave, true);
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         //  if the partition key is null, SDK will get the partitionKey from the object
         return this.getCosmosAsyncClient()
@@ -503,7 +503,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Flux<CosmosItemOperation> cosmosItemOperationsFlux = entities.map(entity -> {
             markAuditedIfConfigured(entity);
             generateIdIfNullAndAutoGenerationEnabled(entity, domainType);
-            JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
+            JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity, true);
             entitiesMap.put(originalItem.get("id").asText(), entity);
             PartitionKey partitionKey = new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity));
             final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
@@ -625,7 +625,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         containerName = getContainerNameOverride(containerName);
         final Class<T> domainType = (Class<T>) object.getClass();
         markAuditedIfConfigured(object);
-        JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object);
+        JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object, true);
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         applyVersioning(object.getClass(), originalItem, options);
         JsonNode finalOriginalItem = originalItem;
