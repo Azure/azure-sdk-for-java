@@ -91,7 +91,7 @@ import static com.azure.messaging.eventhubs.TestUtils.assertAllAttributes;
 import static com.azure.messaging.eventhubs.TestUtils.assertAttributes;
 import static com.azure.messaging.eventhubs.TestUtils.getSpanName;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.DIAGNOSTIC_ID_KEY;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_TYPE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.TRACEPARENT_KEY;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.CREATE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.GET_EVENT_HUB_PROPERTIES;
@@ -1583,7 +1583,7 @@ class EventHubProducerAsyncClientTest {
     private void assertStartOptions(StartSpanOptions startOpts, SpanKind kind, String partitionId, int linkCount) {
         assertEquals(kind, startOpts.getSpanKind());
         assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, partitionId, null, null, startOpts.getAttributes());
-        assertNotNull(startOpts.getAttributes().get(MESSAGING_OPERATION));
+        assertNotNull(startOpts.getAttributes().get(MESSAGING_OPERATION_TYPE));
 
         if (linkCount == 0) {
             assertNull(startOpts.getLinks());

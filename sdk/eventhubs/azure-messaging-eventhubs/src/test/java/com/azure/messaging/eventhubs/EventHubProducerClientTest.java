@@ -54,7 +54,7 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.TestUtils.getSpanName;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.DIAGNOSTIC_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_NAME;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_TYPE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM_VALUE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.SERVER_ADDRESS;
@@ -606,7 +606,7 @@ public class EventHubProducerClientTest {
         assertEquals(EVENT_HUB_NAME, attributes.get(MESSAGING_DESTINATION_NAME));
         assertEquals(HOSTNAME, attributes.get(SERVER_ADDRESS));
         assertEquals(MESSAGING_SYSTEM_VALUE, attributes.get(MESSAGING_SYSTEM));
-        assertNotNull(attributes.get(MESSAGING_OPERATION));
+        assertNotNull(attributes.get(MESSAGING_OPERATION_TYPE));
 
         if (linkCount == 0) {
             assertNull(startOpts.getLinks());

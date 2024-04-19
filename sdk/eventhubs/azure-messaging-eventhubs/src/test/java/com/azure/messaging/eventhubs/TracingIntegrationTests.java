@@ -66,6 +66,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
     private static final String PARTITION_ID = "0";
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
+    private static final AttributeKey<String> OPERATION_TYPE_ATTRIBUTE = AttributeKey.stringKey("messaging.operation.type");
+    private static final AttributeKey<String> OPERATION_NAME_ATTRIBUTE = AttributeKey.stringKey("messaging.operation.name");
     private TestSpanProcessor spanProcessor;
     private EventHubProducerAsyncClient producer;
     private EventHubConsumerAsyncClient consumer;
@@ -635,7 +637,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     private void assertMessageSpan(ReadableSpan actual, EventData message) {
         assertEquals(SpanKind.PRODUCER, actual.getKind());
         assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
-        assertEquals(OperationName.CREATE.getAttributeValue(), actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
+        assertEquals(OperationName.CREATE.getOperationType(), actual.getAttribute(OPERATION_TYPE_ATTRIBUTE));
+        assertNull(actual.getAttribute(OPERATION_NAME_ATTRIBUTE));
         String traceparent = "00-" + actual.getSpanContext().getTraceId() + "-" + actual.getSpanContext().getSpanId() + "-01";
         assertEquals(message.getProperties().get("Diagnostic-Id"), traceparent);
         assertEquals(message.getProperties().get("traceparent"), traceparent);
@@ -644,7 +647,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     private void assertSendSpan(ReadableSpan actual, List<EventData> messages) {
         assertEquals(SpanKind.CLIENT, actual.getKind());
         assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
-        assertEquals("publish", actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
+        assertEquals("publish", actual.getAttribute(OPERATION_TYPE_ATTRIBUTE));
+        assertEquals("send", actual.getAttribute(OPERATION_NAME_ATTRIBUTE));
         if (messages.size() > 1) {
             assertEquals(messages.size(), actual.getAttribute(AttributeKey.longKey("messaging.batch.message_count")));
         }
@@ -662,7 +666,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(SpanKind.CONSUMER, actual.getKind());
         assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
         List<LinkData> links = actual.toSpanData().getLinks();
-        assertEquals("receive", actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
+        assertEquals("receive", actual.getAttribute(OPERATION_TYPE_ATTRIBUTE));
+        assertNull(actual.getAttribute(OPERATION_NAME_ATTRIBUTE));
         if (messages.size() > 1) {
             assertEquals(messages.size(), actual.getAttribute(AttributeKey.longKey("messaging.batch.message_count")));
         }
@@ -680,7 +685,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         SpanData spanData = actual.toSpanData();
         assertEquals(SpanKind.CONSUMER, actual.getKind());
         assertEquals(StatusCode.UNSET, spanData.getStatus().getStatusCode());
-        assertEquals("process", actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
+        assertEquals("process", actual.getAttribute(OPERATION_TYPE_ATTRIBUTE));
+        assertNull(actual.getAttribute(OPERATION_NAME_ATTRIBUTE));
         assertEquals(PARTITION_ID, actual.getAttribute(AttributeKey.stringKey("messaging.destination.partition.id")));
 
         String messageTraceparent = (String) message.getProperties().get("traceparent");
@@ -706,7 +712,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         assertEquals(SpanKind.CONSUMER, actual.getKind());
         assertEquals(status, actual.toSpanData().getStatus().getStatusCode());
-        assertEquals("process", actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
+        assertEquals("process", actual.getAttribute(OPERATION_TYPE_ATTRIBUTE));
+        assertNull(actual.getAttribute(OPERATION_NAME_ATTRIBUTE));
         assertNotNull(actual.getAttribute(AttributeKey.stringKey("messaging.destination.partition.id")));
 
         List<EventData> receivedMessagesWithTraceContext = messages.stream().filter(m -> m.getProperties().containsKey("traceparent")).collect(toList());
@@ -730,7 +737,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     private void assertCheckpointSpan(ReadableSpan actual, SpanContext parent) {
         assertEquals(SpanKind.INTERNAL, actual.getKind());
         assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
-        assertEquals(OperationName.SETTLE.getAttributeValue(), actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
+        assertEquals("settle", actual.getAttribute(OPERATION_TYPE_ATTRIBUTE));
+        assertEquals("checkpoint", actual.getAttribute(OPERATION_NAME_ATTRIBUTE));
 
         assertEquals(parent.getTraceId(), actual.getSpanContext().getTraceId());
         assertEquals(parent.getSpanId(), actual.getParentSpanContext().getSpanId());
@@ -747,6 +755,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     private boolean hasOperationName(ReadableSpan span, OperationName operationName) {
-        return operationName.getAttributeValue().equals(span.getAttribute(AttributeKey.stringKey("messaging.operation")));
+        return operationName.getOperationType().equals(span.getAttribute(OPERATION_TYPE_ATTRIBUTE));
     }
 }

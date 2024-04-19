@@ -16,28 +16,32 @@ public final class OperationName {
     public static final OperationName GET_EVENT_HUB_PROPERTIES = new OperationName("get_event_hub_properties");
     public static final OperationName GET_PARTITION_PROPERTIES = new OperationName("get_partition_properties");
 
-    private final String attributeValue;
-    private final String friendlyName;
+    private final String operationType;
+    private final String operationName;
 
     /**
      * Creates a new instance of OperationName.
-     * @param attributeValue used in `messaging.operation` attribute. Must follow OpenTelemetry semantic conventions.
-     * @param friendlyName used in span name, should match EventHubs terminology.
+     * @param operationType used in `messaging.operation` attribute. Must follow OpenTelemetry semantic conventions.
+     * @param operationName used in span name, should match EventHubs terminology.
      */
-    private OperationName(String attributeValue, String friendlyName) {
-        this.attributeValue = attributeValue;
-        this.friendlyName = friendlyName;
+    private OperationName(String operationType, String operationName) {
+        this.operationType = operationType;
+        this.operationName = operationName;
     }
 
-    public String getAttributeValue() {
-        return attributeValue;
+    public String getOperationType() {
+        return operationType;
+    }
+
+    public String getOperationName() {
+        return operationName;
     }
 
     public String getFriendlyName() {
-        return friendlyName;
+        return operationName == null ? operationType : operationName;
     }
 
-    private OperationName(String attributeName) {
-        this(attributeName, attributeName);
+    private OperationName(String operationType) {
+        this(operationType, null);
     }
 }

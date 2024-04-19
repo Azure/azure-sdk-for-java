@@ -31,7 +31,8 @@ import static com.azure.messaging.eventhubs.implementation.instrumentation.Instr
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_PARTITION_ID;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_TYPE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM_VALUE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.SERVER_ADDRESS;
@@ -226,7 +227,11 @@ public class EventHubsTracer {
                 .setAttribute(MESSAGING_SYSTEM, MESSAGING_SYSTEM_VALUE)
                 .setAttribute(MESSAGING_DESTINATION_NAME, entityName)
                 .setAttribute(SERVER_ADDRESS, fullyQualifiedName)
-                .setAttribute(MESSAGING_OPERATION, operationName.getAttributeValue());
+                .setAttribute(MESSAGING_OPERATION_TYPE, operationName.getOperationType());
+
+        if (operationName.getOperationName() != null) {
+            startOptions.setAttribute(MESSAGING_OPERATION_NAME, operationName.getOperationName());
+        }
 
         if (consumerGroup != null) {
             startOptions.setAttribute(MESSAGING_CONSUMER_GROUP_NAME, consumerGroup);
