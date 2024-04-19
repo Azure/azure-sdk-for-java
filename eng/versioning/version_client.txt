@@ -464,6 +464,7 @@ io.clientcore:core;1.0.0-beta.1;1.0.0-beta.1
 io.clientcore:core-json;1.0.0-beta.1;1.0.0-beta.1
 io.clientcore:http-jdk-httpclient;1.0.0-beta.1;1.0.0-beta.1
 io.clientcore:http-okhttp3;1.0.0-beta.1;1.0.0-beta.1
+io.clientcore:http-stress;1.0.0-beta.1;1.0.0-beta.1
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.
