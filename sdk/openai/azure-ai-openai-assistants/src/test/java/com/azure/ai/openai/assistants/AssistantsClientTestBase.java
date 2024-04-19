@@ -60,6 +60,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
+    private static final String JAVA_SDK_TESTS_ASSISTANTS_TXT =  "java_sdk_tests_assistants.txt";
+    private static final String JAVA_SDK_TESTS_FINE_TUNING_JSON = "java_sdk_tests_fine_tuning.json";
+    private static final String MS_LOGO_PNG = "ms_logo.png";
+
     AssistantsAsyncClient getAssistantsAsyncClient(HttpClient httpClient) {
         return getAssistantsClientBuilder(buildAssertingClient(
                 interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient,
@@ -220,17 +224,23 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     void uploadAssistantTextFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
-        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt")));
+        String fileName =JAVA_SDK_TESTS_ASSISTANTS_TXT;
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
+            .setFilename(fileName);
         testRunner.accept(fileDetails, FilePurpose.ASSISTANTS);
     }
 
     void uploadAssistantImageFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
-        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile("ms_logo.png")));
+        String fileName = MS_LOGO_PNG;
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
+            .setFilename(fileName);
         testRunner.accept(fileDetails, FilePurpose.ASSISTANTS);
     }
 
     void uploadFineTuningJsonFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
-        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_fine_tuning.json")));
+        String fileName = JAVA_SDK_TESTS_FINE_TUNING_JSON;
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
+            .setFilename(fileName);
         testRunner.accept(fileDetails, FilePurpose.FINE_TUNE);
     }
 
@@ -317,8 +327,12 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     String uploadFile(AssistantsClient client) {
+        String fileName =JAVA_SDK_TESTS_ASSISTANTS_TXT;
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
+            .setFilename(fileName);
+
         OpenAIFile openAIFile = client.uploadFile(
-            new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))),
+            fileDetails,
             FilePurpose.ASSISTANTS);
         assertNotNull(openAIFile.getId());
         assertNotNull(openAIFile.getCreatedAt());
@@ -336,8 +350,10 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     String uploadFile(AssistantsAsyncClient client) {
         AtomicReference<String> openAIFileRef = new AtomicReference<>();
+        String fileName =JAVA_SDK_TESTS_ASSISTANTS_TXT;
         StepVerifier.create(client.uploadFile(
-            new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))),
+            new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
+                .setFilename(fileName),
             FilePurpose.ASSISTANTS))
                 .assertNext(openAIFile -> {
                     assertNotNull(openAIFile.getId());
