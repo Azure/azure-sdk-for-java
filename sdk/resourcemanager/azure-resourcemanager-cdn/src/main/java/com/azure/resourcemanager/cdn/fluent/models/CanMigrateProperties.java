@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cdn.models.MigrationErrorType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CanMigrateProperties model. */
+/**
+ * The CanMigrateProperties model.
+ */
 @Fluent
 public final class CanMigrateProperties {
     /*
@@ -31,13 +33,15 @@ public final class CanMigrateProperties {
     @JsonProperty(value = "errors")
     private List<MigrationErrorType> errors;
 
-    /** Creates an instance of CanMigrateProperties class. */
+    /**
+     * Creates an instance of CanMigrateProperties class.
+     */
     public CanMigrateProperties() {
     }
 
     /**
      * Get the canMigrate property: Flag that says if the profile can be migrated.
-     *
+     * 
      * @return the canMigrate value.
      */
     public Boolean canMigrate() {
@@ -46,7 +50,7 @@ public final class CanMigrateProperties {
 
     /**
      * Get the defaultSku property: Recommended sku for the migration.
-     *
+     * 
      * @return the defaultSku value.
      */
     public CanMigrateDefaultSku defaultSku() {
@@ -55,7 +59,7 @@ public final class CanMigrateProperties {
 
     /**
      * Get the errors property: The errors property.
-     *
+     * 
      * @return the errors value.
      */
     public List<MigrationErrorType> errors() {
@@ -64,7 +68,7 @@ public final class CanMigrateProperties {
 
     /**
      * Set the errors property: The errors property.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the CanMigrateProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class CanMigrateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

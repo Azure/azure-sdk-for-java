@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MetricsGranularity. */
+/**
+ * Defines values for MetricsGranularity.
+ */
 public final class MetricsGranularity extends ExpandableStringEnum<MetricsGranularity> {
-    /** Static value PT5M for MetricsGranularity. */
+    /**
+     * Static value PT5M for MetricsGranularity.
+     */
     public static final MetricsGranularity PT5M = fromString("PT5M");
 
-    /** Static value PT1H for MetricsGranularity. */
+    /**
+     * Static value PT1H for MetricsGranularity.
+     */
     public static final MetricsGranularity PT1H = fromString("PT1H");
 
-    /** Static value P1D for MetricsGranularity. */
+    /**
+     * Static value P1D for MetricsGranularity.
+     */
     public static final MetricsGranularity P1D = fromString("P1D");
 
     /**
      * Creates a new instance of MetricsGranularity value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class MetricsGranularity extends ExpandableStringEnum<MetricsGranul
 
     /**
      * Creates or finds a MetricsGranularity from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MetricsGranularity.
      */
@@ -41,7 +49,7 @@ public final class MetricsGranularity extends ExpandableStringEnum<MetricsGranul
 
     /**
      * Gets known MetricsGranularity values.
-     *
+     * 
      * @return known MetricsGranularity values.
      */
     public static Collection<MetricsGranularity> values() {

@@ -28,14 +28,14 @@ public final class ChatChoice {
      */
     @Generated
     @JsonProperty(value = "index")
-    private int index;
+    private final int index;
 
     /*
      * The reason that this chat completions choice completed its generated.
      */
     @Generated
     @JsonProperty(value = "finish_reason")
-    private CompletionsFinishReason finishReason;
+    private final CompletionsFinishReason finishReason;
 
     /*
      * The delta message content for a streaming response.
@@ -115,10 +115,8 @@ public final class ChatChoice {
     private ChatFinishDetails finishDetails;
 
     /*
-     * Represents the output results of Azure OpenAI enhancements to chat completions, as configured via the matching
-     * input
-     * provided in the request. This supplementary information is only available when using Azure OpenAI and only when
-     * the
+     * Represents the output results of Azure OpenAI enhancements to chat completions, as configured via the matching input
+     * provided in the request. This supplementary information is only available when using Azure OpenAI and only when the
      * request is configured to use enhancements.
      */
     @Generated
@@ -138,8 +136,8 @@ public final class ChatChoice {
     }
 
     /**
-     * Get the enhancements property: Represents the output results of Azure OpenAI enhancements to chat completions,
-     * as configured via the matching input
+     * Get the enhancements property: Represents the output results of Azure OpenAI enhancements to chat completions, as
+     * configured via the matching input
      * provided in the request. This supplementary information is only available when using Azure OpenAI and only when
      * the
      * request is configured to use enhancements.
@@ -156,7 +154,7 @@ public final class ChatChoice {
      */
     @Generated
     @JsonProperty(value = "logprobs")
-    private ChatChoiceLogProbabilityInfo logprobs;
+    private final ChatChoiceLogProbabilityInfo logprobs;
 
     /**
      * Creates an instance of ChatChoice class.
@@ -176,8 +174,8 @@ public final class ChatChoice {
     }
 
     /**
-     * Get the logprobs property: The log probability information for this choice, as enabled via the 'logprobs'
-     * request option.
+     * Get the logprobs property: The log probability information for this choice, as enabled via the 'logprobs' request
+     * option.
      *
      * @return the logprobs value.
      */

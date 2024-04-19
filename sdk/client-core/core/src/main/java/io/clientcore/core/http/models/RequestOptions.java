@@ -113,16 +113,26 @@ import java.util.function.Consumer;
  * <!-- end io.clientcore.core.http.rest.requestoptions.postrequest -->
  */
 public final class RequestOptions {
-    private ClientLogger logger;
+    /**
+     * Signifies that no options need to be passed to the pipeline.
+     */
+    public static final RequestOptions NONE = new RequestOptions().lock();
+
+    // RequestOptions is a highly used, short-lived class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(RequestOptions.class);
+
     private Consumer<HttpRequest> requestCallback = request -> {
     };
     private Context context;
     private ResponseBodyMode responseBodyMode;
+    private boolean locked;
+    private ClientLogger logger;
 
     /**
      * Creates a new instance of {@link RequestOptions}.
      */
     public RequestOptions() {
+        this.context = Context.EMPTY;
     }
 
     /**
@@ -155,9 +165,9 @@ public final class RequestOptions {
     }
 
     /**
-     * Gets the {@link ClientLogger} used to log during the request and response.
+     * Gets the {@link ClientLogger} used to log the request and response.
      *
-     * @return The {@link ClientLogger} used to log during the request and response.
+     * @return The {@link ClientLogger} used to log the request and response.
      */
     public ClientLogger getLogger() {
         return logger;
@@ -172,8 +182,15 @@ public final class RequestOptions {
      * @param header The header key.
      *
      * @return The updated {@link RequestOptions} object.
+     *
+     * @throws IllegalStateException if this instance is {@link RequestOptions#NONE RequestOptions.NONE}.
      */
     public RequestOptions addHeader(HttpHeader header) {
+        if (locked) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("RequestOptions.NONE is immutable. Cannot add header."));
+        }
+
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header));
 
         return this;
@@ -188,8 +205,15 @@ public final class RequestOptions {
      * @param value The header value.
      *
      * @return The updated {@link RequestOptions} object.
+     *
+     * @throws IllegalStateException if this instance is {@link RequestOptions#NONE RequestOptions.NONE}.
      */
     public RequestOptions setHeader(HttpHeaderName header, String value) {
+        if (locked) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("RequestOptions.NONE is immutable. Cannot set header."));
+        }
+
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
 
         return this;
@@ -203,6 +227,8 @@ public final class RequestOptions {
      * @param value The value of the query parameter.
      *
      * @return The updated {@link RequestOptions} object.
+     *
+     * @throws IllegalStateException if this instance is {@link RequestOptions#NONE RequestOptions.NONE}.
      */
     public RequestOptions addQueryParam(String parameterName, String value) {
         return addQueryParam(parameterName, value, false);
@@ -218,8 +244,15 @@ public final class RequestOptions {
      * @param encoded Whether this query parameter is already encoded.
      *
      * @return The updated {@link RequestOptions} object.
+     *
+     * @throws IllegalStateException if this instance is {@link RequestOptions#NONE RequestOptions.NONE}.
      */
     public RequestOptions addQueryParam(String parameterName, String value, boolean encoded) {
+        if (locked) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("RequestOptions.NONE is immutable. Cannot add query param."));
+        }
+
         this.requestCallback = this.requestCallback.andThen(request -> {
             String url = request.getUrl().toString();
             String encodedParameterName = encoded ? parameterName : UrlEscapers.QUERY_ESCAPER.escape(parameterName);
@@ -240,8 +273,14 @@ public final class RequestOptions {
      * @return The updated {@link RequestOptions} object.
      *
      * @throws NullPointerException If {@code requestCallback} is {@code null}.
+     * @throws IllegalStateException if this instance is {@link RequestOptions#NONE RequestOptions.NONE}.
      */
     public RequestOptions addRequestCallback(Consumer<HttpRequest> requestCallback) {
+        if (locked) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("RequestOptions.NONE is immutable. Cannot add request callback."));
+        }
+
         Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
 
         this.requestCallback = this.requestCallback.andThen(requestCallback);
@@ -257,8 +296,14 @@ public final class RequestOptions {
      * @return The updated {@link RequestOptions} object.
      *
      * @throws NullPointerException If {@code requestBody} is {@code null}.
+     * @throws IllegalStateException if this instance is {@link RequestOptions#NONE RequestOptions.NONE}.
      */
     public RequestOptions setBody(BinaryData requestBody) {
+        if (locked) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("RequestOptions.NONE is immutable. Cannot set body."));
+        }
+
         Objects.requireNonNull(requestBody, "'requestBody' cannot be null.");
 
         this.requestCallback = this.requestCallback.andThen(request -> request.setBody(requestBody));
@@ -272,15 +317,23 @@ public final class RequestOptions {
      * @param context Additional context that is passed during the service call.
      *
      * @return The updated {@link RequestOptions} object.
+     *
+     * @throws IllegalStateException if this instance is {@link RequestOptions#NONE RequestOptions.NONE}.
      */
     public RequestOptions setContext(Context context) {
+        if (locked) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("RequestOptions.NONE is immutable. Cannot set context."));
+        }
+
         this.context = context;
 
         return this;
     }
 
     /**
-     * Sets the configuration indicating how the body of the resulting HTTP response should be handled.
+     * Sets the configuration indicating how the body of the resulting HTTP response should be handled. If {@code null},
+     * the response body will be handled based on the content type of the response.
      *
      * <p>For more information about the options for handling an HTTP response body, see {@link ResponseBodyMode}.</p>
      *
@@ -288,22 +341,47 @@ public final class RequestOptions {
      * handled.
      *
      * @return The updated {@link RequestOptions} object.
+     *
+     * @throws IllegalStateException if this instance is {@link RequestOptions#NONE RequestOptions.NONE}.
      */
     public RequestOptions setResponseBodyMode(ResponseBodyMode responseBodyMode) {
+        if (locked) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("RequestOptions.NONE is immutable. Cannot set response body mode."));
+        }
+
         this.responseBodyMode = responseBodyMode;
 
         return this;
     }
 
     /**
-     * Sets the {@link ClientLogger} used to log during the request and response.
+     * Sets the {@link ClientLogger} used to log the request and response.
      *
-     * @param logger The {@link ClientLogger} used to log during the request and response.
+     * @param logger The {@link ClientLogger} used to log the request and response.
      *
      * @return The updated {@link RequestOptions} object.
+     *
+     * @throws IllegalStateException if this instance is {@link RequestOptions#NONE RequestOptions.NONE}.
      */
     public RequestOptions setLogger(ClientLogger logger) {
+        if (locked) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("RequestOptions.NONE is immutable. Cannot set logger."));
+        }
+
         this.logger = logger;
+
+        return this;
+    }
+
+    /**
+     * Locks this {@link RequestOptions} to prevent further modifications.
+     *
+     * @return This {@link RequestOptions} instance.
+     */
+    private RequestOptions lock() {
+        locked = true;
 
         return this;
     }

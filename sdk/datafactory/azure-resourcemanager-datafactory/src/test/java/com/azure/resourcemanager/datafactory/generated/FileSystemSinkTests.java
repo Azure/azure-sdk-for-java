@@ -11,16 +11,19 @@ public final class FileSystemSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileSystemSink model = BinaryData.fromString(
-            "{\"type\":\"FileSystemSink\",\"copyBehavior\":\"datatlmcaehjhwklf\",\"writeBatchSize\":\"dataqqgyp\",\"writeBatchTimeout\":\"datawejbngojnak\",\"sinkRetryCount\":\"dataytk\",\"sinkRetryWait\":\"datafo\",\"maxConcurrentConnections\":\"datafksormf\",\"disableMetricsCollection\":\"datauhwxmnrdfjobhr\",\"\":{\"pbdfrtasau\":\"dataeaupjmjig\",\"yrxyn\":\"dataxtoxlxojijtt\",\"nyciss\":\"datafs\"}}")
+            "{\"type\":\"bgohxb\",\"copyBehavior\":\"datacf\",\"writeBatchSize\":\"datazfpfxbqdrjunigxn\",\"writeBatchTimeout\":\"datanghgazdbvenv\",\"sinkRetryCount\":\"datati\",\"sinkRetryWait\":\"dataswrncwhlxvng\",\"maxConcurrentConnections\":\"datapydjdpapndmv\",\"disableMetricsCollection\":\"datadtvvta\",\"\":{\"kmfiudnpj\":\"datawkthmexidecdeh\",\"guv\":\"dataxfhtsgyyrg\",\"ytihhq\":\"datagqllgokznffqvtx\",\"rsnbdfamyolvgk\":\"datancwgrwgdpfzdygt\"}}")
             .toObject(FileSystemSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileSystemSink model
-            = new FileSystemSink().withWriteBatchSize("dataqqgyp").withWriteBatchTimeout("datawejbngojnak")
-                .withSinkRetryCount("dataytk").withSinkRetryWait("datafo").withMaxConcurrentConnections("datafksormf")
-                .withDisableMetricsCollection("datauhwxmnrdfjobhr").withCopyBehavior("datatlmcaehjhwklf");
+        FileSystemSink model = new FileSystemSink().withWriteBatchSize("datazfpfxbqdrjunigxn")
+            .withWriteBatchTimeout("datanghgazdbvenv")
+            .withSinkRetryCount("datati")
+            .withSinkRetryWait("dataswrncwhlxvng")
+            .withMaxConcurrentConnections("datapydjdpapndmv")
+            .withDisableMetricsCollection("datadtvvta")
+            .withCopyBehavior("datacf");
         model = BinaryData.fromObject(model).toObject(FileSystemSink.class);
     }
 }

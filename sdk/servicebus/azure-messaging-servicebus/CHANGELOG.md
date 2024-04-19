@@ -4,9 +4,13 @@
 
 ### Features Added
 
+- Setting the v2 stack as the default for "Session Processor Client" and "Session Reactor Receiver Client". ([39750](https://github.com/Azure/azure-sdk-for-java/pull/39750))
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixes the ServiceBusProcessorClient to signal intermediate errors to the processor handler. ([#39669](https://github.com/Azure/azure-sdk-for-java/issues/39669))
 
 ### Other Changes
 

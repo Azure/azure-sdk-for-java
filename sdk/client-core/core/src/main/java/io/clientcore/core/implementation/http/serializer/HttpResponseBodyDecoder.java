@@ -280,7 +280,6 @@ public final class HttpResponseBodyDecoder {
      */
     private static void ensureRequestSet(Response<?> response) {
         Objects.requireNonNull(response.getRequest());
-        Objects.requireNonNull(response.getRequest().getHttpMethod());
     }
 }
 

@@ -219,15 +219,15 @@ public final class PollOperation {
      */
     @SuppressWarnings("unchecked")
     public static <U> U deserialize(SerializerAdapter serializerAdapter, String value, Type type) {
-        if (value == null || "".equalsIgnoreCase(value)) {
-            LOGGER.verbose("Ignoring decoding of null or empty value to:" + type.getTypeName());
+        if (CoreUtils.isNullOrEmpty(value)) {
+            LOGGER.verbose("Ignoring decoding of null or empty value to:" + type);
             return null;
         } else {
             try {
                 return (U) serializerAdapter.deserialize(value, type, SerializerEncoding.JSON);
             } catch (IOException | RuntimeException ioe) {
                 LOGGER.logExceptionAsWarning(
-                    new IllegalArgumentException("Unable to decode '" + value + "' to: " + type.getTypeName(), ioe));
+                    new IllegalArgumentException("Unable to decode '" + value + "' to: " + type, ioe));
                 return null;
             }
         }

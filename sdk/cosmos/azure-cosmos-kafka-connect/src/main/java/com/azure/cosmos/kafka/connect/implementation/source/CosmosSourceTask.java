@@ -128,32 +128,23 @@ public class CosmosSourceTask extends SourceTask {
     private List<SourceRecord> executeMetadataTask(MetadataTaskUnit taskUnit) {
         List<SourceRecord> sourceRecords = new ArrayList<>();
 
-        // add the containers metadata record - it track the databaseName -> List[containerRid] mapping
-        ContainersMetadataTopicPartition metadataTopicPartition =
-            new ContainersMetadataTopicPartition(taskUnit.getDatabaseName());
-        ContainersMetadataTopicOffset metadataTopicOffset =
-            new ContainersMetadataTopicOffset(taskUnit.getContainerRids());
-
+        // add the containers metadata record - it tracks the databaseName -> List[containerRid] mapping
+        Pair<ContainersMetadataTopicPartition, ContainersMetadataTopicOffset> containersMetadata = taskUnit.getContainersMetadata();
         sourceRecords.add(
             new SourceRecord(
-                ContainersMetadataTopicPartition.toMap(metadataTopicPartition),
-                ContainersMetadataTopicOffset.toMap(metadataTopicOffset),
-                taskUnit.getTopic(),
+                ContainersMetadataTopicPartition.toMap(containersMetadata.getLeft()),
+                ContainersMetadataTopicOffset.toMap(containersMetadata.getRight()),
+                taskUnit.getStorageName(),
                 SchemaAndValue.NULL.schema(),
                 SchemaAndValue.NULL.value()));
 
         // add the container feedRanges metadata record - it tracks the containerRid -> List[FeedRange] mapping
-        for (String containerRid : taskUnit.getContainersEffectiveRangesMap().keySet()) {
-            FeedRangesMetadataTopicPartition feedRangesMetadataTopicPartition =
-                new FeedRangesMetadataTopicPartition(taskUnit.getDatabaseName(), containerRid);
-            FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
-                new FeedRangesMetadataTopicOffset(taskUnit.getContainersEffectiveRangesMap().get(containerRid));
-
+        for (Pair<FeedRangesMetadataTopicPartition, FeedRangesMetadataTopicOffset> feedRangesMetadata : taskUnit.getFeedRangesMetadataList()) {
             sourceRecords.add(
                 new SourceRecord(
-                    FeedRangesMetadataTopicPartition.toMap(feedRangesMetadataTopicPartition),
-                    FeedRangesMetadataTopicOffset.toMap(feedRangesMetadataTopicOffset),
-                    taskUnit.getTopic(),
+                    FeedRangesMetadataTopicPartition.toMap(feedRangesMetadata.getLeft()),
+                    FeedRangesMetadataTopicOffset.toMap(feedRangesMetadata.getRight()),
+                    taskUnit.getStorageName(),
                     SchemaAndValue.NULL.schema(),
                     SchemaAndValue.NULL.value()));
         }
@@ -177,7 +168,7 @@ public class CosmosSourceTask extends SourceTask {
             this.getChangeFeedRequestOptions(feedRangeTaskUnit);
 
         // split/merge will be handled in source task
-        ModelBridgeInternal.getChangeFeedIsSplitHandlingDisabled(changeFeedRequestOptions);
+        ModelBridgeInternal.disableSplitHandling(changeFeedRequestOptions);
         CosmosThroughputControlHelper
             .tryPopulateThroughputControlGroupName(
                 changeFeedRequestOptions,
@@ -241,6 +232,8 @@ public class CosmosSourceTask extends SourceTask {
     }
 
     private Mono<Boolean> handleFeedRangeGone(FeedRangeTaskUnit feedRangeTaskUnit) {
+        //TODO (xinlian-public preview): Add more debug logs
+
         // need to find out whether it is split or merge
         CosmosAsyncContainer container =
             this.cosmosClient
@@ -250,7 +243,7 @@ public class CosmosSourceTask extends SourceTask {
         return ImplementationBridgeHelpers
             .CosmosAsyncContainerHelper
             .getCosmosAsyncContainerAccessor()
-            .getOverlappingFeedRanges(container, feedRangeTaskUnit.getFeedRange())
+            .getOverlappingFeedRanges(container, feedRangeTaskUnit.getFeedRange(), true)
             .flatMap(overlappedRanges -> {
 
                 if (overlappedRanges.size() == 1) {
@@ -271,13 +264,18 @@ public class CosmosSourceTask extends SourceTask {
                     );
 
                     for (FeedRange pkRange : overlappedRanges) {
+                        KafkaCosmosChangeFeedState childContinuationState =
+                            new KafkaCosmosChangeFeedState(
+                                feedRangeTaskUnit.getContinuationState().getResponseContinuation(),
+                                pkRange);
+
                         FeedRangeTaskUnit childTaskUnit =
                             new FeedRangeTaskUnit(
                                 feedRangeTaskUnit.getDatabaseName(),
                                 feedRangeTaskUnit.getContainerName(),
                                 feedRangeTaskUnit.getContainerRid(),
                                 pkRange,
-                                feedRangeTaskUnit.getContinuationState(),
+                                childContinuationState,
                                 feedRangeTaskUnit.getTopic());
                         this.taskUnitsQueue.add(childTaskUnit);
                     }
@@ -328,7 +326,7 @@ public class CosmosSourceTask extends SourceTask {
                     throw new IllegalArgumentException(feedRangeTaskUnit.getContinuationState() + " is not supported");
             }
 
-            if (this.taskConfig.getChangeFeedConfig().getChangeFeedModes() == CosmosChangeFeedModes.ALL_VERSION_AND_DELETES) {
+            if (this.taskConfig.getChangeFeedConfig().getChangeFeedModes() == CosmosChangeFeedMode.ALL_VERSION_AND_DELETES) {
                 changeFeedRequestOptions.allVersionsAndDeletes();
             }
         } else {

@@ -11,13 +11,13 @@ public final class ParquetFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ParquetFormat model = BinaryData.fromString(
-            "{\"type\":\"ParquetFormat\",\"serializer\":\"datarqkzawbunmpak\",\"deserializer\":\"dataz\",\"\":{\"ejzltka\":\"dataepr\",\"xapgrcqebmvrdjom\":\"datazfjsxscbd\",\"vdlsflxkqesdfeds\":\"datanwsb\"}}")
+            "{\"type\":\"iqpmnufz\",\"serializer\":\"datachxwwuzdmh\",\"deserializer\":\"datalvivj\",\"\":{\"cotyx\":\"datalitqdsjipdvi\",\"s\":\"datariifefn\"}}")
             .toObject(ParquetFormat.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParquetFormat model = new ParquetFormat().withSerializer("datarqkzawbunmpak").withDeserializer("dataz");
+        ParquetFormat model = new ParquetFormat().withSerializer("datachxwwuzdmh").withDeserializer("datalvivj");
         model = BinaryData.fromObject(model).toObject(ParquetFormat.class);
     }
 }

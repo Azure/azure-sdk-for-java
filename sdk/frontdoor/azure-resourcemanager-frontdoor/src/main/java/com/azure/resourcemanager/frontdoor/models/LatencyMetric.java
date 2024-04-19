@@ -7,7 +7,9 @@ package com.azure.resourcemanager.frontdoor.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the properties of a latency metric used in the latency scorecard. */
+/**
+ * Defines the properties of a latency metric used in the latency scorecard.
+ */
 @Immutable
 public final class LatencyMetric {
     /*
@@ -70,13 +72,15 @@ public final class LatencyMetric {
     @JsonProperty(value = "bUpper95CI", access = JsonProperty.Access.WRITE_ONLY)
     private Float bUpper95CI;
 
-    /** Creates an instance of LatencyMetric class. */
+    /**
+     * Creates an instance of LatencyMetric class.
+     */
     public LatencyMetric() {
     }
 
     /**
      * Get the name property: The name of the Latency Metric.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -85,7 +89,7 @@ public final class LatencyMetric {
 
     /**
      * Get the endDateTimeUtc property: The end time of the Latency Scorecard in UTC.
-     *
+     * 
      * @return the endDateTimeUtc value.
      */
     public String endDateTimeUtc() {
@@ -94,7 +98,7 @@ public final class LatencyMetric {
 
     /**
      * Get the aValue property: The metric value of the A endpoint.
-     *
+     * 
      * @return the aValue value.
      */
     public Float aValue() {
@@ -103,7 +107,7 @@ public final class LatencyMetric {
 
     /**
      * Get the bValue property: The metric value of the B endpoint.
-     *
+     * 
      * @return the bValue value.
      */
     public Float bValue() {
@@ -112,7 +116,7 @@ public final class LatencyMetric {
 
     /**
      * Get the delta property: The difference in value between endpoint A and B.
-     *
+     * 
      * @return the delta value.
      */
     public Float delta() {
@@ -121,7 +125,7 @@ public final class LatencyMetric {
 
     /**
      * Get the deltaPercent property: The percent difference between endpoint A and B.
-     *
+     * 
      * @return the deltaPercent value.
      */
     public Float deltaPercent() {
@@ -130,7 +134,7 @@ public final class LatencyMetric {
 
     /**
      * Get the aCLower95CI property: The lower end of the 95% confidence interval for endpoint A.
-     *
+     * 
      * @return the aCLower95CI value.
      */
     public Float aCLower95CI() {
@@ -139,7 +143,7 @@ public final class LatencyMetric {
 
     /**
      * Get the aHUpper95CI property: The upper end of the 95% confidence interval for endpoint A.
-     *
+     * 
      * @return the aHUpper95CI value.
      */
     public Float aHUpper95CI() {
@@ -148,7 +152,7 @@ public final class LatencyMetric {
 
     /**
      * Get the bCLower95CI property: The lower end of the 95% confidence interval for endpoint B.
-     *
+     * 
      * @return the bCLower95CI value.
      */
     public Float bCLower95CI() {
@@ -157,7 +161,7 @@ public final class LatencyMetric {
 
     /**
      * Get the bUpper95CI property: The upper end of the 95% confidence interval for endpoint B.
-     *
+     * 
      * @return the bUpper95CI value.
      */
     public Float bUpper95CI() {
@@ -166,7 +170,7 @@ public final class LatencyMetric {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

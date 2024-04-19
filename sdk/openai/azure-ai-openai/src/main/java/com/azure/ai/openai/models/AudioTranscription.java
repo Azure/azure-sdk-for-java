@@ -21,7 +21,7 @@ public final class AudioTranscription {
      */
     @Generated
     @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /*
      * The label that describes which operation type generated the accompanying response data.
@@ -117,5 +117,22 @@ public final class AudioTranscription {
     @Generated
     public List<AudioTranscriptionSegment> getSegments() {
         return this.segments;
+    }
+
+    /*
+     * A collection of information about the timing of each processed word.
+     */
+    @Generated
+    @JsonProperty(value = "words")
+    private List<AudioTranscriptionWord> words;
+
+    /**
+     * Get the words property: A collection of information about the timing of each processed word.
+     *
+     * @return the words value.
+     */
+    @Generated
+    public List<AudioTranscriptionWord> getWords() {
+        return this.words;
     }
 }

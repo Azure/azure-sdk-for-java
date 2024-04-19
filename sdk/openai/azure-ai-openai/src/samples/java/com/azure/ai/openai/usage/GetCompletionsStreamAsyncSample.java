@@ -7,6 +7,7 @@ import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +26,8 @@ public class GetCompletionsStreamAsyncSample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) throws InterruptedException {
-        String azureOpenaiKey = "{azure-open-ai-key}";
-        String endpoint = "{azure-open-ai-endpoint}";
+        String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
         String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
 
         OpenAIAsyncClient client = new OpenAIClientBuilder()

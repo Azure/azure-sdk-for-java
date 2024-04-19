@@ -13,8 +13,6 @@ import java.util.function.Function;
  * The response of an {@link HttpRequest}.
  */
 public class HttpResponse<T> implements Response<T> {
-    private static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
-
     private boolean isValueDeserialized = false;
 
     static {
@@ -117,7 +115,7 @@ public class HttpResponse<T> implements Response<T> {
     public BinaryData getBody() {
         if (body == null) {
             if (value == null) {
-                body = EMPTY_BODY;
+                body = BinaryData.EMPTY;
             } else if (value instanceof BinaryData) {
                 body = (BinaryData) value;
             } else {

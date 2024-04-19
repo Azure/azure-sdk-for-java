@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the add chat participants operation. */
+/**
+ * Result of the add chat participants operation.
+ */
 @Immutable
 public final class AddChatParticipantsResult {
     /*
@@ -18,8 +20,14 @@ public final class AddChatParticipantsResult {
     private List<CommunicationError> invalidParticipants;
 
     /**
+     * Creates an instance of AddChatParticipantsResult class.
+     */
+    public AddChatParticipantsResult() {
+    }
+
+    /**
      * Get the invalidParticipants property: The participants that failed to be added to the chat thread.
-     *
+     * 
      * @return the invalidParticipants value.
      */
     public List<CommunicationError> getInvalidParticipants() {

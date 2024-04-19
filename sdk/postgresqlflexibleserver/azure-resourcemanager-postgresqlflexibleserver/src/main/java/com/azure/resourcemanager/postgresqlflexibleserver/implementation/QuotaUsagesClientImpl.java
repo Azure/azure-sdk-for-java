@@ -56,8 +56,8 @@ public final class QuotaUsagesClientImpl implements QuotaUsagesClient {
     }
 
     /**
-     * The interface defining all the services for PostgreSqlManagementClientQuotaUsages to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for PostgreSqlManagementClientQuotaUsages to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "PostgreSqlManagement")

@@ -12,8 +12,7 @@ import com.azure.resourcemanager.datafactory.fluent.models.PrivateEndpointConnec
 import com.azure.resourcemanager.datafactory.models.PrivateLinkConnectionApprovalRequestResource;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * PrivateEndpointConnectionOperationsClient.
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionOperationsClient.
  */
 public interface PrivateEndpointConnectionOperationsClient {
     /**

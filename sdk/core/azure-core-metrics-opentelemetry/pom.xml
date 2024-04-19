@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-metrics-opentelemetry</artifactId>
-  <version>1.0.0-beta.18</version> <!-- {x-version-update;com.azure:azure-core-metrics-opentelemetry;current} -->
+  <version>1.0.0-beta.19</version> <!-- {x-version-update;com.azure:azure-core-metrics-opentelemetry;current} -->
 
   <name>Microsoft Azure OpenTelemetry metrics plugin</name>
   <description>This package contains the OpenTelemetry metrics plugin for Azure client libraries.</description>
@@ -42,6 +42,7 @@
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     <spotless.skip>false</spotless.skip>
+    <animal.sniffer.skip>false</animal.sniffer.skip>
   </properties>
 
   <dependencies>
@@ -53,7 +54,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.48.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.49.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
@@ -80,13 +81,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.24.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.25.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+      <version>1.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -132,7 +133,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>

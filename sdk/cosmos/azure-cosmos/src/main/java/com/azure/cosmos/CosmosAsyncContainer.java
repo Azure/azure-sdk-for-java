@@ -1232,7 +1232,8 @@ public class CosmosAsyncContainer {
                         .getConsistencyLevel(cosmosBatchRequestOptions),
                     OperationType.Batch,
                     ResourceType.Document,
-                    requestOptionsInternal);
+                    requestOptionsInternal,
+                    null);
         });
     }
 
@@ -2552,7 +2553,7 @@ public class CosmosAsyncContainer {
         return this.getFeedRanges(true);
     }
 
-    Mono<List<FeedRange>> getOverlappingFeedRanges(FeedRange feedRange) {
+    Mono<List<FeedRange>> getOverlappingFeedRanges(FeedRange feedRange, boolean forceRefresh) {
         checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
 
         final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
@@ -2569,7 +2570,7 @@ public class CosmosAsyncContainer {
                                 null,
                                 collection.getResourceId(),
                                 normalizedRange,
-                                false,
+                                forceRefresh,
                                 null
                             );
                     });
@@ -2853,8 +2854,11 @@ public class CosmosAsyncContainer {
                 }
 
                 @Override
-                public Mono<List<FeedRange>> getOverlappingFeedRanges(CosmosAsyncContainer container, FeedRange feedRange) {
-                    return container.getOverlappingFeedRanges(feedRange);
+                public Mono<List<FeedRange>> getOverlappingFeedRanges(
+                    CosmosAsyncContainer container,
+                    FeedRange feedRange,
+                    boolean forceRefresh) {
+                    return container.getOverlappingFeedRanges(feedRange, forceRefresh);
                 }
 
                 @Override

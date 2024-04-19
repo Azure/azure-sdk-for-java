@@ -7,6 +7,7 @@ import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.util.binarydata.BinaryData;
@@ -70,8 +71,9 @@ public class JdkHttpClientTests {
     @Test
     public void testBufferedResponse() throws IOException {
         HttpClient client = new JdkHttpClientProvider().getSharedInstance();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url("/long"));
-        request.getRequestOptions().setResponseBodyMode(ResponseBodyMode.BUFFER);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url("/long"))
+            .setRequestOptions(new RequestOptions().setResponseBodyMode(ResponseBodyMode.BUFFER));
+
         try (Response<?> response = client.send(request)) {
             TestUtils.assertArraysEqual(LONG_BODY, response.getBody().toBytes());
         }
@@ -281,8 +283,8 @@ public class JdkHttpClientTests {
     }
 
     private static Response<?> doRequest(HttpClient client, String path, ResponseBodyMode bodyMode) throws IOException {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(path));
-        request.getRequestOptions().setResponseBodyMode(bodyMode);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(path))
+            .setRequestOptions(new RequestOptions().setResponseBodyMode(bodyMode));
         return client.send(request);
     }
 

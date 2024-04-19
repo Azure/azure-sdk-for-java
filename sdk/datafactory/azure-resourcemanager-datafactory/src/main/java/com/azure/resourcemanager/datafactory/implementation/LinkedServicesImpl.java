@@ -42,8 +42,8 @@ public final class LinkedServicesImpl implements LinkedServices {
 
     public Response<LinkedServiceResource> getWithResponse(String resourceGroupName, String factoryName,
         String linkedServiceName, String ifNoneMatch, Context context) {
-        Response<LinkedServiceResourceInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            factoryName, linkedServiceName, ifNoneMatch, context);
+        Response<LinkedServiceResourceInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, factoryName, linkedServiceName, ifNoneMatch, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LinkedServiceResourceImpl(inner.getValue(), this.manager()));

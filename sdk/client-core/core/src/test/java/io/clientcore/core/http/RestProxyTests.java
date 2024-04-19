@@ -32,9 +32,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
-import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
-import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
-import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -171,48 +168,6 @@ public class RestProxyTests {
         testInterface.testMethodReturnsVoid();
 
         assertTrue(client.closeCalledOnResponse);
-    }
-
-    @Test
-    public void headApiIgnoresResponseBody() {
-        LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
-
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
-
-        testInterface.testHeadMethod();
-
-        assertEquals(IGNORE, client.getLastHttpRequest().getRequestOptions().getResponseBodyMode());
-    }
-
-    @Test
-    public void responseVoidReturningApiBuffersResponseBody() throws IOException {
-        LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
-
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
-
-        testInterface.testMethodReturnsResponseVoid().close();
-
-        assertEquals(BUFFER, client.getLastHttpRequest().getRequestOptions().getResponseBodyMode());
-    }
-
-    @Test
-    public void streamingResponseDoesNotEagerlyDeserializeResponse() throws IOException {
-        LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
-
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
-
-        testInterface.testDownload().close();
-
-        assertEquals(STREAM, client.getLastHttpRequest().getRequestOptions().getResponseBodyMode());
     }
 
     private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {

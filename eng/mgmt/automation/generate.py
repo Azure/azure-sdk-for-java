@@ -12,7 +12,13 @@ pwd = os.getcwd()
 os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
 from utils import set_or_increase_version
-from generate_data import sdk_automation as sdk_automation_data, sdk_automation_typespec
+from utils import set_or_default_version
+from utils import update_service_ci_and_pom
+from utils import update_root_pom
+from generate_data import (
+    sdk_automation as sdk_automation_data,
+    sdk_automation_typespec_project as sdk_automation_typespec_project_data,
+)
 from generate_utils import (
     compare_with_maven_package,
     compile_package,
@@ -20,6 +26,7 @@ from generate_utils import (
     get_and_update_service_from_api_specs,
     get_suffix_from_api_specs,
     update_spec,
+    generate_typespec_project
 )
 
 os.chdir(pwd)
@@ -198,6 +205,81 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
 
     return packages
 
+
+def sdk_automation_typespec(config: dict) -> List[dict]:
+
+    packages = []
+    if 'relatedTypeSpecProjectFolder' not in config:
+        return packages
+
+    tsp_projects = config['relatedTypeSpecProjectFolder']
+    if isinstance(tsp_projects, str):
+        tsp_projects = [tsp_projects]
+
+    for tsp_project in tsp_projects:
+        # mgmt tsp project folder follow the pattern, e.g. specification/deviceregistry/DeviceRegistry.Management
+        if re.match(r'specification[\\/](.*)[\\/](.*)[\\.]Management', tsp_project):
+            packages.append(sdk_automation_typespec_project(tsp_project, config))
+        else:
+            packages.append(sdk_automation_typespec_project_data(tsp_project, config))
+
+    return packages
+
+def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
+
+    # TODO(xiaofei) support changelog, etc
+    base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
+    sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
+    spec_root = os.path.abspath(config['specFolder'])
+    head_sha: str = config['headSha']
+    repo_url: str = config['repoHttpsUrl']
+
+    succeeded, require_sdk_integration, sdk_folder, service, module \
+        = generate_typespec_project(tsp_project, sdk_root, spec_root, head_sha, repo_url)
+
+    if succeeded:
+        # TODO (weidxu): move to typespec-java
+        if require_sdk_integration:
+            set_or_default_version(sdk_root, GROUP_ID, module)
+            update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+            update_root_pom(sdk_root, service)
+
+        # compile
+        succeeded = compile_package(sdk_root, module)
+
+    # output
+    if sdk_folder and module and service:
+        artifacts = [
+            '{0}/pom.xml'.format(sdk_folder)
+        ]
+        artifacts += [
+            jar for jar in glob.glob('{0}/target/*.jar'.format(sdk_folder))
+        ]
+        result = 'succeeded' if succeeded else 'failed'
+
+        return {
+            'packageName': module,
+            'path': [
+                sdk_folder,
+                CI_FILE_FORMAT.format(service),
+                POM_FILE_FORMAT.format(service),
+                'eng/versioning',
+                'pom.xml'
+            ],
+            'typespecProject': [tsp_project],
+            'packageFolder': sdk_folder,
+            'artifacts': artifacts,
+            'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(sdk_folder))), None),
+            'language': 'Java',
+            'result': result,
+        }
+    else:
+        # no info about package, abort with result=failed
+        return {
+            'path': [
+            ],
+            'result': 'failed',
+        }
 
 def main():
     (parser, args) = parse_args()
