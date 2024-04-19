@@ -11,16 +11,19 @@ public final class InformixSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InformixSink model = BinaryData.fromString(
-            "{\"type\":\"InformixSink\",\"preCopyScript\":\"dataamgjy\",\"writeBatchSize\":\"datakttit\",\"writeBatchTimeout\":\"datamnx\",\"sinkRetryCount\":\"dataoadjooer\",\"sinkRetryWait\":\"datalzzmy\",\"maxConcurrentConnections\":\"datautqebpuoycawptxq\",\"disableMetricsCollection\":\"dataufdxpwj\",\"\":{\"cuk\":\"datavskpbuoc\",\"cepp\":\"datatcuvwwfgjjcaa\"}}")
+            "{\"type\":\"seehvmtyubvdou\",\"preCopyScript\":\"datazydwexo\",\"writeBatchSize\":\"datakhipaodohb\",\"writeBatchTimeout\":\"databbweaajgokpnb\",\"sinkRetryCount\":\"dataskhjjxesmbu\",\"sinkRetryWait\":\"datacshyhgahmte\",\"maxConcurrentConnections\":\"datafeoij\",\"disableMetricsCollection\":\"datapn\",\"\":{\"nejnjpwkwxnmqmyt\":\"datawgtrcccyiueh\",\"tyfnmwmgh\":\"dataqrj\",\"tnlbsv\":\"dataeedqakhccwj\",\"zafpvwrbqbyxu\":\"datasjvd\"}}")
             .toObject(InformixSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InformixSink model = new InformixSink().withWriteBatchSize("datakttit").withWriteBatchTimeout("datamnx")
-            .withSinkRetryCount("dataoadjooer").withSinkRetryWait("datalzzmy")
-            .withMaxConcurrentConnections("datautqebpuoycawptxq").withDisableMetricsCollection("dataufdxpwj")
-            .withPreCopyScript("dataamgjy");
+        InformixSink model = new InformixSink().withWriteBatchSize("datakhipaodohb")
+            .withWriteBatchTimeout("databbweaajgokpnb")
+            .withSinkRetryCount("dataskhjjxesmbu")
+            .withSinkRetryWait("datacshyhgahmte")
+            .withMaxConcurrentConnections("datafeoij")
+            .withDisableMetricsCollection("datapn")
+            .withPreCopyScript("datazydwexo");
         model = BinaryData.fromObject(model).toObject(InformixSink.class);
     }
 }

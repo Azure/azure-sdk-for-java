@@ -33,8 +33,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * PrivateEndpointConnectionOperationsClient.
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionOperationsClient.
  */
 public final class PrivateEndpointConnectionOperationsClientImpl implements PrivateEndpointConnectionOperationsClient {
     /**
@@ -307,7 +306,8 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
     private Mono<PrivateEndpointConnectionInner> updateAsync(String resourceGroupName, String serverName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters, Context context) {
         return beginUpdateAsync(resourceGroupName, serverName, privateEndpointConnectionName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

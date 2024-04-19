@@ -147,8 +147,8 @@ public final class AzureBlobDatasetTypeProperties {
     }
 
     /**
-     * Get the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression
-     * with resultType string).
+     * Get the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression with
+     * resultType string).
      * 
      * @return the modifiedDatetimeEnd value.
      */
@@ -157,8 +157,8 @@ public final class AzureBlobDatasetTypeProperties {
     }
 
     /**
-     * Set the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression
-     * with resultType string).
+     * Set the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression with
+     * resultType string).
      * 
      * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
      * @return the AzureBlobDatasetTypeProperties object itself.

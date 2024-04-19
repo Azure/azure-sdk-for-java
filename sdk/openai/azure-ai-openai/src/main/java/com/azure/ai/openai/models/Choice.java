@@ -21,28 +21,28 @@ public final class Choice {
      */
     @Generated
     @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /*
      * The ordered index associated with this completions choice.
      */
     @Generated
     @JsonProperty(value = "index")
-    private int index;
+    private final int index;
 
     /*
      * The log probabilities model for tokens associated with this completions choice.
      */
     @Generated
     @JsonProperty(value = "logprobs")
-    private CompletionsLogProbabilityModel logprobs;
+    private final CompletionsLogProbabilityModel logprobs;
 
     /*
      * Reason for finishing
      */
     @Generated
     @JsonProperty(value = "finish_reason")
-    private CompletionsFinishReason finishReason;
+    private final CompletionsFinishReason finishReason;
 
     /**
      * Creates an instance of Choice class.

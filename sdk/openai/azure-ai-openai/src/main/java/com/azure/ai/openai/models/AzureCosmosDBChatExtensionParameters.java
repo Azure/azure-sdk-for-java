@@ -17,8 +17,7 @@ public final class AzureCosmosDBChatExtensionParameters {
 
     /*
      * The authentication method to use when accessing the defined data source.
-     * Each data source type supports a specific set of available authentication methods; please see the documentation
-     * of
+     * Each data source type supports a specific set of available authentication methods; please see the documentation of
      * the data source for supported mechanisms.
      * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
      * authentication.
@@ -42,17 +41,14 @@ public final class AzureCosmosDBChatExtensionParameters {
     private Boolean inScope;
 
     /*
-     * The configured strictness of the search relevance filtering. The higher of strictness, the higher of the
-     * precision but lower recall of the answer.
+     * The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but lower recall of the answer.
      */
     @Generated
     @JsonProperty(value = "strictness")
     private Integer strictness;
 
     /*
-     * Give the model instructions about how it should behave and any context it should reference when generating a
-     * response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token
-     * limit for it, and it counts against the overall token limit.
+     * Give the model instructions about how it should behave and any context it should reference when generating a response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token limit for it, and it counts against the overall token limit.
      */
     @Generated
     @JsonProperty(value = "role_information")
@@ -63,35 +59,35 @@ public final class AzureCosmosDBChatExtensionParameters {
      */
     @Generated
     @JsonProperty(value = "database_name")
-    private String databaseName;
+    private final String databaseName;
 
     /*
      * The name of the Azure Cosmos DB resource container.
      */
     @Generated
     @JsonProperty(value = "container_name")
-    private String containerName;
+    private final String containerName;
 
     /*
      * The MongoDB vCore index name to use with Azure Cosmos DB.
      */
     @Generated
     @JsonProperty(value = "index_name")
-    private String indexName;
+    private final String indexName;
 
     /*
      * Customized field mapping behavior to use when interacting with the search index.
      */
     @Generated
     @JsonProperty(value = "fields_mapping")
-    private AzureCosmosDBFieldMappingOptions fieldsMapping;
+    private final AzureCosmosDBFieldMappingOptions fieldsMapping;
 
     /*
      * The embedding dependency for vector search.
      */
     @Generated
     @JsonProperty(value = "embedding_dependency")
-    private OnYourDataVectorizationSource embeddingDependency;
+    private final OnYourDataVectorizationSource embeddingDependency;
 
     /**
      * Get the authentication property: The authentication method to use when accessing the defined data source.

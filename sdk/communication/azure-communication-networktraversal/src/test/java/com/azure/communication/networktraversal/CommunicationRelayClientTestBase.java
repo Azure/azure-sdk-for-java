@@ -16,6 +16,7 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.UrlBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
@@ -23,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class CommunicationRelayClientTestBase extends TestProxyTestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
@@ -38,6 +41,16 @@ public class CommunicationRelayClientTestBase extends TestProxyTestBase {
 
     protected CommunicationRelayClientBuilder createClientBuilder(HttpClient httpClient) {
         CommunicationRelayClientBuilder builder = new CommunicationRelayClientBuilder();
+        builder.addPolicy((context, next) -> {
+            try {
+                URL url = context.getHttpRequest().getUrl();
+                URL updatedUrl = UrlBuilder.parse(url).setQueryParameter("api-version", "2022-03-01-preview").toUrl();
+                context.getHttpRequest().setUrl(updatedUrl);
+                return next.process();
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
         String communicationEndpoint = communicationConnectionString.getEndpoint();
@@ -56,6 +69,16 @@ public class CommunicationRelayClientTestBase extends TestProxyTestBase {
 
     protected CommunicationRelayClientBuilder createClientBuilderUsingManagedIdentity(HttpClient httpClient) {
         CommunicationRelayClientBuilder builder = new CommunicationRelayClientBuilder();
+        builder.addPolicy((context, next) -> {
+            try {
+                URL url = context.getHttpRequest().getUrl();
+                URL updatedUrl = UrlBuilder.parse(url).setQueryParameter("api-version", "2022-03-01-preview").toUrl();
+                context.getHttpRequest().setUrl(updatedUrl);
+                return next.process();
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
         String communicationEndpoint = communicationConnectionString.getEndpoint();
@@ -79,6 +102,17 @@ public class CommunicationRelayClientTestBase extends TestProxyTestBase {
 
     protected CommunicationRelayClientBuilder createClientBuilderUsingConnectionString(HttpClient httpClient) {
         CommunicationRelayClientBuilder builder = new CommunicationRelayClientBuilder();
+        builder.addPolicy((context, next) -> {
+            try {
+                URL url = context.getHttpRequest().getUrl();
+                URL updatedUrl = UrlBuilder.parse(url).setQueryParameter("api-version", "2022-03-01-preview").toUrl();
+                context.getHttpRequest().setUrl(updatedUrl);
+                return next.process();
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
         builder
             .connectionString(CONNECTION_STRING)
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);

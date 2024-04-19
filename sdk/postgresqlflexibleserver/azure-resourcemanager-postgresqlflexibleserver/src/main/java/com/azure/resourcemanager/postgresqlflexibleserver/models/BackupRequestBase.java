@@ -52,8 +52,9 @@ public class BackupRequestBase {
      */
     public void validate() {
         if (backupSettings() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property backupSettings in model BackupRequestBase"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property backupSettings in model BackupRequestBase"));
         } else {
             backupSettings().validate();
         }

@@ -1,13 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.openai.unit;
+package com.azure.ai.openai.models;
 
-import com.azure.ai.openai.models.ChatRequestAssistantMessage;
-import com.azure.ai.openai.models.ChatRequestFunctionMessage;
-import com.azure.ai.openai.models.ChatRequestSystemMessage;
-import com.azure.ai.openai.models.ChatRequestToolMessage;
-import com.azure.ai.openai.models.ChatRequestUserMessage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

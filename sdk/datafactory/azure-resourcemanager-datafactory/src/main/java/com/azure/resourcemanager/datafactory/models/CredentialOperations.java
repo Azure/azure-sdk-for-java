@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.datafactory.fluent.models.CredentialResourceInner;
 
 /**
  * Resource collection API of CredentialOperations.
@@ -22,7 +23,7 @@ public interface CredentialOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of credential resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ManagedIdentityCredentialResource> listByFactory(String resourceGroupName, String factoryName);
+    PagedIterable<CredentialResource> listByFactory(String resourceGroupName, String factoryName);
 
     /**
      * List credentials.
@@ -35,8 +36,40 @@ public interface CredentialOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of credential resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ManagedIdentityCredentialResource> listByFactory(String resourceGroupName, String factoryName,
-        Context context);
+    PagedIterable<CredentialResource> listByFactory(String resourceGroupName, String factoryName, Context context);
+
+    /**
+     * Creates or updates a credential.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param credentialName Credential name.
+     * @param credential Credential resource definition.
+     * @param ifMatch ETag of the credential entity. Should only be specified for update, for which it should match
+     * existing entity or can be * for unconditional update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return credential resource type along with {@link Response}.
+     */
+    Response<CredentialResource> createOrUpdateWithResponse(String resourceGroupName, String factoryName,
+        String credentialName, CredentialResourceInner credential, String ifMatch, Context context);
+
+    /**
+     * Creates or updates a credential.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param credentialName Credential name.
+     * @param credential Credential resource definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return credential resource type.
+     */
+    CredentialResource createOrUpdate(String resourceGroupName, String factoryName, String credentialName,
+        CredentialResourceInner credential);
 
     /**
      * Gets a credential.
@@ -52,8 +85,8 @@ public interface CredentialOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a credential along with {@link Response}.
      */
-    Response<ManagedIdentityCredentialResource> getWithResponse(String resourceGroupName, String factoryName,
-        String credentialName, String ifNoneMatch, Context context);
+    Response<CredentialResource> getWithResponse(String resourceGroupName, String factoryName, String credentialName,
+        String ifNoneMatch, Context context);
 
     /**
      * Gets a credential.
@@ -66,7 +99,7 @@ public interface CredentialOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a credential.
      */
-    ManagedIdentityCredentialResource get(String resourceGroupName, String factoryName, String credentialName);
+    CredentialResource get(String resourceGroupName, String factoryName, String credentialName);
 
     /**
      * Deletes a credential.
@@ -94,59 +127,4 @@ public interface CredentialOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void delete(String resourceGroupName, String factoryName, String credentialName);
-
-    /**
-     * Gets a credential.
-     * 
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a credential along with {@link Response}.
-     */
-    ManagedIdentityCredentialResource getById(String id);
-
-    /**
-     * Gets a credential.
-     * 
-     * @param id the resource ID.
-     * @param ifNoneMatch ETag of the credential entity. Should only be specified for get. If the ETag matches the
-     * existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a credential along with {@link Response}.
-     */
-    Response<ManagedIdentityCredentialResource> getByIdWithResponse(String id, String ifNoneMatch, Context context);
-
-    /**
-     * Deletes a credential.
-     * 
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteById(String id);
-
-    /**
-     * Deletes a credential.
-     * 
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
-
-    /**
-     * Begins definition for a new ManagedIdentityCredentialResource resource.
-     * 
-     * @param name resource name.
-     * @return the first stage of the new ManagedIdentityCredentialResource definition.
-     */
-    ManagedIdentityCredentialResource.DefinitionStages.Blank define(String name);
 }

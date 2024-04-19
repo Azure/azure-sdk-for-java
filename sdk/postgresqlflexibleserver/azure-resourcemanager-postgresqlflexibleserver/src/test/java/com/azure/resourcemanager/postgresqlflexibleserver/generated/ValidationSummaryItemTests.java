@@ -15,23 +15,26 @@ public final class ValidationSummaryItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationSummaryItem model = BinaryData.fromString(
-            "{\"type\":\"uruv\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Warning\",\"message\":\"xwabmqoe\"}]}")
+            "{\"type\":\"gsexne\",\"state\":\"Warning\",\"messages\":[{\"state\":\"Warning\",\"message\":\"ewzsyyceuzsoib\"},{\"state\":\"Failed\",\"message\":\"frxtrthzvaytdwk\"}]}")
             .toObject(ValidationSummaryItem.class);
-        Assertions.assertEquals("uruv", model.type());
-        Assertions.assertEquals(ValidationState.SUCCEEDED, model.state());
+        Assertions.assertEquals("gsexne", model.type());
+        Assertions.assertEquals(ValidationState.WARNING, model.state());
         Assertions.assertEquals(ValidationState.WARNING, model.messages().get(0).state());
-        Assertions.assertEquals("xwabmqoe", model.messages().get(0).message());
+        Assertions.assertEquals("ewzsyyceuzsoib", model.messages().get(0).message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ValidationSummaryItem model
-            = new ValidationSummaryItem().withType("uruv").withState(ValidationState.SUCCEEDED).withMessages(
-                Arrays.asList(new ValidationMessage().withState(ValidationState.WARNING).withMessage("xwabmqoe")));
+            = new ValidationSummaryItem().withType("gsexne")
+                .withState(ValidationState.WARNING)
+                .withMessages(Arrays.asList(
+                    new ValidationMessage().withState(ValidationState.WARNING).withMessage("ewzsyyceuzsoib"),
+                    new ValidationMessage().withState(ValidationState.FAILED).withMessage("frxtrthzvaytdwk")));
         model = BinaryData.fromObject(model).toObject(ValidationSummaryItem.class);
-        Assertions.assertEquals("uruv", model.type());
-        Assertions.assertEquals(ValidationState.SUCCEEDED, model.state());
+        Assertions.assertEquals("gsexne", model.type());
+        Assertions.assertEquals(ValidationState.WARNING, model.state());
         Assertions.assertEquals(ValidationState.WARNING, model.messages().get(0).state());
-        Assertions.assertEquals("xwabmqoe", model.messages().get(0).message());
+        Assertions.assertEquals("ewzsyyceuzsoib", model.messages().get(0).message());
     }
 }

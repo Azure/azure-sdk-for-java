@@ -87,6 +87,12 @@ public final class CommunicationRelayClientBuilder implements
     private String connectionString;
     private final Map<String, String> properties = CoreUtils.getProperties(COMMUNICATION_NETWORK_TRAVERSAL_PROPERTIES);
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<>();
+    
+    /**
+     * Default constructor for CommunicationRelayClientBuilder.
+     */
+    public CommunicationRelayClientBuilder() {
+    }
 
     /**
      * Set endpoint of the service
@@ -139,7 +145,7 @@ public final class CommunicationRelayClientBuilder implements
     /**
      * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
      *
-    * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
+     * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated {@link CommunicationRelayClientBuilder} object.
      */
     @Override

@@ -20,14 +20,14 @@ public final class ChatResponseMessage {
      */
     @Generated
     @JsonProperty(value = "role")
-    private ChatRole role;
+    private final ChatRole role;
 
     /*
      * The content of the message.
      */
     @Generated
     @JsonProperty(value = "content")
-    private String content;
+    private final String content;
 
     /*
      * The tool calls that must be resolved and have their outputs appended to subsequent input messages for the chat
@@ -100,8 +100,8 @@ public final class ChatResponseMessage {
     }
 
     /**
-     * Get the functionCall property: The function call that must be resolved and have its output appended to
-     * subsequent input messages for the chat
+     * Get the functionCall property: The function call that must be resolved and have its output appended to subsequent
+     * input messages for the chat
      * completions request to resolve as configured.
      *
      * @return the functionCall value.

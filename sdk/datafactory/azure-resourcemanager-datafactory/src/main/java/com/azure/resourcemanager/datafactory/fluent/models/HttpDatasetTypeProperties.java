@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class HttpDatasetTypeProperties {
     /*
-     * The relative URL based on the URL in the HttpLinkedService refers to an HTTP file Type: string (or Expression
-     * with resultType string).
+     * The relative URL based on the URL in the HttpLinkedService refers to an HTTP file Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "relativeUrl")
     private Object relativeUrl;
@@ -82,8 +81,8 @@ public final class HttpDatasetTypeProperties {
     }
 
     /**
-     * Get the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with
-     * resultType string).
+     * Get the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the requestMethod value.
      */
@@ -92,8 +91,8 @@ public final class HttpDatasetTypeProperties {
     }
 
     /**
-     * Set the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with
-     * resultType string).
+     * Set the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with resultType
+     * string).
      * 
      * @param requestMethod the requestMethod value to set.
      * @return the HttpDatasetTypeProperties object itself.
@@ -104,8 +103,7 @@ public final class HttpDatasetTypeProperties {
     }
 
     /**
-     * Get the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType
-     * string).
+     * Get the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType string).
      * 
      * @return the requestBody value.
      */
@@ -114,8 +112,7 @@ public final class HttpDatasetTypeProperties {
     }
 
     /**
-     * Set the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType
-     * string).
+     * Set the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType string).
      * 
      * @param requestBody the requestBody value to set.
      * @return the HttpDatasetTypeProperties object itself.

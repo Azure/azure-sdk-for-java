@@ -15,22 +15,22 @@ public final class DataFlowDebugResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataFlowDebugResource model = BinaryData.fromString(
-            "{\"properties\":{\"type\":\"DataFlow\",\"description\":\"ltzkatbhjmznnb\",\"annotations\":[\"dataeq\",\"datalarvlagunbtg\"],\"folder\":{\"name\":\"wlnbm\"}},\"name\":\"reeudzqavb\"}")
+            "{\"properties\":{\"type\":\"bgdlfgtdysna\",\"description\":\"flq\",\"annotations\":[\"dataq\",\"dataamz\",\"datarwd\"],\"folder\":{\"name\":\"eqyj\"}},\"name\":\"zi\"}")
             .toObject(DataFlowDebugResource.class);
-        Assertions.assertEquals("reeudzqavb", model.name());
-        Assertions.assertEquals("ltzkatbhjmznnb", model.properties().description());
-        Assertions.assertEquals("wlnbm", model.properties().folder().name());
+        Assertions.assertEquals("zi", model.name());
+        Assertions.assertEquals("flq", model.properties().description());
+        Assertions.assertEquals("eqyj", model.properties().folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataFlowDebugResource model = new DataFlowDebugResource().withName("reeudzqavb")
-            .withProperties(new DataFlow().withDescription("ltzkatbhjmznnb")
-                .withAnnotations(Arrays.asList("dataeq", "datalarvlagunbtg"))
-                .withFolder(new DataFlowFolder().withName("wlnbm")));
+        DataFlowDebugResource model = new DataFlowDebugResource().withName("zi")
+            .withProperties(new DataFlow().withDescription("flq")
+                .withAnnotations(Arrays.asList("dataq", "dataamz", "datarwd"))
+                .withFolder(new DataFlowFolder().withName("eqyj")));
         model = BinaryData.fromObject(model).toObject(DataFlowDebugResource.class);
-        Assertions.assertEquals("reeudzqavb", model.name());
-        Assertions.assertEquals("ltzkatbhjmznnb", model.properties().description());
-        Assertions.assertEquals("wlnbm", model.properties().folder().name());
+        Assertions.assertEquals("zi", model.name());
+        Assertions.assertEquals("flq", model.properties().description());
+        Assertions.assertEquals("eqyj", model.properties().folder().name());
     }
 }

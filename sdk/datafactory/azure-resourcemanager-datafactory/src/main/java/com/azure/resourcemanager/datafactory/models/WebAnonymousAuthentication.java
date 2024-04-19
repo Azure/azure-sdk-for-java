@@ -5,20 +5,43 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A WebLinkedService that uses anonymous authentication to communicate with an HTTP endpoint.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authenticationType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "authenticationType",
+    defaultImpl = WebAnonymousAuthentication.class,
+    visible = true)
 @JsonTypeName("Anonymous")
 @Fluent
 public final class WebAnonymousAuthentication extends WebLinkedServiceTypeProperties {
+    /*
+     * Type of authentication used to connect to the web table source.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "authenticationType", required = true)
+    private WebAuthenticationType authenticationType = WebAuthenticationType.ANONYMOUS;
+
     /**
      * Creates an instance of WebAnonymousAuthentication class.
      */
     public WebAnonymousAuthentication() {
+    }
+
+    /**
+     * Get the authenticationType property: Type of authentication used to connect to the web table source.
+     * 
+     * @return the authenticationType value.
+     */
+    @Override
+    public WebAuthenticationType authenticationType() {
+        return this.authenticationType;
     }
 
     /**
