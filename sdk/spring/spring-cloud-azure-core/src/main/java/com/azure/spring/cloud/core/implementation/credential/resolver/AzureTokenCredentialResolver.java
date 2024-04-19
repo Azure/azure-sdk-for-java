@@ -38,6 +38,7 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Tok
         return this.resolveFunction.apply(properties);
     }
 
+    @SuppressWarnings("deprecation")
     private static TokenCredential resolveTokenCredential(AzureProperties azureProperties) {
         if (azureProperties.getCredential() == null) {
             return null;

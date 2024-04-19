@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
  * Configuration Properties for Feature Management. Processes the configurations to be usable by Feature Management.
  */
 @ConfigurationProperties(prefix = "feature-management")
+@SuppressWarnings("unchecked")
 public class FeatureManagementProperties extends HashMap<String, Object> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FeatureManagementProperties.class);
@@ -96,7 +97,6 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void addFeature(Map<? extends String, ? extends Object> features, String key, String combined) {
         Object featureValue = features.get(key);
         if (!combined.isEmpty() && !combined.endsWith(".")) {
