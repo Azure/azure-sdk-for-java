@@ -139,7 +139,6 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FileProperties.
      */
-    @Generated
     public static FileProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OffsetDateTime lastModified = null;
@@ -153,7 +152,18 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
                 if ("lastModified".equals(fieldName)) {
                     lastModified = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("contentLength".equals(fieldName)) {
-                    contentLength = reader.getLong();
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        String contentLengthStr = reader.getString();
+                        try {
+                            contentLength = Long.parseLong(contentLengthStr);
+                        } catch (NumberFormatException e) {
+                            throw new IOException("Expected numeric contentLength, but found: " + contentLengthStr, e);
+                        }
+                    } else if (reader.currentToken() == JsonToken.NUMBER) {
+                        contentLength = reader.getLong();
+                    } else {
+                        throw new IOException("Expected contentLength to be a number or string, but found other type");
+                    }
                 } else if ("creationTime".equals(fieldName)) {
                     creationTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("contentType".equals(fieldName)) {
