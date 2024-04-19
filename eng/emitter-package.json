@@ -9,6 +9,8 @@
     "@typespec/compiler": "0.55.0",
     "@typespec/versioning": "0.55.0",
     "@azure-tools/typespec-azure-core": "0.41.0",
+    "@azure-tools/typespec-azure-resource-manager": "0.41.0",
+    "@azure-tools/typespec-autorest": "0.41.1",
     "@typespec/http": "0.55.0",
     "@azure-tools/typespec-client-generator-core": "0.41.3"
   }
