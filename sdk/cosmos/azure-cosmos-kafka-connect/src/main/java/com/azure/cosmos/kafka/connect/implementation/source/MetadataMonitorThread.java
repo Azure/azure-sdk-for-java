@@ -94,6 +94,7 @@ public class MetadataMonitorThread extends Thread {
                 .onErrorResume(throwable -> {
                     LOGGER.warn("Containers metadata checking failed. Will retry in next polling cycle", throwable);
                     // TODO: only allow continue for transient errors, for others raiseError
+                    // TODO: double check the interval value config
                     return Mono.empty();
                 })
                 .repeat(() -> this.isRunning.get())

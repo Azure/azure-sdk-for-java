@@ -3,7 +3,7 @@
     "Cosmos": {
       "Session_Integration": {
         "ArmTemplateParameters": "@{ defaultConsistencyLevel = 'Session'; enableMultipleWriteLocations = $false }",
-        "ProfileFlag": "-P kafka-integration",
+        "ProfileFlag": "-P kafka",
         "Pool": "azsdk-pool-mms-ubuntu-2004-general",
         "OSVmImage": "MMSUbuntu2004"
       }
