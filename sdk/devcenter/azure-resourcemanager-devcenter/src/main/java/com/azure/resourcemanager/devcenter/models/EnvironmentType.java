@@ -9,87 +9,97 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.EnvironmentTypeInner;
 import java.util.Map;
 
-/** An immutable client-side representation of EnvironmentType. */
+/**
+ * An immutable client-side representation of EnvironmentType.
+ */
 public interface EnvironmentType {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the displayName property: The display name of the environment type.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.devcenter.fluent.models.EnvironmentTypeInner object.
-     *
+     * 
      * @return the inner object.
      */
     EnvironmentTypeInner innerModel();
 
-    /** The entirety of the EnvironmentType definition. */
+    /**
+     * The entirety of the EnvironmentType definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The EnvironmentType definition stages. */
+    /**
+     * The EnvironmentType definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the EnvironmentType definition. */
+        /**
+         * The first stage of the EnvironmentType definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the EnvironmentType definition allowing to specify parent resource. */
+        /**
+         * The stage of the EnvironmentType definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, devCenterName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param devCenterName The name of the devcenter.
              * @return the next definition stage.
@@ -104,36 +114,40 @@ public interface EnvironmentType {
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithDisplayName {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             EnvironmentType create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             EnvironmentType create(Context context);
         }
 
-        /** The stage of the EnvironmentType definition allowing to specify tags. */
+        /**
+         * The stage of the EnvironmentType definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the EnvironmentType definition allowing to specify displayName. */
+        /**
+         * The stage of the EnvironmentType definition allowing to specify displayName.
+         */
         interface WithDisplayName {
             /**
              * Specifies the displayName property: The display name of the environment type..
-             *
+             * 
              * @param displayName The display name of the environment type.
              * @return the next definition stage.
              */
@@ -143,47 +157,55 @@ public interface EnvironmentType {
 
     /**
      * Begins update for the EnvironmentType resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     EnvironmentType.Update update();
 
-    /** The template for EnvironmentType update. */
+    /**
+     * The template for EnvironmentType update.
+     */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithDisplayName {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         EnvironmentType apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         EnvironmentType apply(Context context);
     }
 
-    /** The EnvironmentType update stages. */
+    /**
+     * The EnvironmentType update stages.
+     */
     interface UpdateStages {
-        /** The stage of the EnvironmentType update allowing to specify tags. */
+        /**
+         * The stage of the EnvironmentType update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
 
-        /** The stage of the EnvironmentType update allowing to specify displayName. */
+        /**
+         * The stage of the EnvironmentType update allowing to specify displayName.
+         */
         interface WithDisplayName {
             /**
              * Specifies the displayName property: The display name of the environment type..
-             *
+             * 
              * @param displayName The display name of the environment type.
              * @return the next definition stage.
              */
@@ -193,14 +215,14 @@ public interface EnvironmentType {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     EnvironmentType refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.devcenter.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties for a Git repository catalog. */
+/**
+ * Properties for a Git repository catalog.
+ */
 @Fluent
 public final class GitCatalog {
     /*
@@ -34,13 +36,15 @@ public final class GitCatalog {
     @JsonProperty(value = "path")
     private String path;
 
-    /** Creates an instance of GitCatalog class. */
+    /**
+     * Creates an instance of GitCatalog class.
+     */
     public GitCatalog() {
     }
 
     /**
      * Get the uri property: Git URI.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -49,7 +53,7 @@ public final class GitCatalog {
 
     /**
      * Set the uri property: Git URI.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the GitCatalog object itself.
      */
@@ -60,7 +64,7 @@ public final class GitCatalog {
 
     /**
      * Get the branch property: Git branch.
-     *
+     * 
      * @return the branch value.
      */
     public String branch() {
@@ -69,7 +73,7 @@ public final class GitCatalog {
 
     /**
      * Set the branch property: Git branch.
-     *
+     * 
      * @param branch the branch value to set.
      * @return the GitCatalog object itself.
      */
@@ -81,7 +85,7 @@ public final class GitCatalog {
     /**
      * Get the secretIdentifier property: A reference to the Key Vault secret containing a security token to
      * authenticate to a Git repository.
-     *
+     * 
      * @return the secretIdentifier value.
      */
     public String secretIdentifier() {
@@ -91,7 +95,7 @@ public final class GitCatalog {
     /**
      * Set the secretIdentifier property: A reference to the Key Vault secret containing a security token to
      * authenticate to a Git repository.
-     *
+     * 
      * @param secretIdentifier the secretIdentifier value to set.
      * @return the GitCatalog object itself.
      */
@@ -102,7 +106,7 @@ public final class GitCatalog {
 
     /**
      * Get the path property: The folder where the catalog items can be found inside the repository.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -111,7 +115,7 @@ public final class GitCatalog {
 
     /**
      * Set the path property: The folder where the catalog items can be found inside the repository.
-     *
+     * 
      * @param path the path value to set.
      * @return the GitCatalog object itself.
      */
@@ -122,7 +126,7 @@ public final class GitCatalog {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

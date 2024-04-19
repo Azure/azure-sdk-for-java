@@ -17,8 +17,7 @@ public final class HealthCheckStatusDetailsImpl implements HealthCheckStatusDeta
 
     private final com.azure.resourcemanager.devcenter.DevCenterManager serviceManager;
 
-    HealthCheckStatusDetailsImpl(
-        HealthCheckStatusDetailsInner innerObject,
+    HealthCheckStatusDetailsImpl(HealthCheckStatusDetailsInner innerObject,
         com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

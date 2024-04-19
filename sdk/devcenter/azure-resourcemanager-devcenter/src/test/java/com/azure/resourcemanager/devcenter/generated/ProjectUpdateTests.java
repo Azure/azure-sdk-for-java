@@ -5,7 +5,13 @@
 package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.devcenter.models.CatalogItemType;
+import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.devcenter.models.ProjectCatalogSettings;
 import com.azure.resourcemanager.devcenter.models.ProjectUpdate;
+import com.azure.resourcemanager.devcenter.models.UserAssignedIdentity;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -13,36 +19,45 @@ import org.junit.jupiter.api.Assertions;
 public final class ProjectUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProjectUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"devCenterId\":\"cdgea\",\"description\":\"gphuticndvka\",\"maxDevBoxesPerUser\":563001635,\"displayName\":\"i\"},\"tags\":{\"rokft\":\"hxh\",\"iawxklry\":\"xolniwpwcukjfk\"},\"location\":\"wckbasyypnd\"}")
-                .toObject(ProjectUpdate.class);
-        Assertions.assertEquals("hxh", model.tags().get("rokft"));
-        Assertions.assertEquals("wckbasyypnd", model.location());
-        Assertions.assertEquals("cdgea", model.devCenterId());
-        Assertions.assertEquals("gphuticndvka", model.description());
-        Assertions.assertEquals(563001635, model.maxDevBoxesPerUser());
-        Assertions.assertEquals("i", model.displayName());
+        ProjectUpdate model = BinaryData.fromString(
+            "{\"properties\":{\"devCenterId\":\"wgcu\",\"description\":\"tumkdosvqwhbm\",\"maxDevBoxesPerUser\":1497620633,\"displayName\":\"jfddgmbmbe\",\"catalogSettings\":{\"catalogItemSyncTypes\":[\"EnvironmentDefinition\",\"EnvironmentDefinition\",\"EnvironmentDefinition\",\"EnvironmentDefinition\"]}},\"identity\":{\"principalId\":\"ff6b140a-969b-4b58-8d22-59577a054d5c\",\"tenantId\":\"e773f663-b838-4a6a-8ada-2883e03f7ddf\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"algbquxigjyjg\":{\"principalId\":\"fc3e471c-9b99-44f0-b5c8-22c5dd4879ea\",\"clientId\":\"0a16a0fd-377a-409f-b7c9-06504bce3f85\"},\"o\":{\"principalId\":\"27832837-87cb-4a10-b5fb-7ce8ccd9d55c\",\"clientId\":\"7431992e-c698-4863-85eb-1a608e7ce4c2\"},\"rtxilner\":{\"principalId\":\"221937a2-ff74-46ab-aaa4-5562a253a840\",\"clientId\":\"2b65c081-ddfa-471f-9ee2-b3bb70a65b76\"}}},\"tags\":{\"awrlyx\":\"ysvlejuvf\",\"nwbxgjvtbvpyssz\":\"jkcpr\"},\"location\":\"rujqg\"}")
+            .toObject(ProjectUpdate.class);
+        Assertions.assertEquals("ysvlejuvf", model.tags().get("awrlyx"));
+        Assertions.assertEquals("rujqg", model.location());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("wgcu", model.devCenterId());
+        Assertions.assertEquals("tumkdosvqwhbm", model.description());
+        Assertions.assertEquals(1497620633, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("jfddgmbmbe", model.displayName());
+        Assertions.assertEquals(CatalogItemType.ENVIRONMENT_DEFINITION,
+            model.catalogSettings().catalogItemSyncTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProjectUpdate model =
-            new ProjectUpdate()
-                .withTags(mapOf("rokft", "hxh", "iawxklry", "xolniwpwcukjfk"))
-                .withLocation("wckbasyypnd")
-                .withDevCenterId("cdgea")
-                .withDescription("gphuticndvka")
-                .withMaxDevBoxesPerUser(563001635)
-                .withDisplayName("i");
+        ProjectUpdate model = new ProjectUpdate().withTags(mapOf("awrlyx", "ysvlejuvf", "nwbxgjvtbvpyssz", "jkcpr"))
+            .withLocation("rujqg")
+            .withIdentity(
+                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("algbquxigjyjg", new UserAssignedIdentity(), "o",
+                        new UserAssignedIdentity(), "rtxilner", new UserAssignedIdentity())))
+            .withDevCenterId("wgcu")
+            .withDescription("tumkdosvqwhbm")
+            .withMaxDevBoxesPerUser(1497620633)
+            .withDisplayName("jfddgmbmbe")
+            .withCatalogSettings(new ProjectCatalogSettings().withCatalogItemSyncTypes(
+                Arrays.asList(CatalogItemType.ENVIRONMENT_DEFINITION, CatalogItemType.ENVIRONMENT_DEFINITION,
+                    CatalogItemType.ENVIRONMENT_DEFINITION, CatalogItemType.ENVIRONMENT_DEFINITION)));
         model = BinaryData.fromObject(model).toObject(ProjectUpdate.class);
-        Assertions.assertEquals("hxh", model.tags().get("rokft"));
-        Assertions.assertEquals("wckbasyypnd", model.location());
-        Assertions.assertEquals("cdgea", model.devCenterId());
-        Assertions.assertEquals("gphuticndvka", model.description());
-        Assertions.assertEquals(563001635, model.maxDevBoxesPerUser());
-        Assertions.assertEquals("i", model.displayName());
+        Assertions.assertEquals("ysvlejuvf", model.tags().get("awrlyx"));
+        Assertions.assertEquals("rujqg", model.location());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("wgcu", model.devCenterId());
+        Assertions.assertEquals("tumkdosvqwhbm", model.description());
+        Assertions.assertEquals(1497620633, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("jfddgmbmbe", model.displayName());
+        Assertions.assertEquals(CatalogItemType.ENVIRONMENT_DEFINITION,
+            model.catalogSettings().catalogItemSyncTypes().get(0));
     }
 
     // Use "Map.of" if available
