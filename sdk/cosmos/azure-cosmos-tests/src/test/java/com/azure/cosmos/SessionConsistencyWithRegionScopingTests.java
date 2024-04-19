@@ -1404,10 +1404,6 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         assertThat(partitionKeyBasedBloomFilter.mightContain(new PartitionKeyBasedBloomFilter.PartitionKeyBasedBloomFilterType("pk2", "eastus", 1L))).isFalse();
     }
 
-    @Test(groups = {"multi-region", "multi-master"})
-    @AfterClass
-    public void afterClass() {}
-
     private static CosmosAsyncClient buildAsyncClient(CosmosClientBuilder clientBuilder, List<String> preferredRegions, boolean isRegionScopedSessionCapturingEnabled) {
         clientBuilder = clientBuilder
             .preferredRegions(preferredRegions)
