@@ -202,8 +202,7 @@ public class PoolTests extends BatchClientTestBase {
             // Update NodeCommunicationMode to Simplified
 
             BatchPoolUpdateContent poolUpdateContent = new BatchPoolUpdateContent();
-            poolUpdateContent.setCertificateReferences(new LinkedList<BatchCertificateReference>())
-                .setApplicationPackageReferences(new LinkedList<BatchApplicationPackageReference>())
+            poolUpdateContent.setApplicationPackageReferences(new LinkedList<BatchApplicationPackageReference>())
                 .setMetadata(new LinkedList<MetadataItem>());
 
             poolUpdateContent.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.SIMPLIFIED);
