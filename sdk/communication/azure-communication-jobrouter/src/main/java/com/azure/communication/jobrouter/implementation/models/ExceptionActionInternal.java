@@ -41,6 +41,7 @@ public class ExceptionActionInternal {
     @Generated
     public ExceptionActionInternal() {
         this.kind = ExceptionActionKind.fromString("ExceptionActionInternal");
+        this.updatedProperties.add("kind");
     }
 
     /**

@@ -50,6 +50,7 @@ public final class ManualReclassifyExceptionActionInternal extends ExceptionActi
      */
     @Generated
     public ManualReclassifyExceptionActionInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**

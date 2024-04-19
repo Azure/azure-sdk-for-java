@@ -39,6 +39,7 @@ public final class WaitTimeExceptionTriggerInternal extends ExceptionTriggerInte
     @Generated
     @JsonCreator
     public WaitTimeExceptionTriggerInternal(@JsonProperty(value = "thresholdSeconds") double thresholdSeconds) {
+        this.updatedProperties.add("kind");
         this.thresholdSeconds = thresholdSeconds;
     }
 

@@ -28,6 +28,7 @@ public final class DirectMapRouterRuleInternal extends RouterRuleInternal {
      */
     @Generated
     public DirectMapRouterRuleInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /*

@@ -49,6 +49,7 @@ public final class ConditionalWorkerSelectorAttachmentInternal extends WorkerSel
     @JsonCreator
     public ConditionalWorkerSelectorAttachmentInternal(@JsonProperty(value = "condition") RouterRuleInternal condition,
         @JsonProperty(value = "workerSelectors") List<RouterWorkerSelectorInternal> workerSelectors) {
+        this.updatedProperties.add("kind");
         this.condition = condition;
         this.workerSelectors = workerSelectors;
     }

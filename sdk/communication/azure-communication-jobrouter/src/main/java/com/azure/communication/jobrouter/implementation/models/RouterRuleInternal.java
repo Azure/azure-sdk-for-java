@@ -37,6 +37,7 @@ public class RouterRuleInternal {
     @Generated
     public RouterRuleInternal() {
         this.kind = RouterRuleKind.fromString("RouterRuleInternal");
+        this.updatedProperties.add("kind");
     }
 
     /*

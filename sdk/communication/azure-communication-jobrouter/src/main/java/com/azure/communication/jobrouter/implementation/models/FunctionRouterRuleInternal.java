@@ -47,6 +47,7 @@ public final class FunctionRouterRuleInternal extends RouterRuleInternal {
     @Generated
     @JsonCreator
     public FunctionRouterRuleInternal(@JsonProperty(value = "functionUri") String functionUri) {
+        this.updatedProperties.add("kind");
         this.functionUri = functionUri;
     }
 

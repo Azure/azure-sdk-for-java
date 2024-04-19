@@ -41,6 +41,7 @@ public final class WeightedAllocationWorkerSelectorAttachmentInternal extends Wo
     @JsonCreator
     public WeightedAllocationWorkerSelectorAttachmentInternal(
         @JsonProperty(value = "allocations") List<WorkerWeightedAllocationInternal> allocations) {
+        this.updatedProperties.add("kind");
         this.allocations = allocations;
     }
 

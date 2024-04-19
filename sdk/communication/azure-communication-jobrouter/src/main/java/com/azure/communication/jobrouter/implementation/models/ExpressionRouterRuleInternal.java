@@ -47,6 +47,7 @@ public final class ExpressionRouterRuleInternal extends RouterRuleInternal {
     @Generated
     @JsonCreator
     public ExpressionRouterRuleInternal(@JsonProperty(value = "expression") String expression) {
+        this.updatedProperties.add("kind");
         this.expression = expression;
     }
 

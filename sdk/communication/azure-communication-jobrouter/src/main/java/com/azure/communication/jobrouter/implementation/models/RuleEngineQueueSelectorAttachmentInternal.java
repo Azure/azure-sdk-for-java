@@ -39,6 +39,7 @@ public final class RuleEngineQueueSelectorAttachmentInternal extends QueueSelect
     @Generated
     @JsonCreator
     public RuleEngineQueueSelectorAttachmentInternal(@JsonProperty(value = "rule") RouterRuleInternal rule) {
+        this.updatedProperties.add("kind");
         this.rule = rule;
     }
 

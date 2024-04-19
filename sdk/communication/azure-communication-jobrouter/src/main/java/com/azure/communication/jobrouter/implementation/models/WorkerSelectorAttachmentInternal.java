@@ -36,6 +36,7 @@ public class WorkerSelectorAttachmentInternal {
     @Generated
     public WorkerSelectorAttachmentInternal() {
         this.kind = WorkerSelectorAttachmentKind.fromString("WorkerSelectorAttachmentInternal");
+        this.updatedProperties.add("kind");
     }
 
     /*

@@ -40,6 +40,7 @@ public final class StaticWorkerSelectorAttachmentInternal extends WorkerSelector
     @JsonCreator
     public StaticWorkerSelectorAttachmentInternal(
         @JsonProperty(value = "workerSelector") RouterWorkerSelectorInternal workerSelector) {
+        this.updatedProperties.add("kind");
         this.workerSelector = workerSelector;
     }
 

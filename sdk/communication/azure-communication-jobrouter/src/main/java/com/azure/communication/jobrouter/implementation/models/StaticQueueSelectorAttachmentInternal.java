@@ -40,6 +40,7 @@ public final class StaticQueueSelectorAttachmentInternal extends QueueSelectorAt
     @JsonCreator
     public StaticQueueSelectorAttachmentInternal(
         @JsonProperty(value = "queueSelector") RouterQueueSelectorInternal queueSelector) {
+        this.updatedProperties.add("kind");
         this.queueSelector = queueSelector;
     }
 

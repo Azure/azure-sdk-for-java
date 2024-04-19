@@ -36,6 +36,7 @@ public class QueueSelectorAttachmentInternal {
     @Generated
     public QueueSelectorAttachmentInternal() {
         this.kind = QueueSelectorAttachmentKind.fromString("QueueSelectorAttachmentInternal");
+        this.updatedProperties.add("kind");
     }
 
     /*

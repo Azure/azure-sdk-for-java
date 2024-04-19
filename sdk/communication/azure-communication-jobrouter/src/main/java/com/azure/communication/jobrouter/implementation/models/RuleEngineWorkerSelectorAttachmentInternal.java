@@ -39,6 +39,7 @@ public final class RuleEngineWorkerSelectorAttachmentInternal extends WorkerSele
     @Generated
     @JsonCreator
     public RuleEngineWorkerSelectorAttachmentInternal(@JsonProperty(value = "rule") RouterRuleInternal rule) {
+        this.updatedProperties.add("kind");
         this.rule = rule;
     }
 

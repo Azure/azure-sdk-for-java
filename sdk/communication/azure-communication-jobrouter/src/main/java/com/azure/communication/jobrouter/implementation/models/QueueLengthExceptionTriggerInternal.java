@@ -39,6 +39,7 @@ public final class QueueLengthExceptionTriggerInternal extends ExceptionTriggerI
     @Generated
     @JsonCreator
     public QueueLengthExceptionTriggerInternal(@JsonProperty(value = "threshold") int threshold) {
+        this.updatedProperties.add("kind");
         this.threshold = threshold;
     }
 

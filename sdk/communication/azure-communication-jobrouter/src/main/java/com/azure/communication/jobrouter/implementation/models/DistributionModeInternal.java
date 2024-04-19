@@ -55,6 +55,7 @@ public class DistributionModeInternal {
     @Generated
     public DistributionModeInternal() {
         this.kind = DistributionModeKind.fromString("DistributionModeInternal");
+        this.updatedProperties.add("kind");
     }
 
     /**

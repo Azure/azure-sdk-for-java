@@ -41,6 +41,7 @@ public final class ScheduleAndSuspendModeInternal extends JobMatchingModeInterna
     @Generated
     @JsonCreator
     public ScheduleAndSuspendModeInternal(@JsonProperty(value = "scheduleAt") OffsetDateTime scheduleAt) {
+        this.updatedProperties.add("kind");
         this.scheduleAt = scheduleAt;
     }
 

@@ -56,6 +56,7 @@ public final class PassThroughWorkerSelectorAttachmentInternal extends WorkerSel
     @JsonCreator
     public PassThroughWorkerSelectorAttachmentInternal(@JsonProperty(value = "key") String key,
         @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
+        this.updatedProperties.add("kind");
         this.key = key;
         this.labelOperator = labelOperator;
     }

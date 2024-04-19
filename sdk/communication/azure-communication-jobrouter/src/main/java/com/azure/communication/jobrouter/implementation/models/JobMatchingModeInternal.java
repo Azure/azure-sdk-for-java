@@ -38,6 +38,7 @@ public class JobMatchingModeInternal {
     @Generated
     public JobMatchingModeInternal() {
         this.kind = JobMatchingModeKind.fromString("JobMatchingModeInternal");
+        this.updatedProperties.add("kind");
     }
 
     /*

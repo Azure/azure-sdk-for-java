@@ -49,6 +49,7 @@ public final class ConditionalQueueSelectorAttachmentInternal extends QueueSelec
     @JsonCreator
     public ConditionalQueueSelectorAttachmentInternal(@JsonProperty(value = "condition") RouterRuleInternal condition,
         @JsonProperty(value = "queueSelectors") List<RouterQueueSelectorInternal> queueSelectors) {
+        this.updatedProperties.add("kind");
         this.condition = condition;
         this.queueSelectors = queueSelectors;
     }

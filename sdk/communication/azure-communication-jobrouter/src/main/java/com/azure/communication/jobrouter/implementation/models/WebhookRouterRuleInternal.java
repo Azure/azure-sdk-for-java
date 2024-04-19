@@ -50,6 +50,7 @@ public final class WebhookRouterRuleInternal extends RouterRuleInternal {
      */
     @Generated
     public WebhookRouterRuleInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**

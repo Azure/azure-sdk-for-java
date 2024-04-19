@@ -24,6 +24,7 @@ public final class RoundRobinModeInternal extends DistributionModeInternal {
      */
     @Generated
     public RoundRobinModeInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**

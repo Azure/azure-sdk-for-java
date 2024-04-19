@@ -39,6 +39,7 @@ public final class BestWorkerModeInternal extends DistributionModeInternal {
      */
     @Generated
     public BestWorkerModeInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**

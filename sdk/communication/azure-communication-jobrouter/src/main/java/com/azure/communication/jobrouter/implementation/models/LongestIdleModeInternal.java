@@ -28,6 +28,7 @@ public final class LongestIdleModeInternal extends DistributionModeInternal {
      */
     @Generated
     public LongestIdleModeInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**

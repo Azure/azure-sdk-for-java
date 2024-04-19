@@ -41,6 +41,7 @@ public final class WeightedAllocationQueueSelectorAttachmentInternal extends Que
     @JsonCreator
     public WeightedAllocationQueueSelectorAttachmentInternal(
         @JsonProperty(value = "allocations") List<QueueWeightedAllocationInternal> allocations) {
+        this.updatedProperties.add("kind");
         this.allocations = allocations;
     }
 

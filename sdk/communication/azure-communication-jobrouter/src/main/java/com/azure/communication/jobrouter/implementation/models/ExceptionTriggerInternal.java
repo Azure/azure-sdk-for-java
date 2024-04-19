@@ -33,6 +33,7 @@ public class ExceptionTriggerInternal {
     @Generated
     public ExceptionTriggerInternal() {
         this.kind = ExceptionTriggerKind.fromString("ExceptionTriggerInternal");
+        this.updatedProperties.add("kind");
     }
 
     /*
