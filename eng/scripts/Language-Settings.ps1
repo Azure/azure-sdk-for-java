@@ -430,9 +430,9 @@ function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidatio
     Set-Location $tempDirectory
     try {
       Write-Host "Calling java2docfx for $artifact"
-      Write-Host "java -jar $java2docfxJar -p ""$artifact"""
+      Write-Host "java -jar ""$java2docfxJar"" -p ""$artifact"""
       $java2docfxResults = java `
-      -jar $java2docfxJar`
+      -jar "$java2docfxJar"`
       -p "$artifact"
       # JRS-TODO: The -o option is something I'm currently questioning the behavior of but
       # I can do some initial testing without that option being set
