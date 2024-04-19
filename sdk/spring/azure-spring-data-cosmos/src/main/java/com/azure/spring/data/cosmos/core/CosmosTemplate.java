@@ -61,6 +61,10 @@ import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -223,20 +227,11 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
 
         JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
-        JsonNode preStrippedItem = originalItem.deepCopy();
 
         containerName = getContainerName(domainType);
 
         @SuppressWarnings("unchecked")
         CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
-        List<String> transientFields =  entityInfo.getTransientFields();
-        Boolean anyTransientFieldsSet = false;
-
-        if (!transientFields.isEmpty()) {
-            //strip fields with @Transient annotation from the JsonNode so they are not persisted.
-            anyTransientFieldsSet = transientFields.stream().anyMatch(originalItem::hasNonNull);
-            originalItem = stripTransientFields(originalItem, transientFields);
-        }
 
         LOGGER.debug("execute createItem in database {} container {}", this.getDatabaseName(),
             containerName);
@@ -258,13 +253,46 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .block();
 
         assert response != null;
-        if (anyTransientFieldsSet) {
-            // recapitulate fields with @Transient annotation from originalItem so they remain serialized in the domain object
-            return toDomainObject(domainType, recapitulateTransientFields(preStrippedItem, response.getItem(), transientFields));
-        }
-        return toDomainObject(domainType, response.getItem());
+
+        ObjectNode r = repopulateTransient(entityInfo, (ObjectNode)response.getItem(), objectToSave);
+        return toDomainObject(domainType, r);
     }
 
+    private <T> ObjectNode repopulateTransient(CosmosEntityInformation<T, Object> entityInfo, ObjectNode item, T objectToSave) {
+        List<String> transientFields =  entityInfo.getTransientFields();
+        for (int i=0;i<transientFields.size();i++) {
+            String transientField = transientFields.get(i);
+            Field field = null;
+            try {
+                field = objectToSave.getClass().getDeclaredField(transientField);
+            } catch (NoSuchFieldException e) {
+                throw new RuntimeException(e);
+            }
+            ReflectionUtils.makeAccessible(field);
+            Class<?> fieldType = field.getType();
+            if (fieldType.isAssignableFrom(String.class)) {
+                item.put(transientField, (String)ReflectionUtils.getField(field, objectToSave));
+            } else if (fieldType.isAssignableFrom(boolean.class)
+                || fieldType.isAssignableFrom(Boolean.class)) {
+                item.put(transientField, (Boolean) ReflectionUtils.getField(field, objectToSave));
+            } else if (fieldType.isAssignableFrom(int.class)
+                || fieldType.isAssignableFrom(Integer.class)) {
+                item.put(transientField, (Integer) ReflectionUtils.getField(field, objectToSave));
+            } else if (fieldType.isAssignableFrom(float.class)
+                || fieldType.isAssignableFrom(Float.class)) {
+                item.put(transientField, (Float) ReflectionUtils.getField(field, objectToSave));
+            } else if (fieldType.isAssignableFrom(double.class)
+                || fieldType.isAssignableFrom(Double.class)) {
+                item.put(transientField, (Double) ReflectionUtils.getField(field, objectToSave));
+            } else if (fieldType.isAssignableFrom(BigDecimal.class)) {
+                item.put(transientField, (BigDecimal) ReflectionUtils.getField(field, objectToSave));
+            } else if (fieldType.isAssignableFrom(BigInteger.class)) {
+                item.put(transientField, (BigInteger) ReflectionUtils.getField(field, objectToSave));
+            }
+        }
+
+        return item;
+    }
 
 
 

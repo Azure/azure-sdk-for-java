@@ -26,6 +26,7 @@ import org.springframework.util.Assert;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static com.azure.spring.data.cosmos.Constants.ISO_8601_COMPATIBLE_DATE_PATTERN;
@@ -113,7 +114,7 @@ public class MappingCosmosConverter
      * @throws MappingException no mapping metadata for entity type
      * @throws CosmosAccessException fail to map document value
      */
-    public JsonNode writeJsonNode(Object sourceEntity) {
+    public <T> JsonNode writeJsonNode(Object sourceEntity) {
         if (sourceEntity == null) {
             return null;
         }
@@ -144,6 +145,13 @@ public class MappingCosmosConverter
         }
 
         mapVersionFieldToEtag(sourceEntity, cosmosObjectNode);
+
+        final Class<T> domainType = (Class<T>) sourceEntity.getClass();
+        CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
+        List<String> transientFields =  entityInfo.getTransientFields();
+        for (int i=0;i<transientFields.size();i++) {
+            cosmosObjectNode.remove(transientFields.get(i));
+        }
 
         return cosmosObjectNode;
     }
