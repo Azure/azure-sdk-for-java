@@ -256,6 +256,13 @@ stages:
                     parameters:
                       ArtifactName: ${{parameters.ArtifactName}}-javadevfeed-$(System.JobAttempt)
                       ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                  - template: /eng/common/pipelines/templates/steps/create-apireview.yml
+                    parameters:
+                      ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
+                      Artifacts: ${{parameters.Artifacts}}
+                      ConfigFileDir: $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo
+                      MarkPackageAsShipped: true
+                      ArtifactName: ${{parameters.ArtifactName}}
 
         - deployment: UpdatePackageVersion
           displayName: "Update Package Version"
