@@ -8,6 +8,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed all saveAll/insertAll bulk functionality to populated audit data - See [PR 39811](https://github.com/Azure/azure-sdk-for-java/pull/39811).
 
 #### Other Changes
 
