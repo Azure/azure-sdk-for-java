@@ -67,7 +67,7 @@ public class SharedKeyTests extends BatchClientTestBase {
             ArrayList<MetadataItem> updatedMetadata = new ArrayList<MetadataItem>();
             updatedMetadata.add(new MetadataItem("foo", "bar"));
 
-            BatchPoolReplaceContent poolReplaceContent = new BatchPoolReplaceContent(new ArrayList<>(), new ArrayList<>(), updatedMetadata);
+            BatchPoolReplaceContent poolReplaceContent = new BatchPoolReplaceContent(new ArrayList<>(), updatedMetadata);
 
             poolReplaceContent.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.SIMPLIFIED);
 

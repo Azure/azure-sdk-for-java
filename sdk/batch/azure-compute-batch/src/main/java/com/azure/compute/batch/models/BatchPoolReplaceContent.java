@@ -123,10 +123,14 @@ public final class BatchPoolReplaceContent implements JsonSerializable<BatchPool
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        // Initialize an empty list for certificateReferences to satisfy Batch API requirements
+        // TODO: Remove this and re-add @Generated tag once certificateReferences is removed from the server side
+        jsonWriter.writeStartArray("certificateReferences");
+        jsonWriter.writeEndArray();
+
         jsonWriter.writeArrayField("applicationPackageReferences", this.applicationPackageReferences,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
