@@ -7,6 +7,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
@@ -18,6 +19,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.SharePermission;
@@ -28,12 +30,14 @@ import com.azure.storage.file.share.implementation.models.SharesCreatePermission
 import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotHeaders;
 import com.azure.storage.file.share.implementation.models.SharesDeleteHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetAccessPolicyHeaders;
+import com.azure.storage.file.share.implementation.models.SharesGetPermissionHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetStatisticsHeaders;
 import com.azure.storage.file.share.implementation.models.SharesSetAccessPolicyHeaders;
 import com.azure.storage.file.share.implementation.models.SharesSetMetadataHeaders;
 import com.azure.storage.file.share.implementation.models.SharesSetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
+import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareInfo;
@@ -92,7 +96,6 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  */
 @ServiceClient(builder = ShareClientBuilder.class)
 public class ShareClient {
-    private final ShareAsyncClient client;
     private static final ClientLogger LOGGER = new ClientLogger(ShareClient.class);
 
     private final AzureFileStorageImpl azureFileStorageClient;
@@ -102,8 +105,17 @@ public class ShareClient {
     private final ShareServiceVersion serviceVersion;
     private final AzureSasCredential sasToken;
 
-    ShareClient(ShareAsyncClient client, AzureFileStorageImpl azureFileStorageClient, String shareName, String snapshot,
-                String accountName, ShareServiceVersion serviceVersion, AzureSasCredential sasToken) {
+    /**
+     * Creates a ShareClient.
+     * @param azureFileStorageClient Client that interacts with the service interfaces
+     * @param shareName Name of the share
+     * @param snapshot The snapshot of the share
+     * @param accountName Name of the account
+     * @param serviceVersion The version of the service to be used when making requests.
+     * @param sasToken The SAS token used to authenticate the request
+     */
+    ShareClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String snapshot, String accountName,
+    ShareServiceVersion serviceVersion, AzureSasCredential sasToken) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         this.shareName = shareName;
         this.snapshot = snapshot;
@@ -111,7 +123,6 @@ public class ShareClient {
         this.azureFileStorageClient = azureFileStorageClient;
         this.serviceVersion = serviceVersion;
         this.sasToken = sasToken;
-        this.client = client;
     }
 
     /**
@@ -167,8 +178,8 @@ public class ShareClient {
      * @return a {@link ShareDirectoryClient} that interacts with the directory in the share
      */
     public ShareDirectoryClient getDirectoryClient(String directoryName) {
-        return new ShareDirectoryClient(client.getDirectoryClient(directoryName), azureFileStorageClient, shareName,
-            directoryName, snapshot, accountName, serviceVersion, sasToken);
+        return new ShareDirectoryClient(azureFileStorageClient, shareName, directoryName, snapshot, accountName,
+            serviceVersion, sasToken);
     }
 
     /**
@@ -181,7 +192,8 @@ public class ShareClient {
      * @return a {@link ShareFileClient} that interacts with the file in the share
      */
     public ShareFileClient getFileClient(String filePath) {
-        return new ShareFileClient(client.getFileClient(filePath), azureFileStorageClient, shareName, filePath, snapshot,
+        return new ShareFileClient(new ShareFileAsyncClient(azureFileStorageClient, shareName, filePath, snapshot,
+            accountName, serviceVersion, sasToken), azureFileStorageClient, shareName, filePath, snapshot,
             accountName, serviceVersion, sasToken);
     }
 
@@ -193,8 +205,7 @@ public class ShareClient {
      * @return a {@link ShareClient} used to interact with the specific snapshot.
      */
     public ShareClient getSnapshotClient(String snapshot) {
-        return new ShareClient(client, azureFileStorageClient, shareName, snapshot, accountName, serviceVersion,
-            sasToken);
+        return new ShareClient(azureFileStorageClient, shareName, snapshot, accountName, serviceVersion, sasToken);
     }
 
     /**
@@ -233,9 +244,20 @@ public class ShareClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
-        Mono<Response<Boolean>> response = client.existsWithResponse(context);
-
-        return blockWithOptionalTimeout(response, timeout);
+        try {
+            Response<ShareProperties> response = getPropertiesWithResponse(timeout, context);
+            return new SimpleResponse<>(response, true);
+        } catch (RuntimeException e) {
+            if (ModelHelper.checkDoesNotExistStatusCode(e)) {
+                HttpResponse response = e instanceof ShareStorageException
+                    ? ((ShareStorageException) e).getResponse()
+                    : ((HttpResponseException) e).getResponse();
+                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), false);
+            } else {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        }
     }
 
     /**
@@ -1127,7 +1149,7 @@ public class ShareClient {
             responseBase.getRequest(),
             responseBase.getStatusCode(),
             responseBase.getHeaders(),
-            responseBase.getValue(),
+            responseBase.getValue().items(),
             null,
             responseBase.getDeserializedHeaders());
 
@@ -1757,8 +1779,7 @@ public class ShareClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDirectoryWithResponse(String directoryName, Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.deleteDirectoryWithResponse(directoryName, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return getDirectoryClient(directoryName).deleteWithResponse(timeout, context);
     }
 
     /**
@@ -1820,7 +1841,7 @@ public class ShareClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> deleteDirectoryIfExistsWithResponse(String directoryName, Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(client.deleteDirectoryIfExistsWithResponse(directoryName, context), timeout);
+        return getDirectoryClient(directoryName).deleteIfExistsWithResponse(timeout, context);
     }
 
     /**
@@ -2080,7 +2101,11 @@ public class ShareClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> getPermissionWithResponse(String filePermissionKey, Context context) {
-        return client.getPermissionWithResponse(filePermissionKey, context).block();
+        Context finalContext = context == null ? Context.NONE : context;
+        ResponseBase<SharesGetPermissionHeaders, SharePermission> response = this.azureFileStorageClient.getShares()
+            .getPermissionWithResponse(shareName, filePermissionKey, null, finalContext);
+
+        return new SimpleResponse<>(response, response.getValue().getPermission());
     }
 
     /**
@@ -2107,7 +2132,7 @@ public class ShareClient {
      * share.
      */
     public String getSnapshotId() {
-        return client.getSnapshotId();
+        return this.snapshot;
     }
 
     /**
@@ -2125,7 +2150,7 @@ public class ShareClient {
      * @return The name of the share.
      */
     public String getShareName() {
-        return this.client.getShareName();
+        return this.shareName;
     }
 
     /**
@@ -2134,7 +2159,7 @@ public class ShareClient {
      * @return account name associated with this storage resource.
      */
     public String getAccountName() {
-        return this.client.getAccountName();
+        return this.accountName;
     }
 
     /**
@@ -2143,7 +2168,7 @@ public class ShareClient {
      * @return The pipeline.
      */
     public HttpPipeline getHttpPipeline() {
-        return this.client.getHttpPipeline();
+        return this.azureFileStorageClient.getHttpPipeline();
     }
 
     /**
@@ -2170,7 +2195,7 @@ public class ShareClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues) {
-        return this.client.generateSas(shareServiceSasSignatureValues);
+        return this.generateSas(shareServiceSasSignatureValues, Context.NONE);
     }
 
     /**
@@ -2199,6 +2224,7 @@ public class ShareClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues, Context context) {
-        return this.client.generateSas(shareServiceSasSignatureValues, context);
+        return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName())
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 }

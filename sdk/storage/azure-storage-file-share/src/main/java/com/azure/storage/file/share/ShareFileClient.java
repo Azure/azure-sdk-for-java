@@ -38,6 +38,7 @@ import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
+import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.FilesForceCloseHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetRangeListHeaders;
@@ -56,11 +57,13 @@ import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
+import com.azure.storage.file.share.models.DownloadRetryOptions;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.Range;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
+import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileDownloadResponse;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
@@ -82,12 +85,16 @@ import com.azure.storage.file.share.options.ShareFileSeekableByteChannelReadOpti
 import com.azure.storage.file.share.options.ShareFileSeekableByteChannelWriteOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.net.HttpURLConnection;
+import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.SeekableByteChannel;
@@ -99,6 +106,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -149,9 +157,14 @@ public class ShareFileClient {
     private final AzureSasCredential sasToken;
 
     /**
-     * * Creates a ShareFileClient.
-     *
-     * @param shareFileAsyncClient ShareFileAsyncClient that is used to send requests
+     * Creates a ShareFileClient.
+     * @param azureFileStorageClient Client that interacts with the service interfaces
+     * @param shareName Name of the share
+     * @param filePath Name of the file
+     * @param snapshot The snapshot of the share
+     * @param accountName Name of the account
+     * @param serviceVersion The version of the service to be used when making requests.
+     * @param sasToken The SAS token used to authenticate the request
      */
     ShareFileClient(ShareFileAsyncClient shareFileAsyncClient, AzureFileStorageImpl azureFileStorageClient,
         String shareName, String filePath, String snapshot, String accountName, ShareServiceVersion serviceVersion,
@@ -259,7 +272,7 @@ public class ShareFileClient {
         }
 
         int chunkSize = options.getChunkSizeInBytes() != null
-            ? options.getChunkSizeInBytes().intValue() : (int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE;
+            ? options.getChunkSizeInBytes().intValue() : (int) FILE_MAX_PUT_RANGE_SIZE;
         return new StorageSeekableByteChannel(chunkSize,
             new StorageSeekableByteChannelShareFileWriteBehavior(this, options.getRequestConditions(),
                 options.getFileLastWrittenMode()), 0L);
@@ -273,9 +286,7 @@ public class ShareFileClient {
     public SeekableByteChannel getFileSeekableByteChannelRead(ShareFileSeekableByteChannelReadOptions options) {
         ShareRequestConditions conditions = options != null ? options.getRequestConditions() : null;
         Long configuredChunkSize = options != null ? options.getChunkSizeInBytes() : null;
-        int chunkSize = configuredChunkSize != null
-            ? configuredChunkSize.intValue()
-            : (int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE;
+        int chunkSize = configuredChunkSize != null ? configuredChunkSize.intValue() : (int) FILE_MAX_PUT_RANGE_SIZE;
         return new StorageSeekableByteChannel(chunkSize,
             new StorageSeekableByteChannelShareFileReadBehavior(this, conditions), 0L);
     }
@@ -997,9 +1008,47 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileProperties> downloadToFileWithResponse(String downloadFilePath, ShareFileRange range,
         ShareRequestConditions requestConditions, Duration timeout, Context context) {
-        Mono<Response<ShareFileProperties>> response = shareFileAsyncClient.downloadToFileWithResponse(downloadFilePath,
-            range, requestConditions, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Objects.requireNonNull(downloadFilePath, "'downloadFilePath' cannot be null.");
+
+        // Setup initial conditions and file channel
+        ShareRequestConditions finalRequestConditions = requestConditions == null ? new ShareRequestConditions()
+            : requestConditions;
+        //ShareFileRange finalRange = range;
+        try (FileChannel fileChannel = FileChannel.open(Paths.get(downloadFilePath), StandardOpenOption.CREATE,
+            StandardOpenOption.WRITE)) {
+            Callable<Response<ShareFileProperties>> operation = () -> {
+                Response<ShareFileProperties> propertiesResponse = getPropertiesWithResponse(timeout, context);
+                long fileLength = propertiesResponse.getValue().getContentLength();
+                ShareFileRange finalRange = range == null ? new ShareFileRange(0, fileLength - 1) : range;
+
+                long start = finalRange.getStart();
+                long end = finalRange.getEnd();
+                long position = start;
+
+                while (position <= end) {
+                    long chunkSize = Math.min(FILE_DEFAULT_BLOCK_SIZE, end - position + 1);
+                    ShareFileRange chunkRange = new ShareFileRange(position, position + chunkSize - 1);
+
+                    Response<InputStream> downloadResponse = downloadRange(chunkRange, null, finalRequestConditions,
+                        context);
+                    try (InputStream inputStream = downloadResponse.getValue()) {
+                        byte[] buffer = new byte[4096];
+                        int bytesRead;
+                        while ((bytesRead = inputStream.read(buffer)) != -1) {
+                            ByteBuffer byteBuffer = ByteBuffer.wrap(buffer, 0, bytesRead);
+                            fileChannel.write(byteBuffer, position - start);
+                            position += bytesRead;
+                        }
+                    }
+                }
+
+                return propertiesResponse;
+            };
+            return timeout != null ? THREAD_POOL.submit(operation).get(timeout.toMillis(), TimeUnit.MILLISECONDS)
+                : THREAD_POOL.submit(operation).get();
+        } catch (Exception ex) {
+            throw new RuntimeException("Failed to download file", ex);
+        }
     }
 
     /**
@@ -1164,12 +1213,78 @@ public class ShareFileClient {
     public ShareFileDownloadResponse downloadWithResponse(OutputStream stream, ShareFileDownloadOptions options,
         Duration timeout, Context context) {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
+        options = options == null ? new ShareFileDownloadOptions() : options;
+        ShareFileRange range = options.getRange() == null ? new ShareFileRange(0) : options.getRange();
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
+        DownloadRetryOptions retryOptions = options.getRetryOptions() == null ? new DownloadRetryOptions()
+            : options.getRetryOptions();
+        Boolean getRangeContentMd5 = options.isRangeContentMd5Requested();
+        int maxRetries = options.getRetryOptions() == null ? 5 : retryOptions.getMaxRetryRequests();
+        int attempt = 0;
+        IOException lastException = null;
 
-        Mono<ShareFileDownloadResponse> download = shareFileAsyncClient.downloadWithResponse(options, context)
-            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
-                .thenReturn(new ShareFileDownloadResponse(response)));
+        while (attempt < maxRetries) {
+            try {
+                Callable<ResponseBase<FilesDownloadHeaders, InputStream>> operation = () -> downloadRange(range,
+                    getRangeContentMd5, requestConditions, context);
 
-        return StorageImplUtils.blockWithOptionalTimeout(download, timeout);
+                ResponseBase<FilesDownloadHeaders, InputStream> response = timeout != null
+                    ? THREAD_POOL.submit(operation).get(timeout.toMillis(), TimeUnit.MILLISECONDS)
+                    : THREAD_POOL.submit(operation).get();
+
+                int responseCode = response.getStatusCode();
+
+                if (responseCode != HttpURLConnection.HTTP_OK && responseCode != HttpURLConnection.HTTP_PARTIAL) {
+                    throw new IOException("Failed to download file: HTTP error code: " + responseCode);
+                }
+
+                ShareFileDownloadHeaders headers = ModelHelper.transformFileDownloadHeaders(
+                    response.getDeserializedHeaders(), response.getHeaders());
+                String eTag = headers.getETag();
+                long contentLength = headers.getContentLength();
+                long finalEnd = range.getEnd() == null ? contentLength : range.getEnd();
+
+                try (InputStream inputStream = response.getValue()) {
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+                    long totalBytesRead = 0;
+
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        stream.write(buffer, 0, bytesRead);
+                        totalBytesRead += bytesRead;
+                        if (totalBytesRead >= finalEnd) {
+                            break;
+                        }
+                    }
+
+                    if (totalBytesRead == finalEnd) {
+                        return new ShareFileDownloadResponse(response.getRequest(), responseCode, response.getHeaders(),
+                            null, headers);
+                    } else {
+                        throw new IOException("Download incomplete: expected " + finalEnd + " bytes, but got "
+                            + totalBytesRead);
+                    }
+                }
+            } catch (IOException e) {
+                lastException = e;
+                attempt++;
+                // implement a backoff strategy here?
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                lastException = new IOException("Failed to download file", e);
+                attempt++;
+            }
+        }
+
+        throw LOGGER.logExceptionAsError(new RuntimeException("Failed to download file after " + maxRetries
+            + " attempts", lastException));
+    }
+
+    private ResponseBase<FilesDownloadHeaders, InputStream> downloadRange(ShareFileRange range,
+        Boolean rangeGetContentMD5, ShareRequestConditions requestConditions, Context context) {
+        String rangeString = range == null ? null : range.toHeaderValue();
+        return azureFileStorageClient.getFiles().downloadWithResponse(shareName, filePath, null,
+            rangeString, rangeGetContentMD5, requestConditions.getLeaseId(),  context);
     }
 
     /**
@@ -2004,8 +2119,94 @@ public class ShareFileClient {
      */
     public Response<ShareFileUploadInfo> uploadWithResponse(ShareFileUploadOptions options,
         Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(
-            shareFileAsyncClient.uploadWithResponse(options, context), timeout);
+        StorageImplUtils.assertNotNull("options", options);
+        ShareRequestConditions validatedRequestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions()
+            : options.getRequestConditions();
+        ParallelTransferOptions validatedParallelTransferOptions =
+            ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
+        long validatedOffset = options.getOffset() == null ? 0 : options.getOffset();
+        InputStream dataStream = options.getDataStream();
+
+        try {
+            Callable<Response<ShareFileUploadInfo>> operation = () -> {
+                if (dataStream.available() <= validatedParallelTransferOptions.getMaxSingleUploadSizeLong()) {
+                    // Perform a full upload
+                    return uploadFull(dataStream, dataStream.available(), options, context);
+                } else {
+                    // Perform a chunked upload
+                    return uploadInChunks(dataStream, validatedOffset, validatedParallelTransferOptions,
+                        validatedRequestConditions, context);
+                }
+            };
+            return timeout != null ? THREAD_POOL.submit(operation).get(timeout.toMillis(), TimeUnit.MILLISECONDS)
+                : THREAD_POOL.submit(operation).get();
+        } catch (Exception ex) {
+            throw new RuntimeException("Failed to upload file", ex);
+        }
+    }
+
+    Response<ShareFileUploadInfo> uploadRangeWithResponse(ShareFileUploadRangeOptions options, Context context) {
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
+        long rangeOffset = options.getOffset() == null ? 0L : options.getOffset();
+        ShareFileRange range = new ShareFileRange(rangeOffset, rangeOffset + options.getLength() - 1);
+
+        BinaryData binaryData;
+        if (options.getDataStream() != null) {
+            // Use BinaryData fromInputStream if an InputStream is provided
+            binaryData = BinaryData.fromStream(options.getDataStream());
+        } else if (options.getDataFlux() != null) {
+            // Convert Flux<ByteBuffer> to BinaryData
+            binaryData = Utility.convertFluxToBinaryData(options.getDataFlux());
+        } else {
+            throw new IllegalArgumentException("No data source available");
+        }
+
+        // Synchronous API call to upload the data
+        try {
+            ResponseBase<FilesUploadRangeHeaders, Void> responseBase = azureFileStorageClient.getFiles()
+                .uploadRangeWithResponse(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
+                options.getLength(), null, null, requestConditions.getLeaseId(), options.getLastWrittenMode(),
+                    binaryData, context);
+
+            return ModelHelper.uploadRangeHeadersToShareFileInfo(responseBase);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to upload range", e);
+        }
+    }
+
+    Response<ShareFileUploadInfo> uploadInChunks(InputStream dataStream, long offset,
+        ParallelTransferOptions parallelTransferOptions, ShareRequestConditions requestConditions, Context context) {
+
+        long chunkSize = parallelTransferOptions.getBlockSizeLong();
+        long currentOffset = offset;
+        Response<ShareFileUploadInfo> lastResponse = null;
+        byte[] buffer = new byte[(int)chunkSize];
+        int bytesRead;
+
+        try {
+            while ((bytesRead = dataStream.read(buffer)) != -1) {
+                ByteArrayInputStream chunkStream = new ByteArrayInputStream(buffer, 0, bytesRead);
+                ShareFileUploadRangeOptions uploadOptions = new ShareFileUploadRangeOptions(chunkStream, bytesRead)
+                    .setOffset(currentOffset).setRequestConditions(requestConditions);
+
+                lastResponse = uploadRangeWithResponse(uploadOptions, context);
+                currentOffset += bytesRead;
+            }
+
+            return lastResponse;
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read data from stream", e);
+        }
+
+    }
+
+    private Response<ShareFileUploadInfo> uploadFull(InputStream dataStream, long length,
+        ShareFileUploadOptions options, Context context) {
+        ShareFileUploadRangeOptions uploadOptions = new ShareFileUploadRangeOptions(dataStream, length)
+            .setOffset(options.getOffset()).setRequestConditions(options.getRequestConditions());
+        return uploadRangeWithResponse(uploadOptions, context);
     }
 
     /**

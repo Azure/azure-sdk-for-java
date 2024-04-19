@@ -4,6 +4,7 @@
 package com.azure.storage.common;
 
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
@@ -12,6 +13,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -21,6 +23,8 @@ import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Utility methods for storage client libraries.
@@ -323,6 +327,43 @@ public final class Utility {
                 return is;
             });
         }).subscribeOn(Schedulers.boundedElastic());
+    }
+
+    /**
+     * Converts a Flux<ByteBuffer> to BinaryData.
+     * @param dataFlux the Flux<ByteBuffer> to be converted
+     * @return BinaryData representing the aggregated data
+     */
+    public static BinaryData convertFluxToBinaryData(Flux<ByteBuffer> dataFlux) {
+        AtomicReference<byte[]> bytes = new AtomicReference<>();
+        CountDownLatch latch = new CountDownLatch(1);
+
+        try {
+            dataFlux.collectList().subscribe(
+                list -> {
+                    try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+                        for (ByteBuffer bb : list) {
+                            while (bb.hasRemaining()) {
+                                out.write(bb.get());
+                            }
+                        }
+                        bytes.set(out.toByteArray());
+                    } catch (Exception e) {
+                        throw new RuntimeException("Error while reading data from Flux<ByteBuffer>", e);
+                    }
+                    latch.countDown();
+                },
+                error -> {
+                    throw new RuntimeException("Error while processing data Flux", error);
+                }
+            );
+
+            latch.await();  // Wait until the flux is processed
+            return BinaryData.fromBytes(bytes.get());
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Error while processing data Flux", e);
+        }
+
     }
 
     /**
