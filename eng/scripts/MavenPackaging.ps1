@@ -75,6 +75,7 @@ function Get-AssociatedArtifacts([MavenPackageDetail]$PackageDetail) {
 function Get-SonaTypeProfileID([string]$GroupID) {
   $sonaTypeProfileID = switch -wildcard ($GroupID)
   {
+    "io.clientcore*"                 { "88192f04117501" }
     "com.azure*"                     { "88192f04117501" }
     "com.microsoft.azure*"           { "534d15ee3800f4" }
     "com.microsoft.commondatamodel*" { "36ba35bb1eff8"  }
