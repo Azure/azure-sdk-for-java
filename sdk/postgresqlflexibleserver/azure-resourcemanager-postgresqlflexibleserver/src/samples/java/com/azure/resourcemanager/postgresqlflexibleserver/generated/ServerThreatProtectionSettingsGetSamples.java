@@ -11,9 +11,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ThreatProtectio
  */
 public final class ServerThreatProtectionSettingsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/
-     * ServerThreatProtectionSettingsGet.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ServerThreatProtectionSettingsGet.json
      */
     /**
      * Sample code: Get a server's Threat Protection settings.
@@ -22,7 +20,8 @@ public final class ServerThreatProtectionSettingsGetSamples {
      */
     public static void getAServerSThreatProtectionSettings(
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.serverThreatProtectionSettings().getWithResponse("threatprotection-6852", "threatprotection-2080",
-            ThreatProtectionName.DEFAULT, com.azure.core.util.Context.NONE);
+        manager.serverThreatProtectionSettings()
+            .getWithResponse("threatprotection-6852", "threatprotection-2080", ThreatProtectionName.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }

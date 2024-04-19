@@ -11,16 +11,20 @@ public final class SalesforceV2SourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SalesforceV2Source model = BinaryData.fromString(
-            "{\"type\":\"SalesforceV2Source\",\"SOQLQuery\":\"datav\",\"includeDeletedObjects\":\"datamlwadst\",\"queryTimeout\":\"datargqmuthxoldmhypp\",\"additionalColumns\":\"datappmulwv\",\"sourceRetryCount\":\"datathgw\",\"sourceRetryWait\":\"datatbubkyipzehitd\",\"maxConcurrentConnections\":\"databouwuajsitgpz\",\"disableMetricsCollection\":\"datalkcvkme\",\"\":{\"ebn\":\"dataolp\",\"jdbdjxvcxepjfxcm\":\"dataafvks\",\"mtret\":\"datahivw\",\"rs\":\"datalirbvqkbxgzepiny\"}}")
+            "{\"type\":\"riviftjjmtk\",\"SOQLQuery\":\"datagxxmxdrgxhrta\",\"includeDeletedObjects\":\"datajboiyqixb\",\"queryTimeout\":\"datafw\",\"additionalColumns\":\"dataqj\",\"sourceRetryCount\":\"datadgfjvit\",\"sourceRetryWait\":\"dataa\",\"maxConcurrentConnections\":\"dataesxn\",\"disableMetricsCollection\":\"dataslhncaspwvgl\",\"\":{\"qhatwxq\":\"datan\",\"aicyuplmdhuu\":\"dataggbirzj\",\"tjqjtoeaug\":\"datatiecnpka\"}}")
             .toObject(SalesforceV2Source.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SalesforceV2Source model = new SalesforceV2Source().withSourceRetryCount("datathgw")
-            .withSourceRetryWait("datatbubkyipzehitd").withMaxConcurrentConnections("databouwuajsitgpz")
-            .withDisableMetricsCollection("datalkcvkme").withQueryTimeout("datargqmuthxoldmhypp")
-            .withAdditionalColumns("datappmulwv").withSoqlQuery("datav").withIncludeDeletedObjects("datamlwadst");
+        SalesforceV2Source model = new SalesforceV2Source().withSourceRetryCount("datadgfjvit")
+            .withSourceRetryWait("dataa")
+            .withMaxConcurrentConnections("dataesxn")
+            .withDisableMetricsCollection("dataslhncaspwvgl")
+            .withQueryTimeout("datafw")
+            .withAdditionalColumns("dataqj")
+            .withSoqlQuery("datagxxmxdrgxhrta")
+            .withIncludeDeletedObjects("datajboiyqixb");
         model = BinaryData.fromObject(model).toObject(SalesforceV2Source.class);
     }
 }

@@ -35,8 +35,7 @@ public final class AzureChatEnhancementConfiguration {
     }
 
     /**
-     * Get the grounding property: A representation of the available options for the Azure OpenAI grounding
-     * enhancement.
+     * Get the grounding property: A representation of the available options for the Azure OpenAI grounding enhancement.
      *
      * @return the grounding value.
      */
@@ -46,8 +45,7 @@ public final class AzureChatEnhancementConfiguration {
     }
 
     /**
-     * Set the grounding property: A representation of the available options for the Azure OpenAI grounding
-     * enhancement.
+     * Set the grounding property: A representation of the available options for the Azure OpenAI grounding enhancement.
      *
      * @param grounding the grounding value to set.
      * @return the AzureChatEnhancementConfiguration object itself.

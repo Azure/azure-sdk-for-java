@@ -76,12 +76,8 @@ public final class FrontDoorImpl implements FrontDoor, FrontDoor.Definition, Fro
     public List<RulesEngine> rulesEngines() {
         List<RulesEngineInner> inner = this.innerModel().rulesEngines();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new RulesEngineImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new RulesEngineImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -139,12 +135,9 @@ public final class FrontDoorImpl implements FrontDoor, FrontDoor.Definition, Fro
     public List<FrontendEndpoint> frontendEndpoints() {
         List<FrontendEndpointInner> inner = this.innerModel().frontendEndpoints();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new FrontendEndpointImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new FrontendEndpointImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -188,20 +181,16 @@ public final class FrontDoorImpl implements FrontDoor, FrontDoor.Definition, Fro
     }
 
     public FrontDoor create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFrontDoors()
-                .createOrUpdate(resourceGroupName, frontDoorName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFrontDoors()
+            .createOrUpdate(resourceGroupName, frontDoorName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public FrontDoor create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFrontDoors()
-                .createOrUpdate(resourceGroupName, frontDoorName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFrontDoors()
+            .createOrUpdate(resourceGroupName, frontDoorName, this.innerModel(), context);
         return this;
     }
 
@@ -216,60 +205,50 @@ public final class FrontDoorImpl implements FrontDoor, FrontDoor.Definition, Fro
     }
 
     public FrontDoor apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFrontDoors()
-                .createOrUpdate(resourceGroupName, frontDoorName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFrontDoors()
+            .createOrUpdate(resourceGroupName, frontDoorName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public FrontDoor apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFrontDoors()
-                .createOrUpdate(resourceGroupName, frontDoorName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFrontDoors()
+            .createOrUpdate(resourceGroupName, frontDoorName, this.innerModel(), context);
         return this;
     }
 
     FrontDoorImpl(FrontDoorInner innerObject, com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.frontDoorName = Utils.getValueFromIdByName(innerObject.id(), "frontDoors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.frontDoorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "frontDoors");
     }
 
     public FrontDoor refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFrontDoors()
-                .getByResourceGroupWithResponse(resourceGroupName, frontDoorName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFrontDoors()
+            .getByResourceGroupWithResponse(resourceGroupName, frontDoorName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FrontDoor refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFrontDoors()
-                .getByResourceGroupWithResponse(resourceGroupName, frontDoorName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFrontDoors()
+            .getByResourceGroupWithResponse(resourceGroupName, frontDoorName, context)
+            .getValue();
         return this;
     }
 
-    public Response<ValidateCustomDomainOutput> validateCustomDomainWithResponse(
-        ValidateCustomDomainInput customDomainProperties, Context context) {
-        return serviceManager
-            .frontDoors()
+    public Response<ValidateCustomDomainOutput>
+        validateCustomDomainWithResponse(ValidateCustomDomainInput customDomainProperties, Context context) {
+        return serviceManager.frontDoors()
             .validateCustomDomainWithResponse(resourceGroupName, frontDoorName, customDomainProperties, context);
     }
 
     public ValidateCustomDomainOutput validateCustomDomain(ValidateCustomDomainInput customDomainProperties) {
-        return serviceManager
-            .frontDoors()
+        return serviceManager.frontDoors()
             .validateCustomDomain(resourceGroupName, frontDoorName, customDomainProperties);
     }
 

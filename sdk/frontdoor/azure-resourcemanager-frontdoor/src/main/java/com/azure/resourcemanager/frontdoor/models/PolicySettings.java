@@ -5,9 +5,13 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.frontdoor.fluent.models.PolicySettingsLogScrubbing;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** Defines top-level WebApplicationFirewallPolicy configuration settings. */
+/**
+ * Defines top-level WebApplicationFirewallPolicy configuration settings.
+ */
 @Fluent
 public final class PolicySettings {
     /*
@@ -35,8 +39,7 @@ public final class PolicySettings {
     private Integer customBlockResponseStatusCode;
 
     /*
-     * If the action type is block, customer can override the response body. The body must be specified in base64
-     * encoding.
+     * If the action type is block, customer can override the response body. The body must be specified in base64 encoding.
      */
     @JsonProperty(value = "customBlockResponseBody")
     private String customBlockResponseBody;
@@ -47,14 +50,28 @@ public final class PolicySettings {
     @JsonProperty(value = "requestBodyCheck")
     private PolicyRequestBodyCheck requestBodyCheck;
 
-    /** Creates an instance of PolicySettings class. */
+    /*
+     * Defines the JavaScript challenge cookie validity lifetime in minutes. This setting is only applicable to Premium_AzureFrontDoor. Value must be an integer between 5 and 1440 with the default value being 30.
+     */
+    @JsonProperty(value = "javascriptChallengeExpirationInMinutes")
+    private Integer javascriptChallengeExpirationInMinutes;
+
+    /*
+     * Defines rules that scrub sensitive fields in the Web Application Firewall logs.
+     */
+    @JsonProperty(value = "logScrubbing")
+    private PolicySettingsLogScrubbing innerLogScrubbing;
+
+    /**
+     * Creates an instance of PolicySettings class.
+     */
     public PolicySettings() {
     }
 
     /**
      * Get the enabledState property: Describes if the policy is in enabled or disabled state. Defaults to Enabled if
      * not specified.
-     *
+     * 
      * @return the enabledState value.
      */
     public PolicyEnabledState enabledState() {
@@ -64,7 +81,7 @@ public final class PolicySettings {
     /**
      * Set the enabledState property: Describes if the policy is in enabled or disabled state. Defaults to Enabled if
      * not specified.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the PolicySettings object itself.
      */
@@ -75,7 +92,7 @@ public final class PolicySettings {
 
     /**
      * Get the mode property: Describes if it is in detection mode or prevention mode at policy level.
-     *
+     * 
      * @return the mode value.
      */
     public PolicyMode mode() {
@@ -84,7 +101,7 @@ public final class PolicySettings {
 
     /**
      * Set the mode property: Describes if it is in detection mode or prevention mode at policy level.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the PolicySettings object itself.
      */
@@ -95,7 +112,7 @@ public final class PolicySettings {
 
     /**
      * Get the redirectUrl property: If action type is redirect, this field represents redirect URL for the client.
-     *
+     * 
      * @return the redirectUrl value.
      */
     public String redirectUrl() {
@@ -104,7 +121,7 @@ public final class PolicySettings {
 
     /**
      * Set the redirectUrl property: If action type is redirect, this field represents redirect URL for the client.
-     *
+     * 
      * @param redirectUrl the redirectUrl value to set.
      * @return the PolicySettings object itself.
      */
@@ -116,7 +133,7 @@ public final class PolicySettings {
     /**
      * Get the customBlockResponseStatusCode property: If the action type is block, customer can override the response
      * status code.
-     *
+     * 
      * @return the customBlockResponseStatusCode value.
      */
     public Integer customBlockResponseStatusCode() {
@@ -126,7 +143,7 @@ public final class PolicySettings {
     /**
      * Set the customBlockResponseStatusCode property: If the action type is block, customer can override the response
      * status code.
-     *
+     * 
      * @param customBlockResponseStatusCode the customBlockResponseStatusCode value to set.
      * @return the PolicySettings object itself.
      */
@@ -138,7 +155,7 @@ public final class PolicySettings {
     /**
      * Get the customBlockResponseBody property: If the action type is block, customer can override the response body.
      * The body must be specified in base64 encoding.
-     *
+     * 
      * @return the customBlockResponseBody value.
      */
     public String customBlockResponseBody() {
@@ -148,7 +165,7 @@ public final class PolicySettings {
     /**
      * Set the customBlockResponseBody property: If the action type is block, customer can override the response body.
      * The body must be specified in base64 encoding.
-     *
+     * 
      * @param customBlockResponseBody the customBlockResponseBody value to set.
      * @return the PolicySettings object itself.
      */
@@ -159,7 +176,7 @@ public final class PolicySettings {
 
     /**
      * Get the requestBodyCheck property: Describes if policy managed rules will inspect the request body content.
-     *
+     * 
      * @return the requestBodyCheck value.
      */
     public PolicyRequestBodyCheck requestBodyCheck() {
@@ -168,7 +185,7 @@ public final class PolicySettings {
 
     /**
      * Set the requestBodyCheck property: Describes if policy managed rules will inspect the request body content.
-     *
+     * 
      * @param requestBodyCheck the requestBodyCheck value to set.
      * @return the PolicySettings object itself.
      */
@@ -178,10 +195,93 @@ public final class PolicySettings {
     }
 
     /**
+     * Get the javascriptChallengeExpirationInMinutes property: Defines the JavaScript challenge cookie validity
+     * lifetime in minutes. This setting is only applicable to Premium_AzureFrontDoor. Value must be an integer between
+     * 5 and 1440 with the default value being 30.
+     * 
+     * @return the javascriptChallengeExpirationInMinutes value.
+     */
+    public Integer javascriptChallengeExpirationInMinutes() {
+        return this.javascriptChallengeExpirationInMinutes;
+    }
+
+    /**
+     * Set the javascriptChallengeExpirationInMinutes property: Defines the JavaScript challenge cookie validity
+     * lifetime in minutes. This setting is only applicable to Premium_AzureFrontDoor. Value must be an integer between
+     * 5 and 1440 with the default value being 30.
+     * 
+     * @param javascriptChallengeExpirationInMinutes the javascriptChallengeExpirationInMinutes value to set.
+     * @return the PolicySettings object itself.
+     */
+    public PolicySettings withJavascriptChallengeExpirationInMinutes(Integer javascriptChallengeExpirationInMinutes) {
+        this.javascriptChallengeExpirationInMinutes = javascriptChallengeExpirationInMinutes;
+        return this;
+    }
+
+    /**
+     * Get the innerLogScrubbing property: Defines rules that scrub sensitive fields in the Web Application Firewall
+     * logs.
+     * 
+     * @return the innerLogScrubbing value.
+     */
+    private PolicySettingsLogScrubbing innerLogScrubbing() {
+        return this.innerLogScrubbing;
+    }
+
+    /**
+     * Get the state property: State of the log scrubbing config. Default value is Enabled.
+     * 
+     * @return the state value.
+     */
+    public WebApplicationFirewallScrubbingState state() {
+        return this.innerLogScrubbing() == null ? null : this.innerLogScrubbing().state();
+    }
+
+    /**
+     * Set the state property: State of the log scrubbing config. Default value is Enabled.
+     * 
+     * @param state the state value to set.
+     * @return the PolicySettings object itself.
+     */
+    public PolicySettings withState(WebApplicationFirewallScrubbingState state) {
+        if (this.innerLogScrubbing() == null) {
+            this.innerLogScrubbing = new PolicySettingsLogScrubbing();
+        }
+        this.innerLogScrubbing().withState(state);
+        return this;
+    }
+
+    /**
+     * Get the scrubbingRules property: List of log scrubbing rules applied to the Web Application Firewall logs.
+     * 
+     * @return the scrubbingRules value.
+     */
+    public List<WebApplicationFirewallScrubbingRules> scrubbingRules() {
+        return this.innerLogScrubbing() == null ? null : this.innerLogScrubbing().scrubbingRules();
+    }
+
+    /**
+     * Set the scrubbingRules property: List of log scrubbing rules applied to the Web Application Firewall logs.
+     * 
+     * @param scrubbingRules the scrubbingRules value to set.
+     * @return the PolicySettings object itself.
+     */
+    public PolicySettings withScrubbingRules(List<WebApplicationFirewallScrubbingRules> scrubbingRules) {
+        if (this.innerLogScrubbing() == null) {
+            this.innerLogScrubbing = new PolicySettingsLogScrubbing();
+        }
+        this.innerLogScrubbing().withScrubbingRules(scrubbingRules);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerLogScrubbing() != null) {
+            innerLogScrubbing().validate();
+        }
     }
 }

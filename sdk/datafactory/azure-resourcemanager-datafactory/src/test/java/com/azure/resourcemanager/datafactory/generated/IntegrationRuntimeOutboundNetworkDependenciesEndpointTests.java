@@ -14,19 +14,20 @@ public final class IntegrationRuntimeOutboundNetworkDependenciesEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeOutboundNetworkDependenciesEndpoint model
-            = BinaryData.fromString("{\"domainName\":\"vfadmws\",\"endpointDetails\":[{\"port\":1913869945}]}")
+            = BinaryData.fromString("{\"domainName\":\"g\",\"endpointDetails\":[{\"port\":1209996134}]}")
                 .toObject(IntegrationRuntimeOutboundNetworkDependenciesEndpoint.class);
-        Assertions.assertEquals("vfadmws", model.domainName());
-        Assertions.assertEquals(1913869945, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("g", model.domainName());
+        Assertions.assertEquals(1209996134, model.endpointDetails().get(0).port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IntegrationRuntimeOutboundNetworkDependenciesEndpoint model
-            = new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("vfadmws").withEndpointDetails(
-                Arrays.asList(new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(1913869945)));
+            = new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("g")
+                .withEndpointDetails(Arrays
+                    .asList(new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(1209996134)));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeOutboundNetworkDependenciesEndpoint.class);
-        Assertions.assertEquals("vfadmws", model.domainName());
-        Assertions.assertEquals(1913869945, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("g", model.domainName());
+        Assertions.assertEquals(1209996134, model.endpointDetails().get(0).port());
     }
 }

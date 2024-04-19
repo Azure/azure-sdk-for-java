@@ -9,8 +9,7 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class TriggersUnsubscribeFromEventsSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * Triggers_UnsubscribeFromEvents.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_UnsubscribeFromEvents.json
      */
     /**
      * Sample code: Triggers_UnsubscribeFromEvents.
@@ -18,7 +17,8 @@ public final class TriggersUnsubscribeFromEventsSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersUnsubscribeFromEvents(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggers().unsubscribeFromEvents("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
-            com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .unsubscribeFromEvents("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
+                com.azure.core.util.Context.NONE);
     }
 }

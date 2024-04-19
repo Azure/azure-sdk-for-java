@@ -67,7 +67,8 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
                 databaseName,
                 Arrays.asList(testContainer.getResourceId()),
                 containersEffectiveRangesMap,
-                testContainerName);
+                testContainerName,
+                CosmosMetadataStorageType.KAFKA);
             taskConfigMap.putAll(CosmosSourceTaskConfig.getMetadataTaskUnitConfigMap(metadataTaskUnit));
 
             // define feedRanges task

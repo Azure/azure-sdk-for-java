@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The json object containing security policy waf parameters. */
+/**
+ * The json object containing security policy waf parameters.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("WebApplicationFirewall")
 @Fluent
@@ -27,13 +29,15 @@ public final class SecurityPolicyWebApplicationFirewallParameters extends Securi
     @JsonProperty(value = "associations")
     private List<SecurityPolicyWebApplicationFirewallAssociation> associations;
 
-    /** Creates an instance of SecurityPolicyWebApplicationFirewallParameters class. */
+    /**
+     * Creates an instance of SecurityPolicyWebApplicationFirewallParameters class.
+     */
     public SecurityPolicyWebApplicationFirewallParameters() {
     }
 
     /**
      * Get the wafPolicy property: Resource ID.
-     *
+     * 
      * @return the wafPolicy value.
      */
     public ResourceReference wafPolicy() {
@@ -42,7 +46,7 @@ public final class SecurityPolicyWebApplicationFirewallParameters extends Securi
 
     /**
      * Set the wafPolicy property: Resource ID.
-     *
+     * 
      * @param wafPolicy the wafPolicy value to set.
      * @return the SecurityPolicyWebApplicationFirewallParameters object itself.
      */
@@ -53,7 +57,7 @@ public final class SecurityPolicyWebApplicationFirewallParameters extends Securi
 
     /**
      * Get the associations property: Waf associations.
-     *
+     * 
      * @return the associations value.
      */
     public List<SecurityPolicyWebApplicationFirewallAssociation> associations() {
@@ -62,19 +66,19 @@ public final class SecurityPolicyWebApplicationFirewallParameters extends Securi
 
     /**
      * Set the associations property: Waf associations.
-     *
+     * 
      * @param associations the associations value to set.
      * @return the SecurityPolicyWebApplicationFirewallParameters object itself.
      */
-    public SecurityPolicyWebApplicationFirewallParameters withAssociations(
-        List<SecurityPolicyWebApplicationFirewallAssociation> associations) {
+    public SecurityPolicyWebApplicationFirewallParameters
+        withAssociations(List<SecurityPolicyWebApplicationFirewallAssociation> associations) {
         this.associations = associations;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

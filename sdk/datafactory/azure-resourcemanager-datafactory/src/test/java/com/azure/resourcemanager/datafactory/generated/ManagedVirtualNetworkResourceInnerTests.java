@@ -15,18 +15,18 @@ public final class ManagedVirtualNetworkResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedVirtualNetworkResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"vNetId\":\"ajinnixjawrtmjfj\",\"alias\":\"ccxlzhcoxovnek\",\"\":{\"jvidttge\":\"datalusfnrdtjxtxrdcq\",\"iesfuug\":\"datauslvyjtcvuwkasi\"}},\"name\":\"uqfecj\",\"type\":\"ygtuhx\",\"etag\":\"cbuewmrswnjlxuz\",\"id\":\"wpusxjbaqehg\"}")
+            "{\"properties\":{\"vNetId\":\"wmj\",\"alias\":\"gfggcvkyylizrzbj\",\"\":{\"vagbwidqlvhukove\":\"dataxsfuztlvt\",\"jfnmjmvlwyz\":\"datafizr\",\"lfojuidjp\":\"dataiblkujr\"}},\"name\":\"yjucejikzoeo\",\"type\":\"tzejetjklnt\",\"etag\":\"yjuzkdb\",\"id\":\"o\"}")
             .toObject(ManagedVirtualNetworkResourceInner.class);
-        Assertions.assertEquals("wpusxjbaqehg", model.id());
+        Assertions.assertEquals("o", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedVirtualNetworkResourceInner model
-            = new ManagedVirtualNetworkResourceInner().withId("wpusxjbaqehg").withProperties(new ManagedVirtualNetwork()
-                .withAdditionalProperties(mapOf("vNetId", "ajinnixjawrtmjfj", "alias", "ccxlzhcoxovnek")));
+        ManagedVirtualNetworkResourceInner model = new ManagedVirtualNetworkResourceInner().withId("o")
+            .withProperties(new ManagedVirtualNetwork()
+                .withAdditionalProperties(mapOf("vNetId", "wmj", "alias", "gfggcvkyylizrzbj")));
         model = BinaryData.fromObject(model).toObject(ManagedVirtualNetworkResourceInner.class);
-        Assertions.assertEquals("wpusxjbaqehg", model.id());
+        Assertions.assertEquals("o", model.id());
     }
 
     // Use "Map.of" if available

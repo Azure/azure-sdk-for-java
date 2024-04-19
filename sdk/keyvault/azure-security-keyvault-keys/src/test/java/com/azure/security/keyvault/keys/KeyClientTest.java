@@ -66,7 +66,12 @@ public class KeyClientTest extends KeyClientTestBase {
     public void createKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
 
-        createKeyRunner((keyToCreate) -> assertKeyEquals(keyToCreate, keyClient.createKey(keyToCreate)));
+        createKeyRunner((keyToCreate) -> {
+            KeyVaultKey createdKey = keyClient.createKey(keyToCreate);
+
+            assertKeyEquals(keyToCreate, createdKey);
+            assertEquals("0", createdKey.getProperties().getHsmPlatform());
+        });
     }
 
     /**
@@ -184,7 +189,10 @@ public class KeyClientTest extends KeyClientTestBase {
         getKeyRunner((keyToSetAndGet) -> {
             keyClient.createKey(keyToSetAndGet);
 
-            assertKeyEquals(keyToSetAndGet, keyClient.getKey(keyToSetAndGet.getName()));
+            KeyVaultKey retrievedKey = keyClient.getKey(keyToSetAndGet.getName());
+
+            assertKeyEquals(keyToSetAndGet, retrievedKey);
+            assertEquals("0", retrievedKey.getProperties().getHsmPlatform());
         });
     }
 

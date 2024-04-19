@@ -28,8 +28,7 @@ public final class LookupActivityTypeProperties {
     private DatasetReference dataset;
 
     /*
-     * Whether to return first row or all rows. Default value is true. Type: boolean (or Expression with resultType
-     * boolean).
+     * Whether to return first row or all rows. Default value is true. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "firstRowOnly")
     private Object firstRowOnly;
@@ -109,14 +108,16 @@ public final class LookupActivityTypeProperties {
      */
     public void validate() {
         if (source() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property source in model LookupActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property source in model LookupActivityTypeProperties"));
         } else {
             source().validate();
         }
         if (dataset() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dataset in model LookupActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataset in model LookupActivityTypeProperties"));
         } else {
             dataset().validate();
         }

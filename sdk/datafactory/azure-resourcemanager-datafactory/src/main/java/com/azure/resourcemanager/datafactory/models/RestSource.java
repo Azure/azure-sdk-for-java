@@ -6,33 +6,38 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Rest service source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = RestSource.class, visible = true)
 @JsonTypeName("RestSource")
 @Fluent
 public final class RestSource extends CopySource {
     /*
-     * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType
-     * string).
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "RestSource";
+
+    /*
+     * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "requestMethod")
     private Object requestMethod;
 
     /*
-     * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType
-     * string).
+     * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "requestBody")
     private Object requestBody;
 
     /*
-     * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType
-     * string).
+     * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "additionalHeaders")
     private Object additionalHeaders;
@@ -44,22 +49,19 @@ public final class RestSource extends CopySource {
     private Object paginationRules;
 
     /*
-     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read
-     * response data. Default value: 00:01:40. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read response data. Default value: 00:01:40. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
 
     /*
-     * The time to await before sending next page request.
+     * The time to await before sending next page request. 
      */
     @JsonProperty(value = "requestInterval")
     private Object requestInterval;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: key value pairs (value should be string
-     * type).
+     * Specifies the additional columns to be added to source data. Type: key value pairs (value should be string type).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
@@ -68,6 +70,16 @@ public final class RestSource extends CopySource {
      * Creates an instance of RestSource class.
      */
     public RestSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -93,8 +105,8 @@ public final class RestSource extends CopySource {
     }
 
     /**
-     * Get the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string
-     * (or Expression with resultType string).
+     * Get the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
+     * Expression with resultType string).
      * 
      * @return the requestBody value.
      */
@@ -103,8 +115,8 @@ public final class RestSource extends CopySource {
     }
 
     /**
-     * Set the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string
-     * (or Expression with resultType string).
+     * Set the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
+     * Expression with resultType string).
      * 
      * @param requestBody the requestBody value to set.
      * @return the RestSource object itself.
@@ -137,8 +149,8 @@ public final class RestSource extends CopySource {
     }
 
     /**
-     * Get the paginationRules property: The pagination rules to compose next page requests. Type: string (or
-     * Expression with resultType string).
+     * Get the paginationRules property: The pagination rules to compose next page requests. Type: string (or Expression
+     * with resultType string).
      * 
      * @return the paginationRules value.
      */
@@ -147,8 +159,8 @@ public final class RestSource extends CopySource {
     }
 
     /**
-     * Set the paginationRules property: The pagination rules to compose next page requests. Type: string (or
-     * Expression with resultType string).
+     * Set the paginationRules property: The pagination rules to compose next page requests. Type: string (or Expression
+     * with resultType string).
      * 
      * @param paginationRules the paginationRules value to set.
      * @return the RestSource object itself.

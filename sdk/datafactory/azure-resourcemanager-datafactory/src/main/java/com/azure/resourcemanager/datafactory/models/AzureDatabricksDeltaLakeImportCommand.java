@@ -6,26 +6,36 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Azure Databricks Delta Lake import command settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AzureDatabricksDeltaLakeImportCommand.class,
+    visible = true)
 @JsonTypeName("AzureDatabricksDeltaLakeImportCommand")
 @Fluent
 public final class AzureDatabricksDeltaLakeImportCommand extends ImportSettings {
     /*
-     * Specify the date format for csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with resultType
-     * string).
+     * The import setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureDatabricksDeltaLakeImportCommand";
+
+    /*
+     * Specify the date format for csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "dateFormat")
     private Object dateFormat;
 
     /*
-     * Specify the timestamp format for csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with
-     * resultType string).
+     * Specify the timestamp format for csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "timestampFormat")
     private Object timestampFormat;
@@ -34,6 +44,16 @@ public final class AzureDatabricksDeltaLakeImportCommand extends ImportSettings 
      * Creates an instance of AzureDatabricksDeltaLakeImportCommand class.
      */
     public AzureDatabricksDeltaLakeImportCommand() {
+    }
+
+    /**
+     * Get the type property: The import setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -59,8 +79,8 @@ public final class AzureDatabricksDeltaLakeImportCommand extends ImportSettings 
     }
 
     /**
-     * Get the timestampFormat property: Specify the timestamp format for csv in Azure Databricks Delta Lake Copy.
-     * Type: string (or Expression with resultType string).
+     * Get the timestampFormat property: Specify the timestamp format for csv in Azure Databricks Delta Lake Copy. Type:
+     * string (or Expression with resultType string).
      * 
      * @return the timestampFormat value.
      */
@@ -69,8 +89,8 @@ public final class AzureDatabricksDeltaLakeImportCommand extends ImportSettings 
     }
 
     /**
-     * Set the timestampFormat property: Specify the timestamp format for csv in Azure Databricks Delta Lake Copy.
-     * Type: string (or Expression with resultType string).
+     * Set the timestampFormat property: Specify the timestamp format for csv in Azure Databricks Delta Lake Copy. Type:
+     * string (or Expression with resultType string).
      * 
      * @param timestampFormat the timestampFormat value to set.
      * @return the AzureDatabricksDeltaLakeImportCommand object itself.

@@ -19,28 +19,14 @@ public final class ContentFilterResult {
      */
     @Generated
     @JsonProperty(value = "severity")
-    private ContentFilterSeverity severity;
+    private final ContentFilterSeverity severity;
 
     /*
      * A value indicating whether or not the content has been filtered.
      */
     @Generated
     @JsonProperty(value = "filtered")
-    private boolean filtered;
-
-    /**
-     * Creates an instance of ContentFilterResult class.
-     *
-     * @param severity the severity value to set.
-     * @param filtered the filtered value to set.
-     */
-    @Generated
-    @JsonCreator
-    private ContentFilterResult(@JsonProperty(value = "severity") ContentFilterSeverity severity,
-        @JsonProperty(value = "filtered") boolean filtered) {
-        this.severity = severity;
-        this.filtered = filtered;
-    }
+    private final boolean filtered;
 
     /**
      * Get the severity property: Ratings for the intensity and risk level of filtered content.
@@ -60,5 +46,19 @@ public final class ContentFilterResult {
     @Generated
     public boolean isFiltered() {
         return this.filtered;
+    }
+
+    /**
+     * Creates an instance of ContentFilterResult class.
+     *
+     * @param filtered the filtered value to set.
+     * @param severity the severity value to set.
+     */
+    @Generated
+    @JsonCreator
+    private ContentFilterResult(@JsonProperty(value = "filtered") boolean filtered,
+        @JsonProperty(value = "severity") ContentFilterSeverity severity) {
+        this.filtered = filtered;
+        this.severity = severity;
     }
 }

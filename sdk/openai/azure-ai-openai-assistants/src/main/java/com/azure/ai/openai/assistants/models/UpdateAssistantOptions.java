@@ -5,7 +5,11 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -13,57 +17,48 @@ import java.util.Map;
  * The request details to use when modifying an existing assistant.
  */
 @Fluent
-public final class UpdateAssistantOptions {
+public final class UpdateAssistantOptions implements JsonSerializable<UpdateAssistantOptions> {
 
     /*
      * The ID of the model to use.
      */
     @Generated
-    @JsonProperty(value = "model")
     private String model;
 
     /*
      * The modified name for the assistant to use.
      */
     @Generated
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The modified description for the assistant to use.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The modified system instructions for the new assistant to use.
      */
     @Generated
-    @JsonProperty(value = "instructions")
     private String instructions;
 
     /*
      * The modified collection of tools to enable for the assistant.
      */
     @Generated
-    @JsonProperty(value = "tools")
     private List<ToolDefinition> tools;
 
     /*
      * The modified list of previously uploaded fileIDs to attach to the assistant.
      */
     @Generated
-    @JsonProperty(value = "file_ids")
     private List<String> fileIds;
 
     /*
-     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
-     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
-     * characters in length.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
      */
     @Generated
-    @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
     /**
@@ -229,5 +224,62 @@ public final class UpdateAssistantOptions {
     public UpdateAssistantOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("model", this.model);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("instructions", this.instructions);
+        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("file_ids", this.fileIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateAssistantOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateAssistantOptions if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateAssistantOptions.
+     */
+    @Generated
+    public static UpdateAssistantOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateAssistantOptions deserializedUpdateAssistantOptions = new UpdateAssistantOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("model".equals(fieldName)) {
+                    deserializedUpdateAssistantOptions.model = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedUpdateAssistantOptions.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedUpdateAssistantOptions.description = reader.getString();
+                } else if ("instructions".equals(fieldName)) {
+                    deserializedUpdateAssistantOptions.instructions = reader.getString();
+                } else if ("tools".equals(fieldName)) {
+                    List<ToolDefinition> tools = reader.readArray(reader1 -> ToolDefinition.fromJson(reader1));
+                    deserializedUpdateAssistantOptions.tools = tools;
+                } else if ("file_ids".equals(fieldName)) {
+                    List<String> fileIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedUpdateAssistantOptions.fileIds = fileIds;
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedUpdateAssistantOptions.metadata = metadata;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedUpdateAssistantOptions;
+        });
     }
 }
