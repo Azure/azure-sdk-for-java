@@ -433,7 +433,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
 
                     if (partitionScopedRegionLevelProgressAsVal == null) {
                         logger.info("Registering a new collection resourceId [{}] in "
-                            + "RegionScopedSessionTokenRegistry", resourceId);
+                            + "RegionScopedSessionContainer", resourceId);
                         partitionScopedRegionLevelProgressAsVal =
                             new PartitionScopedRegionLevelProgress();
                     }
