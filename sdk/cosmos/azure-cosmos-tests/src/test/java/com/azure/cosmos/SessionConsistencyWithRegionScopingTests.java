@@ -381,7 +381,6 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 .iterator();
 
             List<JsonNode> results = new ArrayList<>();
-            int resultSizeCounter = 0;
 
             while (responseIterator.hasNext()) {
                 FeedResponse<JsonNode> response = responseIterator.next();
@@ -389,12 +388,11 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 assertThat(response).isNotNull();
                 assertThat(response.getResults()).isNotNull();
 
-                resultSizeCounter += response.getResults().size();
                 results.addAll(response.getResults());
 
                 changeFeedRequestOptions = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(response.getContinuationToken());
 
-                if (resultSizeCounter >= idsAddedByBulkCreate.size()) {
+                if (results.size() >= idsAddedByBulkCreate.size()) {
                     break;
                 }
             }
