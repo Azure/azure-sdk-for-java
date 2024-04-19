@@ -9,7 +9,6 @@ import org.springframework.data.util.TypeInformation;
 /**
  * A single cosmos parameter of a query method.
  */
-@SuppressWarnings("deprecation")
 public class CosmosParameter extends Parameter {
 
     /**
