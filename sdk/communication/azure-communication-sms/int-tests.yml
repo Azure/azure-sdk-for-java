@@ -1,0 +1,14 @@
+trigger: none
+
+extends:
+  template: /sdk/communication/communication-tests-template.yml
+  parameters:
+    PackageName: azure-communication-sms
+    SafeName: azurecommunicationsms
+    Clouds: 'Int'
+    CloudConfig:
+      Int:
+        SubscriptionConfigurations:
+          - $(sub-config-communication-int-test-resources-common)
+          - $(sub-config-communication-int-test-resources-java)
+          - $(sub-config-communication-sms-int-test-resources)
