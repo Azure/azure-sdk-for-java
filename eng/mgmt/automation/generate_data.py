@@ -34,6 +34,16 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     succeeded, require_sdk_integration, sdk_folder, service, module \
         = generate_typespec_project(tsp_project, sdk_root, spec_root, head_sha, repo_url)
 
+    if succeeded:
+        # TODO (weidxu): move to typespec-java
+        if require_sdk_integration:
+            set_or_default_version(sdk_root, GROUP_ID, module)
+            update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+            update_root_pom(sdk_root, service)
+
+        # compile
+        succeeded = compile_package(sdk_root, GROUP_ID, module)
+
     # output
     if sdk_folder and module and service:
         artifacts = [
