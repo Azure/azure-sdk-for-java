@@ -16,45 +16,37 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DynamicsLinkedServiceTypeProperties {
     /*
-     * The deployment type of the Dynamics instance. 'Online' for Dynamics Online and 'OnPremisesWithIfd' for Dynamics
-     * on-premises with Ifd. Type: string (or Expression with resultType string).
+     * The deployment type of the Dynamics instance. 'Online' for Dynamics Online and 'OnPremisesWithIfd' for Dynamics on-premises with Ifd. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "deploymentType", required = true)
     private Object deploymentType;
 
     /*
-     * The host name of the on-premises Dynamics server. The property is required for on-prem and not allowed for
-     * online. Type: string (or Expression with resultType string).
+     * The host name of the on-premises Dynamics server. The property is required for on-prem and not allowed for online. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "hostName")
     private Object hostname;
 
     /*
-     * The port of on-premises Dynamics server. The property is required for on-prem and not allowed for online.
-     * Default is 443. Type: integer (or Expression with resultType integer), minimum: 0.
+     * The port of on-premises Dynamics server. The property is required for on-prem and not allowed for online. Default is 443. Type: integer (or Expression with resultType integer), minimum: 0.
      */
     @JsonProperty(value = "port")
     private Object port;
 
     /*
-     * The URL to the Microsoft Dynamics server. The property is required for on-line and not allowed for on-prem.
-     * Type: string (or Expression with resultType string).
+     * The URL to the Microsoft Dynamics server. The property is required for on-line and not allowed for on-prem. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "serviceUri")
     private Object serviceUri;
 
     /*
-     * The organization name of the Dynamics instance. The property is required for on-prem and required for online
-     * when there are more than one Dynamics instances associated with the user. Type: string (or Expression with
-     * resultType string).
+     * The organization name of the Dynamics instance. The property is required for on-prem and required for online when there are more than one Dynamics instances associated with the user. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "organizationName")
     private Object organizationName;
 
     /*
-     * The authentication type to connect to Dynamics server. 'Office365' for online scenario, 'Ifd' for on-premises
-     * with Ifd scenario, 'AADServicePrincipal' for Server-To-Server authentication in online scenario. Type: string
-     * (or Expression with resultType string).
+     * The authentication type to connect to Dynamics server. 'Office365' for online scenario, 'Ifd' for on-premises with Ifd scenario, 'AADServicePrincipal' for Server-To-Server authentication in online scenario. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "authenticationType", required = true)
     private Object authenticationType;
@@ -72,31 +64,25 @@ public final class DynamicsLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The client ID of the application in Azure Active Directory used for Server-To-Server authentication. Type:
-     * string (or Expression with resultType string).
+     * The client ID of the application in Azure Active Directory used for Server-To-Server authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
-     * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
+     * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalCredentialType")
     private Object servicePrincipalCredentialType;
 
     /*
-     * The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is
-     * 'ServicePrincipalKey', servicePrincipalCredential can be SecureString or AzureKeyVaultSecretReference. If
-     * servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be
-     * AzureKeyVaultSecretReference.
+     * The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "servicePrincipalCredential")
     private SecretBase servicePrincipalCredential;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
@@ -136,8 +122,8 @@ public final class DynamicsLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the hostname property: The host name of the on-premises Dynamics server. The property is required for
-     * on-prem and not allowed for online. Type: string (or Expression with resultType string).
+     * Get the hostname property: The host name of the on-premises Dynamics server. The property is required for on-prem
+     * and not allowed for online. Type: string (or Expression with resultType string).
      * 
      * @return the hostname value.
      */
@@ -146,8 +132,8 @@ public final class DynamicsLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the hostname property: The host name of the on-premises Dynamics server. The property is required for
-     * on-prem and not allowed for online. Type: string (or Expression with resultType string).
+     * Set the hostname property: The host name of the on-premises Dynamics server. The property is required for on-prem
+     * and not allowed for online. Type: string (or Expression with resultType string).
      * 
      * @param hostname the hostname value to set.
      * @return the DynamicsLinkedServiceTypeProperties object itself.
@@ -250,8 +236,8 @@ public final class DynamicsLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the username property: User name to access the Dynamics instance. Type: string (or Expression with
-     * resultType string).
+     * Get the username property: User name to access the Dynamics instance. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the username value.
      */
@@ -260,8 +246,8 @@ public final class DynamicsLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the username property: User name to access the Dynamics instance. Type: string (or Expression with
-     * resultType string).
+     * Set the username property: User name to access the Dynamics instance. Type: string (or Expression with resultType
+     * string).
      * 
      * @param username the username value to set.
      * @return the DynamicsLinkedServiceTypeProperties object itself.
@@ -314,9 +300,9 @@ public final class DynamicsLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the servicePrincipalCredentialType property: The service principal credential type to use in
-     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
-     * Type: string (or Expression with resultType string).
+     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
      * 
      * @return the servicePrincipalCredentialType value.
      */
@@ -325,9 +311,9 @@ public final class DynamicsLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the servicePrincipalCredentialType property: The service principal credential type to use in
-     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
-     * Type: string (or Expression with resultType string).
+     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
      * 
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the DynamicsLinkedServiceTypeProperties object itself.
@@ -365,8 +351,8 @@ public final class DynamicsLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -375,8 +361,8 @@ public final class DynamicsLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the DynamicsLinkedServiceTypeProperties object itself.
@@ -413,12 +399,14 @@ public final class DynamicsLinkedServiceTypeProperties {
      */
     public void validate() {
         if (deploymentType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property deploymentType in model DynamicsLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property deploymentType in model DynamicsLinkedServiceTypeProperties"));
         }
         if (authenticationType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property authenticationType in model DynamicsLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authenticationType in model DynamicsLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

@@ -7,16 +7,24 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Dynamics sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = DynamicsSink.class, visible = true)
 @JsonTypeName("DynamicsSink")
 @Fluent
 public final class DynamicsSink extends CopySink {
+    /*
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "DynamicsSink";
+
     /*
      * The write behavior for the operation.
      */
@@ -24,15 +32,13 @@ public final class DynamicsSink extends CopySink {
     private DynamicsSinkWriteBehavior writeBehavior;
 
     /*
-     * The flag indicating whether ignore null values from input dataset (except key fields) during write operation.
-     * Default is false. Type: boolean (or Expression with resultType boolean).
+     * The flag indicating whether ignore null values from input dataset (except key fields) during write operation. Default is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "ignoreNullValues")
     private Object ignoreNullValues;
 
     /*
-     * The logical name of the alternate key which will be used when upserting records. Type: string (or Expression
-     * with resultType string).
+     * The logical name of the alternate key which will be used when upserting records. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "alternateKeyName")
     private Object alternateKeyName;
@@ -41,6 +47,16 @@ public final class DynamicsSink extends CopySink {
      * Creates an instance of DynamicsSink class.
      */
     public DynamicsSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -170,8 +186,8 @@ public final class DynamicsSink extends CopySink {
     public void validate() {
         super.validate();
         if (writeBehavior() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property writeBehavior in model DynamicsSink"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property writeBehavior in model DynamicsSink"));
         }
     }
 

@@ -6,40 +6,25 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeResourceInner;
-import com.azure.resourcemanager.datafactory.models.IntegrationRuntime;
-import java.util.HashMap;
-import java.util.Map;
+import com.azure.resourcemanager.datafactory.models.ManagedIntegrationRuntime;
 import org.junit.jupiter.api.Assertions;
 
 public final class IntegrationRuntimeResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"yoxa\",\"\":{\"bniwdj\":\"datakzjancuxrhdwbav\",\"s\":\"datawz\",\"xytxhpzxbz\":\"databpg\"}},\"name\":\"zabglcuhxwt\",\"type\":\"yqiklbbovplwzb\",\"etag\":\"gy\",\"id\":\"uosvmkfssxqukk\"}")
+            "{\"properties\":{\"type\":\"Managed\",\"description\":\"idybyxczf\",\"\":{\"fkts\":\"dataaaxdbabphlwrq\",\"nyyazttbtwwrqpue\":\"datahsucoc\",\"xibxujwbhqwalm\":\"datackzywbiexzfeyue\"}},\"name\":\"yoxa\",\"type\":\"dkzjancuxrh\",\"etag\":\"bavxbniwdjswzt\",\"id\":\"bpg\"}")
             .toObject(IntegrationRuntimeResourceInner.class);
-        Assertions.assertEquals("uosvmkfssxqukk", model.id());
-        Assertions.assertEquals("yoxa", model.properties().description());
+        Assertions.assertEquals("bpg", model.id());
+        Assertions.assertEquals("idybyxczf", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeResourceInner model
-            = new IntegrationRuntimeResourceInner().withId("uosvmkfssxqukk").withProperties(new IntegrationRuntime()
-                .withDescription("yoxa").withAdditionalProperties(mapOf("type", "IntegrationRuntime")));
+        IntegrationRuntimeResourceInner model = new IntegrationRuntimeResourceInner().withId("bpg")
+            .withProperties(new ManagedIntegrationRuntime().withDescription("idybyxczf"));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeResourceInner.class);
-        Assertions.assertEquals("uosvmkfssxqukk", model.id());
-        Assertions.assertEquals("yoxa", model.properties().description());
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        Assertions.assertEquals("bpg", model.id());
+        Assertions.assertEquals("idybyxczf", model.properties().description());
     }
 }

@@ -19,33 +19,32 @@ public final class GoogleBigQueryV2ObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleBigQueryV2ObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"GoogleBigQueryV2Object\",\"typeProperties\":{\"table\":\"datamllznyjyuw\",\"dataset\":\"datazwgdpvhwiril\"},\"description\":\"qtr\",\"structure\":\"datadoxdegacdedpkw\",\"schema\":\"dataobp\",\"linkedServiceName\":{\"referenceName\":\"dcidpdaq\",\"parameters\":{\"lsaqifepdureeviv\":\"datanddlirqq\"}},\"parameters\":{\"tlfytbltytv\":{\"type\":\"SecureString\",\"defaultValue\":\"dataoklsuffpxesw\"},\"clmowurofo\":{\"type\":\"Array\",\"defaultValue\":\"datagcesfdd\"}},\"annotations\":[\"datacj\"],\"folder\":{\"name\":\"weob\"},\"\":{\"hixcc\":\"datadq\",\"og\":\"datakf\",\"bzd\":\"datayoxmyqzyqepg\",\"vo\":\"dataluokc\"}}")
+            "{\"type\":\"uzlweo\",\"typeProperties\":{\"table\":\"dataqocy\",\"dataset\":\"datayineuaxpmezit\"},\"description\":\"foafzdypz\",\"structure\":\"datalmndhgwhlbpjuaj\",\"schema\":\"dataxav\",\"linkedServiceName\":{\"referenceName\":\"itnwlyhbujysv\",\"parameters\":{\"btpgnq\":\"datayddbhatm\"}},\"parameters\":{\"pkdn\":{\"type\":\"Array\",\"defaultValue\":\"datarjewihcigaahmdf\"}},\"annotations\":[\"dataz\",\"datatertnzrrwsc\"],\"folder\":{\"name\":\"hdwi\"},\"\":{\"jy\":\"datatol\",\"xsg\":\"datakr\",\"thqwppvihb\":\"dataaknk\"}}")
             .toObject(GoogleBigQueryV2ObjectDataset.class);
-        Assertions.assertEquals("qtr", model.description());
-        Assertions.assertEquals("dcidpdaq", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("tlfytbltytv").type());
-        Assertions.assertEquals("weob", model.folder().name());
+        Assertions.assertEquals("foafzdypz", model.description());
+        Assertions.assertEquals("itnwlyhbujysv", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("pkdn").type());
+        Assertions.assertEquals("hdwi", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleBigQueryV2ObjectDataset model
-            = new GoogleBigQueryV2ObjectDataset().withDescription("qtr").withStructure("datadoxdegacdedpkw")
-                .withSchema("dataobp")
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("dcidpdaq")
-                    .withParameters(mapOf("lsaqifepdureeviv", "datanddlirqq")))
-                .withParameters(mapOf("tlfytbltytv",
-                    new ParameterSpecification().withType(ParameterType.SECURE_STRING)
-                        .withDefaultValue("dataoklsuffpxesw"),
-                    "clmowurofo",
-                    new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datagcesfdd")))
-                .withAnnotations(Arrays.asList("datacj")).withFolder(new DatasetFolder().withName("weob"))
-                .withTable("datamllznyjyuw").withDataset("datazwgdpvhwiril");
+        GoogleBigQueryV2ObjectDataset model = new GoogleBigQueryV2ObjectDataset().withDescription("foafzdypz")
+            .withStructure("datalmndhgwhlbpjuaj")
+            .withSchema("dataxav")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("itnwlyhbujysv")
+                .withParameters(mapOf("btpgnq", "datayddbhatm")))
+            .withParameters(mapOf("pkdn",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datarjewihcigaahmdf")))
+            .withAnnotations(Arrays.asList("dataz", "datatertnzrrwsc"))
+            .withFolder(new DatasetFolder().withName("hdwi"))
+            .withTable("dataqocy")
+            .withDataset("datayineuaxpmezit");
         model = BinaryData.fromObject(model).toObject(GoogleBigQueryV2ObjectDataset.class);
-        Assertions.assertEquals("qtr", model.description());
-        Assertions.assertEquals("dcidpdaq", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("tlfytbltytv").type());
-        Assertions.assertEquals("weob", model.folder().name());
+        Assertions.assertEquals("foafzdypz", model.description());
+        Assertions.assertEquals("itnwlyhbujysv", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("pkdn").type());
+        Assertions.assertEquals("hdwi", model.folder().name());
     }
 
     // Use "Map.of" if available

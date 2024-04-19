@@ -48,7 +48,7 @@ public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions
         if (options.isFaultInjectionEnabledForDownloads()) {
             clientBuilder.addPolicy(new FaultInjectingHttpPolicy(false, getFaultProbabilities(), false));
         } else if (options.isFaultInjectionEnabledForUploads()) {
-            clientBuilder.addPolicy(new FaultInjectingHttpPolicy(true, getFaultProbabilities(), true));
+            clientBuilder.addPolicy(new FaultInjectingHttpPolicy(false, getFaultProbabilities(), true));
         }
 
         DataLakeServiceClient syncClient = clientBuilder.buildClient();

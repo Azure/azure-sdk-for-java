@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.fluent.models.GoogleBigQueryV2DatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,21 @@ import java.util.Map;
 /**
  * Google BigQuery service dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = GoogleBigQueryV2ObjectDataset.class,
+    visible = true)
 @JsonTypeName("GoogleBigQueryV2Object")
 @Fluent
 public final class GoogleBigQueryV2ObjectDataset extends Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "GoogleBigQueryV2Object";
+
     /*
      * Properties specific to this dataset type.
      */
@@ -29,6 +41,16 @@ public final class GoogleBigQueryV2ObjectDataset extends Dataset {
      * Creates an instance of GoogleBigQueryV2ObjectDataset class.
      */
     public GoogleBigQueryV2ObjectDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

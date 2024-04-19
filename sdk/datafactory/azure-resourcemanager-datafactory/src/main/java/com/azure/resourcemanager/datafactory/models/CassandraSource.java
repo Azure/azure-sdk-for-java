@@ -6,28 +6,32 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity source for a Cassandra database.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = CassandraSource.class, visible = true)
 @JsonTypeName("CassandraSource")
 @Fluent
 public final class CassandraSource extends TabularSource {
     /*
-     * Database query. Should be a SQL-92 query expression or Cassandra Query Language (CQL) command. Type: string (or
-     * Expression with resultType string).
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "CassandraSource";
+
+    /*
+     * Database query. Should be a SQL-92 query expression or Cassandra Query Language (CQL) command. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "query")
     private Object query;
 
     /*
-     * The consistency level specifies how many Cassandra servers must respond to a read request before returning data
-     * to the client application. Cassandra checks the specified number of Cassandra servers for data to satisfy the
-     * read request. Must be one of cassandraSourceReadConsistencyLevels. The default value is 'ONE'. It is
-     * case-insensitive.
+     * The consistency level specifies how many Cassandra servers must respond to a read request before returning data to the client application. Cassandra checks the specified number of Cassandra servers for data to satisfy the read request. Must be one of cassandraSourceReadConsistencyLevels. The default value is 'ONE'. It is case-insensitive.
      */
     @JsonProperty(value = "consistencyLevel")
     private CassandraSourceReadConsistencyLevels consistencyLevel;
@@ -36,6 +40,16 @@ public final class CassandraSource extends TabularSource {
      * Creates an instance of CassandraSource class.
      */
     public CassandraSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
