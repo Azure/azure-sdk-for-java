@@ -249,7 +249,7 @@ public class CosmosTemplateIT {
     }
 
     @Test
-    public void testSaveAllAndFindAllWithTransientField() {
+    public void testInsertAllAndFindAllWithTransientField() {
         final Iterable<Person> entitiesToSave = Collections.singleton(TEST_PERSON_4);
         for (Person entity : entitiesToSave) {
             assertThat(entity.getTransientProperty()).isNotNull();
