@@ -10,10 +10,9 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.migrationdiscoverysap.fluent.models.SapDiscoverySiteInner;
 import com.azure.resourcemanager.migrationdiscoverysap.models.ExtendedLocation;
 import com.azure.resourcemanager.migrationdiscoverysap.models.OperationStatusResult;
-import com.azure.resourcemanager.migrationdiscoverysap.models.ProvisioningState;
 import com.azure.resourcemanager.migrationdiscoverysap.models.SapDiscoverySite;
+import com.azure.resourcemanager.migrationdiscoverysap.models.SapDiscoverySiteProperties;
 import com.azure.resourcemanager.migrationdiscoverysap.models.SapDiscoverySiteTagsUpdate;
-import com.azure.resourcemanager.migrationdiscoverysap.models.SapMigrateError;
 import java.util.Collections;
 import java.util.Map;
 
@@ -48,28 +47,16 @@ public final class SapDiscoverySiteImpl
         }
     }
 
+    public SapDiscoverySiteProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public ExtendedLocation extendedLocation() {
         return this.innerModel().extendedLocation();
     }
 
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public String masterSiteId() {
-        return this.innerModel().masterSiteId();
-    }
-
-    public String migrateProjectId() {
-        return this.innerModel().migrateProjectId();
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public SapMigrateError errors() {
-        return this.innerModel().errors();
     }
 
     public Region region() {
@@ -187,18 +174,13 @@ public final class SapDiscoverySiteImpl
         }
     }
 
+    public SapDiscoverySiteImpl withProperties(SapDiscoverySiteProperties properties) {
+        this.innerModel().withProperties(properties);
+        return this;
+    }
+
     public SapDiscoverySiteImpl withExtendedLocation(ExtendedLocation extendedLocation) {
         this.innerModel().withExtendedLocation(extendedLocation);
-        return this;
-    }
-
-    public SapDiscoverySiteImpl withMasterSiteId(String masterSiteId) {
-        this.innerModel().withMasterSiteId(masterSiteId);
-        return this;
-    }
-
-    public SapDiscoverySiteImpl withMigrateProjectId(String migrateProjectId) {
-        this.innerModel().withMigrateProjectId(migrateProjectId);
         return this;
     }
 

@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.cosmosdbforpostgresql.generated;
 
-/** Samples for FirewallRules Get. */
+/**
+ * Samples for FirewallRules Get.
+ */
 public final class FirewallRulesGetSamples {
     /*
-     * x-ms-original-file: specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/FirewallRuleGet.json
+     * x-ms-original-file:
+     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
+     * FirewallRuleGet.json
      */
     /**
      * Sample code: Get the firewall rule of the cluster.
-     *
+     * 
      * @param manager Entry point to CosmosDBForPostgreSqlManager.
      */
     public static void getTheFirewallRuleOfTheCluster(

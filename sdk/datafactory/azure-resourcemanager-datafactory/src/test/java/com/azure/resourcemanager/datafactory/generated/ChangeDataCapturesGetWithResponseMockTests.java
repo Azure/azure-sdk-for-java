@@ -6,73 +6,56 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.ChangeDataCaptureResource;
 import com.azure.resourcemanager.datafactory.models.ConnectionType;
 import com.azure.resourcemanager.datafactory.models.FrequencyType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ChangeDataCapturesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"folder\":{\"name\":\"bpjwwviesj\"},\"description\":\"izhicxlm\",\"sourceConnectionsInfo\":[{\"sourceEntities\":[{}],\"connection\":{\"linkedService\":{\"referenceName\":\"qetmp\"},\"linkedServiceType\":\"xrwtygbqow\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{},{},{}]}}],\"targetConnectionsInfo\":[{\"targetEntities\":[{},{},{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"lpntpp\"},\"linkedServiceType\":\"vfnryjqboylmzw\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{},{}]},\"dataMapperMappings\":[{}],\"relationships\":[\"datacgftbflechgiqxk\",\"datajrvrvnqidwsggjkz\",\"datalihdhfcc\",\"databhztqiaydmblpdjt\"]}],\"policy\":{\"mode\":\"ilhcca\",\"recurrence\":{\"frequency\":\"Hour\",\"interval\":1285893270}},\"allowVNetOverride\":false,\"status\":\"cakansjr\"},\"name\":\"ydcslyd\",\"type\":\"wtkce\",\"etag\":\"yngupphvo\",\"\":{\"adbuvvpd\":\"datacj\",\"vz\":\"dataolnndvvgsc\",\"khma\":\"dataudfikduw\",\"colf\":\"datag\"},\"id\":\"tzigq\"}";
+            = "{\"properties\":{\"folder\":{\"name\":\"kgrdmlf\"},\"description\":\"jveysui\",\"sourceConnectionsInfo\":[{\"sourceEntities\":[{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"pmyrkpi\"},\"linkedServiceType\":\"wcninypuoze\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{},{},{},{}]}},{\"sourceEntities\":[{},{},{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"k\"},\"linkedServiceType\":\"iytnivtorqkvr\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{},{},{},{}]}}],\"targetConnectionsInfo\":[{\"targetEntities\":[{},{},{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"byakicpdwi\"},\"linkedServiceType\":\"nugil\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{},{},{}]},\"dataMapperMappings\":[{},{},{}],\"relationships\":[\"dataqvgfqrpocieehf\"]},{\"targetEntities\":[{}],\"connection\":{\"linkedService\":{\"referenceName\":\"djeqyrca\"},\"linkedServiceType\":\"q\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{}]},\"dataMapperMappings\":[{},{}],\"relationships\":[\"datanr\",\"databf\",\"datauej\",\"dataqwsxsovhgtaelgfo\"]}],\"policy\":{\"mode\":\"huyawsyxsjprc\",\"recurrence\":{\"frequency\":\"Second\",\"interval\":1515513738}},\"allowVNetOverride\":false,\"status\":\"mooa\"},\"name\":\"glnkrkoub\",\"type\":\"aeafkf\",\"etag\":\"unlgddbeoidm\",\"\":{\"rawpnlagqgwdk\":\"datadpkzsqzwicecdkw\",\"fyhymwghdh\":\"datasqzahhydyerrf\"},\"id\":\"lb\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataFactoryManager manager = DataFactoryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ChangeDataCaptureResource response = manager.changeDataCaptures()
+            .getWithResponse("dhslrtndbch", "gupwxy", "tnsck", "vshiiecsvdtibgts", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        ChangeDataCaptureResource response = manager.changeDataCaptures().getWithResponse("esaolcebwditccu",
-            "jlcmzghaolfup", "hrlhtknmpj", "rcrxxkvuzpsoujc", com.azure.core.util.Context.NONE).getValue();
-
-        Assertions.assertEquals("tzigq", response.id());
-        Assertions.assertEquals("bpjwwviesj", response.folder().name());
-        Assertions.assertEquals("izhicxlm", response.description());
-        Assertions.assertEquals("qetmp",
+        Assertions.assertEquals("lb", response.id());
+        Assertions.assertEquals("kgrdmlf", response.folder().name());
+        Assertions.assertEquals("jveysui", response.description());
+        Assertions.assertEquals("pmyrkpi",
             response.sourceConnectionsInfo().get(0).connection().linkedService().referenceName());
-        Assertions.assertEquals("xrwtygbqow", response.sourceConnectionsInfo().get(0).connection().linkedServiceType());
+        Assertions.assertEquals("wcninypuoze",
+            response.sourceConnectionsInfo().get(0).connection().linkedServiceType());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE,
             response.sourceConnectionsInfo().get(0).connection().type());
-        Assertions.assertEquals(false, response.sourceConnectionsInfo().get(0).connection().isInlineDataset());
-        Assertions.assertEquals("lpntpp",
+        Assertions.assertEquals(true, response.sourceConnectionsInfo().get(0).connection().isInlineDataset());
+        Assertions.assertEquals("byakicpdwi",
             response.targetConnectionsInfo().get(0).connection().linkedService().referenceName());
-        Assertions.assertEquals("vfnryjqboylmzw",
-            response.targetConnectionsInfo().get(0).connection().linkedServiceType());
+        Assertions.assertEquals("nugil", response.targetConnectionsInfo().get(0).connection().linkedServiceType());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE,
             response.targetConnectionsInfo().get(0).connection().type());
-        Assertions.assertEquals(true, response.targetConnectionsInfo().get(0).connection().isInlineDataset());
-        Assertions.assertEquals("ilhcca", response.policy().mode());
-        Assertions.assertEquals(FrequencyType.HOUR, response.policy().recurrence().frequency());
-        Assertions.assertEquals(1285893270, response.policy().recurrence().interval());
+        Assertions.assertEquals(false, response.targetConnectionsInfo().get(0).connection().isInlineDataset());
+        Assertions.assertEquals("huyawsyxsjprc", response.policy().mode());
+        Assertions.assertEquals(FrequencyType.SECOND, response.policy().recurrence().frequency());
+        Assertions.assertEquals(1515513738, response.policy().recurrence().interval());
         Assertions.assertEquals(false, response.allowVNetOverride());
-        Assertions.assertEquals("cakansjr", response.status());
+        Assertions.assertEquals("mooa", response.status());
     }
 }

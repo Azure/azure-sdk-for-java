@@ -11,7 +11,7 @@ public final class LinkedIntegrationRuntimeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinkedIntegrationRuntime model = BinaryData.fromString(
-            "{\"name\":\"uhw\",\"subscriptionId\":\"unw\",\"dataFactoryName\":\"bphylnuzgz\",\"dataFactoryLocation\":\"xdusebkc\",\"createTime\":\"2021-09-21T00:32:46Z\"}")
+            "{\"name\":\"ms\",\"subscriptionId\":\"wsmdoowfrgd\",\"dataFactoryName\":\"gbhtpomiustkqywa\",\"dataFactoryLocation\":\"lgrrsk\",\"createTime\":\"2021-11-10T11:26:07Z\"}")
             .toObject(LinkedIntegrationRuntime.class);
     }
 

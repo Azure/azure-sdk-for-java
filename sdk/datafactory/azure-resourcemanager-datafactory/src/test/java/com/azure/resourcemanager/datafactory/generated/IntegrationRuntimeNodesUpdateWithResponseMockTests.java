@@ -6,51 +6,33 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.SelfHostedIntegrationRuntimeNode;
 import com.azure.resourcemanager.datafactory.models.UpdateIntegrationRuntimeNodeRequest;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IntegrationRuntimeNodesUpdateWithResponseMockTests {
     @Test
     public void testUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"nodeName\":\"sbyfoavozqnn\",\"machineName\":\"xitvmrqbkzchcm\",\"hostServiceUri\":\"skd\",\"status\":\"Initializing\",\"capabilities\":{\"hvqmdoqyo\":\"bwxcabfrvjpfo\",\"suwghtgpgarh\":\"zhundfkpdxfvjdf\"},\"versionStatus\":\"adedivad\",\"version\":\"xvqp\",\"registerTime\":\"2021-03-18T12:51:02Z\",\"lastConnectTime\":\"2021-07-06T05:00:38Z\",\"expiryTime\":\"2020-12-21T21:58:57Z\",\"lastStartTime\":\"2021-01-07T03:04:27Z\",\"lastStopTime\":\"2021-03-16T05:08:47Z\",\"lastUpdateResult\":\"Fail\",\"lastStartUpdateTime\":\"2021-02-26T06:50:06Z\",\"lastEndUpdateTime\":\"2021-07-17T09:02:07Z\",\"isActiveDispatcher\":true,\"concurrentJobsLimit\":690651643,\"maxConcurrentJobs\":1094919284,\"\":{\"teqypt\":\"datanuivpbjclihfzrii\",\"tkqbvtdeouqixgtp\":\"datajqjoamzdsajn\",\"jjuwdvfa\":\"datakbjev\",\"ucobpkphxh\":\"datalbfrch\"}}";
+            = "{\"nodeName\":\"yyfthsafv\",\"machineName\":\"o\",\"hostServiceUri\":\"inmc\",\"status\":\"NeedRegistration\",\"capabilities\":{\"u\":\"ydy\",\"fprfhpcy\":\"kjzp\",\"uzls\":\"ajjyournxq\",\"ebmuv\":\"mbsghzund\"},\"versionStatus\":\"kdea\",\"version\":\"xdwwraimjkaz\",\"registerTime\":\"2021-03-08T20:15:30Z\",\"lastConnectTime\":\"2021-03-04T00:33:43Z\",\"expiryTime\":\"2021-03-25T09:09:50Z\",\"lastStartTime\":\"2021-03-14T23:09:26Z\",\"lastStopTime\":\"2021-01-08T06:02:34Z\",\"lastUpdateResult\":\"Fail\",\"lastStartUpdateTime\":\"2021-09-14T20:41:14Z\",\"lastEndUpdateTime\":\"2021-08-06T06:53:48Z\",\"isActiveDispatcher\":false,\"concurrentJobsLimit\":1313337532,\"maxConcurrentJobs\":1925477381,\"\":{\"nwjowgdw\":\"datah\"}}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataFactoryManager manager = DataFactoryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SelfHostedIntegrationRuntimeNode response = manager.integrationRuntimeNodes()
-            .updateWithResponse("jtahdtdceuhjxvc", "rx", "eeyptvrbgcprsds", "wozpmhhdnxwkf",
-                new UpdateIntegrationRuntimeNodeRequest().withConcurrentJobsLimit(1227772272),
+            .updateWithResponse("wlzvxjxvspubf", "elqzcptsbiruy", "iwsfvanpzabbfd", "issdelyecjmfaf",
+                new UpdateIntegrationRuntimeNodeRequest().withConcurrentJobsLimit(1818752360),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

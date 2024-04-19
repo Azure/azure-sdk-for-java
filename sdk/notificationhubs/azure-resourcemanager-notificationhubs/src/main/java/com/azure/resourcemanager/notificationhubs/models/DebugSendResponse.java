@@ -4,77 +4,81 @@
 
 package com.azure.resourcemanager.notificationhubs.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.notificationhubs.fluent.models.DebugSendResponseInner;
+import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of DebugSendResponse. */
+/**
+ * An immutable client-side representation of DebugSendResponse.
+ */
 public interface DebugSendResponse {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the location property: The geo-location where the resource lives.
-     *
+     * Gets the location property: Deprecated - only for compatibility.
+     * 
      * @return the location value.
      */
     String location();
 
     /**
-     * Gets the tags property: Resource tags.
-     *
+     * Gets the tags property: Deprecated - only for compatibility.
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
-     * Gets the sku property: The sku of the created namespace.
-     *
-     * @return the sku value.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    Sku sku();
+    SystemData systemData();
 
     /**
-     * Gets the success property: successful send.
-     *
+     * Gets the success property: Gets or sets successful send.
+     * 
      * @return the success value.
      */
-    Float success();
+    Long success();
 
     /**
-     * Gets the failure property: send failure.
-     *
+     * Gets the failure property: Gets or sets send failure.
+     * 
      * @return the failure value.
      */
-    Float failure();
+    Long failure();
 
     /**
-     * Gets the results property: actual failure description.
-     *
+     * Gets the results property: Gets or sets actual failure description.
+     * 
      * @return the results value.
      */
-    Object results();
+    List<RegistrationResult> results();
 
     /**
      * Gets the inner com.azure.resourcemanager.notificationhubs.fluent.models.DebugSendResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     DebugSendResponseInner innerModel();

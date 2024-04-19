@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Adaptive Network Hardening resource properties. */
+/**
+ * Adaptive Network Hardening resource properties.
+ */
 @Fluent
 public final class AdaptiveNetworkHardeningProperties {
     /*
@@ -32,13 +34,15 @@ public final class AdaptiveNetworkHardeningProperties {
     @JsonProperty(value = "effectiveNetworkSecurityGroups")
     private List<EffectiveNetworkSecurityGroups> effectiveNetworkSecurityGroups;
 
-    /** Creates an instance of AdaptiveNetworkHardeningProperties class. */
+    /**
+     * Creates an instance of AdaptiveNetworkHardeningProperties class.
+     */
     public AdaptiveNetworkHardeningProperties() {
     }
 
     /**
      * Get the rules property: The security rules which are recommended to be effective on the VM.
-     *
+     * 
      * @return the rules value.
      */
     public List<Rule> rules() {
@@ -47,7 +51,7 @@ public final class AdaptiveNetworkHardeningProperties {
 
     /**
      * Set the rules property: The security rules which are recommended to be effective on the VM.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the AdaptiveNetworkHardeningProperties object itself.
      */
@@ -58,7 +62,7 @@ public final class AdaptiveNetworkHardeningProperties {
 
     /**
      * Get the rulesCalculationTime property: The UTC time on which the rules were calculated.
-     *
+     * 
      * @return the rulesCalculationTime value.
      */
     public OffsetDateTime rulesCalculationTime() {
@@ -67,7 +71,7 @@ public final class AdaptiveNetworkHardeningProperties {
 
     /**
      * Set the rulesCalculationTime property: The UTC time on which the rules were calculated.
-     *
+     * 
      * @param rulesCalculationTime the rulesCalculationTime value to set.
      * @return the AdaptiveNetworkHardeningProperties object itself.
      */
@@ -79,7 +83,7 @@ public final class AdaptiveNetworkHardeningProperties {
     /**
      * Get the effectiveNetworkSecurityGroups property: The Network Security Groups effective on the network interfaces
      * of the protected resource.
-     *
+     * 
      * @return the effectiveNetworkSecurityGroups value.
      */
     public List<EffectiveNetworkSecurityGroups> effectiveNetworkSecurityGroups() {
@@ -89,19 +93,19 @@ public final class AdaptiveNetworkHardeningProperties {
     /**
      * Set the effectiveNetworkSecurityGroups property: The Network Security Groups effective on the network interfaces
      * of the protected resource.
-     *
+     * 
      * @param effectiveNetworkSecurityGroups the effectiveNetworkSecurityGroups value to set.
      * @return the AdaptiveNetworkHardeningProperties object itself.
      */
-    public AdaptiveNetworkHardeningProperties withEffectiveNetworkSecurityGroups(
-        List<EffectiveNetworkSecurityGroups> effectiveNetworkSecurityGroups) {
+    public AdaptiveNetworkHardeningProperties
+        withEffectiveNetworkSecurityGroups(List<EffectiveNetworkSecurityGroups> effectiveNetworkSecurityGroups) {
         this.effectiveNetworkSecurityGroups = effectiveNetworkSecurityGroups;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

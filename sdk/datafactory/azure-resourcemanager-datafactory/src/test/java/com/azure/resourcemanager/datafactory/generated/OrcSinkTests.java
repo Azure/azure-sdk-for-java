@@ -17,22 +17,26 @@ public final class OrcSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OrcSink model = BinaryData.fromString(
-            "{\"type\":\"OrcSink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"dataftqombdsgqxa\",\"disableMetricsCollection\":\"dataduo\",\"copyBehavior\":\"datazhdjbyf\",\"metadata\":[{\"name\":\"datajnhpyylekubiwvjv\",\"value\":\"datanyjqbwxpwjvfi\"}],\"\":{\"ttkbzwgj\":\"dataq\",\"jqsshu\":\"datapjbdqmnki\",\"uwome\":\"dataxjttnurkmerqza\",\"tce\":\"dataqvvtjwdlduvim\"}},\"formatSettings\":{\"type\":\"OrcWriteSettings\",\"maxRowsPerFile\":\"dataxoxtapafbjvbkj\",\"fileNamePrefix\":\"datazkc\",\"\":{\"pydnujgblski\":\"datavc\",\"puacajxdrgxpu\":\"datapr\",\"pzrycchqz\":\"datapzslmfr\"}},\"writeBatchSize\":\"datagesdzgszjhe\",\"writeBatchTimeout\":\"datamdhchi\",\"sinkRetryCount\":\"datasrhgpityeu\",\"sinkRetryWait\":\"dataysbme\",\"maxConcurrentConnections\":\"datag\",\"disableMetricsCollection\":\"datanlihbku\",\"\":{\"tvyzuyqzjfv\":\"dataywy\",\"scyzvv\":\"datanyyjvz\"}}")
+            "{\"type\":\"xljsbtosiwc\",\"storeSettings\":{\"type\":\"lyhgiisn\",\"maxConcurrentConnections\":\"datax\",\"disableMetricsCollection\":\"databo\",\"copyBehavior\":\"datapyilojwcza\",\"metadata\":[{\"name\":\"dataauskishhm\",\"value\":\"datapgrkd\"},{\"name\":\"datazaunbwcqti\",\"value\":\"datavzds\"}],\"\":{\"pplrdkcazujvh\":\"datahjlploa\",\"elaaexcnxrtlnzd\":\"datauzbsxhivnc\"}},\"formatSettings\":{\"type\":\"aboozxkdzmtkmn\",\"maxRowsPerFile\":\"datammzisljxphwy\",\"fileNamePrefix\":\"datamcpfrakucgjreoac\",\"\":{\"kyet\":\"datademrclsxg\",\"yflke\":\"datatkhihixisd\"}},\"writeBatchSize\":\"dataqgehbw\",\"writeBatchTimeout\":\"dataoc\",\"sinkRetryCount\":\"datazlfhhwdajfth\",\"sinkRetryWait\":\"datawuomjd\",\"maxConcurrentConnections\":\"dataufqhq\",\"disableMetricsCollection\":\"dataio\",\"\":{\"pyemppwkryzrdqpk\":\"dataxxbneiobub\",\"myhjgmfyernckg\":\"datafuvhoiqqzb\",\"kafiokeolzizfbun\":\"datawiq\",\"muwl\":\"datamxhfttmj\"}}")
             .toObject(OrcSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrcSink model = new OrcSink().withWriteBatchSize("datagesdzgszjhe").withWriteBatchTimeout("datamdhchi")
-            .withSinkRetryCount("datasrhgpityeu").withSinkRetryWait("dataysbme").withMaxConcurrentConnections("datag")
-            .withDisableMetricsCollection("datanlihbku")
-            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("dataftqombdsgqxa")
-                .withDisableMetricsCollection("dataduo").withCopyBehavior("datazhdjbyf")
-                .withMetadata(
-                    Arrays.asList(new MetadataItem().withName("datajnhpyylekubiwvjv").withValue("datanyjqbwxpwjvfi")))
-                .withAdditionalProperties(mapOf("type", "StoreWriteSettings")))
-            .withFormatSettings(
-                new OrcWriteSettings().withMaxRowsPerFile("dataxoxtapafbjvbkj").withFileNamePrefix("datazkc"));
+        OrcSink model = new OrcSink().withWriteBatchSize("dataqgehbw")
+            .withWriteBatchTimeout("dataoc")
+            .withSinkRetryCount("datazlfhhwdajfth")
+            .withSinkRetryWait("datawuomjd")
+            .withMaxConcurrentConnections("dataufqhq")
+            .withDisableMetricsCollection("dataio")
+            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("datax")
+                .withDisableMetricsCollection("databo")
+                .withCopyBehavior("datapyilojwcza")
+                .withMetadata(Arrays.asList(new MetadataItem().withName("dataauskishhm").withValue("datapgrkd"),
+                    new MetadataItem().withName("datazaunbwcqti").withValue("datavzds")))
+                .withAdditionalProperties(mapOf("type", "lyhgiisn")))
+            .withFormatSettings(new OrcWriteSettings().withMaxRowsPerFile("datammzisljxphwy")
+                .withFileNamePrefix("datamcpfrakucgjreoac"));
         model = BinaryData.fromObject(model).toObject(OrcSink.class);
     }
 

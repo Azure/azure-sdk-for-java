@@ -13,8 +13,8 @@ public final class ProviderDescriptionImpl implements ProviderDescription {
 
     private final com.azure.resourcemanager.quantum.AzureQuantumManager serviceManager;
 
-    ProviderDescriptionImpl(
-        ProviderDescriptionInner innerObject, com.azure.resourcemanager.quantum.AzureQuantumManager serviceManager) {
+    ProviderDescriptionImpl(ProviderDescriptionInner innerObject,
+        com.azure.resourcemanager.quantum.AzureQuantumManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

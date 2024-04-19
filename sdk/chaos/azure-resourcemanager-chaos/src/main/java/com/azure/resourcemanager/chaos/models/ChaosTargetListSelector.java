@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Model that represents a list selector. */
+/**
+ * Model that represents a list selector.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("List")
 @Fluent
@@ -22,13 +24,15 @@ public final class ChaosTargetListSelector extends ChaosTargetSelector {
     @JsonProperty(value = "targets", required = true)
     private List<TargetReference> targets;
 
-    /** Creates an instance of ChaosTargetListSelector class. */
+    /**
+     * Creates an instance of ChaosTargetListSelector class.
+     */
     public ChaosTargetListSelector() {
     }
 
     /**
      * Get the targets property: List of Target references.
-     *
+     * 
      * @return the targets value.
      */
     public List<TargetReference> targets() {
@@ -37,7 +41,7 @@ public final class ChaosTargetListSelector extends ChaosTargetSelector {
 
     /**
      * Set the targets property: List of Target references.
-     *
+     * 
      * @param targets the targets value to set.
      * @return the ChaosTargetListSelector object itself.
      */
@@ -46,14 +50,18 @@ public final class ChaosTargetListSelector extends ChaosTargetSelector {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ChaosTargetListSelector withId(String id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ChaosTargetListSelector withFilter(ChaosTargetFilter filter) {
         super.withFilter(filter);
@@ -62,16 +70,15 @@ public final class ChaosTargetListSelector extends ChaosTargetSelector {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (targets() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property targets in model ChaosTargetListSelector"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property targets in model ChaosTargetListSelector"));
         } else {
             targets().forEach(e -> e.validate());
         }

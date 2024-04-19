@@ -12,41 +12,33 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterServerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterServerInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"fullyQualifiedDomainName\":\"atscmd\",\"role\":\"Worker\",\"state\":\"u\",\"haState\":\"uuvmkjozkrwfnd\",\"availabilityZone\":\"djpslw\",\"postgresqlVersion\":\"dpvwryoqpsoaccta\",\"citusVersion\":\"kljla\",\"serverEdition\":\"cr\",\"storageQuotaInMb\":1060950423,\"vCores\":1389039399,\"enableHa\":false,\"enablePublicIpAccess\":true,\"isReadOnly\":false,\"administratorLogin\":\"paojakhmsbzjh\"},\"id\":\"zevdphlx\",\"name\":\"olthqtrgqjbp\",\"type\":\"zfsinzgvf\"}")
-                .toObject(ClusterServerInner.class);
-        Assertions.assertEquals(ServerRole.WORKER, model.role());
-        Assertions.assertEquals("djpslw", model.availabilityZone());
-        Assertions.assertEquals("dpvwryoqpsoaccta", model.postgresqlVersion());
-        Assertions.assertEquals("kljla", model.citusVersion());
-        Assertions.assertEquals("cr", model.serverEdition());
-        Assertions.assertEquals(1060950423, model.storageQuotaInMb());
-        Assertions.assertEquals(1389039399, model.vCores());
-        Assertions.assertEquals(false, model.enableHa());
+        ClusterServerInner model = BinaryData.fromString(
+            "{\"properties\":{\"fullyQualifiedDomainName\":\"ksqrglssai\",\"role\":\"Coordinator\",\"state\":\"wnzlljfmppeeb\",\"haState\":\"gxsabkyq\",\"availabilityZone\":\"ujitcjcz\",\"postgresqlVersion\":\"evndh\",\"citusVersion\":\"wpdappdsbdkv\",\"serverEdition\":\"wjfeusnhutjel\",\"storageQuotaInMb\":391471833,\"vCores\":1969626150,\"enableHa\":true,\"enablePublicIpAccess\":false,\"isReadOnly\":true,\"administratorLogin\":\"atqxho\"},\"id\":\"geablgphuticndvk\",\"name\":\"ozwyiftyhxhuro\",\"type\":\"ftyxolniw\"}")
+            .toObject(ClusterServerInner.class);
+        Assertions.assertEquals(ServerRole.COORDINATOR, model.role());
+        Assertions.assertEquals("ujitcjcz", model.availabilityZone());
+        Assertions.assertEquals("evndh", model.postgresqlVersion());
+        Assertions.assertEquals("wpdappdsbdkv", model.citusVersion());
+        Assertions.assertEquals("wjfeusnhutjel", model.serverEdition());
+        Assertions.assertEquals(391471833, model.storageQuotaInMb());
+        Assertions.assertEquals(1969626150, model.vCores());
+        Assertions.assertEquals(true, model.enableHa());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterServerInner model =
-            new ClusterServerInner()
-                .withRole(ServerRole.WORKER)
-                .withAvailabilityZone("djpslw")
-                .withPostgresqlVersion("dpvwryoqpsoaccta")
-                .withCitusVersion("kljla")
-                .withServerEdition("cr")
-                .withStorageQuotaInMb(1060950423)
-                .withVCores(1389039399)
-                .withEnableHa(false);
+        ClusterServerInner model
+            = new ClusterServerInner().withRole(ServerRole.COORDINATOR).withAvailabilityZone("ujitcjcz")
+                .withPostgresqlVersion("evndh").withCitusVersion("wpdappdsbdkv").withServerEdition("wjfeusnhutjel")
+                .withStorageQuotaInMb(391471833).withVCores(1969626150).withEnableHa(true);
         model = BinaryData.fromObject(model).toObject(ClusterServerInner.class);
-        Assertions.assertEquals(ServerRole.WORKER, model.role());
-        Assertions.assertEquals("djpslw", model.availabilityZone());
-        Assertions.assertEquals("dpvwryoqpsoaccta", model.postgresqlVersion());
-        Assertions.assertEquals("kljla", model.citusVersion());
-        Assertions.assertEquals("cr", model.serverEdition());
-        Assertions.assertEquals(1060950423, model.storageQuotaInMb());
-        Assertions.assertEquals(1389039399, model.vCores());
-        Assertions.assertEquals(false, model.enableHa());
+        Assertions.assertEquals(ServerRole.COORDINATOR, model.role());
+        Assertions.assertEquals("ujitcjcz", model.availabilityZone());
+        Assertions.assertEquals("evndh", model.postgresqlVersion());
+        Assertions.assertEquals("wpdappdsbdkv", model.citusVersion());
+        Assertions.assertEquals("wjfeusnhutjel", model.serverEdition());
+        Assertions.assertEquals(391471833, model.storageQuotaInMb());
+        Assertions.assertEquals(1969626150, model.vCores());
+        Assertions.assertEquals(true, model.enableHa());
     }
 }

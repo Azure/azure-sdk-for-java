@@ -15,18 +15,20 @@ public final class PolybaseSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolybaseSettings model = BinaryData.fromString(
-            "{\"rejectType\":\"percentage\",\"rejectValue\":\"dataekygnepjyuxqdrp\",\"rejectSampleValue\":\"datayxjqranpztla\",\"useTypeDefault\":\"datapfzsf\",\"\":{\"cavk\":\"dataapbrwviovvyhso\"}}")
+            "{\"rejectType\":\"value\",\"rejectValue\":\"datakscrsbrhkd\",\"rejectSampleValue\":\"dataaxoajg\",\"useTypeDefault\":\"datacachsojgagey\",\"\":{\"gfxwynzbeemlsrtg\":\"datakkzkzprjqb\",\"dglpu\":\"datagcmutuk\"}}")
             .toObject(PolybaseSettings.class);
-        Assertions.assertEquals(PolybaseSettingsRejectType.PERCENTAGE, model.rejectType());
+        Assertions.assertEquals(PolybaseSettingsRejectType.VALUE, model.rejectType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolybaseSettings model = new PolybaseSettings().withRejectType(PolybaseSettingsRejectType.PERCENTAGE)
-            .withRejectValue("dataekygnepjyuxqdrp").withRejectSampleValue("datayxjqranpztla")
-            .withUseTypeDefault("datapfzsf").withAdditionalProperties(mapOf());
+        PolybaseSettings model = new PolybaseSettings().withRejectType(PolybaseSettingsRejectType.VALUE)
+            .withRejectValue("datakscrsbrhkd")
+            .withRejectSampleValue("dataaxoajg")
+            .withUseTypeDefault("datacachsojgagey")
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(PolybaseSettings.class);
-        Assertions.assertEquals(PolybaseSettingsRejectType.PERCENTAGE, model.rejectType());
+        Assertions.assertEquals(PolybaseSettingsRejectType.VALUE, model.rejectType());
     }
 
     // Use "Map.of" if available

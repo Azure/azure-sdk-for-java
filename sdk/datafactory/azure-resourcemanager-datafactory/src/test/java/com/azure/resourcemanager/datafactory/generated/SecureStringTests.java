@@ -12,14 +12,14 @@ public final class SecureStringTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecureString model
-            = BinaryData.fromString("{\"type\":\"SecureString\",\"value\":\"pylx\"}").toObject(SecureString.class);
-        Assertions.assertEquals("pylx", model.value());
+            = BinaryData.fromString("{\"type\":\"qbeiv\",\"value\":\"xolriy\"}").toObject(SecureString.class);
+        Assertions.assertEquals("xolriy", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecureString model = new SecureString().withValue("pylx");
+        SecureString model = new SecureString().withValue("xolriy");
         model = BinaryData.fromObject(model).toObject(SecureString.class);
-        Assertions.assertEquals("pylx", model.value());
+        Assertions.assertEquals("xolriy", model.value());
     }
 }

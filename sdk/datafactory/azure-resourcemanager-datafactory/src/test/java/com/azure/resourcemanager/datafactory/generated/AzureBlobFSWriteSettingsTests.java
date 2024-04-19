@@ -13,16 +13,18 @@ public final class AzureBlobFSWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobFSWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"AzureBlobFSWriteSettings\",\"blockSizeInMB\":\"dataaxthuhuruo\",\"maxConcurrentConnections\":\"datayotapstkdbn\",\"disableMetricsCollection\":\"datapcuzexoymfku\",\"copyBehavior\":\"dataysgsqzpgrvf\",\"metadata\":[{\"name\":\"datahlfrxrpahpt\",\"value\":\"datakfenmiflky\"}],\"\":{\"tablilyoomgse\":\"datalolnxhsupilh\",\"kluqf\":\"dataisydhardx\",\"ierxu\":\"datafglftlqa\"}}")
+            "{\"type\":\"lvxwlqlugnbudjy\",\"blockSizeInMB\":\"datakarggvyuewgy\",\"maxConcurrentConnections\":\"dataiotgtlans\",\"disableMetricsCollection\":\"datavlxsycqqdoxooxua\",\"copyBehavior\":\"dataqoobwxctkveqvp\",\"metadata\":[{\"name\":\"datahqcjrerypjbyqxey\",\"value\":\"datanupsipclxvaovss\"}],\"\":{\"iyo\":\"datavqqvicqdbmzwlej\"}}")
             .toObject(AzureBlobFSWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBlobFSWriteSettings model = new AzureBlobFSWriteSettings().withMaxConcurrentConnections("datayotapstkdbn")
-            .withDisableMetricsCollection("datapcuzexoymfku").withCopyBehavior("dataysgsqzpgrvf")
-            .withMetadata(Arrays.asList(new MetadataItem().withName("datahlfrxrpahpt").withValue("datakfenmiflky")))
-            .withBlockSizeInMB("dataaxthuhuruo");
+        AzureBlobFSWriteSettings model = new AzureBlobFSWriteSettings().withMaxConcurrentConnections("dataiotgtlans")
+            .withDisableMetricsCollection("datavlxsycqqdoxooxua")
+            .withCopyBehavior("dataqoobwxctkveqvp")
+            .withMetadata(
+                Arrays.asList(new MetadataItem().withName("datahqcjrerypjbyqxey").withValue("datanupsipclxvaovss")))
+            .withBlockSizeInMB("datakarggvyuewgy");
         model = BinaryData.fromObject(model).toObject(AzureBlobFSWriteSettings.class);
     }
 }

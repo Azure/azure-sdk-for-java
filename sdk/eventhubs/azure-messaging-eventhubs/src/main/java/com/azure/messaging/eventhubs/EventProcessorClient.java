@@ -139,12 +139,39 @@ public class EventProcessorClient {
     }
 
     /**
-     * Package-private to get processor options.
+     * Gets the processor options.
      *
      * @return Gets the processor options set.
      */
     EventProcessorClientOptions getEventProcessorClientOptions() {
         return processorClientOptions;
+    }
+
+    /**
+     * Gets the consumer group.
+     *
+     * @return The consumer group.
+     */
+    String getConsumerGroup() {
+        return consumerGroup;
+    }
+
+    /**
+     * Gets the Event Hub name.
+     *
+     * @return the Event Hub name.
+     */
+    String getEventHubName() {
+        return eventHubName;
+    }
+
+    /**
+     * Gets the fully-qualified namespace.
+     *
+     * @return The fully-qualified namespace.
+     */
+    String getFullyQualifiedNamespace() {
+        return fullyQualifiedNamespace;
     }
 
     /**

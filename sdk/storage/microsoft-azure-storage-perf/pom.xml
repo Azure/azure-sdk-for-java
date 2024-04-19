@@ -30,7 +30,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-storage</artifactId>
-      <version>8.6.5</version> <!-- {x-version-update;com.microsoft.azure:azure-storage;current} -->
+      <version>8.6.6</version> <!-- {x-version-update;storage_com.microsoft.azure:azure-storage;external_dependency} -->
     </dependency>
   </dependencies>
 
@@ -40,12 +40,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:azure-storage:[8.6.5]</include> <!-- {x-include-update;com.microsoft.azure:azure-storage;current} -->
+                <include>com.microsoft.azure:azure-storage:[8.6.6]</include> <!-- {x-include-update;storage_com.microsoft.azure:azure-storage;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

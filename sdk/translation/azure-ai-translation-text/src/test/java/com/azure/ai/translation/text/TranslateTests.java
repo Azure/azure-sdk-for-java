@@ -57,7 +57,7 @@ public class TranslateTests extends TextTranslationClientBase {
         ArrayList<InputTextItem> content = new ArrayList<>();
         content.add(new InputTextItem("<span class=notranslate>今天是怎么回事是</span>非常可怕的"));
 
-        List<TranslatedTextItem> response = getTranslationClient().translate(targetLanguages, content, null, "zh-chs", TextType.HTML, null, null, null, null, null, null, null, null, null);
+        List<TranslatedTextItem> response = getTranslationClient().translate(targetLanguages, content, null, "zh-Hans", TextType.HTML, null, null, null, null, null, null, null, null, null);
 
         assertEquals(1, response.get(0).getTranslations().size());
         assertTrue(response.get(0).getTranslations().get(0).getText().contains("今天是怎么回事是"));
@@ -176,7 +176,7 @@ public class TranslateTests extends TextTranslationClientBase {
         ProfanityMarker profanityMarker = ProfanityMarker.ASTERISK;
 
         ArrayList<String> targetLanguages = new ArrayList<>();
-        targetLanguages.add("zh-cn");
+        targetLanguages.add("zh-Hant");
 
         ArrayList<InputTextItem> content = new ArrayList<>();
         content.add(new InputTextItem("shit this is fucking crazy"));
@@ -251,6 +251,23 @@ public class TranslateTests extends TextTranslationClientBase {
         content.add(new InputTextItem("This is a test."));
 
         List<TranslatedTextItem> response = getTranslationClientWithToken().translate(targetLanguages, content);
+
+        assertNotNull(response.get(0).getTranslations().get(0).getText());
+        assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
+        assertEquals(1, response.get(0).getDetectedLanguage().getScore());
+        assertEquals(1, response.get(0).getTranslations().size());
+        assertNotNull(response.get(0).getTranslations().get(0).getText());
+    }
+
+    @Test
+    public void translateWithAad() throws Exception {
+        ArrayList<String> targetLanguages = new ArrayList<>();
+        targetLanguages.add("cs");
+
+        ArrayList<InputTextItem> content = new ArrayList<>();
+        content.add(new InputTextItem("This is a test."));
+
+        List<TranslatedTextItem> response = getTranslationClientWithAadAuth().translate(targetLanguages, content);
 
         assertNotNull(response.get(0).getTranslations().get(0).getText());
         assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());

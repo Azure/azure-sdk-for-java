@@ -10,15 +10,17 @@ import com.azure.resourcemanager.datafactory.fluent.models.ImpalaDatasetTypeProp
 public final class ImpalaDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImpalaDatasetTypeProperties model
-            = BinaryData.fromString("{\"tableName\":\"datauklx\",\"table\":\"datalmzpyq\",\"schema\":\"datahuecxhgs\"}")
-                .toObject(ImpalaDatasetTypeProperties.class);
+        ImpalaDatasetTypeProperties model = BinaryData
+            .fromString(
+                "{\"tableName\":\"datatqmlzuwtbdzqa\",\"table\":\"datakmpebfhlgeehb\",\"schema\":\"datagplnl\"}")
+            .toObject(ImpalaDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImpalaDatasetTypeProperties model = new ImpalaDatasetTypeProperties().withTableName("datauklx")
-            .withTable("datalmzpyq").withSchema("datahuecxhgs");
+        ImpalaDatasetTypeProperties model = new ImpalaDatasetTypeProperties().withTableName("datatqmlzuwtbdzqa")
+            .withTable("datakmpebfhlgeehb")
+            .withSchema("datagplnl");
         model = BinaryData.fromObject(model).toObject(ImpalaDatasetTypeProperties.class);
     }
 }

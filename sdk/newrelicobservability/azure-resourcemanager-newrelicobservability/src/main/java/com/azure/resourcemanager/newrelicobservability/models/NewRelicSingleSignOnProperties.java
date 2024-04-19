@@ -7,7 +7,9 @@ package com.azure.resourcemanager.newrelicobservability.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Single sign on Info of the NewRelic account. */
+/**
+ * Single sign on Info of the NewRelic account.
+ */
 @Fluent
 public final class NewRelicSingleSignOnProperties {
     /*
@@ -34,13 +36,15 @@ public final class NewRelicSingleSignOnProperties {
     @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of NewRelicSingleSignOnProperties class. */
+    /**
+     * Creates an instance of NewRelicSingleSignOnProperties class.
+     */
     public NewRelicSingleSignOnProperties() {
     }
 
     /**
      * Get the singleSignOnState property: Single sign-on state.
-     *
+     * 
      * @return the singleSignOnState value.
      */
     public SingleSignOnStates singleSignOnState() {
@@ -49,7 +53,7 @@ public final class NewRelicSingleSignOnProperties {
 
     /**
      * Set the singleSignOnState property: Single sign-on state.
-     *
+     * 
      * @param singleSignOnState the singleSignOnState value to set.
      * @return the NewRelicSingleSignOnProperties object itself.
      */
@@ -60,7 +64,7 @@ public final class NewRelicSingleSignOnProperties {
 
     /**
      * Get the enterpriseAppId property: The Id of the Enterprise App used for Single sign-on.
-     *
+     * 
      * @return the enterpriseAppId value.
      */
     public String enterpriseAppId() {
@@ -69,7 +73,7 @@ public final class NewRelicSingleSignOnProperties {
 
     /**
      * Set the enterpriseAppId property: The Id of the Enterprise App used for Single sign-on.
-     *
+     * 
      * @param enterpriseAppId the enterpriseAppId value to set.
      * @return the NewRelicSingleSignOnProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class NewRelicSingleSignOnProperties {
 
     /**
      * Get the singleSignOnUrl property: The login URL specific to this NewRelic Organization.
-     *
+     * 
      * @return the singleSignOnUrl value.
      */
     public String singleSignOnUrl() {
@@ -89,7 +93,7 @@ public final class NewRelicSingleSignOnProperties {
 
     /**
      * Set the singleSignOnUrl property: The login URL specific to this NewRelic Organization.
-     *
+     * 
      * @param singleSignOnUrl the singleSignOnUrl value to set.
      * @return the NewRelicSingleSignOnProperties object itself.
      */
@@ -100,7 +104,7 @@ public final class NewRelicSingleSignOnProperties {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -109,7 +113,7 @@ public final class NewRelicSingleSignOnProperties {
 
     /**
      * Set the provisioningState property: Provisioning state.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the NewRelicSingleSignOnProperties object itself.
      */
@@ -120,7 +124,7 @@ public final class NewRelicSingleSignOnProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

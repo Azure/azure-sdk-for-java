@@ -10,14 +10,15 @@ import com.azure.resourcemanager.datafactory.models.SkipErrorFile;
 public final class SkipErrorFileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkipErrorFile model
-            = BinaryData.fromString("{\"fileMissing\":\"datas\",\"dataInconsistency\":\"dataksltunrwxsqvx\"}")
-                .toObject(SkipErrorFile.class);
+        SkipErrorFile model = BinaryData
+            .fromString("{\"fileMissing\":\"datakrynziudmhed\",\"dataInconsistency\":\"dataygwagvuioxjwztr\"}")
+            .toObject(SkipErrorFile.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkipErrorFile model = new SkipErrorFile().withFileMissing("datas").withDataInconsistency("dataksltunrwxsqvx");
+        SkipErrorFile model
+            = new SkipErrorFile().withFileMissing("datakrynziudmhed").withDataInconsistency("dataygwagvuioxjwztr");
         model = BinaryData.fromObject(model).toObject(SkipErrorFile.class);
     }
 }

@@ -23,8 +23,8 @@ import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sphere.fluent.AzureSphereManagementClient;
-import com.azure.resourcemanager.sphere.implementation.AzureSphereManagementClientBuilder;
+import com.azure.resourcemanager.sphere.fluent.AzureSphereMgmtClient;
+import com.azure.resourcemanager.sphere.implementation.AzureSphereMgmtClientBuilder;
 import com.azure.resourcemanager.sphere.implementation.CatalogsImpl;
 import com.azure.resourcemanager.sphere.implementation.CertificatesImpl;
 import com.azure.resourcemanager.sphere.implementation.DeploymentsImpl;
@@ -48,7 +48,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to AzureSphereManager. Azure Sphere resource management API. */
+/**
+ * Entry point to AzureSphereManager.
+ * Azure Sphere resource management API.
+ */
 public final class AzureSphereManager {
     private Operations operations;
 
@@ -66,23 +69,19 @@ public final class AzureSphereManager {
 
     private Devices devices;
 
-    private final AzureSphereManagementClient clientObject;
+    private final AzureSphereMgmtClient clientObject;
 
     private AzureSphereManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new AzureSphereManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new AzureSphereMgmtClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval).buildClient();
     }
 
     /**
      * Creates an instance of AzureSphere service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the AzureSphere service API instance.
@@ -95,7 +94,7 @@ public final class AzureSphereManager {
 
     /**
      * Creates an instance of AzureSphere service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the AzureSphere service API instance.
@@ -108,14 +107,16 @@ public final class AzureSphereManager {
 
     /**
      * Gets a Configurable instance that can be used to create AzureSphereManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new AzureSphereManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -187,8 +188,8 @@ public final class AzureSphereManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -205,8 +206,8 @@ public final class AzureSphereManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -226,21 +227,12 @@ public final class AzureSphereManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
-                .append("-")
-                .append("com.azure.resourcemanager.sphere")
-                .append("/")
-                .append("1.0.0-beta.1");
+            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.sphere").append("/")
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
-                    .append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.name"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version"))
-                    .append("; auto-generated)");
+                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -259,38 +251,25 @@ public final class AzureSphereManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
             return new AzureSphereManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -302,7 +281,7 @@ public final class AzureSphereManager {
 
     /**
      * Gets the resource collection API of Catalogs. It manages Catalog.
-     *
+     * 
      * @return Resource collection API of Catalogs.
      */
     public Catalogs catalogs() {
@@ -314,7 +293,7 @@ public final class AzureSphereManager {
 
     /**
      * Gets the resource collection API of Certificates.
-     *
+     * 
      * @return Resource collection API of Certificates.
      */
     public Certificates certificates() {
@@ -326,7 +305,7 @@ public final class AzureSphereManager {
 
     /**
      * Gets the resource collection API of Images. It manages Image.
-     *
+     * 
      * @return Resource collection API of Images.
      */
     public Images images() {
@@ -338,7 +317,7 @@ public final class AzureSphereManager {
 
     /**
      * Gets the resource collection API of Products. It manages Product.
-     *
+     * 
      * @return Resource collection API of Products.
      */
     public Products products() {
@@ -350,7 +329,7 @@ public final class AzureSphereManager {
 
     /**
      * Gets the resource collection API of DeviceGroups. It manages DeviceGroup.
-     *
+     * 
      * @return Resource collection API of DeviceGroups.
      */
     public DeviceGroups deviceGroups() {
@@ -362,7 +341,7 @@ public final class AzureSphereManager {
 
     /**
      * Gets the resource collection API of Deployments. It manages Deployment.
-     *
+     * 
      * @return Resource collection API of Deployments.
      */
     public Deployments deployments() {
@@ -374,7 +353,7 @@ public final class AzureSphereManager {
 
     /**
      * Gets the resource collection API of Devices. It manages Device.
-     *
+     * 
      * @return Resource collection API of Devices.
      */
     public Devices devices() {
@@ -385,10 +364,12 @@ public final class AzureSphereManager {
     }
 
     /**
-     * @return Wrapped service client AzureSphereManagementClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client AzureSphereMgmtClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client AzureSphereMgmtClient.
      */
-    public AzureSphereManagementClient serviceClient() {
+    public AzureSphereMgmtClient serviceClient() {
         return this.clientObject;
     }
 }

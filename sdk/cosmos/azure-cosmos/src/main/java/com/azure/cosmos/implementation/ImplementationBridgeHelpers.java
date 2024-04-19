@@ -40,6 +40,7 @@ import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -122,7 +123,6 @@ public class ImplementationBridgeHelpers {
             CosmosClientBuilderAccessor snapshot = accessor.get();
             if (snapshot == null) {
                 logger.error("CosmosClientBuilderAccessor is not initialized yet!");
-                System.exit(9700); // Using a unique status code here to help debug the issue.
             }
 
             return snapshot;
@@ -178,7 +178,6 @@ public class ImplementationBridgeHelpers {
             PartitionKeyAccessor snapshot = accessor.get();
             if (snapshot == null) {
                 logger.error("PartitionKeyAccessor is not initialized yet!");
-                System.exit(9701); // Using a unique status code here to help debug the issue.
             }
 
             return snapshot;
@@ -186,6 +185,7 @@ public class ImplementationBridgeHelpers {
 
         public interface PartitionKeyAccessor {
             PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal);
+            PartitionKey toPartitionKey(List<Object> values, boolean strict);
             PartitionKeyInternal getPartitionKeyInternal(PartitionKey partitionKey);
         }
     }

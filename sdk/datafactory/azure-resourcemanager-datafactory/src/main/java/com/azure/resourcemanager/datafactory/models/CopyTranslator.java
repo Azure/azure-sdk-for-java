@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
@@ -17,15 +19,18 @@ import java.util.Map;
 /**
  * A copy activity translator.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = CopyTranslator.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = CopyTranslator.class, visible = true)
 @JsonTypeName("CopyTranslator")
 @JsonSubTypes({ @JsonSubTypes.Type(name = "TabularTranslator", value = TabularTranslator.class) })
 @Fluent
 public class CopyTranslator {
+    /*
+     * Copy translator type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type;
+
     /*
      * A copy activity translator.
      */
@@ -36,6 +41,16 @@ public class CopyTranslator {
      * Creates an instance of CopyTranslator class.
      */
     public CopyTranslator() {
+        this.type = "CopyTranslator";
+    }
+
+    /**
+     * Get the type property: Copy translator type.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**

@@ -17,29 +17,31 @@ public final class WarehouseSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WarehouseSink model = BinaryData.fromString(
-            "{\"type\":\"WarehouseSink\",\"preCopyScript\":\"datainfauytmqvsdyqyj\",\"allowCopyCommand\":\"datafotwmxedlcxmyxt\",\"copyCommandSettings\":{\"defaultValues\":[{\"columnName\":\"datajk\",\"defaultValue\":\"dataxantlpspi\"},{\"columnName\":\"dataf\",\"defaultValue\":\"datanqpkvvrhoqyv\"},{\"columnName\":\"datavnruodu\",\"defaultValue\":\"datahskh\"}],\"additionalOptions\":{\"h\":\"vocrddqxhegco\"}},\"tableOption\":\"datacklqrunqwcrkkaby\",\"writeBehavior\":\"datay\",\"writeBatchSize\":\"dataipywgjgfbsfsva\",\"writeBatchTimeout\":\"dataejypokk\",\"sinkRetryCount\":\"datatnwpwskckc\",\"sinkRetryWait\":\"datamfyxpgvqioqrebwa\",\"maxConcurrentConnections\":\"datajplk\",\"disableMetricsCollection\":\"datamxcdreqaqvspsy\",\"\":{\"vwmcrhyoestplmy\":\"datarwtkrbscwbi\",\"vyjzferhxg\":\"datan\",\"qxujxbdyczplmlj\":\"datatiawywp\"}}")
+            "{\"type\":\"vofo\",\"preCopyScript\":\"dataxwtnrroh\",\"allowCopyCommand\":\"datagzczjwizrulrkw\",\"copyCommandSettings\":{\"defaultValues\":[{\"columnName\":\"dataggcpqmk\",\"defaultValue\":\"databenaahdjn\"},{\"columnName\":\"datachtvpeirhst\",\"defaultValue\":\"databv\"}],\"additionalOptions\":{\"nvsu\":\"hpphjimoecqpqk\",\"tyjgxu\":\"izxdlrjspx\",\"llcdqvunvnggqacf\":\"fejiurldsft\"}},\"tableOption\":\"datauwqbendzruus\",\"writeBehavior\":\"datasttjdioevifzq\",\"writeBatchSize\":\"datapphwv\",\"writeBatchTimeout\":\"datauzpiooacj\",\"sinkRetryCount\":\"dataofsiritpqqpynrln\",\"sinkRetryWait\":\"dataxevizzcjnfyubctw\",\"maxConcurrentConnections\":\"datan\",\"disableMetricsCollection\":\"datanumpna\",\"\":{\"adhnbo\":\"datakleieafpvbsllyor\",\"bvvwdftrq\":\"dataeucctppbgzfmuyls\",\"skck\":\"dataobusurxvjdxlbs\",\"mefbnc\":\"datafxtknywx\"}}")
             .toObject(WarehouseSink.class);
-        Assertions.assertEquals("vocrddqxhegco", model.copyCommandSettings().additionalOptions().get("h"));
+        Assertions.assertEquals("hpphjimoecqpqk", model.copyCommandSettings().additionalOptions().get("nvsu"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WarehouseSink model
-            = new WarehouseSink().withWriteBatchSize("dataipywgjgfbsfsva").withWriteBatchTimeout("dataejypokk")
-                .withSinkRetryCount("datatnwpwskckc").withSinkRetryWait("datamfyxpgvqioqrebwa")
-                .withMaxConcurrentConnections("datajplk").withDisableMetricsCollection("datamxcdreqaqvspsy")
-                .withPreCopyScript("datainfauytmqvsdyqyj").withAllowCopyCommand("datafotwmxedlcxmyxt")
-                .withCopyCommandSettings(
-                    new DWCopyCommandSettings()
-                        .withDefaultValues(Arrays.asList(
-                            new DWCopyCommandDefaultValue().withColumnName("datajk").withDefaultValue("dataxantlpspi"),
-                            new DWCopyCommandDefaultValue().withColumnName("dataf")
-                                .withDefaultValue("datanqpkvvrhoqyv"),
-                            new DWCopyCommandDefaultValue().withColumnName("datavnruodu").withDefaultValue("datahskh")))
-                        .withAdditionalOptions(mapOf("h", "vocrddqxhegco")))
-                .withTableOption("datacklqrunqwcrkkaby").withWriteBehavior("datay");
+        WarehouseSink model = new WarehouseSink().withWriteBatchSize("datapphwv")
+            .withWriteBatchTimeout("datauzpiooacj")
+            .withSinkRetryCount("dataofsiritpqqpynrln")
+            .withSinkRetryWait("dataxevizzcjnfyubctw")
+            .withMaxConcurrentConnections("datan")
+            .withDisableMetricsCollection("datanumpna")
+            .withPreCopyScript("dataxwtnrroh")
+            .withAllowCopyCommand("datagzczjwizrulrkw")
+            .withCopyCommandSettings(new DWCopyCommandSettings()
+                .withDefaultValues(Arrays.asList(
+                    new DWCopyCommandDefaultValue().withColumnName("dataggcpqmk").withDefaultValue("databenaahdjn"),
+                    new DWCopyCommandDefaultValue().withColumnName("datachtvpeirhst").withDefaultValue("databv")))
+                .withAdditionalOptions(
+                    mapOf("nvsu", "hpphjimoecqpqk", "tyjgxu", "izxdlrjspx", "llcdqvunvnggqacf", "fejiurldsft")))
+            .withTableOption("datauwqbendzruus")
+            .withWriteBehavior("datasttjdioevifzq");
         model = BinaryData.fromObject(model).toObject(WarehouseSink.class);
-        Assertions.assertEquals("vocrddqxhegco", model.copyCommandSettings().additionalOptions().get("h"));
+        Assertions.assertEquals("hpphjimoecqpqk", model.copyCommandSettings().additionalOptions().get("nvsu"));
     }
 
     // Use "Map.of" if available

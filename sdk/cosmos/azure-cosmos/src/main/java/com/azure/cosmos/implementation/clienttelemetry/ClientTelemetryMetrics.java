@@ -342,9 +342,9 @@ public final class ClientTelemetryMetrics {
             String containerTagValue =
                 escape(accountTagValue)
                 + "/"
-                + databaseId != null ? escape(databaseId) : "NONE"
+                + (databaseId != null ? escape(databaseId) : "NONE")
                 + "/"
-                + containerId != null ? escape(containerId) : "NONE";
+                + (containerId != null ? escape(containerId) : "NONE");
 
             effectiveTags.add(Tag.of(TagName.Container.toString(), containerTagValue));
         }
@@ -504,17 +504,20 @@ public final class ClientTelemetryMetrics {
                         recordStoreResponseStatistics(
                             diagnosticsContext,
                             cosmosAsyncClient,
-                            requestStatistics.getResponseStatisticsList());
+                            requestStatistics.getResponseStatisticsList(),
+                            actualItemCount);
                         recordStoreResponseStatistics(
                             diagnosticsContext,
                             cosmosAsyncClient,
-                            requestStatistics.getSupplementalResponseStatisticsList());
+                            requestStatistics.getSupplementalResponseStatisticsList(),
+                            -1);
                         recordGatewayStatistics(
                             diagnosticsContext,
                             cosmosAsyncClient,
                             requestStatistics.getDuration(),
                             requestStatistics.getGatewayStatisticsList(),
-                            requestStatistics.getRequestPayloadSizeInBytes());
+                            requestStatistics.getRequestPayloadSizeInBytes(),
+                            actualItemCount);
                         recordAddressResolutionStatistics(
                             diagnosticsContext,
                             cosmosAsyncClient,
@@ -888,7 +891,8 @@ public final class ClientTelemetryMetrics {
         private void recordStoreResponseStatistics(
             CosmosDiagnosticsContext ctx,
             CosmosAsyncClient client,
-            Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics) {
+            Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics,
+            int actualItemCount) {
 
             if (!this.metricCategories.contains(MetricCategory.RequestSummary)) {
                 return;
@@ -985,6 +989,24 @@ public final class ClientTelemetryMetrics {
                     requestCounter.increment();
                 }
 
+                CosmosMeterOptions actualItemCountOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMetricName.REQUEST_SUMMARY_DIRECT_ACTUAL_ITEM_COUNT);
+
+                if (actualItemCountOptions.isEnabled()
+                    && (!actualItemCountOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
+                    DistributionSummary actualItemCountMeter = DistributionSummary
+                        .builder(actualItemCountOptions.getMeterName().toString())
+                        .baseUnit("item count")
+                        .description("Rntbd response actual item count")
+                        .maximumExpectedValue(100_000d)
+                        .publishPercentiles()
+                        .publishPercentileHistogram(false)
+                        .tags(getEffectiveTags(requestTags, actualItemCountOptions))
+                        .register(compositeRegistry);
+                    actualItemCountMeter.record(Math.max(0, Math.min(actualItemCount, 100_000d)));
+                }
+
                 if (this.metricCategories.contains(MetricCategory.RequestDetails)) {
                     recordRequestTimeline(
                         ctx,
@@ -1012,7 +1034,8 @@ public final class ClientTelemetryMetrics {
             CosmosAsyncClient client,
             Duration latency,
             List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatisticsList,
-            int requestPayloadSizeInBytes) {
+            int requestPayloadSizeInBytes,
+            int actualItemCount) {
 
             if (gatewayStatisticsList == null
                 || gatewayStatisticsList.size() == 0
@@ -1096,6 +1119,24 @@ public final class ClientTelemetryMetrics {
                             .register(compositeRegistry);
                         requestLatencyMeter.record(latency);
                     }
+                }
+
+                CosmosMeterOptions actualItemCountOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_ACTUAL_ITEM_COUNT);
+
+                if (actualItemCountOptions.isEnabled()
+                    && (!actualItemCountOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
+                    DistributionSummary actualItemCountMeter = DistributionSummary
+                        .builder(actualItemCountOptions.getMeterName().toString())
+                        .baseUnit("item count")
+                        .description("Gateway response actual item count")
+                        .maximumExpectedValue(100_000d)
+                        .publishPercentiles()
+                        .publishPercentileHistogram(false)
+                        .tags(getEffectiveTags(requestTags, actualItemCountOptions))
+                        .register(compositeRegistry);
+                    actualItemCountMeter.record(Math.max(0, Math.min(actualItemCount, 100_000d)));
                 }
 
                 recordRequestTimeline(

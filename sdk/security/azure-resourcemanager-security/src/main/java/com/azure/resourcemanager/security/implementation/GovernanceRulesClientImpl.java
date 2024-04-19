@@ -42,22 +42,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GovernanceRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GovernanceRulesClient.
+ */
 public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GovernanceRulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityCenterImpl client;
 
     /**
      * Initializes an instance of GovernanceRulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GovernanceRulesClientImpl(SecurityCenterImpl client) {
-        this.service =
-            RestProxy.create(GovernanceRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(GovernanceRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,110 +74,84 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterGovern")
     public interface GovernanceRulesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Security/governanceRules")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GovernanceRuleList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("scope") String scope,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<GovernanceRuleList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Security/governanceRules/{ruleId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GovernanceRuleInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("scope") String scope,
-            @PathParam("ruleId") String ruleId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<GovernanceRuleInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @PathParam("ruleId") String ruleId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/{scope}/providers/Microsoft.Security/governanceRules/{ruleId}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GovernanceRuleInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("scope") String scope,
-            @PathParam("ruleId") String ruleId,
-            @BodyParam("application/json") GovernanceRuleInner governanceRule,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<GovernanceRuleInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @PathParam("ruleId") String ruleId, @BodyParam("application/json") GovernanceRuleInner governanceRule,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{scope}/providers/Microsoft.Security/governanceRules/{ruleId}")
-        @ExpectedResponses({200, 202, 204})
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("scope") String scope,
-            @PathParam("ruleId") String ruleId,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @PathParam("ruleId") String ruleId, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/{scope}/providers/Microsoft.Security/governanceRules/{ruleId}/execute")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> execute(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("scope") String scope,
+        Mono<Response<Flux<ByteBuffer>>> execute(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
             @PathParam("ruleId") String ruleId,
             @BodyParam("application/json") ExecuteGovernanceRuleParams executeGovernanceRuleParams,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Security/governanceRules/{ruleId}/operationResults/{operationId}")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<GovernanceRulesOperationResultsResponse> operationResults(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("scope") String scope,
-            @PathParam("ruleId") String ruleId,
-            @PathParam("operationId") String operationId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<GovernanceRulesOperationResultsResponse> operationResults(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @PathParam("ruleId") String ruleId, @PathParam("operationId") String operationId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GovernanceRuleList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<GovernanceRuleList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a list of all relevant governance rules over a scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all relevant governance rules over a scope along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GovernanceRuleInner>> listSinglePageAsync(String scope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -180,39 +160,30 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, scope, accept, context))
-            .<PagedResponse<GovernanceRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<GovernanceRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a list of all relevant governance rules over a scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all relevant governance rules over a scope along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GovernanceRuleInner>> listSinglePageAsync(String scope, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -220,26 +191,18 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
         final String apiVersion = "2022-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, scope, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), apiVersion, scope, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get a list of all relevant governance rules over a scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -252,11 +215,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Get a list of all relevant governance rules over a scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -265,17 +228,17 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<GovernanceRuleInner> listAsync(String scope, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(scope, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(scope, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get a list of all relevant governance rules over a scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -288,11 +251,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Get a list of all relevant governance rules over a scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -306,25 +269,23 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Get a specific governance rule for the requested scope by ruleId.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific governance rule for the requested scope by ruleId along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GovernanceRuleInner>> getWithResponseAsync(String scope, String ruleId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -341,26 +302,24 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Get a specific governance rule for the requested scope by ruleId.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific governance rule for the requested scope by ruleId along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GovernanceRuleInner>> getWithResponseAsync(String scope, String ruleId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -376,11 +335,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Get a specific governance rule for the requested scope by ruleId.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -394,11 +353,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Get a specific governance rule for the requested scope by ruleId.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -413,11 +372,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Get a specific governance rule for the requested scope by ruleId.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -431,11 +390,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Creates or updates a governance rule over a given scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param governanceRule Governance rule over a given scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -444,13 +403,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
      * @return governance rule over a given scope along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GovernanceRuleInner>> createOrUpdateWithResponseAsync(
-        String scope, String ruleId, GovernanceRuleInner governanceRule) {
+    private Mono<Response<GovernanceRuleInner>> createOrUpdateWithResponseAsync(String scope, String ruleId,
+        GovernanceRuleInner governanceRule) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -466,21 +423,18 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
         final String apiVersion = "2022-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(), apiVersion, scope, ruleId, governanceRule, accept, context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion, scope, ruleId,
+                governanceRule, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a governance rule over a given scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param governanceRule Governance rule over a given scope.
      * @param context The context to associate with this operation.
@@ -490,13 +444,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
      * @return governance rule over a given scope along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GovernanceRuleInner>> createOrUpdateWithResponseAsync(
-        String scope, String ruleId, GovernanceRuleInner governanceRule, Context context) {
+    private Mono<Response<GovernanceRuleInner>> createOrUpdateWithResponseAsync(String scope, String ruleId,
+        GovernanceRuleInner governanceRule, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -512,17 +464,17 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
         final String apiVersion = "2022-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(this.client.getEndpoint(), apiVersion, scope, ruleId, governanceRule, accept, context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, scope, ruleId, governanceRule, accept,
+            context);
     }
 
     /**
      * Creates or updates a governance rule over a given scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param governanceRule Governance rule over a given scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -531,19 +483,19 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
      * @return governance rule over a given scope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GovernanceRuleInner> createOrUpdateAsync(
-        String scope, String ruleId, GovernanceRuleInner governanceRule) {
+    private Mono<GovernanceRuleInner> createOrUpdateAsync(String scope, String ruleId,
+        GovernanceRuleInner governanceRule) {
         return createOrUpdateWithResponseAsync(scope, ruleId, governanceRule)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a governance rule over a given scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param governanceRule Governance rule over a given scope.
      * @param context The context to associate with this operation.
@@ -553,18 +505,18 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
      * @return governance rule over a given scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GovernanceRuleInner> createOrUpdateWithResponse(
-        String scope, String ruleId, GovernanceRuleInner governanceRule, Context context) {
+    public Response<GovernanceRuleInner> createOrUpdateWithResponse(String scope, String ruleId,
+        GovernanceRuleInner governanceRule, Context context) {
         return createOrUpdateWithResponseAsync(scope, ruleId, governanceRule, context).block();
     }
 
     /**
      * Creates or updates a governance rule over a given scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param governanceRule Governance rule over a given scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -579,11 +531,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Delete a Governance rule over a given scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -593,10 +545,8 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String scope, String ruleId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -612,11 +562,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Delete a Governance rule over a given scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -627,10 +577,8 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String scope, String ruleId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -645,11 +593,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Delete a Governance rule over a given scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -659,19 +607,17 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String scope, String ruleId) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(scope, ruleId);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a Governance rule over a given scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -683,18 +629,17 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String scope, String ruleId, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(scope, ruleId, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a Governance rule over a given scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -708,11 +653,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Delete a Governance rule over a given scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -727,11 +672,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Delete a Governance rule over a given scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -745,11 +690,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Delete a Governance rule over a given scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -764,11 +709,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Delete a Governance rule over a given scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -781,11 +726,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Delete a Governance rule over a given scope.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -799,11 +744,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Execute a governance rule.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param executeGovernanceRuleParams Execute governance rule over a given scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -812,13 +757,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> executeWithResponseAsync(
-        String scope, String ruleId, ExecuteGovernanceRuleParams executeGovernanceRuleParams) {
+    private Mono<Response<Flux<ByteBuffer>>> executeWithResponseAsync(String scope, String ruleId,
+        ExecuteGovernanceRuleParams executeGovernanceRuleParams) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -832,27 +775,18 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
         final String apiVersion = "2022-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .execute(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            scope,
-                            ruleId,
-                            executeGovernanceRuleParams,
-                            accept,
-                            context))
+            .withContext(context -> service.execute(this.client.getEndpoint(), apiVersion, scope, ruleId,
+                executeGovernanceRuleParams, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Execute a governance rule.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param executeGovernanceRuleParams Execute governance rule over a given scope.
      * @param context The context to associate with this operation.
@@ -862,13 +796,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> executeWithResponseAsync(
-        String scope, String ruleId, ExecuteGovernanceRuleParams executeGovernanceRuleParams, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> executeWithResponseAsync(String scope, String ruleId,
+        ExecuteGovernanceRuleParams executeGovernanceRuleParams, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -882,18 +814,17 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
         final String apiVersion = "2022-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .execute(
-                this.client.getEndpoint(), apiVersion, scope, ruleId, executeGovernanceRuleParams, accept, context);
+        return service.execute(this.client.getEndpoint(), apiVersion, scope, ruleId, executeGovernanceRuleParams,
+            accept, context);
     }
 
     /**
      * Execute a governance rule.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param executeGovernanceRuleParams Execute governance rule over a given scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -902,22 +833,20 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginExecuteAsync(
-        String scope, String ruleId, ExecuteGovernanceRuleParams executeGovernanceRuleParams) {
+    private PollerFlux<PollResult<Void>, Void> beginExecuteAsync(String scope, String ruleId,
+        ExecuteGovernanceRuleParams executeGovernanceRuleParams) {
         Mono<Response<Flux<ByteBuffer>>> mono = executeWithResponseAsync(scope, ruleId, executeGovernanceRuleParams);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Execute a governance rule.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -928,19 +857,17 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
     private PollerFlux<PollResult<Void>, Void> beginExecuteAsync(String scope, String ruleId) {
         final ExecuteGovernanceRuleParams executeGovernanceRuleParams = null;
         Mono<Response<Flux<ByteBuffer>>> mono = executeWithResponseAsync(scope, ruleId, executeGovernanceRuleParams);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Execute a governance rule.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param executeGovernanceRuleParams Execute governance rule over a given scope.
      * @param context The context to associate with this operation.
@@ -950,23 +877,22 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginExecuteAsync(
-        String scope, String ruleId, ExecuteGovernanceRuleParams executeGovernanceRuleParams, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginExecuteAsync(String scope, String ruleId,
+        ExecuteGovernanceRuleParams executeGovernanceRuleParams, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            executeWithResponseAsync(scope, ruleId, executeGovernanceRuleParams, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = executeWithResponseAsync(scope, ruleId, executeGovernanceRuleParams, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Execute a governance rule.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -981,11 +907,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Execute a governance rule.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param executeGovernanceRuleParams Execute governance rule over a given scope.
      * @param context The context to associate with this operation.
@@ -995,18 +921,18 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginExecute(
-        String scope, String ruleId, ExecuteGovernanceRuleParams executeGovernanceRuleParams, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginExecute(String scope, String ruleId,
+        ExecuteGovernanceRuleParams executeGovernanceRuleParams, Context context) {
         return this.beginExecuteAsync(scope, ruleId, executeGovernanceRuleParams, context).getSyncPoller();
     }
 
     /**
      * Execute a governance rule.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param executeGovernanceRuleParams Execute governance rule over a given scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1015,20 +941,19 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> executeAsync(
-        String scope, String ruleId, ExecuteGovernanceRuleParams executeGovernanceRuleParams) {
-        return beginExecuteAsync(scope, ruleId, executeGovernanceRuleParams)
-            .last()
+    private Mono<Void> executeAsync(String scope, String ruleId,
+        ExecuteGovernanceRuleParams executeGovernanceRuleParams) {
+        return beginExecuteAsync(scope, ruleId, executeGovernanceRuleParams).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Execute a governance rule.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1038,18 +963,17 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> executeAsync(String scope, String ruleId) {
         final ExecuteGovernanceRuleParams executeGovernanceRuleParams = null;
-        return beginExecuteAsync(scope, ruleId, executeGovernanceRuleParams)
-            .last()
+        return beginExecuteAsync(scope, ruleId, executeGovernanceRuleParams).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Execute a governance rule.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param executeGovernanceRuleParams Execute governance rule over a given scope.
      * @param context The context to associate with this operation.
@@ -1059,20 +983,19 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> executeAsync(
-        String scope, String ruleId, ExecuteGovernanceRuleParams executeGovernanceRuleParams, Context context) {
-        return beginExecuteAsync(scope, ruleId, executeGovernanceRuleParams, context)
-            .last()
+    private Mono<Void> executeAsync(String scope, String ruleId,
+        ExecuteGovernanceRuleParams executeGovernanceRuleParams, Context context) {
+        return beginExecuteAsync(scope, ruleId, executeGovernanceRuleParams, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Execute a governance rule.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1086,11 +1009,11 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Execute a governance rule.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param executeGovernanceRuleParams Execute governance rule over a given scope.
      * @param context The context to associate with this operation.
@@ -1099,34 +1022,32 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void execute(
-        String scope, String ruleId, ExecuteGovernanceRuleParams executeGovernanceRuleParams, Context context) {
+    public void execute(String scope, String ruleId, ExecuteGovernanceRuleParams executeGovernanceRuleParams,
+        Context context) {
         executeAsync(scope, ruleId, executeGovernanceRuleParams, context).block();
     }
 
     /**
      * Get governance rules long run operation result for the requested scope by ruleId and operationId.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param operationId The governance rule long running operation unique key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return governance rules long run operation result for the requested scope by ruleId and operationId on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GovernanceRulesOperationResultsResponse> operationResultsWithResponseAsync(
-        String scope, String ruleId, String operationId) {
+    private Mono<GovernanceRulesOperationResultsResponse> operationResultsWithResponseAsync(String scope, String ruleId,
+        String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -1140,21 +1061,18 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
         final String apiVersion = "2022-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .operationResults(
-                            this.client.getEndpoint(), apiVersion, scope, ruleId, operationId, accept, context))
+            .withContext(context -> service.operationResults(this.client.getEndpoint(), apiVersion, scope, ruleId,
+                operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get governance rules long run operation result for the requested scope by ruleId and operationId.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param operationId The governance rule long running operation unique key.
      * @param context The context to associate with this operation.
@@ -1162,16 +1080,14 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return governance rules long run operation result for the requested scope by ruleId and operationId on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GovernanceRulesOperationResultsResponse> operationResultsWithResponseAsync(
-        String scope, String ruleId, String operationId, Context context) {
+    private Mono<GovernanceRulesOperationResultsResponse> operationResultsWithResponseAsync(String scope, String ruleId,
+        String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -1185,39 +1101,39 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
         final String apiVersion = "2022-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .operationResults(this.client.getEndpoint(), apiVersion, scope, ruleId, operationId, accept, context);
+        return service.operationResults(this.client.getEndpoint(), apiVersion, scope, ruleId, operationId, accept,
+            context);
     }
 
     /**
      * Get governance rules long run operation result for the requested scope by ruleId and operationId.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param operationId The governance rule long running operation unique key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return governance rules long run operation result for the requested scope by ruleId and operationId on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationResultAutoGeneratedInner> operationResultsAsync(
-        String scope, String ruleId, String operationId) {
+    private Mono<OperationResultAutoGeneratedInner> operationResultsAsync(String scope, String ruleId,
+        String operationId) {
         return operationResultsWithResponseAsync(scope, ruleId, operationId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get governance rules long run operation result for the requested scope by ruleId and operationId.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param operationId The governance rule long running operation unique key.
      * @param context The context to associate with this operation.
@@ -1227,18 +1143,18 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
      * @return governance rules long run operation result for the requested scope by ruleId and operationId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GovernanceRulesOperationResultsResponse operationResultsWithResponse(
-        String scope, String ruleId, String operationId, Context context) {
+    public GovernanceRulesOperationResultsResponse operationResultsWithResponse(String scope, String ruleId,
+        String operationId, Context context) {
         return operationResultsWithResponseAsync(scope, ruleId, operationId, context).block();
     }
 
     /**
      * Get governance rules long run operation result for the requested scope by ruleId and operationId.
-     *
+     * 
      * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-     *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     'subscriptions/{subscriptionId}'), or security connector (format:
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     * 'subscriptions/{subscriptionId}'), or security connector (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
      * @param ruleId The governance rule key - unique key for the standard governance rule (GUID).
      * @param operationId The governance rule long running operation unique key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1253,14 +1169,15 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return page of a governance rules list along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return page of a governance rules list along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GovernanceRuleInner>> listNextSinglePageAsync(String nextLink) {
@@ -1268,37 +1185,28 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<GovernanceRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<GovernanceRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return page of a governance rules list along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return page of a governance rules list along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GovernanceRuleInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1306,23 +1214,13 @@ public final class GovernanceRulesClientImpl implements GovernanceRulesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

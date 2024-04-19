@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.FleetMemberUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The type used for update operations of the FleetMember. */
+/**
+ * The type used for update operations of the FleetMember.
+ */
 @Fluent
 public final class FleetMemberUpdate {
     /*
@@ -17,13 +19,15 @@ public final class FleetMemberUpdate {
     @JsonProperty(value = "properties")
     private FleetMemberUpdateProperties innerProperties;
 
-    /** Creates an instance of FleetMemberUpdate class. */
+    /**
+     * Creates an instance of FleetMemberUpdate class.
+     */
     public FleetMemberUpdate() {
     }
 
     /**
      * Get the innerProperties property: The updatable properties of the FleetMember.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FleetMemberUpdateProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class FleetMemberUpdate {
 
     /**
      * Get the group property: The group this member belongs to for multi-cluster update management.
-     *
+     * 
      * @return the group value.
      */
     public String group() {
@@ -41,7 +45,7 @@ public final class FleetMemberUpdate {
 
     /**
      * Set the group property: The group this member belongs to for multi-cluster update management.
-     *
+     * 
      * @param group the group value to set.
      * @return the FleetMemberUpdate object itself.
      */
@@ -55,7 +59,7 @@ public final class FleetMemberUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

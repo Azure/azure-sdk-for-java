@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.fluent.models.CustomEntityStoreAssignm
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of custom entity store assignments. */
+/**
+ * A list of custom entity store assignments.
+ */
 @Fluent
 public final class CustomEntityStoreAssignmentsListResult {
     /*
@@ -24,13 +26,15 @@ public final class CustomEntityStoreAssignmentsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of CustomEntityStoreAssignmentsListResult class. */
+    /**
+     * Creates an instance of CustomEntityStoreAssignmentsListResult class.
+     */
     public CustomEntityStoreAssignmentsListResult() {
     }
 
     /**
      * Get the value property: Collection of custom entity store assignments.
-     *
+     * 
      * @return the value value.
      */
     public List<CustomEntityStoreAssignmentInner> value() {
@@ -39,7 +43,7 @@ public final class CustomEntityStoreAssignmentsListResult {
 
     /**
      * Get the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class CustomEntityStoreAssignmentsListResult {
 
     /**
      * Set the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CustomEntityStoreAssignmentsListResult object itself.
      */
@@ -59,7 +63,7 @@ public final class CustomEntityStoreAssignmentsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

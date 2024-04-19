@@ -11,8 +11,7 @@ import com.azure.resourcemanager.datafactory.models.ExposureControlRequest;
  */
 public final class ExposureControlGetFeatureValueSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * ExposureControl_GetFeatureValue.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ExposureControl_GetFeatureValue.json
      */
     /**
      * Sample code: ExposureControl_GetFeatureValue.
@@ -21,8 +20,10 @@ public final class ExposureControlGetFeatureValueSamples {
      */
     public static void
         exposureControlGetFeatureValue(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.exposureControls().getFeatureValueWithResponse("WestEurope",
-            new ExposureControlRequest().withFeatureName("ADFIntegrationRuntimeSharingRbac").withFeatureType("Feature"),
-            com.azure.core.util.Context.NONE);
+        manager.exposureControls()
+            .getFeatureValueWithResponse("WestEurope",
+                new ExposureControlRequest().withFeatureName("ADFIntegrationRuntimeSharingRbac")
+                    .withFeatureType("Feature"),
+                com.azure.core.util.Context.NONE);
     }
 }

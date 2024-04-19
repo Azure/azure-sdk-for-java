@@ -13,7 +13,7 @@ public enum ShareSnapshotsDeleteOptionType {
     INCLUDE,
 
     /**
-     *  All of the share's snapshots, including those with an active lease, will be deleted with the share.
+     *  All the share's snapshots, including those with an active lease, will be deleted with the share.
      */
     INCLUDE_WITH_LEASED;
 }

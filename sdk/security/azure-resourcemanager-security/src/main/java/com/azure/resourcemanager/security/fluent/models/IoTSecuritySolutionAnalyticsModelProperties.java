@@ -13,7 +13,9 @@ import com.azure.resourcemanager.security.models.IoTSeverityMetrics;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Security analytics properties of your IoT Security solution. */
+/**
+ * Security analytics properties of your IoT Security solution.
+ */
 @Fluent
 public final class IoTSecuritySolutionAnalyticsModelProperties {
     /*
@@ -52,13 +54,15 @@ public final class IoTSecuritySolutionAnalyticsModelProperties {
     @JsonProperty(value = "mostPrevalentDeviceRecommendations")
     private List<IoTSecurityDeviceRecommendation> mostPrevalentDeviceRecommendations;
 
-    /** Creates an instance of IoTSecuritySolutionAnalyticsModelProperties class. */
+    /**
+     * Creates an instance of IoTSecuritySolutionAnalyticsModelProperties class.
+     */
     public IoTSecuritySolutionAnalyticsModelProperties() {
     }
 
     /**
      * Get the metrics property: Security analytics of your IoT Security solution.
-     *
+     * 
      * @return the metrics value.
      */
     public IoTSeverityMetrics metrics() {
@@ -67,7 +71,7 @@ public final class IoTSecuritySolutionAnalyticsModelProperties {
 
     /**
      * Get the unhealthyDeviceCount property: Number of unhealthy devices within your IoT Security solution.
-     *
+     * 
      * @return the unhealthyDeviceCount value.
      */
     public Long unhealthyDeviceCount() {
@@ -76,7 +80,7 @@ public final class IoTSecuritySolutionAnalyticsModelProperties {
 
     /**
      * Get the devicesMetrics property: List of device metrics by the aggregation date.
-     *
+     * 
      * @return the devicesMetrics value.
      */
     public List<IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem> devicesMetrics() {
@@ -85,7 +89,7 @@ public final class IoTSecuritySolutionAnalyticsModelProperties {
 
     /**
      * Get the topAlertedDevices property: List of the 3 devices with the most alerts.
-     *
+     * 
      * @return the topAlertedDevices value.
      */
     public List<IoTSecurityAlertedDevice> topAlertedDevices() {
@@ -94,19 +98,19 @@ public final class IoTSecuritySolutionAnalyticsModelProperties {
 
     /**
      * Set the topAlertedDevices property: List of the 3 devices with the most alerts.
-     *
+     * 
      * @param topAlertedDevices the topAlertedDevices value to set.
      * @return the IoTSecuritySolutionAnalyticsModelProperties object itself.
      */
-    public IoTSecuritySolutionAnalyticsModelProperties withTopAlertedDevices(
-        List<IoTSecurityAlertedDevice> topAlertedDevices) {
+    public IoTSecuritySolutionAnalyticsModelProperties
+        withTopAlertedDevices(List<IoTSecurityAlertedDevice> topAlertedDevices) {
         this.topAlertedDevices = topAlertedDevices;
         return this;
     }
 
     /**
      * Get the mostPrevalentDeviceAlerts property: List of the 3 most prevalent device alerts.
-     *
+     * 
      * @return the mostPrevalentDeviceAlerts value.
      */
     public List<IoTSecurityDeviceAlert> mostPrevalentDeviceAlerts() {
@@ -115,19 +119,19 @@ public final class IoTSecuritySolutionAnalyticsModelProperties {
 
     /**
      * Set the mostPrevalentDeviceAlerts property: List of the 3 most prevalent device alerts.
-     *
+     * 
      * @param mostPrevalentDeviceAlerts the mostPrevalentDeviceAlerts value to set.
      * @return the IoTSecuritySolutionAnalyticsModelProperties object itself.
      */
-    public IoTSecuritySolutionAnalyticsModelProperties withMostPrevalentDeviceAlerts(
-        List<IoTSecurityDeviceAlert> mostPrevalentDeviceAlerts) {
+    public IoTSecuritySolutionAnalyticsModelProperties
+        withMostPrevalentDeviceAlerts(List<IoTSecurityDeviceAlert> mostPrevalentDeviceAlerts) {
         this.mostPrevalentDeviceAlerts = mostPrevalentDeviceAlerts;
         return this;
     }
 
     /**
      * Get the mostPrevalentDeviceRecommendations property: List of the 3 most prevalent device recommendations.
-     *
+     * 
      * @return the mostPrevalentDeviceRecommendations value.
      */
     public List<IoTSecurityDeviceRecommendation> mostPrevalentDeviceRecommendations() {
@@ -136,7 +140,7 @@ public final class IoTSecuritySolutionAnalyticsModelProperties {
 
     /**
      * Set the mostPrevalentDeviceRecommendations property: List of the 3 most prevalent device recommendations.
-     *
+     * 
      * @param mostPrevalentDeviceRecommendations the mostPrevalentDeviceRecommendations value to set.
      * @return the IoTSecuritySolutionAnalyticsModelProperties object itself.
      */
@@ -148,7 +152,7 @@ public final class IoTSecuritySolutionAnalyticsModelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

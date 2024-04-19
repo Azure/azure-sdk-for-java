@@ -18,31 +18,34 @@ public final class DeleteActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeleteActivityTypeProperties model = BinaryData.fromString(
-            "{\"recursive\":\"datanq\",\"maxConcurrentConnections\":1637432269,\"enableLogging\":\"datau\",\"logStorageSettings\":{\"linkedServiceName\":{\"referenceName\":\"qwxivj\",\"parameters\":{\"ink\":\"datadvnoxjbhltxtpgq\"}},\"path\":\"dataayaf\",\"logLevel\":\"datacwawblkkc\",\"enableReliableLogging\":\"dataxsgklxgsqhczoku\",\"\":{\"qzcbqvjejnwwqyy\":\"dataqhbjmvbeznluk\",\"ybbhktnuzorxati\":\"datactfsdhmrughm\",\"lcfxsgjdiqemcgh\":\"datajqpdfsautviti\",\"bvrmvhtmzwgir\":\"datarrjawfcz\"}},\"dataset\":{\"referenceName\":\"fnzpybr\",\"parameters\":{\"hupvxthpsugebgb\":\"datavtvlqwpmm\",\"iiwuufofgfqge\":\"dataqnc\",\"jonasjdaxe\":\"dataxypxmke\",\"ih\":\"datafdsogl\"}},\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datawn\",\"disableMetricsCollection\":\"datai\",\"\":{\"tpmfachkzznnkmms\":\"datagqwd\"}}}")
+            "{\"recursive\":\"dataoeyyx\",\"maxConcurrentConnections\":2063070863,\"enableLogging\":\"datakkglahdwxyit\",\"logStorageSettings\":{\"linkedServiceName\":{\"referenceName\":\"foek\",\"parameters\":{\"gfy\":\"datajvtfzaqno\",\"s\":\"datafohuxpfxkjrhgw\"}},\"path\":\"dataewkkqvkuzifsg\",\"logLevel\":\"datalfk\",\"enableReliableLogging\":\"datamwezsirhpigq\",\"\":{\"ywbssli\":\"datadrcj\",\"qqeslnaoxke\":\"datahcpuddbzxi\",\"fzyxamyjhp\":\"datautrlzzztg\",\"ily\":\"datazuvsjblqmddtp\"}},\"dataset\":{\"referenceName\":\"joboqts\",\"parameters\":{\"uvcfmtmmpvoa\":\"datauywg\"}},\"storeSettings\":{\"type\":\"lxgtu\",\"maxConcurrentConnections\":\"datajgtsk\",\"disableMetricsCollection\":\"databjylo\",\"\":{\"qsubzi\":\"datacbqocerbwa\",\"nhesw\":\"dataelphauldalspe\",\"vgviycjulun\":\"datallqyvblfprskxhg\",\"bnjpivoizxkh\":\"datatuficip\"}}}")
             .toObject(DeleteActivityTypeProperties.class);
-        Assertions.assertEquals(1637432269, model.maxConcurrentConnections());
-        Assertions.assertEquals("qwxivj", model.logStorageSettings().linkedServiceName().referenceName());
-        Assertions.assertEquals("fnzpybr", model.dataset().referenceName());
+        Assertions.assertEquals(2063070863, model.maxConcurrentConnections());
+        Assertions.assertEquals("foek", model.logStorageSettings().linkedServiceName().referenceName());
+        Assertions.assertEquals("joboqts", model.dataset().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeleteActivityTypeProperties model = new DeleteActivityTypeProperties().withRecursive("datanq")
-            .withMaxConcurrentConnections(1637432269).withEnableLogging("datau")
+        DeleteActivityTypeProperties model = new DeleteActivityTypeProperties().withRecursive("dataoeyyx")
+            .withMaxConcurrentConnections(2063070863)
+            .withEnableLogging("datakkglahdwxyit")
             .withLogStorageSettings(new LogStorageSettings()
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("qwxivj")
-                    .withParameters(mapOf("ink", "datadvnoxjbhltxtpgq")))
-                .withPath("dataayaf").withLogLevel("datacwawblkkc").withEnableReliableLogging("dataxsgklxgsqhczoku")
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("foek")
+                    .withParameters(mapOf("gfy", "datajvtfzaqno", "s", "datafohuxpfxkjrhgw")))
+                .withPath("dataewkkqvkuzifsg")
+                .withLogLevel("datalfk")
+                .withEnableReliableLogging("datamwezsirhpigq")
                 .withAdditionalProperties(mapOf()))
-            .withDataset(new DatasetReference().withReferenceName("fnzpybr")
-                .withParameters(mapOf("hupvxthpsugebgb", "datavtvlqwpmm", "iiwuufofgfqge", "dataqnc", "jonasjdaxe",
-                    "dataxypxmke", "ih", "datafdsogl")))
-            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datawn")
-                .withDisableMetricsCollection("datai").withAdditionalProperties(mapOf("type", "StoreReadSettings")));
+            .withDataset(
+                new DatasetReference().withReferenceName("joboqts").withParameters(mapOf("uvcfmtmmpvoa", "datauywg")))
+            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datajgtsk")
+                .withDisableMetricsCollection("databjylo")
+                .withAdditionalProperties(mapOf("type", "lxgtu")));
         model = BinaryData.fromObject(model).toObject(DeleteActivityTypeProperties.class);
-        Assertions.assertEquals(1637432269, model.maxConcurrentConnections());
-        Assertions.assertEquals("qwxivj", model.logStorageSettings().linkedServiceName().referenceName());
-        Assertions.assertEquals("fnzpybr", model.dataset().referenceName());
+        Assertions.assertEquals(2063070863, model.maxConcurrentConnections());
+        Assertions.assertEquals("foek", model.logStorageSettings().linkedServiceName().referenceName());
+        Assertions.assertEquals("joboqts", model.dataset().referenceName());
     }
 
     // Use "Map.of" if available

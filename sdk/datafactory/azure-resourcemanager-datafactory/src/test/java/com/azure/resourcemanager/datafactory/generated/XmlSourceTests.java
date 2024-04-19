@@ -16,22 +16,27 @@ public final class XmlSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         XmlSource model = BinaryData.fromString(
-            "{\"type\":\"XmlSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datavcv\",\"disableMetricsCollection\":\"datalsb\",\"\":{\"teklgs\":\"datadjvyclasdprknup\",\"oaol\":\"datapvqczpk\",\"wcs\":\"datah\",\"euimtxmd\":\"dataebtjg\"}},\"formatSettings\":{\"type\":\"XmlReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"irnivf\":\"dataguk\"}},\"validationMode\":\"databskinmxanjgua\",\"detectDataType\":\"dataipgfxstw\",\"namespaces\":\"datazeqjno\",\"namespacePrefixes\":\"dataujliti\",\"\":{\"pbxspvkcng\":\"datamqxgjzslhopyqx\",\"klkhhjxww\":\"dataocnwnjmiitlamf\",\"wznwc\":\"datazsyetbffrhqz\",\"purv\":\"dataoapdtjkltetf\"}},\"additionalColumns\":\"datatjb\",\"sourceRetryCount\":\"datafume\",\"sourceRetryWait\":\"dataaafkvqhbw\",\"maxConcurrentConnections\":\"dataivqkyaghf\",\"disableMetricsCollection\":\"datablszsvegu\",\"\":{\"iufqxrlzij\":\"dataijpnymbjrs\"}}")
+            "{\"type\":\"bijoehhqwwsgqzi\",\"storeSettings\":{\"type\":\"awectzjjgvcbtq\",\"maxConcurrentConnections\":\"datapnkyvujhejy\",\"disableMetricsCollection\":\"datavlguysbrn\",\"\":{\"jshtcfnb\":\"dataqhmuqyzxkormr\"}},\"formatSettings\":{\"type\":\"zuaxtbr\",\"compressionProperties\":{\"type\":\"hxpdqoehub\",\"\":{\"glynbqpeo\":\"datazxnuxamxikhrxi\",\"wtihtnywgtsodnx\":\"dataecbog\"}},\"validationMode\":\"datarjtwjimcfrhtz\",\"detectDataType\":\"datauvoaxqo\",\"namespaces\":\"datalp\",\"namespacePrefixes\":\"datapbzyqbggxcyra\",\"\":{\"wxslzqlgxxbnrur\":\"dataurxlp\",\"upckhfbmdemohlsh\":\"datanwbjjy\",\"mwaej\":\"dataaaoofltbsay\",\"gabsfjrjzdq\":\"datazkqcmddcftnxyrtq\"}},\"additionalColumns\":\"datagorvgdibepg\",\"sourceRetryCount\":\"dataoetwjssyazm\",\"sourceRetryWait\":\"dataux\",\"maxConcurrentConnections\":\"dataokckxfk\",\"disableMetricsCollection\":\"dataqkby\",\"\":{\"gxlyvebvxjguwts\":\"dataeawucmqfurbtb\",\"fzv\":\"dataijwiznb\",\"ljjawsaskullvt\":\"dataxtykjrdxlximvr\"}}")
             .toObject(XmlSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        XmlSource model = new XmlSource().withSourceRetryCount("datafume").withSourceRetryWait("dataaafkvqhbw")
-            .withMaxConcurrentConnections("dataivqkyaghf").withDisableMetricsCollection("datablszsvegu")
-            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datavcv")
-                .withDisableMetricsCollection("datalsb").withAdditionalProperties(mapOf("type", "StoreReadSettings")))
+        XmlSource model = new XmlSource().withSourceRetryCount("dataoetwjssyazm")
+            .withSourceRetryWait("dataux")
+            .withMaxConcurrentConnections("dataokckxfk")
+            .withDisableMetricsCollection("dataqkby")
+            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datapnkyvujhejy")
+                .withDisableMetricsCollection("datavlguysbrn")
+                .withAdditionalProperties(mapOf("type", "awectzjjgvcbtq")))
             .withFormatSettings(new XmlReadSettings()
                 .withCompressionProperties(
-                    new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings")))
-                .withValidationMode("databskinmxanjgua").withDetectDataType("dataipgfxstw").withNamespaces("datazeqjno")
-                .withNamespacePrefixes("dataujliti"))
-            .withAdditionalColumns("datatjb");
+                    new CompressionReadSettings().withAdditionalProperties(mapOf("type", "hxpdqoehub")))
+                .withValidationMode("datarjtwjimcfrhtz")
+                .withDetectDataType("datauvoaxqo")
+                .withNamespaces("datalp")
+                .withNamespacePrefixes("datapbzyqbggxcyra"))
+            .withAdditionalColumns("datagorvgdibepg");
         model = BinaryData.fromObject(model).toObject(XmlSource.class);
     }
 

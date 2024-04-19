@@ -14,21 +14,23 @@ public final class ScriptActivityParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptActivityParameter model = BinaryData.fromString(
-            "{\"name\":\"datau\",\"type\":\"DateTimeOffset\",\"value\":\"datajoshmmzotcpf\",\"direction\":\"Output\",\"size\":119206096}")
+            "{\"name\":\"datattoplx\",\"type\":\"Timespan\",\"value\":\"dataliyikcnlb\",\"direction\":\"InputOutput\",\"size\":401356233}")
             .toObject(ScriptActivityParameter.class);
-        Assertions.assertEquals(ScriptActivityParameterType.DATE_TIME_OFFSET, model.type());
-        Assertions.assertEquals(ScriptActivityParameterDirection.OUTPUT, model.direction());
-        Assertions.assertEquals(119206096, model.size());
+        Assertions.assertEquals(ScriptActivityParameterType.TIMESPAN, model.type());
+        Assertions.assertEquals(ScriptActivityParameterDirection.INPUT_OUTPUT, model.direction());
+        Assertions.assertEquals(401356233, model.size());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptActivityParameter model = new ScriptActivityParameter().withName("datau")
-            .withType(ScriptActivityParameterType.DATE_TIME_OFFSET).withValue("datajoshmmzotcpf")
-            .withDirection(ScriptActivityParameterDirection.OUTPUT).withSize(119206096);
+        ScriptActivityParameter model = new ScriptActivityParameter().withName("datattoplx")
+            .withType(ScriptActivityParameterType.TIMESPAN)
+            .withValue("dataliyikcnlb")
+            .withDirection(ScriptActivityParameterDirection.INPUT_OUTPUT)
+            .withSize(401356233);
         model = BinaryData.fromObject(model).toObject(ScriptActivityParameter.class);
-        Assertions.assertEquals(ScriptActivityParameterType.DATE_TIME_OFFSET, model.type());
-        Assertions.assertEquals(ScriptActivityParameterDirection.OUTPUT, model.direction());
-        Assertions.assertEquals(119206096, model.size());
+        Assertions.assertEquals(ScriptActivityParameterType.TIMESPAN, model.type());
+        Assertions.assertEquals(ScriptActivityParameterDirection.INPUT_OUTPUT, model.direction());
+        Assertions.assertEquals(401356233, model.size());
     }
 }

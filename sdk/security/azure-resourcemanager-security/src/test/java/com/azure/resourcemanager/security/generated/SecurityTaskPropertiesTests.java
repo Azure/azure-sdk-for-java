@@ -13,22 +13,19 @@ import java.util.Map;
 public final class SecurityTaskPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecurityTaskProperties model =
-            BinaryData
-                .fromString(
-                    "{\"state\":\"ezikywggxkal\",\"creationTimeUtc\":\"2021-08-12T08:34:22Z\",\"securityTaskParameters\":{\"name\":\"lwuip\",\"\":{\"gvvcnayrhyr\":\"datajzkzi\",\"rdvstkwqqtch\":\"dataxxmueedn\",\"mtdaa\":\"dataalm\",\"vgpiohgwxrt\":\"datagdv\"}},\"lastStateChangeTimeUtc\":\"2021-04-12T14:57:26Z\",\"subState\":\"epxgyqagvr\"}")
-                .toObject(SecurityTaskProperties.class);
+        SecurityTaskProperties model = BinaryData.fromString(
+            "{\"state\":\"mutduqktaps\",\"creationTimeUtc\":\"2021-02-04T06:09:20Z\",\"securityTaskParameters\":{\"name\":\"ertumkdo\",\"\":{\"bbjfddgmbmbexp\":\"datawhbmd\"}},\"lastStateChangeTimeUtc\":\"2021-01-22T16:16:35Z\",\"subState\":\"q\"}")
+            .toObject(SecurityTaskProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityTaskProperties model =
-            new SecurityTaskProperties()
-                .withSecurityTaskParameters(
-                    new SecurityTaskParameters().withAdditionalProperties(mapOf("name", "lwuip")));
+        SecurityTaskProperties model = new SecurityTaskProperties().withSecurityTaskParameters(
+            new SecurityTaskParameters().withAdditionalProperties(mapOf("name", "ertumkdo")));
         model = BinaryData.fromObject(model).toObject(SecurityTaskProperties.class);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

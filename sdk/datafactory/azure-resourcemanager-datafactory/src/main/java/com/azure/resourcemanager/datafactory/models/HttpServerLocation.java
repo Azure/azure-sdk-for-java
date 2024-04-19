@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The location of http server.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = HttpServerLocation.class, visible = true)
 @JsonTypeName("HttpServerLocation")
 @Fluent
 public final class HttpServerLocation extends DatasetLocation {
+    /*
+     * Type of dataset storage location.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "HttpServerLocation";
+
     /*
      * Specify the relativeUrl of http server. Type: string (or Expression with resultType string)
      */
@@ -29,8 +37,18 @@ public final class HttpServerLocation extends DatasetLocation {
     }
 
     /**
-     * Get the relativeUrl property: Specify the relativeUrl of http server. Type: string (or Expression with
-     * resultType string).
+     * Get the type property: Type of dataset storage location.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the relativeUrl property: Specify the relativeUrl of http server. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the relativeUrl value.
      */
@@ -39,8 +57,8 @@ public final class HttpServerLocation extends DatasetLocation {
     }
 
     /**
-     * Set the relativeUrl property: Specify the relativeUrl of http server. Type: string (or Expression with
-     * resultType string).
+     * Set the relativeUrl property: Specify the relativeUrl of http server. Type: string (or Expression with resultType
+     * string).
      * 
      * @param relativeUrl the relativeUrl value to set.
      * @return the HttpServerLocation object itself.

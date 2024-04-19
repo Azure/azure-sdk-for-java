@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.metrics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,67 +12,68 @@ import java.util.Collection;
  */
 public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
     /**
-     * Static value Count for MetricUnit.
+     * Unit of raw quantity.
      */
     public static final MetricUnit COUNT = fromString("Count");
 
     /**
-     * Static value Bytes for MetricUnit.
+     * Unit of memory in bytes.
      */
     public static final MetricUnit BYTES = fromString("Bytes");
 
     /**
-     * Static value Seconds for MetricUnit.
+     * Unit of time in seconds.
      */
     public static final MetricUnit SECONDS = fromString("Seconds");
 
     /**
-     * Static value CountPerSecond for MetricUnit.
+     * Rate unit of raw quantity per second.
      */
     public static final MetricUnit COUNT_PER_SECOND = fromString("CountPerSecond");
 
     /**
-     * Static value BytesPerSecond for MetricUnit.
+     * Rate unit of memory in bytes per second.
      */
     public static final MetricUnit BYTES_PER_SECOND = fromString("BytesPerSecond");
 
     /**
-     * Static value Percent for MetricUnit.
+     * Percentage unit.
      */
     public static final MetricUnit PERCENT = fromString("Percent");
 
     /**
-     * Static value MilliSeconds for MetricUnit.
+     * Unit of time in 1/1000th of a second.
      */
     public static final MetricUnit MILLI_SECONDS = fromString("MilliSeconds");
 
     /**
-     * Static value ByteSeconds for MetricUnit.
+     * Unit of data transfer or storage. It is the size of the data in bytes multiplied by the time it takes to transfer
+     * or store the data in seconds.
      */
     public static final MetricUnit BYTE_SECONDS = fromString("ByteSeconds");
 
     /**
-     * Static value Unspecified for MetricUnit.
+     * No specified unit.
      */
     public static final MetricUnit UNSPECIFIED = fromString("Unspecified");
 
     /**
-     * Static value Cores for MetricUnit.
+     * Unit of processing power.
      */
     public static final MetricUnit CORES = fromString("Cores");
 
     /**
-     * Static value MilliCores for MetricUnit.
+     * Unit of processing power in 1/1000th of a CPU core.
      */
     public static final MetricUnit MILLI_CORES = fromString("MilliCores");
 
     /**
-     * Static value NanoCores for MetricUnit.
+     * Unit of processing power in one billionth of a CPU core.
      */
     public static final MetricUnit NANO_CORES = fromString("NanoCores");
 
     /**
-     * Static value BitsPerSecond for MetricUnit.
+     * Rate unit of binary digits per second.
      */
     public static final MetricUnit BITS_PER_SECOND = fromString("BitsPerSecond");
 
@@ -92,7 +92,6 @@ public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
      * @param name a name to look for.
      * @return the corresponding MetricUnit.
      */
-    @JsonCreator
     public static MetricUnit fromString(String name) {
         return fromString(name, MetricUnit.class);
     }

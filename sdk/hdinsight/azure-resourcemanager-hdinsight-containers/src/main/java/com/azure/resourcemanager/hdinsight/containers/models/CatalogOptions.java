@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Trino cluster catalog options. */
+/**
+ * Trino cluster catalog options.
+ */
 @Fluent
 public final class CatalogOptions {
     /*
@@ -17,13 +19,15 @@ public final class CatalogOptions {
     @JsonProperty(value = "hive")
     private List<HiveCatalogOption> hive;
 
-    /** Creates an instance of CatalogOptions class. */
+    /**
+     * Creates an instance of CatalogOptions class.
+     */
     public CatalogOptions() {
     }
 
     /**
      * Get the hive property: hive catalog options.
-     *
+     * 
      * @return the hive value.
      */
     public List<HiveCatalogOption> hive() {
@@ -32,7 +36,7 @@ public final class CatalogOptions {
 
     /**
      * Set the hive property: hive catalog options.
-     *
+     * 
      * @param hive the hive value to set.
      * @return the CatalogOptions object itself.
      */
@@ -43,7 +47,7 @@ public final class CatalogOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

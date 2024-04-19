@@ -483,7 +483,7 @@ public class GatewayAddressCache implements IAddressCache {
             CosmosException dce;
             if (!(exception instanceof CosmosException)) {
                 // wrap in CosmosException
-                logger.error("Network failure", exception);
+                logger.warn("Network failure", exception);
                 int statusCode = 0;
                 if (WebExceptionUtility.isNetworkFailure(exception)) {
                     if (WebExceptionUtility.isReadTimeoutException(exception)) {
@@ -864,7 +864,7 @@ public class GatewayAddressCache implements IAddressCache {
             CosmosException dce;
             if (!(exception instanceof CosmosException)) {
                 // wrap in CosmosException
-                logger.error("Network failure", exception);
+                logger.warn("Network failure", exception);
                 int statusCode = 0;
                 if (WebExceptionUtility.isNetworkFailure(exception)) {
                     if (WebExceptionUtility.isReadTimeoutException(exception)) {

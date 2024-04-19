@@ -12,8 +12,8 @@ public final class ExternalSecuritySolutionImpl implements ExternalSecuritySolut
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    ExternalSecuritySolutionImpl(
-        ExternalSecuritySolutionInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    ExternalSecuritySolutionImpl(ExternalSecuritySolutionInner innerObject,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

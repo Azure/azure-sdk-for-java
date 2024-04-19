@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The cloudwatch to kinesis connection configuration. */
+/**
+ * The cloudwatch to kinesis connection configuration.
+ */
 @Fluent
 public final class DefenderForContainersAwsOfferingCloudWatchToKinesis {
     /*
@@ -16,13 +18,15 @@ public final class DefenderForContainersAwsOfferingCloudWatchToKinesis {
     @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
 
-    /** Creates an instance of DefenderForContainersAwsOfferingCloudWatchToKinesis class. */
+    /**
+     * Creates an instance of DefenderForContainersAwsOfferingCloudWatchToKinesis class.
+     */
     public DefenderForContainersAwsOfferingCloudWatchToKinesis() {
     }
 
     /**
      * Get the cloudRoleArn property: The cloud role ARN in AWS used by CloudWatch to transfer data into Kinesis.
-     *
+     * 
      * @return the cloudRoleArn value.
      */
     public String cloudRoleArn() {
@@ -31,7 +35,7 @@ public final class DefenderForContainersAwsOfferingCloudWatchToKinesis {
 
     /**
      * Set the cloudRoleArn property: The cloud role ARN in AWS used by CloudWatch to transfer data into Kinesis.
-     *
+     * 
      * @param cloudRoleArn the cloudRoleArn value to set.
      * @return the DefenderForContainersAwsOfferingCloudWatchToKinesis object itself.
      */
@@ -42,7 +46,7 @@ public final class DefenderForContainersAwsOfferingCloudWatchToKinesis {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -13,16 +13,16 @@ public final class FileServerWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileServerWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"FileServerWriteSettings\",\"maxConcurrentConnections\":\"datasqvubwwqgiyu\",\"disableMetricsCollection\":\"datarvwjxmwal\",\"copyBehavior\":\"datajtnsnbpiuvqho\",\"metadata\":[{\"name\":\"datartrsnpbsung\",\"value\":\"datakkmkzfbjucg\"},{\"name\":\"datazjyrdiiwhmrhzq\",\"value\":\"datapjydwm\"}],\"\":{\"pqupdcsvzugiur\":\"dataytjpua\",\"jzscrjtnq\":\"datagqlvl\"}}")
+            "{\"type\":\"vfiskkqspzwsxn\",\"maxConcurrentConnections\":\"datackpcssusdr\",\"disableMetricsCollection\":\"datammrzwm\",\"copyBehavior\":\"datatkcvolaxnuk\",\"metadata\":[{\"name\":\"datau\",\"value\":\"datadcqoxyxiyhmj\"}],\"\":{\"qiygbouv\":\"datawkezgva\"}}")
             .toObject(FileServerWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileServerWriteSettings model = new FileServerWriteSettings().withMaxConcurrentConnections("datasqvubwwqgiyu")
-            .withDisableMetricsCollection("datarvwjxmwal").withCopyBehavior("datajtnsnbpiuvqho")
-            .withMetadata(Arrays.asList(new MetadataItem().withName("datartrsnpbsung").withValue("datakkmkzfbjucg"),
-                new MetadataItem().withName("datazjyrdiiwhmrhzq").withValue("datapjydwm")));
+        FileServerWriteSettings model = new FileServerWriteSettings().withMaxConcurrentConnections("datackpcssusdr")
+            .withDisableMetricsCollection("datammrzwm")
+            .withCopyBehavior("datatkcvolaxnuk")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("datau").withValue("datadcqoxyxiyhmj")));
         model = BinaryData.fromObject(model).toObject(FileServerWriteSettings.class);
     }
 }

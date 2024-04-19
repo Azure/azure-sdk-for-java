@@ -13,21 +13,27 @@ import java.util.Map;
  */
 @Fluent
 public final class UpdateChatMessageOptions {
-    /**
+    /*
      * Chat message content.
      */
     @JsonProperty(value = "content")
     private String content;
 
-    /**
+    /*
      * Message metadata.
      */
     @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
     /**
+     * Creates an instance of UpdateChatMessageOptions class.
+     */
+    public UpdateChatMessageOptions() {
+    }
+
+    /**
      * Get the content property: Chat message content.
-     *
+     * 
      * @return the content value.
      */
     public String getContent() {
@@ -36,7 +42,7 @@ public final class UpdateChatMessageOptions {
 
     /**
      * Set the content property: Chat message content.
-     *
+     * 
      * @param content the content value to set.
      * @return the UpdateChatMessageOptions object itself.
      */
@@ -47,7 +53,7 @@ public final class UpdateChatMessageOptions {
 
     /**
      * Get the metadata property: Message metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> getMetadata() {
@@ -56,7 +62,7 @@ public final class UpdateChatMessageOptions {
 
     /**
      * Set the metadata property: Message metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the UpdateChatMessageOptions object itself.
      */

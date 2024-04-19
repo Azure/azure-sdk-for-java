@@ -10,33 +10,26 @@ import com.azure.resourcemanager.cdn.models.AfdDomainHttpsParameters;
 import com.azure.resourcemanager.cdn.models.AfdMinimumTlsVersion;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 
-/** Samples for AfdCustomDomains Create. */
+/**
+ * Samples for AfdCustomDomains Create.
+ */
 public final class AfdCustomDomainsCreateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/AFDCustomDomains_Create.json
+     * x-ms-original-file:
+     * specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/AFDCustomDomains_Create.json
      */
     /**
      * Sample code: AFDCustomDomains_Create.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void aFDCustomDomainsCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cdnProfiles()
-            .manager()
-            .serviceClient()
-            .getAfdCustomDomains()
-            .create(
-                "RG",
-                "profile1",
-                "domain1",
-                new AfdDomainInner()
-                    .withHostname("www.someDomain.net")
-                    .withTlsSettings(
-                        new AfdDomainHttpsParameters()
-                            .withCertificateType(AfdCertificateType.MANAGED_CERTIFICATE)
-                            .withMinimumTlsVersion(AfdMinimumTlsVersion.TLS12))
-                    .withAzureDnsZone(new ResourceReference().withId("")),
-                com.azure.core.util.Context.NONE);
+        azure.cdnProfiles().manager().serviceClient().getAfdCustomDomains().create("RG", "profile1", "domain1",
+            new AfdDomainInner().withHostname("www.someDomain.net")
+                .withTlsSettings(
+                    new AfdDomainHttpsParameters().withCertificateType(AfdCertificateType.MANAGED_CERTIFICATE)
+                        .withMinimumTlsVersion(AfdMinimumTlsVersion.TLS12))
+                .withAzureDnsZone(new ResourceReference().withId("")),
+            com.azure.core.util.Context.NONE);
     }
 }

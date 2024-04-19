@@ -112,7 +112,7 @@ parameters:
   default: true
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: storage
     EnableBatchRelease: true
@@ -164,6 +164,8 @@ extends:
         groupId: com.azure
         # required by the above perf library
       - name: perf-test-core
+        groupId: com.azure
+      - name: azure-aot-graalvm-perf
         groupId: com.azure
     MatrixConfigs:
       - Name: Storage_ci

@@ -11,16 +11,19 @@ public final class GreenplumSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GreenplumSource model = BinaryData.fromString(
-            "{\"type\":\"GreenplumSource\",\"query\":\"databrolqxloed\",\"queryTimeout\":\"datarvfrfsyqb\",\"additionalColumns\":\"datawujwowthvuepszzn\",\"sourceRetryCount\":\"datajnsp\",\"sourceRetryWait\":\"dataqo\",\"maxConcurrentConnections\":\"datautqt\",\"disableMetricsCollection\":\"dataivvnmavfzjwdwwnx\",\"\":{\"piwcgcwmsh\":\"datand\",\"pzclkatpuomga\":\"datapqxjxhdwjfx\",\"vcfbflyzcqomlybs\":\"datavcqnjjfm\"}}")
+            "{\"type\":\"yl\",\"query\":\"datawctjhdbi\",\"queryTimeout\":\"datatfaekpxv\",\"additionalColumns\":\"datadrcmtsorwta\",\"sourceRetryCount\":\"datarfvoskwujhskx\",\"sourceRetryWait\":\"datak\",\"maxConcurrentConnections\":\"datasa\",\"disableMetricsCollection\":\"dataf\",\"\":{\"qicsfaqypj\":\"dataaxgtwpzqti\"}}")
             .toObject(GreenplumSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GreenplumSource model = new GreenplumSource().withSourceRetryCount("datajnsp").withSourceRetryWait("dataqo")
-            .withMaxConcurrentConnections("datautqt").withDisableMetricsCollection("dataivvnmavfzjwdwwnx")
-            .withQueryTimeout("datarvfrfsyqb").withAdditionalColumns("datawujwowthvuepszzn")
-            .withQuery("databrolqxloed");
+        GreenplumSource model = new GreenplumSource().withSourceRetryCount("datarfvoskwujhskx")
+            .withSourceRetryWait("datak")
+            .withMaxConcurrentConnections("datasa")
+            .withDisableMetricsCollection("dataf")
+            .withQueryTimeout("datatfaekpxv")
+            .withAdditionalColumns("datadrcmtsorwta")
+            .withQuery("datawctjhdbi");
         model = BinaryData.fromObject(model).toObject(GreenplumSource.class);
     }
 }

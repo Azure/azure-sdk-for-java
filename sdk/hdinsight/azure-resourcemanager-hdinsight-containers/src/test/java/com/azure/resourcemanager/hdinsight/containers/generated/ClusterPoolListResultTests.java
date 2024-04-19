@@ -7,10 +7,12 @@ package com.azure.resourcemanager.hdinsight.containers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterPoolInner;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolListResult;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourceProperties;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourcePropertiesClusterPoolProfile;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourcePropertiesComputeProfile;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourcePropertiesLogAnalyticsProfile;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourcePropertiesNetworkProfile;
+import com.azure.resourcemanager.hdinsight.containers.models.OutboundType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,95 +21,53 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterPoolListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPoolListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"deploymentId\":\"ybb\",\"managedResourceGroupName\":\"odepoogin\",\"aksManagedResourceGroupName\":\"amiheognarxz\",\"clusterPoolProfile\":{\"clusterPoolVersion\":\"heotusiv\"},\"computeProfile\":{\"vmSize\":\"evcciqihnhun\",\"count\":1154149650},\"aksClusterProfile\":{\"aksClusterResourceId\":\"rnfygxgispem\",\"aksClusterAgentPoolIdentityProfile\":{\"msiResourceId\":\"zfkufubljofx\",\"msiClientId\":\"eofjaeqjh\",\"msiObjectId\":\"jbasvmsmjqulngs\"},\"aksVersion\":\"nbybkzgcwrwcl\"},\"networkProfile\":{\"subnetId\":\"wrljdouskc\"},\"logAnalyticsProfile\":{\"enabled\":true,\"workspaceId\":\"cr\"},\"status\":\"dkwt\"},\"location\":\"xbnjbiksq\",\"tags\":{\"fmppe\":\"ssainqpjwnzll\",\"c\":\"bvmgxsabkyqduuji\"},\"id\":\"czdzev\",\"name\":\"dhkrwpdappdsbdk\",\"type\":\"wrwjfeu\"},{\"properties\":{\"provisioningState\":\"Failed\",\"deploymentId\":\"je\",\"managedResourceGroupName\":\"mrldhu\",\"aksManagedResourceGroupName\":\"zzd\",\"clusterPoolProfile\":{\"clusterPoolVersion\":\"qxhocdgeablgphut\"},\"computeProfile\":{\"vmSize\":\"cndvkaozwyiftyhx\",\"count\":1298689588},\"aksClusterProfile\":{\"aksClusterResourceId\":\"ftyxolniw\",\"aksClusterAgentPoolIdentityProfile\":{\"msiResourceId\":\"cukjf\",\"msiClientId\":\"giawx\",\"msiObjectId\":\"lryplwckbasyy\"},\"aksVersion\":\"ddhsgcbacphe\"},\"networkProfile\":{\"subnetId\":\"ot\"},\"logAnalyticsProfile\":{\"enabled\":false,\"workspaceId\":\"oulzndlikwyq\"},\"status\":\"fgibmadgakeq\"},\"location\":\"xybz\",\"tags\":{\"kzsmodm\":\"dqytbciqfouflmm\"},\"id\":\"lougpbkw\",\"name\":\"mutduqktaps\",\"type\":\"wgcu\"},{\"properties\":{\"provisioningState\":\"Failed\",\"deploymentId\":\"kdosvqw\",\"managedResourceGroupName\":\"mdgbbjfdd\",\"aksManagedResourceGroupName\":\"bmbexppbhtqqro\",\"clusterPoolProfile\":{\"clusterPoolVersion\":\"p\"},\"computeProfile\":{\"vmSize\":\"psalgbqux\",\"count\":596871405},\"aksClusterProfile\":{\"aksClusterResourceId\":\"gzjaoyfhrtxilne\",\"aksClusterAgentPoolIdentityProfile\":{\"msiResourceId\":\"ujysvle\",\"msiClientId\":\"uvfqawrlyxwj\",\"msiObjectId\":\"cpr\"},\"aksVersion\":\"wbxgjvt\"},\"networkProfile\":{\"subnetId\":\"p\"},\"logAnalyticsProfile\":{\"enabled\":false,\"workspaceId\":\"dnrujqguhmuouqfp\"},\"status\":\"zw\"},\"location\":\"g\",\"tags\":{\"gazxuf\":\"nwui\"},\"id\":\"zuckyfi\",\"name\":\"rfidfvzwdz\",\"type\":\"htymw\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"deploymentId\":\"thwxmnteiwaopvkm\",\"managedResourceGroupName\":\"c\",\"aksManagedResourceGroupName\":\"xdcu\",\"clusterPoolProfile\":{\"clusterPoolVersion\":\"fsrpymzidnse\"},\"computeProfile\":{\"vmSize\":\"cxtbzsg\",\"count\":121296393},\"aksClusterProfile\":{\"aksClusterResourceId\":\"newmdwzjeiachbo\",\"aksClusterAgentPoolIdentityProfile\":{\"msiResourceId\":\"flnrosfqpteehzz\",\"msiClientId\":\"ypyqrimzinp\",\"msiObjectId\":\"swjdkirso\"},\"aksVersion\":\"qxhcrmn\"},\"networkProfile\":{\"subnetId\":\"jtckwhdso\"},\"logAnalyticsProfile\":{\"enabled\":false,\"workspaceId\":\"i\"},\"status\":\"xsqwpgrjbznorc\"},\"location\":\"vsnb\",\"tags\":{\"zafb\":\"abnmocpcyshu\",\"oq\":\"jjgpb\"},\"id\":\"jmkljavbqidtqajz\",\"name\":\"ulpkudjkrl\",\"type\":\"hbzhfepg\"}],\"nextLink\":\"qex\"}")
-                .toObject(ClusterPoolListResult.class);
-        Assertions.assertEquals("xbnjbiksq", model.value().get(0).location());
-        Assertions.assertEquals("ssainqpjwnzll", model.value().get(0).tags().get("fmppe"));
-        Assertions.assertEquals("odepoogin", model.value().get(0).managedResourceGroupName());
-        Assertions.assertEquals("heotusiv", model.value().get(0).clusterPoolProfile().clusterPoolVersion());
-        Assertions.assertEquals("evcciqihnhun", model.value().get(0).computeProfile().vmSize());
-        Assertions.assertEquals("wrljdouskc", model.value().get(0).networkProfile().subnetId());
-        Assertions.assertEquals(true, model.value().get(0).logAnalyticsProfile().enabled());
-        Assertions.assertEquals("cr", model.value().get(0).logAnalyticsProfile().workspaceId());
+        ClusterPoolListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"deploymentId\":\"jdous\",\"managedResourceGroupName\":\"qvkoc\",\"aksManagedResourceGroupName\":\"jdkwtnhxbnjb\",\"clusterPoolProfile\":{\"clusterPoolVersion\":\"sqrglssainq\"},\"computeProfile\":{\"vmSize\":\"jwnzlljfmp\",\"count\":1098993569},\"aksClusterProfile\":{\"aksClusterResourceId\":\"mgxsab\",\"aksClusterAgentPoolIdentityProfile\":{\"msiResourceId\":\"qduujitcjczdz\",\"msiClientId\":\"vndhkrwpdapp\",\"msiObjectId\":\"sbdkvwr\"},\"aksVersion\":\"feusnhut\"},\"networkProfile\":{\"subnetId\":\"ltmrldh\",\"outboundType\":\"loadBalancer\",\"enablePrivateApiServer\":true,\"apiServerAuthorizedIpRanges\":[\"tqxhocdgeab\",\"gphuticndvka\"]},\"logAnalyticsProfile\":{\"enabled\":true,\"workspaceId\":\"i\"},\"status\":\"yhxhu\"},\"location\":\"k\",\"tags\":{\"iawxklry\":\"xolniwpwcukjfk\",\"cbacphejkotynqg\":\"lwckbasyypnddhs\"},\"id\":\"ulzndlikwyqk\",\"name\":\"fgibmadgakeq\",\"type\":\"rxybz\"}],\"nextLink\":\"e\"}")
+            .toObject(ClusterPoolListResult.class);
+        Assertions.assertEquals("k", model.value().get(0).location());
+        Assertions.assertEquals("xolniwpwcukjfk", model.value().get(0).tags().get("iawxklry"));
+        Assertions.assertEquals("qvkoc", model.value().get(0).properties().managedResourceGroupName());
+        Assertions.assertEquals("sqrglssainq",
+            model.value().get(0).properties().clusterPoolProfile().clusterPoolVersion());
+        Assertions.assertEquals("jwnzlljfmp", model.value().get(0).properties().computeProfile().vmSize());
+        Assertions.assertEquals("ltmrldh", model.value().get(0).properties().networkProfile().subnetId());
+        Assertions.assertEquals(OutboundType.LOAD_BALANCER,
+            model.value().get(0).properties().networkProfile().outboundType());
+        Assertions.assertEquals(true, model.value().get(0).properties().networkProfile().enablePrivateApiServer());
+        Assertions.assertEquals("tqxhocdgeab",
+            model.value().get(0).properties().networkProfile().apiServerAuthorizedIpRanges().get(0));
+        Assertions.assertEquals(true, model.value().get(0).properties().logAnalyticsProfile().enabled());
+        Assertions.assertEquals("i", model.value().get(0).properties().logAnalyticsProfile().workspaceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPoolListResult model =
-            new ClusterPoolListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ClusterPoolInner()
-                                .withLocation("xbnjbiksq")
-                                .withTags(mapOf("fmppe", "ssainqpjwnzll", "c", "bvmgxsabkyqduuji"))
-                                .withManagedResourceGroupName("odepoogin")
-                                .withClusterPoolProfile(
-                                    new ClusterPoolResourcePropertiesClusterPoolProfile()
-                                        .withClusterPoolVersion("heotusiv"))
-                                .withComputeProfile(
-                                    new ClusterPoolResourcePropertiesComputeProfile().withVmSize("evcciqihnhun"))
-                                .withNetworkProfile(
-                                    new ClusterPoolResourcePropertiesNetworkProfile().withSubnetId("wrljdouskc"))
-                                .withLogAnalyticsProfile(
-                                    new ClusterPoolResourcePropertiesLogAnalyticsProfile()
-                                        .withEnabled(true)
-                                        .withWorkspaceId("cr")),
-                            new ClusterPoolInner()
-                                .withLocation("xybz")
-                                .withTags(mapOf("kzsmodm", "dqytbciqfouflmm"))
-                                .withManagedResourceGroupName("mrldhu")
-                                .withClusterPoolProfile(
-                                    new ClusterPoolResourcePropertiesClusterPoolProfile()
-                                        .withClusterPoolVersion("qxhocdgeablgphut"))
-                                .withComputeProfile(
-                                    new ClusterPoolResourcePropertiesComputeProfile().withVmSize("cndvkaozwyiftyhx"))
-                                .withNetworkProfile(
-                                    new ClusterPoolResourcePropertiesNetworkProfile().withSubnetId("ot"))
-                                .withLogAnalyticsProfile(
-                                    new ClusterPoolResourcePropertiesLogAnalyticsProfile()
-                                        .withEnabled(false)
-                                        .withWorkspaceId("oulzndlikwyq")),
-                            new ClusterPoolInner()
-                                .withLocation("g")
-                                .withTags(mapOf("gazxuf", "nwui"))
-                                .withManagedResourceGroupName("mdgbbjfdd")
-                                .withClusterPoolProfile(
-                                    new ClusterPoolResourcePropertiesClusterPoolProfile().withClusterPoolVersion("p"))
-                                .withComputeProfile(
-                                    new ClusterPoolResourcePropertiesComputeProfile().withVmSize("psalgbqux"))
-                                .withNetworkProfile(new ClusterPoolResourcePropertiesNetworkProfile().withSubnetId("p"))
-                                .withLogAnalyticsProfile(
-                                    new ClusterPoolResourcePropertiesLogAnalyticsProfile()
-                                        .withEnabled(false)
-                                        .withWorkspaceId("dnrujqguhmuouqfp")),
-                            new ClusterPoolInner()
-                                .withLocation("vsnb")
-                                .withTags(mapOf("zafb", "abnmocpcyshu", "oq", "jjgpb"))
-                                .withManagedResourceGroupName("c")
-                                .withClusterPoolProfile(
-                                    new ClusterPoolResourcePropertiesClusterPoolProfile()
-                                        .withClusterPoolVersion("fsrpymzidnse"))
-                                .withComputeProfile(
-                                    new ClusterPoolResourcePropertiesComputeProfile().withVmSize("cxtbzsg"))
-                                .withNetworkProfile(
-                                    new ClusterPoolResourcePropertiesNetworkProfile().withSubnetId("jtckwhdso"))
-                                .withLogAnalyticsProfile(
-                                    new ClusterPoolResourcePropertiesLogAnalyticsProfile()
-                                        .withEnabled(false)
-                                        .withWorkspaceId("i"))));
+        ClusterPoolListResult model = new ClusterPoolListResult().withValue(Arrays.asList(new ClusterPoolInner()
+            .withLocation("k").withTags(mapOf("iawxklry", "xolniwpwcukjfk", "cbacphejkotynqg", "lwckbasyypnddhs"))
+            .withProperties(new ClusterPoolResourceProperties().withManagedResourceGroupName("qvkoc")
+                .withClusterPoolProfile(
+                    new ClusterPoolResourcePropertiesClusterPoolProfile().withClusterPoolVersion("sqrglssainq"))
+                .withComputeProfile(new ClusterPoolResourcePropertiesComputeProfile().withVmSize("jwnzlljfmp"))
+                .withNetworkProfile(new ClusterPoolResourcePropertiesNetworkProfile().withSubnetId("ltmrldh")
+                    .withOutboundType(OutboundType.LOAD_BALANCER).withEnablePrivateApiServer(true)
+                    .withApiServerAuthorizedIpRanges(Arrays.asList("tqxhocdgeab", "gphuticndvka")))
+                .withLogAnalyticsProfile(
+                    new ClusterPoolResourcePropertiesLogAnalyticsProfile().withEnabled(true).withWorkspaceId("i")))));
         model = BinaryData.fromObject(model).toObject(ClusterPoolListResult.class);
-        Assertions.assertEquals("xbnjbiksq", model.value().get(0).location());
-        Assertions.assertEquals("ssainqpjwnzll", model.value().get(0).tags().get("fmppe"));
-        Assertions.assertEquals("odepoogin", model.value().get(0).managedResourceGroupName());
-        Assertions.assertEquals("heotusiv", model.value().get(0).clusterPoolProfile().clusterPoolVersion());
-        Assertions.assertEquals("evcciqihnhun", model.value().get(0).computeProfile().vmSize());
-        Assertions.assertEquals("wrljdouskc", model.value().get(0).networkProfile().subnetId());
-        Assertions.assertEquals(true, model.value().get(0).logAnalyticsProfile().enabled());
-        Assertions.assertEquals("cr", model.value().get(0).logAnalyticsProfile().workspaceId());
+        Assertions.assertEquals("k", model.value().get(0).location());
+        Assertions.assertEquals("xolniwpwcukjfk", model.value().get(0).tags().get("iawxklry"));
+        Assertions.assertEquals("qvkoc", model.value().get(0).properties().managedResourceGroupName());
+        Assertions.assertEquals("sqrglssainq",
+            model.value().get(0).properties().clusterPoolProfile().clusterPoolVersion());
+        Assertions.assertEquals("jwnzlljfmp", model.value().get(0).properties().computeProfile().vmSize());
+        Assertions.assertEquals("ltmrldh", model.value().get(0).properties().networkProfile().subnetId());
+        Assertions.assertEquals(OutboundType.LOAD_BALANCER,
+            model.value().get(0).properties().networkProfile().outboundType());
+        Assertions.assertEquals(true, model.value().get(0).properties().networkProfile().enablePrivateApiServer());
+        Assertions.assertEquals("tqxhocdgeab",
+            model.value().get(0).properties().networkProfile().apiServerAuthorizedIpRanges().get(0));
+        Assertions.assertEquals(true, model.value().get(0).properties().logAnalyticsProfile().enabled());
+        Assertions.assertEquals("i", model.value().get(0).properties().logAnalyticsProfile().workspaceId());
     }
 
     // Use "Map.of" if available

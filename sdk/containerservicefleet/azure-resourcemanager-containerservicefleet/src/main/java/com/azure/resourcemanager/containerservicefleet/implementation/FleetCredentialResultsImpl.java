@@ -15,8 +15,7 @@ public final class FleetCredentialResultsImpl implements FleetCredentialResults 
 
     private final com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager serviceManager;
 
-    FleetCredentialResultsImpl(
-        FleetCredentialResultsInner innerObject,
+    FleetCredentialResultsImpl(FleetCredentialResultsInner innerObject,
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

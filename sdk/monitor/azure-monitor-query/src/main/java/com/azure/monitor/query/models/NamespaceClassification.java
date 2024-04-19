@@ -4,7 +4,7 @@
 package com.azure.monitor.query.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for NamespaceClassification. */
@@ -19,17 +19,25 @@ public final class NamespaceClassification extends ExpandableStringEnum<Namespac
     public static final NamespaceClassification QOS = fromString("Qos");
 
     /**
+     * Creates an instance of NamespaceClassification.
+     */
+    public NamespaceClassification() { }
+
+    /**
      * Creates or finds a NamespaceClassification from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding NamespaceClassification.
      */
-    @JsonCreator
     public static NamespaceClassification fromString(String name) {
         return fromString(name, NamespaceClassification.class);
     }
 
-    /** @return known NamespaceClassification values. */
+    /**
+     * Returns the known NamespaceClassification values.
+     *
+     * @return The {@link Collection} of known NamespaceClassification values.
+     */
     public static Collection<NamespaceClassification> values() {
         return values(NamespaceClassification.class);
     }

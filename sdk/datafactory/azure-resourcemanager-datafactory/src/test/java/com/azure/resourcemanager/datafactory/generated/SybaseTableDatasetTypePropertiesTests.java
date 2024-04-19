@@ -11,12 +11,12 @@ public final class SybaseTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SybaseTableDatasetTypeProperties model
-            = BinaryData.fromString("{\"tableName\":\"datamzaof\"}").toObject(SybaseTableDatasetTypeProperties.class);
+            = BinaryData.fromString("{\"tableName\":\"dataxuyi\"}").toObject(SybaseTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SybaseTableDatasetTypeProperties model = new SybaseTableDatasetTypeProperties().withTableName("datamzaof");
+        SybaseTableDatasetTypeProperties model = new SybaseTableDatasetTypeProperties().withTableName("dataxuyi");
         model = BinaryData.fromObject(model).toObject(SybaseTableDatasetTypeProperties.class);
     }
 }

@@ -4,12 +4,9 @@
 package com.azure.cosmos.kafka.connect;
 
 import com.azure.core.exception.ResourceNotFoundException;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.connect.json.JsonDeserializer;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.Configuration;
@@ -27,13 +24,16 @@ import java.util.Properties;
 public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosConnectContainer> {
     private static final Logger logger = LoggerFactory.getLogger(KafkaCosmosConnectContainer.class);
     private static final int KAFKA_CONNECT_PORT = 8083;
-    private KafkaConsumer<String, JsonNode> kafkaConsumer;
+    private Properties producerProperties;
+    private Properties consumerProperties;
     private AdminClient adminClient;
     private int replicationFactor = 1;
 
     public KafkaCosmosConnectContainer(final DockerImageName dockerImageName) {
         super(dockerImageName);
         defaultConfig();
+        this.producerProperties = defaultProducerConfig();
+        this.consumerProperties = defaultConsumerConfig();
     }
 
     private void defaultConfig() {
@@ -56,20 +56,24 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
 
     private Properties defaultConsumerConfig() {
         Properties kafkaConsumerProperties = new Properties();
-        kafkaConsumerProperties.put("group.id", "IntegrationTest");
-        kafkaConsumerProperties.put("value.deserializer", JsonDeserializer.class.getName());
-        kafkaConsumerProperties.put("key.deserializer", StringDeserializer.class.getName());
+        kafkaConsumerProperties.put("group.id", "IntegrationTest-Consumer");
         kafkaConsumerProperties.put("sasl.mechanism", "PLAIN");
         kafkaConsumerProperties.put("client.dns.lookup", "use_all_dns_ips");
         kafkaConsumerProperties.put("session.timeout.ms", "45000");
         return kafkaConsumerProperties;
     }
 
-    public KafkaCosmosConnectContainer withLocalKafkaContainer(final KafkaContainer kafkaContainer) {
-        withNetwork(kafkaContainer.getNetwork());
+    private Properties defaultProducerConfig() {
+        Properties kafkaProducerProperties = new Properties();
 
-        withEnv("CONNECT_BOOTSTRAP_SERVERS", kafkaContainer.getNetworkAliases().get(0) + ":9092");
-        return self();
+        kafkaProducerProperties.put(ProducerConfig.CLIENT_ID_CONFIG, "IntegrationTest-producer");
+        kafkaProducerProperties.put(ProducerConfig.MAX_BLOCK_MS_CONFIG, 2000L);
+        kafkaProducerProperties.put(ProducerConfig.ACKS_CONFIG, "all");
+        kafkaProducerProperties.put("sasl.mechanism", "PLAIN");
+        kafkaProducerProperties.put("client.dns.lookup", "use_all_dns_ips");
+        kafkaProducerProperties.put("session.timeout.ms", "45000");
+
+        return kafkaProducerProperties;
     }
 
     public KafkaCosmosConnectContainer withCloudKafkaContainer() {
@@ -85,27 +89,65 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
         withEnv("CONNECT_CONSUMER_SECURITY_PROTOCOL", "SASL_SSL");
         withEnv("CONNECT_CONSUMER_SASL_JAAS_CONFIG", KafkaCosmosTestConfigurations.SASL_JAAS);
         withEnv("CONNECT_CONSUMER_SASL_MECHANISM", "PLAIN");
-        return self();
-    }
 
-    public KafkaCosmosConnectContainer withLocalBootstrapServer(String localBootstrapServer) {
-        Properties consumerProperties = defaultConsumerConfig();
-        consumerProperties.put("bootstrap.servers", localBootstrapServer);
-        this.kafkaConsumer = new KafkaConsumer<>(consumerProperties);
-        this.adminClient = this.getAdminClient(localBootstrapServer);
-        return self();
-    }
+        this.consumerProperties.put("bootstrap.servers", KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER);
+        this.consumerProperties.put("sasl.jaas.config", KafkaCosmosTestConfigurations.SASL_JAAS);
+        this.consumerProperties.put("security.protocol", "SASL_SSL");
+        this.consumerProperties.put("sasl.mechanism", "PLAIN");
 
-    public KafkaCosmosConnectContainer withCloudBootstrapServer() {
-        Properties consumerProperties = defaultConsumerConfig();
-        consumerProperties.put("bootstrap.servers", KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER);
-        consumerProperties.put("sasl.jaas.config", KafkaCosmosTestConfigurations.SASL_JAAS);
-        consumerProperties.put("security.protocol", "SASL_SSL");
-        consumerProperties.put("sasl.mechanism", "PLAIN");
+        this.producerProperties.put("bootstrap.servers", KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER);
+        this.producerProperties.put("sasl.jaas.config", KafkaCosmosTestConfigurations.SASL_JAAS);
+        this.producerProperties.put("security.protocol", "SASL_SSL");
+        this.producerProperties.put("sasl.mechanism", "PLAIN");
 
-        this.kafkaConsumer = new KafkaConsumer<>(consumerProperties);
-        this.adminClient = this.getAdminClient(KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER);
+        Properties adminProperties = new Properties();
+        adminProperties.put("bootstrap.servers", KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER);
+        adminProperties.put("ssl.endpoint.identification.algorithm", "https");
+        adminProperties.put("sasl.jaas.config", KafkaCosmosTestConfigurations.SASL_JAAS);
+        adminProperties.put("sasl.mechanism", "PLAIN");
+        adminProperties.put("security.protocol", "SASL_SSL");
+        this.adminClient = AdminClient.create(adminProperties);
+
         this.replicationFactor = 3;
+        return self();
+    }
+
+    public KafkaCosmosConnectContainer withCloudSchemaRegistryContainer() {
+        withEnv("CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_URL);
+        withEnv("CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_URL);
+
+        this.consumerProperties.put("schema.registry.url", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_URL);
+        this.consumerProperties.put("basic.auth.credentials.source", "USER_INFO");
+        this.consumerProperties.put("basic.auth.user.info", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_BASIC_AUTH_USER_INFO);
+
+        this.producerProperties.put("schema.registry.url", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_URL);
+        this.producerProperties.put("basic.auth.credentials.source", "USER_INFO");
+        this.producerProperties.put("basic.auth.user.info", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_BASIC_AUTH_USER_INFO);
+
+        return self();
+    }
+
+    public KafkaCosmosConnectContainer withLocalKafkaContainer(final KafkaContainer kafkaContainer) {
+        withNetwork(kafkaContainer.getNetwork());
+
+        withEnv("CONNECT_BOOTSTRAP_SERVERS", kafkaContainer.getNetworkAliases().get(0) + ":9092");
+        this.consumerProperties.put("bootstrap.servers", kafkaContainer.getBootstrapServers());
+        this.producerProperties.put("bootstrap.servers", kafkaContainer.getBootstrapServers());
+
+        Properties adminProperties = new Properties();
+        adminProperties.put("bootstrap.servers", kafkaContainer.getBootstrapServers());
+        this.adminClient = AdminClient.create(adminProperties);
+
+        return self();
+    }
+
+    public KafkaCosmosConnectContainer withLocalSchemaRegistryContainer(KafkaSchemaRegistryContainer schemaRegistryContainer) {
+
+        withEnv("CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL", schemaRegistryContainer.getSchemaRegistryUrl());
+        withEnv("CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL", schemaRegistryContainer.getSchemaRegistryUrl());
+
+        this.consumerProperties.put("schema.registry.url", schemaRegistryContainer.getSchemaRegistryUrl());
+        this.producerProperties.put("schema.registry.url", schemaRegistryContainer.getSchemaRegistryUrl());
         return self();
     }
 
@@ -138,12 +180,16 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
         }
     }
 
-    public KafkaConsumer<String, JsonNode> getConsumer() {
-        return this.kafkaConsumer;
-    }
-
     public String getTarget() {
         return "http://" + getContainerIpAddress() + ":" + getMappedPort(KAFKA_CONNECT_PORT);
+    }
+
+    public Properties getProducerProperties() {
+        return (Properties) producerProperties.clone();
+    }
+
+    public Properties getConsumerProperties() {
+        return (Properties) consumerProperties.clone();
     }
 
     public void createTopic(String topicName, int numPartitions) {
@@ -151,9 +197,7 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
             Arrays.asList(new NewTopic(topicName, numPartitions, (short) replicationFactor)));
     }
 
-    private AdminClient getAdminClient(String bootstrapServer) {
-        Properties properties = new Properties();
-        properties.put("bootstrap.servers", bootstrapServer);
-        return AdminClient.create(properties);
+    public void deleteTopic(String topicName) {
+        this.adminClient.deleteTopics(Arrays.asList(topicName));
     }
 }

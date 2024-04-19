@@ -79,6 +79,8 @@ public final class CosmosDiagnosticsContext {
 
     private Double samplingRateSnapshot;
 
+    private boolean isSampledOut;
+
     private ArrayList<CosmosDiagnosticsRequestInfo> requestInfo = null;
 
     private final Integer sequenceNumber;
@@ -128,6 +130,7 @@ public final class CosmosDiagnosticsContext {
         this.userAgent = userAgent;
         this.connectionMode = connectionMode;
         this.sequenceNumber = sequenceNumber;
+        this.isSampledOut = false;
     }
 
     /**
@@ -561,13 +564,18 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
-    void setSamplingRateSnapshot(double samplingRate) {
+    void setSamplingRateSnapshot(double samplingRate, boolean isSampledOut) {
         synchronized (this.spanName) {
             this.samplingRateSnapshot = samplingRate;
+            this.isSampledOut = isSampledOut;
             for (CosmosDiagnostics d : this.diagnostics) {
                 diagAccessor.setSamplingRateSnapshot(d, samplingRate);
             }
         }
+    }
+
+    boolean isSampledOut() {
+        return this.isSampledOut;
     }
 
     String getRequestDiagnostics() {
@@ -1019,9 +1027,9 @@ public final class CosmosDiagnosticsContext {
                     }
 
                     @Override
-                    public void setSamplingRateSnapshot(CosmosDiagnosticsContext ctx, double samplingRate) {
+                    public void setSamplingRateSnapshot(CosmosDiagnosticsContext ctx, double samplingRate, boolean isSampledOut) {
                         checkNotNull(ctx, "Argument 'ctx' must not be null.");
-                        ctx.setSamplingRateSnapshot(samplingRate);
+                        ctx.setSamplingRateSnapshot(samplingRate, isSampledOut);
                     }
 
                     @Override

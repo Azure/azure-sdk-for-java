@@ -11,12 +11,12 @@ public final class GenericDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GenericDatasetTypeProperties model
-            = BinaryData.fromString("{\"tableName\":\"dataypkcpwsrqnn\"}").toObject(GenericDatasetTypeProperties.class);
+            = BinaryData.fromString("{\"tableName\":\"datalioklsuffp\"}").toObject(GenericDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenericDatasetTypeProperties model = new GenericDatasetTypeProperties().withTableName("dataypkcpwsrqnn");
+        GenericDatasetTypeProperties model = new GenericDatasetTypeProperties().withTableName("datalioklsuffp");
         model = BinaryData.fromObject(model).toObject(GenericDatasetTypeProperties.class);
     }
 }

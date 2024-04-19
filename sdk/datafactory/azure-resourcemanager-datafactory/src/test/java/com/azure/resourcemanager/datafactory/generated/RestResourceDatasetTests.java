@@ -19,35 +19,38 @@ public final class RestResourceDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestResourceDataset model = BinaryData.fromString(
-            "{\"type\":\"RestResource\",\"typeProperties\":{\"relativeUrl\":\"dataiarz\",\"requestMethod\":\"datadqseypdlmajpuy\",\"requestBody\":\"dataa\",\"additionalHeaders\":{\"uvmsie\":\"datazgccyn\",\"parxtzayq\":\"dataedmmvoneeyr\"},\"paginationRules\":{\"z\":\"dataigeblsp\",\"eozbj\":\"datassiwwv\"}},\"description\":\"qpizdnuehxw\",\"structure\":\"datassjdywbnklg\",\"schema\":\"dataxa\",\"linkedServiceName\":{\"referenceName\":\"tsawv\",\"parameters\":{\"jrmplzmsl\":\"datampt\",\"vrrllfswarmyb\":\"databnknyfuysj\"}},\"parameters\":{\"cbfnxiajuv\":{\"type\":\"Float\",\"defaultValue\":\"datageysyqnipehfw\"},\"zguaxfhvjixgofqd\":{\"type\":\"Bool\",\"defaultValue\":\"datafjisosfzlnraxnf\"},\"uvrqpbxdoicqp\":{\"type\":\"Array\",\"defaultValue\":\"datajmi\"}},\"annotations\":[\"datalydp\"],\"folder\":{\"name\":\"nsbmzjritukoym\"},\"\":{\"ndu\":\"dataexmizzjxwjoqfzw\"}}")
+            "{\"type\":\"ypkcpwsrqnn\",\"typeProperties\":{\"relativeUrl\":\"datavwkryzgav\",\"requestMethod\":\"datandm\",\"requestBody\":\"dataiekkiskyyyaekn\",\"additionalHeaders\":{\"jiutfofhoajj\":\"datayshdawjlmlcufb\"},\"paginationRules\":{\"quyhbceev\":\"datayqyjnufzvl\",\"dssijuaxxf\":\"datagirrpwnqtvuxeuj\"}},\"description\":\"u\",\"structure\":\"datatl\",\"schema\":\"dataltjhb\",\"linkedServiceName\":{\"referenceName\":\"ycgqakcsihxvt\",\"parameters\":{\"pxpry\":\"datawf\",\"ahtqmmk\":\"datansbubwhzqqgugwlu\",\"qwebagm\":\"datahwq\",\"rgvypa\":\"datapkephujeucosvkke\"}},\"parameters\":{\"ezfpffbuqxkn\":{\"type\":\"SecureString\",\"defaultValue\":\"dataillgnu\"},\"bg\":{\"type\":\"Float\",\"defaultValue\":\"datag\"},\"zoksgqhb\":{\"type\":\"String\",\"defaultValue\":\"datajfchicpare\"}},\"annotations\":[\"datauxilozb\",\"datakcr\",\"datal\"],\"folder\":{\"name\":\"jw\"},\"\":{\"hfgmuxuqiagsko\":\"dataptsflotumbmwgft\"}}")
             .toObject(RestResourceDataset.class);
-        Assertions.assertEquals("qpizdnuehxw", model.description());
-        Assertions.assertEquals("tsawv", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("cbfnxiajuv").type());
-        Assertions.assertEquals("nsbmzjritukoym", model.folder().name());
+        Assertions.assertEquals("u", model.description());
+        Assertions.assertEquals("ycgqakcsihxvt", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("ezfpffbuqxkn").type());
+        Assertions.assertEquals("jw", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestResourceDataset model = new RestResourceDataset().withDescription("qpizdnuehxw")
-            .withStructure("datassjdywbnklg").withSchema("dataxa")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("tsawv")
-                .withParameters(mapOf("jrmplzmsl", "datampt", "vrrllfswarmyb", "databnknyfuysj")))
-            .withParameters(mapOf("cbfnxiajuv",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datageysyqnipehfw"),
-                "zguaxfhvjixgofqd",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datafjisosfzlnraxnf"),
-                "uvrqpbxdoicqp",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datajmi")))
-            .withAnnotations(Arrays.asList("datalydp")).withFolder(new DatasetFolder().withName("nsbmzjritukoym"))
-            .withRelativeUrl("dataiarz").withRequestMethod("datadqseypdlmajpuy").withRequestBody("dataa")
-            .withAdditionalHeaders(mapOf("uvmsie", "datazgccyn", "parxtzayq", "dataedmmvoneeyr"))
-            .withPaginationRules(mapOf("z", "dataigeblsp", "eozbj", "datassiwwv"));
+        RestResourceDataset model = new RestResourceDataset().withDescription("u")
+            .withStructure("datatl")
+            .withSchema("dataltjhb")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ycgqakcsihxvt")
+                .withParameters(mapOf("pxpry", "datawf", "ahtqmmk", "datansbubwhzqqgugwlu", "qwebagm", "datahwq",
+                    "rgvypa", "datapkephujeucosvkke")))
+            .withParameters(mapOf("ezfpffbuqxkn",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("dataillgnu"), "bg",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datag"), "zoksgqhb",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datajfchicpare")))
+            .withAnnotations(Arrays.asList("datauxilozb", "datakcr", "datal"))
+            .withFolder(new DatasetFolder().withName("jw"))
+            .withRelativeUrl("datavwkryzgav")
+            .withRequestMethod("datandm")
+            .withRequestBody("dataiekkiskyyyaekn")
+            .withAdditionalHeaders(mapOf("jiutfofhoajj", "datayshdawjlmlcufb"))
+            .withPaginationRules(mapOf("quyhbceev", "datayqyjnufzvl", "dssijuaxxf", "datagirrpwnqtvuxeuj"));
         model = BinaryData.fromObject(model).toObject(RestResourceDataset.class);
-        Assertions.assertEquals("qpizdnuehxw", model.description());
-        Assertions.assertEquals("tsawv", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("cbfnxiajuv").type());
-        Assertions.assertEquals("nsbmzjritukoym", model.folder().name());
+        Assertions.assertEquals("u", model.description());
+        Assertions.assertEquals("ycgqakcsihxvt", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("ezfpffbuqxkn").type());
+        Assertions.assertEquals("jw", model.folder().name());
     }
 
     // Use "Map.of" if available

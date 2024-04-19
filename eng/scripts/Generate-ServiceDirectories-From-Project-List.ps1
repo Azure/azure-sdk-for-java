@@ -10,9 +10,12 @@
 # prior to calling this script.
 param(
   # $(Build.SourcesDirectory) - root of the repository
-  [Parameter(Mandatory=$true)][string]$SourcesDirectory,
-  # ArtifactsList will be using ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
-  [Parameter(Mandatory=$true)][array] $ProjectList
+  [Parameter(Mandatory=$true)]
+  [string]$SourcesDirectory,
+
+  [Parameter(Mandatory=$true)]
+  [AllowEmptyCollection()]
+  [array] $ProjectList
 )
 
 $StartTime = $(get-date)

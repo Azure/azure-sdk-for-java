@@ -5,59 +5,56 @@
 package com.azure.monitor.query.implementation.metricsbatch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.Duration;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * The MetricResultsResponseValuesItem model.
  */
 @Fluent
-public final class MetricResultsResponseValuesItem {
+public final class MetricResultsResponseValuesItem implements JsonSerializable<MetricResultsResponseValuesItem> {
     /*
      * The start time, in datetime format, for which the data was retrieved.
      */
-    @JsonProperty(value = "starttime", required = true)
-    private String starttime;
+    private final String starttime;
 
     /*
      * The end time, in datetime format, for which the data was retrieved.
      */
-    @JsonProperty(value = "endtime", required = true)
-    private String endtime;
+    private final String endtime;
 
     /*
-     * The interval (window size) for which the metric data was returned in. Follows the IS8601/RFC3339 duration format
-     * (e.g. 'P1D' for 1 day). This may be adjusted in the future and returned back from what was originally requested.
-     * This is not present if a metadata request was made.
+     * The interval (window size) for which the metric data was returned in ISO 8601 duration format with a special
+     * case for 'FULL' value that returns single datapoint for entire time span requested (*Examples: PT15M, PT1H, P1D,
+     * FULL*).
+     * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
      */
-    @JsonProperty(value = "interval")
-    private Duration interval;
+    private String interval;
 
     /*
      * The namespace of the metrics been queried
      */
-    @JsonProperty(value = "namespace")
     private String namespace;
 
     /*
      * The region of the resource been queried for metrics.
      */
-    @JsonProperty(value = "resourceregion")
     private String resourceregion;
 
     /*
      * The resource that has been queried for metrics.
      */
-    @JsonProperty(value = "resourceid")
     private String resourceid;
 
     /*
      * The value of the collection.
      */
-    @JsonProperty(value = "value", required = true)
-    private List<Metric> value;
+    private final List<Metric> value;
 
     /**
      * Creates an instance of MetricResultsResponseValuesItem class.
@@ -66,10 +63,7 @@ public final class MetricResultsResponseValuesItem {
      * @param endtime the endtime value to set.
      * @param value the value value to set.
      */
-    @JsonCreator
-    public MetricResultsResponseValuesItem(@JsonProperty(value = "starttime", required = true) String starttime,
-        @JsonProperty(value = "endtime", required = true) String endtime,
-        @JsonProperty(value = "value", required = true) List<Metric> value) {
+    public MetricResultsResponseValuesItem(String starttime, String endtime, List<Metric> value) {
         this.starttime = starttime;
         this.endtime = endtime;
         this.value = value;
@@ -94,25 +88,27 @@ public final class MetricResultsResponseValuesItem {
     }
 
     /**
-     * Get the interval property: The interval (window size) for which the metric data was returned in. Follows the
-     * IS8601/RFC3339 duration format (e.g. 'P1D' for 1 day). This may be adjusted in the future and returned back from
-     * what was originally requested. This is not present if a metadata request was made.
+     * Get the interval property: The interval (window size) for which the metric data was returned in ISO 8601
+     * duration format with a special case for 'FULL' value that returns single datapoint for entire time span
+     * requested (*Examples: PT15M, PT1H, P1D, FULL*).
+     * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
      * 
      * @return the interval value.
      */
-    public Duration getInterval() {
+    public String getInterval() {
         return this.interval;
     }
 
     /**
-     * Set the interval property: The interval (window size) for which the metric data was returned in. Follows the
-     * IS8601/RFC3339 duration format (e.g. 'P1D' for 1 day). This may be adjusted in the future and returned back from
-     * what was originally requested. This is not present if a metadata request was made.
+     * Set the interval property: The interval (window size) for which the metric data was returned in ISO 8601
+     * duration format with a special case for 'FULL' value that returns single datapoint for entire time span
+     * requested (*Examples: PT15M, PT1H, P1D, FULL*).
+     * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
      * 
      * @param interval the interval value to set.
      * @return the MetricResultsResponseValuesItem object itself.
      */
-    public MetricResultsResponseValuesItem setInterval(Duration interval) {
+    public MetricResultsResponseValuesItem setInterval(String interval) {
         this.interval = interval;
         return this;
     }
@@ -184,5 +180,90 @@ public final class MetricResultsResponseValuesItem {
      */
     public List<Metric> getValue() {
         return this.value;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("starttime", this.starttime);
+        jsonWriter.writeStringField("endtime", this.endtime);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("interval", this.interval);
+        jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeStringField("resourceregion", this.resourceregion);
+        jsonWriter.writeStringField("resourceid", this.resourceid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricResultsResponseValuesItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricResultsResponseValuesItem if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetricResultsResponseValuesItem.
+     */
+    public static MetricResultsResponseValuesItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean starttimeFound = false;
+            String starttime = null;
+            boolean endtimeFound = false;
+            String endtime = null;
+            boolean valueFound = false;
+            List<Metric> value = null;
+            String interval = null;
+            String namespace = null;
+            String resourceregion = null;
+            String resourceid = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("starttime".equals(fieldName)) {
+                    starttime = reader.getString();
+                    starttimeFound = true;
+                } else if ("endtime".equals(fieldName)) {
+                    endtime = reader.getString();
+                    endtimeFound = true;
+                } else if ("value".equals(fieldName)) {
+                    value = reader.readArray(reader1 -> Metric.fromJson(reader1));
+                    valueFound = true;
+                } else if ("interval".equals(fieldName)) {
+                    interval = reader.getString();
+                } else if ("namespace".equals(fieldName)) {
+                    namespace = reader.getString();
+                } else if ("resourceregion".equals(fieldName)) {
+                    resourceregion = reader.getString();
+                } else if ("resourceid".equals(fieldName)) {
+                    resourceid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (starttimeFound && endtimeFound && valueFound) {
+                MetricResultsResponseValuesItem deserializedMetricResultsResponseValuesItem
+                    = new MetricResultsResponseValuesItem(starttime, endtime, value);
+                deserializedMetricResultsResponseValuesItem.interval = interval;
+                deserializedMetricResultsResponseValuesItem.namespace = namespace;
+                deserializedMetricResultsResponseValuesItem.resourceregion = resourceregion;
+                deserializedMetricResultsResponseValuesItem.resourceid = resourceid;
+
+                return deserializedMetricResultsResponseValuesItem;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!starttimeFound) {
+                missingProperties.add("starttime");
+            }
+            if (!endtimeFound) {
+                missingProperties.add("endtime");
+            }
+            if (!valueFound) {
+                missingProperties.add("value");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

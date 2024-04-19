@@ -12,154 +12,168 @@ import com.azure.resourcemanager.appcontainers.fluent.models.JobInner;
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of Job. */
+/**
+ * An immutable client-side representation of Job.
+ */
 public interface Job {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
+     * Gets the extendedLocation property: The complex type of the extended location.
+     * 
+     * @return the extendedLocation value.
+     */
+    ExtendedLocation extendedLocation();
+
+    /**
      * Gets the identity property: Managed identities needed by a container app job to interact with other Azure
      * services to not maintain any secrets or credentials in code.
-     *
+     * 
      * @return the identity value.
      */
     ManagedServiceIdentity identity();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the provisioningState property: Provisioning state of the Container Apps Job.
-     *
+     * 
      * @return the provisioningState value.
      */
     JobProvisioningState provisioningState();
 
     /**
      * Gets the environmentId property: Resource ID of environment.
-     *
+     * 
      * @return the environmentId value.
      */
     String environmentId();
 
     /**
      * Gets the workloadProfileName property: Workload profile name to pin for container apps job execution.
-     *
+     * 
      * @return the workloadProfileName value.
      */
     String workloadProfileName();
 
     /**
      * Gets the configuration property: Container Apps Job configuration properties.
-     *
+     * 
      * @return the configuration value.
      */
     JobConfiguration configuration();
 
     /**
      * Gets the template property: Container Apps job definition.
-     *
+     * 
      * @return the template value.
      */
     JobTemplate template();
 
     /**
      * Gets the outboundIpAddresses property: Outbound IP Addresses of a container apps job.
-     *
+     * 
      * @return the outboundIpAddresses value.
      */
     List<String> outboundIpAddresses();
 
     /**
      * Gets the eventStreamEndpoint property: The endpoint of the eventstream of the container apps job.
-     *
+     * 
      * @return the eventStreamEndpoint value.
      */
     String eventStreamEndpoint();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.JobInner object.
-     *
+     * 
      * @return the inner object.
      */
     JobInner innerModel();
 
-    /** The entirety of the Job definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the Job definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
-    /** The Job definition stages. */
+    /**
+     * The Job definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the Job definition. */
+        /**
+         * The first stage of the Job definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the Job definition allowing to specify location. */
+        /**
+         * The stage of the Job definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -167,18 +181,20 @@ public interface Job {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
 
-        /** The stage of the Job definition allowing to specify parent resource. */
+        /**
+         * The stage of the Job definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
@@ -189,92 +205,113 @@ public interface Job {
          * The stage of the Job definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithEnvironmentId,
-                DefinitionStages.WithWorkloadProfileName,
-                DefinitionStages.WithConfiguration,
-                DefinitionStages.WithTemplate {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithExtendedLocation,
+            DefinitionStages.WithIdentity, DefinitionStages.WithEnvironmentId, DefinitionStages.WithWorkloadProfileName,
+            DefinitionStages.WithConfiguration, DefinitionStages.WithTemplate {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             Job create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             Job create(Context context);
         }
 
-        /** The stage of the Job definition allowing to specify tags. */
+        /**
+         * The stage of the Job definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the Job definition allowing to specify identity. */
+        /**
+         * The stage of the Job definition allowing to specify extendedLocation.
+         */
+        interface WithExtendedLocation {
+            /**
+             * Specifies the extendedLocation property: The complex type of the extended location..
+             * 
+             * @param extendedLocation The complex type of the extended location.
+             * @return the next definition stage.
+             */
+            WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
+        }
+
+        /**
+         * The stage of the Job definition allowing to specify identity.
+         */
         interface WithIdentity {
             /**
              * Specifies the identity property: Managed identities needed by a container app job to interact with other
              * Azure services to not maintain any secrets or credentials in code..
-             *
+             * 
              * @param identity Managed identities needed by a container app job to interact with other Azure services to
-             *     not maintain any secrets or credentials in code.
+             * not maintain any secrets or credentials in code.
              * @return the next definition stage.
              */
             WithCreate withIdentity(ManagedServiceIdentity identity);
         }
 
-        /** The stage of the Job definition allowing to specify environmentId. */
+        /**
+         * The stage of the Job definition allowing to specify environmentId.
+         */
         interface WithEnvironmentId {
             /**
              * Specifies the environmentId property: Resource ID of environment..
-             *
+             * 
              * @param environmentId Resource ID of environment.
              * @return the next definition stage.
              */
             WithCreate withEnvironmentId(String environmentId);
         }
 
-        /** The stage of the Job definition allowing to specify workloadProfileName. */
+        /**
+         * The stage of the Job definition allowing to specify workloadProfileName.
+         */
         interface WithWorkloadProfileName {
             /**
              * Specifies the workloadProfileName property: Workload profile name to pin for container apps job
              * execution..
-             *
+             * 
              * @param workloadProfileName Workload profile name to pin for container apps job execution.
              * @return the next definition stage.
              */
             WithCreate withWorkloadProfileName(String workloadProfileName);
         }
 
-        /** The stage of the Job definition allowing to specify configuration. */
+        /**
+         * The stage of the Job definition allowing to specify configuration.
+         */
         interface WithConfiguration {
             /**
              * Specifies the configuration property: Container Apps Job configuration properties..
-             *
+             * 
              * @param configuration Container Apps Job configuration properties.
              * @return the next definition stage.
              */
             WithCreate withConfiguration(JobConfiguration configuration);
         }
 
-        /** The stage of the Job definition allowing to specify template. */
+        /**
+         * The stage of the Job definition allowing to specify template.
+         */
         interface WithTemplate {
             /**
              * Specifies the template property: Container Apps job definition..
-             *
+             * 
              * @param template Container Apps job definition.
              * @return the next definition stage.
              */
@@ -284,60 +321,84 @@ public interface Job {
 
     /**
      * Begins update for the Job resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     Job.Update update();
 
-    /** The template for Job update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties {
+    /**
+     * The template for Job update.
+     */
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithExtendedLocation, UpdateStages.WithIdentity,
+        UpdateStages.WithProperties {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         Job apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         Job apply(Context context);
     }
 
-    /** The Job update stages. */
+    /**
+     * The Job update stages.
+     */
     interface UpdateStages {
-        /** The stage of the Job update allowing to specify tags. */
+        /**
+         * The stage of the Job update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
 
-        /** The stage of the Job update allowing to specify identity. */
+        /**
+         * The stage of the Job update allowing to specify extendedLocation.
+         */
+        interface WithExtendedLocation {
+            /**
+             * Specifies the extendedLocation property: The complex type of the extended location..
+             * 
+             * @param extendedLocation The complex type of the extended location.
+             * @return the next definition stage.
+             */
+            Update withExtendedLocation(ExtendedLocation extendedLocation);
+        }
+
+        /**
+         * The stage of the Job update allowing to specify identity.
+         */
         interface WithIdentity {
             /**
              * Specifies the identity property: Managed identities needed by a container app job to interact with other
              * Azure services to not maintain any secrets or credentials in code..
-             *
+             * 
              * @param identity Managed identities needed by a container app job to interact with other Azure services to
-             *     not maintain any secrets or credentials in code.
+             * not maintain any secrets or credentials in code.
              * @return the next definition stage.
              */
             Update withIdentity(ManagedServiceIdentity identity);
         }
 
-        /** The stage of the Job update allowing to specify properties. */
+        /**
+         * The stage of the Job update allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: The properties property..
-             *
+             * 
              * @param properties The properties property.
              * @return the next definition stage.
              */
@@ -347,14 +408,14 @@ public interface Job {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     Job refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -362,9 +423,9 @@ public interface Job {
 
     /**
      * Start a Container Apps Job.
-     *
+     * 
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App's Job execution name.
      */
@@ -372,12 +433,12 @@ public interface Job {
 
     /**
      * Start a Container Apps Job.
-     *
+     * 
      * @param template Properties used to start a job execution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App's Job execution name.
      */
@@ -385,9 +446,9 @@ public interface Job {
 
     /**
      * Terminates execution of a running container apps job.
-     *
+     * 
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App executions collection ARM resource.
      */
@@ -395,11 +456,11 @@ public interface Job {
 
     /**
      * Terminates execution of a running container apps job.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App executions collection ARM resource.
      */
@@ -407,11 +468,11 @@ public interface Job {
 
     /**
      * List secrets for a container apps job.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container Apps Job Secrets Collection ARM resource along with {@link Response}.
      */
@@ -419,9 +480,9 @@ public interface Job {
 
     /**
      * List secrets for a container apps job.
-     *
+     * 
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container Apps Job Secrets Collection ARM resource.
      */

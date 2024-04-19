@@ -4,7 +4,7 @@
 package com.azure.cosmos.kafka.connect.implementation.source;
 
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.FeedRange;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,18 +17,18 @@ import java.util.stream.Collectors;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class FeedRangesMetadataTopicOffset {
-    public static final String CONTAINER_FEED_RANGES_KEY = "cosmos.source.metadata.container.feedRanges";
+    public static final String CONTAINER_FEED_RANGES_KEY = "feedRanges";
     public static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
-    private final List<Range<String>> feedRanges;
+    private final List<FeedRange> feedRanges;
 
-    public FeedRangesMetadataTopicOffset(List<Range<String>> feedRanges) {
+    public FeedRangesMetadataTopicOffset(List<FeedRange> feedRanges) {
         checkNotNull(feedRanges, "Argument 'feedRanges' can not be null");
 
         this.feedRanges = feedRanges;
     }
 
-    public List<Range<String>> getFeedRanges() {
+    public List<FeedRange> getFeedRanges() {
         return feedRanges;
     }
 
@@ -41,7 +41,7 @@ public class FeedRangesMetadataTopicOffset {
                 CONTAINER_FEED_RANGES_KEY,
                 OBJECT_MAPPER
                     .writeValueAsString(
-                        offset.getFeedRanges().stream().map(range -> range.toJson()).collect(Collectors.toList())));
+                        offset.getFeedRanges().stream().map(range -> range.toString()).collect(Collectors.toList())));
 
             return map;
         } catch (JsonProcessingException e) {
@@ -56,11 +56,11 @@ public class FeedRangesMetadataTopicOffset {
 
         String feedRangesValue = offsetMap.get(CONTAINER_FEED_RANGES_KEY).toString();
         try {
-            List<Range<String>> feedRanges =
+            List<FeedRange> feedRanges =
                 OBJECT_MAPPER
                     .readValue(feedRangesValue, new TypeReference<List<String>>() {})
                     .stream()
-                    .map(rangeJson -> new Range<String>(rangeJson))
+                    .map(rangeJson -> FeedRange.fromString(rangeJson))
                     .collect(Collectors.toList());
 
             return new FeedRangesMetadataTopicOffset(feedRanges);

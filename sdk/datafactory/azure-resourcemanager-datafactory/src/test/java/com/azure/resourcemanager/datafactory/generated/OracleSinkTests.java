@@ -11,16 +11,19 @@ public final class OracleSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OracleSink model = BinaryData.fromString(
-            "{\"type\":\"OracleSink\",\"preCopyScript\":\"dataynljigjcnkadmwti\",\"writeBatchSize\":\"dataknewpnpun\",\"writeBatchTimeout\":\"datajbnhbxvvufq\",\"sinkRetryCount\":\"datajuosajqnsrcqdth\",\"sinkRetryWait\":\"dataqamdlcu\",\"maxConcurrentConnections\":\"datamrvryakc\",\"disableMetricsCollection\":\"datasnprda\",\"\":{\"bwobovexsnmwwhbm\":\"datagabbxexacgmtpk\",\"nkmkcimksfejzm\":\"datajlsztpygqwkdlx\",\"nb\":\"datavlbzmngxzp\",\"kjfkaoe\":\"dataovhddvtnbtvl\"}}")
+            "{\"type\":\"vav\",\"preCopyScript\":\"datawynslcfx\",\"writeBatchSize\":\"datariedf\",\"writeBatchTimeout\":\"datatfugppiudhylx\",\"sinkRetryCount\":\"datasumqdri\",\"sinkRetryWait\":\"dataxzcrf\",\"maxConcurrentConnections\":\"databchnh\",\"disableMetricsCollection\":\"datamgcqlufoj\",\"\":{\"zvnsnaklob\":\"datapkqhgfw\",\"jfxueqyjee\":\"datauyhmltdgxiqrgrr\",\"buglalaazncnhzqn\":\"dataytgnycnklqipnzgn\",\"galodfsbhphwt\":\"dataxkscyykrzrjjernj\"}}")
             .toObject(OracleSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OracleSink model = new OracleSink().withWriteBatchSize("dataknewpnpun").withWriteBatchTimeout("datajbnhbxvvufq")
-            .withSinkRetryCount("datajuosajqnsrcqdth").withSinkRetryWait("dataqamdlcu")
-            .withMaxConcurrentConnections("datamrvryakc").withDisableMetricsCollection("datasnprda")
-            .withPreCopyScript("dataynljigjcnkadmwti");
+        OracleSink model = new OracleSink().withWriteBatchSize("datariedf")
+            .withWriteBatchTimeout("datatfugppiudhylx")
+            .withSinkRetryCount("datasumqdri")
+            .withSinkRetryWait("dataxzcrf")
+            .withMaxConcurrentConnections("databchnh")
+            .withDisableMetricsCollection("datamgcqlufoj")
+            .withPreCopyScript("datawynslcfx");
         model = BinaryData.fromObject(model).toObject(OracleSink.class);
     }
 }

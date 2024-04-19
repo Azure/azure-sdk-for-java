@@ -293,7 +293,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                 .flatMap(
                         t -> {
                             if (this.isClosed) {
-                                logger.warn("client already closed");
+                                logger.info("client already closed");
                                 // if client is already closed, nothing to be done, just return.
                                 return Mono.empty();
                             }

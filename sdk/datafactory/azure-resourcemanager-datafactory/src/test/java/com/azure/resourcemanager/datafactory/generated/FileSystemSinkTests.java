@@ -11,16 +11,19 @@ public final class FileSystemSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileSystemSink model = BinaryData.fromString(
-            "{\"type\":\"FileSystemSink\",\"copyBehavior\":\"datassayrwy\",\"writeBatchSize\":\"datautezxrpxdhzwdyva\",\"writeBatchTimeout\":\"datav\",\"sinkRetryCount\":\"datawexwhosc\",\"sinkRetryWait\":\"datapmvc\",\"maxConcurrentConnections\":\"datamgqlshglympe\",\"disableMetricsCollection\":\"datazvcfh\",\"\":{\"twz\":\"dataropxeezlqwbgl\",\"orfpizyb\":\"datatkhyrwdsnpuo\",\"pqatkzghwcywrb\":\"dataj\",\"kf\":\"dataxwls\"}}")
+            "{\"type\":\"bgohxb\",\"copyBehavior\":\"datacf\",\"writeBatchSize\":\"datazfpfxbqdrjunigxn\",\"writeBatchTimeout\":\"datanghgazdbvenv\",\"sinkRetryCount\":\"datati\",\"sinkRetryWait\":\"dataswrncwhlxvng\",\"maxConcurrentConnections\":\"datapydjdpapndmv\",\"disableMetricsCollection\":\"datadtvvta\",\"\":{\"kmfiudnpj\":\"datawkthmexidecdeh\",\"guv\":\"dataxfhtsgyyrg\",\"ytihhq\":\"datagqllgokznffqvtx\",\"rsnbdfamyolvgk\":\"datancwgrwgdpfzdygt\"}}")
             .toObject(FileSystemSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileSystemSink model = new FileSystemSink().withWriteBatchSize("datautezxrpxdhzwdyva")
-            .withWriteBatchTimeout("datav").withSinkRetryCount("datawexwhosc").withSinkRetryWait("datapmvc")
-            .withMaxConcurrentConnections("datamgqlshglympe").withDisableMetricsCollection("datazvcfh")
-            .withCopyBehavior("datassayrwy");
+        FileSystemSink model = new FileSystemSink().withWriteBatchSize("datazfpfxbqdrjunigxn")
+            .withWriteBatchTimeout("datanghgazdbvenv")
+            .withSinkRetryCount("datati")
+            .withSinkRetryWait("dataswrncwhlxvng")
+            .withMaxConcurrentConnections("datapydjdpapndmv")
+            .withDisableMetricsCollection("datadtvvta")
+            .withCopyBehavior("datacf");
         model = BinaryData.fromObject(model).toObject(FileSystemSink.class);
     }
 }

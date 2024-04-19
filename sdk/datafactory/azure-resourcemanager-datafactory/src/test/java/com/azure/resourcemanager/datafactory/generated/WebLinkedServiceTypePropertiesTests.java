@@ -5,19 +5,20 @@
 package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.datafactory.models.WebBasicAuthentication;
 import com.azure.resourcemanager.datafactory.models.WebLinkedServiceTypeProperties;
 
 public final class WebLinkedServiceTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WebLinkedServiceTypeProperties model
-            = BinaryData.fromString("{\"authenticationType\":\"WebLinkedServiceTypeProperties\",\"url\":\"dataht\"}")
+            = BinaryData.fromString("{\"authenticationType\":\"Basic\",\"url\":\"dataczypslfqgfwonb\"}")
                 .toObject(WebLinkedServiceTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebLinkedServiceTypeProperties model = new WebLinkedServiceTypeProperties().withUrl("dataht");
+        WebLinkedServiceTypeProperties model = new WebBasicAuthentication().withUrl("dataczypslfqgfwonb");
         model = BinaryData.fromObject(model).toObject(WebLinkedServiceTypeProperties.class);
     }
 }

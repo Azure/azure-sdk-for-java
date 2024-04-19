@@ -13,18 +13,18 @@ public final class RestResourceDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestResourceDatasetTypeProperties model = BinaryData.fromString(
-            "{\"relativeUrl\":\"datauwdvolxt\",\"requestMethod\":\"dataricdsflzbkiumj\",\"requestBody\":\"dataoxedrmrazhvch\",\"additionalHeaders\":{\"ntnwzruzso\":\"datayiog\",\"lcappnvcebspci\":\"datawxcsmx\",\"mzkwhjjsqwhae\":\"datayomhkdwuwedupb\"},\"paginationRules\":{\"a\":\"datavvkxdbnmc\"}}")
+            "{\"relativeUrl\":\"datauqirh\",\"requestMethod\":\"dataxpaowkgvnlfueyx\",\"requestBody\":\"dataibrlrjugcfeb\",\"additionalHeaders\":{\"bvr\":\"datace\",\"lsxr\":\"datalldfknbdzw\"},\"paginationRules\":{\"lwrduxntpfxxgja\":\"dataj\",\"eyfbkqynlzx\":\"datayxfwfctq\",\"vfoy\":\"datamelupjckiehd\"}}")
             .toObject(RestResourceDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestResourceDatasetTypeProperties model = new RestResourceDatasetTypeProperties()
-            .withRelativeUrl("datauwdvolxt").withRequestMethod("dataricdsflzbkiumj")
-            .withRequestBody("dataoxedrmrazhvch")
-            .withAdditionalHeaders(
-                mapOf("ntnwzruzso", "datayiog", "lcappnvcebspci", "datawxcsmx", "mzkwhjjsqwhae", "datayomhkdwuwedupb"))
-            .withPaginationRules(mapOf("a", "datavvkxdbnmc"));
+        RestResourceDatasetTypeProperties model = new RestResourceDatasetTypeProperties().withRelativeUrl("datauqirh")
+            .withRequestMethod("dataxpaowkgvnlfueyx")
+            .withRequestBody("dataibrlrjugcfeb")
+            .withAdditionalHeaders(mapOf("bvr", "datace", "lsxr", "datalldfknbdzw"))
+            .withPaginationRules(
+                mapOf("lwrduxntpfxxgja", "dataj", "eyfbkqynlzx", "datayxfwfctq", "vfoy", "datamelupjckiehd"));
         model = BinaryData.fromObject(model).toObject(RestResourceDatasetTypeProperties.class);
     }
 

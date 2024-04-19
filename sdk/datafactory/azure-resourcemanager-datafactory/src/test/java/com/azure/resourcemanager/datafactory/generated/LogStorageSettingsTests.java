@@ -15,20 +15,23 @@ public final class LogStorageSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogStorageSettings model = BinaryData.fromString(
-            "{\"linkedServiceName\":{\"referenceName\":\"gfvzvmtjcxig\",\"parameters\":{\"ivmbu\":\"dataxdbglceet\"}},\"path\":\"datazwyw\",\"logLevel\":\"datafptbdx\",\"enableReliableLogging\":\"datalpjulslfiuzytxe\",\"\":{\"cid\":\"datagmqntutetdt\",\"paqnfyhgrcmc\":\"datarjwiwou\",\"ubtwelutrvdz\":\"datappledxyect\",\"pscw\":\"datawp\"}}")
+            "{\"linkedServiceName\":{\"referenceName\":\"xn\",\"parameters\":{\"vectooxjztt\":\"datajfvj\",\"mdyb\":\"datalsnmxvsrvkzvxlez\",\"ogtnfla\":\"dataehjk\"}},\"path\":\"datapghfvkqijmyqo\",\"logLevel\":\"datasfaoc\",\"enableReliableLogging\":\"datazrrgdpy\",\"\":{\"vlwhtfscoups\":\"datamru\",\"c\":\"dataeywbhxhawkwcf\"}}")
             .toObject(LogStorageSettings.class);
-        Assertions.assertEquals("gfvzvmtjcxig", model.linkedServiceName().referenceName());
+        Assertions.assertEquals("xn", model.linkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LogStorageSettings model = new LogStorageSettings()
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("gfvzvmtjcxig")
-                .withParameters(mapOf("ivmbu", "dataxdbglceet")))
-            .withPath("datazwyw").withLogLevel("datafptbdx").withEnableReliableLogging("datalpjulslfiuzytxe")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("xn")
+                .withParameters(
+                    mapOf("vectooxjztt", "datajfvj", "mdyb", "datalsnmxvsrvkzvxlez", "ogtnfla", "dataehjk")))
+            .withPath("datapghfvkqijmyqo")
+            .withLogLevel("datasfaoc")
+            .withEnableReliableLogging("datazrrgdpy")
             .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(LogStorageSettings.class);
-        Assertions.assertEquals("gfvzvmtjcxig", model.linkedServiceName().referenceName());
+        Assertions.assertEquals("xn", model.linkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

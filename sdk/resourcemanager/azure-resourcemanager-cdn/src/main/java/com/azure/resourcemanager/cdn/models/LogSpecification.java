@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Log specification of operation. */
+/**
+ * Log specification of operation.
+ */
 @Fluent
 public final class LogSpecification {
     /*
@@ -34,13 +36,15 @@ public final class LogSpecification {
     @JsonProperty(value = "logFilterPattern")
     private String logFilterPattern;
 
-    /** Creates an instance of LogSpecification class. */
+    /**
+     * Creates an instance of LogSpecification class.
+     */
     public LogSpecification() {
     }
 
     /**
      * Get the name property: Name of log specification.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +53,7 @@ public final class LogSpecification {
 
     /**
      * Set the name property: Name of log specification.
-     *
+     * 
      * @param name the name value to set.
      * @return the LogSpecification object itself.
      */
@@ -60,7 +64,7 @@ public final class LogSpecification {
 
     /**
      * Get the displayName property: Display name of log specification.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -69,7 +73,7 @@ public final class LogSpecification {
 
     /**
      * Set the displayName property: Display name of log specification.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the LogSpecification object itself.
      */
@@ -80,7 +84,7 @@ public final class LogSpecification {
 
     /**
      * Get the blobDuration property: Blob duration of specification.
-     *
+     * 
      * @return the blobDuration value.
      */
     public String blobDuration() {
@@ -89,7 +93,7 @@ public final class LogSpecification {
 
     /**
      * Set the blobDuration property: Blob duration of specification.
-     *
+     * 
      * @param blobDuration the blobDuration value to set.
      * @return the LogSpecification object itself.
      */
@@ -100,7 +104,7 @@ public final class LogSpecification {
 
     /**
      * Get the logFilterPattern property: Pattern to filter based on name.
-     *
+     * 
      * @return the logFilterPattern value.
      */
     public String logFilterPattern() {
@@ -109,7 +113,7 @@ public final class LogSpecification {
 
     /**
      * Set the logFilterPattern property: Pattern to filter based on name.
-     *
+     * 
      * @param logFilterPattern the logFilterPattern value to set.
      * @return the LogSpecification object itself.
      */
@@ -120,7 +124,7 @@ public final class LogSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,25 +4,46 @@
 
 package com.azure.monitor.query.implementation.metrics.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
- * Describes the format of Error response.
+ * Error Response
+ * 
+ * Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also
+ * follows the OData error response format.).
  */
-@Fluent
-public final class ErrorResponse {
+@Immutable
+public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
     /*
-     * Error code
+     * The error code.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
-     * Error message indicating why the operation failed.
+     * The error message.
      */
-    @JsonProperty(value = "message")
     private String message;
+
+    /*
+     * The error target.
+     */
+    private String target;
+
+    /*
+     * The error details.
+     */
+    private List<ErrorResponse> details;
+
+    /*
+     * The error additional info.
+     */
+    private List<ErrorAdditionalInfo> additionalInfo;
 
     /**
      * Creates an instance of ErrorResponse class.
@@ -31,7 +52,7 @@ public final class ErrorResponse {
     }
 
     /**
-     * Get the code property: Error code.
+     * Get the code property: The error code.
      * 
      * @return the code value.
      */
@@ -40,18 +61,7 @@ public final class ErrorResponse {
     }
 
     /**
-     * Set the code property: Error code.
-     * 
-     * @param code the code value to set.
-     * @return the ErrorResponse object itself.
-     */
-    public ErrorResponse setCode(String code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
-     * Get the message property: Error message indicating why the operation failed.
+     * Get the message property: The error message.
      * 
      * @return the message value.
      */
@@ -60,13 +70,72 @@ public final class ErrorResponse {
     }
 
     /**
-     * Set the message property: Error message indicating why the operation failed.
+     * Get the target property: The error target.
      * 
-     * @param message the message value to set.
-     * @return the ErrorResponse object itself.
+     * @return the target value.
      */
-    public ErrorResponse setMessage(String message) {
-        this.message = message;
-        return this;
+    public String getTarget() {
+        return this.target;
+    }
+
+    /**
+     * Get the details property: The error details.
+     * 
+     * @return the details value.
+     */
+    public List<ErrorResponse> getDetails() {
+        return this.details;
+    }
+
+    /**
+     * Get the additionalInfo property: The error additional info.
+     * 
+     * @return the additionalInfo value.
+     */
+    public List<ErrorAdditionalInfo> getAdditionalInfo() {
+        return this.additionalInfo;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ErrorResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ErrorResponse if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ErrorResponse.
+     */
+    public static ErrorResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ErrorResponse deserializedErrorResponse = new ErrorResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedErrorResponse.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedErrorResponse.message = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedErrorResponse.target = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    List<ErrorResponse> details = reader.readArray(reader1 -> ErrorResponse.fromJson(reader1));
+                    deserializedErrorResponse.details = details;
+                } else if ("additionalInfo".equals(fieldName)) {
+                    List<ErrorAdditionalInfo> additionalInfo
+                        = reader.readArray(reader1 -> ErrorAdditionalInfo.fromJson(reader1));
+                    deserializedErrorResponse.additionalInfo = additionalInfo;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedErrorResponse;
+        });
     }
 }

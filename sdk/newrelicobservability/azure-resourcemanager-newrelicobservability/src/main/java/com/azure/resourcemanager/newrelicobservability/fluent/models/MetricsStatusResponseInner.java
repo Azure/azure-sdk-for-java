@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response of get metrics status Operation. */
+/**
+ * Response of get metrics status Operation.
+ */
 @Fluent
 public final class MetricsStatusResponseInner {
     /*
@@ -17,13 +19,15 @@ public final class MetricsStatusResponseInner {
     @JsonProperty(value = "azureResourceIds")
     private List<String> azureResourceIds;
 
-    /** Creates an instance of MetricsStatusResponseInner class. */
+    /**
+     * Creates an instance of MetricsStatusResponseInner class.
+     */
     public MetricsStatusResponseInner() {
     }
 
     /**
      * Get the azureResourceIds property: Azure resource IDs.
-     *
+     * 
      * @return the azureResourceIds value.
      */
     public List<String> azureResourceIds() {
@@ -32,7 +36,7 @@ public final class MetricsStatusResponseInner {
 
     /**
      * Set the azureResourceIds property: Azure resource IDs.
-     *
+     * 
      * @param azureResourceIds the azureResourceIds value to set.
      * @return the MetricsStatusResponseInner object itself.
      */
@@ -43,7 +47,7 @@ public final class MetricsStatusResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

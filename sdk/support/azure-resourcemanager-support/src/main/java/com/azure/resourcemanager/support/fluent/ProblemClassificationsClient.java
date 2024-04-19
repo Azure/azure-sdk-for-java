@@ -10,14 +10,47 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.support.fluent.models.ProblemClassificationInner;
+import com.azure.resourcemanager.support.fluent.models.ProblemClassificationsClassificationOutputInner;
+import com.azure.resourcemanager.support.models.ProblemClassificationsClassificationInput;
 
-/** An instance of this class provides access to all the operations defined in ProblemClassificationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProblemClassificationsClient.
+ */
 public interface ProblemClassificationsClient {
+    /**
+     * Classify the right problem classifications (categories) available for a specific Azure service.
+     * 
+     * @param problemServiceName Name of the Azure service for which the problem classifications need to be retrieved.
+     * @param problemClassificationsClassificationInput Input to check.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of the problem classification Classification API along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ProblemClassificationsClassificationOutputInner> classifyProblemsWithResponse(String problemServiceName,
+        ProblemClassificationsClassificationInput problemClassificationsClassificationInput, Context context);
+
+    /**
+     * Classify the right problem classifications (categories) available for a specific Azure service.
+     * 
+     * @param problemServiceName Name of the Azure service for which the problem classifications need to be retrieved.
+     * @param problemClassificationsClassificationInput Input to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of the problem classification Classification API.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ProblemClassificationsClassificationOutputInner classifyProblems(String problemServiceName,
+        ProblemClassificationsClassificationInput problemClassificationsClassificationInput);
+
     /**
      * Lists all the problem classifications (categories) available for a specific Azure service. Always use the service
      * and problem classifications obtained programmatically. This practice ensures that you always have the most recent
      * set of service and problem classification Ids.
-     *
+     * 
      * @param serviceName Name of the Azure service for which the problem classifications need to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -31,7 +64,7 @@ public interface ProblemClassificationsClient {
      * Lists all the problem classifications (categories) available for a specific Azure service. Always use the service
      * and problem classifications obtained programmatically. This practice ensures that you always have the most recent
      * set of service and problem classification Ids.
-     *
+     * 
      * @param serviceName Name of the Azure service for which the problem classifications need to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,8 +77,8 @@ public interface ProblemClassificationsClient {
 
     /**
      * Get problem classification details for a specific Azure service.
-     *
-     * @param serviceName Name of the Azure service available for support.
+     * 
+     * @param serviceName Name of the Azure service for which the problem classifications need to be retrieved.
      * @param problemClassificationName Name of problem classification.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -54,13 +87,13 @@ public interface ProblemClassificationsClient {
      * @return problem classification details for a specific Azure service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProblemClassificationInner> getWithResponse(
-        String serviceName, String problemClassificationName, Context context);
+    Response<ProblemClassificationInner> getWithResponse(String serviceName, String problemClassificationName,
+        Context context);
 
     /**
      * Get problem classification details for a specific Azure service.
-     *
-     * @param serviceName Name of the Azure service available for support.
+     * 
+     * @param serviceName Name of the Azure service for which the problem classifications need to be retrieved.
      * @param problemClassificationName Name of problem classification.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

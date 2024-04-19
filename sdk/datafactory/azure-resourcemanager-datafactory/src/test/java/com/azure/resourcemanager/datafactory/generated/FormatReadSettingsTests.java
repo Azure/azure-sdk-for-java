@@ -12,15 +12,14 @@ import java.util.Map;
 public final class FormatReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FormatReadSettings model = BinaryData
-            .fromString("{\"type\":\"FormatReadSettings\",\"\":{\"oebgkx\":\"datady\",\"rvbcgsaaday\":\"datapkl\"}}")
+        FormatReadSettings model = BinaryData.fromString(
+            "{\"type\":\"lgkkiuq\",\"\":{\"qaf\":\"dataafobpyeobrtae\",\"kelow\":\"datahpkiiunyrob\",\"upski\":\"datamrvdtqhrtnqssqy\",\"aued\":\"dataokphamefzzgwj\"}}")
             .toObject(FormatReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FormatReadSettings model
-            = new FormatReadSettings().withAdditionalProperties(mapOf("type", "FormatReadSettings"));
+        FormatReadSettings model = new FormatReadSettings().withAdditionalProperties(mapOf("type", "lgkkiuq"));
         model = BinaryData.fromObject(model).toObject(FormatReadSettings.class);
     }
 

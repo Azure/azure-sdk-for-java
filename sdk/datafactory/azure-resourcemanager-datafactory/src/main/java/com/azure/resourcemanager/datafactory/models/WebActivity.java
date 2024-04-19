@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.WebActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,17 @@ import java.util.Map;
 /**
  * Web activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = WebActivity.class, visible = true)
 @JsonTypeName("WebActivity")
 @Fluent
 public final class WebActivity extends ExecutionActivity {
+    /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "WebActivity";
+
     /*
      * Web activity properties.
      */
@@ -30,6 +38,16 @@ public final class WebActivity extends ExecutionActivity {
      * Creates an instance of WebActivity class.
      */
     public WebActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -137,8 +155,7 @@ public final class WebActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the url property: Web activity target endpoint and path. Type: string (or Expression with resultType
-     * string).
+     * Get the url property: Web activity target endpoint and path. Type: string (or Expression with resultType string).
      * 
      * @return the url value.
      */
@@ -147,8 +164,7 @@ public final class WebActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the url property: Web activity target endpoint and path. Type: string (or Expression with resultType
-     * string).
+     * Set the url property: Web activity target endpoint and path. Type: string (or Expression with resultType string).
      * 
      * @param url the url value to set.
      * @return the WebActivity object itself.
@@ -168,7 +184,7 @@ public final class WebActivity extends ExecutionActivity {
      * 
      * @return the headers value.
      */
-    public Map<String, String> headers() {
+    public Map<String, Object> headers() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().headers();
     }
 
@@ -180,7 +196,7 @@ public final class WebActivity extends ExecutionActivity {
      * @param headers the headers value to set.
      * @return the WebActivity object itself.
      */
-    public WebActivity withHeaders(Map<String, String> headers) {
+    public WebActivity withHeaders(Map<String, Object> headers) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new WebActivityTypeProperties();
         }
@@ -287,9 +303,9 @@ public final class WebActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the turnOffAsync property: Option to disable invoking HTTP GET on location given in response header of a
-     * HTTP 202 Response. If set true, it stops invoking HTTP GET on http location given in response header. If set
-     * false then continues to invoke HTTP GET call on location given in http response headers.
+     * Get the turnOffAsync property: Option to disable invoking HTTP GET on location given in response header of a HTTP
+     * 202 Response. If set true, it stops invoking HTTP GET on http location given in response header. If set false
+     * then continues to invoke HTTP GET call on location given in http response headers.
      * 
      * @return the turnOffAsync value.
      */
@@ -298,9 +314,9 @@ public final class WebActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the turnOffAsync property: Option to disable invoking HTTP GET on location given in response header of a
-     * HTTP 202 Response. If set true, it stops invoking HTTP GET on http location given in response header. If set
-     * false then continues to invoke HTTP GET call on location given in http response headers.
+     * Set the turnOffAsync property: Option to disable invoking HTTP GET on location given in response header of a HTTP
+     * 202 Response. If set true, it stops invoking HTTP GET on http location given in response header. If set false
+     * then continues to invoke HTTP GET call on location given in http response headers.
      * 
      * @param turnOffAsync the turnOffAsync value to set.
      * @return the WebActivity object itself.
@@ -391,8 +407,9 @@ public final class WebActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerTypeProperties in model WebActivity"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property innerTypeProperties in model WebActivity"));
         } else {
             innerTypeProperties().validate();
         }

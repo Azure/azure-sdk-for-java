@@ -43,7 +43,7 @@ If you want to see the full code for these snippets check out our [samples folde
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai</artifactId>
-    <version>1.0.0-beta.6</version>
+    <version>1.0.0-beta.9</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -105,7 +105,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.11.2</version>
+    <version>1.11.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -234,26 +234,23 @@ chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
 chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
 chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
-IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelName}",
-    new ChatCompletionsOptions(chatMessages));
-
-chatCompletionsStream
-    .stream()
-    // Remove .skip(1) when using Non-Azure OpenAI API
-    // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
-    // TODO: remove .skip(1) when service fix the issue.
-    .skip(1)
-    .forEach(chatCompletions -> {
-        ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
-        if (delta.getRole() != null) {
-            System.out.println("Role = " + delta.getRole());
-        }
-        if (delta.getContent() != null) {
-            System.out.print(delta.getContent());
-        }
-    });
+client.getChatCompletionsStream("{deploymentOrModelName}", new ChatCompletionsOptions(chatMessages))
+        .forEach(chatCompletions -> {
+            if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
+                return;
+            }
+            ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
+            if (delta.getRole() != null) {
+                System.out.println("Role = " + delta.getRole());
+            }
+            if (delta.getContent() != null) {
+                String content = delta.getContent();
+                System.out.print(content);
+            }
+        });
 ```
-For a complete sample example, see sample [Streaming Chat Completions][sample_get_chat_completions_streaming].
+
+To compute tokens in streaming chat completions, see sample [Streaming Chat Completions][sample_get_chat_completions_streaming].
 
 ### Text embeddings
 
@@ -265,7 +262,7 @@ Embeddings embeddings = client.getEmbeddings("{deploymentOrModelName}", embeddin
 
 for (EmbeddingItem item : embeddings.getData()) {
     System.out.printf("Index: %d.%n", item.getPromptIndex());
-    for (Double embedding : item.getEmbedding()) {
+    for (Float embedding : item.getEmbedding()) {
         System.out.printf("%f;", embedding);
     }
 }
@@ -459,6 +456,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_subscription]: https://azure.microsoft.com/free/
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jtokkit]: https://github.com/knuddelsgmbh/jtokkit
 [logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [microsoft_docs_openai_completion]: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/completions
 [microsoft_docs_openai_embedding]: https://learn.microsoft.com/azure/cognitive-services/openai/concepts/understand-embeddings

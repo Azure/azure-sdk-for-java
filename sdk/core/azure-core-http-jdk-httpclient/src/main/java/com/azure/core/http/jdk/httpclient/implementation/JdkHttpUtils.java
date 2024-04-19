@@ -5,13 +5,20 @@ package com.azure.core.http.jdk.httpclient.implementation;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Utility class for JDK HttpClient.
  */
 public final class JdkHttpUtils {
+    // Singleton timer to schedule timeout tasks.
+    // TODO (alzimmer): Make sure one thread is sufficient for all timeout tasks.
+    private static final Timer TIMER = new Timer("azure-jdk-httpclient-network-timeout-tracker", true);
+
     /**
      * Converts the given JDK Http headers to azure-core Http header.
      *
@@ -29,5 +36,41 @@ public final class JdkHttpUtils {
         }
 
         return httpHeaders;
+    }
+
+    /**
+     * Gets the size of the given list of ByteBuffers.
+     * <p>
+     * If the size of buffers is greater than {@link Integer#MAX_VALUE} an {@link IllegalStateException} will be thrown.
+     * This is done as this is used to create a {@code byte[]} and this could result in an integer overflow.
+     *
+     * @param buffers The list of ByteBuffers to get the size of.
+     * @return The size of the buffers.
+     * @throws IllegalStateException If the size of the buffers is greater than {@link Integer#MAX_VALUE}.
+     */
+    public static int getSizeOfBuffers(List<ByteBuffer> buffers) {
+        long size = 0;
+        for (ByteBuffer buffer : buffers) {
+            size += buffer.remaining();
+
+            if (size > Integer.MAX_VALUE) {
+                throw new IllegalStateException("The size of the buffers is greater than Integer.MAX_VALUE.");
+            }
+        }
+
+        return (int) size;
+    }
+
+    /**
+     * Schedules a timeout task to be executed after the given timeout.
+     *
+     * @param task The task to be executed.
+     * @param timeoutMillis The timeout in milliseconds.
+     */
+    public static void scheduleTimeoutTask(TimerTask task, long timeoutMillis) {
+        TIMER.schedule(task, timeoutMillis);
+    }
+
+    private JdkHttpUtils() {
     }
 }

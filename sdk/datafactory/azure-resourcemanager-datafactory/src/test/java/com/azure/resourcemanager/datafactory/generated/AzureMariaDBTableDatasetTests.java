@@ -19,32 +19,31 @@ public final class AzureMariaDBTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMariaDBTableDataset model = BinaryData.fromString(
-            "{\"type\":\"AzureMariaDBTable\",\"typeProperties\":{\"tableName\":\"datatn\"},\"description\":\"jewihcigaahm\",\"structure\":\"dataspkdnx\",\"schema\":\"dataz\",\"linkedServiceName\":{\"referenceName\":\"tertnzrrwsc\",\"parameters\":{\"nvtolzj\":\"datahdwi\",\"haknklthqwppv\":\"datafkryxs\"}},\"parameters\":{\"bkabhvxjuaivx\":{\"type\":\"Int\",\"defaultValue\":\"datarvpvdrohul\"},\"kg\":{\"type\":\"Array\",\"defaultValue\":\"datarnygti\"},\"rxzpqditu\":{\"type\":\"Bool\",\"defaultValue\":\"datamkphvdl\"},\"e\":{\"type\":\"String\",\"defaultValue\":\"datatfcieil\"}},\"annotations\":[\"datakehldopjsxvbbwsg\",\"datakkmibnmdp\",\"datad\",\"datapwtgzwmzhcmrloqa\"],\"folder\":{\"name\":\"yzavky\"},\"\":{\"bngzldvvd\":\"dataudnmbj\",\"pmq\":\"dataoptythctoxo\",\"sfzsgzgus\":\"dataerwhemvids\"}}")
+            "{\"type\":\"wapdunhdikatzmtu\",\"typeProperties\":{\"tableName\":\"dataoeqcrjvcjskqsfn\"},\"description\":\"nh\",\"structure\":\"datajkbi\",\"schema\":\"datalwzlv\",\"linkedServiceName\":{\"referenceName\":\"cmcu\",\"parameters\":{\"cfbaobo\":\"datanlodi\"}},\"parameters\":{\"ksaxyeedvpmodkt\":{\"type\":\"Float\",\"defaultValue\":\"datapsvax\"}},\"annotations\":[\"dataydvvgkmorbpcjesf\",\"datavuztnsvmsh\",\"datakg\",\"datagf\"],\"folder\":{\"name\":\"meh\"},\"\":{\"ivrfnztx\":\"datalpkryrcbmjjviu\",\"ohlgrjcx\":\"datamrmgftjvii\"}}")
             .toObject(AzureMariaDBTableDataset.class);
-        Assertions.assertEquals("jewihcigaahm", model.description());
-        Assertions.assertEquals("tertnzrrwsc", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("bkabhvxjuaivx").type());
-        Assertions.assertEquals("yzavky", model.folder().name());
+        Assertions.assertEquals("nh", model.description());
+        Assertions.assertEquals("cmcu", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("ksaxyeedvpmodkt").type());
+        Assertions.assertEquals("meh", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMariaDBTableDataset model = new AzureMariaDBTableDataset().withDescription("jewihcigaahm")
-            .withStructure("dataspkdnx").withSchema("dataz")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("tertnzrrwsc")
-                .withParameters(mapOf("nvtolzj", "datahdwi", "haknklthqwppv", "datafkryxs")))
-            .withParameters(mapOf("bkabhvxjuaivx",
-                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datarvpvdrohul"), "kg",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datarnygti"), "rxzpqditu",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datamkphvdl"), "e",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datatfcieil")))
-            .withAnnotations(Arrays.asList("datakehldopjsxvbbwsg", "datakkmibnmdp", "datad", "datapwtgzwmzhcmrloqa"))
-            .withFolder(new DatasetFolder().withName("yzavky")).withTableName("datatn");
+        AzureMariaDBTableDataset model = new AzureMariaDBTableDataset().withDescription("nh")
+            .withStructure("datajkbi")
+            .withSchema("datalwzlv")
+            .withLinkedServiceName(
+                new LinkedServiceReference().withReferenceName("cmcu").withParameters(mapOf("cfbaobo", "datanlodi")))
+            .withParameters(mapOf("ksaxyeedvpmodkt",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datapsvax")))
+            .withAnnotations(Arrays.asList("dataydvvgkmorbpcjesf", "datavuztnsvmsh", "datakg", "datagf"))
+            .withFolder(new DatasetFolder().withName("meh"))
+            .withTableName("dataoeqcrjvcjskqsfn");
         model = BinaryData.fromObject(model).toObject(AzureMariaDBTableDataset.class);
-        Assertions.assertEquals("jewihcigaahm", model.description());
-        Assertions.assertEquals("tertnzrrwsc", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("bkabhvxjuaivx").type());
-        Assertions.assertEquals("yzavky", model.folder().name());
+        Assertions.assertEquals("nh", model.description());
+        Assertions.assertEquals("cmcu", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("ksaxyeedvpmodkt").type());
+        Assertions.assertEquals("meh", model.folder().name());
     }
 
     // Use "Map.of" if available

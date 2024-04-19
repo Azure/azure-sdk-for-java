@@ -6,95 +6,97 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.resourcemanager.security.fluent.models.SoftwareInner;
 
-/** An immutable client-side representation of Software. */
+/**
+ * An immutable client-side representation of Software.
+ */
 public interface Software {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the deviceId property: Unique identifier for the virtual machine in the service.
-     *
+     * 
      * @return the deviceId value.
      */
     String deviceId();
 
     /**
      * Gets the osPlatform property: Platform of the operating system running on the device.
-     *
+     * 
      * @return the osPlatform value.
      */
     String osPlatform();
 
     /**
      * Gets the vendor property: Name of the software vendor.
-     *
+     * 
      * @return the vendor value.
      */
     String vendor();
 
     /**
      * Gets the softwareName property: Name of the software product.
-     *
+     * 
      * @return the softwareName value.
      */
     String softwareName();
 
     /**
      * Gets the version property: Version number of the software product.
-     *
+     * 
      * @return the version value.
      */
     String version();
 
     /**
      * Gets the endOfSupportStatus property: End of support status.
-     *
+     * 
      * @return the endOfSupportStatus value.
      */
     EndOfSupportStatus endOfSupportStatus();
 
     /**
      * Gets the endOfSupportDate property: The end of support date in case the product is upcoming end of support.
-     *
+     * 
      * @return the endOfSupportDate value.
      */
     String endOfSupportDate();
 
     /**
      * Gets the numberOfKnownVulnerabilities property: Number of weaknesses.
-     *
+     * 
      * @return the numberOfKnownVulnerabilities value.
      */
     Integer numberOfKnownVulnerabilities();
 
     /**
      * Gets the firstSeenAt property: First time that the software was seen in the device.
-     *
+     * 
      * @return the firstSeenAt value.
      */
     String firstSeenAt();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.SoftwareInner object.
-     *
+     * 
      * @return the inner object.
      */
     SoftwareInner innerModel();

@@ -8,16 +8,18 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ConnectedEnvironmentsCertificates. */
+/**
+ * Resource collection API of ConnectedEnvironmentsCertificates.
+ */
 public interface ConnectedEnvironmentsCertificates {
     /**
      * Get the Certificates in a given connected environment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Certificates in a given connected environment as paginated response with {@link PagedIterable}.
      */
@@ -25,13 +27,13 @@ public interface ConnectedEnvironmentsCertificates {
 
     /**
      * Get the Certificates in a given connected environment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Certificates in a given connected environment as paginated response with {@link PagedIterable}.
      */
@@ -39,29 +41,29 @@ public interface ConnectedEnvironmentsCertificates {
 
     /**
      * Get the specified Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Certificate along with {@link Response}.
      */
-    Response<Certificate> getWithResponse(
-        String resourceGroupName, String connectedEnvironmentName, String certificateName, Context context);
+    Response<Certificate> getWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        String certificateName, Context context);
 
     /**
      * Get the specified Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Certificate.
      */
@@ -69,40 +71,40 @@ public interface ConnectedEnvironmentsCertificates {
 
     /**
      * Deletes the specified Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String connectedEnvironmentName, String certificateName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName, String certificateName,
+        Context context);
 
     /**
      * Deletes the specified Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void delete(String resourceGroupName, String connectedEnvironmentName, String certificateName);
 
     /**
      * Get the specified Certificate.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Certificate along with {@link Response}.
      */
@@ -110,12 +112,12 @@ public interface ConnectedEnvironmentsCertificates {
 
     /**
      * Get the specified Certificate.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Certificate along with {@link Response}.
      */
@@ -123,23 +125,23 @@ public interface ConnectedEnvironmentsCertificates {
 
     /**
      * Deletes the specified Certificate.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void deleteById(String id);
 
     /**
      * Deletes the specified Certificate.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -147,7 +149,7 @@ public interface ConnectedEnvironmentsCertificates {
 
     /**
      * Begins definition for a new Certificate resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Certificate definition.
      */

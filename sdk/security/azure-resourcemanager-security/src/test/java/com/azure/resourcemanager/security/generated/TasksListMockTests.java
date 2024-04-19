@@ -30,35 +30,25 @@ public final class TasksListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"state\":\"ewuyqa\",\"creationTimeUtc\":\"2021-07-02T03:18:38Z\",\"securityTaskParameters\":{\"name\":\"hgejkbvhhdaurgh\",\"\":{}},\"lastStateChangeTimeUtc\":\"2021-10-08T07:27:35Z\",\"subState\":\"xb\"},\"id\":\"hxjxjoezlqxrkdkn\",\"name\":\"obektmbozo\",\"type\":\"tzamicbig\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"state\":\"ixxfsfpcr\",\"creationTimeUtc\":\"2021-01-18T21:48:33Z\",\"securityTaskParameters\":{\"name\":\"efx\",\"\":{\"bdveywetkrhl\":\"datat\"}},\"lastStateChangeTimeUtc\":\"2021-04-15T07:28:47Z\",\"subState\":\"nwepfgsvbbv\"},\"id\":\"qdljnpe\",\"name\":\"l\",\"type\":\"n\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SecurityTask> response = manager.tasks().list("ycqsxr", com.azure.core.util.Context.NONE);
+        PagedIterable<SecurityTask> response = manager.tasks().list("jovkeyym", com.azure.core.util.Context.NONE);
+
     }
 }

@@ -12,8 +12,7 @@ public final class NameAvailabilityImpl implements NameAvailability {
 
     private final com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager;
 
-    NameAvailabilityImpl(
-        NameAvailabilityInner innerObject,
+    NameAvailabilityImpl(NameAvailabilityInner innerObject,
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

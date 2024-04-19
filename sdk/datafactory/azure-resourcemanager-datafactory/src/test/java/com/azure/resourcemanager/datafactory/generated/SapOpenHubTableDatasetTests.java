@@ -19,35 +19,38 @@ public final class SapOpenHubTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapOpenHubTableDataset model = BinaryData.fromString(
-            "{\"type\":\"SapOpenHubTable\",\"typeProperties\":{\"openHubDestinationName\":\"datauky\",\"excludeLastRequest\":\"dataxrjiqoqovqhg\",\"baseRequestId\":\"datagxuwudgcyqru\"},\"description\":\"mryddnqivahfcq\",\"structure\":\"datajzebp\",\"schema\":\"dataciyoypoedk\",\"linkedServiceName\":{\"referenceName\":\"pwwibpybqeig\",\"parameters\":{\"nhcgn\":\"dataxsxteuikhznff\"}},\"parameters\":{\"rkrgsdc\":{\"type\":\"SecureString\",\"defaultValue\":\"datarfqd\"},\"zfutgpbygbnb\":{\"type\":\"Int\",\"defaultValue\":\"datamgqlwyqznbbyzpo\"},\"ewflwzhxzuxe\":{\"type\":\"Array\",\"defaultValue\":\"dataiqgtzpv\"},\"ajdqxymxx\":{\"type\":\"Float\",\"defaultValue\":\"dataywlrkqsqvvdkfpfj\"}},\"annotations\":[\"datadjidcetfvgwfws\",\"datadigwoup\"],\"folder\":{\"name\":\"ddqsvclrsnxfrp\"},\"\":{\"tfxxepzpxzxlcqz\":\"dataqclmd\",\"jbsmkirpqni\":\"dataxaitiqm\",\"uzltenlb\":\"dataudmhkcomeobwk\",\"uomtxj\":\"dataxlmxozesndo\"}}")
+            "{\"type\":\"on\",\"typeProperties\":{\"openHubDestinationName\":\"datazcg\",\"excludeLastRequest\":\"dataozlibcbnunzuysaj\",\"baseRequestId\":\"dataqlho\"},\"description\":\"ivgtibtkqjqjc\",\"structure\":\"datago\",\"schema\":\"datatkhh\",\"linkedServiceName\":{\"referenceName\":\"emrvk\",\"parameters\":{\"qfxspxgogyp\":\"datajtdyulglhelwrukl\",\"kvctvuz\":\"dataztgaexjn\",\"ttmhlvr\":\"datamb\"}},\"parameters\":{\"jggkwdepem\":{\"type\":\"Float\",\"defaultValue\":\"datanwukfajnpdw\"},\"gtrttcuayiqylnk\":{\"type\":\"Float\",\"defaultValue\":\"datayfiqiidxcorjvudy\"},\"gqexowq\":{\"type\":\"Object\",\"defaultValue\":\"datazifb\"},\"kuobpw\":{\"type\":\"Array\",\"defaultValue\":\"datagqrqkkvfy\"}},\"annotations\":[\"datapgobothx\",\"dataewhpnyjt\",\"dataqgzyvextc\"],\"folder\":{\"name\":\"r\"},\"\":{\"rifiozttcbiichg\":\"dataowuwhd\",\"ryqycymzrlcfgdwz\":\"dataudsozodwjcfqoy\",\"adnyciwzki\":\"datauzfdh\"}}")
             .toObject(SapOpenHubTableDataset.class);
-        Assertions.assertEquals("mryddnqivahfcq", model.description());
-        Assertions.assertEquals("pwwibpybqeig", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("rkrgsdc").type());
-        Assertions.assertEquals("ddqsvclrsnxfrp", model.folder().name());
+        Assertions.assertEquals("ivgtibtkqjqjc", model.description());
+        Assertions.assertEquals("emrvk", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("jggkwdepem").type());
+        Assertions.assertEquals("r", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapOpenHubTableDataset model = new SapOpenHubTableDataset().withDescription("mryddnqivahfcq")
-            .withStructure("datajzebp").withSchema("dataciyoypoedk")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("pwwibpybqeig")
-                .withParameters(mapOf("nhcgn", "dataxsxteuikhznff")))
-            .withParameters(mapOf("rkrgsdc",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datarfqd"),
-                "zfutgpbygbnb",
-                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datamgqlwyqznbbyzpo"),
-                "ewflwzhxzuxe",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataiqgtzpv"), "ajdqxymxx",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataywlrkqsqvvdkfpfj")))
-            .withAnnotations(Arrays.asList("datadjidcetfvgwfws", "datadigwoup"))
-            .withFolder(new DatasetFolder().withName("ddqsvclrsnxfrp")).withOpenHubDestinationName("datauky")
-            .withExcludeLastRequest("dataxrjiqoqovqhg").withBaseRequestId("datagxuwudgcyqru");
+        SapOpenHubTableDataset model = new SapOpenHubTableDataset().withDescription("ivgtibtkqjqjc")
+            .withStructure("datago")
+            .withSchema("datatkhh")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("emrvk")
+                .withParameters(
+                    mapOf("qfxspxgogyp", "datajtdyulglhelwrukl", "kvctvuz", "dataztgaexjn", "ttmhlvr", "datamb")))
+            .withParameters(mapOf("jggkwdepem",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datanwukfajnpdw"),
+                "gtrttcuayiqylnk",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datayfiqiidxcorjvudy"),
+                "gqexowq", new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datazifb"),
+                "kuobpw", new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datagqrqkkvfy")))
+            .withAnnotations(Arrays.asList("datapgobothx", "dataewhpnyjt", "dataqgzyvextc"))
+            .withFolder(new DatasetFolder().withName("r"))
+            .withOpenHubDestinationName("datazcg")
+            .withExcludeLastRequest("dataozlibcbnunzuysaj")
+            .withBaseRequestId("dataqlho");
         model = BinaryData.fromObject(model).toObject(SapOpenHubTableDataset.class);
-        Assertions.assertEquals("mryddnqivahfcq", model.description());
-        Assertions.assertEquals("pwwibpybqeig", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("rkrgsdc").type());
-        Assertions.assertEquals("ddqsvclrsnxfrp", model.folder().name());
+        Assertions.assertEquals("ivgtibtkqjqjc", model.description());
+        Assertions.assertEquals("emrvk", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("jggkwdepem").type());
+        Assertions.assertEquals("r", model.folder().name());
     }
 
     // Use "Map.of" if available

@@ -14,22 +14,26 @@ import com.azure.resourcemanager.security.models.IoTSeverityMetrics;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Security analytics of your IoT Security solution. */
+/**
+ * Security analytics of your IoT Security solution.
+ */
 @Fluent
 public final class IoTSecuritySolutionAnalyticsModelInner extends ProxyResource {
     /*
-     * Security Solution  Aggregated Alert data
+     * Security Solution Aggregated Alert data
      */
     @JsonProperty(value = "properties")
     private IoTSecuritySolutionAnalyticsModelProperties innerProperties;
 
-    /** Creates an instance of IoTSecuritySolutionAnalyticsModelInner class. */
+    /**
+     * Creates an instance of IoTSecuritySolutionAnalyticsModelInner class.
+     */
     public IoTSecuritySolutionAnalyticsModelInner() {
     }
 
     /**
      * Get the innerProperties property: Security Solution Aggregated Alert data.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IoTSecuritySolutionAnalyticsModelProperties innerProperties() {
@@ -38,7 +42,7 @@ public final class IoTSecuritySolutionAnalyticsModelInner extends ProxyResource 
 
     /**
      * Get the metrics property: Security analytics of your IoT Security solution.
-     *
+     * 
      * @return the metrics value.
      */
     public IoTSeverityMetrics metrics() {
@@ -47,7 +51,7 @@ public final class IoTSecuritySolutionAnalyticsModelInner extends ProxyResource 
 
     /**
      * Get the unhealthyDeviceCount property: Number of unhealthy devices within your IoT Security solution.
-     *
+     * 
      * @return the unhealthyDeviceCount value.
      */
     public Long unhealthyDeviceCount() {
@@ -56,7 +60,7 @@ public final class IoTSecuritySolutionAnalyticsModelInner extends ProxyResource 
 
     /**
      * Get the devicesMetrics property: List of device metrics by the aggregation date.
-     *
+     * 
      * @return the devicesMetrics value.
      */
     public List<IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem> devicesMetrics() {
@@ -65,7 +69,7 @@ public final class IoTSecuritySolutionAnalyticsModelInner extends ProxyResource 
 
     /**
      * Get the topAlertedDevices property: List of the 3 devices with the most alerts.
-     *
+     * 
      * @return the topAlertedDevices value.
      */
     public List<IoTSecurityAlertedDevice> topAlertedDevices() {
@@ -74,12 +78,12 @@ public final class IoTSecuritySolutionAnalyticsModelInner extends ProxyResource 
 
     /**
      * Set the topAlertedDevices property: List of the 3 devices with the most alerts.
-     *
+     * 
      * @param topAlertedDevices the topAlertedDevices value to set.
      * @return the IoTSecuritySolutionAnalyticsModelInner object itself.
      */
-    public IoTSecuritySolutionAnalyticsModelInner withTopAlertedDevices(
-        List<IoTSecurityAlertedDevice> topAlertedDevices) {
+    public IoTSecuritySolutionAnalyticsModelInner
+        withTopAlertedDevices(List<IoTSecurityAlertedDevice> topAlertedDevices) {
         if (this.innerProperties() == null) {
             this.innerProperties = new IoTSecuritySolutionAnalyticsModelProperties();
         }
@@ -89,7 +93,7 @@ public final class IoTSecuritySolutionAnalyticsModelInner extends ProxyResource 
 
     /**
      * Get the mostPrevalentDeviceAlerts property: List of the 3 most prevalent device alerts.
-     *
+     * 
      * @return the mostPrevalentDeviceAlerts value.
      */
     public List<IoTSecurityDeviceAlert> mostPrevalentDeviceAlerts() {
@@ -98,12 +102,12 @@ public final class IoTSecuritySolutionAnalyticsModelInner extends ProxyResource 
 
     /**
      * Set the mostPrevalentDeviceAlerts property: List of the 3 most prevalent device alerts.
-     *
+     * 
      * @param mostPrevalentDeviceAlerts the mostPrevalentDeviceAlerts value to set.
      * @return the IoTSecuritySolutionAnalyticsModelInner object itself.
      */
-    public IoTSecuritySolutionAnalyticsModelInner withMostPrevalentDeviceAlerts(
-        List<IoTSecurityDeviceAlert> mostPrevalentDeviceAlerts) {
+    public IoTSecuritySolutionAnalyticsModelInner
+        withMostPrevalentDeviceAlerts(List<IoTSecurityDeviceAlert> mostPrevalentDeviceAlerts) {
         if (this.innerProperties() == null) {
             this.innerProperties = new IoTSecuritySolutionAnalyticsModelProperties();
         }
@@ -113,7 +117,7 @@ public final class IoTSecuritySolutionAnalyticsModelInner extends ProxyResource 
 
     /**
      * Get the mostPrevalentDeviceRecommendations property: List of the 3 most prevalent device recommendations.
-     *
+     * 
      * @return the mostPrevalentDeviceRecommendations value.
      */
     public List<IoTSecurityDeviceRecommendation> mostPrevalentDeviceRecommendations() {
@@ -122,7 +126,7 @@ public final class IoTSecuritySolutionAnalyticsModelInner extends ProxyResource 
 
     /**
      * Set the mostPrevalentDeviceRecommendations property: List of the 3 most prevalent device recommendations.
-     *
+     * 
      * @param mostPrevalentDeviceRecommendations the mostPrevalentDeviceRecommendations value to set.
      * @return the IoTSecuritySolutionAnalyticsModelInner object itself.
      */
@@ -137,7 +141,7 @@ public final class IoTSecuritySolutionAnalyticsModelInner extends ProxyResource 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

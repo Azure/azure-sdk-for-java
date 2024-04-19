@@ -12,8 +12,9 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.security.SecurityManager;
-import com.azure.resourcemanager.security.models.MinimalSeverity;
 import com.azure.resourcemanager.security.models.SecurityContact;
+import com.azure.resourcemanager.security.models.SecurityContactName;
+import com.azure.resourcemanager.security.models.SecurityContactRole;
 import com.azure.resourcemanager.security.models.State;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -32,42 +33,31 @@ public final class SecurityContactsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"emails\":\"glhrfo\",\"phone\":\"wecr\",\"alertNotifications\":{\"state\":\"Passed\",\"minimalSeverity\":\"Medium\"},\"notificationsByRole\":{\"state\":\"Skipped\",\"roles\":[]}},\"id\":\"ovppqibukklvzrlr\",\"name\":\"l\",\"type\":\"cme\"}";
+        String responseStr
+            = "{\"properties\":{\"emails\":\"dvvlrhocrkkvxund\",\"phone\":\"bvbps\",\"isEnabled\":true,\"notificationsSources\":[{\"sourceType\":\"NotificationsSource\"}],\"notificationsByRole\":{\"state\":\"Failed\",\"roles\":[\"Contributor\",\"AccountAdmin\",\"Owner\",\"Owner\"]}},\"id\":\"kurklpiigfuzkeu\",\"name\":\"uipjclzjwaqd\",\"type\":\"qydewuwxyllz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SecurityContact response =
-            manager.securityContacts().getWithResponse("xl", com.azure.core.util.Context.NONE).getValue();
+        SecurityContact response = manager.securityContacts()
+            .getWithResponse(SecurityContactName.DEFAULT, com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("glhrfo", response.emails());
-        Assertions.assertEquals("wecr", response.phone());
-        Assertions.assertEquals(State.PASSED, response.alertNotifications().state());
-        Assertions.assertEquals(MinimalSeverity.MEDIUM, response.alertNotifications().minimalSeverity());
-        Assertions.assertEquals(State.SKIPPED, response.notificationsByRole().state());
+        Assertions.assertEquals("dvvlrhocrkkvxund", response.emails());
+        Assertions.assertEquals("bvbps", response.phone());
+        Assertions.assertEquals(true, response.isEnabled());
+        Assertions.assertEquals(State.FAILED, response.notificationsByRole().state());
+        Assertions.assertEquals(SecurityContactRole.CONTRIBUTOR, response.notificationsByRole().roles().get(0));
     }
 }

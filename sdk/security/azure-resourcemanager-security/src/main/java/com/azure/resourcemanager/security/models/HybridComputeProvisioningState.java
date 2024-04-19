@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** State of the service principal and its secret. */
+/**
+ * State of the service principal and its secret.
+ */
 public final class HybridComputeProvisioningState extends ExpandableStringEnum<HybridComputeProvisioningState> {
-    /** Static value Valid for HybridComputeProvisioningState. */
+    /**
+     * Static value Valid for HybridComputeProvisioningState.
+     */
     public static final HybridComputeProvisioningState VALID = fromString("Valid");
 
-    /** Static value Invalid for HybridComputeProvisioningState. */
+    /**
+     * Static value Invalid for HybridComputeProvisioningState.
+     */
     public static final HybridComputeProvisioningState INVALID = fromString("Invalid");
 
-    /** Static value Expired for HybridComputeProvisioningState. */
+    /**
+     * Static value Expired for HybridComputeProvisioningState.
+     */
     public static final HybridComputeProvisioningState EXPIRED = fromString("Expired");
 
     /**
      * Creates a new instance of HybridComputeProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class HybridComputeProvisioningState extends ExpandableStringEnum<H
 
     /**
      * Creates or finds a HybridComputeProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HybridComputeProvisioningState.
      */
@@ -41,7 +49,7 @@ public final class HybridComputeProvisioningState extends ExpandableStringEnum<H
 
     /**
      * Gets known HybridComputeProvisioningState values.
-     *
+     * 
      * @return known HybridComputeProvisioningState values.
      */
     public static Collection<HybridComputeProvisioningState> values() {

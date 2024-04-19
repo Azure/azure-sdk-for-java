@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.security.models.State;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Regulatory compliance assessment details and state. */
+/**
+ * Regulatory compliance assessment details and state.
+ */
 @Fluent
 public final class RegulatoryComplianceAssessmentInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class RegulatoryComplianceAssessmentInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private RegulatoryComplianceAssessmentProperties innerProperties;
 
-    /** Creates an instance of RegulatoryComplianceAssessmentInner class. */
+    /**
+     * Creates an instance of RegulatoryComplianceAssessmentInner class.
+     */
     public RegulatoryComplianceAssessmentInner() {
     }
 
     /**
      * Get the innerProperties property: Regulatory compliance assessment data.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RegulatoryComplianceAssessmentProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class RegulatoryComplianceAssessmentInner extends ProxyResource {
 
     /**
      * Get the description property: The description of the regulatory compliance assessment.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -42,7 +46,7 @@ public final class RegulatoryComplianceAssessmentInner extends ProxyResource {
 
     /**
      * Get the assessmentType property: The expected type of assessment contained in the AssessmentDetailsLink.
-     *
+     * 
      * @return the assessmentType value.
      */
     public String assessmentType() {
@@ -52,7 +56,7 @@ public final class RegulatoryComplianceAssessmentInner extends ProxyResource {
     /**
      * Get the assessmentDetailsLink property: Link to more detailed assessment results data. The response type will be
      * according to the assessmentType field.
-     *
+     * 
      * @return the assessmentDetailsLink value.
      */
     public String assessmentDetailsLink() {
@@ -61,7 +65,7 @@ public final class RegulatoryComplianceAssessmentInner extends ProxyResource {
 
     /**
      * Get the state property: Aggregative state based on the assessment's scanned resources states.
-     *
+     * 
      * @return the state value.
      */
     public State state() {
@@ -70,7 +74,7 @@ public final class RegulatoryComplianceAssessmentInner extends ProxyResource {
 
     /**
      * Set the state property: Aggregative state based on the assessment's scanned resources states.
-     *
+     * 
      * @param state the state value to set.
      * @return the RegulatoryComplianceAssessmentInner object itself.
      */
@@ -84,7 +88,7 @@ public final class RegulatoryComplianceAssessmentInner extends ProxyResource {
 
     /**
      * Get the passedResources property: The given assessment's related resources count with passed state.
-     *
+     * 
      * @return the passedResources value.
      */
     public Integer passedResources() {
@@ -93,7 +97,7 @@ public final class RegulatoryComplianceAssessmentInner extends ProxyResource {
 
     /**
      * Get the failedResources property: The given assessment's related resources count with failed state.
-     *
+     * 
      * @return the failedResources value.
      */
     public Integer failedResources() {
@@ -102,7 +106,7 @@ public final class RegulatoryComplianceAssessmentInner extends ProxyResource {
 
     /**
      * Get the skippedResources property: The given assessment's related resources count with skipped state.
-     *
+     * 
      * @return the skippedResources value.
      */
     public Integer skippedResources() {
@@ -111,7 +115,7 @@ public final class RegulatoryComplianceAssessmentInner extends ProxyResource {
 
     /**
      * Get the unsupportedResources property: The given assessment's related resources count with unsupported state.
-     *
+     * 
      * @return the unsupportedResources value.
      */
     public Integer unsupportedResources() {
@@ -120,7 +124,7 @@ public final class RegulatoryComplianceAssessmentInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
