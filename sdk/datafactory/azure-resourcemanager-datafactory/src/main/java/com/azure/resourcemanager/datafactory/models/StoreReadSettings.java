@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
@@ -18,11 +19,7 @@ import java.util.Map;
 /**
  * Connector read setting.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = StoreReadSettings.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = StoreReadSettings.class, visible = true)
 @JsonTypeName("StoreReadSettings")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureBlobStorageReadSettings", value = AzureBlobStorageReadSettings.class),
@@ -42,15 +39,20 @@ import java.util.Map;
 @Fluent
 public class StoreReadSettings {
     /*
-     * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType
-     * integer).
+     * The read setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type;
+
+    /*
+     * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "maxConcurrentConnections")
     private Object maxConcurrentConnections;
 
     /*
-     * If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType
-     * boolean).
+     * If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "disableMetricsCollection")
     private Object disableMetricsCollection;
@@ -65,6 +67,16 @@ public class StoreReadSettings {
      * Creates an instance of StoreReadSettings class.
      */
     public StoreReadSettings() {
+        this.type = "StoreReadSettings";
+    }
+
+    /**
+     * Get the type property: The read setting type.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**

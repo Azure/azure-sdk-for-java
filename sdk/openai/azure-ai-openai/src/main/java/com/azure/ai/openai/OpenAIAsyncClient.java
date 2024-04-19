@@ -569,6 +569,7 @@ public final class OpenAIAsyncClient {
      * <p>
      * <strong>Code Samples</strong>
      * </p>
+     * <!-- @formatter:off -->
      * <!-- src_embed
      * com.azure.ai.openai.OpenAIAsyncClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload -->
      *
@@ -583,6 +584,7 @@ public final class OpenAIAsyncClient {
      *
      * <!-- end com.azure.ai.openai.OpenAIAsyncClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload
      * -->
+     * <!-- @formatter:on -->
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -701,6 +703,7 @@ public final class OpenAIAsyncClient {
      * <p>
      * <strong>Code Samples</strong>
      * </p>
+     * <!-- @formatter:off -->
      * <!-- src_embed com.azure.ai.openai.OpenAIAsyncClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
      * <pre>
      * openAIAsyncClient
@@ -711,6 +714,7 @@ public final class OpenAIAsyncClient {
      *                 &#40;&#41; -&gt; System.out.println&#40;&quot;Completed called getChatCompletionsStream.&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.ai.openai.OpenAIAsyncClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
+     * <!-- @formatter:on -->
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.

@@ -17,6 +17,7 @@ import com.azure.spring.data.cosmos.repository.StubDateTimeProvider;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AuditableIdGeneratedRepository;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
+import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -74,6 +75,33 @@ public class AuditableIT {
         assertThat(savedEntity.getCreatedDate()).isEqualTo(now);
         assertThat(savedEntity.getLastModifiedBy()).isEqualTo("created-by");
         assertThat(savedEntity.getLastModifiedByDate()).isEqualTo(now);
+    }
+
+    @Test
+    public void testInsertAllShouldSetAuditableEntries() {
+        final AuditableEntity entity1 = new AuditableEntity();
+        String UUID_1 = UUID.randomUUID().toString();
+        entity1.setId(UUID_1);
+        final AuditableEntity entity2 = new AuditableEntity();
+        String UUID_2 = UUID.randomUUID().toString();
+        entity2.setId(UUID_2);
+        final OffsetDateTime now = OffsetDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.MICROS);
+
+        stubDateTimeProvider.setNow(now);
+        stubAuditorProvider.setCurrentAuditor("created-by");
+        final List<AuditableEntity> savedEntities =
+            TestUtils.toList(auditableRepository.saveAll(Lists.newArrayList(entity1, entity2)));
+
+        assertThat(savedEntities.get(0).getId()).isEqualTo(UUID_1);
+        assertThat(savedEntities.get(0).getCreatedBy()).isEqualTo("created-by");
+        assertThat(savedEntities.get(0).getCreatedDate()).isEqualTo(now);
+        assertThat(savedEntities.get(0).getLastModifiedBy()).isEqualTo("created-by");
+        assertThat(savedEntities.get(0).getLastModifiedByDate()).isEqualTo(now);
+        assertThat(savedEntities.get(1).getId()).isEqualTo(UUID_2);
+        assertThat(savedEntities.get(1).getCreatedBy()).isEqualTo("created-by");
+        assertThat(savedEntities.get(1).getCreatedDate()).isEqualTo(now);
+        assertThat(savedEntities.get(1).getLastModifiedBy()).isEqualTo("created-by");
+        assertThat(savedEntities.get(1).getLastModifiedByDate()).isEqualTo(now);
     }
 
     @Test

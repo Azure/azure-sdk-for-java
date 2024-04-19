@@ -19,34 +19,31 @@ public final class CosmosDbSqlApiCollectionDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CosmosDbSqlApiCollectionDataset model = BinaryData.fromString(
-            "{\"type\":\"CosmosDbSqlApiCollection\",\"typeProperties\":{\"collectionName\":\"datalvsmfjihv\"},\"description\":\"cqrttjf\",\"structure\":\"datammfjew\",\"schema\":\"dataq\",\"linkedServiceName\":{\"referenceName\":\"avdostw\",\"parameters\":{\"elvxgwzz\":\"datafm\",\"zvzrbvgwxhlx\":\"datawdtlcjgpvc\"}},\"parameters\":{\"vhhplkhwwdk\":{\"type\":\"Array\",\"defaultValue\":\"datadrwynbgovazoym\"},\"yxryearmhpwbuk\":{\"type\":\"Object\",\"defaultValue\":\"dataeqmgkcswz\"}},\"annotations\":[\"datamfasgtlvhqpoilos\",\"dataaemcezevftmh\",\"datal\"],\"folder\":{\"name\":\"jy\"},\"\":{\"miwtpcflcez\":\"datatm\",\"fpf\":\"datawwvwiftdjtv\"}}")
+            "{\"type\":\"grcavqc\",\"typeProperties\":{\"collectionName\":\"datargdqyxaj\"},\"description\":\"zoq\",\"structure\":\"datamqcwwsjnkiixepbn\",\"schema\":\"dataqww\",\"linkedServiceName\":{\"referenceName\":\"fgsqxile\",\"parameters\":{\"uqynttwk\":\"datasewrzne\",\"yd\":\"datahajksbsyogjmqjhg\"}},\"parameters\":{\"xtdlxwmvcdkucp\":{\"type\":\"Array\",\"defaultValue\":\"datavjbssfcriqxz\"}},\"annotations\":[\"dataafr\",\"datargorogeuvmkrspn\"],\"folder\":{\"name\":\"semlzofrsnq\"},\"\":{\"rpub\":\"datapetexutikelpmw\"}}")
             .toObject(CosmosDbSqlApiCollectionDataset.class);
-        Assertions.assertEquals("cqrttjf", model.description());
-        Assertions.assertEquals("avdostw", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("vhhplkhwwdk").type());
-        Assertions.assertEquals("jy", model.folder().name());
+        Assertions.assertEquals("zoq", model.description());
+        Assertions.assertEquals("fgsqxile", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("xtdlxwmvcdkucp").type());
+        Assertions.assertEquals("semlzofrsnq", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbSqlApiCollectionDataset model
-            = new CosmosDbSqlApiCollectionDataset().withDescription("cqrttjf").withStructure("datammfjew")
-                .withSchema("dataq")
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("avdostw")
-                    .withParameters(mapOf("elvxgwzz", "datafm", "zvzrbvgwxhlx", "datawdtlcjgpvc")))
-                .withParameters(
-                    mapOf("vhhplkhwwdk",
-                        new ParameterSpecification().withType(ParameterType.ARRAY)
-                            .withDefaultValue("datadrwynbgovazoym"),
-                        "yxryearmhpwbuk",
-                        new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataeqmgkcswz")))
-                .withAnnotations(Arrays.asList("datamfasgtlvhqpoilos", "dataaemcezevftmh", "datal"))
-                .withFolder(new DatasetFolder().withName("jy")).withCollectionName("datalvsmfjihv");
+        CosmosDbSqlApiCollectionDataset model = new CosmosDbSqlApiCollectionDataset().withDescription("zoq")
+            .withStructure("datamqcwwsjnkiixepbn")
+            .withSchema("dataqww")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("fgsqxile")
+                .withParameters(mapOf("uqynttwk", "datasewrzne", "yd", "datahajksbsyogjmqjhg")))
+            .withParameters(mapOf("xtdlxwmvcdkucp",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datavjbssfcriqxz")))
+            .withAnnotations(Arrays.asList("dataafr", "datargorogeuvmkrspn"))
+            .withFolder(new DatasetFolder().withName("semlzofrsnq"))
+            .withCollectionName("datargdqyxaj");
         model = BinaryData.fromObject(model).toObject(CosmosDbSqlApiCollectionDataset.class);
-        Assertions.assertEquals("cqrttjf", model.description());
-        Assertions.assertEquals("avdostw", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("vhhplkhwwdk").type());
-        Assertions.assertEquals("jy", model.folder().name());
+        Assertions.assertEquals("zoq", model.description());
+        Assertions.assertEquals("fgsqxile", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("xtdlxwmvcdkucp").type());
+        Assertions.assertEquals("semlzofrsnq", model.folder().name());
     }
 
     // Use "Map.of" if available

@@ -63,8 +63,8 @@ public final class LtrBackupRequest extends BackupRequestBase {
     public void validate() {
         super.validate();
         if (targetDetails() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property targetDetails in model LtrBackupRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property targetDetails in model LtrBackupRequest"));
         } else {
             targetDetails().validate();
         }
