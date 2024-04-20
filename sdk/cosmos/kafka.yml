@@ -33,9 +33,8 @@ extends:
               safeName: azurecosmoskafkaconnect
           TimeoutInMinutes: 120
           PreSteps:
-            - steps:
-                - task: DockerInstaller@0
-                  display: "Intalling docker"
+            - task: DockerInstaller@0
+              display: "Intalling docker"
           TestGoals: 'clean verify'
           TestOptions: '$(ProfileFlag)'
           AdditionalVariables:
