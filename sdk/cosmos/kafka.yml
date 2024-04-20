@@ -1,51 +1,43 @@
 trigger: none
-pr: none
 
 variables:
   - template: ../../eng/pipelines/templates/variables/globals.yml
   - name: AdditionalArgs
     value: ''
+  - name: TenantId
+    value: '72f988bf-86f1-41af-91ab-2d7cd011db47'
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
     stages:
-      - stage:
-        displayName: 'Kafka TestContainer Integration'
-        dependsOn: [ ]
-        jobs:
-          - job:
-            timeoutInMinutes: 40
-            steps:
-              - task: DockerInstaller@0
-                display: "Intalling docker"
-              - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
-                parameters:
-                  TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
-                  TestName: 'Kafka_TestContainer_Integration'
-                  CloudConfig:
-                    Public:
-                      SubscriptionConfigurations:
-                        - $(sub-config-azure-cloud-test-resources)
-                        - $(sub-config-cosmos-azure-cloud-test-resources)
-                  MatrixConfigs:
-                    - Name: Kafka_TestContainer_Integration_Test
-                      Path: sdk/cosmos/kafka-testcontainer-matrix.json
-                      Selection: all
-                      GenerateVMJobs: true
-                  ServiceDirectory: cosmos
-                  TestResourceDirectories:
-                    - cosmos/
-                  Artifacts:
-                    - name: azure-cosmos-kafka-connect
-                      groupId: com.azure.cosmos.kafka
-                      safeName: azurecosmoskafkaconnect
-                  TimeoutInMinutes: 120
-                  PreSteps:
-                    - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-                  TestGoals: 'clean verify'
-                  TestOptions: '$(ProfileFlag)'
-                  AdditionalVariables:
-                    - name: AdditionalArgs
-                      value: '-DACCOUNT_TENANT_ID=$(SubscriptionId) -DACCOUNT_AAD_CLIENT_ID=$(spark-databricks-cosmos-spn-clientId) -DACCOUNT_AAD_CLIENT_SECRET=$(spark-databricks-cosmos-spn-clientSecret)'
-
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
+          TestName: 'Kafka_TestContainer_Integration'
+          CloudConfig:
+            Public:
+              SubscriptionConfigurations:
+                - $(sub-config-azure-cloud-test-resources)
+                - $(sub-config-cosmos-azure-cloud-test-resources)
+          MatrixConfigs:
+            - Name: Kafka_TestContainer_Integration_Test
+              Path: sdk/cosmos/kafka-testcontainer-matrix.json
+              Selection: all
+              GenerateVMJobs: true
+          ServiceDirectory: cosmos
+          TestResourceDirectories:
+            - cosmos/
+          Artifacts:
+            - name: azure-cosmos-kafka-connect
+              groupId: com.azure.cosmos.kafka
+              safeName: azurecosmoskafkaconnect
+          TimeoutInMinutes: 120
+          PreSteps:
+            - steps:
+                - task: DockerInstaller@0
+                  display: "Intalling docker"
+          TestGoals: 'clean verify'
+          TestOptions: '$(ProfileFlag)'
+          AdditionalVariables:
+            - name: AdditionalArgs
+              value: '-DACCOUNT_TENANT_ID=$(TenantId) -DACCOUNT_AAD_CLIENT_ID=$(spark-databricks-cosmos-spn-clientId) -DACCOUNT_AAD_CLIENT_SECRET=$(spark-databricks-cosmos-spn-clientSecret)'
