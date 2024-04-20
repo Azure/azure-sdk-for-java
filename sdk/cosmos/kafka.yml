@@ -18,8 +18,6 @@ extends:
               Selection: all
               GenerateVMJobs: true
           ServiceDirectory: cosmos
-          TestResourceDirectories:
-            - cosmos/
           Artifacts:
             - name: azure-cosmos-kafka-connect
               groupId: com.azure.cosmos.kafka
