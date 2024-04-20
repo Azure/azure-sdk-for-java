@@ -1,12 +1,5 @@
 trigger: none
 
-variables:
-  - template: ../../eng/pipelines/templates/variables/globals.yml
-  - name: AdditionalArgs
-    value: ''
-  - name: TenantId
-    value: '72f988bf-86f1-41af-91ab-2d7cd011db47'
-
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
@@ -36,7 +29,9 @@ extends:
             - task: DockerInstaller@0
               displayName: "Intalling docker"
           TestGoals: 'clean verify'
-          TestOptions: '$(ProfileFlag)'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
           AdditionalVariables:
+            - name: TenantId
+              value: '72f988bf-86f1-41af-91ab-2d7cd011db47'
             - name: AdditionalArgs
               value: '-DACCOUNT_TENANT_ID=$(TenantId) -DACCOUNT_AAD_CLIENT_ID=$(spark-databricks-cosmos-spn-clientId) -DACCOUNT_AAD_CLIENT_SECRET=$(spark-databricks-cosmos-spn-clientSecret)'

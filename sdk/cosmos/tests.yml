@@ -93,7 +93,7 @@ extends:
           PreSteps:
             - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'clean verify'
-          TestOptions: '$(ProfileFlag)'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
           AdditionalVariables:
             - name: AdditionalArgs
               value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account)'
