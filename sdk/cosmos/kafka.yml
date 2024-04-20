@@ -34,7 +34,7 @@ extends:
           TimeoutInMinutes: 120
           PreSteps:
             - task: DockerInstaller@0
-              display: "Intalling docker"
+              displayName: "Intalling docker"
           TestGoals: 'clean verify'
           TestOptions: '$(ProfileFlag)'
           AdditionalVariables:
