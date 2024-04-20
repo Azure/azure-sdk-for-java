@@ -5,10 +5,15 @@ package com.azure.cosmos.kafka.connect;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.source.ContainersMetadataTopicOffset;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosMetadataStorageType;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
+import com.azure.cosmos.kafka.connect.implementation.source.FeedRangesMetadataTopicOffset;
+import com.azure.cosmos.models.FeedRange;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -48,7 +53,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
     }
 
     // TODO[public preview]: add more integration tests
-    @Test(groups = { "kafka-integration"}, dataProvider = "sourceAuthParameterProvider", timeOut = 2 * TIMEOUT)
+    @Test(groups = { "kafka-integration" }, dataProvider = "sourceAuthParameterProvider", timeOut = 2 * TIMEOUT)
     public void readFromSingleContainer(boolean useMasterKey, CosmosMetadataStorageType metadataStorageType) {
         String topicName = singlePartitionContainerName + "-" + UUID.randomUUID();
         String metadataStorageName = "Metadata-" + UUID.randomUUID();
@@ -82,6 +87,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConnectorConfig);
         CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig());
         CosmosAsyncContainer container = client.getDatabase(databaseName).getContainer(singlePartitionContainerName);
+        String containerRid = container.read().block().getProperties().getResourceId();
 
         String connectorName = "simpleTest-" + UUID.randomUUID();
 
@@ -135,10 +141,33 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
                 return metadataRecords.size() >= expectedMetadataRecordsCount && itemRecords.size() >= expectedItemRecords;
             });
 
-            //TODO[public preview]currently the metadata record value is null, populate it with metadata and validate the content here
             assertThat(metadataRecords.size()).isEqualTo(expectedMetadataRecordsCount);
-            assertThat(itemRecords.size()).isEqualTo(createdItems.size());
+            if (metadataStorageType == CosmosMetadataStorageType.KAFKA) {
+                //validate containers metadata record
+                ConsumerRecord<String, JsonNode> containerMetadataRecord = metadataRecords.get(0);
+                assertThat(containerMetadataRecord.key()).isEqualTo(databaseName);
+                ContainersMetadataTopicOffset containersMetadataTopicOffset =
+                    ContainersMetadataTopicOffset.fromMap(
+                        Utils.getSimpleObjectMapper()
+                            .convertValue(containerMetadataRecord.value().get("payload"), new TypeReference<Map<String, Object>>(){})
+                    );
+                assertThat(containersMetadataTopicOffset.getContainerRids().size()).isEqualTo(1);
+                assertThat(containersMetadataTopicOffset.getContainerRids().contains(containerRid)).isTrue();
 
+                // validate feed ranges metadata record
+                ConsumerRecord<String, JsonNode> feedRangesMetadataRecord = metadataRecords.get(1);
+                assertThat(feedRangesMetadataRecord.key()).isEqualTo(databaseName + "_" + containerRid);
+                FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffsetOffset =
+                    FeedRangesMetadataTopicOffset.fromMap(
+                        Utils.getSimpleObjectMapper()
+                            .convertValue(feedRangesMetadataRecord.value().get("payload"), new TypeReference<Map<String, Object>>(){})
+                    );
+                assertThat(feedRangesMetadataTopicOffsetOffset.getFeedRanges().size()).isEqualTo(1);
+                assertThat(feedRangesMetadataTopicOffsetOffset.getFeedRanges().contains(FeedRange.forFullRange())).isTrue();
+            }
+
+            // validate the item records
+            assertThat(itemRecords.size()).isEqualTo(createdItems.size());
             List<String> receivedItems =
                 itemRecords.stream().map(consumerRecord -> {
                     JsonNode jsonNode = consumerRecord.value();

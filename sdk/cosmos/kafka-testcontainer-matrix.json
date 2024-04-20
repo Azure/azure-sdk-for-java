@@ -3,12 +3,11 @@
     "Cosmos": {
       "Session_Integration": {
         "ArmTemplateParameters": "@{ defaultConsistencyLevel = 'Session'; enableMultipleWriteLocations = $false }",
-        "ProfileFlag": "-P kafka-integration",
+        "ProfileFlag": "-Pkafka-integration",
         "Pool": "env:LINUXPOOL",
         "OSVmImage": "env:LINUXVMIMAGE"
       }
     },
-    "TestFromSource": true,
     "JavaTestVersion": ["1.8", "1.11", "1.17", "1.21"]
   }
 }

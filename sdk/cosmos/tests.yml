@@ -82,7 +82,10 @@ extends:
               Path: sdk/cosmos/kafka-cosmos-matrix.json
               Selection: all
               GenerateVMJobs: true
+              TestFromSource: false
           ServiceDirectory: cosmos
+          TestResourceDirectories:
+            - cosmos/
           Artifacts:
             - name: azure-cosmos-kafka-connect
               groupId: com.azure.cosmos.kafka
@@ -91,7 +94,7 @@ extends:
           PreSteps:
             - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'clean verify'
-          TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
           AdditionalVariables:
             - name: AdditionalArgs
               value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account)'

@@ -6,6 +6,7 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.guava25.base.Stopwatch;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
@@ -17,6 +18,8 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.kafka.connect.data.ConnectSchema;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;
 import org.apache.kafka.connect.source.SourceRecord;
@@ -130,23 +133,39 @@ public class CosmosSourceTask extends SourceTask {
 
         // add the containers metadata record - it tracks the databaseName -> List[containerRid] mapping
         Pair<ContainersMetadataTopicPartition, ContainersMetadataTopicOffset> containersMetadata = taskUnit.getContainersMetadata();
+
+        // Convert JSON to Kafka Connect struct and JSON schema
+        SchemaAndValue containersMetadataSchemaAndValue = JsonToStruct.recordToSchemaAndValue(
+            Utils.getSimpleObjectMapper().convertValue(
+                ContainersMetadataTopicOffset.toMap(containersMetadata.getRight()),
+                ObjectNode.class));
+
         sourceRecords.add(
             new SourceRecord(
                 ContainersMetadataTopicPartition.toMap(containersMetadata.getLeft()),
                 ContainersMetadataTopicOffset.toMap(containersMetadata.getRight()),
                 taskUnit.getStorageName(),
-                SchemaAndValue.NULL.schema(),
-                SchemaAndValue.NULL.value()));
+                Schema.STRING_SCHEMA,
+                containersMetadata.getLeft().getDatabaseName(),
+                containersMetadataSchemaAndValue.schema(),
+                containersMetadataSchemaAndValue.value()));
 
         // add the container feedRanges metadata record - it tracks the containerRid -> List[FeedRange] mapping
         for (Pair<FeedRangesMetadataTopicPartition, FeedRangesMetadataTopicOffset> feedRangesMetadata : taskUnit.getFeedRangesMetadataList()) {
+            SchemaAndValue feedRangeMetadataSchemaAndValue = JsonToStruct.recordToSchemaAndValue(
+                Utils.getSimpleObjectMapper().convertValue(
+                    FeedRangesMetadataTopicOffset.toMap(feedRangesMetadata.getRight()),
+                    ObjectNode.class));
+
             sourceRecords.add(
                 new SourceRecord(
                     FeedRangesMetadataTopicPartition.toMap(feedRangesMetadata.getLeft()),
                     FeedRangesMetadataTopicOffset.toMap(feedRangesMetadata.getRight()),
                     taskUnit.getStorageName(),
-                    SchemaAndValue.NULL.schema(),
-                    SchemaAndValue.NULL.value()));
+                    Schema.STRING_SCHEMA,
+                    feedRangesMetadata.getLeft().getDatabaseName() + "_" + feedRangesMetadata.getLeft().getContainerRid(),
+                    feedRangeMetadataSchemaAndValue.schema(),
+                    feedRangeMetadataSchemaAndValue.value()));
         }
 
         LOGGER.info("There are {} metadata records being created/updated", sourceRecords.size());

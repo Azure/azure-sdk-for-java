@@ -7,6 +7,12 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Kafka_TestContainer_Integration'
+          EnvVars:
+            ACCOUNT_TENANT_ID: '72f988bf-86f1-41af-91ab-2d7cd011db47'
+            ACCOUNT_AAD_CLIENT_ID: $(spark-databricks-cosmos-spn-clientId)
+            ACCOUNT_AAD_CLIENT_SECRET: $(spark-databricks-cosmos-spn-clientSecret)
+            COSMOS.CLIENT_TELEMETRY_ENDPOINT: $(cosmos-client-telemetry-endpoint)
+            COSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT: $(cosmos-client-telemetry-cosmos-account)
           CloudConfig:
             Public:
               SubscriptionConfigurations:
@@ -18,18 +24,20 @@ extends:
               Selection: all
               GenerateVMJobs: true
           ServiceDirectory: cosmos
+          TestResourceDirectories:
+            - cosmos/test-resources/kafka-testcontainer/
           Artifacts:
             - name: azure-cosmos-kafka-connect
               groupId: com.azure.cosmos.kafka
               safeName: azurecosmoskafkaconnect
+          AdditionalModules:
+            - name: azure-cosmos
+              groupId: com.azure
           TimeoutInMinutes: 120
           PreSteps:
-            - task: DockerInstaller@0
-              displayName: "Intalling docker"
+            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'clean verify'
-          TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
           AdditionalVariables:
-            - name: TenantId
-              value: '72f988bf-86f1-41af-91ab-2d7cd011db47'
             - name: AdditionalArgs
-              value: '-DACCOUNT_TENANT_ID=$(TenantId) -DACCOUNT_AAD_CLIENT_ID=$(spark-databricks-cosmos-spn-clientId) -DACCOUNT_AAD_CLIENT_SECRET=$(spark-databricks-cosmos-spn-clientSecret)'
+              value: ''

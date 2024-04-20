@@ -76,7 +76,7 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         };
     }
 
-    @Test(groups = { "kafka" }, dataProvider = "sinkTaskParameterProvider", timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, dataProvider = "sinkTaskParameterProvider", timeOut = TIMEOUT)
     public void sinkWithValidRecords(boolean bulkEnabled, Schema.Type valueSchemaType) {
         String topicName = singlePartitionContainerName;
 
@@ -133,7 +133,7 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = { "kafka" }, dataProvider = "bulkEnableParameterProvider", timeOut = 10 * TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, dataProvider = "bulkEnableParameterProvider", timeOut = 10 * TIMEOUT)
     public void retryOnServiceUnavailable(boolean bulkEnabled) {
         String topicName = singlePartitionContainerName;
 
@@ -204,7 +204,7 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = { "kafka" }, dataProvider = "bulkEnableParameterProvider", timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, dataProvider = "bulkEnableParameterProvider", timeOut = TIMEOUT)
     public void sinkWithItemAppend(boolean bulkEnabled) {
         String topicName = singlePartitionContainerName;
 
@@ -255,7 +255,7 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = { "kafka" }, dataProvider = "bulkEnableParameterProvider", timeOut = 3 * TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, dataProvider = "bulkEnableParameterProvider", timeOut = 3 * TIMEOUT)
     public void sinkWithItemOverwriteIfNotModified(boolean bulkEnabled) {
         String topicName = singlePartitionContainerName;
 
@@ -351,7 +351,7 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = { "kafka" }, dataProvider = "bulkEnableParameterProvider", timeOut = 3 * TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, dataProvider = "bulkEnableParameterProvider", timeOut = 3 * TIMEOUT)
     public void sinkWithItemDelete(boolean bulkEnabled) {
         String topicName = singlePartitionContainerName;
 
@@ -414,7 +414,7 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = { "kafka" }, dataProvider = "bulkEnableParameterProvider", timeOut = 3 * TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, dataProvider = "bulkEnableParameterProvider", timeOut = 3 * TIMEOUT)
     public void sinkWithItemDeleteIfNotModified(boolean bulkEnabled) throws InterruptedException {
         String topicName = singlePartitionContainerName;
 
@@ -512,7 +512,7 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = { "kafka" }, dataProvider = "bulkEnableParameterProvider", timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, dataProvider = "bulkEnableParameterProvider", timeOut = TIMEOUT)
     public void sinkWithItemPatch(boolean bulkEnabled) {
         String topicName = singlePartitionContainerName;
 
@@ -609,7 +609,7 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = { "kafka" }, dataProvider = "sinkTaskWithThroughputControlParameterProvider", timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, dataProvider = "sinkTaskWithThroughputControlParameterProvider", timeOut = TIMEOUT)
     public void sinkWithThroughputControl(boolean bulkEnabled) {
         String topicName = singlePartitionContainerName;
         String throughputControlContainerName = "throughputControlContainer-" + UUID.randomUUID();
@@ -688,7 +688,7 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = { "kafka" }, dataProvider = "bulkEnableParameterProvider", timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, dataProvider = "bulkEnableParameterProvider", timeOut = TIMEOUT)
     public void sinkForContainerWithNestedPartitionKeyPath(boolean bulkEnabled) {
         String topicName= "NestedPartitionKeyPathContainer";
         String nestedPartitionKeyPathContainer = "NestedPartitionKeyPathContainer";

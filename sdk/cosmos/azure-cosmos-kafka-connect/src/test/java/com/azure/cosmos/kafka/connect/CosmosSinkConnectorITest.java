@@ -49,7 +49,7 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         };
     }
 
-    @Test(groups = { "kafka-integration"}, dataProvider = "sinkAuthParameterProvider", timeOut = TIMEOUT)
+    @Test(groups = { "kafka-integration" }, dataProvider = "sinkAuthParameterProvider", timeOut = TIMEOUT)
     public void sinkToSingleContainer(boolean useMasterKey) throws InterruptedException {
         Map<String, String> sinkConnectorConfig = new HashMap<>();
         String topicName = singlePartitionContainerName + "-" + UUID.randomUUID();
@@ -129,7 +129,7 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         }
     }
 
-    @Test(groups = { "kafka-integration"}, timeOut = 10 * TIMEOUT)
+    @Test(groups = { "kafka-integration" }, timeOut = 10 * TIMEOUT)
     public void postAvroMessage() throws InterruptedException {
         Map<String, String> sinkConnectorConfig = new HashMap<>();
         String topicName = singlePartitionContainerName + "-avro-" + UUID.randomUUID();
@@ -207,7 +207,7 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         }
     }
 
-    @Test(groups = { "kafka-integration"}, timeOut = 10 * TIMEOUT)
+    @Test(groups = { "kafka-integration" }, timeOut = 10 * TIMEOUT)
     public void postAvroMessageWithTemplateIdStrategy() throws InterruptedException {
         Map<String, String> sinkConnectorConfig = new HashMap<>();
         String topicName = singlePartitionContainerName + "-avro-" + UUID.randomUUID();
@@ -279,7 +279,7 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         }
     }
 
-    @Test(groups = { "kafka-integration"}, timeOut = 10 * TIMEOUT)
+    @Test(groups = { "kafka-integration" }, timeOut = 10 * TIMEOUT)
     public void postAvroMessageWithJsonPathInProvidedInKeyStrategy() throws InterruptedException {
         Map<String, String> sinkConnectorConfig = new HashMap<>();
         String topicName = singlePartitionContainerName + "-avro-" + UUID.randomUUID();
