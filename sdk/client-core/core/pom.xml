@@ -50,7 +50,6 @@
       --add-opens io.clientcore.core/io.clientcore.core.http.exception=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.models=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.pipeline=ALL-UNNAMED
-      --add-opens io.clientcore.core/io.clientcore.core.http.policy=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation.http=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation.http.rest=ALL-UNNAMED
@@ -177,7 +176,6 @@
             <bannedDependencies>
               <includes>
                 <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
-                <include>com.github.tomakehurst:wiremock-jre8-standalone:[3.0.1]</include> <!-- {x-include-update;com.github.tomakehurst:wiremock-jre8-standalone;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
