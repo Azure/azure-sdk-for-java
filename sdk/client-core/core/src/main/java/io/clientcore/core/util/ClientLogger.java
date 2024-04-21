@@ -12,8 +12,6 @@ import io.clientcore.core.json.JsonWriter;
 import io.clientcore.core.util.configuration.Configuration;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -103,8 +101,8 @@ public class ClientLogger {
     }
 
     ClientLogger(DefaultLogger defaultLogger, Map<String, Object> context) {
-        this.logger = new Slf4jLoggerShim(defaultLogger);
-        this.globalContext = context == null ? null : Collections.unmodifiableMap(context);
+        logger = new Slf4jLoggerShim(defaultLogger);
+        globalContext = context == null ? null : Collections.unmodifiableMap(context);
     }
 
     /**
@@ -119,10 +117,8 @@ public class ClientLogger {
      */
     public <T extends Throwable> T logThrowableAsWarning(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        if (canLogAtLevel(LogLevel.WARNING)) {
-            LoggingEventBuilder.create(logger, LogLevel.WARNING, globalContext, true)
-                .log(throwable.getMessage(), throwable);
-        }
+        LoggingEventBuilder.create(logger, LogLevel.WARNING, globalContext)
+            .log(throwable.getMessage(), throwable);
 
         return throwable;
     }
@@ -139,10 +135,8 @@ public class ClientLogger {
      */
     public <T extends Throwable> T logThrowableAsError(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        if (canLogAtLevel(LogLevel.ERROR)) {
-            LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContext, true)
-                .log(throwable.getMessage(), throwable);
-        }
+        LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContext)
+            .log(throwable.getMessage(), throwable);
         return throwable;
     }
 
@@ -174,7 +168,7 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder}  or no-op if error logging is disabled.
      */
     public LoggingEventBuilder atError() {
-        return LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContext, canLogAtLevel(LogLevel.ERROR));
+        return LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContext);
     }
 
     /**
@@ -196,8 +190,7 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if warn logging is disabled.
      */
     public LoggingEventBuilder atWarning() {
-        return LoggingEventBuilder.create(logger, LogLevel.WARNING, globalContext,
-            canLogAtLevel(LogLevel.WARNING));
+        return LoggingEventBuilder.create(logger, LogLevel.WARNING, globalContext);
     }
 
     /**
@@ -220,8 +213,7 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if info logging is disabled.
      */
     public LoggingEventBuilder atInfo() {
-        return LoggingEventBuilder.create(logger, LogLevel.INFORMATIONAL, globalContext,
-            canLogAtLevel(LogLevel.INFORMATIONAL));
+        return LoggingEventBuilder.create(logger, LogLevel.INFORMATIONAL, globalContext);
     }
 
     /**
@@ -242,8 +234,7 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
      */
     public LoggingEventBuilder atVerbose() {
-        return LoggingEventBuilder.create(logger, LogLevel.VERBOSE, globalContext,
-            canLogAtLevel(LogLevel.VERBOSE));
+        return LoggingEventBuilder.create(logger, LogLevel.VERBOSE, globalContext);
     }
 
     /**
@@ -268,7 +259,7 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if logging at provided level is disabled.
      */
     public LoggingEventBuilder atLevel(LogLevel level) {
-        return LoggingEventBuilder.create(logger, level, globalContext, canLogAtLevel(level));
+        return LoggingEventBuilder.create(logger, level, globalContext);
     }
 
     /**
@@ -303,9 +294,8 @@ public class ClientLogger {
          * Creates {@code LoggingEventBuilder} for provided level and  {@link ClientLogger}.
          * If level is disabled, returns no-op instance.
          */
-        static LoggingEventBuilder create(Slf4jLoggerShim logger, LogLevel level, Map<String, Object> globalContext,
-                                          boolean canLogAtLevel) {
-            if (canLogAtLevel) {
+        static LoggingEventBuilder create(Slf4jLoggerShim logger, LogLevel level, Map<String, Object> globalContext) {
+            if (logger.canLogAtLevel(level)) {
                 return new LoggingEventBuilder(logger, level, globalContext, true);
             }
 
@@ -457,19 +447,14 @@ public class ClientLogger {
                 if (throwable != null) {
                     addKeyValueInternal("exception.message", throwable.getMessage());
                     if (isDebugEnabled) {
-                        addKeyValue("exception.stacktrace", getStackTrace(throwable));
+                        StringBuilder stackTrace = new StringBuilder();
+                        DefaultLogger.appendThrowable(stackTrace, throwable);
+                        addKeyValue("exception.stacktrace", stackTrace.toString());
                     }
                 }
                 logger.performLogging(level, getMessageWithContext(message), isDebugEnabled ? throwable : null);
             }
             return throwable;
-        }
-
-        private String getStackTrace(Throwable t) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            t.printStackTrace(pw);
-            return sw.toString().trim();
         }
 
         private String getMessageWithContext(String message) {

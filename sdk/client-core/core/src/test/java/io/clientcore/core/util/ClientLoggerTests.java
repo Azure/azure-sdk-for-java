@@ -8,7 +8,6 @@ import io.clientcore.core.implementation.util.DefaultLogger;
 import io.clientcore.core.json.JsonOptions;
 import io.clientcore.core.json.JsonProviders;
 import io.clientcore.core.json.JsonReader;
-import io.clientcore.core.json.JsonWriter;
 import io.clientcore.core.util.ClientLogger.LogLevel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -847,23 +846,7 @@ public class ClientLoggerTests {
     private String stackTraceToString(Throwable exception) {
         StringWriter stringWriter = new StringWriter();
         exception.printStackTrace(new PrintWriter(stringWriter));
-        return stringWriter.toString().trim();
-    }
-
-    private static String encodedJsonStringNoWrappingQuotes(String toEncode) {
-        String encoded = encodedJsonString(toEncode);
-        return encoded.substring(1, encoded.length() - 1);
-    }
-
-    private static String encodedJsonString(String toEncode) {
-        try (AccessibleByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
-            JsonWriter jsonWriter = JsonProviders.createWriter(stream)) {
-            jsonWriter.writeString(toEncode).flush();
-
-            return stream.toString(StandardCharsets.UTF_8);
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
-        }
+        return stringWriter.toString();
     }
 
     private ClientLogger setupLogLevelAndGetLogger(LogLevel logLevelToSet) {

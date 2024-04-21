@@ -7,6 +7,8 @@ import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.configuration.Configuration;
 
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.InvalidPathException;
 import java.time.LocalDateTime;
@@ -26,11 +28,11 @@ public final class DefaultLogger {
     private static final String HYPHEN = " - ";
     private static final String OPEN_BRACKET = " [";
     private static final String CLOSE_BRACKET = "]";
-    public static final String WARN = "WARN";
-    public static final String DEBUG = "DEBUG";
-    public static final String INFO = "INFO";
-    public static final String ERROR = "ERROR";
-    public static final String TRACE = "TRACE";
+    private static final String WARN = "WARN";
+    private static final String DEBUG = "DEBUG";
+    private static final String INFO = "INFO";
+    private static final String ERROR = "ERROR";
+    private static final String NOTSET = "NOTSET";
 
     private final String classPath;
     private final LogLevel level;
@@ -69,22 +71,6 @@ public final class DefaultLogger {
         this.level = logLevel;
     }
 
-    private static String getClassPathFromClassName(String className) {
-        try {
-            return Class.forName(className).getCanonicalName();
-        } catch (ClassNotFoundException | InvalidPathException e) {
-            // Swallow ClassNotFoundException as the passed class name may not correlate to an actual class.
-            // Swallow InvalidPathException as the className may contain characters that aren't legal file characters.
-            return className;
-        }
-    }
-
-    private static LogLevel fromEnvironment() {
-        // LogLevel is so basic, we can't use configuration to read it (since Configuration needs to log too)
-        String level = EnvironmentConfiguration.getGlobalConfiguration().get(Configuration.PROPERTY_LOG_LEVEL);
-        return LogLevel.fromString(level);
-    }
-
     public boolean isEnabled(LogLevel level) {
         if (this.level == LogLevel.NOTSET) {
             return false;
@@ -94,12 +80,16 @@ public final class DefaultLogger {
     }
 
     /**
-     * Format and write the message according to the {@code MESSAGE_TEMPLATE}.
+     * Format and write the message according to the default template.
      *
-     * @param levelName log level
+     * @param level log level
      * @param message The message itself
      */
-    public void log(String levelName, String message) {
+    public void log(LogLevel level, String message, Throwable throwable) {
+        if (!isEnabled(level)) {
+            return;
+        }
+
         String dateTime = getFormattedDate();
         String threadName = Thread.currentThread().getName();
         // Use a larger initial buffer for the StringBuilder as it defaults to 16 and non-empty information is expected
@@ -110,7 +100,7 @@ public final class DefaultLogger {
             .append(threadName)
             .append(CLOSE_BRACKET)
             .append(OPEN_BRACKET)
-            .append(levelName)
+            .append(getLevelName(level))
             .append(CLOSE_BRACKET)
             .append(WHITESPACE)
             .append(classPath)
@@ -118,7 +108,34 @@ public final class DefaultLogger {
             .append(message)
             .append(System.lineSeparator());
 
+        appendThrowable(stringBuilder, throwable);
         logLocation.print(stringBuilder);
+    }
+
+    private static String getLevelName(LogLevel level) {
+        switch (level) {
+            case VERBOSE:
+                return DEBUG;
+            case INFORMATIONAL:
+                return INFO;
+            case WARNING:
+                return WARN;
+            case ERROR:
+                return ERROR;
+            default:
+                // not possible
+                return NOTSET;
+        }
+    }
+
+    public static void appendThrowable(StringBuilder stringBuilder, Throwable t) {
+        if (t != null) {
+            StringWriter sw = new StringWriter();
+            try (PrintWriter pw = new PrintWriter(sw)) {
+                t.printStackTrace(pw);
+                stringBuilder.append(sw);
+            }
+        }
     }
 
     /**
@@ -188,5 +205,22 @@ public final class DefaultLogger {
             bytes[index++] = (byte) ('0' + high);
             bytes[index] = (byte) ('0' + (value - (10 * high)));
         }
+    }
+
+
+    private static String getClassPathFromClassName(String className) {
+        try {
+            return Class.forName(className).getCanonicalName();
+        } catch (ClassNotFoundException | InvalidPathException e) {
+            // Swallow ClassNotFoundException as the passed class name may not correlate to an actual class.
+            // Swallow InvalidPathException as the className may contain characters that aren't legal file characters.
+            return className;
+        }
+    }
+
+    private static LogLevel fromEnvironment() {
+        // LogLevel is so basic, we can't use configuration to read it (since Configuration needs to log too)
+        String level = EnvironmentConfiguration.getGlobalConfiguration().get(Configuration.PROPERTY_LOG_LEVEL);
+        return LogLevel.fromString(level);
     }
 }
