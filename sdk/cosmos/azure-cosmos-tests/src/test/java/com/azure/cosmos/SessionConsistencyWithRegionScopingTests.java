@@ -432,6 +432,66 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return ImmutableSet.of(documentId);
         };
 
+        Function<CosmosAsyncContainer, Set<String>> changeFeed_fromBeginning_forLogicalPartition_withSessionGuaranteeFunc = (container) -> {
+            int createOperationCount = 10;
+            Set<String> idsAddedByBulkCreate = new HashSet<>();
+
+            Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
+                String documentId = UUID.randomUUID().toString();
+                TestItem testItem = new TestItem(documentId, documentId, documentId);
+
+                idsAddedByBulkCreate.add(documentId);
+                return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
+            });
+
+            List<CosmosBulkOperationResponse<Object>> bulkCreateResponses = container.executeBulkOperations(createOperationsFlux).collectList().block();
+
+            assertThat(bulkCreateResponses).isNotNull();
+            assertThat(bulkCreateResponses.size()).isEqualTo(createOperationCount);
+
+            String idToObserveUsingChangeFeed = idsAddedByBulkCreate.stream().collect(Collectors.toList()).get(0);
+
+            CosmosChangeFeedRequestOptions changeFeedRequestOptions = CosmosChangeFeedRequestOptions
+                .createForProcessingFromBeginning(FeedRange.forLogicalPartition(new PartitionKey(idToObserveUsingChangeFeed)));
+
+            Iterator<FeedResponse<JsonNode>> responseIterator = container
+                .queryChangeFeed(changeFeedRequestOptions, JsonNode.class)
+                .byPage()
+                .toIterable()
+                .iterator();
+
+            List<JsonNode> results = new ArrayList<>();
+
+            while (responseIterator.hasNext()) {
+                FeedResponse<JsonNode> response = responseIterator.next();
+
+                assertThat(response).isNotNull();
+                assertThat(response.getResults()).isNotNull();
+
+                results.addAll(response.getResults());
+
+                changeFeedRequestOptions = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(response.getContinuationToken());
+
+                if (results.size() >= 1) {
+                    break;
+                }
+            }
+
+            assertThat(results.size()).isGreaterThanOrEqualTo(1);
+
+            Set<String> idsReceivedFromChangeFeedRequest = new HashSet<>();
+
+            results.forEach(instanceReceivedFromChangeFeedRequest ->
+                idsReceivedFromChangeFeedRequest.add(instanceReceivedFromChangeFeedRequest.get("id").asText()));
+
+            assertThat(idsReceivedFromChangeFeedRequest.size()).isEqualTo(1);
+
+            String idReceivedFromChangeFeedRequest = idsReceivedFromChangeFeedRequest.stream().collect(Collectors.toList()).get(0);
+            assertThat(idReceivedFromChangeFeedRequest).isEqualTo(idToObserveUsingChangeFeed);
+
+            return idsReceivedFromChangeFeedRequest;
+        };
+
         return new Object[][] {
             {
                 pointReadYourPointCreate_BothFromFirstPreferredRegionFunc,
@@ -508,6 +568,14 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             {
                 changeFeed_fromBeginning_forFullRange_withSessionGuaranteeFunc,
                 "changeFeed_fromBeginning_forFullRange_withSessionGuarantee",
+                "Change feed operation should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                changeFeed_fromBeginning_forLogicalPartition_withSessionGuaranteeFunc,
+                "changeFeed_fromBeginning_forLogicalPartition_withSessionGuarantee",
                 "Change feed operation should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
@@ -1057,6 +1125,68 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return idsReceivedFromChangeFeedRequest;
         };
 
+        Function<CosmosAsyncContainer, Set<String>> changeFeed_fromBeginningAndFromSecondPreferredRegion_forLogicalPartition_withCreatesOnFirstPreferredRegion_withSessionGuaranteeFunc = (container) -> {
+            int createOperationCount = 10;
+            Set<String> idsAddedByBulkCreate = new HashSet<>();
+
+            Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
+                String documentId = UUID.randomUUID().toString();
+                TestItem testItem = new TestItem(documentId, documentId, documentId);
+
+                idsAddedByBulkCreate.add(documentId);
+                return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
+            });
+
+            List<CosmosBulkOperationResponse<Object>> bulkCreateResponses = container.executeBulkOperations(createOperationsFlux).collectList().block();
+
+            assertThat(bulkCreateResponses).isNotNull();
+            assertThat(bulkCreateResponses.size()).isEqualTo(createOperationCount);
+
+            String idToObserveUsingChangeFeed = idsAddedByBulkCreate.stream().collect(Collectors.toList()).get(0);
+
+            CosmosChangeFeedRequestOptions changeFeedRequestOptions = CosmosChangeFeedRequestOptions
+                .createForProcessingFromBeginning(FeedRange.forLogicalPartition(new PartitionKey(idToObserveUsingChangeFeed)))
+                .setExcludedRegions(ImmutableList.of(this.writeRegions.get(0)));
+
+            Iterator<FeedResponse<JsonNode>> responseIterator = container
+                .queryChangeFeed(changeFeedRequestOptions, JsonNode.class)
+                .byPage()
+                .toIterable()
+                .iterator();
+
+            List<JsonNode> results = new ArrayList<>();
+
+            while (responseIterator.hasNext()) {
+                FeedResponse<JsonNode> response = responseIterator.next();
+
+                assertThat(response).isNotNull();
+                assertThat(response.getResults()).isNotNull();
+
+                results.addAll(response.getResults());
+
+                changeFeedRequestOptions = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(response.getContinuationToken());
+
+                if (results.size() >= 1) {
+                    break;
+                }
+            }
+
+            assertThat(results.size()).isGreaterThanOrEqualTo(1);
+
+            Set<String> idsReceivedFromChangeFeedRequest = new HashSet<>();
+
+            results.forEach(instanceReceivedFromChangeFeedRequest ->
+                idsReceivedFromChangeFeedRequest.add(instanceReceivedFromChangeFeedRequest.get("id").asText()));
+
+            assertThat(idsReceivedFromChangeFeedRequest.size()).isEqualTo(1);
+
+            String idReceivedFromChangeFeedRequest = idsReceivedFromChangeFeedRequest.stream().collect(Collectors.toList()).get(0);
+            assertThat(idReceivedFromChangeFeedRequest).isEqualTo(idToObserveUsingChangeFeed);
+
+            return idsReceivedFromChangeFeedRequest;
+        };
+
+
         return new Object[][] {
             {
                 pointReadYourPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegionFunc,
@@ -1119,6 +1249,14 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "changeFeed_fromBeginning_fromSecondPreferredRegion_forFullRange_withCreatesOnFirstPreferredRegion_withSessionGuarantee",
                 "Change feed execution should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+            },
+            {
+                changeFeed_fromBeginningAndFromSecondPreferredRegion_forLogicalPartition_withCreatesOnFirstPreferredRegion_withSessionGuaranteeFunc,
+                "changeFeed_fromBeginningAndFromSecondPreferredRegion_forLogicalPartition_withCreatesOnFirstPreferredRegion_withSessionGuarantee",
+                "Change feed execution should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
                 !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
             },

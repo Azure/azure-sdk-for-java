@@ -1934,7 +1934,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                           .populateFeedRangeFilteringHeaders(
                               this.getPartitionKeyRangeCache(),
                               request,
-                              this.collectionCache.resolveCollectionAsync(metadataDiagnosticsCtx, request))
+                              this.collectionCache
+                                  .resolveCollectionAsync(metadataDiagnosticsCtx, request)
+                                  .flatMap(documentCollectionValueHolder -> {
+
+                                      if (documentCollectionValueHolder.v != null) {
+                                          request.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                                      }
+
+                                      return Mono.just(documentCollectionValueHolder);
+                                  })
+                          )
                           .flatMap(this::populateAuthorizationHeader);
         }
 
