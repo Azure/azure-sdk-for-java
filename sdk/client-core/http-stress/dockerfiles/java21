@@ -17,6 +17,7 @@ ADD ./sdk/parents /stress/sdk/parents
 ADD ./sdk/client-core /stress/sdk/client-core
 
 ARG SKIP_CHECKS="-Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests -Dcodesnippet.skip -Dspotless.skip"
+ARG MAVEN_ARGS="-B -V -U -Dhttp.keepAlive=true"
 
 # Build dependencies and stress tests
 RUN --mount=type=cache,target=/root/.m2 \

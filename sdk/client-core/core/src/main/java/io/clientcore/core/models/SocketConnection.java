@@ -11,7 +11,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.Objects;
 
-/*
+/**
  * Class to hold the SocketConnection and its properties
  */
 public final class SocketConnection {
@@ -102,8 +102,9 @@ public final class SocketConnection {
         return canBeReused;
     }
 
-    /*
-     * Class to hold the properties of the SocketConnection
+
+    /**
+     * Class to hold the properties of the socket connection
      */
     public static final class SocketConnectionProperties {
         private final URL requestUrl;
@@ -113,9 +114,9 @@ public final class SocketConnection {
         /**
          * Creates a new instance of SocketConnectionProperties
          *
-         * @param requestUrl the HTTP request
-         * @param host       the host
-         * @param port       the port
+         * @param requestUrl the HTTP request url
+         * @param host the host name
+         * @param port the port number
          */
         public SocketConnectionProperties(URL requestUrl, String host, String port) {
             this.requestUrl = requestUrl;

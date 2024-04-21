@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class SocketConnectionCacheTest {
     private static Socket myServerSocket;
     private static Thread server;
-    private static final int port = 8080;
+    private static final int PORT = 8080;
     private static volatile boolean keepRunning = true; // shared flag
     private static final SocketConnectionProperties SOCKET_PROPERTIES;
 
@@ -67,7 +67,7 @@ public class SocketConnectionCacheTest {
             try {
                 ServerSocket myServer = new ServerSocket();
                 myServer.setReuseAddress(true);
-                myServer.bind(new java.net.InetSocketAddress(port));
+                myServer.bind(new java.net.InetSocketAddress(PORT));
 
                 myServerSocket = myServer.accept();
 
@@ -92,6 +92,7 @@ public class SocketConnectionCacheTest {
     }
 
     @AfterAll
+    @SuppressWarnings("deprecation")
     public static void tearDown() throws IOException, InterruptedException {
         keepRunning = false; // stop the threads
         if (myServerSocket != null) {
@@ -145,6 +146,7 @@ public class SocketConnectionCacheTest {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @Order(4)
     void testConnectionPoolSize() {
@@ -157,7 +159,7 @@ public class SocketConnectionCacheTest {
                 instance.reuseConnection(connection);
             }
             // Access the connection pool size
-            Field connectionPoolField = SocketConnectionCache.class.getDeclaredField("connectionPool");
+            Field connectionPoolField = SocketConnectionCache.class.getDeclaredField("CONNECTION_POOL");
             connectionPoolField.setAccessible(true);
             Map<SocketConnectionProperties, List<SocketConnection>> connectionPool =
                 (Map<SocketConnectionProperties, List<SocketConnection>>) connectionPoolField.get(instance);
@@ -169,6 +171,7 @@ public class SocketConnectionCacheTest {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @Order(5)
     void testConnectionPoolSizeMultipleThreads() {
@@ -197,7 +200,7 @@ public class SocketConnectionCacheTest {
 
         // Access the connection pool size
         try {
-            Field connectionPoolField = SocketConnectionCache.class.getDeclaredField("connectionPool");
+            Field connectionPoolField = SocketConnectionCache.class.getDeclaredField("CONNECTION_POOL");
             connectionPoolField.setAccessible(true);
             Map<SocketConnectionProperties, List<SocketConnection>> connectionPool =
                 (Map<SocketConnectionProperties, List<SocketConnection>>) connectionPoolField.get(instance);
@@ -223,6 +226,7 @@ public class SocketConnectionCacheTest {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @Order(7)
     void testReuseClosedConnection() {
@@ -234,7 +238,7 @@ public class SocketConnectionCacheTest {
             instance.reuseConnection(connection);
 
             try {
-                Field connectionPoolField = SocketConnectionCache.class.getDeclaredField("connectionPool");
+                Field connectionPoolField = SocketConnectionCache.class.getDeclaredField("CONNECTION_POOL");
                 connectionPoolField.setAccessible(true);
                 Map<SocketConnectionProperties, List<SocketConnection>> connectionPool =
                     (Map<SocketConnectionProperties, List<SocketConnection>>) connectionPoolField.get(instance);
@@ -252,13 +256,13 @@ public class SocketConnectionCacheTest {
     @Order(8)
     void testReadTimeout() {
         SocketConnectionCache.clearCache();
-        SocketConnectionCache instance = SocketConnectionCache.getInstance(true, 10, 1000);
+        SocketConnectionCache instance = SocketConnectionCache.getInstance(true, 10, 5000);
 
         // Start a server that delays its response
         new Thread(() -> {
             try (ServerSocket serverSocket = new ServerSocket(8081)) {
                 Socket clientSocket = serverSocket.accept();
-                Thread.sleep(2000); // delay longer than the read timeout
+                Thread.sleep(6000); // delay longer than the read timeout
                 DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
                 out.writeBytes("HTTP/1.1 200 OK\n\n");
                 out.flush();

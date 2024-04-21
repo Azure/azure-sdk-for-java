@@ -16,13 +16,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/*
- * Class maintaining a cache of socket connections
+/**
+ * Class to maintain a cache of socket connections
  */
 public final class SocketConnectionCache {
 
-    private static SocketConnectionCache INSTANCE;
-    private static final Map<SocketConnectionProperties, List<SocketConnection>> connectionPool
+    private static SocketConnectionCache instance;
+    private static final Map<SocketConnectionProperties, List<SocketConnection>> CONNECTION_POOL
         = new HashMap<SocketConnectionProperties, List<SocketConnection>>();
     private final int readTimeout;
     private final boolean keepConnectionAlive;
@@ -43,10 +43,10 @@ public final class SocketConnectionCache {
      */
     public static synchronized SocketConnectionCache getInstance(boolean connectionKeepAlive, int maximumConnections,
         int readTimeout) {
-        if (INSTANCE == null) {
-            INSTANCE = new SocketConnectionCache(connectionKeepAlive, maximumConnections, readTimeout);
+        if (instance == null) {
+            instance = new SocketConnectionCache(connectionKeepAlive, maximumConnections, readTimeout);
         }
-        return INSTANCE;
+        return instance;
     }
 
 
@@ -60,15 +60,15 @@ public final class SocketConnectionCache {
     public SocketConnection get(SocketConnectionProperties socketConnectionProperties) throws IOException {
         SocketConnection connection = null;
         // try to get a connection from the cache
-        synchronized (connectionPool) {
-            List<SocketConnection> connections = connectionPool.get(socketConnectionProperties);
+        synchronized (CONNECTION_POOL) {
+            List<SocketConnection> connections = CONNECTION_POOL.get(socketConnectionProperties);
             while (!CoreUtils.isNullOrEmpty(connections)) {
                 connection = connections.remove(connections.size() - 1);
                 if (connections.isEmpty()) {
-                    connectionPool.remove(socketConnectionProperties);
+                    CONNECTION_POOL.remove(socketConnectionProperties);
                     connections = null;
                 } else {
-                    connectionPool.put(socketConnectionProperties, connections);
+                    CONNECTION_POOL.put(socketConnectionProperties, connections);
                 }
                 // keep removing connections from list until we find a use-able one, disregard other connections in use
                 if (connection.canBeReused()) {
@@ -83,11 +83,11 @@ public final class SocketConnectionCache {
             connection = getSocketSocketConnection(socketConnectionProperties, readTimeout, keepConnectionAlive);
         }
 
-        synchronized (connectionPool) {
-            List<SocketConnection> connections = connectionPool.get(socketConnectionProperties);
+        synchronized (CONNECTION_POOL) {
+            List<SocketConnection> connections = CONNECTION_POOL.get(socketConnectionProperties);
             if (connections == null) {
                 connections = new ArrayList<>();
-                connectionPool.put(socketConnectionProperties, connections);
+                CONNECTION_POOL.put(socketConnectionProperties, connections);
             }
         }
         return connection;
@@ -97,10 +97,10 @@ public final class SocketConnectionCache {
      * Clear the cache of connections
      */
     static void clearCache() {
-        synchronized (connectionPool) {
-            connectionPool.clear();
+        synchronized (CONNECTION_POOL) {
+            CONNECTION_POOL.clear();
         }
-        INSTANCE = null;
+        instance = null;
     }
 
     /**
@@ -113,18 +113,18 @@ public final class SocketConnectionCache {
             SocketConnectionProperties connectionProperties = connection.getConnectionProperties();
 
             // try and put the connection back in the pool
-            synchronized (connectionPool) {
-                List<SocketConnection> connections = connectionPool.get(connectionProperties);
+            synchronized (CONNECTION_POOL) {
+                List<SocketConnection> connections = CONNECTION_POOL.get(connectionProperties);
                 if (connections == null) {
                     connections = new ArrayList<SocketConnection>();
-                    connectionPool.put(connectionProperties, connections);
+                    CONNECTION_POOL.put(connectionProperties, connections);
                 }
                 if (connections.size() < maxConnections) {
                     // mark the connection as available for reuse
                     connection.markAvailableForReuse();
                     connection.getSocket().setKeepAlive(true);
                     connections.add(connection);
-                    connectionPool.put(connectionProperties, connections);
+                    CONNECTION_POOL.put(connectionProperties, connections);
                 }
                 return; // keep the connection open
             }
@@ -143,7 +143,7 @@ public final class SocketConnectionCache {
         int port = requestUrl.getPort();
 
         Socket socket;
-        socket = protocol.equals("https")
+        socket = "https".equals(protocol)
             ? (SSLSocket) SSLSocketFactory.getDefault().createSocket(host, port)
             : new Socket(host, port);
 
