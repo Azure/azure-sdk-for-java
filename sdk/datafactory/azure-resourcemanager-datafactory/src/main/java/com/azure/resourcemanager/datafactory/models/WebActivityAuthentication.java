@@ -25,8 +25,7 @@ public final class WebActivityAuthentication {
     private SecretBase pfx;
 
     /*
-     * Web activity authentication user name for basic authentication or ClientID when used for ServicePrincipal. Type:
-     * string (or Expression with resultType string).
+     * Web activity authentication user name for basic authentication or ClientID when used for ServicePrincipal. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "username")
     private Object username;
@@ -38,15 +37,13 @@ public final class WebActivityAuthentication {
     private SecretBase password;
 
     /*
-     * Resource for which Azure Auth token will be requested when using MSI Authentication. Type: string (or Expression
-     * with resultType string).
+     * Resource for which Azure Auth token will be requested when using MSI Authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "resource")
     private Object resource;
 
     /*
-     * TenantId for which Azure Auth token will be requested when using ServicePrincipal Authentication. Type: string
-     * (or Expression with resultType string).
+     * TenantId for which Azure Auth token will be requested when using ServicePrincipal Authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userTenant")
     private Object userTenant;

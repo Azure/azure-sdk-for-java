@@ -9,8 +9,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.PrivateEndPointConnectionsClient;
 import com.azure.resourcemanager.datafactory.fluent.models.PrivateEndpointConnectionResourceInner;
-import com.azure.resourcemanager.datafactory.models.PrivateEndPointConnections;
 import com.azure.resourcemanager.datafactory.models.PrivateEndpointConnectionResource;
+import com.azure.resourcemanager.datafactory.models.PrivateEndPointConnections;
 
 public final class PrivateEndPointConnectionsImpl implements PrivateEndPointConnections {
     private static final ClientLogger LOGGER = new ClientLogger(PrivateEndPointConnectionsImpl.class);

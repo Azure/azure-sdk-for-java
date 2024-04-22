@@ -10,6 +10,12 @@ import java.util.Collection;
 
 /** Defines values for RouteType. */
 public final class RouteType extends ExpandableStringEnum<RouteType> {
+    /**
+     * Default constructor for RouteType.
+     */
+    public RouteType() {
+    }
+
     /** Static value any for RouteType. */
     public static final RouteType ANY = fromString("any");
 
@@ -27,7 +33,11 @@ public final class RouteType extends ExpandableStringEnum<RouteType> {
         return fromString(name, RouteType.class);
     }
 
-    /** @return known RouteType values. */
+    /**
+     * Retrieve values collection
+     *
+     * @return known RouteType values.
+     */
     public static Collection<RouteType> values() {
         return values(RouteType.class);
     }

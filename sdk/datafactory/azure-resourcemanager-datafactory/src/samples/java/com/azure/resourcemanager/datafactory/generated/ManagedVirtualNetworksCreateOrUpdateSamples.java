@@ -13,8 +13,7 @@ import java.util.Map;
  */
 public final class ManagedVirtualNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * ManagedVirtualNetworks_Create.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedVirtualNetworks_Create.json
      */
     /**
      * Sample code: ManagedVirtualNetworks_Create.
@@ -22,9 +21,11 @@ public final class ManagedVirtualNetworksCreateOrUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void managedVirtualNetworksCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.managedVirtualNetworks().define("exampleManagedVirtualNetworkName")
+        manager.managedVirtualNetworks()
+            .define("exampleManagedVirtualNetworkName")
             .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
-            .withProperties(new ManagedVirtualNetwork().withAdditionalProperties(mapOf())).create();
+            .withProperties(new ManagedVirtualNetwork().withAdditionalProperties(mapOf()))
+            .create();
     }
 
     // Use "Map.of" if available
