@@ -22,13 +22,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class LengthValidatingInputStreamTests {
     @Test
     public void nullInnerInputStreamThrows() {
-        assertThrows(NullPointerException.class, () -> new LengthValidatingInputStream(null, 0));
+        assertThrows(NullPointerException.class, () -> new LengthValidatingInputStream(null, 0).close());
     }
 
     @Test
     public void negativeExpectedReadSizeThrows() {
         assertThrows(IllegalArgumentException.class,
-            () -> new LengthValidatingInputStream(new ByteArrayInputStream(new byte[0]), -1));
+            () -> new LengthValidatingInputStream(new ByteArrayInputStream(new byte[0]), -1).close());
     }
 
     @Test

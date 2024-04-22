@@ -22,7 +22,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.http.HttpTimeoutException;
@@ -41,7 +40,6 @@ import java.util.concurrent.TimeUnit;
 import static io.clientcore.http.jdk.httpclient.JdkHttpClientLocalTestServer.LONG_BODY;
 import static io.clientcore.http.jdk.httpclient.JdkHttpClientLocalTestServer.SHORT_BODY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTimeout;
@@ -150,7 +148,7 @@ public class JdkHttpClientTests {
             }
         }));
 
-        UncheckedIOException thrown = assertThrows(UncheckedIOException.class, () -> client.send(request));
+        IOException thrown = assertThrows(IOException.class, () -> client.send(request).close());
         assertEquals("boo", thrown.getCause().getMessage());
     }
 
@@ -175,7 +173,7 @@ public class JdkHttpClientTests {
             }
         }));
 
-        UncheckedIOException thrown = assertThrows(UncheckedIOException.class, () -> client.send(request));
+        IOException thrown = assertThrows(IOException.class, () -> client.send(request).close());
         assertEquals("boo", thrown.getCause().getMessage());
     }
 
@@ -184,7 +182,7 @@ public class JdkHttpClientTests {
         HttpClient client = new JdkHttpClientProvider().getSharedInstance();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url("/connectionClose"));
-        assertThrows(UncheckedIOException.class, () -> client.send(request));
+        assertThrows(IOException.class, () -> client.send(request).close());
     }
 
     @Test
@@ -224,13 +222,11 @@ public class JdkHttpClientTests {
     public void noResponseTimesOut() {
         HttpClient client = new JdkHttpClientBuilder().responseTimeout(Duration.ofSeconds(1)).build();
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
+        assertThrows(HttpTimeoutException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
             try (Response<?> response = doRequest(client, "/noResponse")) {
                 assertNotNull(response);
             }
         }));
-
-        assertInstanceOf(HttpTimeoutException.class, ex.getCause());
     }
 
     @Test
@@ -241,13 +237,11 @@ public class JdkHttpClientTests {
             .readTimeout(Duration.ofSeconds(1))
             .build();
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
+        assertThrows(HttpTimeoutException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
             try (Response<?> response = doRequest(client, "/slowResponse")) {
                 TestUtils.assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
             }
         }));
-
-        assertInstanceOf(HttpTimeoutException.class, ex.getCause());
     }
 
     @Test
@@ -258,13 +252,11 @@ public class JdkHttpClientTests {
             .readTimeout(Duration.ofSeconds(1))
             .build();
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
+        assertThrows(HttpTimeoutException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
             try (Response<?> response = doRequest(client, "/slowResponse", ResponseBodyMode.BUFFER)) {
                 TestUtils.assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
             }
         }));
-
-        assertInstanceOf(HttpTimeoutException.class, ex.getCause());
     }
 
     @SuppressWarnings("deprecation")
@@ -286,14 +278,13 @@ public class JdkHttpClientTests {
         }
     }
 
-    private static Response<?> doRequest(HttpClient client, String path) {
+    private static Response<?> doRequest(HttpClient client, String path) throws IOException {
         return doRequest(client, path, null);
     }
 
-    private static Response<?> doRequest(HttpClient client, String path, ResponseBodyMode bodyMode) {
+    private static Response<?> doRequest(HttpClient client, String path, ResponseBodyMode bodyMode) throws IOException {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(path))
             .setRequestOptions(new RequestOptions().setResponseBodyMode(bodyMode));
-
         return client.send(request);
     }
 

@@ -29,7 +29,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import javax.servlet.ServletException;
-import java.io.UncheckedIOException;
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.time.Duration;
@@ -121,15 +121,16 @@ public class OkHttpHttpClientBuilderTests {
      * Tests that an {@link OkHttpHttpClient} is able to be built from an existing {@link OkHttpClient}.
      */
     @Test
-    public void buildClientWithExistingClient() {
+    public void buildClientWithExistingClient() throws IOException {
         OkHttpClient existingClient = new OkHttpClient.Builder()
             .addInterceptor(chain -> chain
                 .proceed(chain.request().newBuilder().addHeader("Cookie", "test=success").build()))
             .build();
         HttpClient client = new OkHttpHttpClientBuilder(existingClient).build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, cookieValidatorUrl));
 
-        assertEquals(200, response.getStatusCode());
+        try (Response<?> response = client.send(new HttpRequest(HttpMethod.GET, cookieValidatorUrl))) {
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     /**
@@ -145,15 +146,16 @@ public class OkHttpHttpClientBuilderTests {
      * Tests that adding an {@link Interceptor} is handled correctly.
      */
     @Test
-    public void addNetworkInterceptor() {
+    public void addNetworkInterceptor() throws IOException {
         Interceptor testInterceptor = chain -> chain.proceed(chain.request().newBuilder()
             .addHeader("Cookie", "test=success").build());
         HttpClient client = new OkHttpHttpClientBuilder()
             .addNetworkInterceptor(testInterceptor)
             .build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, cookieValidatorUrl));
 
-        assertEquals(200, response.getStatusCode());
+        try (Response<?> response = client.send(new HttpRequest(HttpMethod.GET, cookieValidatorUrl))) {
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     /**
@@ -169,7 +171,7 @@ public class OkHttpHttpClientBuilderTests {
      * interceptors.
      */
     @Test
-    public void setNetworkInterceptors() {
+    public void setNetworkInterceptors() throws IOException {
         Interceptor badCookieSetter = chain -> chain.proceed(chain.request().newBuilder()
             .addHeader("Cookie", "test=failure").build());
         Interceptor goodCookieSetter = chain -> chain.proceed(chain.request().newBuilder()
@@ -178,9 +180,10 @@ public class OkHttpHttpClientBuilderTests {
             .addNetworkInterceptor(badCookieSetter)
             .networkInterceptors(Collections.singletonList(goodCookieSetter))
             .build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, cookieValidatorUrl));
 
-        assertEquals(200, response.getStatusCode());
+        try (Response<?> response = client.send(new HttpRequest(HttpMethod.GET, cookieValidatorUrl))) {
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     /**
@@ -196,7 +199,7 @@ public class OkHttpHttpClientBuilderTests {
      * Tests building a client with a given {@code connectionTimeout}.
      */
     @Test
-    public void buildWithConnectionTimeout() {
+    public void buildWithConnectionTimeout() throws IOException {
         int expectedConnectionTimeoutMillis = 3600 * 1000;
         Interceptor validatorInterceptor = chain -> {
             assertEquals(expectedConnectionTimeoutMillis, chain.connectTimeoutMillis());
@@ -207,45 +210,49 @@ public class OkHttpHttpClientBuilderTests {
             .addNetworkInterceptor(validatorInterceptor)
             .connectionTimeout(Duration.ofSeconds(3600))
             .build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
 
-        assertEquals(200, response.getStatusCode());
+        try (Response<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl))) {
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
 
     @Test
-    public void buildWithFollowRedirectSetToTrue() {
+    public void buildWithFollowRedirectSetToTrue() throws IOException {
         HttpClient client = new OkHttpHttpClientBuilder()
             .followRedirects(true)
             .build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, redirectUrl));
 
-        assertEquals(200, response.getStatusCode());
+        try (Response<?> response = client.send(new HttpRequest(HttpMethod.GET, redirectUrl))) {
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     @Test
-    public void buildWithFollowRedirectSetToFalse() {
+    public void buildWithFollowRedirectSetToFalse() throws IOException {
         HttpClient client = new OkHttpHttpClientBuilder()
             .followRedirects(false)
             .build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, redirectUrl));
 
-        assertEquals(307, response.getStatusCode());
+        try (Response<?> response = client.send(new HttpRequest(HttpMethod.GET, redirectUrl))) {
+            assertEquals(307, response.getStatusCode());
+        }
     }
 
     @Test
-    public void buildWithFollowRedirectDefault() {
+    public void buildWithFollowRedirectDefault() throws IOException {
         HttpClient client = new OkHttpHttpClientBuilder().build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, redirectUrl));
 
-        assertEquals(307, response.getStatusCode());
+        try (Response<?> response = client.send(new HttpRequest(HttpMethod.GET, redirectUrl))) {
+            assertEquals(307, response.getStatusCode());
+        }
     }
 
     /**
      * Tests building a client with a given {@code connectionTimeout}.
      */
     @Test
-    public void buildWithReadTimeout() {
+    public void buildWithReadTimeout() throws IOException {
         int expectedReadTimeoutMillis = 3600 * 1000;
         Interceptor validatorInterceptor = chain -> {
             assertEquals(expectedReadTimeoutMillis, chain.readTimeoutMillis());
@@ -256,16 +263,17 @@ public class OkHttpHttpClientBuilderTests {
             .addNetworkInterceptor(validatorInterceptor)
             .readTimeout(Duration.ofSeconds(3600))
             .build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
 
-        assertEquals(200, response.getStatusCode());
+        try (Response<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl))) {
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     /**
      * Tests building a client with a given {@code callTimeout}.
      */
     @Test
-    public void buildWithCallTimeout() {
+    public void buildWithCallTimeout() throws IOException {
         long expectedCallTimeoutNanos = 3600000000000L;
         Interceptor validatorInterceptor = chain -> {
             assertEquals(expectedCallTimeoutNanos, chain.call().timeout().timeoutNanos());
@@ -275,9 +283,10 @@ public class OkHttpHttpClientBuilderTests {
             .addNetworkInterceptor(validatorInterceptor)
             .callTimeout(Duration.ofSeconds(3600))
             .build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
 
-        assertEquals(200, response.getStatusCode());
+        try (Response<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl))) {
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     /**
@@ -294,7 +303,7 @@ public class OkHttpHttpClientBuilderTests {
      * Tests building a client with default timeouts.
      */
     @Test
-    public void buildWithDefaultTimeouts() {
+    public void buildWithDefaultTimeouts() throws IOException {
         Interceptor validatorInterceptor = chain -> {
             assertEquals(0L, chain.call().timeout().timeoutNanos());
             assertEquals(60000, chain.readTimeoutMillis());
@@ -305,24 +314,26 @@ public class OkHttpHttpClientBuilderTests {
         HttpClient client = new OkHttpHttpClientBuilder()
             .addNetworkInterceptor(validatorInterceptor)
             .build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
 
-        assertEquals(200, response.getStatusCode());
+        try (Response<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl))) {
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     /**
      * Tests building a client with a given {@code connectionPool}.
      */
     @Test
-    public void buildWithConnectionPool() {
+    public void buildWithConnectionPool() throws IOException {
         ConnectionPool connectionPool = new ConnectionPool();
         HttpClient client = new OkHttpHttpClientBuilder()
             .connectionPool(connectionPool)
             .build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
 
-        assertEquals(200, response.getStatusCode());
-        assertEquals(1, connectionPool.connectionCount());
+        try (Response<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl))) {
+            assertEquals(200, response.getStatusCode());
+            assertEquals(1, connectionPool.connectionCount());
+        }
     }
 
     /**
@@ -359,7 +370,7 @@ public class OkHttpHttpClientBuilderTests {
             }
         }, 1000);
 
-        assertThrows(UncheckedIOException.class, () -> client.send(new HttpRequest(HttpMethod.GET, dispatcherUrl)));
+        assertThrows(IOException.class, () -> client.send(new HttpRequest(HttpMethod.GET, dispatcherUrl)).close());
     }
 
     /**
@@ -382,7 +393,7 @@ public class OkHttpHttpClientBuilderTests {
             .proxy(proxyOptions)
             .build();
 
-        assertThrows(RuntimeException.class, () -> client.send(new HttpRequest(HttpMethod.GET, requestUrl)),
+        assertThrows(RuntimeException.class, () -> client.send(new HttpRequest(HttpMethod.GET, requestUrl)).close(),
             TestEventListenerValidator.EXPECTED_EXCEPTION_MESSAGE);
     }
 
@@ -462,7 +473,7 @@ public class OkHttpHttpClientBuilderTests {
             .configuration(configuration)
             .build();
 
-        assertThrows(Throwable.class, () -> client.send(new HttpRequest(HttpMethod.GET, requestUrl)),
+        assertThrows(Throwable.class, () -> client.send(new HttpRequest(HttpMethod.GET, requestUrl)).close(),
             TestEventListenerValidator.EXPECTED_EXCEPTION_MESSAGE);
     }
 
@@ -475,7 +486,7 @@ public class OkHttpHttpClientBuilderTests {
             .configuration(configuration)
             .build();
 
-        assertThrows(Throwable.class, () -> client.send(new HttpRequest(HttpMethod.GET, requestUrl)),
+        assertThrows(Throwable.class, () -> client.send(new HttpRequest(HttpMethod.GET, requestUrl)).close(),
             TestEventListenerValidator.EXPECTED_EXCEPTION_MESSAGE);
     }
 

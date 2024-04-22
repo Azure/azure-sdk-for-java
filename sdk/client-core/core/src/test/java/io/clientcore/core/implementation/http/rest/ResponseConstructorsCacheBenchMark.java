@@ -49,14 +49,13 @@ public class ResponseConstructorsCacheBenchMark {
     public void reflectionCache(Blackhole blackhole) {
         ResponseConstructorsCacheBenchMarkTestData.Input[] inputs = testData.inputs();
 
-        for (int i = 0; i < inputs.length; i++) {
-            Class<? extends Response<?>> responseClass =
-                (Class<? extends Response<?>>) TypeUtil.getRawClass(inputs[i].getReturnType());
+        for (ResponseConstructorsCacheBenchMarkTestData.Input input : inputs) {
+            Class<? extends Response<?>> responseClass = (Class<? extends Response<?>>) TypeUtil.getRawClass(
+                input.getReturnType());
             // Step1: Locate Constructor using Reflection.
             ReflectiveInvoker reflectiveInvoker = defaultCache.get(responseClass);
             // Step2: Invoke Constructor using Reflection.
-            Response<?> response = defaultCache.invoke(reflectiveInvoker, inputs[i].getResponse(),
-                inputs[i].getBodyAsObject());
+            Response<?> response = defaultCache.invoke(reflectiveInvoker, input.getResponse(), input.getBodyAsObject());
             // avoid JVM dead code detection
             blackhole.consume(response);
         }
@@ -67,18 +66,18 @@ public class ResponseConstructorsCacheBenchMark {
     public void lambdaMetaFactoryCache(Blackhole blackhole) {
         ResponseConstructorsCacheBenchMarkTestData.Input[] inputs = testData.inputs();
 
-        for (int i = 0; i < inputs.length; i++) {
-            Class<? extends Response<?>> responseClass =
-                (Class<? extends Response<?>>) TypeUtil.getRawClass(inputs[i].getReturnType());
+        for (ResponseConstructorsCacheBenchMarkTestData.Input input : inputs) {
+            Class<? extends Response<?>> responseClass = (Class<? extends Response<?>>) TypeUtil.getRawClass(
+                input.getReturnType());
             // Step1: Locate Constructor using LambdaMetaFactory.
-            ResponseConstructorsCacheLambdaMetaFactory.ResponseConstructor constructor =
-                lambdaMetaCache.get(responseClass);
+            ResponseConstructorsCacheLambdaMetaFactory.ResponseConstructor constructor = lambdaMetaCache.get(
+                responseClass);
 
             if (constructor == null) {
                 throw new IllegalStateException("Response constructor with expected parameters not found.");
             }
             // Step2: Invoke Constructor using LambdaMetaFactory functional interface.
-            Response<?> response = constructor.invoke(inputs[i].getResponse(), inputs[i].getBodyAsObject());
+            Response<?> response = constructor.invoke(input.getResponse(), input.getBodyAsObject());
 
             // avoid JVM dead code detection
             blackhole.consume(response);
@@ -90,9 +89,9 @@ public class ResponseConstructorsCacheBenchMark {
     public void reflectionNoCache(Blackhole blackhole) {
         ResponseConstructorsCacheBenchMarkTestData.Input[] inputs = testData.inputs();
 
-        for (int i = 0; i < inputs.length; i++) {
-            Class<? extends Response<?>> responseClass =
-                (Class<? extends Response<?>>) TypeUtil.getRawClass(inputs[i].getReturnType());
+        for (ResponseConstructorsCacheBenchMarkTestData.Input input : inputs) {
+            Class<? extends Response<?>> responseClass = (Class<? extends Response<?>>) TypeUtil.getRawClass(
+                input.getReturnType());
             // Step1: Locate Constructor using Reflection.
             Constructor<? extends Response<?>> constructor = reflectionNoCache.get(responseClass);
 
@@ -101,8 +100,7 @@ public class ResponseConstructorsCacheBenchMark {
             }
             // Step2: Invoke Constructor using Reflection.
 
-            Response<?> response = reflectionNoCache.invoke(constructor, inputs[i].getResponse(),
-                inputs[i].getBodyAsObject());
+            Response<?> response = reflectionNoCache.invoke(constructor, input.getResponse(), input.getBodyAsObject());
 
             // avoid JVM dead code detection
             blackhole.consume(response);

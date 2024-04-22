@@ -6,6 +6,7 @@ package io.clientcore.core.implementation.serializer;
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AdditionalPropertiesSerializerTests {
     @Test
-    public void canSerializeAdditionalProperties() {
+    public void canSerializeAdditionalProperties() throws IOException {
         Foo foo = new Foo();
 
         foo.bar("hello.world");
@@ -38,7 +39,7 @@ public class AdditionalPropertiesSerializerTests {
     }
 
     @Test
-    public void canDeserializeAdditionalProperties() {
+    public void canDeserializeAdditionalProperties() throws IOException {
         String wireValue = "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
         Foo deserialized = new DefaultJsonSerializer().deserializeFromBytes(wireValue.getBytes(), Foo.class);
 
@@ -49,7 +50,7 @@ public class AdditionalPropertiesSerializerTests {
     }
 
     @Test
-    public void canSerializeAdditionalPropertiesThroughInheritance() {
+    public void canSerializeAdditionalPropertiesThroughInheritance() throws IOException {
         FooChild foo = new FooChild();
 
         foo.bar("hello.world");
@@ -72,7 +73,7 @@ public class AdditionalPropertiesSerializerTests {
     }
 
     @Test
-    public void canDeserializeAdditionalPropertiesThroughInheritance() {
+    public void canDeserializeAdditionalPropertiesThroughInheritance() throws IOException {
         String wireValue = "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
         FooChild deserialized = new DefaultJsonSerializer().deserializeFromBytes(wireValue.getBytes(), FooChild.class);
 
@@ -100,7 +101,7 @@ public class AdditionalPropertiesSerializerTests {
     }
 
     @Test
-    public void canSerializeAdditionalPropertiesWithNestedAdditionalProperties() {
+    public void canSerializeAdditionalPropertiesWithNestedAdditionalProperties() throws IOException {
         Foo foo = new Foo();
 
         foo.bar("hello.world");

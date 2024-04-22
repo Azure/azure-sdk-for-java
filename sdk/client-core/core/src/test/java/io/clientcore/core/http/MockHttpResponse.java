@@ -10,8 +10,6 @@ import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
-import java.io.ByteArrayOutputStream;
-
 public class MockHttpResponse extends HttpResponse<BinaryData> {
     private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
 
@@ -71,14 +69,14 @@ public class MockHttpResponse extends HttpResponse<BinaryData> {
      * @param serializable Contents to be serialized into JSON for the response.
      */
     public MockHttpResponse(HttpRequest request, int statusCode, Object serializable) {
-        this(request, statusCode, new HttpHeaders(), BinaryData.fromBytes(serialize(serializable)));
+        this(request, statusCode, new HttpHeaders(), serialize(serializable));
     }
 
-    private static byte[] serialize(Object serializable) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    private static BinaryData serialize(Object serializable) {
+        if (serializable == null) {
+            return null;
+        }
 
-        SERIALIZER.serializeToStream(stream, serializable);
-
-        return stream.toByteArray();
+        return BinaryData.fromObject(serializable, SERIALIZER);
     }
 }
