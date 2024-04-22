@@ -518,6 +518,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             if (isRegionScopedSessionCapturingEnabled || Configs.isRegionScopedSessionTokenCapturingEnabled()) {
                 this.sessionContainer = new RegionScopedSessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing, this.globalEndpointManager);
+                this.diagnosticsClientConfig.withRegionScopedSessionContainerOptions((RegionScopedSessionContainer) this.sessionContainer);
             } else {
                 this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
             }

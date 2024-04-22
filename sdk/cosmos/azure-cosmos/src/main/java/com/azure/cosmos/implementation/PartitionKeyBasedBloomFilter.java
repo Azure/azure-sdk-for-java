@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class PartitionKeyBasedBloomFilter {
 
@@ -22,6 +23,7 @@ public class PartitionKeyBasedBloomFilter {
     private static final double ALLOWED_FALSE_POSITIVE_RATE = Configs.getPkBasedBloomFilterExpectedFfpRate();
     private BloomFilter<PartitionKeyBasedBloomFilterType> pkBasedBloomFilter;
     private final Set<String> recordedRegions;
+    private final AtomicLong bloomFilterApproximateInsertionCount;
     private final Funnel<PartitionKeyBasedBloomFilterType> funnel;
 
     public PartitionKeyBasedBloomFilter() {
@@ -36,6 +38,7 @@ public class PartitionKeyBasedBloomFilter {
             }
         };
         this.pkBasedBloomFilter = BloomFilter.create(this.funnel, EXPECTED_INSERTIONS, ALLOWED_FALSE_POSITIVE_RATE);
+        this.bloomFilterApproximateInsertionCount = new AtomicLong(0);
     }
 
     public void tryRecordPartitionKey(
@@ -77,6 +80,7 @@ public class PartitionKeyBasedBloomFilter {
                         normalizedRegionRoutedTo,
                         collectionRid));
                 this.recordedRegions.add(normalizedRegionRoutedTo);
+                this.bloomFilterApproximateInsertionCount.incrementAndGet();
             }
         } catch (Exception e) {
             throw new IllegalStateException(e);
@@ -100,6 +104,10 @@ public class PartitionKeyBasedBloomFilter {
                 if (this.pkBasedBloomFilter.mightContain(new PartitionKeyBasedBloomFilterType(effectivePartitionKeyString, region, collectionRid))) {
                     regionsPartitionKeyHasProbablySeen.add(region);
                 }
+            }
+
+            if (request.requestContext != null) {
+                request.requestContext.setApproximateBloomFilterInsertionCount(bloomFilterApproximateInsertionCount.get());
             }
 
             return regionsPartitionKeyHasProbablySeen;

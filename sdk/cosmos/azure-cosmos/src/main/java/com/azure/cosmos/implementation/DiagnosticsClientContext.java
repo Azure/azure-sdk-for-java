@@ -84,6 +84,10 @@ public interface DiagnosticsClientContext {
                 generator.writeStringField("proactiveInitCfg", clientConfig.proactivelyInitializedContainersAsString);
                 generator.writeStringField("e2ePolicyCfg", clientConfig.endToEndOperationLatencyPolicyConfigAsString);
                 generator.writeStringField("sessionRetryCfg", clientConfig.sessionRetryOptionsAsString);
+
+                if (!clientConfig.regionScopedSessionContainerOptionsAsString.isEmpty()) {
+                    generator.writeStringField("regionScopedSessionCfg", clientConfig.regionScopedSessionContainerOptionsAsString);
+                }
             } catch (Exception e) {
                 logger.debug("unexpected failure", e);
             }
@@ -115,6 +119,7 @@ public interface DiagnosticsClientContext {
         private boolean replicaValidationEnabled = Configs.isReplicaAddressValidationEnabled();
         private ConnectionPolicy connectionPolicy;
         private String sessionRetryOptionsAsString;
+        private String regionScopedSessionContainerOptionsAsString;
 
         public DiagnosticsClientConfig withMachineId(String machineId) {
             this.machineId = machineId;
@@ -217,6 +222,17 @@ public interface DiagnosticsClientContext {
                 this.sessionRetryOptionsAsString = "";
             } else {
                 this.sessionRetryOptionsAsString = sessionRetryOptions.toString();
+            }
+
+            return this;
+        }
+
+        public DiagnosticsClientConfig withRegionScopedSessionContainerOptions(RegionScopedSessionContainer regionScopedSessionContainer) {
+
+            if (regionScopedSessionContainer == null) {
+                this.regionScopedSessionContainerOptionsAsString = "";
+            } else {
+                this.regionScopedSessionContainerOptionsAsString = regionScopedSessionContainer.getRegionScopedSessionCapturingOptionsAsString();
             }
 
             return this;

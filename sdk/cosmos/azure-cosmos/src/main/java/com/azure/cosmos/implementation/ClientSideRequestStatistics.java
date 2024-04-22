@@ -56,6 +56,7 @@ public class ClientSideRequestStatistics {
     private final String userAgent;
 
     private double samplingRateSnapshot = 1;
+    private long approximateInsertionCountInBloomFilter = 0;
 
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsClientConfig = diagnosticsClientContext.getConfig();
@@ -75,6 +76,7 @@ public class ClientSideRequestStatistics {
         this.requestPayloadSizeInBytes = 0;
         this.userAgent = diagnosticsClientContext.getUserAgent();
         this.samplingRateSnapshot = 1;
+        this.approximateInsertionCountInBloomFilter = 0;
     }
 
     public ClientSideRequestStatistics(ClientSideRequestStatistics toBeCloned) {
@@ -97,6 +99,7 @@ public class ClientSideRequestStatistics {
         this.requestPayloadSizeInBytes = toBeCloned.requestPayloadSizeInBytes;
         this.userAgent = toBeCloned.userAgent;
         this.samplingRateSnapshot = toBeCloned.samplingRateSnapshot;
+        this.approximateInsertionCountInBloomFilter = toBeCloned.approximateInsertionCountInBloomFilter;
     }
 
     @JsonIgnore
@@ -153,6 +156,9 @@ public class ClientSideRequestStatistics {
 
         URI locationEndPoint = null;
         if (request.requestContext != null) {
+
+            this.approximateInsertionCountInBloomFilter = request.requestContext.getApproximateBloomFilterInsertionCount();
+
             if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
                 storeResponseStatistics.e2ePolicyCfg =
                     request.requestContext.getEndToEndOperationLatencyPolicyConfig().toString();
@@ -202,6 +208,7 @@ public class ClientSideRequestStatistics {
             URI locationEndPoint = null;
             if (rxDocumentServiceRequest != null && rxDocumentServiceRequest.requestContext != null) {
                 locationEndPoint = rxDocumentServiceRequest.requestContext.locationEndpointToRoute;
+                this.approximateInsertionCountInBloomFilter = rxDocumentServiceRequest.requestContext.getApproximateBloomFilterInsertionCount();
             }
             this.recordRetryContextEndTime();
 
@@ -679,6 +686,7 @@ public class ClientSideRequestStatistics {
             generator.writeObjectField("serializationDiagnosticsContext", statistics.getSerializationDiagnosticsContext());
             generator.writeObjectField("gatewayStatisticsList", statistics.gatewayStatisticsList);
             generator.writeObjectField("samplingRateSnapshot", statistics.samplingRateSnapshot);
+            generator.writeObjectField("bloomFilterInsertionCountSnapshot", statistics.approximateInsertionCountInBloomFilter);
 
             try {
                 CosmosDiagnosticsSystemUsageSnapshot systemInformation = fetchSystemInformation();

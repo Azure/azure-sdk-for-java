@@ -50,6 +50,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
     private boolean disableSessionCapturing;
     private final GlobalEndpointManager globalEndpointManager;
     private final AtomicReference<String> firstPreferredReadableRegionCached;
+    private final String regionScopedSessionCapturingOptionsAsString;
 
     public RegionScopedSessionContainer(final String hostName, boolean disableSessionCapturing, GlobalEndpointManager globalEndpointManager) {
         this.hostName = hostName;
@@ -57,6 +58,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         this.globalEndpointManager = globalEndpointManager;
         this.firstPreferredReadableRegionCached = new AtomicReference<>(StringUtils.EMPTY);
         this.partitionKeyBasedBloomFilter = new PartitionKeyBasedBloomFilter();
+        this.regionScopedSessionCapturingOptionsAsString = stringifyConfig();
     }
 
     public RegionScopedSessionContainer(final String hostName, boolean disableSessionCapturing) {
@@ -594,5 +596,16 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         Long collectionRid = this.collectionNameToCollectionResourceId.getOrDefault(collectionId, -1L);
         return this.partitionKeyBasedBloomFilter.isPartitionKeyResolvedToARegion(
             effectivePartitionKeyString, normalizedRegion, collectionRid);
+    }
+
+    public String getRegionScopedSessionCapturingOptionsAsString() {
+        return this.regionScopedSessionCapturingOptionsAsString;
+    }
+
+    private static String stringifyConfig() {
+        return String.format(
+          "(rssc: true, expins:%s, ffprate: %s)",
+          Configs.getPkBasedBloomFilterExpectedInsertionCount(),
+          Configs.getPkBasedBloomFilterExpectedFfpRate());
     }
 }

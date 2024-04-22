@@ -47,8 +47,8 @@ public class ClientConfigDiagnosticsTest {
         .CosmosSessionRetryOptionsHelper
         .getCosmosSessionRetryOptionsAccessor();
 
-    @DataProvider(name = "proactiveContainerInitConfigProvider")
-    public Object[][] proactiveContainerInitConfigProvider() {
+    @DataProvider(name = "clientCfgProvider")
+    public Object[][] clientCfgProvider() {
 
         Duration aggressiveWarmUpDuration1 = Duration.ofSeconds(1);
         int proactiveConnectionRegionCount1 = 1;
@@ -72,7 +72,8 @@ public class ClientConfigDiagnosticsTest {
                     .build(),
                 aggressiveWarmUpDuration1,
                 proactiveConnectionRegionCount1,
-                cosmosContainerIdentities
+                cosmosContainerIdentities,
+                false // is region scoped session capturing enabled
             },
             {
                 new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
@@ -81,7 +82,8 @@ public class ClientConfigDiagnosticsTest {
                     .build(),
                 aggressiveWarmUpDuration2,
                 proactiveConnectionRegionCount2,
-                cosmosContainerIdentities
+                cosmosContainerIdentities,
+                true
             },
             {
                 new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
@@ -89,7 +91,8 @@ public class ClientConfigDiagnosticsTest {
                     .build(),
                 null,
                 proactiveConnectionRegionCount3,
-                cosmosContainerIdentities
+                cosmosContainerIdentities,
+                false
             }
         };
     }
@@ -234,12 +237,13 @@ public class ClientConfigDiagnosticsTest {
         assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: false, cs: false, rv: true)");
     }
 
-    @Test(groups = { "unit" }, dataProvider = "proactiveContainerInitConfigProvider")
+    @Test(groups = { "unit" }, dataProvider = "clientCfgProvider")
     public void full(
         CosmosContainerProactiveInitConfig containerProactiveInitConfig,
         Duration aggressiveWarmupDuration,
         int proactiveConnectionRegionCount,
-        List<CosmosContainerIdentity> cosmosContainerIdentities) throws Exception {
+        List<CosmosContainerIdentity> cosmosContainerIdentities,
+        boolean isRegionScopedSessionCapturingEnabled) throws Exception {
 
         DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
         System.setProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED", "false");
@@ -266,6 +270,13 @@ public class ClientConfigDiagnosticsTest {
         diagnosticsClientConfig.withClientMap(new HashMap<>());
         diagnosticsClientConfig.withProactiveContainerInitConfig(containerProactiveInitConfig);
 
+        RegionScopedSessionContainer regionScopedSessionContainer = null;
+
+        if (isRegionScopedSessionCapturingEnabled) {
+            regionScopedSessionContainer = new RegionScopedSessionContainer("127.0.0.1");
+            diagnosticsClientConfig.withRegionScopedSessionContainerOptions(regionScopedSessionContainer);
+        }
+
         Mockito.doReturn(diagnosticsClientConfig).when(clientContext).getConfig();
 
         StringWriter jsonWriter = new StringWriter();
@@ -283,6 +294,12 @@ public class ClientConfigDiagnosticsTest {
         assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("(cps:500, nrto:PT18S, icto:PT17S, p:false)");
         assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: true, cs: true, rv: false)");
         assertThat(objectNode.get("excrgns").asText()).isEqualTo("[westus2]");
+
+        if (isRegionScopedSessionCapturingEnabled) {
+            assertThat(objectNode.get("regionScopedSessionCfg").asText()).isEqualTo(regionScopedSessionContainer.getRegionScopedSessionCapturingOptionsAsString());
+        } else {
+            assertThat(objectNode.get("regionScopedSessionCfg")).isNull();
+        }
 
         String expectedProactiveInitConfigString = reconstructProactiveInitConfigString(cosmosContainerIdentities, aggressiveWarmupDuration, proactiveConnectionRegionCount);
 
