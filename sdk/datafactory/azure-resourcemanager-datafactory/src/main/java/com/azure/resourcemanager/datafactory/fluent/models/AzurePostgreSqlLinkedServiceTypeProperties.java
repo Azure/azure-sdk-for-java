@@ -26,8 +26,7 @@ public final class AzurePostgreSqlLinkedServiceTypeProperties {
     private AzureKeyVaultSecretReference password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
@@ -81,8 +80,8 @@ public final class AzurePostgreSqlLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -91,8 +90,8 @@ public final class AzurePostgreSqlLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzurePostgreSqlLinkedServiceTypeProperties object itself.

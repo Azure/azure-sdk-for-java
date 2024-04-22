@@ -7,13 +7,14 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A request chat message representing requested output from a configured tool.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "role")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "role", defaultImpl = ChatRequestToolMessage.class, visible = true)
 @JsonTypeName("tool")
 @Immutable
 public final class ChatRequestToolMessage extends ChatRequestMessage {
@@ -23,14 +24,14 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
      */
     @Generated
     @JsonProperty(value = "content")
-    private String content;
+    private final String content;
 
     /*
      * The ID of the tool call resolved by the provided content.
      */
     @Generated
     @JsonProperty(value = "tool_call_id")
-    private String toolCallId;
+    private final String toolCallId;
 
     /**
      * Creates an instance of ChatRequestToolMessage class.
@@ -64,5 +65,24 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
     @Generated
     public String getToolCallId() {
         return this.toolCallId;
+    }
+
+    /*
+     * The chat role associated with this message.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "role")
+    private ChatRole role = ChatRole.TOOL;
+
+    /**
+     * Get the role property: The chat role associated with this message.
+     *
+     * @return the role value.
+     */
+    @Generated
+    @Override
+    public ChatRole getRole() {
+        return this.role;
     }
 }

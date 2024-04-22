@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureKeyVaultLinkedServiceTypeProperties {
     /*
-     * The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net Type: string (or Expression with
-     * resultType string).
+     * The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "baseUrl", required = true)
     private Object baseUrl;
@@ -82,8 +81,9 @@ public final class AzureKeyVaultLinkedServiceTypeProperties {
      */
     public void validate() {
         if (baseUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property baseUrl in model AzureKeyVaultLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property baseUrl in model AzureKeyVaultLinkedServiceTypeProperties"));
         }
         if (credential() != null) {
             credential().validate();

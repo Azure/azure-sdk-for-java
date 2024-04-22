@@ -7,13 +7,14 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A structured representation of a stop reason that signifies natural termination by the model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = StopFinishDetails.class, visible = true)
 @JsonTypeName("stop")
 @Immutable
 public final class StopFinishDetails extends ChatFinishDetails {
@@ -23,7 +24,7 @@ public final class StopFinishDetails extends ChatFinishDetails {
      */
     @Generated
     @JsonProperty(value = "stop")
-    private String stop;
+    private final String stop;
 
     /**
      * Creates an instance of StopFinishDetails class.
@@ -44,5 +45,24 @@ public final class StopFinishDetails extends ChatFinishDetails {
     @Generated
     public String getStop() {
         return this.stop;
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
+    private String type = "stop";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
     }
 }

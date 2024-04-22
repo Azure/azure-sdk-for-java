@@ -712,6 +712,8 @@ public class EventHubsJavaDocCodeSamples {
         // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
             .checkpointStore(new SampleCheckpointStore())
             .processEventBatch(eventBatchContext -> {
                 eventBatchContext.getEvents().forEach(eventData -> {
