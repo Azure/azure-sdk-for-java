@@ -1519,7 +1519,7 @@ public final class CosmosEncryptionAsyncContainer {
         }
 
         if (JsonSerializable.class.isAssignableFrom(itemClass)) {
-            return ((JsonSerializable)itemOperation.getItem()).get("id").toString();
+            return ((JsonSerializable)itemOperation.getItem()).get(Constants.PROPERTY_NAME_ID).toString();
         }
 
         Field id = itemClass.getDeclaredField(Constants.PROPERTY_NAME_ID);
