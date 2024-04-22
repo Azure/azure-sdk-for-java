@@ -40,6 +40,7 @@ import java.util.concurrent.TimeoutException;
 public final class RequestRetryPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(RequestRetryPolicy.class);
     private final RequestRetryOptions requestRetryOptions;
+    public static final HttpHeaderName X_MS_COPY_SOURCE_ERROR_CODE = HttpHeaderName.fromString("x-ms-copy-source-error-code");
 
     /**
      * Constructs the policy using the retry options.
@@ -384,23 +385,17 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
          * or if the secondary was being tried and the resources didn't exist there (404). Only the secondary can retry
          * if the resource wasn't found as there may be a delay in replication from the primary.
          */
-        if (response != null) {
-            String headerValue = response.getHeaders().getValue(HttpHeaderName.fromString("x-ms-copy-source-error-code"));
+        boolean headerRetry = false;
+        boolean statusCodeRetry = (statusCode == 429 || statusCode == 500 || statusCode == 503) || (!isPrimary && statusCode == 404);
+        if (response != null && response.getHeaders() != null) {
+            String headerValue = response.getHeaders().getValue(X_MS_COPY_SOURCE_ERROR_CODE);
             if (headerValue != null) {
-                switch (headerValue) {
-                    case "" + 429:
-                    case "" + 500:
-                    case "" + 503:
-                        return true;
-                    case "" + 404:
-                        return !isPrimary;
-                    default:
-                        break;
-                }
+                headerRetry = (headerValue.equals("429") || headerValue.equals("500") || headerValue.equals("503"))
+                    || (!isPrimary && headerValue.equals("404"));
             }
+
         }
-        return (statusCode == 429 || statusCode == 500 || statusCode == 503)
-            || (!isPrimary && statusCode == 404);
+        return statusCodeRetry || headerRetry;
     }
 
     static final class ExceptionRetryStatus {
