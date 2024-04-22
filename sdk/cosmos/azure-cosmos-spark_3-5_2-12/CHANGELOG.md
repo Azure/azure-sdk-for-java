@@ -4,7 +4,7 @@
 
 #### Features Added
 * Added capability to use (and enforce) native netty transport. The native transport is more efficient - esepcially when the number of TCP connections being used is high. - See [PR 39834](https://github.com/Azure/azure-sdk-for-java/pull/39834)
-
+ 
 #### Breaking Changes
 
 #### Bugs Fixed
