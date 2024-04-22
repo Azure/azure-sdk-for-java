@@ -517,9 +517,9 @@ class EventHubProducerAsyncClientTest {
             false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         final EventHubProperties ehProperties = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[]{"0"});
-        PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, "0",
-            1L, 2L, OffsetDateTime.now().toString(), Instant.now(), false);
-        EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
+        final PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, "0",
+            1L, 2L, OffsetDateTime.now().toString(), Instant.now(), false, 5, 10);
+        final EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
 
         AtomicInteger tryCount = new AtomicInteger();
         when(connection.getManagementNode()).thenAnswer(invocation -> {
@@ -552,6 +552,8 @@ class EventHubProducerAsyncClientTest {
             .verify(DEFAULT_TIMEOUT);
 
         assertEquals(3, tryCount.get());
+
+        managementNode.close();
     }
 
     /**
