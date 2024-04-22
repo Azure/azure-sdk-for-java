@@ -10,7 +10,7 @@ import requests
 import tempfile
 import subprocess
 import urllib.parse
-from typing import Tuple, List
+from typing import Tuple, List, Union
 
 pwd = os.getcwd()
 #os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
@@ -208,7 +208,7 @@ def compare_with_maven_package(sdk_root: str, service: str, stable_version: str,
 def get_version(
     sdk_root: str,
     module: str,
-) -> str:
+) -> Union[str, None]:
     version_file = os.path.join(sdk_root, 'eng/versioning/version_client.txt')
     project = '{0}:{1}'.format(GROUP_ID, module)
 
@@ -318,7 +318,7 @@ def generate_typespec_project(tsp_project: str, sdk_root: str, spec_root: str, h
                '--local-spec-repo', tsp_dir]
         check_call(cmd, sdk_root)
 
-        sdk_folder = find_sdk_folder()
+        sdk_folder = find_sdk_folder(sdk_root)
         logging.info('SDK folder: ' + sdk_folder)
         if sdk_folder:
             succeeded = True
