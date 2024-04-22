@@ -62,7 +62,7 @@ public class BinaryDataTest {
     }
 
     @Test
-    public void fromCustomObject() {
+    public void fromCustomObject() throws IOException {
         // Arrange
         final Person actualValue = new Person().setName("John Doe").setAge(50);
         final Person expectedValue = new Person().setName("John Doe").setAge(50);
@@ -75,7 +75,7 @@ public class BinaryDataTest {
     }
 
     @Test
-    public void fromDouble() {
+    public void fromDouble() throws IOException {
         // Arrange
         final Double actualValue = Double.valueOf("10.1");
         final Double expectedValue = Double.valueOf("10.1");
@@ -225,7 +225,7 @@ public class BinaryDataTest {
     }
 
     @Test
-    public void fromCustomObjectWithDefaultSerializer() {
+    public void fromCustomObjectWithDefaultSerializer() throws IOException {
         // Arrange
         final Person actualValue = new Person().setName("John Doe").setAge(50);
         final Person expectedValue = new Person().setName("John Doe").setAge(50);
@@ -238,7 +238,7 @@ public class BinaryDataTest {
     }
 
     @Test
-    public void fromDoubleWithDefaultSerializer() {
+    public void fromDoubleWithDefaultSerializer() throws IOException {
         // Arrange
         final Double actualValue = Double.valueOf("10.1");
         final Double expectedValue = Double.valueOf("10.1");
@@ -407,7 +407,7 @@ public class BinaryDataTest {
         assertSame(data, clone);
     }
 
-    public static Stream<Arguments> createRetryableBinaryData() {
+    public static Stream<Arguments> createRetryableBinaryData() throws IOException {
         byte[] bytes = new byte[1024];
         fillArray(bytes);
 
@@ -532,7 +532,7 @@ public class BinaryDataTest {
     }
 
     @Test
-    public void binaryDataAsPropertySerialization() {
+    public void binaryDataAsPropertySerialization() throws IOException {
         BinaryDataAsProperty binaryDataAsProperty = new BinaryDataAsProperty()
             .setProperty(BinaryData.fromObject(new BinaryDataPropertyClass().setTest("test")));
         String expectedJson = "{\"property\":{\"test\":\"test\"}}";
@@ -542,7 +542,7 @@ public class BinaryDataTest {
     }
 
     @Test
-    public void binaryDataAsPropertyDeserialization() {
+    public void binaryDataAsPropertyDeserialization() throws IOException {
         BinaryDataAsProperty expected = new BinaryDataAsProperty()
             .setProperty(BinaryData.fromObject(new BinaryDataPropertyClass().setTest("test")));
         String json = "{\"property\":{\"test\":\"test\"}}";

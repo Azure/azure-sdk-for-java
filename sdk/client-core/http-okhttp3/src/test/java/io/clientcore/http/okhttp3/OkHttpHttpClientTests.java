@@ -18,7 +18,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import javax.servlet.ServletException;
-import java.io.UncheckedIOException;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -32,7 +32,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static io.clientcore.http.okhttp3.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -95,12 +95,12 @@ public class OkHttpHttpClientTests {
     }
 
     @Test
-    public void testFlowableResponseShortBodyAsByteArrayAsync() {
+    public void testFlowableResponseShortBodyAsByteArrayAsync() throws IOException {
         checkBodyReceived(SHORT_BODY, "/short");
     }
 
     @Test
-    public void testFlowableResponseLongBodyAsByteArrayAsync() {
+    public void testFlowableResponseLongBodyAsByteArrayAsync() throws IOException {
         checkBodyReceived(LONG_BODY, "/long");
     }
 
@@ -109,7 +109,7 @@ public class OkHttpHttpClientTests {
         HttpClient client = new OkHttpHttpClientProvider().getSharedInstance();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/connectionClose"));
 
-        assertThrows(UncheckedIOException.class, () -> client.send(request).getBody().toBytes());
+        assertThrows(IOException.class, () -> client.send(request).getBody().toBytes());
     }
 
     @Test
@@ -124,7 +124,7 @@ public class OkHttpHttpClientTests {
             requests.add(() -> {
                 try (Response<?> response = doRequest(client, "/long")) {
                     byte[] body = response.getBody().toBytes();
-                    TestUtils.assertArraysEqual(LONG_BODY, body);
+                    assertArraysEqual(LONG_BODY, body);
 
                     return null;
                 }
@@ -138,7 +138,7 @@ public class OkHttpHttpClientTests {
     }
 
     @Test
-    public void validateHeadersReturnAsIs() {
+    public void validateHeadersReturnAsIs() throws IOException {
         HttpClient client = new OkHttpHttpClientProvider().getSharedInstance();
         HttpHeaderName singleValueHeaderName = HttpHeaderName.fromString("singleValue");
         final String singleValueHeaderValue = "value";
@@ -148,21 +148,22 @@ public class OkHttpHttpClientTests {
         HttpHeaders headers = new HttpHeaders().set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        Response<?> response = client.send(
-            new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers));
+        try (Response<?> response = client.send(
+            new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers))) {
 
-        assertEquals(200, response.getStatusCode());
+            assertEquals(200, response.getStatusCode());
 
-        HttpHeaders responseHeaders = response.getHeaders();
-        HttpHeader singleValueHeader = responseHeaders.get(singleValueHeaderName);
+            HttpHeaders responseHeaders = response.getHeaders();
+            HttpHeader singleValueHeader = responseHeaders.get(singleValueHeaderName);
 
-        assertEquals(singleValueHeaderName.getCaseSensitiveName(), singleValueHeader.getName().toString());
-        assertEquals(singleValueHeaderValue, singleValueHeader.getValue());
+            assertEquals(singleValueHeaderName.getCaseSensitiveName(), singleValueHeader.getName().toString());
+            assertEquals(singleValueHeaderValue, singleValueHeader.getValue());
 
-        HttpHeader multiValueHeader = responseHeaders.get(multiValueHeaderName);
+            HttpHeader multiValueHeader = responseHeaders.get(multiValueHeaderName);
 
-        assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName().toString());
-        assertLinesMatch(multiValueHeaderValue, multiValueHeader.getValues());
+            assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName().toString());
+            assertLinesMatch(multiValueHeaderValue, multiValueHeader.getValues());
+        }
     }
 
     static URL url(LocalTestServer server, String path) {
@@ -184,14 +185,16 @@ public class OkHttpHttpClientTests {
         return longBody;
     }
 
-    private static void checkBodyReceived(byte[] expectedBody, String path) {
+    private static void checkBodyReceived(byte[] expectedBody, String path) throws IOException {
         HttpClient client = new OkHttpHttpClientBuilder().build();
-        byte[] bytes = doRequest(client, path).getBody().toBytes();
+        try (Response<?> response = doRequest(client, path)) {
+            byte[] bytes = response.getBody().toBytes();
 
-        assertArrayEquals(expectedBody, bytes);
+            assertArraysEqual(expectedBody, bytes);
+        }
     }
 
-    private static Response<?> doRequest(HttpClient client, String path) {
+    private static Response<?> doRequest(HttpClient client, String path) throws IOException {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
 
         return client.send(request);

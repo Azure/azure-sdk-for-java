@@ -20,7 +20,6 @@ import io.clientcore.http.jdk.httpclient.implementation.JdkHttpResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.Set;
@@ -80,7 +79,7 @@ class JdkHttpClient implements HttpClient {
     }
 
     @Override
-    public Response<?> send(HttpRequest request) {
+    public Response<?> send(HttpRequest request) throws IOException {
         java.net.http.HttpRequest jdkRequest = toJdkHttpRequest(request);
         try {
             // JDK HttpClient works differently than OkHttp and HttpUrlConnection where the response body handling has
@@ -92,10 +91,7 @@ class JdkHttpClient implements HttpClient {
                 HttpResponse.BodyHandlers::ofInputStream, InputStreamTimeoutResponseSubscriber::new);
 
             java.net.http.HttpResponse<InputStream> jdKResponse = jdkHttpClient.send(jdkRequest, bodyHandler);
-
             return toResponse(request, jdKResponse);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         } catch (InterruptedException e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }

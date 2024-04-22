@@ -15,7 +15,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -27,9 +26,8 @@ import java.util.regex.Pattern;
  * Utility class for Server Sent Event handling.
  */
 public final class ServerSentEventUtils {
-    private static final ClientLogger LOGGER = new ClientLogger(ServerSentEventUtils.class);
     private static final String DEFAULT_EVENT = "message";
-    private static final Pattern DIGITS_ONLY = Pattern.compile("^[\\d]*$");
+    private static final Pattern DIGITS_ONLY = Pattern.compile("^\\d*$");
     private static final HttpHeaderName LAST_EVENT_ID = HttpHeaderName.fromString("Last-Event-Id");
     public static final String NO_LISTENER_ERROR_MESSAGE = "No ServerSentEventListener attached to HttpRequest to "
         + "handle the text/event-stream response";
@@ -62,28 +60,16 @@ public final class ServerSentEventUtils {
      * @param httpRequest The {@link HttpRequest} to send.
      * @param inputStream The {@link InputStream} to read data from.
      * @param listener The {@link ServerSentEventListener event listener} attached to the {@link HttpRequest}.
+     * @throws IOException If an error occurs while reading the data.
      */
     public static void processTextEventStream(HttpClient httpClient, HttpRequest httpRequest,
-                                              InputStream inputStream, ServerSentEventListener listener) {
+        InputStream inputStream, ServerSentEventListener listener) throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             RetrySSEResult retrySSEResult = processBuffer(reader, listener);
 
             if (retrySSEResult != null && !retryExceptionForSSE(retrySSEResult, listener, httpRequest)
                 && !Thread.currentThread().isInterrupted()) {
-
                 httpClient.send(httpRequest);
-            }
-        } catch (IOException e) {
-            ClientLogger logger = null;
-
-            if (httpRequest.getRequestOptions() != null) {
-                logger = httpRequest.getRequestOptions().getLogger();
-            }
-
-            if (logger == null) {
-                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-            } else {
-                throw logger.logThrowableAsError(new UncheckedIOException(e));
             }
         }
     }

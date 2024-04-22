@@ -41,7 +41,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link HttpResponseBodyDecoder}.
@@ -226,7 +225,7 @@ public class HttpResponseBodyDecoderTests {
         BinaryData body = response.getBody();
         Object actual = HttpResponseBodyDecoder.decodeByteArray(body.toBytes(), response, SERIALIZER, decodeData);
 
-        assertTrue(actual instanceof List);
+        assertInstanceOf(List.class, actual);
 
         @SuppressWarnings("unchecked")
         List<byte[]> decoded = (List<byte[]>) actual;

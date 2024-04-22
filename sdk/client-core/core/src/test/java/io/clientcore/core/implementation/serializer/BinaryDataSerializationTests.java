@@ -119,7 +119,7 @@ public class BinaryDataSerializationTests {
 
     @ParameterizedTest
     @MethodSource("binaryDataSerializationSupplier")
-    public void binaryDataSerialization(Object serializable, String expected) {
+    public void binaryDataSerialization(Object serializable, String expected) throws IOException {
         String actual = new String(SERIALIZER.serializeToBytes(serializable));
 
         assertEquals(expected, actual);
@@ -146,7 +146,7 @@ public class BinaryDataSerializationTests {
     @ParameterizedTest
     @MethodSource("binaryDataDeserializationSupplier")
     @Execution(ExecutionMode.SAME_THREAD)
-    public void binaryDataDeserialization(Object expected, String json, Class<?> type) {
+    public void binaryDataDeserialization(Object expected, String json, Class<?> type) throws IOException {
         Object actual = SERIALIZER.deserializeFromBytes(json.getBytes(), type);
 
         assertEquals(expected, actual);

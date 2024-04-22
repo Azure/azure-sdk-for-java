@@ -14,7 +14,6 @@ import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -58,6 +57,8 @@ public final class HttpResponseBodyDecoder {
             try {
                 return deserializeBody(body, decodeData.getUnexpectedException(
                     response.getStatusCode()).getExceptionBodyClass(), null, serializer);
+            } catch (IOException e) {
+                return LOGGER.atWarning().log("Failed to deserialize the error entity.", e);
             } catch (RuntimeException e) {
                 Throwable cause = e.getCause();
 
@@ -90,7 +91,7 @@ public final class HttpResponseBodyDecoder {
                     decodeData.getReturnValueWireType(), serializer);
             } catch (MalformedValueException e) {
                 throw new HttpResponseException("HTTP response has a malformed body.", response, null, e);
-            } catch (UncheckedIOException e) {
+            } catch (IOException e) {
                 throw new HttpResponseException("Deserialization failed.", response, null, e);
             }
         }
@@ -136,8 +137,10 @@ public final class HttpResponseBodyDecoder {
      * the Java proxy method indicating 'entity type' (wireType) of REST API wire response body.
      *
      * @return Deserialized object.
+     * @throws IOException If the deserialization fails.
      */
-    private static Object deserializeBody(byte[] value, Type resultType, Type wireType, ObjectSerializer serializer) {
+    private static Object deserializeBody(byte[] value, Type resultType, Type wireType, ObjectSerializer serializer)
+        throws IOException {
         if (wireType == null) {
             return deserialize(value, resultType, serializer);
         } else {
@@ -148,7 +151,7 @@ public final class HttpResponseBodyDecoder {
         }
     }
 
-    private static Object deserialize(byte[] value, Type type, ObjectSerializer serializer) {
+    private static Object deserialize(byte[] value, Type type, ObjectSerializer serializer) throws IOException {
         return serializer.deserializeFromBytes(value == null ? new byte[0] : value, type);
     }
 

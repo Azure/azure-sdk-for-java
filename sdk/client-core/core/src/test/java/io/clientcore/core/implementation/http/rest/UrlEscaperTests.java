@@ -8,31 +8,31 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UrlEscaperTests {
-    private static String simple = "abcABC-123";
-    private static String genDelim = "abc[456#78";
-    private static String safeForPath = "abc:456@78";
-    private static String safeForQuery = "abc/456?78";
+    private static final String SIMPLE = "abcABC-123";
+    private static final String GEN_DELIM = "abc[456#78";
+    private static final String SAFE_FOR_PATH = "abc:456@78";
+    private static final String SAFE_FOR_QUERY = "abc/456?78";
 
     @Test
     public void canEscapePathSimple() {
         PercentEscaper escaper = UrlEscapers.PATH_ESCAPER;
-        String actual = escaper.escape(simple);
+        String actual = escaper.escape(SIMPLE);
 
-        assertEquals(simple, actual);
+        assertEquals(SIMPLE, actual);
     }
 
     @Test
     public void canEscapeQuerySimple() {
         PercentEscaper escaper = UrlEscapers.QUERY_ESCAPER;
-        String actual = escaper.escape(simple);
+        String actual = escaper.escape(SIMPLE);
 
-        assertEquals(simple, actual);
+        assertEquals(SIMPLE, actual);
     }
 
     @Test
     public void canEscapePathWithGenDelim() {
         PercentEscaper escaper = UrlEscapers.PATH_ESCAPER;
-        String actual = escaper.escape(genDelim);
+        String actual = escaper.escape(GEN_DELIM);
 
         assertEquals("abc%5B456%2378", actual);
     }
@@ -40,7 +40,7 @@ public class UrlEscaperTests {
     @Test
     public void canEscapeQueryWithGenDelim() {
         PercentEscaper escaper = UrlEscapers.QUERY_ESCAPER;
-        String actual = escaper.escape(genDelim);
+        String actual = escaper.escape(GEN_DELIM);
 
         assertEquals("abc%5B456%2378", actual);
     }
@@ -48,15 +48,15 @@ public class UrlEscaperTests {
     @Test
     public void canEscapePathWithSafeForPath() {
         PercentEscaper escaper = UrlEscapers.PATH_ESCAPER;
-        String actual = escaper.escape(safeForPath);
+        String actual = escaper.escape(SAFE_FOR_PATH);
 
-        assertEquals(safeForPath, actual);
+        assertEquals(SAFE_FOR_PATH, actual);
     }
 
     @Test
     public void canEscapeQueryWithSafeForPath() {
         PercentEscaper escaper = UrlEscapers.QUERY_ESCAPER;
-        String actual = escaper.escape(safeForPath);
+        String actual = escaper.escape(SAFE_FOR_PATH);
 
         assertEquals("abc%3A456%4078", actual);
     }
@@ -64,7 +64,7 @@ public class UrlEscaperTests {
     @Test
     public void canEscapePathWithSafeForQuery() {
         PercentEscaper escaper = UrlEscapers.PATH_ESCAPER;
-        String actual = escaper.escape(safeForQuery);
+        String actual = escaper.escape(SAFE_FOR_QUERY);
 
         assertEquals("abc%2F456%3F78", actual);
     }
@@ -72,8 +72,8 @@ public class UrlEscaperTests {
     @Test
     public void canEscapeQueryWithSafeForQuery() {
         PercentEscaper escaper = UrlEscapers.QUERY_ESCAPER;
-        String actual = escaper.escape(safeForQuery);
+        String actual = escaper.escape(SAFE_FOR_QUERY);
 
-        assertEquals(safeForQuery, actual);
+        assertEquals(SAFE_FOR_QUERY, actual);
     }
 }

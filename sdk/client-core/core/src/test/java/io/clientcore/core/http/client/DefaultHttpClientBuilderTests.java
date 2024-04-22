@@ -56,7 +56,7 @@ public class DefaultHttpClientBuilderTests {
     }
 
     @Test
-    public void buildWithHttpProxy() {
+    public void buildWithHttpProxy() throws IOException {
         SimpleBasicAuthHttpProxyServer proxyServer =
             new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME, PROXY_PASSWORD, SERVICE_ENDPOINT);
 
@@ -73,16 +73,16 @@ public class DefaultHttpClientBuilderTests {
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
-
-            assertEquals(200, response.getStatusCode());
+            try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
+                assertEquals(200, response.getStatusCode());
+            }
         } finally {
             proxyServer.shutdown();
         }
     }
 
     @Test
-    public void buildWithHttpProxyFromEnvConfiguration() {
+    public void buildWithHttpProxyFromEnvConfiguration() throws IOException {
         SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
             PROXY_PASSWORD, SERVICE_ENDPOINT);
 
@@ -102,16 +102,16 @@ public class DefaultHttpClientBuilderTests {
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
-
-            assertEquals(200, response.getStatusCode());
+            try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
+                assertEquals(200, response.getStatusCode());
+            }
         } finally {
             proxyServer.shutdown();
         }
     }
 
     @Test
-    public void buildWithHttpProxyFromExplicitConfiguration() {
+    public void buildWithHttpProxyFromExplicitConfiguration() throws IOException {
         SimpleBasicAuthHttpProxyServer proxyServer =
             new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME, PROXY_PASSWORD, SERVICE_ENDPOINT);
 
@@ -129,9 +129,9 @@ public class DefaultHttpClientBuilderTests {
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
-
-            assertEquals(200, response.getStatusCode());
+            try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
+                assertEquals(200, response.getStatusCode());
+            }
         } finally {
             proxyServer.shutdown();
         }
@@ -153,7 +153,8 @@ public class DefaultHttpClientBuilderTests {
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            assertThrows(RuntimeException.class, () -> httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)));
+            assertThrows(IOException.class,
+                () -> httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)).close());
         } finally {
             proxyServer.shutdown();
         }
