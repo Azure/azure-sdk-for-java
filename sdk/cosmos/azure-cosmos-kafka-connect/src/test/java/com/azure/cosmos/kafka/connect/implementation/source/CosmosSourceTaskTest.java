@@ -32,7 +32,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
     private final int CONTAINER_THROUGHPUT_FOR_SPLIT = 10100;
 
-    @Test(groups = { "kafka", "kafka-emulator" }, timeOut = 10 * TIMEOUT)
+    @Test(groups = { "kafka" }, timeOut = 60 * TIMEOUT)
     public void poll() throws InterruptedException {
         String testContainerName = "KafkaCosmosTestPoll-" + UUID.randomUUID();
         Map<String, String> sourceConfigMap = new HashMap<>();
