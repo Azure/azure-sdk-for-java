@@ -346,30 +346,20 @@ class PartitionPumpManager {
         // A checkpoint indicates the last known successfully processed event.
         // So, the event position to start a new partition processing should be exclusive of the
         // offset/sequence number in the checkpoint. If no checkpoint is available, start from
-        // the position set in the InitializationContext (either the latest event in the partition or
-        // the user provided initial position)
-        if (checkpoint == null) {
-            if (options.getInitialEventPositionProvider() != null) {
-                final EventPosition initialPosition = options.getInitialEventPositionProvider().apply(partitionId);
-
-                if (initialPosition != null) {
-                    return initialPosition;
-                }
-            }
-
-            return EventPosition.latest();
-        }
-
-        if (checkpoint.getSequenceNumber() != null) {
-            final int replicationSegment = checkpoint.getReplicationSegment() != null
-                ? checkpoint.getReplicationSegment()
-                : DEFAULT_REPLICATION_SEGMENT;
-
-            return EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber(), replicationSegment);
-        }
-
-        if (checkpoint.getOffset() != null) {
+        // the position set in the InitializationContext (either the user provided initial position or the latest event
+        // in the partition).
+        if (checkpoint != null && checkpoint.getSequenceNumber() != null) {
+            return EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber());
+        } else if (checkpoint != null && checkpoint.getOffset() != null) {
             return EventPosition.fromOffset(checkpoint.getOffset());
+        }
+
+        if (options.getInitialEventPositionProvider() != null) {
+            final EventPosition initialPosition = options.getInitialEventPositionProvider().apply(partitionId);
+
+            if (initialPosition != null) {
+                return initialPosition;
+            }
         }
 
         return EventPosition.latest();
