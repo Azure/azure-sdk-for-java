@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.RequestOptions;
 
 /**
@@ -72,7 +71,6 @@ public final class CosmosBatchItemRequestOptions {
 
         return this;
     }
-
 
     RequestOptions toRequestOptions() {
         final RequestOptions requestOptions = new RequestOptions();

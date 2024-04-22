@@ -47,6 +47,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -244,7 +245,9 @@ public class JsonSerializable {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public <T> void set(String propertyName, T value, CosmosItemSerializer itemSerializer) {
         checkNotNull(itemSerializer, "Argument 'itemSerializer' must not be null.");
-        checkNotNull(itemSerializer, "Argument 'itemSerializer' must be the DEFAULT_SERIALIZER when using this method.");
+        checkArgument(
+            itemSerializer == CosmosItemSerializer.DEFAULT_SERIALIZER,
+            "Argument 'itemSerializer' must be the DEFAULT_SERIALIZER when using this method.");
         set(propertyName, value, itemSerializer, false);
     }
 

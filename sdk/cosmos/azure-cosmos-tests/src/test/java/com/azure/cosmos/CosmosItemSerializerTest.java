@@ -132,8 +132,8 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
 
                         for (Object[] wrappedProvider : providersCurrentTestCase) {
                             CosmosClientBuilder clientBuilder = (CosmosClientBuilder) wrappedProvider[0];
-                            clientBuilder.setCustomSerializer(serializer);
-                            clientBuilder.setNonIdempotentWriteRetryPolicy(
+                            clientBuilder.customSerializer(serializer);
+                            clientBuilder.nonIdempotentWriteRetryPolicy(
                                 nonIdempotentWriteRetriesEnabled,
                                 trackingIdUsageForWriteRetriesEnabled);
                         }
@@ -285,6 +285,16 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions()
             .setCustomSerializer(requestLevelSerializer);
         CosmosItemResponse<T> pojoResponse = container.createItem(doc, new PartitionKey(id), requestOptions);
+
+        if (this.isContentOnWriteEnabled) {
+            assertSameDocument(doc, pojoResponse.getItem());
+        } else {
+            assertThat(pojoResponse.getItem()).isNull();
+        }
+
+        container.deleteItem(doc, requestOptions);
+
+        pojoResponse = container.createItem(doc, requestOptions);
 
         if (this.isContentOnWriteEnabled) {
             assertSameDocument(doc, pojoResponse.getItem());

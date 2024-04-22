@@ -21,6 +21,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.ObjectNodeMap;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.ItemBulkOperation;
@@ -1075,12 +1076,9 @@ public final class CosmosEncryptionAsyncContainer {
             .getEffectiveItemSerializer(options != null ? options.getCustomSerializer(): null);
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             AtomicBoolean shouldRetry = new AtomicBoolean(!isRetry);
-
-
             Transformer<T> transformer = new CosmosEncryptionQueryTransformer<T>(
                 this.encryptionScheduler,
                 this.getEncryptionProcessor(),
-                CosmosItemSerializer.DEFAULT_SERIALIZER,
                 classType,
                 false);
 
@@ -1194,7 +1192,6 @@ public final class CosmosEncryptionAsyncContainer {
             Transformer<T> transformer = new CosmosEncryptionQueryTransformer<T>(
                 this.encryptionScheduler,
                 this.getEncryptionProcessor(),
-                effectiveSerializer,
                 classType,
                 true);
 
@@ -1249,7 +1246,6 @@ public final class CosmosEncryptionAsyncContainer {
             Transformer<T> transformer = new CosmosEncryptionQueryTransformer<T>(
                 this.encryptionScheduler,
                 this.getEncryptionProcessor(),
-                effectiveSerializer,
                 classType,
                 false);
 
@@ -1509,7 +1505,7 @@ public final class CosmosEncryptionAsyncContainer {
         throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
 
         String idSnapshot = itemOperation.getId();
-        if (idSnapshot != null) {
+        if (!Strings.isNullOrEmpty(idSnapshot)) {
             return idSnapshot;
         }
 

@@ -123,8 +123,8 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
 
                         for (Object[] wrappedProvider : providersCurrentTestCase) {
                             CosmosClientBuilder clientBuilder = (CosmosClientBuilder) wrappedProvider[0];
-                            clientBuilder.setCustomSerializer(serializer);
-                            clientBuilder.setNonIdempotentWriteRetryPolicy(
+                            clientBuilder.customSerializer(serializer);
+                            clientBuilder.nonIdempotentWriteRetryPolicy(
                                 nonIdempotentWriteRetriesEnabled,
                                 trackingIdUsageForWriteRetriesEnabled);
                         }
@@ -193,7 +193,6 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
     @AfterClass(groups = {  "encryption" }, timeOut = 100 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
-        CosmosEncryptionDatabase sharedEncDatabase = getSharedEncryptionDatabase(this.client);
         this.client.close();
     }
 
@@ -242,7 +241,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         return prefix + "|Client_" + customSerializer.getClass().getSimpleName();
     }
 
-    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT)
     public void pointOperationsAndQueryWithPojo(CosmosItemSerializer requestLevelSerializer) {
         String id = UUID.randomUUID().toString();
         TestDocument doc = TestDocument.create(id);
@@ -335,6 +334,16 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
             assertThat(pojoResponse.getItem()).isNull();
         }
 
+        container.deleteItem(doc, requestOptions);
+
+        pojoResponse = container.createItem(doc, requestOptions);
+
+        if (this.isContentOnWriteEnabled) {
+            assertSameDocument(doc, pojoResponse.getItem());
+        } else {
+            assertThat(pojoResponse.getItem()).isNull();
+        }
+
         pojoResponse = container.readItem(id, new PartitionKey(id), requestOptions, classType);
         assertSameDocument(doc, pojoResponse.getItem());
 
@@ -415,7 +424,6 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         );
     }
 
-
     private <T> void runBulkAndReadManyTestCase(
         Function<String, T> docGenerator,
         CosmosItemSerializer requestLevelSerializer,
@@ -455,6 +463,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         }
 
         // TODO - re-enable the read many validation after adding readMany API for azure-cosmos-encryption
+        // See https://github.com/Azure/azure-sdk-for-java/issues/39842
         /*
         List<CosmosItemIdentity> readManyTuples = new ArrayList<>();
         for (String id: inputItems.keySet().stream().limit(3).toArray(count -> new String[count])) {

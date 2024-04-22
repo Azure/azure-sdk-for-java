@@ -92,18 +92,6 @@ public final class BridgeInternal {
         return new ResourceResponse<>(response, cls);
     }
 
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> toFeedResponsePage(
-        RxDocumentServiceResponse response,
-        CosmosItemSerializer itemSerializer,
-        Class<T> cls) {
-
-        FeedResponse<T> feedResponse = ModelBridgeInternal.toFeedResponsePage(response, itemSerializer, cls);
-        applyDiagnosticsToFeedResponse(response.getCosmosDiagnostics(), feedResponse);
-
-        return feedResponse;
-    }
-
     private static <T> FeedResponse<T> applyDiagnosticsToFeedResponse(CosmosDiagnostics diagnostics, FeedResponse<T> response) {
         if (diagnostics == null || diagnostics == response.getCosmosDiagnostics()) {
             return response;
@@ -135,18 +123,6 @@ public final class BridgeInternal {
         applyDiagnosticsToFeedResponse(diagnostics, feedResponseWithQueryMetrics);
 
         return feedResponseWithQueryMetrics;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> toChangeFeedResponsePage(
-        RxDocumentServiceResponse response,
-        CosmosItemSerializer itemSerializer,
-        Class<T> cls) {
-
-        FeedResponse<T> feedResponse = ModelBridgeInternal.toChangeFeedResponsePage(response, itemSerializer, cls);
-        applyDiagnosticsToFeedResponse(response.getCosmosDiagnostics(), feedResponse);
-
-        return feedResponse;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

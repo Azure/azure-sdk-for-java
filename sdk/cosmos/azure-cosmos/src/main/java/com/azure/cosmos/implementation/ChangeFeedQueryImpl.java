@@ -26,6 +26,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 class ChangeFeedQueryImpl<T> {
 
+    private final static
+    ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
+        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+
     private static final int INITIAL_TOP_VALUE = -1;
 
     private final RxDocumentClientImpl client;
@@ -138,9 +142,7 @@ class ChangeFeedQueryImpl<T> {
     private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
         if (this.operationContextAndListener == null) {
             return client.readFeed(request)
-                .map(rsp -> {
-                    return BridgeInternal.toChangeFeedResponsePage(rsp, this.itemSerializer, klass);
-                });
+                .map(rsp -> feedResponseAccessor.createChangeFeedResponse(rsp, this.itemSerializer, klass));
         } else {
             final OperationListener listener = operationContextAndListener.getOperationListener();
             final OperationContext operationContext = operationContextAndListener.getOperationContext();
@@ -153,7 +155,7 @@ class ChangeFeedQueryImpl<T> {
                          .map(rsp -> {
                              listener.responseListener(operationContext, rsp);
 
-                             final FeedResponse<T> feedResponse = BridgeInternal.toChangeFeedResponsePage(
+                             final FeedResponse<T> feedResponse = feedResponseAccessor.createChangeFeedResponse(
                                  rsp, this.itemSerializer, klass);
 
                              Map<String, String> rspHeaders = feedResponse.getResponseHeaders();

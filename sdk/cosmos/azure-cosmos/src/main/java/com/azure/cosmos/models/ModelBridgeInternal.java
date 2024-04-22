@@ -296,38 +296,13 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> toFeedResponsePage(
-        RxDocumentServiceResponse response,
-        CosmosItemSerializer effectiveSerializer,
-        Class<T> cls) {
-
-        return new FeedResponse<>(response.getQueryResponse(effectiveSerializer, cls), response);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> FeedResponse<T> toFeedResponsePage(List<T> results, Map<String, String> headers, boolean noChanges) {
         return new FeedResponse<>(results, headers, noChanges);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> toChangeFeedResponsePage(
-        RxDocumentServiceResponse response,
-        CosmosItemSerializer effectiveSerializer,
-        Class<T> cls) {
-
-        return new FeedResponse<>(
-            noChanges(response) ? Collections.emptyList() : response.getQueryResponse(effectiveSerializer, cls),
-            response.getResponseHeaders(), noChanges(response));
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> boolean noChanges(FeedResponse<T> page) {
         return page.nochanges;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends Resource> boolean noChanges(RxDocumentServiceResponse rsp) {
-        return rsp.getStatusCode() == HttpConstants.StatusCodes.NOT_MODIFIED;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

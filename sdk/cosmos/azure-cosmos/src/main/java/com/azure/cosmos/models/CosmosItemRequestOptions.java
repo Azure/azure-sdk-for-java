@@ -306,7 +306,7 @@ public class CosmosItemRequestOptions {
     /**
      * Enables automatic retries for write operations even when the SDK can't
      * guarantee that they are idempotent. This is an override of the
-     * {@link CosmosClientBuilder#setNonIdempotentWriteRetryPolicy(boolean, boolean)} behavior for a specific request/operation.
+     * {@link CosmosClientBuilder#nonIdempotentWriteRetryPolicy(boolean, boolean)} behavior for a specific request/operation.
      * <br/>
      * NOTE: the setting on the CosmosClientBuilder will determine the default behavior for Create, Replace,
      * Upsert and Delete operations. It can be overridden on per-request base in the request options. For patch

@@ -40,8 +40,6 @@
   </developers>
   <properties>
     <cosmos.spark.skip>false</cosmos.spark.skip>
-    <noScalaTestIgnore>true</noScalaTestIgnore>
-    <testFailureIgnore>true</testFailureIgnore>
   </properties>
   <build>
     <plugins>

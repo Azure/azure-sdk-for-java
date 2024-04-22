@@ -47,6 +47,9 @@ implements IDocumentQueryExecutionContext<T> {
     private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
 
+    private static final ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
+        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+
     protected final DiagnosticsClientContext diagnosticsClientContext;
     protected ResourceType resourceTypeEnum;
     protected String resourceLink;
@@ -164,7 +167,7 @@ implements IDocumentQueryExecutionContext<T> {
         CosmosItemSerializer itemSerializer,
         Mono<RxDocumentServiceResponse> response) {
 
-        return response.map(resp -> BridgeInternal.toFeedResponsePage(resp, itemSerializer, resourceType));
+        return response.map(resp -> feedResponseAccessor.createFeedResponse(resp, itemSerializer, resourceType));
     }
 
     public CosmosQueryRequestOptions getFeedOptions(String continuationToken, Integer maxPageSize) {

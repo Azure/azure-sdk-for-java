@@ -744,7 +744,7 @@ public class CosmosClientBuilder implements
      * on their own.
      * @return the CosmosItemRequestOptions
      */
-    public CosmosClientBuilder setNonIdempotentWriteRetryPolicy(
+    public CosmosClientBuilder nonIdempotentWriteRetryPolicy(
         boolean nonIdempotentWriteRetriesEnabled,
         boolean useTrackingIdPropertyForCreateAndReplace) {
 
@@ -1070,7 +1070,7 @@ public class CosmosClientBuilder implements
      * @param serializer the custom serialzier to be used for payload transformations
      * @return current CosmosClientBuilder
      */
-    public CosmosClientBuilder setCustomSerializer(CosmosItemSerializer serializer) {
+    public CosmosClientBuilder customSerializer(CosmosItemSerializer serializer) {
         this.defaultCustomSerializer = serializer;
 
         return this;

@@ -33,11 +33,9 @@ public class CosmosEncryptionQueryTransformer<T> implements Transformer<T> {
     public CosmosEncryptionQueryTransformer(
         Scheduler encryptionScheduler,
         EncryptionProcessor encryptionProcessor,
-        CosmosItemSerializer effectiveItemSerializer,
         Class<T> classType,
         Boolean isChangeFeed) {
 
-        checkNotNull(effectiveItemSerializer, "Argument 'effectiveItemSerializer' must not be null.");
         this.encryptionScheduler = encryptionScheduler;
         this.encryptionProcessor = encryptionProcessor;
         this.classType = classType;
