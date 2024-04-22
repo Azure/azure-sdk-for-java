@@ -32,16 +32,6 @@ public class HttpHeaders implements Iterable<HttpHeader> {
 
     /**
      * Create a {@link HttpHeaders} instance with the provided initial {@link HttpHeaders}.
-     *
-     * @param headers The map of initial {@link HttpHeaders}.
-     */
-    public HttpHeaders(Map<HttpHeaderName, HttpHeader> headers) {
-        this.headers = new HashMap<>(headers.size());
-        headers.forEach((name, value) -> this.set(name, value.getValue()));
-    }
-
-    /**
-     * Create a {@link HttpHeaders} instance with the provided initial {@link HttpHeaders}.
      * <p>
      * This constructor is a deep copy of the provided {@link HttpHeaders}.
      *
@@ -320,7 +310,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     @Override
     public String toString() {
         return this.stream()
-            .map(header -> header.getName() + "=" + header.getValue())
+            .map(HttpHeader::toString)
             .collect(Collectors.joining(", "));
     }
 

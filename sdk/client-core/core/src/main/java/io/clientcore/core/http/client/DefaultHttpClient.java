@@ -188,7 +188,7 @@ class DefaultHttpClient implements HttpClient {
     /**
      * Receive the response from the remote server
      *
-     * @param request The HTTP Request being sent
+     * @param httpRequest The HTTP Request being sent
      * @param connection The HttpURLConnection being sent to
      * @return A HttpResponse object
      */
@@ -200,7 +200,7 @@ class DefaultHttpClient implements HttpClient {
         if (connection.getErrorStream() != null) {
             // Read the error stream to completion to ensure the connection is released back to the pool and set it as
             // the response body.
-            eagerlyBufferResponseBody(httpResponse, connection);
+            eagerlyBufferResponseBody(httpResponse, connection.getErrorStream());
             return httpResponse;
         }
 
@@ -252,7 +252,7 @@ class DefaultHttpClient implements HttpClient {
                 case BUFFER:
                 case DESERIALIZE: // Deserialization will occur at a later point in HttpResponseBodyDecoder.
                 default:
-                    eagerlyBufferResponseBody(httpResponse, connection);
+                    eagerlyBufferResponseBody(httpResponse, connection.getInputStream());
             }
         }
 
@@ -278,9 +278,10 @@ class DefaultHttpClient implements HttpClient {
         HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromStream(connection.getInputStream()));
     }
 
-    private static void eagerlyBufferResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection)
+    private static void eagerlyBufferResponseBody(HttpResponse<?> httpResponse, InputStream stream)
         throws IOException {
-        AccessibleByteArrayOutputStream outputStream = getAccessibleByteArrayOutputStream(connection);
+        int contentLength = speculateContentLength(httpResponse.getHeaders());
+        AccessibleByteArrayOutputStream outputStream = getAccessibleByteArrayOutputStream(stream, contentLength);
 
         HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromByteBuffer(outputStream.toByteBuffer()));
     }
@@ -296,15 +297,13 @@ class DefaultHttpClient implements HttpClient {
         return responseHeaders;
     }
 
-    private static AccessibleByteArrayOutputStream getAccessibleByteArrayOutputStream(HttpURLConnection connection)
-        throws IOException {
-        int contentLengthInt = connection.getContentLength();
-        AccessibleByteArrayOutputStream outputStream = (contentLengthInt >= 0)
-            ? new AccessibleByteArrayOutputStream(contentLengthInt)
+    private static AccessibleByteArrayOutputStream getAccessibleByteArrayOutputStream(InputStream stream,
+        int contentLength) throws IOException {
+        AccessibleByteArrayOutputStream outputStream = (contentLength >= 0)
+            ? new AccessibleByteArrayOutputStream(contentLength)
             : new AccessibleByteArrayOutputStream();
 
-        try (InputStream errorStream = connection.getErrorStream();
-            InputStream inputStream = (errorStream == null) ? connection.getInputStream() : errorStream) {
+        try (InputStream inputStream = stream) {
             byte[] buffer = new byte[8192];
             int length;
             while ((length = inputStream.read(buffer)) != -1) {
@@ -312,6 +311,21 @@ class DefaultHttpClient implements HttpClient {
             }
         }
         return outputStream;
+    }
+
+    private static int speculateContentLength(HttpHeaders headers) {
+        String contentLength = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
+        if (contentLength == null) {
+            return -1;
+        }
+
+        // We're only speculating an integer sized Content-Length. If it's not an integer, or larger than an integer,
+        // we'll return -1 to indicate that we don't know the content length.
+        try {
+            return Integer.parseInt(contentLength);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
     }
 
     private static class SocketClient {
