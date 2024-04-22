@@ -14,7 +14,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.RetryServerSentResult;
+import io.clientcore.core.util.ServerSentResult;
 import io.clientcore.core.util.ServerSentEventUtils;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.binarydata.FileBinaryData;
@@ -147,7 +147,7 @@ class OkHttpHttpClient implements HttpClient {
 
             if (listener != null) {
                 processTextEventStream(response.body().byteStream(), listener);
-                RetryServerSentResult retrySSEResult
+                ServerSentResult retrySSEResult
                     = processTextEventStream(response.body().byteStream(), listener);
                 if (retrySSEResult != null && !shouldRetry(retrySSEResult, listener, request)
                     && !Thread.currentThread().isInterrupted()) {

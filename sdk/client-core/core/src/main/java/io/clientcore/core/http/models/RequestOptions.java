@@ -127,6 +127,7 @@ public final class RequestOptions {
     private ResponseBodyMode responseBodyMode;
     private boolean locked;
     private ClientLogger logger;
+    private ServerSentEventListener serverSentEventListener;
 
     /**
      * Creates a new instance of {@link RequestOptions}.
@@ -374,6 +375,30 @@ public final class RequestOptions {
 
         return this;
     }
+
+
+    /**
+     * Get the specified event stream {@link ServerSentEventListener listener} for this request.
+     *
+     * @return The {@link ServerSentEventListener listener} for this request.
+     */
+    public ServerSentEventListener getServerSentEventListener() {
+        return serverSentEventListener;
+    }
+
+    /**
+     * Set an event stream {@link ServerSentEventListener listener} for this request.
+     *
+     * @param serverSentEventListener The {@link ServerSentEventListener listener} to set for this request.
+     *
+     * @return The updated {@link RequestOptions}.
+     */
+    public RequestOptions setServerSentEventListener(ServerSentEventListener serverSentEventListener) {
+        this.serverSentEventListener = serverSentEventListener;
+
+        return this;
+    }
+
 
     /**
      * Locks this {@link RequestOptions} to prevent further modifications.

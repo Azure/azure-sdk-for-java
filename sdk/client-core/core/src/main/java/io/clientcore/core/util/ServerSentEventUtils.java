@@ -57,11 +57,11 @@ public final class ServerSentEventUtils {
      *
      * @param inputStream The {@link InputStream} to read data from.
      * @param listener The {@link ServerSentEventListener event listener} attached to the {@link HttpRequest}.
-     * @return The non-null {@link RetryServerSentResult result} in case of an error.
+     * @return The non-null {@link ServerSentResult result} in case of an error.
      * @throws IOException If an error occurs while reading the data.
      */
-    public static RetryServerSentResult processTextEventStream(InputStream inputStream,
-        ServerSentEventListener listener) throws IOException {
+    public static ServerSentResult processTextEventStream(InputStream inputStream,
+                                                          ServerSentEventListener listener) throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             return processBuffer(reader, listener);
         }
@@ -70,29 +70,29 @@ public final class ServerSentEventUtils {
     /**
      * Retries the {@link HttpRequest} if the listener allows it.
      *
-     * @param retryServerSentResult The {@link RetryServerSentResult result} of the retry.
+     * @param serverSentResult The {@link ServerSentResult result} of the retry.
      * @param listener The listener object attached with the {@link HttpRequest}.
      * @param httpRequest The {@link HttpRequest} to send.
      * @return {@code true} if the request should be retried.
      */
-    public static boolean shouldRetry(RetryServerSentResult retryServerSentResult, ServerSentEventListener listener,
+    public static boolean shouldRetry(ServerSentResult serverSentResult, ServerSentEventListener listener,
         HttpRequest httpRequest) {
-        if (Thread.currentThread().isInterrupted() || !listener.shouldRetry(retryServerSentResult.getException(),
-            retryServerSentResult.getRetryAfter(), retryServerSentResult.getLastEventId())) {
+        if (Thread.currentThread().isInterrupted() || !listener.shouldRetry(serverSentResult.getException(),
+            serverSentResult.getRetryAfter(), serverSentResult.getLastEventId())) {
 
-            listener.onError(retryServerSentResult.getException());
+            listener.onError(serverSentResult.getException());
 
             return true;
         }
 
-        if (retryServerSentResult.getLastEventId() != -1) {
+        if (serverSentResult.getLastEventId() != null) {
             httpRequest.getHeaders()
-                .add(LAST_EVENT_ID, String.valueOf(retryServerSentResult.getLastEventId()));
+                .add(LAST_EVENT_ID, serverSentResult.getLastEventId());
         }
 
         try {
-            if (retryServerSentResult.getRetryAfter() != null) {
-                Thread.sleep(retryServerSentResult.getRetryAfter().toMillis());
+            if (serverSentResult.getRetryAfter() != null) {
+                Thread.sleep(serverSentResult.getRetryAfter().toMillis());
             }
         } catch (InterruptedException ignored) {
             return true;
@@ -112,8 +112,9 @@ public final class ServerSentEventUtils {
      * @param reader The {@link BufferedReader} to read data from.
      * @param listener The {@link ServerSentEventListener} object attached to the {@link HttpRequest}.
      */
-    private static RetryServerSentResult processBuffer(BufferedReader reader, ServerSentEventListener listener) {
+    private static ServerSentResult processBuffer(BufferedReader reader, ServerSentEventListener listener) {
         ServerSentEvent event = null;
+        List<String> allCollectedData = new ArrayList<>(); // List to store all collected data blocks
 
         try {
             StringBuilder collectedData = new StringBuilder();
@@ -123,6 +124,7 @@ public final class ServerSentEventUtils {
                 collectedData.append(line).append("\n");
 
                 if (isEndOfBlock(collectedData)) {
+                    allCollectedData.add(collectedData.toString().replace("data: ", "")); // Add the collected data block to the list
                     event = processLines(collectedData.toString().split("\n"));
 
                     if (!Objects.equals(event.getEvent(), DEFAULT_EVENT) || event.getData() != null) {
@@ -135,11 +137,11 @@ public final class ServerSentEventUtils {
 
             listener.onClose();
         } catch (IOException e) {
-            return new RetryServerSentResult(e, event != null ? event.getId() : -1,
-                event != null ? ServerSentEventHelper.getRetryAfter(event) : null);
+            return new ServerSentResult(e, event != null ? event.getId() : null,
+                event != null ? ServerSentEventHelper.getRetryAfter(event) : null, null);
         }
 
-        return null;
+        return new ServerSentResult(null, event.getId(), ServerSentEventHelper.getRetryAfter(event), allCollectedData);
     }
 
     private static ServerSentEvent processLines(String[] lines) {
@@ -173,7 +175,7 @@ public final class ServerSentEventUtils {
                     break;
                 case "id":
                     if (!value.isEmpty()) {
-                        ServerSentEventHelper.setId(event, Long.parseLong(value));
+                        ServerSentEventHelper.setId(event, value);
                     }
 
                     break;

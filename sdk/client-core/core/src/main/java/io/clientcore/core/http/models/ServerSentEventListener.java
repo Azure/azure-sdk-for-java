@@ -44,7 +44,7 @@ public interface ServerSentEventListener {
      * @param lastEventId ID of last event that was received
      * @return whether to retry
      */
-    default boolean shouldRetry(Throwable throwable, Duration retryAfter, long lastEventId) {
+    default boolean shouldRetry(Throwable throwable, Duration retryAfter, String lastEventId) {
         // do not auto-retry.
         return false;
     }

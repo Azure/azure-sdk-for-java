@@ -5,22 +5,33 @@ package io.clientcore.core.util;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 
 /**
  * Class to hold the result for a retry of an ServerSentEvent content type request.
  */
-public final class RetryServerSentResult {
-    private final long lastEventId;
+public final class ServerSentResult {
+    private final String lastEventId;
     private final Duration retryAfter;
     private final IOException ioException;
+    private final List<String> data;
 
-    RetryServerSentResult(IOException e, long lastEventId, Duration retryAfter) {
-        this.ioException = e;
+    ServerSentResult(IOException exception, String lastEventId, Duration retryAfter, List<String> data) {
+        this.ioException = exception;
         this.lastEventId = lastEventId;
         this.retryAfter = retryAfter;
+        this.data = data;
     }
 
-    long getLastEventId() {
+    /**
+     * Get the data from the text event stream.
+     * @return The data from the text event stream.
+     */
+    public List<String> getData() {
+        return data;
+    }
+
+    String getLastEventId() {
         return lastEventId;
     }
 

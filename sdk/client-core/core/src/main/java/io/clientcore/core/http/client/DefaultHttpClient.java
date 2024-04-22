@@ -17,7 +17,7 @@ import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
 import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.RetryServerSentResult;
+import io.clientcore.core.util.ServerSentResult;
 import io.clientcore.core.util.ServerSentEventUtils;
 import io.clientcore.core.util.binarydata.BinaryData;
 
@@ -201,7 +201,8 @@ class DefaultHttpClient implements HttpClient {
     private Response<?> receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) throws IOException {
         HttpHeaders responseHeaders = getResponseHeaders(connection);
         HttpResponse<?> httpResponse = createHttpResponse(httpRequest, connection);
-
+        RequestOptions options = httpRequest.getRequestOptions();
+        ServerSentResult serverSentResult = null;
         // First check if we've gotten back an error response. If so, handle it now and ignore everything else.
         if (connection.getErrorStream() != null) {
             // Read the error stream to completion to ensure the connection is released back to the pool and set it as
@@ -211,62 +212,72 @@ class DefaultHttpClient implements HttpClient {
         }
 
         if (isTextEventStream(responseHeaders)) {
-            ServerSentEventListener listener = httpRequest.getServerSentEventListener();
+            ServerSentEventListener listener = options.getServerSentEventListener();
+            // REMOVE, once confirmed
+            if (listener == null) {
+                listener = httpRequest.getServerSentEventListener();
+            }
 
             if (listener == null) {
                 connection.getInputStream().close();
                 throw LOGGER.logThrowableAsError(new RuntimeException(NO_LISTENER_ERROR_MESSAGE));
             }
 
-            RetryServerSentResult retrySSEResult
-                = processTextEventStream(connection.getInputStream(), listener);
-            if (retrySSEResult != null && !shouldRetry(retrySSEResult, listener, httpRequest)
+            serverSentResult = processTextEventStream(connection.getInputStream(), listener);
+            if (!shouldRetry(serverSentResult, listener, httpRequest)
                 && !Thread.currentThread().isInterrupted()) {
                 this.send(httpRequest);
             }
-        } else {
-            RequestOptions options = httpRequest.getRequestOptions();
-            ResponseBodyMode responseBodyMode = null;
+        }
+        ResponseBodyMode responseBodyMode = null;
 
-            if (options != null) {
-                responseBodyMode = options.getResponseBodyMode();
-            }
+        if (options != null) {
+            responseBodyMode = options.getResponseBodyMode();
+        }
 
-            if (responseBodyMode == null) {
-                HttpHeader contentType = httpResponse.getHeaders().get(CONTENT_TYPE);
+        if (responseBodyMode == null) {
+            HttpHeader contentType = httpResponse.getHeaders().get(CONTENT_TYPE);
 
-                if (httpRequest.getHttpMethod() == HEAD) {
-                    responseBodyMode = IGNORE;
-                } else if (contentType != null && APPLICATION_OCTET_STREAM
-                    .regionMatches(true, 0, contentType.getValue(), 0, APPLICATION_OCTET_STREAM.length())) {
+            if (httpRequest.getHttpMethod() == HEAD) {
+                responseBodyMode = IGNORE;
+            } else if (contentType != null && APPLICATION_OCTET_STREAM
+                .regionMatches(true, 0, contentType.getValue(), 0, APPLICATION_OCTET_STREAM.length())) {
 
-                    responseBodyMode = STREAM;
-                } else {
-                    responseBodyMode = BUFFER;
-                }
-            }
-
-            switch (responseBodyMode) {
-                case IGNORE:
-                    HttpResponseAccessHelper.setBody(httpResponse, BinaryData.EMPTY);
-
-                    // Close the response InputStream rather than using disconnect. Disconnect will close the Socket
-                    // connection when the InputStream is still open, which can result in keep alive handling not being
-                    // applied.
-                    connection.getInputStream().close();
-
-                    break;
-                case STREAM:
-                    streamResponseBody(httpResponse, connection);
-
-                    break;
-                case BUFFER:
-                case DESERIALIZE: // Deserialization will occur at a later point in HttpResponseBodyDecoder.
-                default:
-                    eagerlyBufferResponseBody(httpResponse, connection.getInputStream());
+                responseBodyMode = STREAM;
+            } else {
+                responseBodyMode = BUFFER;
             }
         }
 
+        switch (responseBodyMode) {
+            case IGNORE:
+                HttpResponseAccessHelper.setBody(httpResponse, BinaryData.EMPTY);
+
+                // Close the response InputStream rather than using disconnect. Disconnect will close the Socket
+                // connection when the InputStream is still open, which can result in keep alive handling not being
+                // applied.
+                connection.getInputStream().close();
+
+                break;
+            case STREAM:
+                streamResponseBody(httpResponse, connection);
+                break;
+            case BUFFER:
+            case DESERIALIZE:
+                if (isTextEventStream(responseHeaders)) {
+                    if (serverSentResult != null && serverSentResult.getData() != null) {
+                        HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromString(String.join("\n", serverSentResult.getData())));
+                    } else {
+                        HttpResponseAccessHelper.setBody(httpResponse, BinaryData.EMPTY);
+                    }
+
+                } else {
+                    eagerlyBufferResponseBody(httpResponse, connection.getInputStream());
+                }
+                break;
+            default:
+                eagerlyBufferResponseBody(httpResponse, connection.getInputStream());
+        }
         return httpResponse;
     }
 

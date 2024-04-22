@@ -1702,16 +1702,16 @@ public abstract class HttpClientTests {
         HttpRequest request = new HttpRequest(HttpMethod.GET, getRequestUrl(SSE_RESPONSE)).setServerSentEventListener(
             sse -> {
                 String expected;
-                Long id;
+                String id;
                 if (i[0] == 0) {
                     expected = "first event";
-                    id = 1L;
+                    id = "1";
                     Assertions.assertEquals("test stream", sse.getComment());
                 } else {
                     expected = "This is the second message, it";
                     String line2 = "has two lines.";
 
-                    id = 2L;
+                    id = "2";
                     Assertions.assertEquals(line2, sse.getData().get(1));
                 }
                 Assertions.assertEquals(expected, sse.getData().get(0));
@@ -1769,10 +1769,10 @@ public abstract class HttpClientTests {
                     if (++i[0] == 1) {
                         assertEquals("test stream", sse.getComment());
                         assertEquals("first event", sse.getData().get(0));
-                        assertEquals(1, sse.getId());
+                        assertEquals("1", sse.getId());
                         throw new IOException("test exception");
                     } else {
-                        assertTimeout(Duration.ofMillis(100L), () -> assertEquals(2, sse.getId()));
+                        assertTimeout(Duration.ofMillis(100L), () -> assertEquals("2", sse.getId()));
                         assertEquals("This is the second message, it", sse.getData().get(0));
                         assertEquals("has two lines.", sse.getData().get(1));
                     }
@@ -1782,11 +1782,15 @@ public abstract class HttpClientTests {
                 }
 
                 @Override
-                public boolean shouldRetry(Throwable throwable, Duration retryAfter, long lastEventId) {
-                    assertEquals("test exception", throwable.getMessage());
-                    assertEquals(100, retryAfter.toMillis());
-                    assertEquals(1, lastEventId);
-                    return true;
+                public boolean shouldRetry(Throwable throwable, Duration retryAfter, String lastEventId) {
+                    if (i[0] == 1) {
+                        assertEquals("test exception", throwable.getMessage());
+                        assertEquals(100, retryAfter.toMillis());
+                        assertEquals("1", lastEventId);
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
             });
 
@@ -1803,6 +1807,22 @@ public abstract class HttpClientTests {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(SSE_RESPONSE)).setBody(requestBody);
 
         assertThrows(RuntimeException.class, () -> getHttpClient().send(request).close());
+    }
+
+    @Test
+    public void bodyIsDeserializedForServerSentEventType() throws IOException {
+        Service30 service = createService(Service30.class);
+        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(DESERIALIZE);
+        List<String> expected = Arrays.asList("YHOO", "+2", "10");
+
+        try (Response<BinaryData> response =
+                 service.postSSEResponse(getServerUri(isSecure()), 42,
+                     requestOptions.setServerSentEventListener(sse -> assertEquals(expected, sse.getData())))) {
+            assertNotNull(response.getBody());
+            assertNotEquals(0, response.getBody().getLength());
+            assertNotNull(response.getValue());
+        }
+
     }
 
     private static Stream<BiConsumer<String, Service29>> voidErrorReturnsErrorBodySupplier() {
@@ -1827,6 +1847,10 @@ public abstract class HttpClientTests {
         @HttpRequestInformation(method = HttpMethod.POST, path = "stream", expectedStatusCodes = { 200 })
         Response<HttpBinJSON> postStreamResponse(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestOptions requestOptions);
+
+        @HttpRequestInformation(method = HttpMethod.POST, path = "serversentevent", expectedStatusCodes = { 200 })
+        Response<BinaryData> postSSEResponse(@HostParam("url") String url,
+                                                 @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestOptions requestOptions);
     }
 
     @Test

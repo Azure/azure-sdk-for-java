@@ -13,7 +13,7 @@ import java.util.List;
  * <a href="https://html.spec.whatwg.org/multipage/server-sent-events.html#parsing-an-event-stream">here</a>.
  */
 public final class ServerSentEvent {
-    private Long id;
+    private String id;
     private String event;
     private List<String> data;
     private String comment;
@@ -27,7 +27,7 @@ public final class ServerSentEvent {
      *
      * @return event id.
      */
-    public Long getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -83,7 +83,7 @@ public final class ServerSentEvent {
      * Set event ID
      * @param id the event id
      */
-    private void setId(Long id) {
+    private void setId(String id) {
         this.id = id;
     }
 
@@ -123,7 +123,7 @@ public final class ServerSentEvent {
     static {
         ServerSentEventHelper.setAccessor(new ServerSentEventHelper.ServerSentEventAccessor() {
             @Override
-            public void setId(ServerSentEvent serverSentEvent, Long id) {
+            public void setId(ServerSentEvent serverSentEvent, String id) {
                 serverSentEvent.setId(id);
             }
 
