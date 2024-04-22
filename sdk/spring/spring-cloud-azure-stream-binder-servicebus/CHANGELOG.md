@@ -3,6 +3,7 @@
 ## 4.18.0-beta.1 (Unreleased)
 
 ### Features Added
+- Dynamic Destination Enablement. By setting the AzureHeaders.Name header, you are able to route to different destination dynamically.
 
 ### Breaking Changes
 

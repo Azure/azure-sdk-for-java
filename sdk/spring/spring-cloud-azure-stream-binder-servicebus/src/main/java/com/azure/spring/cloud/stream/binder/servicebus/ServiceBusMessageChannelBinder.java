@@ -103,7 +103,7 @@ public class ServiceBusMessageChannelBinder extends
         ProducerDestination destination,
         ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties,
         MessageChannel errorChannel) {
-        Assert.notNull(getServiceBusTemplate(), "ServiceBusTemplate can't be null when create a producer");
+        Assert.notNull(initServiceBusTemplate(producerProperties), "ServiceBusTemplate failed to be initialized. It can't be null when creating a producer");
 
         extendedProducerPropertiesMap.put(destination.getName(), producerProperties);
         DefaultMessageHandler handler = new DefaultMessageHandler(destination.getName(), this.serviceBusTemplate);
@@ -265,7 +265,7 @@ public class ServiceBusMessageChannelBinder extends
         this.bindingProperties = bindingProperties;
     }
 
-    private ServiceBusTemplate getServiceBusTemplate() {
+    private ServiceBusTemplate initServiceBusTemplate(ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties) {
         if (this.serviceBusTemplate == null) {
             DefaultServiceBusNamespaceProducerFactory factory = new DefaultServiceBusNamespaceProducerFactory(
                 this.namespaceProperties, getProducerPropertiesSupplier());
@@ -278,6 +278,9 @@ public class ServiceBusMessageChannelBinder extends
                 instrumentationManager.addHealthInstrumentation(instrumentation);
             });
             this.serviceBusTemplate = new ServiceBusTemplate(factory);
+            if(producerProperties.getExtension() != null) {
+                this.serviceBusTemplate.setDefaultEntityType(producerProperties.getExtension().getEntityType());
+            }
         }
         return this.serviceBusTemplate;
     }
