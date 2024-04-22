@@ -14,6 +14,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.RetryServerSentResult;
 import io.clientcore.core.util.ServerSentEventUtils;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.binarydata.FileBinaryData;
@@ -36,6 +37,8 @@ import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
 import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStream;
+import static io.clientcore.core.util.ServerSentEventUtils.shouldRetry;
+
 /**
  * HttpClient implementation for OkHttp.
  */
@@ -143,7 +146,13 @@ class OkHttpHttpClient implements HttpClient {
             ServerSentEventListener listener = request.getServerSentEventListener();
 
             if (listener != null) {
-                processTextEventStream(this, request, response.body().byteStream(), listener);
+                processTextEventStream(response.body().byteStream(), listener);
+                RetryServerSentResult retrySSEResult
+                    = processTextEventStream(response.body().byteStream(), listener);
+                if (retrySSEResult != null && !shouldRetry(retrySSEResult, listener, request)
+                    && !Thread.currentThread().isInterrupted()) {
+                    this.send(request);
+                }
             } else {
                 throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtils.NO_LISTENER_ERROR_MESSAGE));
             }

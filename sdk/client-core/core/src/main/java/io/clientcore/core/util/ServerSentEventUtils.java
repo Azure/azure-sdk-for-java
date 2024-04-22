@@ -3,7 +3,6 @@
 
 package io.clientcore.core.util;
 
-import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
@@ -56,22 +55,50 @@ public final class ServerSentEventUtils {
      * <p>
      * The passed {@link InputStream} will be closed by this method.
      *
-     * @param httpClient The {@link HttpClient} to send the {@code httpRequest} through.
-     * @param httpRequest The {@link HttpRequest} to send.
      * @param inputStream The {@link InputStream} to read data from.
      * @param listener The {@link ServerSentEventListener event listener} attached to the {@link HttpRequest}.
+     * @return The non-null {@link RetryServerSentResult result} in case of an error.
      * @throws IOException If an error occurs while reading the data.
      */
-    public static void processTextEventStream(HttpClient httpClient, HttpRequest httpRequest,
-        InputStream inputStream, ServerSentEventListener listener) throws IOException {
+    public static RetryServerSentResult processTextEventStream(InputStream inputStream,
+        ServerSentEventListener listener) throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-            RetrySSEResult retrySSEResult = processBuffer(reader, listener);
-
-            if (retrySSEResult != null && !retryExceptionForSSE(retrySSEResult, listener, httpRequest)
-                && !Thread.currentThread().isInterrupted()) {
-                httpClient.send(httpRequest);
-            }
+            return processBuffer(reader, listener);
         }
+    }
+
+    /**
+     * Retries the {@link HttpRequest} if the listener allows it.
+     *
+     * @param retryServerSentResult The {@link RetryServerSentResult result} of the retry.
+     * @param listener The listener object attached with the {@link HttpRequest}.
+     * @param httpRequest The {@link HttpRequest} to send.
+     * @return {@code true} if the request should be retried.
+     */
+    public static boolean shouldRetry(RetryServerSentResult retryServerSentResult, ServerSentEventListener listener,
+        HttpRequest httpRequest) {
+        if (Thread.currentThread().isInterrupted() || !listener.shouldRetry(retryServerSentResult.getException(),
+            retryServerSentResult.getRetryAfter(), retryServerSentResult.getLastEventId())) {
+
+            listener.onError(retryServerSentResult.getException());
+
+            return true;
+        }
+
+        if (retryServerSentResult.getLastEventId() != -1) {
+            httpRequest.getHeaders()
+                .add(LAST_EVENT_ID, String.valueOf(retryServerSentResult.getLastEventId()));
+        }
+
+        try {
+            if (retryServerSentResult.getRetryAfter() != null) {
+                Thread.sleep(retryServerSentResult.getRetryAfter().toMillis());
+            }
+        } catch (InterruptedException ignored) {
+            return true;
+        }
+
+        return false;
     }
 
     private static boolean isEndOfBlock(StringBuilder sb) {
@@ -85,7 +112,7 @@ public final class ServerSentEventUtils {
      * @param reader The {@link BufferedReader} to read data from.
      * @param listener The {@link ServerSentEventListener} object attached to the {@link HttpRequest}.
      */
-    private static RetrySSEResult processBuffer(BufferedReader reader, ServerSentEventListener listener) {
+    private static RetryServerSentResult processBuffer(BufferedReader reader, ServerSentEventListener listener) {
         ServerSentEvent event = null;
 
         try {
@@ -108,44 +135,11 @@ public final class ServerSentEventUtils {
 
             listener.onClose();
         } catch (IOException e) {
-            return new RetrySSEResult(e, event != null ? event.getId() : -1,
+            return new RetryServerSentResult(e, event != null ? event.getId() : -1,
                 event != null ? ServerSentEventHelper.getRetryAfter(event) : null);
         }
 
         return null;
-    }
-
-    /**
-     * Retries the {@link HttpRequest} if the listener allows it.
-     *
-     * @param retrySSEResult The {@link RetrySSEResult result} of the retry.
-     * @param listener The listener object attached with the {@link HttpRequest}.
-     * @param httpRequest The {@link HttpRequest} to send.
-     */
-    private static boolean retryExceptionForSSE(RetrySSEResult retrySSEResult, ServerSentEventListener listener,
-                                                HttpRequest httpRequest) {
-        if (Thread.currentThread().isInterrupted() || !listener.shouldRetry(retrySSEResult.getException(),
-            retrySSEResult.getRetryAfter(), retrySSEResult.getLastEventId())) {
-
-            listener.onError(retrySSEResult.getException());
-
-            return true;
-        }
-
-        if (retrySSEResult.getLastEventId() != -1) {
-            httpRequest.getHeaders()
-                .add(LAST_EVENT_ID, String.valueOf(retrySSEResult.getLastEventId()));
-        }
-
-        try {
-            if (retrySSEResult.getRetryAfter() != null) {
-                Thread.sleep(retrySSEResult.getRetryAfter().toMillis());
-            }
-        } catch (InterruptedException ignored) {
-            return true;
-        }
-
-        return false;
     }
 
     private static ServerSentEvent processLines(String[] lines) {
@@ -204,32 +198,5 @@ public final class ServerSentEventUtils {
         }
 
         return event;
-    }
-
-    /**
-     * Inner class to hold the result for a retry of an SSE request.
-     */
-    private static class RetrySSEResult {
-        private final long lastEventId;
-        private final Duration retryAfter;
-        private final IOException ioException;
-
-        RetrySSEResult(IOException e, long lastEventId, Duration retryAfter) {
-            this.ioException = e;
-            this.lastEventId = lastEventId;
-            this.retryAfter = retryAfter;
-        }
-
-        public long getLastEventId() {
-            return lastEventId;
-        }
-
-        public Duration getRetryAfter() {
-            return retryAfter;
-        }
-
-        public IOException getException() {
-            return ioException;
-        }
     }
 }

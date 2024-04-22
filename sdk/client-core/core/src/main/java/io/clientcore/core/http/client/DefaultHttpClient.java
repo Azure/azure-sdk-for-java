@@ -17,6 +17,7 @@ import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
 import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.RetryServerSentResult;
 import io.clientcore.core.util.ServerSentEventUtils;
 import io.clientcore.core.util.binarydata.BinaryData;
 
@@ -51,6 +52,7 @@ import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
 import static io.clientcore.core.util.ServerSentEventUtils.NO_LISTENER_ERROR_MESSAGE;
 import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStream;
+import static io.clientcore.core.util.ServerSentEventUtils.shouldRetry;
 
 /**
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
@@ -192,7 +194,9 @@ class DefaultHttpClient implements HttpClient {
      *
      * @param httpRequest The HTTP Request being sent
      * @param connection The HttpURLConnection being sent to
-     * @return A HttpResponse object
+     * @return A Response object
+     * @throws IOException If an I/O error occurs
+     * @throws RuntimeException If the ServerSentEventListener is not set
      */
     private Response<?> receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) throws IOException {
         HttpHeaders responseHeaders = getResponseHeaders(connection);
@@ -214,7 +218,12 @@ class DefaultHttpClient implements HttpClient {
                 throw LOGGER.logThrowableAsError(new RuntimeException(NO_LISTENER_ERROR_MESSAGE));
             }
 
-            processTextEventStream(this, httpRequest, connection.getInputStream(), listener);
+            RetryServerSentResult retrySSEResult
+                = processTextEventStream(connection.getInputStream(), listener);
+            if (retrySSEResult != null && !shouldRetry(retrySSEResult, listener, httpRequest)
+                && !Thread.currentThread().isInterrupted()) {
+                this.send(httpRequest);
+            }
         } else {
             RequestOptions options = httpRequest.getRequestOptions();
             ResponseBodyMode responseBodyMode = null;
