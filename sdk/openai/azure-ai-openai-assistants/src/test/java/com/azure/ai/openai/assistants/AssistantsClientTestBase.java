@@ -306,7 +306,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         assertEquals(expected.getCreatedAt(), actual.getCreatedAt());
     }
 
-    protected static Path openResourceFile(String fileName) {
+    public static Path openResourceFile(String fileName) {
         return Paths.get("src", "test", "resources", fileName);
     }
 
@@ -350,7 +350,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     String uploadFile(AssistantsAsyncClient client) {
         AtomicReference<String> openAIFileRef = new AtomicReference<>();
-        String fileName =JAVA_SDK_TESTS_ASSISTANTS_TXT;
+        String fileName = JAVA_SDK_TESTS_ASSISTANTS_TXT;
         StepVerifier.create(client.uploadFile(
             new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
                 .setFilename(fileName),
