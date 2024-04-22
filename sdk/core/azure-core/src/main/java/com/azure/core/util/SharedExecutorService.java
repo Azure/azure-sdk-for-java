@@ -26,15 +26,30 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * An {@link ExecutorService} that is shared by multiple consumers.
  * <p>
- * On creation of this executor service, it will register a runtime shutdown hook and reference shutdown hook to ensure
- * it is cleaned up when either the JVM exits or is no longer being referenced.
+ * A default shared executor service is created if one isn't set using {@link #setInstance(ExecutorService)}. The shared
+ * executor service is created using the following configuration settings:
+ * <ul>
+ *     <li>{@code azure.sdk.sharedpool.size} - The size of the shared executor service. If not set, it defaults to 10
+ *     times the number of available processors.</li>
+ *     <li>{@code azure.sdk.sharedpool.keepalivemillis} - The keep alive time for threads in the shared executor
+ *     service. If not set, it defaults to 60 seconds.</li>
+ *     <li>{@code azure.sdk.sharedpool.virtual} - A boolean flag to indicate if the shared executor service should use
+ *     virtual threads. If not set, it defaults to true. Ignored if virtual threads are available in the runtime.</li>
+ * </ul>
+ *
+ * Calls to {@link #shutdown()} and {@link #shutdownNow()} are not supported. If the default shared executor service is
+ * being used, it is bind to the lifecycle of the application and will be shutdown when the application is shutdown.
+ * If a custom executor service is set using {@link #setInstance(ExecutorService)}, it is the responsibility of the
+ * caller to manage the lifecycle of the executor service.
  * <p>
- * This executor service may be created by using its constructor, but it is recommended to use the shared instance.
+ * If a custom executor service is set using {@link #setInstance(ExecutorService)}, and it is shutdown or terminated,
+ * the shared executor service will be reset to the default shared executor service.
  */
+@SuppressWarnings({ "resource", "NullableProblems" })
 public final class SharedExecutorService implements ExecutorService {
     private static final ClientLogger LOGGER = new ClientLogger(SharedExecutorService.class);
 
-    private static final AtomicReference<SharedExecutorService> INSTANCE = new AtomicReference<>();
+    private static final SharedExecutorService INSTANCE = new SharedExecutorService();
 
     // Shared thread counter for all instances of SharedExecutorService created using the empty factory method.
     private static final AtomicLong AZURE_SDK_THREAD_COUNTER = new AtomicLong();
@@ -42,11 +57,11 @@ public final class SharedExecutorService implements ExecutorService {
 
     // The thread pool size for the shared executor service.
     //
-    // This uses the configuration setting 'azure.sdk.threadPoolSize' if set, otherwise it defaults to 10 times the
+    // This uses the configuration setting 'azure.sdk.sharedpool.size' if set, otherwise it defaults to 10 times the
     // number of available processors.
-    // If 'azure.sdk.threadPoolSize' is set to a non-integer, negative value, or zero, the default value is used.
+    // If 'azure.sdk.sharedpool.size' is set to a non-integer, negative value, or zero, the default value is used.
     private static final int THREAD_POOL_SIZE
-        = Configuration.getGlobalConfiguration().get("azure.sdk.threadPoolSize", config -> {
+        = Configuration.getGlobalConfiguration().get("azure.sdk.sharedpool.size", config -> {
             try {
                 int size = Integer.parseInt(config);
                 if (size <= 0) {
@@ -58,6 +73,32 @@ public final class SharedExecutorService implements ExecutorService {
                 return 10 * Runtime.getRuntime().availableProcessors();
             }
         });
+
+    // The thread pool keep alive time for the shared executor service.
+    //
+    // This uses the configuration setting 'azure.sdk.sharedpool.keepalivemillis' if set, otherwise it defaults to 60
+    // seconds.
+    // If 'azure.sdk.sharedpool.keepalivemillis' is set to a non-integer, negative value, or zero, the default value is
+    // used.
+    private static final long THREAD_POOL_KEEP_ALIVE_MILLIS
+        = Configuration.getGlobalConfiguration().get("azure.sdk.sharedpool.keepalivemillis", config -> {
+            try {
+                long keepAlive = Long.parseLong(config);
+                if (keepAlive <= 0) {
+                    return 60_000L;
+                } else {
+                    return keepAlive;
+                }
+            } catch (NumberFormatException ignored) {
+                return 60_000L;
+            }
+        });
+
+    // Virtual thread support for the shared executor service.
+    //
+    // This uses the configuration setting 'azure.sdk.sharedpool.virtual' if set, otherwise it defaults to true.
+    private static final boolean THREAD_POOL_VIRTUAL = Configuration.getGlobalConfiguration()
+        .get("azure.sdk.sharedpool.virtual", config -> config == null || Boolean.parseBoolean(config));
 
     private static final boolean VIRTUAL_THREAD_SUPPORTED;
     private static final ReflectiveInvoker GET_VIRTUAL_THREAD_BUILDER;
@@ -91,12 +132,10 @@ public final class SharedExecutorService implements ExecutorService {
         CREATE_VIRTUAL_THREAD_FACTORY = createVirtualThreadFactory;
     }
 
-    private final ExecutorService wrappedExecutorService;
-    private final boolean internal;
+    private final AtomicReference<ExecutorService> wrappedExecutorService;
 
-    private SharedExecutorService(ExecutorService executorService, boolean internal) {
-        this.wrappedExecutorService = executorService;
-        this.internal = internal;
+    private SharedExecutorService() {
+        this.wrappedExecutorService = new AtomicReference<>();
     }
 
     /**
@@ -105,13 +144,7 @@ public final class SharedExecutorService implements ExecutorService {
      * @return The shared instance of the executor service.
      */
     public static SharedExecutorService getInstance() {
-        return INSTANCE.updateAndGet(instance -> {
-            if (instance == null) {
-                return new SharedExecutorService(createSharedExecutor(), true);
-            } else {
-                return instance;
-            }
-        });
+        return INSTANCE;
     }
 
     /**
@@ -132,9 +165,9 @@ public final class SharedExecutorService implements ExecutorService {
             throw new IllegalStateException("The passed executor service is shutdown or terminated.");
         }
 
-        SharedExecutorService existing = INSTANCE.getAndSet(new SharedExecutorService(executorService, false));
-        if (existing != null && existing.internal) {
-            existing.wrappedExecutorService.shutdown();
+        ExecutorService existing = INSTANCE.wrappedExecutorService.getAndSet(executorService);
+        if (existing instanceof InternalExecutor) {
+            existing.shutdown();
         }
     }
 
@@ -163,83 +196,105 @@ public final class SharedExecutorService implements ExecutorService {
             new UnsupportedOperationException("This executor service is shared and cannot be shut down."));
     }
 
+    /**
+     * Checks if the executor service is shutdown.
+     * <p>
+     * Will always return false as the shared executor service cannot be shut down.
+     *
+     * @return False, as the shared executor service cannot be shut down.
+     */
     @Override
     public boolean isShutdown() {
-        return wrappedExecutorService.isShutdown();
+        return false;
     }
 
+    /**
+     * Checks if the executor service is terminated.
+     * <p>
+     * Will always return false as the shared executor service cannot be terminated.
+     *
+     * @return False, as the shared executor service cannot be terminated.
+     */
     @Override
     public boolean isTerminated() {
-        return wrappedExecutorService.isTerminated();
-    }
-
-    @Override
-    public boolean awaitTermination(long timeout, TimeUnit unit) {
         return false;
     }
 
     @Override
+    public boolean awaitTermination(long timeout, TimeUnit unit) {
+        throw LOGGER.logThrowableAsError(
+            new UnsupportedOperationException("This executor service is shared and cannot be terminated."));
+    }
+
+    @Override
     public void execute(Runnable command) {
-        wrappedExecutorService.execute(command);
+        ensureNotShutdown().execute(command);
     }
 
     @Override
     public <T> Future<T> submit(Callable<T> task) {
-        return wrappedExecutorService.submit(task);
+        return ensureNotShutdown().submit(task);
     }
 
     @Override
     public <T> Future<T> submit(Runnable task, T result) {
-        return wrappedExecutorService.submit(task, result);
+        return ensureNotShutdown().submit(task, result);
     }
 
     @Override
     public Future<?> submit(Runnable task) {
-        return wrappedExecutorService.submit(task);
+        return ensureNotShutdown().submit(task);
     }
 
     @Override
     public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks) throws InterruptedException {
-        return wrappedExecutorService.invokeAll(tasks);
+        return ensureNotShutdown().invokeAll(tasks);
     }
 
     @Override
     public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit)
         throws InterruptedException {
-        return wrappedExecutorService.invokeAll(tasks, timeout, unit);
+        return ensureNotShutdown().invokeAll(tasks, timeout, unit);
     }
 
     @Override
     public <T> T invokeAny(Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException {
-        return wrappedExecutorService.invokeAny(tasks);
+        return ensureNotShutdown().invokeAny(tasks);
     }
 
     @Override
     public <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit)
         throws InterruptedException, ExecutionException, TimeoutException {
-        return wrappedExecutorService.invokeAny(tasks, timeout, unit);
+        return ensureNotShutdown().invokeAny(tasks, timeout, unit);
+    }
+
+    private ExecutorService ensureNotShutdown() {
+        return wrappedExecutorService.updateAndGet(executorService -> {
+            if (executorService == null || executorService.isShutdown() || executorService.isTerminated()) {
+                return createSharedExecutor();
+            } else {
+                return executorService;
+            }
+        });
     }
 
     private static ExecutorService createSharedExecutor() {
         ThreadFactory threadFactory;
-        if (VIRTUAL_THREAD_SUPPORTED) {
+        if (VIRTUAL_THREAD_SUPPORTED && THREAD_POOL_VIRTUAL) {
             try {
+                LOGGER.verbose("Attempting to create a virtual thread factory.");
                 threadFactory = createVirtualThreadFactory();
+                LOGGER.verbose("Successfully created a virtual thread factory.");
             } catch (Exception e) {
+                LOGGER.info("Failed to create a virtual thread factory, falling back to non-virtual threads.", e);
                 threadFactory = createNonVirtualThreadFactory();
             }
         } else {
             threadFactory = createNonVirtualThreadFactory();
         }
 
-        ExecutorService sharedExecutor = CoreUtils.addShutdownHookSafely(
-            new ThreadPoolExecutor(0, THREAD_POOL_SIZE, 60L, TimeUnit.SECONDS, new SynchronousQueue<>(), threadFactory),
-            Duration.ofSeconds(5));
-
-        // Register the shared executor with the ReferenceManager to ensure it shuts down if it becomes unreferenced.
-        ReferenceManager.INSTANCE.register(sharedExecutor, sharedExecutor::shutdown);
-
-        return sharedExecutor;
+        return new InternalExecutor(new ThreadPoolExecutor(0, THREAD_POOL_SIZE, THREAD_POOL_KEEP_ALIVE_MILLIS,
+            TimeUnit.MILLISECONDS, new SynchronousQueue<>(), threadFactory));
     }
 
     private static ThreadFactory createVirtualThreadFactory() throws Exception {
@@ -255,5 +310,89 @@ public final class SharedExecutorService implements ExecutorService {
 
             return thread;
         };
+    }
+
+    private static final class InternalExecutor implements ExecutorService {
+        private final Thread shutdownThread;
+        private final ExecutorService executorService;
+
+        InternalExecutor(ExecutorService executorService) {
+            this.executorService = executorService;
+
+            this.shutdownThread = CoreUtils.createExecutorServiceShutdownThread(executorService, Duration.ofSeconds(5));
+            CoreUtils.addShutdownHookSafely(shutdownThread);
+        }
+
+        @Override
+        public void shutdown() {
+            executorService.shutdown();
+            CoreUtils.removeShutdownHookSafely(shutdownThread);
+        }
+
+        @Override
+        public List<Runnable> shutdownNow() {
+            List<Runnable> runnables = executorService.shutdownNow();
+            CoreUtils.removeShutdownHookSafely(shutdownThread);
+
+            return runnables;
+        }
+
+        @Override
+        public boolean isShutdown() {
+            return executorService.isShutdown();
+        }
+
+        @Override
+        public boolean isTerminated() {
+            return executorService.isTerminated();
+        }
+
+        @Override
+        public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
+            return executorService.awaitTermination(timeout, unit);
+        }
+
+        @Override
+        public <T> Future<T> submit(Callable<T> task) {
+            return executorService.submit(task);
+        }
+
+        @Override
+        public <T> Future<T> submit(Runnable task, T result) {
+            return executorService.submit(task, result);
+        }
+
+        @Override
+        public Future<?> submit(Runnable task) {
+            return executorService.submit(task);
+        }
+
+        @Override
+        public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks) throws InterruptedException {
+            return executorService.invokeAll(tasks);
+        }
+
+        @Override
+        public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit)
+            throws InterruptedException {
+            return executorService.invokeAll(tasks, timeout, unit);
+        }
+
+        @Override
+        public <T> T invokeAny(Collection<? extends Callable<T>> tasks)
+            throws InterruptedException, ExecutionException {
+            return executorService.invokeAny(tasks);
+        }
+
+        @Override
+        public <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit)
+            throws InterruptedException, ExecutionException, TimeoutException {
+            return executorService.invokeAny(tasks, timeout, unit);
+        }
+
+        @Override
+        public void execute(Runnable command) {
+            executorService.execute(command);
+        }
     }
 }

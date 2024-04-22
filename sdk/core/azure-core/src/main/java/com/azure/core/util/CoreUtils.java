@@ -620,8 +620,14 @@ public final class CoreUtils {
             throw new IllegalArgumentException("'shutdownTimeout' must be a non-zero positive duration.");
         }
 
+        CoreUtils.addShutdownHookSafely(createExecutorServiceShutdownThread(executorService, shutdownTimeout));
+
+        return executorService;
+    }
+
+    static Thread createExecutorServiceShutdownThread(ExecutorService executorService, Duration shutdownTimeout) {
         long timeoutNanos = shutdownTimeout.toNanos();
-        Thread shutdownThread = new Thread(() -> {
+        return new Thread(() -> {
             try {
                 executorService.shutdown();
                 if (!executorService.awaitTermination(timeoutNanos / 2, TimeUnit.NANOSECONDS)) {
@@ -633,10 +639,6 @@ public final class CoreUtils {
                 executorService.shutdown();
             }
         });
-
-        CoreUtils.addShutdownHookSafely(shutdownThread);
-
-        return executorService;
     }
 
     /**
@@ -670,6 +672,22 @@ public final class CoreUtils {
         }
 
         return shutdownThread;
+    }
+
+    @SuppressWarnings("removal")
+    static void removeShutdownHookSafely(Thread shutdownThread) {
+        if (shutdownThread == null) {
+            return;
+        }
+
+        if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
+            java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
+                Runtime.getRuntime().removeShutdownHook(shutdownThread);
+                return null;
+            });
+        } else {
+            Runtime.getRuntime().removeShutdownHook(shutdownThread);
+        }
     }
 
     /**
