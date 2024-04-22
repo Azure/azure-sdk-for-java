@@ -24,6 +24,7 @@
     <maven.compiler.target>11</maven.compiler.target>
     <jacoco.skip>true</jacoco.skip>
     <shadingPrefix>azure_cosmos_spark</shadingPrefix>
+    <shadingPrefixNetty>azurecosmosspark</shadingPrefixNetty>
     <legal>
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]>
     </legal>
@@ -427,7 +428,7 @@
                     </relocation>
                     <relocation>
                       <pattern>io.netty</pattern>
-                      <shadedPattern>${shadingPrefix}.io.netty</shadedPattern>
+                      <shadedPattern>${shadingPrefixNetty}.io.netty</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>org.codehaus</pattern>
@@ -604,6 +605,35 @@
               </execution>
             </executions>
           </plugin>
+          <!--<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <id>repack</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <unzip src="${project.build.directory}/${project.build.finalName}.jar" dest="${project.build.directory}/tmp" />
+                    <copy file="${project.build.directory}/tmp/META-INF/native/libnetty_resolver_dns_native_macos_x86_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_resolver_dns_native_macos_x86_64.jnilib" />
+                    <copy file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_linux_aarch_64.so" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_tcnative_linux_aarch_64.so" />
+                    <copy file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_linux_x86_64.so" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_tcnative_linux_x86_64.so" />
+                    <copy file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_osx_aarch_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_tcnative_osx_aarch_64.jnilib" />
+                    <copy file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_osx_x86_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_tcnative_osx_x86_64.jnilib" />
+                    <copy file="${project.build.directory}/tmp/META-INF/native/libnetty_transport_native_epoll_x86_64.so" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_transport_native_epoll_x86_64.so" />
+                    <copy file="${project.build.directory}/tmp/META-INF/native/libnetty_transport_native_kqueue_x86_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_transport_native_kqueue_x86_64.jnilib" />
+                    <copy file="${project.build.directory}/tmp/META-INF/native/netty_tcnative_windows_x86_64.dll" tofile="${project.build.directory}/tmp/META-INF/native/azurecosmosspark_netty_tcnative_windows_x86_64.dll" />
+                    <zip basedir="${project.build.directory}/tmp" destfile="${project.build.directory}/${project.build.finalName}.jar" />
+                    <delete dir="${project.build.directory}/tmp" />
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>-->
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>xml-maven-plugin</artifactId>

@@ -1218,7 +1218,7 @@ public class CosmosClientBuilder implements
     private void logStartupInfo(StopWatch stopwatch, CosmosAsyncClient client) {
         stopwatch.stop();
 
-        if (logger.isInfoEnabled()) {
+        if (logger.isWarnEnabled()) {
             long time = stopwatch.getTime();
             String diagnosticsCfg = "";
             String tracingCfg = "";
@@ -1235,11 +1235,14 @@ public class CosmosClientBuilder implements
             logger.warn("Cosmos Client with (Correlation) ID [{}] started up in [{}] ms with the following " +
                     "configuration: serviceEndpoint [{}], preferredRegions [{}], excludedRegions [{}], connectionPolicy [{}], " +
                     "consistencyLevel [{}], contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
-                    "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}], proactiveContainerInit [{}], diagnostics [{}], tracing [{}]",
+                    "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}], proactiveContainerInit [{}], " +
+                    "diagnostics [{}], tracing [{}], nativeTransport [{}] fastClientOpen [{}]",
                 client.getContextClient().getClientCorrelationId(), time, getEndpoint(), getPreferredRegions(), getExcludedRegions(),
                 getConnectionPolicy(), getConsistencyLevel(), isContentResponseOnWriteEnabled(),
                 isSessionCapturingOverrideEnabled(), isConnectionSharingAcrossClientsEnabled(),
-                isClientTelemetryEnabled(), getProactiveContainerInitConfig(), diagnosticsCfg, tracingCfg);
+                isClientTelemetryEnabled(), getProactiveContainerInitConfig(), diagnosticsCfg,
+                tracingCfg, io.netty.channel.epoll.Epoll.isAvailable(),
+                io.netty.channel.epoll.Epoll.isTcpFastOpenClientSideAvailable());
         }
     }
 
