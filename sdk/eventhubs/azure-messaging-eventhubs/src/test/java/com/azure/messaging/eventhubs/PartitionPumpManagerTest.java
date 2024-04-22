@@ -135,12 +135,15 @@ public class PartitionPumpManagerTest {
         final long offset = 10L;
 
         return Stream.of(
-            // Offset is used if available.
-            Arguments.of(offset, sequenceNumber, mapPosition, EventPosition.fromOffset(offset)),
-            // Sequence number is the fallback.
-            Arguments.of(null, sequenceNumber, mapPosition, EventPosition.fromSequenceNumber(sequenceNumber)),
+            // Sequence number is prioritised over offset.
+            Arguments.of(offset, sequenceNumber, mapPosition, EventPosition.fromSequenceNumber(sequenceNumber)),
+
+            // Offset is the fallback.
+            Arguments.of(offset, null, mapPosition, EventPosition.fromOffset(offset)),
+
             // if both are null, then use the initial Map position is used.
             Arguments.of(null, null, mapPosition, mapPosition),
+
             // Fallback to start listening from the latest part of the stream.
             Arguments.of(null, null, null, EventPosition.latest())
         );
@@ -620,7 +623,7 @@ public class PartitionPumpManagerTest {
     }
 
     /**
-     * Offset is preferred over sequence number if it is part of the checkpoint.
+     * Offset is used if sequence number is null.
      */
     @Test
     public void startPositionReturnsCheckpointOffset() {
@@ -630,9 +633,9 @@ public class PartitionPumpManagerTest {
         initialPartitionPositions.put("another", EventPosition.earliest());
 
         final long offset = 242343;
-        final long sequenceNumber = 150;
+
         checkpoint.setOffset(offset)
-            .setSequenceNumber(sequenceNumber);
+            .setSequenceNumber(null);
 
         final EventPosition expected = EventPosition.fromOffset(offset);
 
@@ -666,7 +669,7 @@ public class PartitionPumpManagerTest {
     }
 
     /**
-     * Sequence number is used if offset is null.
+     * Sequence number is preferred over offset if it is available.
      */
     @Test
     public void startPositionReturnsCheckpointSequenceNumber() {
@@ -676,7 +679,9 @@ public class PartitionPumpManagerTest {
         initialPartitionPositions.put("another", EventPosition.earliest());
 
         final long sequenceNumber = 150;
-        checkpoint.setSequenceNumber(sequenceNumber);
+        final long offset = 242343;
+        checkpoint.setSequenceNumber(sequenceNumber)
+            .setOffset(offset);
 
         final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
         final boolean trackLastEnqueuedEventProperties = false;
@@ -1044,7 +1049,7 @@ public class PartitionPumpManagerTest {
     private PartitionEvent createEvent(Instant retrievalTime, int index) {
         Instant lastEnqueuedTime = retrievalTime.minusSeconds(60);
         LastEnqueuedEventProperties lastEnqueuedProperties =
-            new LastEnqueuedEventProperties((long) index, (long) index, retrievalTime, lastEnqueuedTime.plusSeconds(index));
+            new LastEnqueuedEventProperties((long) index, (long) index, retrievalTime, lastEnqueuedTime.plusSeconds(index), 10);
         return new PartitionEvent(PARTITION_CONTEXT, new EventData(String.valueOf(index)), lastEnqueuedProperties);
     }
 }
