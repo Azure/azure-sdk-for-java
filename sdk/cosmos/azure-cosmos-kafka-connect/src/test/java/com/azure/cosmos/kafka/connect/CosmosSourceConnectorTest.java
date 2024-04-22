@@ -164,7 +164,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
     @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void getTaskConfigs_withMetadataCosmosStorageManager() throws JsonProcessingException {
         CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
-        String metadataStorageName = "_cosmos.metadata.topic";
+        String metadataStorageName = "_cosmos.metadata.topic-" + UUID.randomUUID();
         CosmosAsyncClient cosmosAsyncClient = null;
         try {
             Map<String, Object> sourceConfigMap = new HashMap<>();

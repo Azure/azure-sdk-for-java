@@ -307,7 +307,6 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
         Map<FeedRange, KafkaCosmosChangeFeedState> effectiveContinuationMap = new LinkedHashMap<>();
         if (feedRangeContinuationTopicOffset != null) {
             // we can find the continuation offset based on exact feedRange matching
-            System.out.println("Find exact matching");
             effectiveContinuationMap.put(
                 containerFeedRange,
                 this.getContinuationStateFromOffset(
