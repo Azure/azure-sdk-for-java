@@ -34,6 +34,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.DEFAULT_REPLICATION_SEGMENT;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.SEQUENCE_NUMBER_KEY;
 
@@ -348,7 +349,13 @@ class PartitionPumpManager {
         // the position set in the InitializationContext (either the user provided initial position or the latest event
         // in the partition).
         if (checkpoint != null && checkpoint.getSequenceNumber() != null) {
-            return EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber());
+
+            final int replicationSegment = checkpoint.getReplicationSegment() != null
+                ? checkpoint.getReplicationSegment()
+                : DEFAULT_REPLICATION_SEGMENT;
+
+            return EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber(), replicationSegment);
+
         } else if (checkpoint != null && checkpoint.getOffset() != null) {
             return EventPosition.fromOffset(checkpoint.getOffset());
         }

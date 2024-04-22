@@ -41,6 +41,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.DEFAULT_REPLICATION_SEGMENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -133,19 +134,33 @@ public class PartitionPumpManagerTest {
         final EventPosition mapPosition = EventPosition.fromSequenceNumber(165L);
         final long sequenceNumber = 15L;
         final long offset = 10L;
+        final int replicationSegment = 23;
 
         return Stream.of(
-            // Sequence number is prioritised over offset.
-            Arguments.of(offset, sequenceNumber, mapPosition, EventPosition.fromSequenceNumber(sequenceNumber)),
+            // Sequence number is prioritised over offset. Uses replication segment.
+            Arguments.of(offset, sequenceNumber, replicationSegment, mapPosition,
+                EventPosition.fromSequenceNumber(sequenceNumber, replicationSegment)),
+
+            // Sequence number is prioritised over offset. Uses replication segment.
+            Arguments.of(offset, sequenceNumber, null, mapPosition,
+                EventPosition.fromSequenceNumber(sequenceNumber, DEFAULT_REPLICATION_SEGMENT)),
 
             // Offset is the fallback.
-            Arguments.of(offset, null, mapPosition, EventPosition.fromOffset(offset)),
+            Arguments.of(offset, null, replicationSegment, mapPosition, EventPosition.fromOffset(offset)),
 
-            // if both are null, then use the initial Map position is used.
-            Arguments.of(null, null, mapPosition, mapPosition),
+            // If offset and sequence number are both null, then use the initial map position is
+            // used even if replication segment is set.
+            Arguments.of(null, null, replicationSegment, mapPosition, mapPosition),
+
+            // If offset and sequence number are both null, then use the initial map position is used.
+            Arguments.of(null, null, null, mapPosition, mapPosition),
+
 
             // Fallback to start listening from the latest part of the stream.
-            Arguments.of(null, null, null, EventPosition.latest())
+            Arguments.of(null, null, replicationSegment, null, EventPosition.latest()),
+
+            // Fallback to start listening from the latest part of the stream.
+            Arguments.of(null, null, null, null, EventPosition.latest())
         );
     }
 
@@ -154,8 +169,8 @@ public class PartitionPumpManagerTest {
      */
     @MethodSource
     @ParameterizedTest
-    public void startPartitionPumpAtCorrectPosition(Long offset, Long sequenceNumber, EventPosition initialPosition,
-        EventPosition expectedPosition) {
+    public void startPartitionPumpAtCorrectPosition(Long offset, Long sequenceNumber, Integer replicationSegment,
+        EventPosition initialPosition, EventPosition expectedPosition) {
 
         // Arrange
         if (initialPosition != null) {
@@ -670,6 +685,8 @@ public class PartitionPumpManagerTest {
 
     /**
      * Sequence number is preferred over offset if it is available.
+     * If no replication segment is in the checkpoint, then the
+     * DEFAULT_REPLICATION_SEGMENT is used.
      */
     @Test
     public void startPositionReturnsCheckpointSequenceNumber() {
@@ -699,7 +716,7 @@ public class PartitionPumpManagerTest {
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
-        final EventPosition expected = EventPosition.fromSequenceNumber(sequenceNumber);
+        final EventPosition expected = EventPosition.fromSequenceNumber(sequenceNumber, DEFAULT_REPLICATION_SEGMENT);
 
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
             DEFAULT_TRACER, options);
@@ -710,6 +727,52 @@ public class PartitionPumpManagerTest {
         // Assert
         assertEquals(expected, actual);
     }
+
+    /**
+     * Sequence number is preferred over offset if it is available.
+     */
+    @Test
+    public void startPositionReturnsCheckpointSequenceNumberReplicationSegment() {
+        // Arrange
+        final String partitionId = "the-partition-id";
+        initialPartitionPositions.put(partitionId, EventPosition.fromSequenceNumber(11L, true));
+        initialPartitionPositions.put("another", EventPosition.earliest());
+
+        final long sequenceNumber = 150;
+        final long offset = 242343;
+        final int replicationSegment = 23;
+        checkpoint.setSequenceNumber(sequenceNumber)
+            .setOffset(offset)
+            .setReplicationSegment(replicationSegment);
+
+        final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
+        final boolean trackLastEnqueuedEventProperties = false;
+        final int maxBatchSize = 2;
+        final Duration maxWaitTime = Duration.ofSeconds(1);
+        final boolean batchReceiveMode = true;
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
+            .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
+            .setMaxBatchSize(maxBatchSize)
+            .setMaxWaitTime(maxWaitTime)
+            .setBatchReceiveMode(batchReceiveMode)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+        final EventPosition expected = EventPosition.fromSequenceNumber(sequenceNumber, replicationSegment);
+
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_TRACER, options);
+
+        // Act
+        final EventPosition actual = manager.getInitialEventPosition(partitionId, checkpoint);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
 
     /**
      * If no checkpoint, prefers the position found in the initialPartitionEventPosition map.
