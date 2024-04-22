@@ -5,7 +5,7 @@ parameters:
   BuildParallelization: '2C'
 
 jobs:
-  - job: 'compatibility_test'
+  - job: 'compatibility_test_for_sb3'
     dependsOn: ${{ parameters.DependsOn }}
     condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
     strategy:
