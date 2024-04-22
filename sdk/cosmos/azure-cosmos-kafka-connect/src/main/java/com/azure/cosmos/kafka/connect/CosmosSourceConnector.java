@@ -307,6 +307,7 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
         Map<FeedRange, KafkaCosmosChangeFeedState> effectiveContinuationMap = new LinkedHashMap<>();
         if (feedRangeContinuationTopicOffset != null) {
             // we can find the continuation offset based on exact feedRange matching
+            System.out.println("Find exact matching");
             effectiveContinuationMap.put(
                 containerFeedRange,
                 this.getContinuationStateFromOffset(
@@ -317,7 +318,7 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
         }
 
         // we can not find the continuation offset based on the exact feed range matching
-        // it means the previous Partition key range could have gone due to container split/merge
+        // it means the previous Partition key range could have gone due to container split/merge or there is no continuation state yet
         // need to find out overlapped feedRanges from offset
         return  Flux.fromIterable(rangesFromMetadataTopicOffset)
                     .flatMap(rangeFromOffset -> {
@@ -336,23 +337,43 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
                     .collectList()
                     .flatMap(overlappedFeedRangesFromOffset -> {
                         if (overlappedFeedRangesFromOffset.size() == 1) {
-                            // split - use the current containerFeedRange, but construct the continuationState based on the feedRange from offset
-                            effectiveContinuationMap.put(
-                                containerFeedRange,
-                                this.getContinuationStateFromOffset(
-                                    this.kafkaOffsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, overlappedFeedRangesFromOffset.get(0)),
-                                    containerFeedRange));
+                            // a. split - use the current containerFeedRange, but construct the continuationState based on the feedRange from offset
+                            // b. there is no existing feed range continuationToken state yet
+                            FeedRangeContinuationTopicOffset continuationTopicOffset = this.kafkaOffsetStorageReader.getFeedRangeContinuationOffset(
+                                databaseName,
+                                containerRid,
+                                overlappedFeedRangesFromOffset.get(0)
+                            );
+
+                            if (continuationTopicOffset == null) {
+                                effectiveContinuationMap.put(overlappedFeedRangesFromOffset.get(0), null);
+                            } else {
+                                effectiveContinuationMap.put(
+                                    containerFeedRange,
+                                    this.getContinuationStateFromOffset(continuationTopicOffset, containerFeedRange));
+                            }
+
                             return Mono.just(effectiveContinuationMap);
                         }
 
                         if (overlappedFeedRangesFromOffset.size() > 1) {
                             // merge - use the feed ranges from the offset
                             for (FeedRange overlappedRangeFromOffset : overlappedFeedRangesFromOffset) {
-                                effectiveContinuationMap.put(
-                                    overlappedRangeFromOffset,
-                                    this.getContinuationStateFromOffset(
-                                        this.kafkaOffsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, overlappedRangeFromOffset),
-                                        overlappedRangeFromOffset));
+                                FeedRangeContinuationTopicOffset continuationTopicOffset =
+                                    this.kafkaOffsetStorageReader
+                                        .getFeedRangeContinuationOffset(
+                                            databaseName,
+                                            containerRid,
+                                            overlappedRangeFromOffset);
+                                if (continuationTopicOffset == null) {
+                                    effectiveContinuationMap.put(overlappedRangeFromOffset, null);
+                                } else {
+                                    effectiveContinuationMap.put(
+                                        overlappedRangeFromOffset,
+                                        this.getContinuationStateFromOffset(
+                                            this.kafkaOffsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, overlappedRangeFromOffset),
+                                            overlappedRangeFromOffset));
+                                }
                             }
 
                             return Mono.just(effectiveContinuationMap);

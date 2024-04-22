@@ -656,7 +656,6 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         MetadataCosmosStorageManager cosmosStorageManager = new MetadataCosmosStorageManager(container);
         KafkaCosmosReflectionUtils.setMetadataReader(sourceConnector, cosmosStorageManager);
 
-
         InMemoryStorageReader inMemoryStorageReader = new InMemoryStorageReader();
         MetadataKafkaStorageManager metadataReader = new MetadataKafkaStorageManager(inMemoryStorageReader);
         KafkaCosmosReflectionUtils.setKafkaOffsetStorageReader(sourceConnector, metadataReader);
