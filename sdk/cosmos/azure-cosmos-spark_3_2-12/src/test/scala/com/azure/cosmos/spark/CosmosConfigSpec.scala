@@ -64,7 +64,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
           endpointConfig.endpoint shouldEqual sampleProdEndpoint
 
-          val aadAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosAadAuthConfig]
+          val aadAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosServicePrincipalAuthConfig]
           endpointConfig.subscriptionId.get shouldEqual testAccountSubscriptionId
           aadAuthConfig.tenantId shouldEqual testAccountTenantId
           endpointConfig.resourceGroupName.get shouldEqual testAccountResourceGroupName
@@ -92,7 +92,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
           endpointConfig.endpoint shouldEqual sampleProdEndpoint
 
-          val aadAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosAadAuthConfig]
+          val aadAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosServicePrincipalAuthConfig]
           endpointConfig.subscriptionId.get shouldEqual testAccountSubscriptionId
           aadAuthConfig.tenantId shouldEqual testAccountTenantId
           endpointConfig.resourceGroupName.get shouldEqual testAccountResourceGroupName
