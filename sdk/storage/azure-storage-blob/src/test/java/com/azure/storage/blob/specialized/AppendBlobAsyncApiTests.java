@@ -24,6 +24,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -570,6 +571,17 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
                 assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
                 assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
             });
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void appendBlockFromURLSourceErrorAndStatusCode2() {
+        AppendBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+
+        StepVerifier.create(destBlob.createIfNotExists())
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
+
     }
 
     @Test

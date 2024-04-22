@@ -40,7 +40,7 @@ import java.util.concurrent.TimeoutException;
 public final class RequestRetryPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(RequestRetryPolicy.class);
     private final RequestRetryOptions requestRetryOptions;
-    public static final HttpHeaderName X_MS_COPY_SOURCE_ERROR_CODE = HttpHeaderName.fromString("x-ms-copy-source-error-code");
+    private static final HttpHeaderName X_MS_COPY_SOURCE_ERROR_CODE = HttpHeaderName.fromString("x-ms-copy-source-error-code");
 
     /**
      * Constructs the policy using the retry options.
