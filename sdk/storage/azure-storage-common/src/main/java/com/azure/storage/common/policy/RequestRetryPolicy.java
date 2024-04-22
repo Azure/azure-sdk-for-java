@@ -390,8 +390,8 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         if (response != null && response.getHeaders() != null) {
             String headerValue = response.getHeaders().getValue(X_MS_COPY_SOURCE_ERROR_CODE);
             if (headerValue != null) {
-                headerRetry = (headerValue.equals("429") || headerValue.equals("500") || headerValue.equals("503"))
-                    || (!isPrimary && headerValue.equals("404"));
+                headerRetry = ("429".equals(headerValue) || "500".equals(headerValue) || "503".equals(headerValue))
+                    || (!isPrimary && "404".equals(headerValue));
             }
 
         }
