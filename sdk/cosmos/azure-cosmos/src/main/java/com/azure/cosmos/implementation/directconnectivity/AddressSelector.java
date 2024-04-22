@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class AddressSelector {
@@ -31,13 +32,32 @@ public class AddressSelector {
         boolean forceRefresh) {
         Mono<List<AddressInformation>> allReplicaAddressesObs = this.resolveAddressesAsync(request, forceRefresh);
         return allReplicaAddressesObs.map(allReplicaAddresses -> allReplicaAddresses.stream().filter(a -> includePrimary || !a.isPrimary())
-            .map(a -> a.getPhysicalUri()).collect(Collectors.toList()));
+            .map(a -> {
+                    if (includePrimary && a.isPrimary()) {
+                        a.getPhysicalUri().setHealthStatusTuplePrimary(true);
+                    }
+                    return a.getPhysicalUri();
+            }).collect(Collectors.toList()));
     }
 
     public Mono<Uri> resolvePrimaryUriAsync(RxDocumentServiceRequest request, boolean forceAddressRefresh) {
         Mono<List<AddressInformation>> replicaAddressesObs = this.resolveAddressesAsync(request, forceAddressRefresh);
         return replicaAddressesObs.flatMap(replicaAddresses -> {
             try {
+                return Mono.just(AddressSelector.getPrimaryUri(request, replicaAddresses));
+            } catch (Exception e) {
+                return Mono.error(e);
+            }
+        });
+    }
+
+    public Mono<Uri> resolvePrimaryUriAsync(RxDocumentServiceRequest request, boolean forceAddressRefresh, Map<Uri, String> replicaStatuses) {
+        Mono<List<AddressInformation>> replicaAddressesObs = this.resolveAddressesAsync(request, forceAddressRefresh);
+        return replicaAddressesObs.flatMap(replicaAddresses -> {
+            try {
+                replicaAddresses.forEach(replica -> {
+                    replicaStatuses.put(replica.getPhysicalUri(), replica.getPhysicalUri().getHealthStatusDiagnosticString());
+                });
                 return Mono.just(AddressSelector.getPrimaryUri(request, replicaAddresses));
             } catch (Exception e) {
                 return Mono.error(e);

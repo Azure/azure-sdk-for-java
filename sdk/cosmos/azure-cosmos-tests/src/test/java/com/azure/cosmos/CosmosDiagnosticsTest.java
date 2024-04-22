@@ -980,6 +980,11 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             JsonNode replicaStatusList = storeResult.get("replicaStatusList");
             assertThat(replicaStatusList.isArray()).isTrue();
             assertThat(replicaStatusList.size()).isGreaterThan(0);
+            int quorumAcked = storeResult.get("quorumAckedLSN").asInt(-1);
+            assertThat(quorumAcked).isGreaterThan(0);
+            int currentReplicaSetSize = storeResult.get("currentReplicaSetSize").asInt(-1);
+            assertThat(currentReplicaSetSize).isGreaterThan(0);
+
         }
     }
 
@@ -1222,11 +1227,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(responseStatisticsList.size()).isGreaterThan(0);
         JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
         assertThat(storeResult).isNotNull();
-
+        int replicaSetSize = storeResult.get("currentReplicaSetSize").asInt(-1);
+        assertThat(replicaSetSize).isGreaterThan(0);
         JsonNode replicaStatusList = storeResult.get("replicaStatusList");
         assertThat(replicaStatusList.isArray()).isTrue();
-        assertThat(replicaStatusList.size()).isGreaterThan(0);
-
+        assertThat(replicaStatusList.size()).isEqualTo(replicaSetSize);
+        String replicaStatusTxt = replicaStatusList.get(0).asText();
+        assertThat(replicaStatusTxt.contains("Primary")).isTrue();
+        assertThat(replicaStatusTxt.contains("Connected")).isTrue();
         // validate serviceEndpointStatistics
         JsonNode serviceEndpointStatistics = storeResult.get("serviceEndpointStatistics");
         assertThat(serviceEndpointStatistics).isNotNull();
@@ -1502,14 +1510,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
             TestItem testItem = TestItem.createNewItem();
             container.createItem(testItem).block();
-            
+
             CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
             requestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(
                 new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(-1)).build()
             );
             CosmosPagedFlux<ObjectNode> flux = container.readAllItems(requestOptions, ObjectNode.class);
             List<ObjectNode> results = flux.collectList().block();
-                
+
             fail("This should have failed with an exception");
         } catch(OperationCancelledException cancelledException) {
             assertThat(cancelledException).isNotNull();

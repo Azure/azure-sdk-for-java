@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.implementation.cpu.CpuMemoryReader;
 import com.azure.cosmos.implementation.directconnectivity.addressEnumerator.AddressEnumerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -183,7 +184,25 @@ public class Uri {
     }
 
     public String getHealthStatusDiagnosticString() {
-        return this.healthStatusTuple.get().diagnsoticString;
+        return this.healthStatusTuple.get().getDiagnsoticString();
+    }
+
+    public void setHealthStatusTupleAttempting(boolean attempting) {
+        this.healthStatusTuple.updateAndGet(previousStatusTuple ->
+            {
+                previousStatusTuple.setAttempting(attempting);
+                return previousStatusTuple;
+            }
+        );
+    }
+
+    public void setHealthStatusTuplePrimary(boolean primary) {
+        this.healthStatusTuple.updateAndGet(previousStatusTuple ->
+            {
+                previousStatusTuple.setPrimary(primary);
+                return previousStatusTuple;
+            }
+        );
     }
 
     @Override
@@ -230,12 +249,31 @@ public class Uri {
     }
 
     static class HealthStatusAndDiagnosticStringTuple {
-        private final String diagnsoticString;
         private final HealthStatus status;
+        private final String ATTEMPTING = "Attempting";
+        private final String NOT_ATTEMPTING = "NotAttempting";
+        private final String PRIMARY = "Primary";
+        private final String SECONDARY = "Secondary";
+        private final URI uri;
+        private boolean isAttempting;
+        private boolean isPrimary;
 
         public HealthStatusAndDiagnosticStringTuple(URI uri, HealthStatus status) {
-            this.diagnsoticString = uri.getPort() + ":" + status;
+            this.uri = uri;
             this.status = status;
+        }
+
+        public String getDiagnsoticString() {
+            return uri.getPort() + ":" + (isPrimary ? PRIMARY : SECONDARY) + ":" +
+                status + "|" + (isAttempting ? ATTEMPTING : NOT_ATTEMPTING);
+        }
+
+        public void setAttempting(boolean attempting) {
+            isAttempting = attempting;
+        }
+
+        public void setPrimary(boolean primary) {
+            isPrimary = primary;
         }
     }
 }

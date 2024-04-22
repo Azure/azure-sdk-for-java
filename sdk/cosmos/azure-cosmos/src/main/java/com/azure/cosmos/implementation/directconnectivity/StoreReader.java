@@ -37,7 +37,10 @@ import reactor.core.scheduler.Schedulers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -216,16 +219,20 @@ public class StoreReader {
             return Flux.error(new GoneException());
         }
         List<Pair<Flux<StoreResponse>, Uri>> readStoreTasks = new ArrayList<>();
-
+        Map<Uri, String> replicaStatuses = new HashMap<>();
+        resolveApiResults.forEach(uri -> {
+            replicaStatuses.put(uri, uri.getHealthStatusDiagnosticString());
+        });
         List<Uri> addressRandomPermutation = AddressEnumerator.getTransportAddresses(entity, resolveApiResults);
 
         // The health status of the Uri will change as the time goes by
         // what we really want to track is the health status snapshot at this moment
-        List<String> replicaStatusList =
-                addressRandomPermutation
-                        .stream()
-                        .map(uri -> uri.getHealthStatusDiagnosticString())
-                        .collect(Collectors.toList());
+        addressRandomPermutation.forEach(uri -> {
+            uri.setHealthStatusTupleAttempting(true);
+            replicaStatuses.replace(uri, uri.getHealthStatusDiagnosticString());
+        });
+        // how to add primary
+        List<String> replicaStatusList = new ArrayList<>(replicaStatuses.values());
 
         int startIndex = 0;
 
@@ -563,9 +570,10 @@ public class StoreReader {
             return Mono.error(new GoneException());
         }
 
+        Map<Uri, String> replicaStatuses = new ConcurrentHashMap<>();
         Mono<Uri> primaryUriObs = this.addressSelector.resolvePrimaryUriAsync(
                 entity,
-                entity.requestContext.forceRefreshAddressCache);
+                entity.requestContext.forceRefreshAddressCache, replicaStatuses);
 
         AtomicReference<List<String>> replicaStatusList = new AtomicReference<>();
 
@@ -588,7 +596,9 @@ public class StoreReader {
                             this.readFromStoreAsync(
                                 primaryUri,
                                 entity);
-                        replicaStatusList.set(Arrays.asList(primaryUri.getHealthStatusDiagnosticString()));
+                        primaryUri.setHealthStatusTuplePrimary(true);
+                        replicaStatuses.replace(primaryUri, primaryUri.getHealthStatusDiagnosticString());
+                        replicaStatusList.set(new ArrayList<>(replicaStatuses.values()));
 
                         return storeResponseObsAndUri.getLeft().flatMap(
                                 storeResponse -> {

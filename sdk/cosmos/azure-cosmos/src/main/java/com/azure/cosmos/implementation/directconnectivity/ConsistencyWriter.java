@@ -37,7 +37,10 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -167,11 +170,16 @@ public class ConsistencyWriter {
             Mono<List<AddressInformation>> replicaAddressesObs = this.addressSelector.resolveAddressesAsync(request, forceRefresh);
             AtomicReference<Uri> primaryURI = new AtomicReference<>();
             AtomicReference<List<String>> replicaStatusList = new AtomicReference<>();
+            Map<Uri, String> replicaStatuses = new ConcurrentHashMap<>();
 
             return replicaAddressesObs.flatMap(replicaAddresses -> {
                 try {
                     List<URI> contactedReplicas = new ArrayList<>();
-                    replicaAddresses.forEach(replicaAddress -> contactedReplicas.add(replicaAddress.getPhysicalUri().getURI()));
+                    replicaAddresses.forEach(replicaAddress -> {
+                        Uri uri = replicaAddress.getPhysicalUri();
+                        contactedReplicas.add(uri.getURI());
+                        replicaStatuses.put(uri, uri.getHealthStatusDiagnosticString());
+                    });
                     BridgeInternal.setContactedReplicas(request.requestContext.cosmosDiagnostics, contactedReplicas);
                     return Mono.just(AddressSelector.getPrimaryUri(request, replicaAddresses));
                 } catch (GoneException e) {
@@ -196,8 +204,10 @@ public class ConsistencyWriter {
                 } catch (Exception e) {
                     return Mono.error(e);
                 }
-
-                replicaStatusList.set(Arrays.asList(primaryUri.getHealthStatusDiagnosticString()));
+                primaryUri.setHealthStatusTuplePrimary(true);
+                primaryUri.setHealthStatusTupleAttempting(true);
+                replicaStatuses.replace(primaryUri, primaryUri.getHealthStatusDiagnosticString());
+                replicaStatusList.set(new ArrayList<>(replicaStatuses.values()));
 
                 return this.transportClient.invokeResourceOperationAsync(primaryUri, request)
                                            .doOnError(
