@@ -79,6 +79,7 @@ public final class QueueLengthExceptionTriggerInternal extends ExceptionTriggerI
      */
     @Generated
     public QueueLengthExceptionTriggerInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**

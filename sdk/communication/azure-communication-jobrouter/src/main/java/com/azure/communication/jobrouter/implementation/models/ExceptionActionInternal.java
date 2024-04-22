@@ -33,6 +33,7 @@ public class ExceptionActionInternal implements JsonSerializable<ExceptionAction
     @Generated
     public ExceptionActionInternal() {
         this.kind = ExceptionActionKind.fromString("ExceptionActionInternal");
+        this.updatedProperties.add("kind");
     }
 
     /**

@@ -31,6 +31,7 @@ public class JobMatchingModeInternal implements JsonSerializable<JobMatchingMode
     @Generated
     public JobMatchingModeInternal() {
         this.kind = JobMatchingModeKind.fromString("JobMatchingModeInternal");
+        this.updatedProperties.add("kind");
     }
 
     /*

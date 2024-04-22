@@ -25,6 +25,7 @@ public final class SuspendModeInternal extends JobMatchingModeInternal {
      */
     @Generated
     public SuspendModeInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /*

@@ -79,6 +79,7 @@ public final class RuleEngineQueueSelectorAttachmentInternal extends QueueSelect
      */
     @Generated
     public RuleEngineQueueSelectorAttachmentInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**
@@ -125,9 +126,9 @@ public final class RuleEngineQueueSelectorAttachmentInternal extends QueueSelect
             if (this.rule == null) {
                 jsonWriter.writeNullField("rule");
             } else {
-                this.rule.serializeAsJsonMergePatch(true);
+                JsonMergePatchHelper.getRouterRuleInternalAccessor().prepareModelForJsonMergePatch(this.rule, true);
                 jsonWriter.writeJsonField("rule", this.rule);
-                this.rule.serializeAsJsonMergePatch(false);
+                JsonMergePatchHelper.getRouterRuleInternalAccessor().prepareModelForJsonMergePatch(this.rule, false);
             }
         }
         return jsonWriter.writeEndObject();

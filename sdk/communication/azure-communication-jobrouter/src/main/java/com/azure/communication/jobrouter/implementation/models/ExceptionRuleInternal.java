@@ -170,9 +170,11 @@ public final class ExceptionRuleInternal implements JsonSerializable<ExceptionRu
             if (this.trigger == null) {
                 jsonWriter.writeNullField("trigger");
             } else {
-                this.trigger.serializeAsJsonMergePatch(true);
+                JsonMergePatchHelper.getExceptionTriggerInternalAccessor()
+                    .prepareModelForJsonMergePatch(this.trigger, true);
                 jsonWriter.writeJsonField("trigger", this.trigger);
-                this.trigger.serializeAsJsonMergePatch(false);
+                JsonMergePatchHelper.getExceptionTriggerInternalAccessor()
+                    .prepareModelForJsonMergePatch(this.trigger, false);
             }
         }
         if (updatedProperties.contains("actions")) {

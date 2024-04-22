@@ -675,9 +675,11 @@ public final class RouterJobInternal implements JsonSerializable<RouterJobIntern
             if (this.matchingMode == null) {
                 jsonWriter.writeNullField("matchingMode");
             } else {
-                this.matchingMode.serializeAsJsonMergePatch(true);
+                JsonMergePatchHelper.getJobMatchingModeInternalAccessor()
+                    .prepareModelForJsonMergePatch(this.matchingMode, true);
                 jsonWriter.writeJsonField("matchingMode", this.matchingMode);
-                this.matchingMode.serializeAsJsonMergePatch(false);
+                JsonMergePatchHelper.getJobMatchingModeInternalAccessor()
+                    .prepareModelForJsonMergePatch(this.matchingMode, false);
             }
         }
         return jsonWriter.writeEndObject();

@@ -81,6 +81,7 @@ public final class WeightedAllocationWorkerSelectorAttachmentInternal extends Wo
      */
     @Generated
     public WeightedAllocationWorkerSelectorAttachmentInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**

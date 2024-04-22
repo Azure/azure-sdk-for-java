@@ -79,6 +79,7 @@ public final class WaitTimeExceptionTriggerInternal extends ExceptionTriggerInte
      */
     @Generated
     public WaitTimeExceptionTriggerInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**

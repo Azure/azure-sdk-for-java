@@ -302,9 +302,11 @@ public final class ClassificationPolicyInternal implements JsonSerializable<Clas
             if (this.prioritizationRule == null) {
                 jsonWriter.writeNullField("prioritizationRule");
             } else {
-                this.prioritizationRule.serializeAsJsonMergePatch(true);
+                JsonMergePatchHelper.getRouterRuleInternalAccessor()
+                    .prepareModelForJsonMergePatch(this.prioritizationRule, true);
                 jsonWriter.writeJsonField("prioritizationRule", this.prioritizationRule);
-                this.prioritizationRule.serializeAsJsonMergePatch(false);
+                JsonMergePatchHelper.getRouterRuleInternalAccessor()
+                    .prepareModelForJsonMergePatch(this.prioritizationRule, false);
             }
         }
         if (updatedProperties.contains("workerSelectorAttachments")) {

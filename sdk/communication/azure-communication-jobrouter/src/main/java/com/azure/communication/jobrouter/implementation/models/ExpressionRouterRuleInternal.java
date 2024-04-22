@@ -109,6 +109,7 @@ public final class ExpressionRouterRuleInternal extends RouterRuleInternal {
      */
     @Generated
     public ExpressionRouterRuleInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**

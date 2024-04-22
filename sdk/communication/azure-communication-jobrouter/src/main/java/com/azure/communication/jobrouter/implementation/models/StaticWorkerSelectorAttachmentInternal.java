@@ -79,6 +79,7 @@ public final class StaticWorkerSelectorAttachmentInternal extends WorkerSelector
      */
     @Generated
     public StaticWorkerSelectorAttachmentInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**
@@ -125,9 +126,11 @@ public final class StaticWorkerSelectorAttachmentInternal extends WorkerSelector
             if (this.workerSelector == null) {
                 jsonWriter.writeNullField("workerSelector");
             } else {
-                this.workerSelector.serializeAsJsonMergePatch(true);
+                JsonMergePatchHelper.getRouterWorkerSelectorInternalAccessor()
+                    .prepareModelForJsonMergePatch(this.workerSelector, true);
                 jsonWriter.writeJsonField("workerSelector", this.workerSelector);
-                this.workerSelector.serializeAsJsonMergePatch(false);
+                JsonMergePatchHelper.getRouterWorkerSelectorInternalAccessor()
+                    .prepareModelForJsonMergePatch(this.workerSelector, false);
             }
         }
         return jsonWriter.writeEndObject();

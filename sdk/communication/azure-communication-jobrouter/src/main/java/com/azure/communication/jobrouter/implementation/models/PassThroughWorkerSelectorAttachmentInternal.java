@@ -125,6 +125,7 @@ public final class PassThroughWorkerSelectorAttachmentInternal extends WorkerSel
      */
     @Generated
     public PassThroughWorkerSelectorAttachmentInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**

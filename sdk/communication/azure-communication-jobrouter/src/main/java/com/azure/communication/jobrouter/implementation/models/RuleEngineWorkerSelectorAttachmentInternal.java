@@ -79,6 +79,7 @@ public final class RuleEngineWorkerSelectorAttachmentInternal extends WorkerSele
      */
     @Generated
     public RuleEngineWorkerSelectorAttachmentInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**
@@ -125,9 +126,9 @@ public final class RuleEngineWorkerSelectorAttachmentInternal extends WorkerSele
             if (this.rule == null) {
                 jsonWriter.writeNullField("rule");
             } else {
-                this.rule.serializeAsJsonMergePatch(true);
+                JsonMergePatchHelper.getRouterRuleInternalAccessor().prepareModelForJsonMergePatch(this.rule, true);
                 jsonWriter.writeJsonField("rule", this.rule);
-                this.rule.serializeAsJsonMergePatch(false);
+                JsonMergePatchHelper.getRouterRuleInternalAccessor().prepareModelForJsonMergePatch(this.rule, false);
             }
         }
         return jsonWriter.writeEndObject();

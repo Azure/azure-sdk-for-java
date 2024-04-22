@@ -79,6 +79,7 @@ public final class StaticQueueSelectorAttachmentInternal extends QueueSelectorAt
      */
     @Generated
     public StaticQueueSelectorAttachmentInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**
@@ -125,9 +126,11 @@ public final class StaticQueueSelectorAttachmentInternal extends QueueSelectorAt
             if (this.queueSelector == null) {
                 jsonWriter.writeNullField("queueSelector");
             } else {
-                this.queueSelector.serializeAsJsonMergePatch(true);
+                JsonMergePatchHelper.getRouterQueueSelectorInternalAccessor()
+                    .prepareModelForJsonMergePatch(this.queueSelector, true);
                 jsonWriter.writeJsonField("queueSelector", this.queueSelector);
-                this.queueSelector.serializeAsJsonMergePatch(false);
+                JsonMergePatchHelper.getRouterQueueSelectorInternalAccessor()
+                    .prepareModelForJsonMergePatch(this.queueSelector, false);
             }
         }
         return jsonWriter.writeEndObject();

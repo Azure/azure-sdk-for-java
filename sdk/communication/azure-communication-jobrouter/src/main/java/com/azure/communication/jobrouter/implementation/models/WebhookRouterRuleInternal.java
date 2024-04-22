@@ -44,6 +44,7 @@ public final class WebhookRouterRuleInternal extends RouterRuleInternal {
      */
     @Generated
     public WebhookRouterRuleInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**
@@ -194,10 +195,11 @@ public final class WebhookRouterRuleInternal extends RouterRuleInternal {
             if (this.clientCredential == null) {
                 jsonWriter.writeNullField("clientCredential");
             } else {
-                JsonMergePatchHelper.getOAuth2WebhookClientCredentialAccessor().prepareModelForJsonMergePatch(this.clientCredential, true);
+                JsonMergePatchHelper.getOAuth2WebhookClientCredentialAccessor()
+                    .prepareModelForJsonMergePatch(this.clientCredential, true);
                 jsonWriter.writeJsonField("clientCredential", this.clientCredential);
-                JsonMergePatchHelper.getOAuth2WebhookClientCredentialAccessor().prepareModelForJsonMergePatch(this.clientCredential, false);
-
+                JsonMergePatchHelper.getOAuth2WebhookClientCredentialAccessor()
+                    .prepareModelForJsonMergePatch(this.clientCredential, false);
             }
         }
         if (updatedProperties.contains("webhookUri")) {

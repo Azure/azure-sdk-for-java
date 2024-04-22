@@ -38,6 +38,7 @@ public final class BestWorkerModeInternal extends DistributionModeInternal {
      */
     @Generated
     public BestWorkerModeInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**
@@ -218,18 +219,22 @@ public final class BestWorkerModeInternal extends DistributionModeInternal {
             if (this.scoringRule == null) {
                 jsonWriter.writeNullField("scoringRule");
             } else {
-                this.scoringRule.serializeAsJsonMergePatch(true);
+                JsonMergePatchHelper.getRouterRuleInternalAccessor()
+                    .prepareModelForJsonMergePatch(this.scoringRule, true);
                 jsonWriter.writeJsonField("scoringRule", this.scoringRule);
-                this.scoringRule.serializeAsJsonMergePatch(false);
+                JsonMergePatchHelper.getRouterRuleInternalAccessor()
+                    .prepareModelForJsonMergePatch(this.scoringRule, false);
             }
         }
         if (updatedProperties.contains("scoringRuleOptions")) {
             if (this.scoringRuleOptions == null) {
                 jsonWriter.writeNullField("scoringRuleOptions");
             } else {
-                JsonMergePatchHelper.getScoringRuleOptionsAccessor().prepareModelForJsonMergePatch(this.scoringRuleOptions, true);
+                JsonMergePatchHelper.getScoringRuleOptionsAccessor()
+                    .prepareModelForJsonMergePatch(this.scoringRuleOptions, true);
                 jsonWriter.writeJsonField("scoringRuleOptions", this.scoringRuleOptions);
-                JsonMergePatchHelper.getScoringRuleOptionsAccessor().prepareModelForJsonMergePatch(this.scoringRuleOptions, false);
+                JsonMergePatchHelper.getScoringRuleOptionsAccessor()
+                    .prepareModelForJsonMergePatch(this.scoringRuleOptions, false);
             }
         }
         return jsonWriter.writeEndObject();

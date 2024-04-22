@@ -31,6 +31,7 @@ public final class StaticRouterRuleInternal extends RouterRuleInternal {
      */
     @Generated
     public StaticRouterRuleInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**

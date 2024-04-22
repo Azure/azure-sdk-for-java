@@ -38,6 +38,7 @@ public final class ReclassifyExceptionActionInternal extends ExceptionActionInte
      */
     @Generated
     public ReclassifyExceptionActionInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**

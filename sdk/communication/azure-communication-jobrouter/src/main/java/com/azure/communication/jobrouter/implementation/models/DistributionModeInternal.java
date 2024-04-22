@@ -45,6 +45,7 @@ public class DistributionModeInternal implements JsonSerializable<DistributionMo
     @Generated
     public DistributionModeInternal() {
         this.kind = DistributionModeKind.fromString("DistributionModeInternal");
+        this.updatedProperties.add("kind");
     }
 
     /**

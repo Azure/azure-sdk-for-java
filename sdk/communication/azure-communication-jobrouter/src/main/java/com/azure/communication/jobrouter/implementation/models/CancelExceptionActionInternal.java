@@ -37,6 +37,7 @@ public final class CancelExceptionActionInternal extends ExceptionActionInternal
      */
     @Generated
     public CancelExceptionActionInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**

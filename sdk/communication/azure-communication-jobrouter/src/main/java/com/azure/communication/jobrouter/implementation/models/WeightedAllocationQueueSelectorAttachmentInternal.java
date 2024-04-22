@@ -81,6 +81,7 @@ public final class WeightedAllocationQueueSelectorAttachmentInternal extends Que
      */
     @Generated
     public WeightedAllocationQueueSelectorAttachmentInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**

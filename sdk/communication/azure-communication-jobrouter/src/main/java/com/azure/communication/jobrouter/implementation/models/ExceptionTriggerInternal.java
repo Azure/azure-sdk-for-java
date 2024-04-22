@@ -27,6 +27,7 @@ public class ExceptionTriggerInternal implements JsonSerializable<ExceptionTrigg
     @Generated
     public ExceptionTriggerInternal() {
         this.kind = ExceptionTriggerKind.fromString("ExceptionTriggerInternal");
+        this.updatedProperties.add("kind");
     }
 
     /*

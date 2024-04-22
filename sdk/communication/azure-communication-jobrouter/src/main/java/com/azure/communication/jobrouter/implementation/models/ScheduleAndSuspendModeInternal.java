@@ -82,6 +82,7 @@ public final class ScheduleAndSuspendModeInternal extends JobMatchingModeInterna
      */
     @Generated
     public ScheduleAndSuspendModeInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**

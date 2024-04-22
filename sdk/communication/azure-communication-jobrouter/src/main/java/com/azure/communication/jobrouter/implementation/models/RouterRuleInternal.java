@@ -32,6 +32,7 @@ public class RouterRuleInternal implements JsonSerializable<RouterRuleInternal> 
     @Generated
     public RouterRuleInternal() {
         this.kind = RouterRuleKind.fromString("RouterRuleInternal");
+        this.updatedProperties.add("kind");
     }
 
     /*

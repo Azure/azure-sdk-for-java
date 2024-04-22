@@ -25,6 +25,7 @@ public final class QueueAndMatchModeInternal extends JobMatchingModeInternal {
      */
     @Generated
     public QueueAndMatchModeInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /*

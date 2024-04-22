@@ -96,6 +96,7 @@ public final class PassThroughQueueSelectorAttachmentInternal extends QueueSelec
      */
     @Generated
     public PassThroughQueueSelectorAttachmentInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**

@@ -109,6 +109,7 @@ public final class FunctionRouterRuleInternal extends RouterRuleInternal {
      */
     @Generated
     public FunctionRouterRuleInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**
@@ -163,9 +164,11 @@ public final class FunctionRouterRuleInternal extends RouterRuleInternal {
             if (this.credential == null) {
                 jsonWriter.writeNullField("credential");
             } else {
-                JsonMergePatchHelper.getFunctionRouterRuleCredentialAccessor().prepareModelForJsonMergePatch(this.credential, true);
+                JsonMergePatchHelper.getFunctionRouterRuleCredentialAccessor()
+                    .prepareModelForJsonMergePatch(this.credential, true);
                 jsonWriter.writeJsonField("credential", this.credential);
-                JsonMergePatchHelper.getFunctionRouterRuleCredentialAccessor().prepareModelForJsonMergePatch(this.credential, false);
+                JsonMergePatchHelper.getFunctionRouterRuleCredentialAccessor()
+                    .prepareModelForJsonMergePatch(this.credential, false);
             }
         }
         return jsonWriter.writeEndObject();

@@ -229,9 +229,11 @@ public final class DistributionPolicyInternal implements JsonSerializable<Distri
             if (this.mode == null) {
                 jsonWriter.writeNullField("mode");
             } else {
-                this.mode.serializeAsJsonMergePatch(true);
+                JsonMergePatchHelper.getDistributionModeInternalAccessor()
+                    .prepareModelForJsonMergePatch(this.mode, true);
                 jsonWriter.writeJsonField("mode", this.mode);
-                this.mode.serializeAsJsonMergePatch(false);
+                JsonMergePatchHelper.getDistributionModeInternalAccessor()
+                    .prepareModelForJsonMergePatch(this.mode, false);
             }
         }
         return jsonWriter.writeEndObject();

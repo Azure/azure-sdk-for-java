@@ -96,6 +96,7 @@ public final class ConditionalQueueSelectorAttachmentInternal extends QueueSelec
      */
     @Generated
     public ConditionalQueueSelectorAttachmentInternal() {
+        this.updatedProperties.add("kind");
     }
 
     /**
@@ -159,9 +160,11 @@ public final class ConditionalQueueSelectorAttachmentInternal extends QueueSelec
             if (this.condition == null) {
                 jsonWriter.writeNullField("condition");
             } else {
-                this.condition.serializeAsJsonMergePatch(true);
+                JsonMergePatchHelper.getRouterRuleInternalAccessor()
+                    .prepareModelForJsonMergePatch(this.condition, true);
                 jsonWriter.writeJsonField("condition", this.condition);
-                this.condition.serializeAsJsonMergePatch(false);
+                JsonMergePatchHelper.getRouterRuleInternalAccessor()
+                    .prepareModelForJsonMergePatch(this.condition, false);
             }
         }
         if (updatedProperties.contains("queueSelectors")) {

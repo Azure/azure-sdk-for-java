@@ -27,6 +27,7 @@ public class QueueSelectorAttachmentInternal implements JsonSerializable<QueueSe
     @Generated
     public QueueSelectorAttachmentInternal() {
         this.kind = QueueSelectorAttachmentKind.fromString("QueueSelectorAttachmentInternal");
+        this.updatedProperties.add("kind");
     }
 
     /*
