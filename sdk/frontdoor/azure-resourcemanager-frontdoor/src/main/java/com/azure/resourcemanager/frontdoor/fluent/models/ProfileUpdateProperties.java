@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.frontdoor.models.State;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the properties of an experiment. */
+/**
+ * Defines the properties of an experiment.
+ */
 @Fluent
 public final class ProfileUpdateProperties {
     /*
@@ -17,13 +19,15 @@ public final class ProfileUpdateProperties {
     @JsonProperty(value = "enabledState")
     private State enabledState;
 
-    /** Creates an instance of ProfileUpdateProperties class. */
+    /**
+     * Creates an instance of ProfileUpdateProperties class.
+     */
     public ProfileUpdateProperties() {
     }
 
     /**
      * Get the enabledState property: The enabled state of the Profile.
-     *
+     * 
      * @return the enabledState value.
      */
     public State enabledState() {
@@ -32,7 +36,7 @@ public final class ProfileUpdateProperties {
 
     /**
      * Set the enabledState property: The enabled state of the Profile.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the ProfileUpdateProperties object itself.
      */
@@ -43,7 +47,7 @@ public final class ProfileUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

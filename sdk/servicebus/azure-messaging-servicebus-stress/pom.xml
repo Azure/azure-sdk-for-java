@@ -45,7 +45,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.16.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+      <version>7.16.0</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
     </dependency>
 
     <!-- logging, tracing, metrics -->
@@ -94,7 +94,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>

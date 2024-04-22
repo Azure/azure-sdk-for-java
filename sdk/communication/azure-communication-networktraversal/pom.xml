@@ -16,13 +16,12 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-networktraversal</artifactId>
   <packaging>jar</packaging>
-  <version>1.1.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-networktraversal;current} -->
+  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-networktraversal;current} -->
 
   <name>Microsoft Azure Network Traversal client library for communication</name>
   <description>
-    This package contains APIs for application Network Traversal in Microsoft Azure Communication Services.
-    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-networktraversal/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-identity/CHANGELOG.md.
-    Microsoft Azure Communication Network Traversal quickstart - https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-java
+    Please note, this package has been deprecated and will no longer be maintained after 03/31/2024. 
+    Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
   </description>
   <licenses>
     <license>
@@ -67,6 +66,12 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
       <version>1.3.1</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -129,7 +134,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.11</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.12</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <excludes>
             <exclude>com/azure/communication/**/models/**/*</exclude>
@@ -149,7 +154,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>

@@ -8,7 +8,8 @@ public enum ItemWriteStrategy {
     ITEM_APPEND("ItemAppend"),
     ITEM_DELETE("ItemDelete"),
     ITEM_DELETE_IF_NOT_MODIFIED("ItemDeleteIfNotModified"),
-    ITEM_OVERWRITE_IF_NOT_MODIFIED("ItemOverwriteIfNotModified");
+    ITEM_OVERWRITE_IF_NOT_MODIFIED("ItemOverwriteIfNotModified"),
+    ITEM_PATCH("ItemPatch");
 
     // TODO[Public Preview] Add ItemPatch, ItemBulkUpdate
     private final String name;

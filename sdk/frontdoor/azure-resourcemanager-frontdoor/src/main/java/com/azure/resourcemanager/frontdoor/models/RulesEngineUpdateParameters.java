@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Rules Engine Configuration to apply to a Routing Rule. */
+/**
+ * Rules Engine Configuration to apply to a Routing Rule.
+ */
 @Fluent
 public class RulesEngineUpdateParameters {
     /*
@@ -17,13 +19,15 @@ public class RulesEngineUpdateParameters {
     @JsonProperty(value = "rules")
     private List<RulesEngineRule> rules;
 
-    /** Creates an instance of RulesEngineUpdateParameters class. */
+    /**
+     * Creates an instance of RulesEngineUpdateParameters class.
+     */
     public RulesEngineUpdateParameters() {
     }
 
     /**
      * Get the rules property: A list of rules that define a particular Rules Engine Configuration.
-     *
+     * 
      * @return the rules value.
      */
     public List<RulesEngineRule> rules() {
@@ -32,7 +36,7 @@ public class RulesEngineUpdateParameters {
 
     /**
      * Set the rules property: A list of rules that define a particular Rules Engine Configuration.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the RulesEngineUpdateParameters object itself.
      */
@@ -43,7 +47,7 @@ public class RulesEngineUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

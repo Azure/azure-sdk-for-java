@@ -25,7 +25,7 @@ public final class Completions {
      */
     @Generated
     @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
      * The collection of completions choices associated with this completions response.
@@ -34,14 +34,14 @@ public final class Completions {
      */
     @Generated
     @JsonProperty(value = "choices")
-    private List<Choice> choices;
+    private final List<Choice> choices;
 
     /*
      * Usage information for tokens processed and generated as part of this completions operation.
      */
     @Generated
     @JsonProperty(value = "usage")
-    private CompletionsUsage usage;
+    private final CompletionsUsage usage;
 
     /**
      * Get the id property: A unique identifier associated with this completions response.
@@ -114,7 +114,7 @@ public final class Completions {
      */
     @Generated
     @JsonProperty(value = "created")
-    private long createdAt;
+    private final long createdAt;
 
     /**
      * Creates an instance of Completions class.
@@ -127,7 +127,11 @@ public final class Completions {
     @Generated
     private Completions(String id, OffsetDateTime createdAt, List<Choice> choices, CompletionsUsage usage) {
         this.id = id;
-        this.createdAt = createdAt.toEpochSecond();
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
         this.choices = choices;
         this.usage = usage;
     }

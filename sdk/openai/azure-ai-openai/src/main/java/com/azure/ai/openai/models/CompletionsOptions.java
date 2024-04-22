@@ -23,7 +23,7 @@ public final class CompletionsOptions {
      */
     @Generated
     @JsonProperty(value = "prompt")
-    private List<String> prompt;
+    private final List<String> prompt;
 
     /*
      * The maximum number of tokens to generate.
@@ -231,8 +231,7 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Get the topP property: An alternative to sampling with temperature called nucleus sampling. This value causes
-     * the
+     * Get the topP property: An alternative to sampling with temperature called nucleus sampling. This value causes the
      * model to consider the results of tokens with the provided probability mass. As an example, a
      * value of 0.15 will cause only the tokens comprising the top 15% of probability mass to be
      * considered.
@@ -247,8 +246,7 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Set the topP property: An alternative to sampling with temperature called nucleus sampling. This value causes
-     * the
+     * Set the topP property: An alternative to sampling with temperature called nucleus sampling. This value causes the
      * model to consider the results of tokens with the provided probability mass. As an example, a
      * value of 0.15 will cause only the tokens comprising the top 15% of probability mass to be
      * considered.
@@ -453,8 +451,8 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Get the frequencyPenalty property: A value that influences the probability of generated tokens appearing based
-     * on their cumulative
+     * Get the frequencyPenalty property: A value that influences the probability of generated tokens appearing based on
+     * their cumulative
      * frequency in generated text.
      * Positive values will make tokens less likely to appear as their frequency increases and
      * decrease the likelihood of the model repeating the same statements verbatim.
@@ -467,8 +465,8 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Set the frequencyPenalty property: A value that influences the probability of generated tokens appearing based
-     * on their cumulative
+     * Set the frequencyPenalty property: A value that influences the probability of generated tokens appearing based on
+     * their cumulative
      * frequency in generated text.
      * Positive values will make tokens less likely to appear as their frequency increases and
      * decrease the likelihood of the model repeating the same statements verbatim.
