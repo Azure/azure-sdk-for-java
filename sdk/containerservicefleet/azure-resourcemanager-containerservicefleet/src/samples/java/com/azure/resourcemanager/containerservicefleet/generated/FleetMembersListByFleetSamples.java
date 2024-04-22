@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.containerservicefleet.generated;
 
-/** Samples for FleetMembers ListByFleet. */
+/**
+ * Samples for FleetMembers ListByFleet.
+ */
 public final class FleetMembersListByFleetSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/FleetMembers_ListByFleet.json
+     * x-ms-original-file:
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-02-02-preview/
+     * examples/FleetMembers_ListByFleet.json
      */
     /**
      * Sample code: Lists the members of a Fleet.
-     *
+     * 
      * @param manager Entry point to ContainerServiceFleetManager.
      */
-    public static void listsTheMembersOfAFleet(
-        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+    public static void
+        listsTheMembersOfAFleet(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
         manager.fleetMembers().listByFleet("rg1", "fleet1", com.azure.core.util.Context.NONE);
     }
 }

@@ -78,12 +78,13 @@ public final class PackageStore {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model PackageStore"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model PackageStore"));
         }
         if (packageStoreLinkedService() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property packageStoreLinkedService in model PackageStore"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property packageStoreLinkedService in model PackageStore"));
         } else {
             packageStoreLinkedService().validate();
         }

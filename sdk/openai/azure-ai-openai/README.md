@@ -43,7 +43,7 @@ If you want to see the full code for these snippets check out our [samples folde
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai</artifactId>
-    <version>1.0.0-beta.6</version>
+    <version>1.0.0-beta.9</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -105,7 +105,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.11.2</version>
+    <version>1.11.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -262,7 +262,7 @@ Embeddings embeddings = client.getEmbeddings("{deploymentOrModelName}", embeddin
 
 for (EmbeddingItem item : embeddings.getData()) {
     System.out.printf("Index: %d.%n", item.getPromptIndex());
-    for (Double embedding : item.getEmbedding()) {
+    for (Float embedding : item.getEmbedding()) {
         System.out.printf("%f;", embedding);
     }
 }

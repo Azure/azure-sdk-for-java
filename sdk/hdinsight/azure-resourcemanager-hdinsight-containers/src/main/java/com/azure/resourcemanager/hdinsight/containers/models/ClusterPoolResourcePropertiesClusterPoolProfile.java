@@ -6,14 +6,20 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** CLuster pool profile. */
+/**
+ * CLuster pool profile.
+ */
 @Fluent
 public final class ClusterPoolResourcePropertiesClusterPoolProfile extends ClusterPoolProfile {
-    /** Creates an instance of ClusterPoolResourcePropertiesClusterPoolProfile class. */
+    /**
+     * Creates an instance of ClusterPoolResourcePropertiesClusterPoolProfile class.
+     */
     public ClusterPoolResourcePropertiesClusterPoolProfile() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterPoolResourcePropertiesClusterPoolProfile withClusterPoolVersion(String clusterPoolVersion) {
         super.withClusterPoolVersion(clusterPoolVersion);
@@ -22,7 +28,7 @@ public final class ClusterPoolResourcePropertiesClusterPoolProfile extends Clust
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

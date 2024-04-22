@@ -17,8 +17,7 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
 
     /*
      * The authentication method to use when accessing the defined data source.
-     * Each data source type supports a specific set of available authentication methods; please see the documentation
-     * of
+     * Each data source type supports a specific set of available authentication methods; please see the documentation of
      * the data source for supported mechanisms.
      * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
      * authentication.
@@ -42,17 +41,14 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
     private Boolean inScope;
 
     /*
-     * The configured strictness of the search relevance filtering. The higher of strictness, the higher of the
-     * precision but lower recall of the answer.
+     * The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but lower recall of the answer.
      */
     @Generated
     @JsonProperty(value = "strictness")
     private Integer strictness;
 
     /*
-     * Give the model instructions about how it should behave and any context it should reference when generating a
-     * response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token
-     * limit for it, and it counts against the overall token limit.
+     * Give the model instructions about how it should behave and any context it should reference when generating a response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token limit for it, and it counts against the overall token limit.
      */
     @Generated
     @JsonProperty(value = "role_information")
@@ -63,21 +59,21 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
      */
     @Generated
     @JsonProperty(value = "project_resource_id")
-    private String projectResourceId;
+    private final String projectResourceId;
 
     /*
      * The Azure Machine Learning vector index name.
      */
     @Generated
     @JsonProperty(value = "name")
-    private String name;
+    private final String name;
 
     /*
      * The version of the Azure Machine Learning vector index.
      */
     @Generated
     @JsonProperty(value = "version")
-    private String version;
+    private final String version;
 
     /*
      * Search filter. Only supported if the Azure Machine Learning vector index is of type AzureSearch.

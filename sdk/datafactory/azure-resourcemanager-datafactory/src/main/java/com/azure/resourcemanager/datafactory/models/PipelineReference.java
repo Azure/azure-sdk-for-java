@@ -104,8 +104,9 @@ public final class PipelineReference {
      */
     public void validate() {
         if (referenceName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property referenceName in model PipelineReference"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property referenceName in model PipelineReference"));
         }
     }
 

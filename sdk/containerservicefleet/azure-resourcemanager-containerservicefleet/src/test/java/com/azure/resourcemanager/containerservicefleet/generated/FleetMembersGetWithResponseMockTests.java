@@ -30,42 +30,28 @@ public final class FleetMembersGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"clusterResourceId\":\"exilzznfqqnvwpmq\",\"group\":\"ruoujmk\",\"provisioningState\":\"Updating\"},\"eTag\":\"qytjrybnwjewgd\",\"id\":\"ervnaenqpehi\",\"name\":\"doy\",\"type\":\"mifthnzdnd\"}";
+        String responseStr
+            = "{\"properties\":{\"clusterResourceId\":\"wmgxcxrsl\",\"group\":\"utwu\",\"provisioningState\":\"Canceled\"},\"eTag\":\"pkhjwni\",\"id\":\"sluicpdggkzz\",\"name\":\"vmbmp\",\"type\":\"xmodf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ContainerServiceFleetManager manager =
-            ContainerServiceFleetManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ContainerServiceFleetManager manager = ContainerServiceFleetManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        FleetMember response =
-            manager
-                .fleetMembers()
-                .getWithResponse("birx", "pybsrfbjfdtw", "sotftpvj", com.azure.core.util.Context.NONE)
-                .getValue();
+        FleetMember response = manager.fleetMembers()
+            .getWithResponse("rhvoods", "tbobz", "opcjwvnhd", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("exilzznfqqnvwpmq", response.clusterResourceId());
-        Assertions.assertEquals("ruoujmk", response.group());
+        Assertions.assertEquals("wmgxcxrsl", response.clusterResourceId());
+        Assertions.assertEquals("utwu", response.group());
     }
 }

@@ -5,7 +5,11 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -13,22 +17,18 @@ import java.util.Map;
  * The details used to create a new assistant thread.
  */
 @Fluent
-public final class AssistantThreadCreationOptions {
+public final class AssistantThreadCreationOptions implements JsonSerializable<AssistantThreadCreationOptions> {
 
     /*
      * The initial messages to associate with the new thread.
      */
     @Generated
-    @JsonProperty(value = "messages")
     private List<ThreadInitializationMessage> messages;
 
     /*
-     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
-     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
-     * characters in length.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
      */
     @Generated
-    @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
     /**
@@ -84,5 +84,48 @@ public final class AssistantThreadCreationOptions {
     public AssistantThreadCreationOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("messages", this.messages, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AssistantThreadCreationOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AssistantThreadCreationOptions if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AssistantThreadCreationOptions.
+     */
+    @Generated
+    public static AssistantThreadCreationOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AssistantThreadCreationOptions deserializedAssistantThreadCreationOptions
+                = new AssistantThreadCreationOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("messages".equals(fieldName)) {
+                    List<ThreadInitializationMessage> messages
+                        = reader.readArray(reader1 -> ThreadInitializationMessage.fromJson(reader1));
+                    deserializedAssistantThreadCreationOptions.messages = messages;
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAssistantThreadCreationOptions.metadata = metadata;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedAssistantThreadCreationOptions;
+        });
     }
 }

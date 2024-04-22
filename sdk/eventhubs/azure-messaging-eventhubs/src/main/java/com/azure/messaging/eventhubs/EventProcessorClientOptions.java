@@ -9,7 +9,7 @@ import java.time.Duration;
 import java.util.function.Function;
 
 /**
- * Package-private class specifying the options set when creating EventProcessorClient.
+ * Options set when creating EventProcessorClient.
  */
 class EventProcessorClientOptions {
     private boolean batchReceiveMode;

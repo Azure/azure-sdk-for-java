@@ -12,21 +12,30 @@ public final class SapTableSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapTableSource model = BinaryData.fromString(
-            "{\"type\":\"SapTableSource\",\"rowCount\":\"dataiznbif\",\"rowSkips\":\"dataix\",\"rfcTableFields\":\"datakj\",\"rfcTableOptions\":\"dataxl\",\"batchSize\":\"datamvrblj\",\"customRfcReadTableFunctionModule\":\"datawsaskullvtsaujiv\",\"sapDataColumnDelimiter\":\"datazidzq\",\"partitionOption\":\"datafhzxkjygkuidgwdh\",\"partitionSettings\":{\"partitionColumnName\":\"datacozb\",\"partitionUpperBound\":\"datat\",\"partitionLowerBound\":\"datacmxqdexnkp\",\"maxPartitionsNumber\":\"dataxc\"},\"queryTimeout\":\"datamzykp\",\"additionalColumns\":\"datagiumuztb\",\"sourceRetryCount\":\"datatfmcnrgwgcsto\",\"sourceRetryWait\":\"dataveehmvr\",\"maxConcurrentConnections\":\"dataurpzry\",\"disableMetricsCollection\":\"datafdhch\",\"\":{\"fqsjzlcktkbg\":\"dataahaxyrdlvbom\",\"tle\":\"datateehyhxgnlpj\",\"krcohhuwzun\":\"dataymijhn\"}}")
+            "{\"type\":\"pubsdinfauyt\",\"rowCount\":\"dataql\",\"rowSkips\":\"datarhctbrvegdamoy\",\"rfcTableFields\":\"datafjpkezqjizbyczme\",\"rfcTableOptions\":\"dataacgvlnpjjb\",\"batchSize\":\"datayrktuvdestarulnh\",\"customRfcReadTableFunctionModule\":\"datatvyhsxhcrf\",\"sapDataColumnDelimiter\":\"dataxexupcuizvx\",\"partitionOption\":\"datavzhlkeotdscqkxzr\",\"partitionSettings\":{\"partitionColumnName\":\"dataqzmvemli\",\"partitionUpperBound\":\"datadfqfnftrrhhgwaw\",\"partitionLowerBound\":\"datah\",\"maxPartitionsNumber\":\"datavcfxdvk\"},\"queryTimeout\":\"dataxultxhqqvdhdyy\",\"additionalColumns\":\"datatx\",\"sourceRetryCount\":\"datavsdyqyjkmfo\",\"sourceRetryWait\":\"datamxedlcxm\",\"maxConcurrentConnections\":\"datatpbapojknvxantlp\",\"disableMetricsCollection\":\"dataiipfgdnqpkvvrho\",\"\":{\"uexhskh\":\"dataqdvnruo\",\"xhegc\":\"dataqlvocrdd\",\"unqwcrkkabyx\":\"datalhqzcklq\"}}")
             .toObject(SapTableSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapTableSource model = new SapTableSource().withSourceRetryCount("datatfmcnrgwgcsto")
-            .withSourceRetryWait("dataveehmvr").withMaxConcurrentConnections("dataurpzry")
-            .withDisableMetricsCollection("datafdhch").withQueryTimeout("datamzykp")
-            .withAdditionalColumns("datagiumuztb").withRowCount("dataiznbif").withRowSkips("dataix")
-            .withRfcTableFields("datakj").withRfcTableOptions("dataxl").withBatchSize("datamvrblj")
-            .withCustomRfcReadTableFunctionModule("datawsaskullvtsaujiv").withSapDataColumnDelimiter("datazidzq")
-            .withPartitionOption("datafhzxkjygkuidgwdh").withPartitionSettings(
-                new SapTablePartitionSettings().withPartitionColumnName("datacozb").withPartitionUpperBound("datat")
-                    .withPartitionLowerBound("datacmxqdexnkp").withMaxPartitionsNumber("dataxc"));
+        SapTableSource model = new SapTableSource().withSourceRetryCount("datavsdyqyjkmfo")
+            .withSourceRetryWait("datamxedlcxm")
+            .withMaxConcurrentConnections("datatpbapojknvxantlp")
+            .withDisableMetricsCollection("dataiipfgdnqpkvvrho")
+            .withQueryTimeout("dataxultxhqqvdhdyy")
+            .withAdditionalColumns("datatx")
+            .withRowCount("dataql")
+            .withRowSkips("datarhctbrvegdamoy")
+            .withRfcTableFields("datafjpkezqjizbyczme")
+            .withRfcTableOptions("dataacgvlnpjjb")
+            .withBatchSize("datayrktuvdestarulnh")
+            .withCustomRfcReadTableFunctionModule("datatvyhsxhcrf")
+            .withSapDataColumnDelimiter("dataxexupcuizvx")
+            .withPartitionOption("datavzhlkeotdscqkxzr")
+            .withPartitionSettings(new SapTablePartitionSettings().withPartitionColumnName("dataqzmvemli")
+                .withPartitionUpperBound("datadfqfnftrrhhgwaw")
+                .withPartitionLowerBound("datah")
+                .withMaxPartitionsNumber("datavcfxdvk"));
         model = BinaryData.fromObject(model).toObject(SapTableSource.class);
     }
 }

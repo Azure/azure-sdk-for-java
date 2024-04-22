@@ -10,8 +10,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.OperationDispla
 public final class OperationDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationDisplay model = BinaryData.fromString(
-            "{\"provider\":\"zpfrla\",\"resource\":\"zrnw\",\"operation\":\"indfpwpjyl\",\"description\":\"tlhflsjcdhszf\"}")
+        OperationDisplay model = BinaryData
+            .fromString(
+                "{\"provider\":\"r\",\"resource\":\"ldgmfpgvmpip\",\"operation\":\"ltha\",\"description\":\"x\"}")
             .toObject(OperationDisplay.class);
     }
 

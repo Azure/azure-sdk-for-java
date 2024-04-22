@@ -19,14 +19,14 @@ public final class SpeechGenerationOptions {
      */
     @Generated
     @JsonProperty(value = "input")
-    private String input;
+    private final String input;
 
     /*
      * The voice to use for text-to-speech.
      */
     @Generated
     @JsonProperty(value = "voice")
-    private SpeechVoice voice;
+    private final SpeechVoice voice;
 
     /*
      * The audio output format for the spoken text. By default, the MP3 format will be used.
@@ -36,8 +36,7 @@ public final class SpeechGenerationOptions {
     private SpeechGenerationResponseFormat responseFormat;
 
     /*
-     * The speed of speech for generated audio. Values are valid in the range from 0.25 to 4.0, with 1.0 the default
-     * and higher values corresponding to faster speech.
+     * The speed of speech for generated audio. Values are valid in the range from 0.25 to 4.0, with 1.0 the default and higher values corresponding to faster speech.
      */
     @Generated
     @JsonProperty(value = "speed")

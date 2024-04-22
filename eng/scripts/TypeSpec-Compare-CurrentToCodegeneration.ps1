@@ -18,6 +18,12 @@ param(
   [string]$Directory
 )
 
+function Reset-Repository {
+  # Clean up generated code, so that next step will not be affected.
+  git reset --hard
+  git clean -fd $sdkPath
+}
+
 Write-Host "
 
 ===========================================
@@ -51,6 +57,7 @@ foreach ($tspLocationPath in (Get-ChildItem -Path $Directory -Filter "tsp-locati
 
 if ($failedSdk.Length -gt 0) {
   Write-Host "Code generation failed for following modules: $failedSdk"
+  Reset-Repository
   exit 1
 }
 
@@ -71,14 +78,13 @@ if ($LastExitCode -ne 0) {
 The following files are out of date:
 $status
 "
+  Reset-Repository
   exit 1
 }
 
 # Delete out TypeSpec temporary folders if they still exist.
 Get-ChildItem -Path $Directory -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
-    Remove-Item -Path $_.FullName -Recurse -Force
+  Remove-Item -Path $_.FullName -Recurse -Force
 }
 
-# Clean up generated code, so that next step will not be affected.
-git checkout $sdkPath
-git clean -fd $sdkPath
+Reset-Repository

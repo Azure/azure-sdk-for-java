@@ -27,14 +27,14 @@ public final class RouterJobOffer {
      */
     @Generated
     @JsonProperty(value = "jobId")
-    private String jobId;
+    private final String jobId;
 
     /*
      * The capacity cost consumed by the job offer.
      */
     @Generated
     @JsonProperty(value = "capacityCost")
-    private int capacityCost;
+    private final int capacityCost;
 
     /*
      * Timestamp when the offer was created in UTC.
@@ -49,6 +49,20 @@ public final class RouterJobOffer {
     @Generated
     @JsonProperty(value = "expiresAt")
     private OffsetDateTime expiresAt;
+
+    /**
+     * Creates an instance of RouterJobOffer class.
+     *
+     * @param jobId the jobId value to set.
+     * @param capacityCost the capacityCost value to set.
+     */
+    @Generated
+    @JsonCreator
+    private RouterJobOffer(@JsonProperty(value = "jobId") String jobId,
+        @JsonProperty(value = "capacityCost") int capacityCost) {
+        this.jobId = jobId;
+        this.capacityCost = capacityCost;
+    }
 
     /**
      * Get the offerId property: Id of an offer.
@@ -98,19 +112,5 @@ public final class RouterJobOffer {
     @Generated
     public OffsetDateTime getExpiresAt() {
         return this.expiresAt;
-    }
-
-    /**
-     * Creates an instance of RouterJobOffer class.
-     *
-     * @param jobId the jobId value to set.
-     * @param capacityCost the capacityCost value to set.
-     */
-    @Generated
-    @JsonCreator
-    private RouterJobOffer(@JsonProperty(value = "jobId") String jobId,
-        @JsonProperty(value = "capacityCost") int capacityCost) {
-        this.jobId = jobId;
-        this.capacityCost = capacityCost;
     }
 }

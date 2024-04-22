@@ -6,16 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Factory's GitHub repo information.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = FactoryGitHubConfiguration.class,
+    visible = true)
 @JsonTypeName("FactoryGitHubConfiguration")
 @Fluent
 public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
+    /*
+     * Type of repo configuration.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "FactoryGitHubConfiguration";
+
     /*
      * GitHub Enterprise host name. For example: `https://github.mydomain.com`
      */
@@ -38,6 +50,16 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
      * Creates an instance of FactoryGitHubConfiguration class.
      */
     public FactoryGitHubConfiguration() {
+    }
+
+    /**
+     * Get the type property: Type of repo configuration.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

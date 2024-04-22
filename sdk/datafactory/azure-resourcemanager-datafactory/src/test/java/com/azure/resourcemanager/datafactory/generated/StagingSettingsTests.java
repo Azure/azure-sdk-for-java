@@ -15,19 +15,21 @@ public final class StagingSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StagingSettings model = BinaryData.fromString(
-            "{\"linkedServiceName\":{\"referenceName\":\"cjkarggvyuewg\",\"parameters\":{\"li\":\"datalvxwlqlugnbudjy\",\"qdoxooxuaufqoo\":\"datatgtlansykvlxsyc\"}},\"path\":\"dataxctkveqvpedwmhqc\",\"enableCompression\":\"dataery\",\"\":{\"clxvaovssibnvq\":\"datayqxeyzqnupsi\",\"q\":\"datavi\"}}")
+            "{\"linkedServiceName\":{\"referenceName\":\"iflzsrk\",\"parameters\":{\"svpokv\":\"dataobhhbl\"}},\"path\":\"databy\",\"enableCompression\":\"datafu\",\"\":{\"fffagoovfwzy\":\"dataus\",\"xup\":\"datavnvrfjg\",\"earowrmesziubkyv\":\"datahgonovwu\",\"kaomy\":\"datagkouf\"}}")
             .toObject(StagingSettings.class);
-        Assertions.assertEquals("cjkarggvyuewg", model.linkedServiceName().referenceName());
+        Assertions.assertEquals("iflzsrk", model.linkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StagingSettings model = new StagingSettings()
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("cjkarggvyuewg")
-                .withParameters(mapOf("li", "datalvxwlqlugnbudjy", "qdoxooxuaufqoo", "datatgtlansykvlxsyc")))
-            .withPath("dataxctkveqvpedwmhqc").withEnableCompression("dataery").withAdditionalProperties(mapOf());
+            .withLinkedServiceName(
+                new LinkedServiceReference().withReferenceName("iflzsrk").withParameters(mapOf("svpokv", "dataobhhbl")))
+            .withPath("databy")
+            .withEnableCompression("datafu")
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(StagingSettings.class);
-        Assertions.assertEquals("cjkarggvyuewg", model.linkedServiceName().referenceName());
+        Assertions.assertEquals("iflzsrk", model.linkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

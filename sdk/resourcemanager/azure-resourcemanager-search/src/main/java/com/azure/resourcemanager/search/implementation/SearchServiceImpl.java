@@ -13,6 +13,7 @@ import com.azure.resourcemanager.search.models.AdminKeyKind;
 import com.azure.resourcemanager.search.models.AdminKeys;
 import com.azure.resourcemanager.search.models.HostingMode;
 import com.azure.resourcemanager.search.models.ProvisioningState;
+import com.azure.resourcemanager.search.models.PublicNetworkAccess;
 import com.azure.resourcemanager.search.models.QueryKey;
 import com.azure.resourcemanager.search.models.SearchService;
 import com.azure.resourcemanager.search.models.SearchServiceStatus;
@@ -152,6 +153,11 @@ class SearchServiceImpl
     }
 
     @Override
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
+    @Override
     public SearchServiceImpl withSku(SkuName skuName) {
         this.innerModel().withSku(new Sku().withName(skuName));
         return this;
@@ -184,6 +190,18 @@ class SearchServiceImpl
     @Override
     public SearchServiceImpl withPartitionCount(int count) {
         this.innerModel().withPartitionCount(count);
+        return this;
+    }
+
+    @Override
+    public SearchServiceImpl enablePublicNetworkAccess() {
+        this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        return this;
+    }
+
+    @Override
+    public SearchServiceImpl disablePublicNetworkAccess() {
+        this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         return this;
     }
 }

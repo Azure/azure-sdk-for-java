@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The MetricsResponseSeriesItem model. */
+/**
+ * The MetricsResponseSeriesItem model.
+ */
 @Fluent
 public final class MetricsResponseSeriesItem {
     /*
@@ -35,13 +37,15 @@ public final class MetricsResponseSeriesItem {
     @JsonProperty(value = "data")
     private List<MetricsResponseSeriesItemData> data;
 
-    /** Creates an instance of MetricsResponseSeriesItem class. */
+    /**
+     * Creates an instance of MetricsResponseSeriesItem class.
+     */
     public MetricsResponseSeriesItem() {
     }
 
     /**
      * Get the metric property: The metric property.
-     *
+     * 
      * @return the metric value.
      */
     public String metric() {
@@ -50,7 +54,7 @@ public final class MetricsResponseSeriesItem {
 
     /**
      * Set the metric property: The metric property.
-     *
+     * 
      * @param metric the metric value to set.
      * @return the MetricsResponseSeriesItem object itself.
      */
@@ -61,7 +65,7 @@ public final class MetricsResponseSeriesItem {
 
     /**
      * Get the unit property: The unit property.
-     *
+     * 
      * @return the unit value.
      */
     public MetricsSeriesUnit unit() {
@@ -70,7 +74,7 @@ public final class MetricsResponseSeriesItem {
 
     /**
      * Set the unit property: The unit property.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the MetricsResponseSeriesItem object itself.
      */
@@ -81,7 +85,7 @@ public final class MetricsResponseSeriesItem {
 
     /**
      * Get the groups property: The groups property.
-     *
+     * 
      * @return the groups value.
      */
     public List<MetricsResponseSeriesPropertiesItemsItem> groups() {
@@ -90,7 +94,7 @@ public final class MetricsResponseSeriesItem {
 
     /**
      * Set the groups property: The groups property.
-     *
+     * 
      * @param groups the groups value to set.
      * @return the MetricsResponseSeriesItem object itself.
      */
@@ -101,7 +105,7 @@ public final class MetricsResponseSeriesItem {
 
     /**
      * Get the data property: The data property.
-     *
+     * 
      * @return the data value.
      */
     public List<MetricsResponseSeriesItemData> data() {
@@ -110,7 +114,7 @@ public final class MetricsResponseSeriesItem {
 
     /**
      * Set the data property: The data property.
-     *
+     * 
      * @param data the data value to set.
      * @return the MetricsResponseSeriesItem object itself.
      */
@@ -121,7 +125,7 @@ public final class MetricsResponseSeriesItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

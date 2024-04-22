@@ -5,18 +5,16 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * An abstract representation of a chat message as provided in a request.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "role",
-    defaultImpl = ChatRequestMessage.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "role", defaultImpl = ChatRequestMessage.class, visible = true)
 @JsonTypeName("ChatRequestMessage")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "system", value = ChatRequestSystemMessage.class),
@@ -32,5 +30,24 @@ public class ChatRequestMessage {
      */
     @Generated
     public ChatRequestMessage() {
+        this.role = ChatRole.fromString("ChatRequestMessage");
+    }
+
+    /*
+     * The chat role associated with this message.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "role")
+    private ChatRole role;
+
+    /**
+     * Get the role property: The chat role associated with this message.
+     *
+     * @return the role value.
+     */
+    @Generated
+    public ChatRole getRole() {
+        return this.role;
     }
 }

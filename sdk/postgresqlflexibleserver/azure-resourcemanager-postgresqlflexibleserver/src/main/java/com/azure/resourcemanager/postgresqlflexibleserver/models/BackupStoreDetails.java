@@ -53,8 +53,8 @@ public final class BackupStoreDetails {
      */
     public void validate() {
         if (sasUriList() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sasUriList in model BackupStoreDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sasUriList in model BackupStoreDetails"));
         }
     }
 

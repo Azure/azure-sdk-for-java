@@ -5,7 +5,9 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -14,9 +16,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "type",
-    defaultImpl = ChatCompletionsNamedToolSelection.class)
+    defaultImpl = ChatCompletionsNamedToolSelection.class,
+    visible = true)
 @JsonTypeName("ChatCompletionsNamedToolSelection")
 @JsonSubTypes({ @JsonSubTypes.Type(name = "function", value = ChatCompletionsNamedFunctionToolSelection.class) })
 @Immutable
@@ -27,5 +29,24 @@ public class ChatCompletionsNamedToolSelection {
      */
     @Generated
     public ChatCompletionsNamedToolSelection() {
+        this.type = "ChatCompletionsNamedToolSelection";
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
+    private String type;
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public String getType() {
+        return this.type;
     }
 }

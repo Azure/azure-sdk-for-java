@@ -6,33 +6,33 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Currency field value.
  */
 @Immutable
-public final class CurrencyValue {
+public final class CurrencyValue implements JsonSerializable<CurrencyValue> {
     /*
      * Currency amount.
      */
     @Generated
-    @JsonProperty(value = "amount")
-    private double amount;
+    private final double amount;
 
     /*
      * Currency symbol label, if any.
      */
     @Generated
-    @JsonProperty(value = "currencySymbol")
     private String currencySymbol;
 
     /*
      * Resolved currency code (ISO 4217), if any.
      */
     @Generated
-    @JsonProperty(value = "currencyCode")
     private String currencyCode;
 
     /**
@@ -41,8 +41,7 @@ public final class CurrencyValue {
      * @param amount the amount value to set.
      */
     @Generated
-    @JsonCreator
-    private CurrencyValue(@JsonProperty(value = "amount") double amount) {
+    private CurrencyValue(double amount) {
         this.amount = amount;
     }
 
@@ -74,5 +73,55 @@ public final class CurrencyValue {
     @Generated
     public String getCurrencyCode() {
         return this.currencyCode;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeDoubleField("amount", this.amount);
+        jsonWriter.writeStringField("currencySymbol", this.currencySymbol);
+        jsonWriter.writeStringField("currencyCode", this.currencyCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CurrencyValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CurrencyValue if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CurrencyValue.
+     */
+    @Generated
+    public static CurrencyValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            double amount = 0.0;
+            String currencySymbol = null;
+            String currencyCode = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("amount".equals(fieldName)) {
+                    amount = reader.getDouble();
+                } else if ("currencySymbol".equals(fieldName)) {
+                    currencySymbol = reader.getString();
+                } else if ("currencyCode".equals(fieldName)) {
+                    currencyCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            CurrencyValue deserializedCurrencyValue = new CurrencyValue(amount);
+            deserializedCurrencyValue.currencySymbol = currencySymbol;
+            deserializedCurrencyValue.currencyCode = currencyCode;
+
+            return deserializedCurrencyValue;
+        });
     }
 }

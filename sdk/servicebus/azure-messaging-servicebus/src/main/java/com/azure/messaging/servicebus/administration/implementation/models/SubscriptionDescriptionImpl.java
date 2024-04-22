@@ -56,11 +56,6 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     private Boolean deadLetteringOnFilterEvaluationExceptions;
 
     /*
-     * The default rule description.
-     */
-    private RuleDescriptionImpl defaultRuleDescription;
-
-    /*
      * The number of messages in the subscription.
      */
     private Integer messageCount;
@@ -126,6 +121,11 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
      * Availability status of the entity
      */
     private EntityAvailabilityStatusImpl entityAvailabilityStatus;
+
+    /*
+     * The default rule description.
+     */
+    private RuleDescriptionImpl defaultRuleDescription;
 
     /**
      * Creates an instance of SubscriptionDescription class.
@@ -245,26 +245,6 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     public SubscriptionDescriptionImpl
         setDeadLetteringOnFilterEvaluationExceptions(Boolean deadLetteringOnFilterEvaluationExceptions) {
         this.deadLetteringOnFilterEvaluationExceptions = deadLetteringOnFilterEvaluationExceptions;
-        return this;
-    }
-
-    /**
-     * Get the defaultRuleDescription property: The default rule description.
-     * 
-     * @return the defaultRuleDescription value.
-     */
-    public RuleDescriptionImpl getDefaultRuleDescription() {
-        return this.defaultRuleDescription;
-    }
-
-    /**
-     * Set the defaultRuleDescription property: The default rule description.
-     * 
-     * @param defaultRuleDescription the defaultRuleDescription value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    public SubscriptionDescriptionImpl setDefaultRuleDescription(RuleDescriptionImpl defaultRuleDescription) {
-        this.defaultRuleDescription = defaultRuleDescription;
         return this;
     }
 
@@ -541,6 +521,26 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
         return this;
     }
 
+    /**
+     * Get the defaultRuleDescription property: The default rule description.
+     * 
+     * @return the defaultRuleDescription value.
+     */
+    public RuleDescriptionImpl getDefaultRuleDescription() {
+        return this.defaultRuleDescription;
+    }
+
+    /**
+     * Set the defaultRuleDescription property: The default rule description.
+     * 
+     * @param defaultRuleDescription the defaultRuleDescription value to set.
+     * @return the SubscriptionDescription object itself.
+     */
+    public SubscriptionDescriptionImpl setDefaultRuleDescription(RuleDescriptionImpl defaultRuleDescription) {
+        this.defaultRuleDescription = defaultRuleDescription;
+        return this;
+    }
+
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
@@ -561,7 +561,6 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
             this.deadLetteringOnMessageExpiration);
         xmlWriter.writeBooleanElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT,
             "DeadLetteringOnFilterEvaluationExceptions", this.deadLetteringOnFilterEvaluationExceptions);
-        xmlWriter.writeXml(this.defaultRuleDescription, "RuleDescription");
         xmlWriter.writeNumberElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "MessageCount", this.messageCount);
         xmlWriter.writeNumberElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "MaxDeliveryCount",
             this.maxDeliveryCount);
@@ -584,6 +583,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
             CoreToCodegenBridgeUtils.durationToStringWithDays(this.autoDeleteOnIdle));
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "EntityAvailabilityStatus",
             this.entityAvailabilityStatus == null ? null : this.entityAvailabilityStatus.toString());
+        xmlWriter.writeXml(this.defaultRuleDescription, "DefaultRuleDescription");
         return xmlWriter.writeEndElement();
     }
 
@@ -637,10 +637,6 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedSubscriptionDescription.deadLetteringOnFilterEvaluationExceptions
                         = reader.getNullableElement(Boolean::parseBoolean);
-                } else if ("RuleDescription".equals(elementName.getLocalPart())
-                    && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
-                    deserializedSubscriptionDescription.defaultRuleDescription
-                        = RuleDescriptionImpl.fromXml(reader, "RuleDescription");
                 } else if ("MessageCount".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedSubscriptionDescription.messageCount = reader.getNullableElement(Integer::parseInt);
@@ -686,6 +682,10 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedSubscriptionDescription.entityAvailabilityStatus
                         = EntityAvailabilityStatusImpl.fromString(reader.getStringElement());
+                } else if ("DefaultRuleDescription".equals(elementName.getLocalPart())
+                    && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
+                    deserializedSubscriptionDescription.defaultRuleDescription
+                        = RuleDescriptionImpl.fromXml(reader, "DefaultRuleDescription");
                 } else {
                     reader.skipElement();
                 }

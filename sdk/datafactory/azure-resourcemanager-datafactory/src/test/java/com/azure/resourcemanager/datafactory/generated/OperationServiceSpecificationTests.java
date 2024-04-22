@@ -43,19 +43,26 @@ public final class OperationServiceSpecificationTests {
     public void testSerialize() throws Exception {
         OperationServiceSpecification model = new OperationServiceSpecification()
             .withLogSpecifications(Arrays.asList(
-                new OperationLogSpecification().withName("ujysvle").withDisplayName("vfqawrlyxwjkcpr").withBlobDuration(
-                    "wbxgjvt"),
+                new OperationLogSpecification()
+                    .withName("ujysvle")
+                    .withDisplayName("vfqawrlyxwjkcpr")
+                    .withBlobDuration("wbxgjvt"),
                 new OperationLogSpecification().withName("p").withDisplayName("szdnr").withBlobDuration("qguhmuo")))
             .withMetricSpecifications(Arrays.asList(new OperationMetricSpecification().withName("rwzwbng")
-                .withDisplayName("tnwu").withDisplayDescription("gazxuf").withUnit("uckyf")
-                .withAggregationType("rfidfvzwdz").withEnableRegionalMdmAccount("tymw")
-                .withSourceMdmAccount("dkfthwxmnt").withSourceMdmNamespace("waopvkmijcmmxd")
+                .withDisplayName("tnwu")
+                .withDisplayDescription("gazxuf")
+                .withUnit("uckyf")
+                .withAggregationType("rfidfvzwdz")
+                .withEnableRegionalMdmAccount("tymw")
+                .withSourceMdmAccount("dkfthwxmnt")
+                .withSourceMdmNamespace("waopvkmijcmmxd")
                 .withAvailabilities(Arrays.asList(
                     new OperationMetricAvailability().withTimeGrain("fsrpymzidnse").withBlobDuration("xtbzsgfyccsne"),
                     new OperationMetricAvailability().withTimeGrain("dwzjeiach").withBlobDuration("osfln"),
                     new OperationMetricAvailability().withTimeGrain("sfqpteehz").withBlobDuration("ypyqrimzinp")))
                 .withDimensions(Arrays.asList(new OperationMetricDimension().withName("dkirsoodqxhcr")
-                    .withDisplayName("ohjtckw").withToBeExportedForShoebox(true)))));
+                    .withDisplayName("ohjtckw")
+                    .withToBeExportedForShoebox(true)))));
         model = BinaryData.fromObject(model).toObject(OperationServiceSpecification.class);
         Assertions.assertEquals("ujysvle", model.logSpecifications().get(0).name());
         Assertions.assertEquals("vfqawrlyxwjkcpr", model.logSpecifications().get(0).displayName());
