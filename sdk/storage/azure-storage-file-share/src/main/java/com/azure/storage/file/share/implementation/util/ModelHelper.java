@@ -11,11 +11,13 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.FileConstants;
 import com.azure.storage.file.share.FileSmbProperties;
+import com.azure.storage.file.share.implementation.MessageConstants;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileDownloadHeadersConstructorProxy;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.DirectoriesCreateHeaders;
@@ -65,6 +67,7 @@ import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocols;
+import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 import com.azure.storage.file.share.models.ShareStatistics;
@@ -82,6 +85,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -96,8 +100,8 @@ public class ModelHelper {
 
     private static final long MAX_FILE_PUT_RANGE_BYTES = 4 * Constants.MB;
     private static final int FILE_DEFAULT_NUMBER_OF_BUFFERS = 8;
-    static final long FILE_DEFAULT_BLOCK_SIZE = 4 * 1024 * 1024L;
-    static final long FILE_MAX_PUT_RANGE_SIZE = 4 * Constants.MB;
+    public static final long FILE_DEFAULT_BLOCK_SIZE = 4 * 1024 * 1024L;
+    public static final long FILE_MAX_PUT_RANGE_SIZE = 4 * Constants.MB;
 
     private static final HttpHeaderName X_MS_ERROR_CODE = HttpHeaderName.fromString("x-ms-error-code");
 
@@ -313,7 +317,7 @@ public class ModelHelper {
     public static void validateFilePermissionAndKey(String filePermission, String  filePermissionKey) {
         if (filePermission != null && filePermissionKey != null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                FileConstants.MessageConstants.FILE_PERMISSION_FILE_PERMISSION_KEY_INVALID));
+                MessageConstants.FILE_PERMISSION_FILE_PERMISSION_KEY_INVALID));
         }
 
         if (filePermission != null) {
@@ -323,20 +327,22 @@ public class ModelHelper {
     }
 
     public static boolean checkDoesNotExistStatusCode(Throwable t) {
-        // ShareStorageException
-        return (t instanceof ShareStorageException
-            && ((ShareStorageException) t).getStatusCode() == 404
-            && (((ShareStorageException) t).getErrorCode() == ShareErrorCode.RESOURCE_NOT_FOUND
-            || ((ShareStorageException) t).getErrorCode() == ShareErrorCode.SHARE_NOT_FOUND))
-
+        if (t instanceof ShareStorageException) {
+            ShareStorageException s = (ShareStorageException) t;
+            return s.getStatusCode() == 404
+                && (s.getErrorCode() == ShareErrorCode.RESOURCE_NOT_FOUND
+                || s.getErrorCode() == ShareErrorCode.SHARE_NOT_FOUND);
             /* HttpResponseException - file get properties is a head request so a body is not returned. Error
              conversion logic does not properly handle errors that don't return XML. */
-            || (t instanceof HttpResponseException
-            && ((HttpResponseException) t).getResponse().getStatusCode() == 404
-            && (((HttpResponseException) t).getResponse().getHeaderValue("x-ms-error-code")
-            .equals(ShareErrorCode.RESOURCE_NOT_FOUND.toString())
-            || (((HttpResponseException) t).getResponse().getHeaderValue("x-ms-error-code")
-            .equals(ShareErrorCode.SHARE_NOT_FOUND.toString()))));
+        } else if (t instanceof HttpResponseException) {
+            HttpResponseException h = (HttpResponseException) t;
+            String errorCode = h.getResponse().getHeaderValue(X_MS_ERROR_CODE);
+            return h.getResponse().getStatusCode() == 404
+                && (ShareErrorCode.RESOURCE_NOT_FOUND.toString().equals(errorCode)
+                || ShareErrorCode.SHARE_NOT_FOUND.toString().equals(errorCode));
+        } else {
+            return false;
+        }
     }
 
     public static Response<ShareFileInfo> createFileInfoResponse(ResponseBase<FilesCreateHeaders, Void> response) {
@@ -357,12 +363,12 @@ public class ModelHelper {
         String fileType = headers.getXMsType();
         Long contentLength = headers.getContentLength();
         String contentType = headers.getContentType();
-        byte[] contentMD5;
-        try {
-            contentMD5 = headers.getContentMD5();
-        } catch (NullPointerException e) {
-            contentMD5 = null;
-        }
+        byte[] contentMD5 = headers.getContentMD5();
+//        try {
+//            contentMD5 = headers.getContentMD5();
+//        } catch (NullPointerException e) {
+//            contentMD5 = null;
+//        }
         String contentEncoding = headers.getContentEncoding();
         String cacheControl = headers.getCacheControl();
         String contentDisposition = headers.getContentDisposition();
@@ -594,19 +600,48 @@ public class ModelHelper {
         return ranges;
     }
 
-    public static AsynchronousFileChannel channelSetup(String filePath, OpenOption... options) {
-        try {
-            return AsynchronousFileChannel.open(Paths.get(filePath), options);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+    public static List<ShareSignedIdentifier> truncateAccessPolicyPermissionsToSeconds(
+        List<ShareSignedIdentifier> permissions) {
+        /*
+        We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
+        OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
+        allows for proper serialization with no real detriment to users as sub-second precision on active time for
+        signed identifiers is not really necessary.
+         */
+        if (permissions != null) {
+            for (ShareSignedIdentifier permission : permissions) {
+                if (permission.getAccessPolicy() != null && permission.getAccessPolicy().getStartsOn() != null) {
+                    permission.getAccessPolicy().setStartsOn(
+                        permission.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS));
+                }
+                if (permission.getAccessPolicy() != null && permission.getAccessPolicy().getExpiresOn() != null) {
+                    permission.getAccessPolicy().setExpiresOn(
+                        permission.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
+                }
+            }
         }
+        return permissions;
     }
 
-    public static void channelCleanUp(AsynchronousFileChannel channel) {
-        try {
-            channel.close();
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(e)));
+    public static LongRunningOperationStatus mapStatusToLongRunningOperationStatus(CopyStatusType status) {
+        LongRunningOperationStatus operationStatus;
+        switch (status) {
+            case SUCCESS:
+                operationStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                break;
+            case FAILED:
+                operationStatus = LongRunningOperationStatus.FAILED;
+                break;
+            case ABORTED:
+                operationStatus = LongRunningOperationStatus.USER_CANCELLED;
+                break;
+            case PENDING:
+                operationStatus = LongRunningOperationStatus.IN_PROGRESS;
+                break;
+            default:
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                    "CopyStatusType is not supported. Status: " + status));
         }
+        return operationStatus;
     }
 }

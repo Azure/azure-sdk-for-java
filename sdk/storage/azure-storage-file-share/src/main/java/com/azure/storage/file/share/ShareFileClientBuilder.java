@@ -195,10 +195,7 @@ public class ShareFileClientBuilder implements
     }
 
     private ShareServiceVersion getServiceVersion() {
-        if (version == null) {
-            version = ShareServiceVersion.getLatest();
-        }
-        return version;
+        return version != null ? version : ShareServiceVersion.getLatest();
     }
 
     private AzureFileStorageImpl constructImpl() {

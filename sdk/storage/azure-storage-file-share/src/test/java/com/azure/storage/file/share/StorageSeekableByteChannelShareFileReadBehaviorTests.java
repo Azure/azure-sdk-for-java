@@ -73,7 +73,7 @@ public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileSh
     public void readCallsToClientCorrectly(int offset, ShareRequestConditions conditions) throws IOException {
         ByteBuffer buffer = ByteBuffer.allocate(Constants.KB);
         AtomicInteger downloadCallCount = new AtomicInteger(0);
-        ShareFileClient client = new ShareFileClient(null) {
+        ShareFileClient client = new ShareFileClient(null, null, null, null, null, null, null, null) {
             @Override
             public ShareFileDownloadResponse downloadWithResponse(OutputStream stream, ShareFileDownloadOptions options,
                 Duration timeout, Context context) {

@@ -608,8 +608,6 @@ public final class ShareServiceClientBuilder implements
         ShareServiceVersion serviceVersion = version != null ? version : ShareServiceVersion.getLatest();
         this.serviceVersion(serviceVersion);
 
-        AzureSasCredential azureSasCredentialFromSasToken = sasToken != null ? new AzureSasCredential(sasToken) : null;
-
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, coreRetryOptions, logOptions,

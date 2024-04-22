@@ -1245,25 +1245,9 @@ public class ShareAsyncClient {
         options = options == null ? new ShareSetAccessPolicyOptions() : options;
         ShareRequestConditions requestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions() : options.getRequestConditions();
-        List<ShareSignedIdentifier> permissions = options.getPermissions();
-        /*
-        We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
-        OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
-        allows for proper serialization with no real detriment to users as sub-second precision on active time for
-        signed identifiers is not really necessary.
-         */
-        if (permissions != null) {
-            for (ShareSignedIdentifier permission : permissions) {
-                if (permission.getAccessPolicy() != null && permission.getAccessPolicy().getStartsOn() != null) {
-                    permission.getAccessPolicy().setStartsOn(
-                        permission.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS));
-                }
-                if (permission.getAccessPolicy() != null && permission.getAccessPolicy().getExpiresOn() != null) {
-                    permission.getAccessPolicy().setExpiresOn(
-                        permission.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
-                }
-            }
-        }
+        List<ShareSignedIdentifier> permissions =
+            ModelHelper.truncateAccessPolicyPermissionsToSeconds(options.getPermissions());
+
         context = context == null ? Context.NONE : context;
 
         return azureFileStorageClient.getShares()

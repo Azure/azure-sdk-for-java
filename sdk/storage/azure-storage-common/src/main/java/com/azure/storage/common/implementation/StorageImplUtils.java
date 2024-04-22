@@ -5,6 +5,8 @@ package com.azure.storage.common.implementation;
 
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
@@ -31,9 +33,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
@@ -484,5 +488,16 @@ public class StorageImplUtils {
             }
         }
         return null;
+    }
+
+    public static <T, U> ResponseBase<T, U> sendRequest(Callable<ResponseBase<T, U>> operation, Duration timeout) {
+        try {
+            Future<ResponseBase<T, U>> future = THREAD_POOL.submit(operation);
+            return CoreUtils.getResultWithTimeout(future, timeout);
+        } catch (RuntimeException e) {
+        throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 }

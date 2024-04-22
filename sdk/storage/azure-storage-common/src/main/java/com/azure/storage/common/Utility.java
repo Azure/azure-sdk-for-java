@@ -330,43 +330,6 @@ public final class Utility {
     }
 
     /**
-     * Converts a Flux<ByteBuffer> to BinaryData.
-     * @param dataFlux the Flux<ByteBuffer> to be converted
-     * @return BinaryData representing the aggregated data
-     */
-    public static BinaryData convertFluxToBinaryData(Flux<ByteBuffer> dataFlux) {
-        AtomicReference<byte[]> bytes = new AtomicReference<>();
-        CountDownLatch latch = new CountDownLatch(1);
-
-        try {
-            dataFlux.collectList().subscribe(
-                list -> {
-                    try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-                        for (ByteBuffer bb : list) {
-                            while (bb.hasRemaining()) {
-                                out.write(bb.get());
-                            }
-                        }
-                        bytes.set(out.toByteArray());
-                    } catch (Exception e) {
-                        throw new RuntimeException("Error while reading data from Flux<ByteBuffer>", e);
-                    }
-                    latch.countDown();
-                },
-                error -> {
-                    throw new RuntimeException("Error while processing data Flux", error);
-                }
-            );
-
-            latch.await();  // Wait until the flux is processed
-            return BinaryData.fromBytes(bytes.get());
-        } catch (InterruptedException e) {
-            throw new RuntimeException("Error while processing data Flux", e);
-        }
-
-    }
-
-    /**
      * Appends a query parameter to a url.
      *
      * @param url The url.

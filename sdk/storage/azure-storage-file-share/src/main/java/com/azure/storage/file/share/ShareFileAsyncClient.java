@@ -142,8 +142,6 @@ import static com.azure.core.util.FluxUtil.withContext;
 @ServiceClient(builder = ShareFileClientBuilder.class, isAsync = true)
 public class ShareFileAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(ShareFileAsyncClient.class);
-    static final long FILE_DEFAULT_BLOCK_SIZE = 4 * 1024 * 1024L;
-    static final long FILE_MAX_PUT_RANGE_SIZE = 4 * Constants.MB;
 
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
@@ -722,28 +720,11 @@ public class ShareFileAsyncClient {
                 final ShareFileCopyInfo result = new ShareFileCopyInfo(value.getCopySource(), value.getCopyId(),
                     status, value.getETag(), value.getCopyCompletionTime(), value.getCopyStatusDescription());
 
-                LongRunningOperationStatus operationStatus;
-                switch (status) {
-                    case SUCCESS:
-                        operationStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                        break;
-                    case FAILED:
-                        operationStatus = LongRunningOperationStatus.FAILED;
-                        break;
-                    case ABORTED:
-                        operationStatus = LongRunningOperationStatus.USER_CANCELLED;
-                        break;
-                    case PENDING:
-                        operationStatus = LongRunningOperationStatus.IN_PROGRESS;
-                        break;
-                    default:
-                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                            "CopyStatusType is not supported. Status: " + status));
-                }
+                LongRunningOperationStatus operationStatus = ModelHelper.mapStatusToLongRunningOperationStatus(status);
 
                 return new PollResponse<>(operationStatus, result);
-            }).onErrorReturn(new PollResponse<>(LongRunningOperationStatus.fromString("POLLING_FAILED",
-                        true), lastInfo));
+            }).onErrorReturn(new PollResponse<>(LongRunningOperationStatus.fromString("POLLING_FAILED", true),
+                lastInfo));
     }
 
     /**
@@ -971,8 +952,8 @@ public class ShareFileAsyncClient {
             .getContentLength()))))
             .map(currentRange -> {
                 List<ShareFileRange> chunks = new ArrayList<>();
-                for (long pos = currentRange.getStart(); pos < currentRange.getEnd(); pos += FILE_DEFAULT_BLOCK_SIZE) {
-                    long count = FILE_DEFAULT_BLOCK_SIZE;
+                for (long pos = currentRange.getStart(); pos < currentRange.getEnd(); pos += ModelHelper.FILE_DEFAULT_BLOCK_SIZE) {
+                    long count = ModelHelper.FILE_DEFAULT_BLOCK_SIZE;
                     if (pos + count > currentRange.getEnd()) {
                         count = currentRange.getEnd() - pos;
                     }
@@ -2068,7 +2049,7 @@ public class ShareFileAsyncClient {
         ParallelTransferOptions parallelTransferOptions, ShareRequestConditions requestConditions, Context context) {
 
         // Validation done in the constructor.
-        BufferStagingArea stagingArea = new BufferStagingArea(parallelTransferOptions.getBlockSizeLong(), FILE_MAX_PUT_RANGE_SIZE);
+        BufferStagingArea stagingArea = new BufferStagingArea(parallelTransferOptions.getBlockSizeLong(), ModelHelper.FILE_MAX_PUT_RANGE_SIZE);
 
         Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data, parallelTransferOptions);
 
@@ -2201,7 +2182,7 @@ public class ShareFileAsyncClient {
 
         Flux<ByteBuffer> data = options.getDataFlux() == null
             ? Utility.convertStreamToByteBuffer(
-                options.getDataStream(), options.getLength(), (int) FILE_DEFAULT_BLOCK_SIZE, true)
+                options.getDataStream(), options.getLength(), (int) ModelHelper.FILE_DEFAULT_BLOCK_SIZE, true)
             : options.getDataFlux();
 
         return azureFileStorageClient.getFiles()
@@ -2565,8 +2546,8 @@ public class ShareFileAsyncClient {
         File file = new File(path);
         assert file.exists();
         List<ShareFileRange> ranges = new ArrayList<>();
-        for (long pos = 0; pos < file.length(); pos += FILE_DEFAULT_BLOCK_SIZE) {
-            long count = FILE_DEFAULT_BLOCK_SIZE;
+        for (long pos = 0; pos < file.length(); pos += ModelHelper.FILE_DEFAULT_BLOCK_SIZE) {
+            long count = ModelHelper.FILE_DEFAULT_BLOCK_SIZE;
             if (pos + count > file.length()) {
                 count = file.length() - pos;
             }

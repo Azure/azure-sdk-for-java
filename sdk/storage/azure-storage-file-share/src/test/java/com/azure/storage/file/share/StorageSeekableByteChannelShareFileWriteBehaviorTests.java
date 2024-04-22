@@ -44,7 +44,7 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
             stubbedUploadInfo);
 
         AtomicInteger uploadRangeCallCount = new AtomicInteger(0);
-        ShareFileClient client = new ShareFileClient(null) {
+        ShareFileClient client = new ShareFileClient(null, null, null, null, null, null, null, null) {
             @Override
             public Response<ShareFileUploadInfo> uploadRangeWithResponse(ShareFileUploadRangeOptions options,
                 Duration timeout, Context context) {
@@ -95,7 +95,7 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
     @MethodSource("writeBehaviorCanSeekAnywhereInFileRangeSupplier")
     public void writeBehaviorCanSeekAnywhereInFileRange(long fileSize, int position) {
         AtomicInteger getPropertiesCallCount = new AtomicInteger(0);
-        ShareFileClient client = new ShareFileClient(null) {
+        ShareFileClient client = new ShareFileClient(null, null, null, null, null, null, null, null) {
             @Override
             public ShareFileProperties getProperties() {
                 getPropertiesCallCount.incrementAndGet();
@@ -121,7 +121,7 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
     @MethodSource("writeBehaviorThrowsWhenSeekingBeyondRangeSupplier")
     public void writeBehaviorThrowsWhenSeekingBeyondRange(long fileSize, int position) {
         AtomicInteger getPropertiesCallCount = new AtomicInteger(0);
-        ShareFileClient client = new ShareFileClient(null) {
+        ShareFileClient client = new ShareFileClient(null, null, null, null, null, null, null, null) {
             @Override
             public ShareFileProperties getProperties() {
                 getPropertiesCallCount.incrementAndGet();
@@ -145,7 +145,7 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
 
     @Test
     public void writeBehaviorTruncateUnsupported() {
-        ShareFileClient client = new ShareFileClient(null);
+        ShareFileClient client = new ShareFileClient(null, null, null, null, null, null, null, null);
         StorageSeekableByteChannelShareFileWriteBehavior behavior =
             new StorageSeekableByteChannelShareFileWriteBehavior(client, null, null);
         assertThrows(UnsupportedOperationException.class, () -> behavior.resize(10));

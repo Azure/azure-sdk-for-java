@@ -76,16 +76,5 @@ public final class FileConstants {
         private HeaderConstants() {
         }
     }
-
-    /**
-     * Message constants used for the File Service.
-     */
-    public static final class MessageConstants {
-        public static final String FILE_PERMISSION_FILE_PERMISSION_KEY_INVALID =
-            "File permission and file permission key cannot both be set";
-
-        private MessageConstants() {
-        }
-    }
 }
 
