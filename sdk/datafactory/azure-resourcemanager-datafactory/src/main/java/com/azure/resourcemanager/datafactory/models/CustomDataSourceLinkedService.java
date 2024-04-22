@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,21 @@ import java.util.Map;
 /**
  * Custom linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = CustomDataSourceLinkedService.class,
+    visible = true)
 @JsonTypeName("CustomDataSource")
 @Fluent
 public final class CustomDataSourceLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "CustomDataSource";
+
     /*
      * Custom linked service properties.
      */
@@ -29,6 +41,16 @@ public final class CustomDataSourceLinkedService extends LinkedService {
      * Creates an instance of CustomDataSourceLinkedService class.
      */
     public CustomDataSourceLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -96,8 +118,9 @@ public final class CustomDataSourceLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (typeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property typeProperties in model CustomDataSourceLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property typeProperties in model CustomDataSourceLinkedService"));
         }
     }
 

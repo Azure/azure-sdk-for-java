@@ -15,12 +15,12 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.slf4j.Logger;
@@ -96,16 +96,46 @@ public class Utils {
         }
         objectMapper.configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, false);
 
-
-        // We will not register after burner for java 16+, due to its breaking changes
-        // https://github.com/Azure/azure-sdk-for-java/issues/23005
-        if (JAVA_VERSION != -1 && JAVA_VERSION < 16) {
-            objectMapper.registerModule(new AfterburnerModule());
-        }
+        tryToLoadJacksonPerformanceLibrary(objectMapper);
 
         objectMapper.registerModule(new JavaTimeModule());
 
         return objectMapper;
+    }
+
+    private static void tryToLoadJacksonPerformanceLibrary(ObjectMapper objectMapper) {
+        // Afterburner and Blackbird are libraries that increase the performance of marshaling json to objects
+        boolean loaded = false;
+        if (JAVA_VERSION != -1) {
+            if (JAVA_VERSION >= 11) {
+                // Blackbird is preferred and only works with java 11+
+                // https://github.com/FasterXML/jackson-modules-base/tree/2.18/blackbird
+                loaded = loadModuleIfFound("com.fasterxml.jackson.module.blackbird.BlackbirdModule", objectMapper);
+            }
+            if (!loaded && JAVA_VERSION < 16) {
+                // Afterburner no longer works with java 16
+                // https://github.com/Azure/azure-sdk-for-java/issues/23005
+                // https://github.com/FasterXML/jackson-modules-base/tree/2.18/afterburner
+                loaded = loadModuleIfFound("com.fasterxml.jackson.module.afterburner.AfterburnerModule", objectMapper);
+            }
+        }
+        if (!loaded) {
+            logger.warn("Neither Afterburner nor Blackbird Jackson module loaded.  Consider adding one to your classpath for maximum Jackson performance.");
+        }
+    }
+
+    private static boolean loadModuleIfFound(String className, ObjectMapper objectMapper) {
+        try {
+            Class<?> clazz = Class.forName(className);
+            Module module = (Module)clazz.getDeclaredConstructor().newInstance();
+            objectMapper.registerModule(module);
+            return true;
+        } catch (ClassNotFoundException e) {
+            //Not found, dont register
+        } catch (Exception e) {
+            logger.warn("Issues loading Jackson performance module " + className, e);
+        }
+        return false;
     }
 
     private static ObjectMapper createAndInitializeDurationObjectMapper() {

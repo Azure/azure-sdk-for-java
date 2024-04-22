@@ -191,3 +191,21 @@ directive:
       delete $.QueueDescriptionEntry.properties.base.xml.prefix;
       delete $.TopicDescriptionEntry.properties.base.xml.prefix;
 ```
+
+### Fix RuleDescription definitions
+
+`RuleDescription` gets used as a `$ref` property with different XML names based on the usage. Therefore, it cannot
+define the `XML` name itself. Instead, rely on the Swagger model property name matching the expected XML serialization
+name to support using a different XML element name based on the use case.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      delete $.RuleDescription.xml.name;
+      $.CreateRuleBody.properties.content.properties.RuleDescription = $.CreateRuleBody.properties.content.properties.ruleDescription;
+      delete $.CreateRuleBody.properties.content.properties.ruleDescription;
+      $.SubscriptionDescription.properties.DefaultRuleDescription = $.SubscriptionDescription.properties.defaultRuleDescription;
+      delete $.SubscriptionDescription.properties.defaultRuleDescription;
+```

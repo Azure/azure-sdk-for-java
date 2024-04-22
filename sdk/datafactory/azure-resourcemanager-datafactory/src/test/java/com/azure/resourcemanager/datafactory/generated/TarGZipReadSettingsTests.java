@@ -11,14 +11,13 @@ public final class TarGZipReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TarGZipReadSettings model = BinaryData.fromString(
-            "{\"type\":\"TarGZipReadSettings\",\"preserveCompressionFileNameAsFolder\":\"dataiaizsglavdttty\",\"\":{\"qkjqcsh\":\"dataomz\"}}")
+            "{\"type\":\"eqljzkhncaeyk\",\"preserveCompressionFileNameAsFolder\":\"datapdnnsujx\",\"\":{\"lniahvlzgs\":\"datatztnprns\",\"isjscuwyl\":\"datawiubgbltj\",\"rziryx\":\"dataktzcuxuxaihhegu\"}}")
             .toObject(TarGZipReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TarGZipReadSettings model
-            = new TarGZipReadSettings().withPreserveCompressionFileNameAsFolder("dataiaizsglavdttty");
+        TarGZipReadSettings model = new TarGZipReadSettings().withPreserveCompressionFileNameAsFolder("datapdnnsujx");
         model = BinaryData.fromObject(model).toObject(TarGZipReadSettings.class);
     }
 }

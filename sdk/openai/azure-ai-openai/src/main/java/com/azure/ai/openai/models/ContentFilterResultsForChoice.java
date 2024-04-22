@@ -7,7 +7,6 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.models.ResponseError;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /**
  * Information about content filtering evaluated against generated model output.
@@ -17,9 +16,9 @@ public final class ContentFilterResultsForChoice {
 
     /*
      * Describes language related to anatomical organs and genitals, romantic relationships,
-     * acts portrayed in erotic or affectionate terms, physical sexual acts, including
-     * those portrayed as an assault or a forced sexual violent act against one’s will,
-     * prostitution, pornography, and abuse.
+     *  acts portrayed in erotic or affectionate terms, physical sexual acts, including
+     *  those portrayed as an assault or a forced sexual violent act against one’s will,
+     *  prostitution, pornography, and abuse.
      */
     @Generated
     @JsonProperty(value = "sexual")
@@ -64,7 +63,7 @@ public final class ContentFilterResultsForChoice {
      */
     @Generated
     @JsonProperty(value = "custom_blocklists")
-    private List<ContentFilterBlocklistIdResult> customBlocklists;
+    private ContentFilterDetailedResults customBlocklists;
 
     /*
      * Describes an error returned if the content filtering system is
@@ -160,7 +159,7 @@ public final class ContentFilterResultsForChoice {
      * @return the customBlocklists value.
      */
     @Generated
-    public List<ContentFilterBlocklistIdResult> getCustomBlocklists() {
+    public ContentFilterDetailedResults getCustomBlocklists() {
         return this.customBlocklists;
     }
 

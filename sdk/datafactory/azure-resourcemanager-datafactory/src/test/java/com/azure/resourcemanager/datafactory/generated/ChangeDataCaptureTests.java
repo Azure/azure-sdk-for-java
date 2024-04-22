@@ -31,280 +31,262 @@ public final class ChangeDataCaptureTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChangeDataCapture model = BinaryData.fromString(
-            "{\"folder\":{\"name\":\"fkndl\"},\"description\":\"twknvgm\",\"sourceConnectionsInfo\":[{\"sourceEntities\":[{\"name\":\"yw\",\"properties\":{\"schema\":[{},{}],\"dslConnectorProperties\":[{},{},{},{}]}},{\"name\":\"ueatgroe\",\"properties\":{\"schema\":[{}],\"dslConnectorProperties\":[{},{}]}},{\"name\":\"byfqxkfaoy\",\"properties\":{\"schema\":[{},{}],\"dslConnectorProperties\":[{},{}]}},{\"name\":\"jmvqmtd\",\"properties\":{\"schema\":[{}],\"dslConnectorProperties\":[{},{}]}}],\"connection\":{\"linkedService\":{\"referenceName\":\"jn\",\"parameters\":{\"rreqynkceysfaqe\":\"datajdjusk\",\"ryshwddkvbxgk\":\"datapl\",\"vvlfntymtp\":\"datausybwptdaca\",\"zrsq\":\"dataiwenazero\"}},\"linkedServiceType\":\"sxkdnwqapfgsdpc\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{\"name\":\"h\",\"value\":\"datauipldqq\"},{\"name\":\"ekvalblhtjq\",\"value\":\"datayvwehtaemxh\"},{\"name\":\"ysev\",\"value\":\"dataxivzrrry\"},{\"name\":\"imipskdyzatvfuz\",\"value\":\"dataftjvvruxwigsye\"}]}},{\"sourceEntities\":[{\"name\":\"smjtgrqgdg\",\"properties\":{\"schema\":[{},{},{}],\"dslConnectorProperties\":[{},{}]}},{\"name\":\"kcsmk\",\"properties\":{\"schema\":[{},{},{},{}],\"dslConnectorProperties\":[{},{},{}]}}],\"connection\":{\"linkedService\":{\"referenceName\":\"dorvvmqfloy\",\"parameters\":{\"gdexjd\":\"datagwumgxdgdhpa\",\"wllcolsr\":\"datavjsaqwotm\",\"ljnhvlqj\":\"dataxaptefhexcgjok\"}},\"linkedServiceType\":\"kpeeksnbksdqhj\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{\"name\":\"lkhhu\",\"value\":\"datacpoq\"}]}},{\"sourceEntities\":[{\"name\":\"wqjwgok\",\"properties\":{\"schema\":[{},{},{}],\"dslConnectorProperties\":[{},{}]}},{\"name\":\"xybwfdbkjbzten\",\"properties\":{\"schema\":[{},{},{}],\"dslConnectorProperties\":[{},{}]}}],\"connection\":{\"linkedService\":{\"referenceName\":\"jknsxfwu\",\"parameters\":{\"pkuwxeoioj\":\"datadpkupnqrmgjf\"}},\"linkedServiceType\":\"zfav\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{\"name\":\"yay\",\"value\":\"datamfzsbf\"},{\"name\":\"rzx\",\"value\":\"dataewsrsxkrplbjaze\"},{\"name\":\"w\",\"value\":\"datayoyp\"}]}}],\"targetConnectionsInfo\":[{\"targetEntities\":[{\"name\":\"nnhj\",\"properties\":{\"schema\":[{}],\"dslConnectorProperties\":[{}]}},{\"name\":\"kbiwetpozyc\",\"properties\":{\"schema\":[{},{}],\"dslConnectorProperties\":[{}]}},{\"name\":\"fsetz\",\"properties\":{\"schema\":[{},{},{},{}],\"dslConnectorProperties\":[{},{},{}]}}],\"connection\":{\"linkedService\":{\"referenceName\":\"dynojpziuwfb\",\"parameters\":{\"qsyclj\":\"datadtn\",\"cbevxrhyzdfw\":\"dataelpkpbafvafhlbyl\",\"mairrh\":\"datasofpltd\"}},\"linkedServiceType\":\"fnrac\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{\"name\":\"uuj\",\"value\":\"datauhd\"}]},\"dataMapperMappings\":[{\"targetEntityName\":\"grbjbxsjybvitvqk\",\"sourceEntityName\":\"az\",\"sourceConnectionReference\":{\"connectionName\":\"tggmuwdchozfnkfe\",\"type\":\"linkedservicetype\"},\"attributeMappingInfo\":{\"attributeMappings\":[{},{},{}]},\"sourceDenormalizeInfo\":\"datakizvoa\"}],\"relationships\":[\"dataa\",\"datalnuwiguy\"]},{\"targetEntities\":[{\"name\":\"wphvxz\",\"properties\":{\"schema\":[{},{},{},{}],\"dslConnectorProperties\":[{},{}]}},{\"name\":\"jtlkexaonwivkcqh\",\"properties\":{\"schema\":[{}],\"dslConnectorProperties\":[{},{}]}},{\"name\":\"ccrmmk\",\"properties\":{\"schema\":[{},{},{},{}],\"dslConnectorProperties\":[{},{}]}},{\"name\":\"yqjf\",\"properties\":{\"schema\":[{},{},{},{}],\"dslConnectorProperties\":[{},{},{},{}]}}],\"connection\":{\"linkedService\":{\"referenceName\":\"em\",\"parameters\":{\"dxphlk\":\"datadudxjascowvfdjk\",\"dkz\":\"datasnmgzvyfi\",\"uqwqulsutrjbhxyk\":\"dataqnwsithuqolyah\"}},\"linkedServiceType\":\"y\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{\"name\":\"g\",\"value\":\"dataftbcvexreuquow\"},{\"name\":\"jv\",\"value\":\"datahreagk\"},{\"name\":\"xv\",\"value\":\"datatvbczsulm\"},{\"name\":\"glmep\",\"value\":\"datafs\"}]},\"dataMapperMappings\":[{\"targetEntityName\":\"sa\",\"sourceEntityName\":\"psznga\",\"sourceConnectionReference\":{\"connectionName\":\"ylkvecjuj\",\"type\":\"linkedservicetype\"},\"attributeMappingInfo\":{\"attributeMappings\":[{},{},{}]},\"sourceDenormalizeInfo\":\"dataedmzrgjfoknub\"},{\"targetEntityName\":\"itpkpztrgdg\",\"sourceEntityName\":\"coqra\",\"sourceConnectionReference\":{\"connectionName\":\"gyxpqit\",\"type\":\"linkedservicetype\"},\"attributeMappingInfo\":{\"attributeMappings\":[{},{},{},{}]},\"sourceDenormalizeInfo\":\"dataskbuhzaca\"},{\"targetEntityName\":\"yltcoqcuj\",\"sourceEntityName\":\"sxzakuejkm\",\"sourceConnectionReference\":{\"connectionName\":\"ztjofqcvovjufyc\",\"type\":\"linkedservicetype\"},\"attributeMappingInfo\":{\"attributeMappings\":[{}]},\"sourceDenormalizeInfo\":\"datayeji\"}],\"relationships\":[\"dataxeg\",\"datahortu\",\"dataawlpjfelqerpp\",\"datacbgqnzmnhiil\"]},{\"targetEntities\":[{\"name\":\"cjgckbbcccgzpra\",\"properties\":{\"schema\":[{},{},{}],\"dslConnectorProperties\":[{},{},{}]}},{\"name\":\"a\",\"properties\":{\"schema\":[{},{},{},{}],\"dslConnectorProperties\":[{},{}]}},{\"name\":\"wcxbyubhiqdxyurn\",\"properties\":{\"schema\":[{}],\"dslConnectorProperties\":[{}]}},{\"name\":\"ccnuhiig\",\"properties\":{\"schema\":[{}],\"dslConnectorProperties\":[{},{},{}]}}],\"connection\":{\"linkedService\":{\"referenceName\":\"xvatvcr\",\"parameters\":{\"bqxvhcsyhzlwxae\":\"datab\"}},\"linkedServiceType\":\"vurex\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{\"name\":\"ead\",\"value\":\"datazmwntopagt\"},{\"name\":\"v\",\"value\":\"dataagoaqylkjztji\"}]},\"dataMapperMappings\":[{\"targetEntityName\":\"cgm\",\"sourceEntityName\":\"tpfinzcpdltkr\",\"sourceConnectionReference\":{\"connectionName\":\"mtbdrvcqgu\",\"type\":\"linkedservicetype\"},\"attributeMappingInfo\":{\"attributeMappings\":[{},{}]},\"sourceDenormalizeInfo\":\"dataheqdurelyujlfyou\"}],\"relationships\":[\"datakyeclcdigpta\",\"databrzmqxucycijoclx\",\"datautgjcyz\",\"datazjd\"]}],\"policy\":{\"mode\":\"qjbtxjeaoqaqbzgy\",\"recurrence\":{\"frequency\":\"Minute\",\"interval\":1743289619}},\"allowVNetOverride\":true,\"status\":\"wbqamteuliy\"}")
+            "{\"folder\":{\"name\":\"igptajbrzmqxucyc\"},\"description\":\"oclxiut\",\"sourceConnectionsInfo\":[{\"sourceEntities\":[{\"name\":\"yzjdnrqjbt\",\"properties\":{\"schema\":[{},{},{},{}],\"dslConnectorProperties\":[{},{}]}},{\"name\":\"qbzg\",\"properties\":{\"schema\":[{}],\"dslConnectorProperties\":[{}]}}],\"connection\":{\"linkedService\":{\"referenceName\":\"tbwbqamteuli\",\"parameters\":{\"uxx\":\"datapkcvmwf\",\"iciijqpkzfbojx\":\"datapmywbormcq\",\"nkwywzwofa\":\"datamcsmyqwixvcp\",\"t\":\"dataickduoiqta\"}},\"linkedServiceType\":\"sknxrwzawnvsbcf\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{\"name\":\"hycvdimwrzre\",\"value\":\"datagy\"},{\"name\":\"utrwpweryekz\",\"value\":\"datahmeott\"},{\"name\":\"jyosxwwh\",\"value\":\"datajtfvpndpmiljpn\"}]}}],\"targetConnectionsInfo\":[{\"targetEntities\":[{\"name\":\"qllzsauzpjlxeehu\",\"properties\":{\"schema\":[{},{},{},{}],\"dslConnectorProperties\":[{},{},{},{}]}},{\"name\":\"aymezx\",\"properties\":{\"schema\":[{},{},{},{}],\"dslConnectorProperties\":[{},{}]}}],\"connection\":{\"linkedService\":{\"referenceName\":\"fdsajred\",\"parameters\":{\"afpwzyifrkgwl\":\"datayshtuwgmev\",\"zdyi\":\"dataxeqipx\",\"abnsmj\":\"datasfayorpravkjoges\",\"qpkevmyltjc\":\"datawynqxaekqsykvwj\"}},\"linkedServiceType\":\"pxklurccl\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{\"name\":\"oytzpose\",\"value\":\"dataigpxvkq\"}]},\"dataMapperMappings\":[{\"targetEntityName\":\"xvpif\",\"sourceEntityName\":\"aifyzyzeyuubeids\",\"sourceConnectionReference\":{\"connectionName\":\"ytoithgygvfl\",\"type\":\"linkedservicetype\"},\"attributeMappingInfo\":{\"attributeMappings\":[{},{}]},\"sourceDenormalizeInfo\":\"dataynkrxwetw\"},{\"targetEntityName\":\"rcyrucpcunnu\",\"sourceEntityName\":\"qumoeno\",\"sourceConnectionReference\":{\"connectionName\":\"ienhqhskndnelq\",\"type\":\"linkedservicetype\"},\"attributeMappingInfo\":{\"attributeMappings\":[{},{},{}]},\"sourceDenormalizeInfo\":\"datawf\"}],\"relationships\":[\"datan\",\"datayopetxivc\",\"datarl\"]},{\"targetEntities\":[{\"name\":\"caephbl\",\"properties\":{\"schema\":[{}],\"dslConnectorProperties\":[{}]}},{\"name\":\"bqsdtcjbctvi\",\"properties\":{\"schema\":[{},{},{},{}],\"dslConnectorProperties\":[{},{},{},{}]}},{\"name\":\"uo\",\"properties\":{\"schema\":[{},{},{},{}],\"dslConnectorProperties\":[{}]}},{\"name\":\"sqhzvbrzcdbanfz\",\"properties\":{\"schema\":[{},{},{}],\"dslConnectorProperties\":[{},{},{},{}]}}],\"connection\":{\"linkedService\":{\"referenceName\":\"atkdbmwnrd\",\"parameters\":{\"axljal\":\"databqbnaomhjrmkuh\",\"cjmobcanc\":\"datai\",\"xf\":\"dataexxqcwg\"}},\"linkedServiceType\":\"aknokzwjjzrl\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{\"name\":\"yfytpq\",\"value\":\"datax\"},{\"name\":\"m\",\"value\":\"datajivyqlkjuv\"}]},\"dataMapperMappings\":[{\"targetEntityName\":\"slzoyov\",\"sourceEntityName\":\"dbpqvybefgvm\",\"sourceConnectionReference\":{\"connectionName\":\"kcvtl\",\"type\":\"linkedservicetype\"},\"attributeMappingInfo\":{\"attributeMappings\":[{},{},{}]},\"sourceDenormalizeInfo\":\"datacua\"},{\"targetEntityName\":\"rhunlp\",\"sourceEntityName\":\"ykycndzfqi\",\"sourceConnectionReference\":{\"connectionName\":\"euy\",\"type\":\"linkedservicetype\"},\"attributeMappingInfo\":{\"attributeMappings\":[{},{},{},{}]},\"sourceDenormalizeInfo\":\"datagltbxoeeo\"},{\"targetEntityName\":\"lnf\",\"sourceEntityName\":\"y\",\"sourceConnectionReference\":{\"connectionName\":\"qdbpbhfckdvezc\",\"type\":\"linkedservicetype\"},\"attributeMappingInfo\":{\"attributeMappings\":[{},{},{}]},\"sourceDenormalizeInfo\":\"dataddubbnqfblhkal\"}],\"relationships\":[\"dataavawugiqj\",\"dataiogqgdminictte\",\"datajohiyg\",\"datapnbonhpcz\"]},{\"targetEntities\":[{\"name\":\"tp\",\"properties\":{\"schema\":[{}],\"dslConnectorProperties\":[{},{}]}}],\"connection\":{\"linkedService\":{\"referenceName\":\"chkhufm\",\"parameters\":{\"zulo\":\"datamqyjgy\"}},\"linkedServiceType\":\"aeuzanh\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{\"name\":\"wphpzfngqj\",\"value\":\"dataidftujwjjufwbe\"},{\"name\":\"k\",\"value\":\"datarhtssr\"},{\"name\":\"nmdvha\",\"value\":\"datavjytiqswbq\"}]},\"dataMapperMappings\":[{\"targetEntityName\":\"xiytxtdgukvl\",\"sourceEntityName\":\"ktg\",\"sourceConnectionReference\":{\"connectionName\":\"youambewr\",\"type\":\"linkedservicetype\"},\"attributeMappingInfo\":{\"attributeMappings\":[{}]},\"sourceDenormalizeInfo\":\"datagmmuteyxey\"},{\"targetEntityName\":\"qigijiitnspxlzde\",\"sourceEntityName\":\"grijwaiufanrayb\",\"sourceConnectionReference\":{\"connectionName\":\"qfrojsydgrhyd\",\"type\":\"linkedservicetype\"},\"attributeMappingInfo\":{\"attributeMappings\":[{},{},{},{}]},\"sourceDenormalizeInfo\":\"dataskieca\"}],\"relationships\":[\"datazmxieqvdsmaklix\",\"datacahyhx\"]}],\"policy\":{\"mode\":\"ybxawoijpodtblx\",\"recurrence\":{\"frequency\":\"Minute\",\"interval\":1810381006}},\"allowVNetOverride\":false,\"status\":\"qhykincn\"}")
             .toObject(ChangeDataCapture.class);
-        Assertions.assertEquals("fkndl", model.folder().name());
-        Assertions.assertEquals("twknvgm", model.description());
-        Assertions.assertEquals("yw", model.sourceConnectionsInfo().get(0).sourceEntities().get(0).name());
-        Assertions.assertEquals("jn",
+        Assertions.assertEquals("igptajbrzmqxucyc", model.folder().name());
+        Assertions.assertEquals("oclxiut", model.description());
+        Assertions.assertEquals("yzjdnrqjbt", model.sourceConnectionsInfo().get(0).sourceEntities().get(0).name());
+        Assertions.assertEquals("tbwbqamteuli",
             model.sourceConnectionsInfo().get(0).connection().linkedService().referenceName());
-        Assertions.assertEquals("sxkdnwqapfgsdpc",
+        Assertions.assertEquals("sknxrwzawnvsbcf",
             model.sourceConnectionsInfo().get(0).connection().linkedServiceType());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE,
             model.sourceConnectionsInfo().get(0).connection().type());
-        Assertions.assertEquals(true, model.sourceConnectionsInfo().get(0).connection().isInlineDataset());
-        Assertions.assertEquals("h",
+        Assertions.assertEquals(false, model.sourceConnectionsInfo().get(0).connection().isInlineDataset());
+        Assertions.assertEquals("hycvdimwrzre",
             model.sourceConnectionsInfo().get(0).connection().commonDslConnectorProperties().get(0).name());
-        Assertions.assertEquals("nnhj", model.targetConnectionsInfo().get(0).targetEntities().get(0).name());
-        Assertions.assertEquals("dynojpziuwfb",
+        Assertions.assertEquals("qllzsauzpjlxeehu",
+            model.targetConnectionsInfo().get(0).targetEntities().get(0).name());
+        Assertions.assertEquals("fdsajred",
             model.targetConnectionsInfo().get(0).connection().linkedService().referenceName());
-        Assertions.assertEquals("fnrac", model.targetConnectionsInfo().get(0).connection().linkedServiceType());
+        Assertions.assertEquals("pxklurccl", model.targetConnectionsInfo().get(0).connection().linkedServiceType());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE,
             model.targetConnectionsInfo().get(0).connection().type());
         Assertions.assertEquals(true, model.targetConnectionsInfo().get(0).connection().isInlineDataset());
-        Assertions.assertEquals("uuj",
+        Assertions.assertEquals("oytzpose",
             model.targetConnectionsInfo().get(0).connection().commonDslConnectorProperties().get(0).name());
-        Assertions.assertEquals("grbjbxsjybvitvqk",
+        Assertions.assertEquals("xvpif",
             model.targetConnectionsInfo().get(0).dataMapperMappings().get(0).targetEntityName());
-        Assertions.assertEquals("az",
+        Assertions.assertEquals("aifyzyzeyuubeids",
             model.targetConnectionsInfo().get(0).dataMapperMappings().get(0).sourceEntityName());
-        Assertions.assertEquals("tggmuwdchozfnkfe", model.targetConnectionsInfo().get(0).dataMapperMappings().get(0)
-            .sourceConnectionReference().connectionName());
+        Assertions.assertEquals("ytoithgygvfl",
+            model.targetConnectionsInfo()
+                .get(0)
+                .dataMapperMappings()
+                .get(0)
+                .sourceConnectionReference()
+                .connectionName());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE,
             model.targetConnectionsInfo().get(0).dataMapperMappings().get(0).sourceConnectionReference().type());
-        Assertions.assertEquals("qjbtxjeaoqaqbzgy", model.policy().mode());
+        Assertions.assertEquals("ybxawoijpodtblx", model.policy().mode());
         Assertions.assertEquals(FrequencyType.MINUTE, model.policy().recurrence().frequency());
-        Assertions.assertEquals(1743289619, model.policy().recurrence().interval());
-        Assertions.assertEquals(true, model.allowVNetOverride());
-        Assertions.assertEquals("wbqamteuliy", model.status());
+        Assertions.assertEquals(1810381006, model.policy().recurrence().interval());
+        Assertions.assertEquals(false, model.allowVNetOverride());
+        Assertions.assertEquals("qhykincn", model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ChangeDataCapture model
-            = new ChangeDataCapture().withFolder(new ChangeDataCaptureFolder().withName("fkndl"))
-                .withDescription("twknvgm")
-                .withSourceConnectionsInfo(Arrays.asList(
-                    new MapperSourceConnectionsInfo()
-                        .withSourceEntities(Arrays.asList(
-                            new MapperTable().withName("yw")
-                                .withSchema(Arrays.asList(new MapperTableSchema(), new MapperTableSchema()))
-                                .withDslConnectorProperties(Arrays
-                                    .asList(new MapperDslConnectorProperties(), new MapperDslConnectorProperties(),
-                                        new MapperDslConnectorProperties(), new MapperDslConnectorProperties())),
-                            new MapperTable().withName("ueatgroe").withSchema(Arrays.asList(new MapperTableSchema()))
-                                .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties(),
-                                    new MapperDslConnectorProperties())),
-                            new MapperTable().withName("byfqxkfaoy")
-                                .withSchema(Arrays.asList(new MapperTableSchema(), new MapperTableSchema()))
-                                .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties(),
-                                    new MapperDslConnectorProperties())),
-                            new MapperTable().withName("jmvqmtd").withSchema(Arrays.asList(new MapperTableSchema()))
-                                .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties(),
-                                    new MapperDslConnectorProperties()))))
-                        .withConnection(new MapperConnection()
-                            .withLinkedService(new LinkedServiceReference().withReferenceName("jn")
-                                .withParameters(mapOf("rreqynkceysfaqe", "datajdjusk", "ryshwddkvbxgk", "datapl",
-                                    "vvlfntymtp", "datausybwptdaca", "zrsq", "dataiwenazero")))
-                            .withLinkedServiceType("sxkdnwqapfgsdpc").withType(ConnectionType.LINKEDSERVICETYPE)
-                            .withIsInlineDataset(true).withCommonDslConnectorProperties(
-                                Arrays.asList(new MapperDslConnectorProperties().withName("h").withValue("datauipldqq"),
-                                    new MapperDslConnectorProperties().withName("ekvalblhtjq")
-                                        .withValue("datayvwehtaemxh"),
-                                    new MapperDslConnectorProperties().withName("ysev").withValue("dataxivzrrry"),
-                                    new MapperDslConnectorProperties().withName("imipskdyzatvfuz")
-                                        .withValue("dataftjvvruxwigsye")))),
-                    new MapperSourceConnectionsInfo()
-                        .withSourceEntities(Arrays.asList(
-                            new MapperTable().withName("smjtgrqgdg")
-                                .withSchema(Arrays.asList(new MapperTableSchema(), new MapperTableSchema(),
-                                    new MapperTableSchema()))
-                                .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties(),
-                                    new MapperDslConnectorProperties())),
-                            new MapperTable().withName("kcsmk")
-                                .withSchema(Arrays.asList(new MapperTableSchema(), new MapperTableSchema(),
-                                    new MapperTableSchema(), new MapperTableSchema()))
-                                .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties(),
-                                    new MapperDslConnectorProperties(), new MapperDslConnectorProperties()))))
-                        .withConnection(new MapperConnection()
-                            .withLinkedService(new LinkedServiceReference().withReferenceName("dorvvmqfloy")
-                                .withParameters(mapOf("gdexjd", "datagwumgxdgdhpa", "wllcolsr", "datavjsaqwotm",
-                                    "ljnhvlqj", "dataxaptefhexcgjok")))
-                            .withLinkedServiceType("kpeeksnbksdqhj").withType(ConnectionType.LINKEDSERVICETYPE)
-                            .withIsInlineDataset(false)
-                            .withCommonDslConnectorProperties(Arrays
-                                .asList(new MapperDslConnectorProperties().withName("lkhhu").withValue("datacpoq")))),
-                    new MapperSourceConnectionsInfo()
-                        .withSourceEntities(Arrays.asList(
-                            new MapperTable().withName("wqjwgok")
-                                .withSchema(Arrays.asList(new MapperTableSchema(), new MapperTableSchema(),
-                                    new MapperTableSchema()))
-                                .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties(),
-                                    new MapperDslConnectorProperties())),
-                            new MapperTable().withName("xybwfdbkjbzten")
-                                .withSchema(Arrays.asList(new MapperTableSchema(), new MapperTableSchema(),
-                                    new MapperTableSchema()))
-                                .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties(),
-                                    new MapperDslConnectorProperties()))))
-                        .withConnection(new MapperConnection()
-                            .withLinkedService(new LinkedServiceReference().withReferenceName("jknsxfwu")
-                                .withParameters(mapOf("pkuwxeoioj", "datadpkupnqrmgjf")))
-                            .withLinkedServiceType("zfav").withType(ConnectionType.LINKEDSERVICETYPE)
-                            .withIsInlineDataset(true)
-                            .withCommonDslConnectorProperties(Arrays.asList(
-                                new MapperDslConnectorProperties().withName("yay").withValue("datamfzsbf"),
-                                new MapperDslConnectorProperties().withName("rzx").withValue("dataewsrsxkrplbjaze"),
-                                new MapperDslConnectorProperties().withName("w").withValue("datayoyp"))))))
+            = new ChangeDataCapture().withFolder(new ChangeDataCaptureFolder().withName("igptajbrzmqxucyc"))
+                .withDescription("oclxiut")
+                .withSourceConnectionsInfo(Arrays.asList(new MapperSourceConnectionsInfo()
+                    .withSourceEntities(Arrays.asList(
+                        new MapperTable().withName("yzjdnrqjbt")
+                            .withSchema(Arrays.asList(new MapperTableSchema(), new MapperTableSchema(),
+                                new MapperTableSchema(), new MapperTableSchema()))
+                            .withDslConnectorProperties(
+                                Arrays.asList(new MapperDslConnectorProperties(), new MapperDslConnectorProperties())),
+                        new MapperTable().withName("qbzg")
+                            .withSchema(Arrays.asList(new MapperTableSchema()))
+                            .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties()))))
+                    .withConnection(new MapperConnection()
+                        .withLinkedService(new LinkedServiceReference().withReferenceName("tbwbqamteuli")
+                            .withParameters(mapOf("uxx", "datapkcvmwf", "iciijqpkzfbojx", "datapmywbormcq",
+                                "nkwywzwofa", "datamcsmyqwixvcp", "t", "dataickduoiqta")))
+                        .withLinkedServiceType("sknxrwzawnvsbcf")
+                        .withType(ConnectionType.LINKEDSERVICETYPE)
+                        .withIsInlineDataset(false)
+                        .withCommonDslConnectorProperties(Arrays.asList(
+                            new MapperDslConnectorProperties().withName("hycvdimwrzre").withValue("datagy"),
+                            new MapperDslConnectorProperties().withName("utrwpweryekz").withValue("datahmeott"),
+                            new MapperDslConnectorProperties().withName("jyosxwwh").withValue("datajtfvpndpmiljpn"))))))
                 .withTargetConnectionsInfo(Arrays.asList(
                     new MapperTargetConnectionsInfo()
                         .withTargetEntities(Arrays.asList(
-                            new MapperTable().withName("nnhj").withSchema(Arrays.asList(new MapperTableSchema()))
-                                .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties())),
-                            new MapperTable().withName("kbiwetpozyc")
-                                .withSchema(Arrays.asList(new MapperTableSchema(), new MapperTableSchema()))
-                                .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties())),
-                            new MapperTable().withName("fsetz")
-                                .withSchema(Arrays.asList(new MapperTableSchema(), new MapperTableSchema(),
-                                    new MapperTableSchema(), new MapperTableSchema()))
-                                .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties(),
-                                    new MapperDslConnectorProperties(), new MapperDslConnectorProperties()))))
-                        .withConnection(
-                            new MapperConnection()
-                                .withLinkedService(new LinkedServiceReference().withReferenceName("dynojpziuwfb")
-                                    .withParameters(mapOf("qsyclj", "datadtn", "cbevxrhyzdfw", "dataelpkpbafvafhlbyl",
-                                        "mairrh", "datasofpltd")))
-                                .withLinkedServiceType("fnrac").withType(ConnectionType.LINKEDSERVICETYPE)
-                                .withIsInlineDataset(true)
-                                .withCommonDslConnectorProperties(Arrays
-                                    .asList(new MapperDslConnectorProperties().withName("uuj").withValue("datauhd"))))
-                        .withDataMapperMappings(Arrays.asList(
-                            new DataMapperMapping().withTargetEntityName("grbjbxsjybvitvqk").withSourceEntityName("az")
-                                .withSourceConnectionReference(new MapperConnectionReference()
-                                    .withConnectionName("tggmuwdchozfnkfe").withType(ConnectionType.LINKEDSERVICETYPE))
-                                .withAttributeMappingInfo(new MapperAttributeMappings().withAttributeMappings(
-                                    Arrays.asList(new MapperAttributeMapping(), new MapperAttributeMapping(),
-                                        new MapperAttributeMapping())))
-                                .withSourceDenormalizeInfo("datakizvoa")))
-                        .withRelationships(Arrays.asList("dataa", "datalnuwiguy")),
-                    new MapperTargetConnectionsInfo()
-                        .withTargetEntities(Arrays.asList(
-                            new MapperTable().withName("wphvxz")
-                                .withSchema(Arrays.asList(new MapperTableSchema(), new MapperTableSchema(),
-                                    new MapperTableSchema(), new MapperTableSchema()))
-                                .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties(),
-                                    new MapperDslConnectorProperties())),
-                            new MapperTable().withName("jtlkexaonwivkcqh")
-                                .withSchema(Arrays.asList(new MapperTableSchema()))
-                                .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties(),
-                                    new MapperDslConnectorProperties())),
-                            new MapperTable().withName("ccrmmk")
-                                .withSchema(Arrays.asList(new MapperTableSchema(), new MapperTableSchema(),
-                                    new MapperTableSchema(), new MapperTableSchema()))
-                                .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties(),
-                                    new MapperDslConnectorProperties())),
-                            new MapperTable().withName("yqjf")
+                            new MapperTable().withName("qllzsauzpjlxeehu")
                                 .withSchema(Arrays.asList(new MapperTableSchema(), new MapperTableSchema(),
                                     new MapperTableSchema(), new MapperTableSchema()))
                                 .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties(),
                                     new MapperDslConnectorProperties(), new MapperDslConnectorProperties(),
-                                    new MapperDslConnectorProperties()))))
-                        .withConnection(new MapperConnection()
-                            .withLinkedService(new LinkedServiceReference().withReferenceName("em")
-                                .withParameters(mapOf("dxphlk", "datadudxjascowvfdjk", "dkz", "datasnmgzvyfi",
-                                    "uqwqulsutrjbhxyk", "dataqnwsithuqolyah")))
-                            .withLinkedServiceType("y").withType(ConnectionType.LINKEDSERVICETYPE)
-                            .withIsInlineDataset(true)
-                            .withCommonDslConnectorProperties(Arrays.asList(
-                                new MapperDslConnectorProperties().withName("g").withValue("dataftbcvexreuquow"),
-                                new MapperDslConnectorProperties().withName("jv").withValue("datahreagk"),
-                                new MapperDslConnectorProperties().withName("xv").withValue("datatvbczsulm"),
-                                new MapperDslConnectorProperties().withName("glmep").withValue("datafs"))))
-                        .withDataMapperMappings(Arrays.asList(
-                            new DataMapperMapping().withTargetEntityName("sa").withSourceEntityName("psznga")
-                                .withSourceConnectionReference(new MapperConnectionReference()
-                                    .withConnectionName("ylkvecjuj").withType(ConnectionType.LINKEDSERVICETYPE))
-                                .withAttributeMappingInfo(new MapperAttributeMappings()
-                                    .withAttributeMappings(Arrays.asList(new MapperAttributeMapping(),
-                                        new MapperAttributeMapping(), new MapperAttributeMapping())))
-                                .withSourceDenormalizeInfo("dataedmzrgjfoknub"),
-                            new DataMapperMapping().withTargetEntityName("itpkpztrgdg").withSourceEntityName("coqra")
-                                .withSourceConnectionReference(new MapperConnectionReference()
-                                    .withConnectionName("gyxpqit").withType(ConnectionType.LINKEDSERVICETYPE))
-                                .withAttributeMappingInfo(new MapperAttributeMappings().withAttributeMappings(
-                                    Arrays.asList(new MapperAttributeMapping(), new MapperAttributeMapping(),
-                                        new MapperAttributeMapping(), new MapperAttributeMapping())))
-                                .withSourceDenormalizeInfo("dataskbuhzaca"),
-                            new DataMapperMapping().withTargetEntityName("yltcoqcuj").withSourceEntityName("sxzakuejkm")
-                                .withSourceConnectionReference(new MapperConnectionReference()
-                                    .withConnectionName("ztjofqcvovjufyc").withType(ConnectionType.LINKEDSERVICETYPE))
-                                .withAttributeMappingInfo(new MapperAttributeMappings()
-                                    .withAttributeMappings(Arrays.asList(new MapperAttributeMapping())))
-                                .withSourceDenormalizeInfo("datayeji")))
-                        .withRelationships(
-                            Arrays.asList("dataxeg", "datahortu", "dataawlpjfelqerpp", "datacbgqnzmnhiil")),
-                    new MapperTargetConnectionsInfo()
-                        .withTargetEntities(Arrays.asList(
-                            new MapperTable().withName("cjgckbbcccgzpra")
-                                .withSchema(Arrays.asList(new MapperTableSchema(), new MapperTableSchema(),
-                                    new MapperTableSchema()))
-                                .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties(),
-                                    new MapperDslConnectorProperties(), new MapperDslConnectorProperties())),
-                            new MapperTable().withName("a")
+                                    new MapperDslConnectorProperties())),
+                            new MapperTable().withName("aymezx")
                                 .withSchema(Arrays.asList(new MapperTableSchema(), new MapperTableSchema(),
                                     new MapperTableSchema(), new MapperTableSchema()))
                                 .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties(),
-                                    new MapperDslConnectorProperties())),
-                            new MapperTable().withName("wcxbyubhiqdxyurn")
-                                .withSchema(Arrays.asList(new MapperTableSchema()))
-                                .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties())),
-                            new MapperTable().withName("ccnuhiig").withSchema(Arrays.asList(new MapperTableSchema()))
-                                .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties(),
-                                    new MapperDslConnectorProperties(), new MapperDslConnectorProperties()))))
-                        .withConnection(new MapperConnection()
-                            .withLinkedService(new LinkedServiceReference().withReferenceName("xvatvcr")
-                                .withParameters(mapOf("bqxvhcsyhzlwxae", "datab")))
-                            .withLinkedServiceType("vurex").withType(ConnectionType.LINKEDSERVICETYPE)
-                            .withIsInlineDataset(true)
-                            .withCommonDslConnectorProperties(Arrays.asList(
-                                new MapperDslConnectorProperties().withName("ead").withValue("datazmwntopagt"),
-                                new MapperDslConnectorProperties().withName("v").withValue("dataagoaqylkjztji"))))
-                        .withDataMapperMappings(Arrays.asList(
-                            new DataMapperMapping().withTargetEntityName("cgm").withSourceEntityName("tpfinzcpdltkr")
-                                .withSourceConnectionReference(new MapperConnectionReference()
-                                    .withConnectionName("mtbdrvcqgu").withType(ConnectionType.LINKEDSERVICETYPE))
+                                    new MapperDslConnectorProperties()))))
+                        .withConnection(
+                            new MapperConnection()
+                                .withLinkedService(new LinkedServiceReference().withReferenceName("fdsajred")
+                                    .withParameters(mapOf("afpwzyifrkgwl", "datayshtuwgmev", "zdyi", "dataxeqipx",
+                                        "abnsmj", "datasfayorpravkjoges", "qpkevmyltjc", "datawynqxaekqsykvwj")))
+                                .withLinkedServiceType("pxklurccl")
+                                .withType(ConnectionType.LINKEDSERVICETYPE)
+                                .withIsInlineDataset(true)
+                                .withCommonDslConnectorProperties(Arrays.asList(
+                                    new MapperDslConnectorProperties().withName("oytzpose").withValue("dataigpxvkq"))))
+                        .withDataMapperMappings(
+                            Arrays.asList(
+                                new DataMapperMapping().withTargetEntityName("xvpif")
+                                    .withSourceEntityName("aifyzyzeyuubeids")
+                                    .withSourceConnectionReference(
+                                        new MapperConnectionReference().withConnectionName("ytoithgygvfl")
+                                            .withType(ConnectionType.LINKEDSERVICETYPE))
+                                    .withAttributeMappingInfo(new MapperAttributeMappings().withAttributeMappings(
+                                        Arrays.asList(new MapperAttributeMapping(), new MapperAttributeMapping())))
+                                    .withSourceDenormalizeInfo("dataynkrxwetw"),
+                                new DataMapperMapping().withTargetEntityName("rcyrucpcunnu")
+                                    .withSourceEntityName("qumoeno")
+                                    .withSourceConnectionReference(
+                                        new MapperConnectionReference().withConnectionName("ienhqhskndnelq")
+                                            .withType(ConnectionType.LINKEDSERVICETYPE))
+                                    .withAttributeMappingInfo(new MapperAttributeMappings()
+                                        .withAttributeMappings(Arrays.asList(new MapperAttributeMapping(),
+                                            new MapperAttributeMapping(), new MapperAttributeMapping())))
+                                    .withSourceDenormalizeInfo("datawf")))
+                        .withRelationships(Arrays.asList("datan", "datayopetxivc", "datarl")),
+                    new MapperTargetConnectionsInfo()
+                        .withTargetEntities(
+                            Arrays.asList(
+                                new MapperTable().withName("caephbl")
+                                    .withSchema(Arrays.asList(new MapperTableSchema()))
+                                    .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties())),
+                                new MapperTable().withName("bqsdtcjbctvi")
+                                    .withSchema(Arrays.asList(new MapperTableSchema(), new MapperTableSchema(),
+                                        new MapperTableSchema(), new MapperTableSchema()))
+                                    .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties(),
+                                        new MapperDslConnectorProperties(), new MapperDslConnectorProperties(),
+                                        new MapperDslConnectorProperties())),
+                                new MapperTable().withName("uo")
+                                    .withSchema(Arrays.asList(new MapperTableSchema(), new MapperTableSchema(),
+                                        new MapperTableSchema(), new MapperTableSchema()))
+                                    .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties())),
+                                new MapperTable().withName("sqhzvbrzcdbanfz")
+                                    .withSchema(Arrays.asList(new MapperTableSchema(), new MapperTableSchema(),
+                                        new MapperTableSchema()))
+                                    .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties(),
+                                        new MapperDslConnectorProperties(), new MapperDslConnectorProperties(),
+                                        new MapperDslConnectorProperties()))))
+                        .withConnection(
+                            new MapperConnection()
+                                .withLinkedService(new LinkedServiceReference().withReferenceName("atkdbmwnrd")
+                                    .withParameters(mapOf("axljal", "databqbnaomhjrmkuh", "cjmobcanc", "datai", "xf",
+                                        "dataexxqcwg")))
+                                .withLinkedServiceType("aknokzwjjzrl")
+                                .withType(ConnectionType.LINKEDSERVICETYPE)
+                                .withIsInlineDataset(false)
+                                .withCommonDslConnectorProperties(Arrays.asList(
+                                    new MapperDslConnectorProperties().withName("yfytpq").withValue("datax"),
+                                    new MapperDslConnectorProperties().withName("m").withValue("datajivyqlkjuv"))))
+                        .withDataMapperMappings(Arrays.asList(new DataMapperMapping().withTargetEntityName("slzoyov")
+                            .withSourceEntityName("dbpqvybefgvm")
+                            .withSourceConnectionReference(new MapperConnectionReference().withConnectionName("kcvtl")
+                                .withType(ConnectionType.LINKEDSERVICETYPE))
+                            .withAttributeMappingInfo(new MapperAttributeMappings()
+                                .withAttributeMappings(Arrays.asList(new MapperAttributeMapping(),
+                                    new MapperAttributeMapping(), new MapperAttributeMapping())))
+                            .withSourceDenormalizeInfo("datacua"),
+                            new DataMapperMapping().withTargetEntityName("rhunlp")
+                                .withSourceEntityName("ykycndzfqi")
+                                .withSourceConnectionReference(new MapperConnectionReference().withConnectionName("euy")
+                                    .withType(ConnectionType.LINKEDSERVICETYPE))
                                 .withAttributeMappingInfo(new MapperAttributeMappings().withAttributeMappings(
-                                    Arrays.asList(new MapperAttributeMapping(), new MapperAttributeMapping())))
-                                .withSourceDenormalizeInfo("dataheqdurelyujlfyou")))
+                                    Arrays.asList(new MapperAttributeMapping(), new MapperAttributeMapping(),
+                                        new MapperAttributeMapping(), new MapperAttributeMapping())))
+                                .withSourceDenormalizeInfo("datagltbxoeeo"),
+                            new DataMapperMapping().withTargetEntityName("lnf")
+                                .withSourceEntityName("y")
+                                .withSourceConnectionReference(
+                                    new MapperConnectionReference().withConnectionName("qdbpbhfckdvezc")
+                                        .withType(ConnectionType.LINKEDSERVICETYPE))
+                                .withAttributeMappingInfo(new MapperAttributeMappings()
+                                    .withAttributeMappings(Arrays.asList(new MapperAttributeMapping(),
+                                        new MapperAttributeMapping(), new MapperAttributeMapping())))
+                                .withSourceDenormalizeInfo("dataddubbnqfblhkal")))
                         .withRelationships(
-                            Arrays.asList("datakyeclcdigpta", "databrzmqxucycijoclx", "datautgjcyz", "datazjd"))))
-                .withPolicy(new MapperPolicy().withMode("qjbtxjeaoqaqbzgy").withRecurrence(
-                    new MapperPolicyRecurrence().withFrequency(FrequencyType.MINUTE).withInterval(1743289619)))
-                .withAllowVNetOverride(true).withStatus("wbqamteuliy");
+                            Arrays.asList("dataavawugiqj", "dataiogqgdminictte", "datajohiyg", "datapnbonhpcz")),
+                    new MapperTargetConnectionsInfo()
+                        .withTargetEntities(
+                            Arrays.asList(new MapperTable().withName("tp")
+                                .withSchema(Arrays.asList(new MapperTableSchema()))
+                                .withDslConnectorProperties(Arrays.asList(new MapperDslConnectorProperties(),
+                                    new MapperDslConnectorProperties()))))
+                        .withConnection(new MapperConnection()
+                            .withLinkedService(new LinkedServiceReference().withReferenceName("chkhufm")
+                                .withParameters(mapOf("zulo", "datamqyjgy")))
+                            .withLinkedServiceType("aeuzanh")
+                            .withType(ConnectionType.LINKEDSERVICETYPE)
+                            .withIsInlineDataset(false)
+                            .withCommonDslConnectorProperties(Arrays.asList(
+                                new MapperDslConnectorProperties().withName("wphpzfngqj")
+                                    .withValue("dataidftujwjjufwbe"),
+                                new MapperDslConnectorProperties().withName("k").withValue("datarhtssr"),
+                                new MapperDslConnectorProperties().withName("nmdvha").withValue("datavjytiqswbq"))))
+                        .withDataMapperMappings(Arrays.asList(
+                            new DataMapperMapping().withTargetEntityName("xiytxtdgukvl")
+                                .withSourceEntityName("ktg")
+                                .withSourceConnectionReference(
+                                    new MapperConnectionReference().withConnectionName("youambewr")
+                                        .withType(ConnectionType.LINKEDSERVICETYPE))
+                                .withAttributeMappingInfo(new MapperAttributeMappings()
+                                    .withAttributeMappings(Arrays.asList(new MapperAttributeMapping())))
+                                .withSourceDenormalizeInfo("datagmmuteyxey"),
+                            new DataMapperMapping().withTargetEntityName("qigijiitnspxlzde")
+                                .withSourceEntityName("grijwaiufanrayb")
+                                .withSourceConnectionReference(
+                                    new MapperConnectionReference().withConnectionName("qfrojsydgrhyd")
+                                        .withType(ConnectionType.LINKEDSERVICETYPE))
+                                .withAttributeMappingInfo(new MapperAttributeMappings().withAttributeMappings(
+                                    Arrays.asList(new MapperAttributeMapping(), new MapperAttributeMapping(),
+                                        new MapperAttributeMapping(), new MapperAttributeMapping())))
+                                .withSourceDenormalizeInfo("dataskieca")))
+                        .withRelationships(Arrays.asList("datazmxieqvdsmaklix", "datacahyhx"))))
+                .withPolicy(new MapperPolicy().withMode("ybxawoijpodtblx")
+                    .withRecurrence(
+                        new MapperPolicyRecurrence().withFrequency(FrequencyType.MINUTE).withInterval(1810381006)))
+                .withAllowVNetOverride(false)
+                .withStatus("qhykincn");
         model = BinaryData.fromObject(model).toObject(ChangeDataCapture.class);
-        Assertions.assertEquals("fkndl", model.folder().name());
-        Assertions.assertEquals("twknvgm", model.description());
-        Assertions.assertEquals("yw", model.sourceConnectionsInfo().get(0).sourceEntities().get(0).name());
-        Assertions.assertEquals("jn",
+        Assertions.assertEquals("igptajbrzmqxucyc", model.folder().name());
+        Assertions.assertEquals("oclxiut", model.description());
+        Assertions.assertEquals("yzjdnrqjbt", model.sourceConnectionsInfo().get(0).sourceEntities().get(0).name());
+        Assertions.assertEquals("tbwbqamteuli",
             model.sourceConnectionsInfo().get(0).connection().linkedService().referenceName());
-        Assertions.assertEquals("sxkdnwqapfgsdpc",
+        Assertions.assertEquals("sknxrwzawnvsbcf",
             model.sourceConnectionsInfo().get(0).connection().linkedServiceType());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE,
             model.sourceConnectionsInfo().get(0).connection().type());
-        Assertions.assertEquals(true, model.sourceConnectionsInfo().get(0).connection().isInlineDataset());
-        Assertions.assertEquals("h",
+        Assertions.assertEquals(false, model.sourceConnectionsInfo().get(0).connection().isInlineDataset());
+        Assertions.assertEquals("hycvdimwrzre",
             model.sourceConnectionsInfo().get(0).connection().commonDslConnectorProperties().get(0).name());
-        Assertions.assertEquals("nnhj", model.targetConnectionsInfo().get(0).targetEntities().get(0).name());
-        Assertions.assertEquals("dynojpziuwfb",
+        Assertions.assertEquals("qllzsauzpjlxeehu",
+            model.targetConnectionsInfo().get(0).targetEntities().get(0).name());
+        Assertions.assertEquals("fdsajred",
             model.targetConnectionsInfo().get(0).connection().linkedService().referenceName());
-        Assertions.assertEquals("fnrac", model.targetConnectionsInfo().get(0).connection().linkedServiceType());
+        Assertions.assertEquals("pxklurccl", model.targetConnectionsInfo().get(0).connection().linkedServiceType());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE,
             model.targetConnectionsInfo().get(0).connection().type());
         Assertions.assertEquals(true, model.targetConnectionsInfo().get(0).connection().isInlineDataset());
-        Assertions.assertEquals("uuj",
+        Assertions.assertEquals("oytzpose",
             model.targetConnectionsInfo().get(0).connection().commonDslConnectorProperties().get(0).name());
-        Assertions.assertEquals("grbjbxsjybvitvqk",
+        Assertions.assertEquals("xvpif",
             model.targetConnectionsInfo().get(0).dataMapperMappings().get(0).targetEntityName());
-        Assertions.assertEquals("az",
+        Assertions.assertEquals("aifyzyzeyuubeids",
             model.targetConnectionsInfo().get(0).dataMapperMappings().get(0).sourceEntityName());
-        Assertions.assertEquals("tggmuwdchozfnkfe", model.targetConnectionsInfo().get(0).dataMapperMappings().get(0)
-            .sourceConnectionReference().connectionName());
+        Assertions.assertEquals("ytoithgygvfl",
+            model.targetConnectionsInfo()
+                .get(0)
+                .dataMapperMappings()
+                .get(0)
+                .sourceConnectionReference()
+                .connectionName());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE,
             model.targetConnectionsInfo().get(0).dataMapperMappings().get(0).sourceConnectionReference().type());
-        Assertions.assertEquals("qjbtxjeaoqaqbzgy", model.policy().mode());
+        Assertions.assertEquals("ybxawoijpodtblx", model.policy().mode());
         Assertions.assertEquals(FrequencyType.MINUTE, model.policy().recurrence().frequency());
-        Assertions.assertEquals(1743289619, model.policy().recurrence().interval());
-        Assertions.assertEquals(true, model.allowVNetOverride());
-        Assertions.assertEquals("wbqamteuliy", model.status());
+        Assertions.assertEquals(1810381006, model.policy().recurrence().interval());
+        Assertions.assertEquals(false, model.allowVNetOverride());
+        Assertions.assertEquals("qhykincn", model.status());
     }
 
     // Use "Map.of" if available

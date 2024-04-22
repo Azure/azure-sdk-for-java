@@ -264,7 +264,7 @@ com.google.truth:truth;1.1.3
 
 ## Maven Tools versions
 com.azure:sdk-build-tools;1.0.0
-com.azure.tools:codesnippet-maven-plugin;1.0.0-beta.8
+com.azure.tools:codesnippet-maven-plugin;1.0.0-beta.10
 com.beust:jcommander;1.78
 # Spotless 2.30.0 is the last version supporting a Java 8 runtime
 com.diffplug.spotless:spotless-maven-plugin;2.30.0
@@ -354,6 +354,7 @@ test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # everything under sdk\cosmos
 cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.13.5
+cosmos_com.fasterxml.jackson.module:jackson-module-blackbird;2.13.5
 cosmos_com.google.guava:guava;33.0.0-jre
 cosmos_com.microsoft.data.encryption:cryptography;0.2.2.jre8-preview
 cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;0.2.2.jre8-preview

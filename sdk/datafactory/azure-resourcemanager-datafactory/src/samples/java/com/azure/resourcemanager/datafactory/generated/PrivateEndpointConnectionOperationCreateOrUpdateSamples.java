@@ -13,8 +13,7 @@ import com.azure.resourcemanager.datafactory.models.PrivateLinkConnectionState;
  */
 public final class PrivateEndpointConnectionOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * ApproveRejectPrivateEndpointConnection.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ApproveRejectPrivateEndpointConnection.json
      */
     /**
      * Sample code: Approves or rejects a private endpoint connection for a factory.
@@ -23,11 +22,13 @@ public final class PrivateEndpointConnectionOperationCreateOrUpdateSamples {
      */
     public static void approvesOrRejectsAPrivateEndpointConnectionForAFactory(
         com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.privateEndpointConnectionOperations().define("connection")
+        manager.privateEndpointConnectionOperations()
+            .define("connection")
             .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
             .withProperties(new PrivateLinkConnectionApprovalRequest()
                 .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState().withStatus("Approved")
-                    .withDescription("Approved by admin.").withActionsRequired(""))
+                    .withDescription("Approved by admin.")
+                    .withActionsRequired(""))
                 .withPrivateEndpoint(new PrivateEndpoint().withId(
                     "/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName/privateEndpoints/myPrivateEndpoint")))
             .create();
