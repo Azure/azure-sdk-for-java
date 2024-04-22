@@ -7,6 +7,8 @@ import com.azure.core.annotation.Immutable;
 
 import java.time.Instant;
 
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.DEFAULT_REPLICATION_SEGMENT;
+
 /**
  * A set of information about the enqueued state of a partition, as observed by the consumer.
  */
@@ -17,6 +19,23 @@ public class LastEnqueuedEventProperties {
     private final Instant lastEnqueuedTime;
     private final Instant retrievalTime;
     private final Integer lastEnqueuedReplicationSegment;
+
+    /**
+     * Creates an instance with the last enqueued event information set.
+     *
+     * @param lastSequenceNumber Sequence number of the last event to be enqueued in a partition. {@code null} if
+     *     the information has not been retrieved, yet.
+     * @param lastOffset Offset of the last observed event enqueued in a partition. {@code null} if the information
+     *     has not been retrieved, yet.
+     * @param lastEnqueuedTime The date and time of the last observed event enqueued in a partition. {@code null} if
+     *     the information has not been retrieved, yet.
+     * @param retrievalTime The date and time that the information was retrieved. {@code null} if the information
+     *     has not been retrieved, yet.
+     */
+    public LastEnqueuedEventProperties(Long lastSequenceNumber, Long lastOffset, Instant lastEnqueuedTime,
+        Instant retrievalTime) {
+        this(lastSequenceNumber, lastOffset, lastEnqueuedTime, retrievalTime, DEFAULT_REPLICATION_SEGMENT);
+    }
 
     /**
      * Creates an instance with the last enqueued event information set.
