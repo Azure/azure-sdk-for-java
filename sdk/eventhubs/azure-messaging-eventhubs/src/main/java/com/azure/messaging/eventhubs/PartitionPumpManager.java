@@ -34,7 +34,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.DEFAULT_REPLICATION_SEGMENT;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.SEQUENCE_NUMBER_KEY;
 
