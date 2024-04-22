@@ -167,11 +167,54 @@ public class CosmosClientBuilder implements
         return this.state;
     }
 
+    /**
+     * Sets a {@code boolean} flag to reduce the frequency of retries when the client
+     * strives to meet Session Consistency guarantees for operations
+     * that can be scoped to a single logical partition. Read your writes for a given logical partition
+     * should see higher stickiness to regions where the logical partition was written to prior or saw requests in
+     * thus reducing unnecessary cross-region retries. Reduction of retries would reduce CPU utilization spikes on VMs
+     * where the client is deployed along with latency savings through reduction of cross-region calls.
+     *
+     * <p>
+     *     DISCLAIMER: Setting the {@link CosmosClientBuilder#isRegionScopedSessionCapturingEnabled} flag to {@code true}
+     *     will impact all operations executed through this instance of the client provided that
+     *     both the operation and the account support multi-region writes.
+     * </p>
+     * <p>
+     *     Setting {@link CosmosClientBuilder#isRegionScopedSessionCapturingEnabled} flag to {@code true} can be space intensive, so
+     *     ensure to maintain a singleton instance of {@link CosmosClient} or {@link CosmosAsyncClient}.
+     * </p>
+     *
+     * Operations supported:
+     * <ul>
+     *     <li>Read</li>
+     *     <li>Create</li>
+     *     <li>Upsert</li>
+     *     <li>Delete</li>
+     *     <li>Replace</li>
+     *     <li>Batch</li>
+     *     <li>Patch</li>
+     *     <li>Query when scoped to a single logical partition by specifying {@code PartitionKey} with {@link com.azure.cosmos.models.CosmosQueryRequestOptions}</li>
+     *     <li>Change feed when scoped to a single logical partition by using {@code FeedRange.forLogicalPartition()} with {@link com.azure.cosmos.models.CosmosChangeFeedRequestOptions}</li>
+     * </ul>
+     *
+     * <p>
+     *     NOTE: Bulk operations are not supported.
+     * </p>
+     *
+     * @param isRegionScopedSessionCapturingEnabled A {@code boolean} flag
+     * @return current {@link CosmosClientBuilder}
+     * */
     CosmosClientBuilder regionScopedSessionCapturingEnabled(boolean isRegionScopedSessionCapturingEnabled) {
         this.isRegionScopedSessionCapturingEnabled = isRegionScopedSessionCapturingEnabled;
         return this;
     }
 
+    /**
+     * Gets the {@code boolean} flag {@link CosmosClientBuilder#isRegionScopedSessionCapturingEnabled}
+     *
+     * @return isRegionScopedSessionCapturingEnabled A {@code boolean} flag
+     * */
     boolean isRegionScopedSessionCapturingEnabled() {
         return this.isRegionScopedSessionCapturingEnabled;
     }
