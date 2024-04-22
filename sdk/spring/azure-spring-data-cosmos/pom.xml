@@ -98,7 +98,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.57.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.58.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
@@ -243,7 +243,7 @@
       <plugin>
         <groupId>com.azure.tools</groupId>
         <artifactId>codesnippet-maven-plugin</artifactId>
-        <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
         <configuration>
           <skip>true</skip>
         </configuration>
