@@ -883,7 +883,7 @@ public final class CosmosEncryptionAsyncContainer {
             cosmosEncryptionAsyncClient.getEffectiveItemSerializer(requestOptions.getCustomSerializer());
 
         // The actual replace happens on the already encrypted document
-        // so any custom serialization/deserialization happens her in the encryption wrapper
+        // so any custom serialization/deserialization happens here in the encryption wrapper
         CosmosItemRequestOptions requestOptionsWithDefaultSerializer = ModelBridgeInternal
             .clone(requestOptions)
             .setCustomSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
@@ -1515,7 +1515,7 @@ public final class CosmosEncryptionAsyncContainer {
         }
 
         if (JsonSerializable.class.isAssignableFrom(itemClass)) {
-            return ((JsonSerializable)itemOperation.getItem()).get("id").toString();
+            return ((JsonSerializable)itemOperation.getItem()).get(Constants.PROPERTY_NAME_ID).toString();
         }
 
         Field id = itemClass.getDeclaredField(Constants.PROPERTY_NAME_ID);

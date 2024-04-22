@@ -308,7 +308,7 @@ public class CosmosException extends AzureException {
     }
 
     /**
-     * Gets the sub status code. Teh sub status code is exposed for informational purposes only - new sub status codes
+     * Gets the sub status code. The sub status code is exposed for informational purposes only - new sub status codes
      * can be added anytime and applications should never take a dependency on certain sub status codes. For
      * applications treating errors based on status code is sufficient.
      *
