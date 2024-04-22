@@ -209,7 +209,7 @@ public class PartitionScopedRegionLevelProgress {
 
             Utils.ValueHolder<ISessionToken> resolvedSessionToken = new Utils.ValueHolder<>(null);
 
-            // TODO: one additional step of merging base session token / first preferred read region
+            // one additional step of merging base session token / first preferred read region
             if (VectorSessionToken.tryCreate(sbPartOne.append(sbPartTwo).toString(), resolvedSessionToken)) {
                 return baseSessionToken.merge(resolvedSessionToken.v);
             }

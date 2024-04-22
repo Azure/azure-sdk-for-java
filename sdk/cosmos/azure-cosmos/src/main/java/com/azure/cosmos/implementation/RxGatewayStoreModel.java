@@ -735,6 +735,9 @@ public class RxGatewayStoreModel implements RxStoreModel {
                                 .getEffectivePartitionKeyString(
                                     partitionKeyInternal,
                                     collectionValueHolder.v.getPartitionKey());
+
+                            request.setEffectivePartitionKey(effectivePartitionKeyString);
+
                             PartitionKeyRange range =
                                 collectionRoutingMapValueHolder.v.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
                             request.requestContext.resolvedPartitionKeyRange = range;
