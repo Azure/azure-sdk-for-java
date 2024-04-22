@@ -139,8 +139,8 @@ public class EventHubMessageSerializerTest {
         final Date lastEnqueuedTimeAsDate = new Date(1569275540L);
         final Instant lastEnqueuedTime = lastEnqueuedTimeAsDate.toInstant();
         final boolean isEmpty = true;
-        final Long beginningReplicationSegment = 8L;
-        final Long lastEnqueuedReplicationSegment = 10L;
+        final Integer beginningReplicationSegment = 8;
+        final Integer lastEnqueuedReplicationSegment = 10;
 
         final Map<String, Object> values = new HashMap<>();
         values.put(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
