@@ -3,10 +3,12 @@
 ### 4.59.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added the capability to regionally scope session tokens used for operations scoped to a logical partition. - See[PR 38003](https://github.com/Azure/azure-sdk-for-java/pull/38003)
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Wired `excludedRegions` for change feed operations scoped to a partition key. - See [PR 38003](https://github.com/Azure/azure-sdk-for-java/pull/38003) 
 
 #### Other Changes
 
