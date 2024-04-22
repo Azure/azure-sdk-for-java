@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.routing.RegionNameToRegionIdMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;

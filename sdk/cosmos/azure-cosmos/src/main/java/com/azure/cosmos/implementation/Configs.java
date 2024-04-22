@@ -440,14 +440,6 @@ public class Configs {
         }
     }
 
-    private static double getDoubleValue(String val, double defaultValue) {
-        if (StringUtils.isEmpty(val)) {
-            return defaultValue;
-        } else {
-            return Double.valueOf(val);
-        }
-    }
-
     private static boolean getBooleanValue(String val, boolean defaultValue) {
         if (StringUtils.isEmpty(val)) {
             return defaultValue;

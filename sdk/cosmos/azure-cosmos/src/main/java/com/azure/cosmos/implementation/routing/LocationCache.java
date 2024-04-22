@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -730,7 +729,6 @@ public class LocationCache {
         private UnmodifiableMap<URI, String> regionNameByReadEndpoint;
         private UnmodifiableList<URI> writeEndpoints;
         private UnmodifiableList<URI> readEndpoints;
-        private boolean hasWritableLocationsChangedSinceClientInit;
 
         public DatabaseAccountLocationsInfo(List<String> preferredLocations,
                                             URI defaultEndpoint) {
@@ -747,7 +745,6 @@ public class LocationCache {
             this.availableWriteLocations = new UnmodifiableList<>(Collections.emptyList());
             this.readEndpoints = new UnmodifiableList<>(Collections.singletonList(defaultEndpoint));
             this.writeEndpoints = new UnmodifiableList<>(Collections.singletonList(defaultEndpoint));
-            this.hasWritableLocationsChangedSinceClientInit = false;
         }
 
         public DatabaseAccountLocationsInfo(DatabaseAccountLocationsInfo other) {
@@ -760,7 +757,6 @@ public class LocationCache {
             this.availableReadEndpointByLocation = other.availableReadEndpointByLocation;
             this.writeEndpoints = other.writeEndpoints;
             this.readEndpoints = other.readEndpoints;
-            this.hasWritableLocationsChangedSinceClientInit = other.hasWritableLocationsChangedSinceClientInit;
         }
     }
 }

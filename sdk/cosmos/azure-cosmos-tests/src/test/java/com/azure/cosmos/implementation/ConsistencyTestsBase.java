@@ -843,7 +843,6 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                     .build();
             client2.replaceCollection(createdCollection, null).block();
-            Document doc2 = client2.readDocument(BridgeInternal.getAltLink(doc), requestOptions).block().getResource();
             String token2 = client2.getSession().getSessionToken(createdCollection.getSelfLink());
 
             logger.info("Token after document and after collection replace {} = {}", token1, token2);

@@ -454,7 +454,4 @@ public class ReflectionUtils {
         return get(ISessionContainer.class, rxDocumentClient, "sessionContainer");
     }
 
-    public static PartitionKeyBasedBloomFilter getPartitionKeyBasedBloomFilter(RegionScopedSessionContainer regionScopedSessionContainer) {
-        return get(PartitionKeyBasedBloomFilter.class, regionScopedSessionContainer, "partitionKeyBasedBloomFilter");
-    }
 }

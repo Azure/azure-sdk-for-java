@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.routing;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class RegionNameToRegionIdMap {
@@ -243,7 +242,6 @@ public class RegionNameToRegionIdMap {
             put("northeurope", 12);
         }
     };
-
 
     public static String getRegionName(int regionId) {
         return regionIdToNormalizedRegionNameMappings.getOrDefault(regionId, StringUtils.EMPTY);
