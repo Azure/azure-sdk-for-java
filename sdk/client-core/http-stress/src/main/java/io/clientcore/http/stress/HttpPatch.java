@@ -75,14 +75,12 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
     }
 
     private HttpRequest createRequest() {
-        String body = "{\"test\":\"value\"}";
+        String body = "{\"id\": \"1\", \"name\": \"test\"}";
         HttpRequest request = new HttpRequest(HttpMethod.PATCH, url).setBody(BinaryData.fromString(body));
-
+        request.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(body.length()));
         request.getHeaders().set(HttpHeaderName.USER_AGENT, "azsdk-java-stress");
         request.getHeaders().set(HttpHeaderName.fromString("x-client-id"), String.valueOf(clientRequestId.incrementAndGet()));
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-        request.getHeaders().set(HttpHeaderName.fromString("response-length"), "128");
-        request.getHeaders().set(HttpHeaderName.fromString("X-HTTP-Method-Override"), "PATCH");
         return request;
     }
 
