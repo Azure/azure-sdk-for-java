@@ -561,7 +561,7 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
     @Test
-    public void appendBlockFromURLSourceErrorAndStatusCode() {
+    public void appendBlockFromURLSourceErrorAndStatusCodeNewTest() {
         AppendBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
 
         StepVerifier.create(destBlob.createIfNotExists().then(destBlob.appendBlockFromUrl(bc.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES))))
@@ -571,17 +571,6 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
                 assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
                 assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
             });
-    }
-
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
-    @Test
-    public void appendBlockFromURLSourceErrorAndStatusCode2() {
-        AppendBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
-
-        StepVerifier.create(destBlob.createIfNotExists())
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
-
     }
 
     @Test
