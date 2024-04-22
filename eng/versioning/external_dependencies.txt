@@ -398,6 +398,7 @@ cosmos_org.mockito:mockito-core;4.8.1
 cosmos_org.scalatest:scalatest-maven-plugin;2.1.0
 cosmos_net.alchim31.maven:scala-maven-plugin;4.8.1
 cosmos_org.scalastyle:scalastyle-maven-plugin;1.0.0
+cosmos_com.coderplus.maven.plugins:copy-rename-maven-plugin;1.0.1
 
 ## Cosmos Kafka connector under sdk\cosmos\azure-cosmos-kafka-connect\pom.xml
 # Cosmos Kafka connector runtime dependencies
