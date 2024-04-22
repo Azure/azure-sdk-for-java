@@ -11,10 +11,13 @@ from typing import List
 pwd = os.getcwd()
 os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
-from utils import set_or_increase_version
-from utils import set_or_default_version
-from utils import update_service_ci_and_pom
-from utils import update_root_pom
+from utils import (
+    set_or_increase_version,
+    set_or_default_version,
+    update_service_ci_and_pom,
+    update_root_pom,
+    update_version
+)
 from generate_data import (
     sdk_automation as sdk_automation_data,
     sdk_automation_typespec_project as sdk_automation_typespec_project_data,
@@ -57,6 +60,12 @@ def parse_args() -> (argparse.ArgumentParser, argparse.Namespace):
         '-r',
         '--readme',
         help='Readme path, Sample: "storage" or "specification/storage/resource-manager/readme.md"',
+    )
+    parser.add_argument(
+        '-d',
+        '--tsp-directory',
+        help='The top level directory where the main.tsp for the service lives. '
+             'This should be relative to the spec repo root such as specification/cognitiveservices/OpenAI.Inference',
     )
     parser.add_argument('-t', '--tag', help='Specific tag')
     parser.add_argument('-v', '--version', help='Specific sdk version')
@@ -292,42 +301,59 @@ def main():
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
     api_specs_file = os.path.join(base_dir, API_SPECS_FILE)
 
-    if not args.get('readme'):
-        parser.print_help()
-        sys.exit(0)
+    if args.get('tsp_directory'):
+        tsp_directory = args['tsp_directory']
 
-    readme = args['readme']
-    match = re.match(
-        'specification/([^/]+)/resource-manager(/.*)*/readme.md',
-        readme,
-        re.IGNORECASE,
-    )
-    if not match:
-        spec = readme
-        readme = 'specification/{0}/resource-manager/readme.md'.format(spec)
+        succeeded, require_sdk_integration, sdk_folder, service, module \
+            = generate_typespec_project(tsp_project=tsp_directory, spec_root=args["spec_root"])
+
+        stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
+        args['version'] = current_version
+
+        if require_sdk_integration:
+            update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+            update_root_pom(sdk_root, service)
+
+        update_parameters(None)
+        output_folder = OUTPUT_FOLDER_FORMAT.format(service)
+        update_version(sdk_root, output_folder)
     else:
-        spec = match.group(1)
-        spec = update_spec(spec, match.group(2))
+        if not args.get('readme'):
+            parser.print_help()
+            sys.exit(0)
 
-    args['readme'] = readme
-    args['spec'] = spec
+        readme = args['readme']
+        match = re.match(
+            'specification/([^/]+)/resource-manager(/.*)*/readme.md',
+            readme,
+            re.IGNORECASE,
+        )
+        if not match:
+            spec = readme
+            readme = 'specification/{0}/resource-manager/readme.md'.format(spec)
+        else:
+            spec = match.group(1)
+            spec = update_spec(spec, match.group(2))
 
-    update_parameters(args.get('suffix') or get_suffix_from_api_specs(api_specs_file, spec))
-    service = get_and_update_service_from_api_specs(api_specs_file, spec,
-                                                    args['service'])
-    args['service'] = service
-    module = ARTIFACT_FORMAT.format(service)
-    stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
-    args['version'] = current_version
-    output_folder = OUTPUT_FOLDER_FORMAT.format(service)
-    namespace = NAMESPACE_FORMAT.format(service)
-    succeeded = generate(
-        sdk_root,
-        module=module,
-        output_folder=output_folder,
-        namespace=namespace,
-        **args
-    )
+        args['readme'] = readme
+        args['spec'] = spec
+
+        update_parameters(args.get('suffix') or get_suffix_from_api_specs(api_specs_file, spec))
+        service = get_and_update_service_from_api_specs(api_specs_file, spec,
+                                                        args['service'])
+        args['service'] = service
+        module = ARTIFACT_FORMAT.format(service)
+        stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
+        args['version'] = current_version
+        output_folder = OUTPUT_FOLDER_FORMAT.format(service)
+        namespace = NAMESPACE_FORMAT.format(service)
+        succeeded = generate(
+            sdk_root,
+            module=module,
+            output_folder=output_folder,
+            namespace=namespace,
+            **args
+        )
 
     if succeeded:
         succeeded = compile_package(sdk_root, module)

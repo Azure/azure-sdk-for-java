@@ -299,7 +299,10 @@ def update_spec(spec: str, subspec: str) -> str:
     return spec
 
 
-def generate_typespec_project(tsp_project: str, sdk_root: str, spec_root: str, head_sha: str, repo_url: str):
+def generate_typespec_project(tsp_project: str, sdk_root: str = None, spec_root: str = None, head_sha: str = "", repo_url: str = ""):
+
+    if not tsp_project:
+        return False
 
     succeeded = False
     sdk_folder = None
@@ -307,9 +310,8 @@ def generate_typespec_project(tsp_project: str, sdk_root: str, spec_root: str, h
     module = None
     require_sdk_integration = False
 
-    tsp_dir = os.path.join(spec_root, tsp_project)
-
     try:
+        tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
         cmd = ['pwsh', './eng/common/scripts/TypeSpec-Project-Process.ps1', tsp_dir, head_sha, repo_url]
         logging.info('Command line: ' + ' '.join(cmd))
         output = subprocess.check_output(cmd, cwd=sdk_root)
