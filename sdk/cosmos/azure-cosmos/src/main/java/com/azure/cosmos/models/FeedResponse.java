@@ -572,6 +572,10 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         BridgeInternal.setQueryPlanDiagnosticsContext(cosmosDiagnostics, queryPlanDiagnosticsContext);
     }
 
+    private static boolean noChanges(RxDocumentServiceResponse rsp) {
+        return rsp.getStatusCode() == HttpConstants.StatusCodes.NOT_MODIFIED;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -588,10 +592,6 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
                     return new FeedResponse<>(
                         noChanges(response) ? Collections.emptyList() : response.getQueryResponse(itemSerializer, cls),
                         response.getResponseHeaders(), noChanges(response));
-                }
-
-                private static boolean noChanges(RxDocumentServiceResponse rsp) {
-                    return rsp.getStatusCode() == HttpConstants.StatusCodes.NOT_MODIFIED;
                 }
 
                 @Override
