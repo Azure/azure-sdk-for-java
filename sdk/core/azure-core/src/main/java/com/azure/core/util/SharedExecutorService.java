@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 /**
  * An {@link ExecutorService} that is shared by multiple consumers.
@@ -66,18 +67,8 @@ public final class SharedExecutorService implements ExecutorService {
     // number of available processors.
     // If 'azure.sdk.sharedpool.size' is set to a non-integer, negative value, or zero, the default value is used.
     private static final int THREAD_POOL_SIZE
-        = Configuration.getGlobalConfiguration().get("azure.sdk.sharedpool.size", config -> {
-            try {
-                int size = Integer.parseInt(config);
-                if (size <= 0) {
-                    return 10 * Runtime.getRuntime().availableProcessors();
-                } else {
-                    return size;
-                }
-            } catch (NumberFormatException ignored) {
-                return 10 * Runtime.getRuntime().availableProcessors();
-            }
-        });
+        = Configuration.getGlobalConfiguration().get("azure.sdk.sharedpool.size",
+        config -> safeNumericParse(config, Integer::parseInt, 10 * Runtime.getRuntime().availableProcessors()));
 
     // The thread pool keep alive time for the shared executor service.
     //
@@ -86,18 +77,20 @@ public final class SharedExecutorService implements ExecutorService {
     // If 'azure.sdk.sharedpool.keepalivemillis' is set to a non-integer, negative value, or zero, the default value is
     // used.
     private static final long THREAD_POOL_KEEP_ALIVE_MILLIS
-        = Configuration.getGlobalConfiguration().get("azure.sdk.sharedpool.keepalivemillis", config -> {
-            try {
-                long keepAlive = Long.parseLong(config);
-                if (keepAlive <= 0) {
-                    return 60_000L;
-                } else {
-                    return keepAlive;
-                }
-            } catch (NumberFormatException ignored) {
-                return 60_000L;
-            }
-        });
+        = Configuration.getGlobalConfiguration().get("azure.sdk.sharedpool.keepalivemillis",
+        config -> safeNumericParse(config, Long::parseLong, 60000L));
+
+    private static <T extends Number> T safeNumericParse(String value, Function<String, T> parser, T defaultValue) {
+        if (value == null) {
+            return defaultValue;
+        }
+
+        try {
+            return parser.apply(value);
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
 
     // Virtual thread support for the shared executor service.
     //
