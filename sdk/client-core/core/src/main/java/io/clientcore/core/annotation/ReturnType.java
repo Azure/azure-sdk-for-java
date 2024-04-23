@@ -19,7 +19,7 @@ public enum ReturnType {
     COLLECTION,
 
     /**
-     * Long-running operation return type.
+     * Server Sent Event operation return type.
      */
-    LONG_RUNNING_OPERATION
+    SERVER_SENT_EVENT
 }

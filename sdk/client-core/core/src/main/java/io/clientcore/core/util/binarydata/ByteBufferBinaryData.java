@@ -52,7 +52,7 @@ public final class ByteBufferBinaryData extends BinaryData {
     }
 
     @Override
-    public <T> T toObject(Type type, ObjectSerializer serializer) {
+    public <T> T toObject(Type type, ObjectSerializer serializer) throws IOException {
         return serializer.deserializeFromBytes(toBytes(), type);
     }
 

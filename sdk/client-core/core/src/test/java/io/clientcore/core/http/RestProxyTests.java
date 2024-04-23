@@ -32,9 +32,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
-import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
-import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
-import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -76,7 +73,7 @@ public class RestProxyTests {
     }
 
     @Test
-    public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() {
+    public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() throws IOException {
         HttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -84,10 +81,10 @@ public class RestProxyTests {
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         byte[] bytes = "hello".getBytes();
-        Response<Void> response =
-            testInterface.testMethod(ByteBuffer.wrap(bytes), "application/json", (long) bytes.length);
-
-        assertEquals(200, response.getStatusCode());
+        try (Response<Void> response =
+            testInterface.testMethod(ByteBuffer.wrap(bytes), "application/json", (long) bytes.length)) {
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     // TODO (vcolin7): Re-enable this test if we ever compose HttpResponse into a stream Response type.
@@ -173,48 +170,6 @@ public class RestProxyTests {
         assertTrue(client.closeCalledOnResponse);
     }
 
-    @Test
-    public void headApiIgnoresResponseBody() {
-        LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
-
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
-
-        testInterface.testHeadMethod();
-
-        assertEquals(IGNORE, client.getLastHttpRequest().getRequestOptions().getResponseBodyMode());
-    }
-
-    @Test
-    public void responseVoidReturningApiBuffersResponseBody() {
-        LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
-
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
-
-        testInterface.testMethodReturnsResponseVoid();
-
-        assertEquals(BUFFER, client.getLastHttpRequest().getRequestOptions().getResponseBodyMode());
-    }
-
-    @Test
-    public void streamingResponseDoesNotEagerlyDeserializeResponse() {
-        LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
-
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
-
-        testInterface.testDownload();
-
-        assertEquals(STREAM, client.getLastHttpRequest().getRequestOptions().getResponseBodyMode());
-    }
-
     private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {
         String string = "hello";
         byte[] bytes = string.getBytes();
@@ -267,7 +222,7 @@ public class RestProxyTests {
     }
 
     @Test
-    public void doesNotChangeEncodedPath() {
+    public void doesNotChangeEncodedPath() throws IOException {
         String nextLinkUrl =
             "https://management.azure.com:443/subscriptions/000/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines?api-version=2021-11-01&$skiptoken=Mzk4YzFjMzMtM2IwMC00OWViLWI2NGYtNjg4ZTRmZGQ1Nzc2IS9TdWJzY3JpcHRpb25zL2VjMGFhNWY3LTllNzgtNDBjOS04NWNkLTUzNWM2MzA1YjM4MC9SZXNvdXJjZUdyb3Vwcy9SRy1XRUlEWFUtVk1TUy9WTVNjYWxlU2V0cy9WTVNTMS9WTXMvNzc=";
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -280,6 +235,6 @@ public class RestProxyTests {
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
 
-        testInterface.testListNext(nextLinkUrl);
+        testInterface.testListNext(nextLinkUrl).close();
     }
 }

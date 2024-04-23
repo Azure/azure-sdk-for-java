@@ -19,6 +19,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData;
@@ -27,19 +28,17 @@ import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.implementation.util.DateTimeRfc1123;
 import io.clientcore.core.implementation.util.UrlBuilder;
 import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.Context;
 import io.clientcore.core.util.ExpandableEnum;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -224,17 +223,13 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this.bodyContentType = bodyContentType;
         this.bodyJavaType = bodyJavaType;
         Class<?>[] parameterTypes = swaggerMethod.getParameterTypes();
-        int contextPosition = -1;
         int requestOptionsPosition = -1;
 
         for (int i = 0; i < parameterTypes.length; i++) {
             Class<?> parameterType = parameterTypes[i];
-            // Check for the Context and RequestOptions position.
+            // Check for the RequestOptions position.
             // To retain previous behavior, only track the first instance found.
-
-            if (parameterType == Context.class && contextPosition == -1) {
-                contextPosition = i;
-            } else if (parameterType == RequestOptions.class && requestOptionsPosition == -1) {
+            if (parameterType == RequestOptions.class && requestOptionsPosition == -1) {
                 requestOptionsPosition = i;
             }
         }
@@ -554,10 +549,10 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         } else if (value instanceof OffsetDateTime) {
             return ((OffsetDateTime) value).format(DateTimeFormatter.ISO_INSTANT);
         } else {
-            try (OutputStream outputStream = new ByteArrayOutputStream()) {
+            try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream()) {
                 serializer.serializeToStream(outputStream, value);
 
-                return outputStream.toString();
+                return outputStream.toString(StandardCharsets.UTF_8);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

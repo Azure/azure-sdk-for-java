@@ -247,7 +247,7 @@ public class JdkHttpClientBuilderTests {
         Set<String> expectedRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         expectedRestrictedHeaders
             .addAll(io.clientcore.http.jdk.httpclient.JdkHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS);
-        expectedRestrictedHeaders.removeAll(Arrays.asList("content-length", "host", "connection", "upgrade"));
+        Arrays.asList("content-length", "host", "connection", "upgrade").forEach(expectedRestrictedHeaders::remove);
 
         validateRestrictedHeaders(jdkHttpClientBuilder, expectedRestrictedHeaders, 1);
     }

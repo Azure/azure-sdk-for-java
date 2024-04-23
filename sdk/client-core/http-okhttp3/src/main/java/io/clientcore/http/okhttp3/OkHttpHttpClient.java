@@ -9,11 +9,12 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
-import io.clientcore.core.implementation.util.ServerSentEventUtil;
 import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.ServerSentEventUtils;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.binarydata.FileBinaryData;
 import io.clientcore.core.util.binarydata.InputStreamBinaryData;
@@ -27,13 +28,14 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 
 import static io.clientcore.core.http.models.ContentType.APPLICATION_OCTET_STREAM;
 import static io.clientcore.core.http.models.HttpHeaderName.CONTENT_TYPE;
+import static io.clientcore.core.http.models.HttpMethod.HEAD;
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
+import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
-import static io.clientcore.core.implementation.util.ServerSentEventUtil.processTextEventStream;
+import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStream;
 /**
  * HttpClient implementation for OkHttp.
  */
@@ -48,16 +50,11 @@ class OkHttpHttpClient implements HttpClient {
     }
 
     @Override
-    public Response<?> send(HttpRequest request) {
+    public Response<?> send(HttpRequest request) throws IOException {
         Request okHttpRequest = toOkHttpRequest(request);
+        okhttp3.Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
 
-        try {
-            okhttp3.Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
-
-            return toResponse(request, okHttpResponse);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        return toResponse(request, okHttpResponse);
     }
 
     /**
@@ -99,7 +96,7 @@ class OkHttpHttpClient implements HttpClient {
      * @return The Mono emitting okhttp request
      */
     private RequestBody toOkHttpRequestBody(BinaryData bodyContent, HttpHeaders headers) {
-        if (bodyContent == null) {
+        if (bodyContent == null || bodyContent == BinaryData.EMPTY) {
             return EMPTY_REQUEST_BODY;
         }
 
@@ -146,32 +143,37 @@ class OkHttpHttpClient implements HttpClient {
             ServerSentEventListener listener = request.getServerSentEventListener();
 
             if (listener != null) {
-                processTextEventStream(request, this::send, response.body().byteStream(), listener, LOGGER);
+                processTextEventStream(this, request, response.body().byteStream(), listener);
             } else {
-                throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtil.NO_LISTENER_ERROR_MESSAGE));
+                throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtils.NO_LISTENER_ERROR_MESSAGE));
             }
 
-            return new OkHttpResponse(response, request, BinaryData.fromBytes(EMPTY_BODY));
+            return new OkHttpResponse(response, request, BinaryData.EMPTY);
         }
 
         return processResponse(request, response);
     }
 
     private Response<?> processResponse(HttpRequest request, okhttp3.Response response) throws IOException {
-        ResponseBodyMode responseBodyMode = request.getRequestOptions().getResponseBodyMode();
+        RequestOptions options = request.getRequestOptions();
+        ResponseBodyMode responseBodyMode = null;
+
+        if (options != null) {
+            responseBodyMode = options.getResponseBodyMode();
+        }
 
         if (responseBodyMode == null) {
             String contentType = response.headers().get(CONTENT_TYPE.getCaseInsensitiveName());
 
-            if (contentType != null
+            if (request.getHttpMethod() == HEAD) {
+                responseBodyMode = IGNORE;
+            } else if (contentType != null
                 && APPLICATION_OCTET_STREAM.regionMatches(true, 0, contentType, 0, APPLICATION_OCTET_STREAM.length())) {
 
                 responseBodyMode = STREAM;
             } else {
                 responseBodyMode = BUFFER;
             }
-
-            request.getRequestOptions().setResponseBodyMode(responseBodyMode); // We only change this if it was null.
         }
 
         BinaryData body = null;
@@ -199,12 +201,12 @@ class OkHttpHttpClient implements HttpClient {
                 }
         }
 
-        return new OkHttpResponse(response, request, body == null ? BinaryData.fromBytes(EMPTY_BODY) : body);
+        return new OkHttpResponse(response, request, body == null ? BinaryData.EMPTY : body);
     }
 
     private static boolean isTextEventStream(okhttp3.Headers responseHeaders) {
         if (responseHeaders != null) {
-            return ServerSentEventUtil
+            return ServerSentEventUtils
                 .isTextEventStreamContentType(responseHeaders.get(HttpHeaderName.CONTENT_TYPE.toString()));
         }
 

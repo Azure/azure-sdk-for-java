@@ -9,6 +9,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.util.Context;
@@ -108,13 +109,13 @@ public class DefaultHttpClientTest {
 
     private static void sendSSEResponseWithDataOnly(org.eclipse.jetty.server.Response resp) throws IOException {
         resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
-        resp.getOutputStream().write(("data: YHOO\n" + "data: +2\n" + "data: 10\n" + "\n").getBytes());
+        resp.getOutputStream().write(("data: YHOO\ndata: +2\ndata: 10\n\n").getBytes());
         resp.flushBuffer();
     }
 
     private static String addServerSentEventWithRetry() {
-        return ": test stream\n" + "data: first event\n" + "id: 1\n" + "retry: 100\n\n"
-            + "data: This is the second message, it\n" + "data: has two lines.\n" + "id: 2\n\n" + "data:  third event";
+        return ": test stream\ndata: first event\nid: 1\nretry: 100\n\n"
+            + "data: This is the second message, it\ndata: has two lines.\nid: 2\n\ndata:  third event";
     }
 
     private static void sendSSEResponseWithRetry(org.eclipse.jetty.server.Response resp) throws IOException {
@@ -124,7 +125,7 @@ public class DefaultHttpClientTest {
     }
 
     private static String addServerSentEventLast() {
-        return "data: This is the second message, it\n" + "data: has two lines.\n" + "id: 2\n\n" + "data:  third event";
+        return "data: This is the second message, it\ndata: has two lines.\nid: 2\n\ndata:  third event";
     }
 
     private static void sendSSELastEventIdResponse(org.eclipse.jetty.server.Response resp) throws IOException {
@@ -256,10 +257,9 @@ public class DefaultHttpClientTest {
         }
     }
 
-    private static Response<?> getResponse(HttpClient client, String path, Context context) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
-
-        request.getRequestOptions().setContext(context);
+    private static Response<?> getResponse(HttpClient client, String path, Context context) throws IOException {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path))
+            .setRequestOptions(new RequestOptions().setContext(context));
 
         return client.send(request);
     }
@@ -283,7 +283,7 @@ public class DefaultHttpClientTest {
         return longBody;
     }
 
-    private static Response<?> doRequest(HttpClient client, String path) {
+    private static Response<?> doRequest(HttpClient client, String path) throws IOException {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
 
         return client.send(request);

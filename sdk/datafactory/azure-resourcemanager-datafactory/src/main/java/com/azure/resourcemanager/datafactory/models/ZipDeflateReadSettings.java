@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The ZipDeflate compression read settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = ZipDeflateReadSettings.class, visible = true)
 @JsonTypeName("ZipDeflateReadSettings")
 @Fluent
 public final class ZipDeflateReadSettings extends CompressionReadSettings {
+    /*
+     * The Compression setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "ZipDeflateReadSettings";
+
     /*
      * Preserve the zip file name as folder path. Type: boolean (or Expression with resultType boolean).
      */
@@ -26,6 +34,16 @@ public final class ZipDeflateReadSettings extends CompressionReadSettings {
      * Creates an instance of ZipDeflateReadSettings class.
      */
     public ZipDeflateReadSettings() {
+    }
+
+    /**
+     * Get the type property: The Compression setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

@@ -41,7 +41,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link HttpResponseBodyDecoder}.
@@ -66,10 +65,7 @@ public class HttpResponseBodyDecoderTests {
             Arguments.of((Response<?>) null),
 
             // Response without a request.
-            Arguments.of(new MockHttpResponse(null, 200)),
-
-            // Response with a request that is missing the HttpMethod.
-            Arguments.of(new MockHttpResponse(new HttpRequest(null, "https://example.com"), 200))
+            Arguments.of(new MockHttpResponse(null, 200))
         );
     }
 
@@ -229,7 +225,7 @@ public class HttpResponseBodyDecoderTests {
         BinaryData body = response.getBody();
         Object actual = HttpResponseBodyDecoder.decodeByteArray(body.toBytes(), response, SERIALIZER, decodeData);
 
-        assertTrue(actual instanceof List);
+        assertInstanceOf(List.class, actual);
 
         @SuppressWarnings("unchecked")
         List<byte[]> decoded = (List<byte[]>) actual;

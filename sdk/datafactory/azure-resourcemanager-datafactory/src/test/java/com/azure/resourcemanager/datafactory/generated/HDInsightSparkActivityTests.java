@@ -23,68 +23,82 @@ public final class HDInsightSparkActivityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HDInsightSparkActivity model = BinaryData.fromString(
-            "{\"type\":\"HDInsightSpark\",\"typeProperties\":{\"rootPath\":\"datachzuap\",\"entryFilePath\":\"datahfhuuizyeyfki\",\"arguments\":[\"datayjffpuuyky\"],\"getDebugInfo\":\"Failure\",\"sparkJobLinkedService\":{\"referenceName\":\"eymlctnnsjcuf\",\"parameters\":{\"xg\":\"dataaxuvazzptlda\",\"htykebtvn\":\"dataxhbnqyewinle\",\"riehooxqkc\":\"datadcclpbhntoiviue\",\"kyiqjtx\":\"datayydtnl\"}},\"className\":\"grf\",\"proxyUser\":\"datadkj\",\"sparkConfig\":{\"vii\":\"datahivvoczsryp\",\"usnhnnekhfdlbc\":\"datajjqpsbbxkeygmqnu\",\"cccydldavozmibtk\":\"datacwfcbug\"}},\"linkedServiceName\":{\"referenceName\":\"tpgll\",\"parameters\":{\"zjwizrul\":\"dataankxxwtnrrohlkgz\",\"obenaah\":\"datakwyldttggcpqmk\",\"irhstwpbvwu\":\"datajnmychtvp\",\"nvsu\":\"datahpphjimoecqpqk\"}},\"policy\":{\"timeout\":\"dataxdlrjspxot\",\"retry\":\"datag\",\"retryIntervalInSeconds\":1487197700,\"secureInput\":true,\"secureOutput\":true,\"\":{\"lcdqvunvnggqacf\":\"dataldsftm\",\"dzruuscbs\":\"dataruwqbe\",\"ofoc\":\"datatjdioevifzqqs\",\"uuzpiooacjxsof\":\"datapphwv\"}},\"name\":\"iritpqqpynrl\",\"description\":\"u\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"jnfyub\",\"dependencyConditions\":[\"Completed\",\"Failed\"],\"\":{\"pkleieafpvbsllyo\":\"dataqqnumpnav\"}},{\"activity\":\"iadhnbofeucct\",\"dependencyConditions\":[\"Skipped\",\"Skipped\",\"Failed\",\"Succeeded\"],\"\":{\"rqsobusur\":\"dataylskbvvwdf\",\"knywxpmefbnccbvc\":\"datavjdxlbsnskcksfx\"}}],\"userProperties\":[{\"name\":\"kmifyx\",\"value\":\"datanu\"}],\"\":{\"w\":\"datasfnbtqdr\",\"yhnfqnekpxd\":\"dataidroidhbulvki\",\"jahnsmktk\":\"datadeahfg\"}}")
+            "{\"type\":\"nn\",\"typeProperties\":{\"rootPath\":\"datameacj\",\"entryFilePath\":\"dataaixhma\",\"arguments\":[\"datagvwvlqqnf\",\"datawrws\",\"datayblwjhpibgalefjs\"],\"getDebugInfo\":\"Failure\",\"sparkJobLinkedService\":{\"referenceName\":\"gmvzci\",\"parameters\":{\"tskprgztzcib\":\"datapqnshnbfdwxsj\",\"nbsxoe\":\"datawqmfhg\",\"hv\":\"dataephohjorguif\"}},\"className\":\"bmngkqej\",\"proxyUser\":\"dataw\",\"sparkConfig\":{\"hwcfxbywpw\":\"datazdlfayi\",\"j\":\"datavpglstxznkbj\",\"pdnnvepbocwbcx\":\"datazunrddy\"}},\"linkedServiceName\":{\"referenceName\":\"pummphb\",\"parameters\":{\"l\":\"dataive\"}},\"policy\":{\"timeout\":\"dataizyenajjx\",\"retry\":\"datadpnersmevhgs\",\"retryIntervalInSeconds\":417182956,\"secureInput\":true,\"secureOutput\":true,\"\":{\"syqpkpvbxgrgy\":\"dataqakbh\",\"eiocacngiaa\":\"datauqyxvzyivg\",\"teidfzof\":\"datagxdzhyc\"}},\"name\":\"cmlomlnprkiky\",\"description\":\"csgquphqnuitu\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"gabcw\",\"dependencyConditions\":[\"Completed\"],\"\":{\"zanr\":\"datakc\",\"hijjlaxeqehg\":\"datatjdmdbtbdtrqiu\",\"gb\":\"datajgvrawjom\"}},{\"activity\":\"dwfyagvhe\",\"dependencyConditions\":[\"Succeeded\",\"Skipped\",\"Skipped\",\"Completed\"],\"\":{\"z\":\"datawpcupejz\"}},{\"activity\":\"dapxxgvcsvtflcj\",\"dependencyConditions\":[\"Completed\",\"Succeeded\",\"Completed\"],\"\":{\"pdfi\":\"datapf\",\"maqyesahvowlibr\":\"datarutcedeygsrrgd\",\"acyrkcdokka\":\"dataomdwz\",\"ysadjlqkoraqtbis\":\"datakaitihn\"}},{\"activity\":\"kcebjajl\",\"dependencyConditions\":[\"Succeeded\",\"Succeeded\",\"Succeeded\"],\"\":{\"ukghxde\":\"dataipkeonixx\",\"uevzqawjnwj\":\"dataqptvxibpzhkn\",\"eisjg\":\"datasiubp\"}}],\"userProperties\":[{\"name\":\"ldxsdrlbbpkjseft\",\"value\":\"datawu\"},{\"name\":\"fmakn\",\"value\":\"datanaqyeswinoecwabu\"}],\"\":{\"skbbeqayvkmptg\":\"datal\",\"zjrlm\":\"dataqxiyllamdz\"}}")
             .toObject(HDInsightSparkActivity.class);
-        Assertions.assertEquals("iritpqqpynrl", model.name());
-        Assertions.assertEquals("u", model.description());
-        Assertions.assertEquals(ActivityState.ACTIVE, model.state());
+        Assertions.assertEquals("cmlomlnprkiky", model.name());
+        Assertions.assertEquals("csgquphqnuitu", model.description());
+        Assertions.assertEquals(ActivityState.INACTIVE, model.state());
         Assertions.assertEquals(ActivityOnInactiveMarkAs.SKIPPED, model.onInactiveMarkAs());
-        Assertions.assertEquals("jnfyub", model.dependsOn().get(0).activity());
+        Assertions.assertEquals("gabcw", model.dependsOn().get(0).activity());
         Assertions.assertEquals(DependencyCondition.COMPLETED, model.dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("kmifyx", model.userProperties().get(0).name());
-        Assertions.assertEquals("tpgll", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(1487197700, model.policy().retryIntervalInSeconds());
+        Assertions.assertEquals("ldxsdrlbbpkjseft", model.userProperties().get(0).name());
+        Assertions.assertEquals("pummphb", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(417182956, model.policy().retryIntervalInSeconds());
         Assertions.assertEquals(true, model.policy().secureInput());
         Assertions.assertEquals(true, model.policy().secureOutput());
         Assertions.assertEquals(HDInsightActivityDebugInfoOption.FAILURE, model.getDebugInfo());
-        Assertions.assertEquals("eymlctnnsjcuf", model.sparkJobLinkedService().referenceName());
-        Assertions.assertEquals("grf", model.className());
+        Assertions.assertEquals("gmvzci", model.sparkJobLinkedService().referenceName());
+        Assertions.assertEquals("bmngkqej", model.className());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HDInsightSparkActivity model
-            = new HDInsightSparkActivity().withName("iritpqqpynrl").withDescription("u").withState(ActivityState.ACTIVE)
-                .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
-                .withDependsOn(Arrays.asList(
-                    new ActivityDependency().withActivity("jnfyub")
-                        .withDependencyConditions(
-                            Arrays.asList(DependencyCondition.COMPLETED, DependencyCondition.FAILED))
-                        .withAdditionalProperties(mapOf()),
-                    new ActivityDependency().withActivity("iadhnbofeucct")
-                        .withDependencyConditions(Arrays.asList(DependencyCondition.SKIPPED,
-                            DependencyCondition.SKIPPED, DependencyCondition.FAILED, DependencyCondition.SUCCEEDED))
-                        .withAdditionalProperties(mapOf())))
-                .withUserProperties(Arrays.asList(new UserProperty().withName("kmifyx").withValue("datanu")))
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("tpgll")
-                    .withParameters(mapOf("zjwizrul", "dataankxxwtnrrohlkgz", "obenaah", "datakwyldttggcpqmk",
-                        "irhstwpbvwu", "datajnmychtvp", "nvsu", "datahpphjimoecqpqk")))
-                .withPolicy(new ActivityPolicy().withTimeout("dataxdlrjspxot").withRetry("datag")
-                    .withRetryIntervalInSeconds(1487197700).withSecureInput(true).withSecureOutput(true)
-                    .withAdditionalProperties(mapOf()))
-                .withRootPath("datachzuap").withEntryFilePath("datahfhuuizyeyfki")
-                .withArguments(Arrays.asList("datayjffpuuyky"))
-                .withGetDebugInfo(HDInsightActivityDebugInfoOption.FAILURE)
-                .withSparkJobLinkedService(new LinkedServiceReference().withReferenceName("eymlctnnsjcuf")
-                    .withParameters(mapOf("xg", "dataaxuvazzptlda", "htykebtvn", "dataxhbnqyewinle", "riehooxqkc",
-                        "datadcclpbhntoiviue", "kyiqjtx", "datayydtnl")))
-                .withClassName("grf").withProxyUser("datadkj").withSparkConfig(mapOf("vii", "datahivvoczsryp",
-                    "usnhnnekhfdlbc", "datajjqpsbbxkeygmqnu", "cccydldavozmibtk", "datacwfcbug"));
+        HDInsightSparkActivity model = new HDInsightSparkActivity().withName("cmlomlnprkiky")
+            .withDescription("csgquphqnuitu")
+            .withState(ActivityState.INACTIVE)
+            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
+            .withDependsOn(Arrays.asList(
+                new ActivityDependency().withActivity("gabcw")
+                    .withDependencyConditions(Arrays.asList(DependencyCondition.COMPLETED))
+                    .withAdditionalProperties(mapOf()),
+                new ActivityDependency().withActivity("dwfyagvhe")
+                    .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED, DependencyCondition.SKIPPED,
+                        DependencyCondition.SKIPPED, DependencyCondition.COMPLETED))
+                    .withAdditionalProperties(mapOf()),
+                new ActivityDependency().withActivity("dapxxgvcsvtflcj")
+                    .withDependencyConditions(Arrays.asList(DependencyCondition.COMPLETED,
+                        DependencyCondition.SUCCEEDED, DependencyCondition.COMPLETED))
+                    .withAdditionalProperties(mapOf()),
+                new ActivityDependency().withActivity("kcebjajl")
+                    .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED,
+                        DependencyCondition.SUCCEEDED, DependencyCondition.SUCCEEDED))
+                    .withAdditionalProperties(mapOf())))
+            .withUserProperties(Arrays.asList(new UserProperty().withName("ldxsdrlbbpkjseft").withValue("datawu"),
+                new UserProperty().withName("fmakn").withValue("datanaqyeswinoecwabu")))
+            .withLinkedServiceName(
+                new LinkedServiceReference().withReferenceName("pummphb").withParameters(mapOf("l", "dataive")))
+            .withPolicy(new ActivityPolicy().withTimeout("dataizyenajjx")
+                .withRetry("datadpnersmevhgs")
+                .withRetryIntervalInSeconds(417182956)
+                .withSecureInput(true)
+                .withSecureOutput(true)
+                .withAdditionalProperties(mapOf()))
+            .withRootPath("datameacj")
+            .withEntryFilePath("dataaixhma")
+            .withArguments(Arrays.asList("datagvwvlqqnf", "datawrws", "datayblwjhpibgalefjs"))
+            .withGetDebugInfo(HDInsightActivityDebugInfoOption.FAILURE)
+            .withSparkJobLinkedService(new LinkedServiceReference().withReferenceName("gmvzci")
+                .withParameters(
+                    mapOf("tskprgztzcib", "datapqnshnbfdwxsj", "nbsxoe", "datawqmfhg", "hv", "dataephohjorguif")))
+            .withClassName("bmngkqej")
+            .withProxyUser("dataw")
+            .withSparkConfig(
+                mapOf("hwcfxbywpw", "datazdlfayi", "j", "datavpglstxznkbj", "pdnnvepbocwbcx", "datazunrddy"));
         model = BinaryData.fromObject(model).toObject(HDInsightSparkActivity.class);
-        Assertions.assertEquals("iritpqqpynrl", model.name());
-        Assertions.assertEquals("u", model.description());
-        Assertions.assertEquals(ActivityState.ACTIVE, model.state());
+        Assertions.assertEquals("cmlomlnprkiky", model.name());
+        Assertions.assertEquals("csgquphqnuitu", model.description());
+        Assertions.assertEquals(ActivityState.INACTIVE, model.state());
         Assertions.assertEquals(ActivityOnInactiveMarkAs.SKIPPED, model.onInactiveMarkAs());
-        Assertions.assertEquals("jnfyub", model.dependsOn().get(0).activity());
+        Assertions.assertEquals("gabcw", model.dependsOn().get(0).activity());
         Assertions.assertEquals(DependencyCondition.COMPLETED, model.dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("kmifyx", model.userProperties().get(0).name());
-        Assertions.assertEquals("tpgll", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(1487197700, model.policy().retryIntervalInSeconds());
+        Assertions.assertEquals("ldxsdrlbbpkjseft", model.userProperties().get(0).name());
+        Assertions.assertEquals("pummphb", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(417182956, model.policy().retryIntervalInSeconds());
         Assertions.assertEquals(true, model.policy().secureInput());
         Assertions.assertEquals(true, model.policy().secureOutput());
         Assertions.assertEquals(HDInsightActivityDebugInfoOption.FAILURE, model.getDebugInfo());
-        Assertions.assertEquals("eymlctnnsjcuf", model.sparkJobLinkedService().referenceName());
-        Assertions.assertEquals("grf", model.className());
+        Assertions.assertEquals("gmvzci", model.sparkJobLinkedService().referenceName());
+        Assertions.assertEquals("bmngkqej", model.className());
     }
 
     // Use "Map.of" if available

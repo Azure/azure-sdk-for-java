@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning status of the profile. */
+/**
+ * Provisioning status of the profile.
+ */
 public final class ProfileProvisioningState extends ExpandableStringEnum<ProfileProvisioningState> {
-    /** Static value Succeeded for ProfileProvisioningState. */
+    /**
+     * Static value Succeeded for ProfileProvisioningState.
+     */
     public static final ProfileProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ProfileProvisioningState. */
+    /**
+     * Static value Failed for ProfileProvisioningState.
+     */
     public static final ProfileProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Updating for ProfileProvisioningState. */
+    /**
+     * Static value Updating for ProfileProvisioningState.
+     */
     public static final ProfileProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for ProfileProvisioningState. */
+    /**
+     * Static value Deleting for ProfileProvisioningState.
+     */
     public static final ProfileProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Creating for ProfileProvisioningState. */
+    /**
+     * Static value Creating for ProfileProvisioningState.
+     */
     public static final ProfileProvisioningState CREATING = fromString("Creating");
 
     /**
      * Creates a new instance of ProfileProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class ProfileProvisioningState extends ExpandableStringEnum<Profile
 
     /**
      * Creates or finds a ProfileProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProfileProvisioningState.
      */
@@ -47,7 +59,7 @@ public final class ProfileProvisioningState extends ExpandableStringEnum<Profile
 
     /**
      * Gets known ProfileProvisioningState values.
-     *
+     * 
      * @return known ProfileProvisioningState values.
      */
     public static Collection<ProfileProvisioningState> values() {

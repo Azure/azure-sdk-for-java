@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureMLLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,17 @@ import java.util.Map;
 /**
  * Azure ML Studio Web Service linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = AzureMLLinkedService.class, visible = true)
 @JsonTypeName("AzureML")
 @Fluent
 public final class AzureMLLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureML";
+
     /*
      * Azure ML Studio Web Service linked service properties.
      */
@@ -30,6 +38,16 @@ public final class AzureMLLinkedService extends LinkedService {
      * Creates an instance of AzureMLLinkedService class.
      */
     public AzureMLLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -176,8 +194,8 @@ public final class AzureMLLinkedService extends LinkedService {
     }
 
     /**
-     * Get the servicePrincipalKey property: The key of the service principal used to authenticate against the
-     * ARM-based updateResourceEndpoint of an Azure ML Studio web service.
+     * Get the servicePrincipalKey property: The key of the service principal used to authenticate against the ARM-based
+     * updateResourceEndpoint of an Azure ML Studio web service.
      * 
      * @return the servicePrincipalKey value.
      */
@@ -186,8 +204,8 @@ public final class AzureMLLinkedService extends LinkedService {
     }
 
     /**
-     * Set the servicePrincipalKey property: The key of the service principal used to authenticate against the
-     * ARM-based updateResourceEndpoint of an Azure ML Studio web service.
+     * Set the servicePrincipalKey property: The key of the service principal used to authenticate against the ARM-based
+     * updateResourceEndpoint of an Azure ML Studio web service.
      * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureMLLinkedService object itself.
@@ -226,8 +244,8 @@ public final class AzureMLLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -236,8 +254,8 @@ public final class AzureMLLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureMLLinkedService object itself.
@@ -284,8 +302,9 @@ public final class AzureMLLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model AzureMLLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model AzureMLLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

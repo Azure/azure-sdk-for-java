@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.FtpServerLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,17 @@ import java.util.Map;
 /**
  * A FTP server Linked Service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = FtpServerLinkedService.class, visible = true)
 @JsonTypeName("FtpServer")
 @Fluent
 public final class FtpServerLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "FtpServer";
+
     /*
      * Properties specific to this linked service type.
      */
@@ -30,6 +38,16 @@ public final class FtpServerLinkedService extends LinkedService {
      * Creates an instance of FtpServerLinkedService class.
      */
     public FtpServerLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -149,8 +167,7 @@ public final class FtpServerLinkedService extends LinkedService {
     }
 
     /**
-     * Get the username property: Username to logon the FTP server. Type: string (or Expression with resultType
-     * string).
+     * Get the username property: Username to logon the FTP server. Type: string (or Expression with resultType string).
      * 
      * @return the username value.
      */
@@ -159,8 +176,7 @@ public final class FtpServerLinkedService extends LinkedService {
     }
 
     /**
-     * Set the username property: Username to logon the FTP server. Type: string (or Expression with resultType
-     * string).
+     * Set the username property: Username to logon the FTP server. Type: string (or Expression with resultType string).
      * 
      * @param username the username value to set.
      * @return the FtpServerLinkedService object itself.
@@ -197,8 +213,8 @@ public final class FtpServerLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -207,8 +223,8 @@ public final class FtpServerLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the FtpServerLinkedService object itself.
@@ -222,8 +238,8 @@ public final class FtpServerLinkedService extends LinkedService {
     }
 
     /**
-     * Get the enableSsl property: If true, connect to the FTP server over SSL/TLS channel. Default value is true.
-     * Type: boolean (or Expression with resultType boolean).
+     * Get the enableSsl property: If true, connect to the FTP server over SSL/TLS channel. Default value is true. Type:
+     * boolean (or Expression with resultType boolean).
      * 
      * @return the enableSsl value.
      */
@@ -232,8 +248,8 @@ public final class FtpServerLinkedService extends LinkedService {
     }
 
     /**
-     * Set the enableSsl property: If true, connect to the FTP server over SSL/TLS channel. Default value is true.
-     * Type: boolean (or Expression with resultType boolean).
+     * Set the enableSsl property: If true, connect to the FTP server over SSL/TLS channel. Default value is true. Type:
+     * boolean (or Expression with resultType boolean).
      * 
      * @param enableSsl the enableSsl value to set.
      * @return the FtpServerLinkedService object itself.
@@ -247,19 +263,20 @@ public final class FtpServerLinkedService extends LinkedService {
     }
 
     /**
-     * Get the enableServerCertificateValidation property: If true, validate the FTP server SSL certificate when
-     * connect over SSL/TLS channel. Default value is true. Type: boolean (or Expression with resultType boolean).
+     * Get the enableServerCertificateValidation property: If true, validate the FTP server SSL certificate when connect
+     * over SSL/TLS channel. Default value is true. Type: boolean (or Expression with resultType boolean).
      * 
      * @return the enableServerCertificateValidation value.
      */
     public Object enableServerCertificateValidation() {
-        return this.innerTypeProperties() == null ? null
+        return this.innerTypeProperties() == null
+            ? null
             : this.innerTypeProperties().enableServerCertificateValidation();
     }
 
     /**
-     * Set the enableServerCertificateValidation property: If true, validate the FTP server SSL certificate when
-     * connect over SSL/TLS channel. Default value is true. Type: boolean (or Expression with resultType boolean).
+     * Set the enableServerCertificateValidation property: If true, validate the FTP server SSL certificate when connect
+     * over SSL/TLS channel. Default value is true. Type: boolean (or Expression with resultType boolean).
      * 
      * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
      * @return the FtpServerLinkedService object itself.
@@ -281,8 +298,9 @@ public final class FtpServerLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model FtpServerLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model FtpServerLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

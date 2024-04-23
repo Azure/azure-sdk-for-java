@@ -14,7 +14,7 @@
   <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-analytics-purview-catalog;current} -->
 
   <name>Microsoft Azure client library for Purview Catalog</name>
-  <description>This package contains Microsoft Azure Purview Catalog client library.</description>
+  <description>This package contains Microsoft Azure Purview Catalog client library. Please note, this package has been deprecated and will no longer be maintained after 06/01/2024. We encourage you to upgrade to the replacement package, `com.azure/azure-analytics-purview-datamap`, to continue receiving updates. Refer to the migration guide (https://aka.ms/azsdk/java/migrate/purview-datamap) for guidance on upgrading. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.</description>
 
   <distributionManagement>
     <site>
@@ -42,12 +42,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.47.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.48.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.14.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -60,13 +60,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.24.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.24.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.11.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

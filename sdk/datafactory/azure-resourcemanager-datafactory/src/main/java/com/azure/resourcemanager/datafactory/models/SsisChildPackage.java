@@ -134,12 +134,13 @@ public final class SsisChildPackage {
      */
     public void validate() {
         if (packagePath() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property packagePath in model SsisChildPackage"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property packagePath in model SsisChildPackage"));
         }
         if (packageContent() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property packageContent in model SsisChildPackage"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property packageContent in model SsisChildPackage"));
         }
     }
 

@@ -15,9 +15,7 @@ import java.util.List;
 @Fluent
 public final class RunQueryFilter {
     /*
-     * Parameter name to be used for filter. The allowed operands to query pipeline runs are PipelineName, RunStart,
-     * RunEnd and Status; to query activity runs are ActivityName, ActivityRunStart, ActivityRunEnd, ActivityType and
-     * Status, and to query trigger runs are TriggerName, TriggerRunTimestamp and Status.
+     * Parameter name to be used for filter. The allowed operands to query pipeline runs are PipelineName, RunStart, RunEnd and Status; to query activity runs are ActivityName, ActivityRunStart, ActivityRunEnd, ActivityType and Status, and to query trigger runs are TriggerName, TriggerRunTimestamp and Status.
      */
     @JsonProperty(value = "operand", required = true)
     private RunQueryFilterOperand operand;
@@ -113,16 +111,16 @@ public final class RunQueryFilter {
      */
     public void validate() {
         if (operand() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property operand in model RunQueryFilter"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property operand in model RunQueryFilter"));
         }
         if (operator() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property operator in model RunQueryFilter"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property operator in model RunQueryFilter"));
         }
         if (values() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property values in model RunQueryFilter"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property values in model RunQueryFilter"));
         }
     }
 

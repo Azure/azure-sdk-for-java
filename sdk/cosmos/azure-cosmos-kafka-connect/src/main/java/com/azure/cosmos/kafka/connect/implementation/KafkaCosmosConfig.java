@@ -5,6 +5,7 @@ package com.azure.cosmos.kafka.connect.implementation;
 
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.kafka.connect.implementation.sink.ItemWriteStrategy;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceContainersConfig;
 import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.common.config.ConfigDef;
@@ -18,7 +19,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
+
+import static com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig.PATCH_PROPERTY_CONFIGS;
+import static com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig.PATCH_PROPERTY_CONFIG_PATTERN;
+import static com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig.WRITE_STRATEGY;
 
 /**
  * Common Configuration for Cosmos DB Kafka source connector and sink connector.
@@ -35,7 +41,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String ACCOUNT_AZURE_ENVIRONMENT = CONFIG_PREFIX + "account.azureEnvironment";
     private static final String ACCOUNT_AZURE_ENVIRONMENT_DOC = "The azure environment of the CosmosDB account: `Azure`, `AzureChina`, `AzureUsGovernment`, `AzureGermany`.";
     private static final String ACCOUNT_AZURE_ENVIRONMENT_DISPLAY = "The azure environment of the CosmosDB account.";
-    private static final String DEFAULT_ACCOUNT_AZURE_ENVIRONMENT = CosmosAzureEnvironments.AZURE.getName();
+    private static final String DEFAULT_ACCOUNT_AZURE_ENVIRONMENT = CosmosAzureEnvironment.AZURE.getName();
 
     private static final String ACCOUNT_TENANT_ID = CONFIG_PREFIX + "account.tenantId";
     private static final String ACCOUNT_TENANT_ID_DOC = "The tenantId of the CosmosDB account. Required for `ServicePrincipal` authentication.";
@@ -46,7 +52,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String AUTH_TYPE_DOC = "There are two auth types are supported currently: "
         + "`MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), `ServicePrincipal`";
     private static final String AUTH_TYPE_DISPLAY = "Cosmos Auth type.";
-    private static final String DEFAULT_AUTH_TYPE = CosmosAuthTypes.MASTER_KEY.getName();
+    private static final String DEFAULT_AUTH_TYPE = CosmosAuthType.MASTER_KEY.getName();
 
     private static final String ACCOUNT_KEY = CONFIG_PREFIX + "accountKey";
     private static final String ACCOUNT_KEY_DOC = "Cosmos DB Account Key (only required in case of `auth.type` as `MasterKey`)";
@@ -93,7 +99,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String THROUGHPUT_CONTROL_ACCOUNT_AZURE_ENVIRONMENT = CONFIG_PREFIX + "throughputControl.account.azureEnvironment";
     private static final String THROUGHPUT_CONTROL_ACCOUNT_AZURE_ENVIRONMENT_DOC = "The azure environment of the CosmosDB account: `Azure`, `AzureChina`, `AzureUsGovernment`, `AzureGermany`.";
     private static final String THROUGHPUT_CONTROL_ACCOUNT_AZURE_ENVIRONMENT_DISPLAY = "The azure environment of the CosmosDB account.";
-    private static final String DEFAULT_THROUGHPUT_CONTROL_ACCOUNT_AZURE_ENVIRONMENT = CosmosAzureEnvironments.AZURE.getName();
+    private static final String DEFAULT_THROUGHPUT_CONTROL_ACCOUNT_AZURE_ENVIRONMENT = CosmosAzureEnvironment.AZURE.getName();
 
     private static final String THROUGHPUT_CONTROL_ACCOUNT_TENANT_ID = CONFIG_PREFIX + "throughputControl.account.tenantId";
     private static final String THROUGHPUT_CONTROL_ACCOUNT_TENANT_ID_DOC = "The tenantId of the CosmosDB account. Required for `ServicePrincipal` authentication.";
@@ -104,7 +110,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String THROUGHPUT_CONTROL_AUTH_TYPE_DOC = "There are two auth types are supported currently: "
         + "`MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), `ServicePrincipal`";
     private static final String THROUGHPUT_CONTROL_AUTH_TYPE_DISPLAY = "Cosmos Auth type.";
-    private static final String DEFAULT_THROUGHPUT_CONTROL_AUTH_TYPE = CosmosAuthTypes.MASTER_KEY.getName();
+    private static final String DEFAULT_THROUGHPUT_CONTROL_AUTH_TYPE = CosmosAuthType.MASTER_KEY.getName();
 
     private static final String THROUGHPUT_CONTROL_ACCOUNT_KEY = CONFIG_PREFIX + "throughputControl.accountKey";
     private static final String THROUGHPUT_CONTROL_ACCOUNT_KEY_DOC = "Cosmos DB Throughput Control Account Key (only required in case of `throughputControl.auth.type` as `MasterKey`)";
@@ -219,9 +225,9 @@ public class KafkaCosmosConfig extends AbstractConfig {
         String preferredRegionListConfig) {
 
         String endpoint = this.getString(accountEndpointConfig);
-        CosmosAzureEnvironments azureEnvironment = this.parseAzureEnvironment(accountAzureEnvironmentConfig);
+        CosmosAzureEnvironment azureEnvironment = this.parseAzureEnvironment(accountAzureEnvironmentConfig);
         String tenantId = this.getString(accountTenantIdConfig);
-        CosmosAuthTypes authType = this.parseCosmosAuthType(authTypeConfig);
+        CosmosAuthType authType = this.parseCosmosAuthType(authTypeConfig);
         String masterKey = this.getPassword(accountKeyConfig).value();
         String clientId = this.getString(clientIdConfig);
         String clientSecret = this.getPassword(clientSecretConfig).value();
@@ -240,9 +246,9 @@ public class KafkaCosmosConfig extends AbstractConfig {
     }
 
     private CosmosAuthConfig getAuthConfig(
-        CosmosAzureEnvironments azureEnvironment,
+        CosmosAzureEnvironment azureEnvironment,
         String tenantId,
-        CosmosAuthTypes authType,
+        CosmosAuthType authType,
         String masterKey,
         String clientId,
         String clientSecret) {
@@ -257,14 +263,14 @@ public class KafkaCosmosConfig extends AbstractConfig {
         }
     }
 
-    private CosmosAzureEnvironments parseAzureEnvironment(String configName) {
+    private CosmosAzureEnvironment parseAzureEnvironment(String configName) {
         String authType = this.getString(configName);
-        return CosmosAzureEnvironments.fromName(authType);
+        return CosmosAzureEnvironment.fromName(authType);
     }
 
-    private CosmosAuthTypes parseCosmosAuthType(String configName) {
+    private CosmosAuthType parseCosmosAuthType(String configName) {
         String authType = this.getString(configName);
-        return CosmosAuthTypes.fromName(authType);
+        return CosmosAuthType.fromName(authType);
     }
 
     private CosmosThroughputControlConfig parseThroughputControlConfig() {
@@ -740,8 +746,8 @@ public class KafkaCosmosConfig extends AbstractConfig {
         String throughputControlAuthTypeString =
             StringUtils.isNotEmpty(throughputControlAccountEndpoint)
                 ? configValueMap.get(THROUGHPUT_CONTROL_AUTH_TYPE).value().toString() : configValueMap.get(AUTH_TYPE).value().toString();
-        CosmosAuthTypes throughputControlAuthType = CosmosAuthTypes.fromName(throughputControlAuthTypeString);
-        if (throughputControlAuthType == CosmosAuthTypes.SERVICE_PRINCIPAL) {
+        CosmosAuthType throughputControlAuthType = CosmosAuthType.fromName(throughputControlAuthTypeString);
+        if (throughputControlAuthType == CosmosAuthType.SERVICE_PRINCIPAL) {
             if (targetThroughputThreshold > 0) {
                 configValueMap
                     .get(THROUGHPUT_CONTROL_TARGET_THROUGHPUT_THRESHOLD)
@@ -769,7 +775,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
         String clientIdConfig,
         String clientSecretConfig) {
 
-        CosmosAuthTypes authType = CosmosAuthTypes.fromName(configValueMap.get(authTypeConfig).value().toString());
+        CosmosAuthType authType = CosmosAuthType.fromName(configValueMap.get(authTypeConfig).value().toString());
         switch (authType) {
             case MASTER_KEY:
                 String masterKey = ((Password) configValueMap.get(accountKeyConfig).value()).value();
@@ -803,6 +809,35 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 break;
             default:
                 throw new IllegalArgumentException("AuthType " + authType + " is not supported");
+        }
+    }
+
+    public static void validateWriteConfig(Map<String, ConfigValue> configValueMap) {
+        ItemWriteStrategy itemWriteStrategy =
+            ItemWriteStrategy.fromName(configValueMap.get(WRITE_STRATEGY).value().toString());
+
+        if (itemWriteStrategy == ItemWriteStrategy.ITEM_PATCH) {
+            validatePatchPropertyConfig(configValueMap);
+        }
+    }
+
+    private static void validatePatchPropertyConfig(Map<String, ConfigValue> configValueMap) {
+        List<String> patchPropertyConfigs =
+            convertToList(configValueMap.get(PATCH_PROPERTY_CONFIGS).value().toString());
+
+        if (patchPropertyConfigs.size() == 0) {
+            return;
+        }
+
+        for (String propertyConfig : patchPropertyConfigs) {
+            Matcher matcher = PATCH_PROPERTY_CONFIG_PATTERN.matcher(propertyConfig);
+            if (!matcher.matches()) {
+                configValueMap
+                    .get(PATCH_PROPERTY_CONFIGS)
+                    .addErrorMessage("Patch property config is in valid format."
+                        + " Only allow property(jsonProperty).op(operationType) or property(jsonProperty).path(patchInCosmosdb).op(operationType)");
+                return;
+            }
         }
     }
 
@@ -873,7 +908,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 throw new ConfigException(name, o, "AuthType can not be empty or null");
             }
 
-            CosmosAuthTypes authType = CosmosAuthTypes.fromName(authTypeString);
+            CosmosAuthType authType = CosmosAuthType.fromName(authTypeString);
             if (authType == null) {
                 throw new ConfigException(name, o, "Invalid AuthType, only allow MasterKey or ServicePrincipal");
             }
@@ -881,7 +916,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
 
         @Override
         public String toString() {
-            return "AuthType. Only allow " + CosmosAuthTypes.values();
+            return "AuthType. Only allow " + CosmosAuthType.values();
         }
     }
 
@@ -894,7 +929,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 throw new ConfigException(name, o, "AzureEnvironment can not be empty or null");
             }
 
-            CosmosAzureEnvironments azureEnvironment = CosmosAzureEnvironments.fromName(azureEnvironmentString);
+            CosmosAzureEnvironment azureEnvironment = CosmosAzureEnvironment.fromName(azureEnvironmentString);
             if (azureEnvironment == null) {
                 throw new ConfigException(name, o, "Invalid AzureEnvironment, only allow `Azure`, `AzureChina`, `AzureUsGovernment`, `AzureGermany`");
             }
@@ -902,7 +937,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
 
         @Override
         public String toString() {
-            return "AzureEnvironment. Only allow " + CosmosAzureEnvironments.values();
+            return "AzureEnvironment. Only allow " + CosmosAzureEnvironment.values();
         }
     }
 }

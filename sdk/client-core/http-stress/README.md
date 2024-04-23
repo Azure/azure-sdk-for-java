@@ -110,7 +110,7 @@ Below is the current structure of project:
 
 Start with [Azure SDK stress Wiki](https://aka.ms/azsdk/stress) to learn about stress tests.
 
-1. Copy `src/main/java/com/azure/sdk/template/azure-template-stress` folder to your service folder.
+1. Copy `src/main/java/com/azure/sdk/clientcore/http-stress` folder to your service folder.
 2. Update the code
   - Update `pom.xml` to change artifact name and add dependencies on your service.
   - Implement your first stress test instead of `HttpGet` and make sure to update `StressTestOptions` to include important parameters for your tests.

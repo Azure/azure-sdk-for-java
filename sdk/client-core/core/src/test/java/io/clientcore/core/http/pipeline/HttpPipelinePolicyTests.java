@@ -5,8 +5,10 @@ package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.NoOpHttpClient;
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HttpPipelinePolicyTests {
     @Test
-    public void verifySend() throws Exception {
+    public void verifySend() throws IOException {
         SyncPolicy policy1 = new SyncPolicy();
         SyncPolicy policy2 = new SyncPolicy();
         URL url = createUrl("http://localhost/");
@@ -31,14 +33,14 @@ public class HttpPipelinePolicyTests {
             .build();
 
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, url));
+        pipeline.send(new HttpRequest(HttpMethod.GET, url)).close();
 
         assertEquals(1, policy1.syncCalls.get());
         assertEquals(1, policy2.syncCalls.get());
     }
 
     @Test
-    public void defaultImplementationShouldCallRightStack() throws Exception {
+    public void defaultImplementationShouldCallRightStack() throws IOException {
         DefaultImplementationSyncPolicy policyWithDefaultSyncImplementation = new DefaultImplementationSyncPolicy();
         URL url = createUrl("http://localhost/");
 
@@ -47,7 +49,7 @@ public class HttpPipelinePolicyTests {
             .policies(policyWithDefaultSyncImplementation)
             .build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, url));
+        pipeline.send(new HttpRequest(HttpMethod.GET, url)).close();
 
         assertEquals(1, policyWithDefaultSyncImplementation.syncCalls.get());
         assertEquals(1, policyWithDefaultSyncImplementation.syncCalls.get());
@@ -59,7 +61,7 @@ public class HttpPipelinePolicyTests {
      * @throws MalformedURLException ignored.
      */
     @Test
-    public void doesntThrowThatThreadIsNonBlocking() throws IOException {
+    public void doesNotThrowThatThreadIsNonBlocking() throws IOException {
         SyncPolicy policy1 = new SyncPolicy();
         HttpPipelinePolicy badPolicy1 = (httpRequest, next) -> {
             try {
@@ -87,7 +89,7 @@ public class HttpPipelinePolicyTests {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            return null;
+            return new HttpResponse<>(request, 200, new HttpHeaders(), null);
         };
         URL url = createUrl("http://localhost/");
 
@@ -96,7 +98,7 @@ public class HttpPipelinePolicyTests {
             .policies(policy1, badPolicy1, badPolicy2)
             .build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, url));
+        pipeline.send(new HttpRequest(HttpMethod.GET, url)).close();
     }
 
 

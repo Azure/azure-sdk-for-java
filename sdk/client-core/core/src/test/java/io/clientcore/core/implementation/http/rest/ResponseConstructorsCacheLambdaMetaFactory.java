@@ -39,10 +39,10 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
 
     /**
      * Identify the most specific constructor for the given response class.
-     *
+     * <p>
      * The most specific constructor is looked up following order: 1. (httpRequest, statusCode, headers, body,
      * decodedHeaders) 2. (httpRequest, statusCode, headers, body) 3. (httpRequest, statusCode, headers)
-     *
+     * <p>
      * Developer Note: This method logic can be easily replaced with Java.Stream and associated operators but we're
      * using basic sort and loop constructs here as this method is in hot path and Stream route is consuming a fair
      * amount of resources.

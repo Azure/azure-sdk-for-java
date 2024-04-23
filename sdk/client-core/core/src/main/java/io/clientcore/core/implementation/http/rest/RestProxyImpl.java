@@ -6,6 +6,7 @@ package io.clientcore.core.implementation.http.rest;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponse;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -18,10 +19,8 @@ import io.clientcore.core.util.serializer.ObjectSerializer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
-import java.util.function.Consumer;
 
 import static io.clientcore.core.http.models.ResponseBodyMode.DESERIALIZE;
 import static io.clientcore.core.implementation.http.serializer.HttpResponseBodyDecoder.decodeByteArray;
@@ -54,12 +53,11 @@ public class RestProxyImpl extends RestProxyBase {
 
     @SuppressWarnings({"try", "unused"})
     @Override
-    public Object invoke(Object proxy, Method method, Consumer<HttpRequest> requestCallback,
-                         SwaggerMethodParser methodParser, HttpRequest request) {
+    public Object invoke(Object proxy, SwaggerMethodParser methodParser, HttpRequest request) {
         // If there is 'RequestOptions' apply its request callback operations before validating the body.
         // This is because the callbacks may mutate the request body.
-        if (requestCallback != null) {
-            requestCallback.accept(request);
+        if (request.getRequestOptions() != null) {
+            request.getRequestOptions().getRequestCallback().accept(request);
         }
 
         if (request.getBody() != null) {
@@ -121,7 +119,12 @@ public class RestProxyImpl extends RestProxyBase {
 
                 return createResponseIfNecessary(response, entityType, null);
             } else {
-                ResponseBodyMode responseBodyMode = response.getRequest().getRequestOptions().getResponseBodyMode();
+                ResponseBodyMode responseBodyMode = null;
+                RequestOptions requestOptions = response.getRequest().getRequestOptions();
+
+                if (requestOptions != null) {
+                    responseBodyMode = requestOptions.getResponseBodyMode();
+                }
 
                 if (responseBodyMode == DESERIALIZE) {
                     HttpResponseAccessHelper.setValue((HttpResponse<?>) response,

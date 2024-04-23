@@ -377,9 +377,5 @@ public class RedirectPolicyTest {
         int getCount() {
             return count.get();
         }
-
-        void resetCount() {
-            count.set(0);
-        }
     }
 }

@@ -24,7 +24,7 @@ public class JsonSerializableEndToEndTests {
     private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
 
     @Test
-    public void serialization() {
+    public void serialization() throws IOException {
         JsonSerializableWrapper wrapper = new JsonSerializableWrapper()
             .setGeneralProperties(new GeneralProperties(42, true, "hello world", -0.0D));
         String expected = "{\"jsonserializable\":{\"anInt\":42,\"aBoolean\":true,\"aString\":\"hello world\","
@@ -35,7 +35,7 @@ public class JsonSerializableEndToEndTests {
     }
 
     @Test
-    public void deserialization() {
+    public void deserialization() throws IOException {
         String json = "{\"jsonserializable\":{\"anInt\":42,\"aBoolean\":true,\"aString\":\"hello world\","
             + "\"aNullableDecimal\":-0.0}}";
         JsonSerializableWrapper expected = new JsonSerializableWrapper()

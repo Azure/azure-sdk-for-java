@@ -4,16 +4,21 @@
 package io.clientcore.core.util;
 
 import io.clientcore.core.annotation.Metadata;
+import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.implementation.util.DefaultLogger;
+import io.clientcore.core.json.JsonProviders;
+import io.clientcore.core.json.JsonWriter;
 import io.clientcore.core.util.configuration.Configuration;
-import io.clientcore.core.json.implementation.jackson.core.io.JsonStringEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.NOPLogger;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -308,9 +313,7 @@ public class ClientLogger {
      */
     @Metadata(conditions = FLUENT)
     public static final class LoggingEventBuilder {
-        private static final JsonStringEncoder JSON_STRING_ENCODER = JsonStringEncoder.getInstance();
         private static final LoggingEventBuilder NOOP = new LoggingEventBuilder(null, null, null, false);
-        private static final String SDK_LOG_MESSAGE_KEY = "{\"message\":\"";
 
         private final Logger logger;
         private final LogLevel level;
@@ -517,26 +520,32 @@ public class ClientLogger {
                 message = "";
             }
 
-            StringBuilder sb = new StringBuilder(20 + (context == null ? 0 : context.size()) * 20 + message.length()
-                + globalContextCached.length());
-            // message must be first for log parsing tooling to work, key also works as a
-            // marker for SDK logs so we'll write it even if there is no message
-            sb.append(SDK_LOG_MESSAGE_KEY);
-            JSON_STRING_ENCODER.quoteAsString(message, sb);
-            sb.append('"');
+            int speculatedSize = 20 + (context == null ? 0 : context.size()) * 20 + message.length()
+                + globalContextCached.length();
+            try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream(speculatedSize);
+                 JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+                jsonWriter.writeStartObject()
+                    .writeStringField("message", message)
+                    .flush();
 
-            if (hasGlobalContext) {
-                sb.append(',').append(globalContextCached);
-            }
-
-            if (context != null) {
-                for (ContextKeyValuePair contextKeyValuePair : context) {
-                    contextKeyValuePair.write(sb.append(','));
+                if (hasGlobalContext) {
+                    // Hack for now as writeRawValue only works for locations where a String could be written.
+                    outputStream.write(',');
+                    outputStream.write(globalContextCached.getBytes(StandardCharsets.UTF_8));
                 }
-            }
 
-            sb.append('}');
-            return sb.toString();
+                if (context != null) {
+                    for (ContextKeyValuePair contextKeyValuePair : context) {
+                        contextKeyValuePair.write(jsonWriter);
+                    }
+                }
+
+                jsonWriter.writeEndObject().flush();
+
+                return outputStream.toString(StandardCharsets.UTF_8);
+            } catch (IOException ex) {
+                throw new UncheckedIOException(ex);
+            }
         }
 
         private void addKeyValueInternal(String key, Object value) {
@@ -582,46 +591,16 @@ public class ClientLogger {
                 return "";
             }
 
-            StringBuilder formatter = new StringBuilder(context.size() * 20);
+            int speculatedSize = context.size() * 20;
+            try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream(speculatedSize);
+                 JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+                jsonWriter.writeMap(context, JsonWriter::writeUntyped).flush();
 
-            // Keep track of whether we've written a value yet so we don't write a trailing comma.
-            // The previous implementation would delete the trailing comma, but internally this causes StringBuilder to
-            // copy the entirety of the string to a new buffer, which is very expensive.
-            boolean firstValueWritten = false;
-            for (Map.Entry<String, Object> pair : context.entrySet()) {
-                if (firstValueWritten) {
-                    formatter.append(',');
-                } else {
-                    firstValueWritten = true;
-                }
-
-                writeKeyAndValue(pair.getKey(), pair.getValue(), formatter);
+                // Will have opening '{' and trailing '}' which we don't want to include.
+                return outputStream.toString(StandardCharsets.UTF_8).substring(1, outputStream.size() - 1);
+            } catch (IOException ex) {
+                throw new UncheckedIOException(ex);
             }
-
-            return formatter.toString();
-        }
-
-        private static void writeKeyAndValue(String key, Object value, StringBuilder formatter) {
-            formatter.append('"');
-            JSON_STRING_ENCODER.quoteAsString(key, formatter);
-            formatter.append("\":");
-
-            if (value == null) {
-                formatter.append("null");
-            } else if (isUnquotedType(value)) {
-                JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
-            } else {
-                formatter.append('"');
-                JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
-                formatter.append('"');
-            }
-        }
-
-        /**
-         *  Returns true if the value is an unquoted JSON type (boolean, number, null).
-         */
-        private static boolean isUnquotedType(Object value) {
-            return value instanceof Boolean || value instanceof Number;
         }
 
         private static final class ContextKeyValuePair {
@@ -644,11 +623,12 @@ public class ClientLogger {
             /**
              * Writes "key":"value" json string to provided StringBuilder.
              */
-            public void write(StringBuilder formatter) {
+            void write(JsonWriter jsonWriter) throws IOException {
                 if (valueSupplier == null) {
-                    writeKeyAndValue(key, value, formatter);
+                    jsonWriter.writeUntypedField(key, value);
                 } else {
-                    writeKeyAndValue(key, valueSupplier.get(), formatter);
+                    // Use writeUntypedField as we want null values to be written.
+                    jsonWriter.writeUntypedField(key, valueSupplier.get());
                 }
             }
         }

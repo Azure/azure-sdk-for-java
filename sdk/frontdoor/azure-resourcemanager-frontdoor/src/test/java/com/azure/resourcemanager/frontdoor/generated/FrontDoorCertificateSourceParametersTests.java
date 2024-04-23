@@ -12,17 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class FrontDoorCertificateSourceParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FrontDoorCertificateSourceParameters model =
-            BinaryData
-                .fromString("{\"certificateType\":\"Dedicated\"}")
-                .toObject(FrontDoorCertificateSourceParameters.class);
+        FrontDoorCertificateSourceParameters model = BinaryData.fromString("{\"certificateType\":\"Dedicated\"}")
+            .toObject(FrontDoorCertificateSourceParameters.class);
         Assertions.assertEquals(FrontDoorCertificateType.DEDICATED, model.certificateType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FrontDoorCertificateSourceParameters model =
-            new FrontDoorCertificateSourceParameters().withCertificateType(FrontDoorCertificateType.DEDICATED);
+        FrontDoorCertificateSourceParameters model
+            = new FrontDoorCertificateSourceParameters().withCertificateType(FrontDoorCertificateType.DEDICATED);
         model = BinaryData.fromObject(model).toObject(FrontDoorCertificateSourceParameters.class);
         Assertions.assertEquals(FrontDoorCertificateType.DEDICATED, model.certificateType());
     }

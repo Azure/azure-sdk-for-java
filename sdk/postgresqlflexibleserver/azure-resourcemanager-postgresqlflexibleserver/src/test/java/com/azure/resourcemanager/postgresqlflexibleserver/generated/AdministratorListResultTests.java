@@ -26,18 +26,24 @@ public final class AdministratorListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdministratorListResult model
-            = new AdministratorListResult()
-                .withValue(Arrays.asList(
-                    new ActiveDirectoryAdministratorInner().withPrincipalType(PrincipalType.USER)
-                        .withPrincipalName("xrifkwmrvkts").withObjectId("nt").withTenantId("ipa"),
-                    new ActiveDirectoryAdministratorInner().withPrincipalType(PrincipalType.UNKNOWN)
-                        .withPrincipalName("rd").withObjectId("pewnw").withTenantId("itjz"),
-                    new ActiveDirectoryAdministratorInner().withPrincipalType(PrincipalType.GROUP)
-                        .withPrincipalName("k").withObjectId("txukcdmp").withTenantId("cryuan"),
-                    new ActiveDirectoryAdministratorInner().withPrincipalType(PrincipalType.USER)
-                        .withPrincipalName("yrtih").withObjectId("tijbpzvgnwzsymgl").withTenantId("fcyzkohdbihanufh")))
-                .withNextLink("qhabifpikxwcz");
+        AdministratorListResult model = new AdministratorListResult().withValue(Arrays.asList(
+            new ActiveDirectoryAdministratorInner().withPrincipalType(PrincipalType.USER)
+                .withPrincipalName("xrifkwmrvkts")
+                .withObjectId("nt")
+                .withTenantId("ipa"),
+            new ActiveDirectoryAdministratorInner().withPrincipalType(PrincipalType.UNKNOWN)
+                .withPrincipalName("rd")
+                .withObjectId("pewnw")
+                .withTenantId("itjz"),
+            new ActiveDirectoryAdministratorInner().withPrincipalType(PrincipalType.GROUP)
+                .withPrincipalName("k")
+                .withObjectId("txukcdmp")
+                .withTenantId("cryuan"),
+            new ActiveDirectoryAdministratorInner().withPrincipalType(PrincipalType.USER)
+                .withPrincipalName("yrtih")
+                .withObjectId("tijbpzvgnwzsymgl")
+                .withTenantId("fcyzkohdbihanufh")))
+            .withNextLink("qhabifpikxwcz");
         model = BinaryData.fromObject(model).toObject(AdministratorListResult.class);
         Assertions.assertEquals(PrincipalType.USER, model.value().get(0).principalType());
         Assertions.assertEquals("xrifkwmrvkts", model.value().get(0).principalName());

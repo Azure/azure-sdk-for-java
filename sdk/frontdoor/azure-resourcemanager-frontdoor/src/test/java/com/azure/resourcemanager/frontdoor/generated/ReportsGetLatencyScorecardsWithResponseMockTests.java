@@ -6,74 +6,37 @@ package com.azure.resourcemanager.frontdoor.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.frontdoor.FrontDoorManager;
 import com.azure.resourcemanager.frontdoor.models.LatencyScorecard;
 import com.azure.resourcemanager.frontdoor.models.LatencyScorecardAggregationInterval;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ReportsGetLatencyScorecardsWithResponseMockTests {
     @Test
     public void testGetLatencyScorecardsWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"id\":\"infsz\",\"name\":\"glqdhm\",\"description\":\"zralcxpjbyyps\",\"endpointA\":\"qcjenkyhf\",\"endpointB\":\"vsqxfxjelgcmpzqj\",\"startDateTimeUTC\":\"2021-11-04T06:03:59Z\",\"endDateTimeUTC\":\"2021-02-22T05:17:56Z\",\"country\":\"w\",\"latencyMetrics\":[{\"name\":\"co\",\"endDateTimeUTC\":\"i\",\"aValue\":5.781335,\"bValue\":37.078613,\"delta\":22.760654,\"deltaPercent\":40.390663,\"aCLower95CI\":45.28454,\"aHUpper95CI\":50.03874,\"bCLower95CI\":92.06426,\"bUpper95CI\":97.761154},{\"name\":\"ijiufehgmvfln\",\"endDateTimeUTC\":\"v\",\"aValue\":78.07501,\"bValue\":71.5515,\"delta\":68.94412,\"deltaPercent\":49.01049,\"aCLower95CI\":77.75446,\"aHUpper95CI\":52.201344,\"bCLower95CI\":43.301346,\"bUpper95CI\":95.77263},{\"name\":\"utgqztwh\",\"endDateTimeUTC\":\"mupgxy\",\"aValue\":20.35476,\"bValue\":24.07775,\"delta\":8.802265,\"deltaPercent\":4.5686665,\"aCLower95CI\":74.17705,\"aHUpper95CI\":18.091225,\"bCLower95CI\":95.478,\"bUpper95CI\":67.505226}]},\"location\":\"bklqpxz\",\"tags\":{\"wxudgn\":\"feddwwnlza\",\"gpbemeluclvdjju\":\"gookrtalvnb\",\"ahhxhqfaqnvzoqg\":\"yrdnqod\"},\"id\":\"ipemchgavscz\",\"name\":\"ejdtxptl\",\"type\":\"h\"}";
 
-        String responseStr =
-            "{\"properties\":{\"id\":\"kqg\",\"name\":\"kjq\",\"description\":\"broyla\",\"endpointA\":\"ulcdisdosf\",\"endpointB\":\"jsvg\",\"startDateTimeUTC\":\"2021-11-20T19:36:11Z\",\"endDateTimeUTC\":\"2021-04-27T23:33:03Z\",\"country\":\"vyc\",\"latencyMetrics\":[]},\"location\":\"c\",\"tags\":{\"vjdhttzaefedxih\":\"ccknfnwmbtmvp\"},\"id\":\"hrphkmcrjdqn\",\"name\":\"dfzpbgtgkylkdg\",\"type\":\"rjeuut\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        FrontDoorManager manager = FrontDoorManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        LatencyScorecard response = manager.reports()
+            .getLatencyScorecardsWithResponse("pyc", "hcoeocnhzq", "ot", LatencyScorecardAggregationInterval.DAILY,
+                "zcfyjzptwrl", "h", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        FrontDoorManager manager =
-            FrontDoorManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        LatencyScorecard response =
-            manager
-                .reports()
-                .getLatencyScorecardsWithResponse(
-                    "nac",
-                    "cc",
-                    "knh",
-                    LatencyScorecardAggregationInterval.MONTHLY,
-                    "izvy",
-                    "nrzvuljraaer",
-                    com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("c", response.location());
-        Assertions.assertEquals("ccknfnwmbtmvp", response.tags().get("vjdhttzaefedxih"));
+        Assertions.assertEquals("bklqpxz", response.location());
+        Assertions.assertEquals("feddwwnlza", response.tags().get("wxudgn"));
     }
 }
