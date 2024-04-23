@@ -428,7 +428,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions-Duration-Context -->
      * <pre>
      * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
-     *     .setContentMd5&#40;MessageDigest.getInstance&#40;&quot;MD5&quot;&#41;.digest&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
      *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      *
@@ -495,7 +495,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#BlockBlobSimpleUploadOptions-Duration-Context -->
      * <pre>
      * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
-     *     .setContentMd5&#40;MessageDigest.getInstance&#40;&quot;MD5&quot;&#41;.digest&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
      *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      *
@@ -614,7 +614,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.uploadFromUrlWithResponse#BlobUploadFromUrlOptions-Duration-Context -->
      * <pre>
      * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
-     *     .setContentMd5&#40;MessageDigest.getInstance&#40;&quot;MD5&quot;&#41;.digest&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
      *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      *
@@ -1060,7 +1060,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration-Context -->
      * <pre>
      * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
-     *     .setContentMd5&#40;MessageDigest.getInstance&#40;&quot;MD5&quot;&#41;.digest&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
      *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      *

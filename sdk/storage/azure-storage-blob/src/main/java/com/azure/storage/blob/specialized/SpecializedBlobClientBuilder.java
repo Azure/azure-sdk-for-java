@@ -37,6 +37,7 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
@@ -339,7 +340,7 @@ public final class SpecializedBlobClientBuilder implements
             this.endpoint = BuilderHelper.getEndpoint(parts);
             this.containerName = parts.getBlobContainerName() == null ? this.containerName
                 : parts.getBlobContainerName();
-            this.blobName = parts.getBlobName() == null ? this.blobName : parts.getBlobName();
+            this.blobName = parts.getBlobName() == null ? this.blobName : Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
             this.versionId = parts.getVersionId();
 
@@ -541,7 +542,8 @@ public final class SpecializedBlobClientBuilder implements
      * @throws NullPointerException If {@code blobName} is {@code null}
      */
     public SpecializedBlobClientBuilder blobName(String blobName) {
-        this.blobName = Objects.requireNonNull(blobName, "'blobName' cannot be null.");
+        this.blobName = Utility.urlEncode(Utility.urlDecode(Objects.requireNonNull(blobName,
+            "'blobName' cannot be null.")));
         return this;
     }
 
