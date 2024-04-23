@@ -7,8 +7,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -20,21 +18,16 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
-import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
-import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.LeaseStatusType;
-import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
-import com.azure.storage.file.datalake.models.PathInfo;
-import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
@@ -50,19 +43,17 @@ import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveO
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
 import com.azure.storage.file.datalake.sas.PathSasPermission;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import reactor.util.function.Tuple2;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -70,8 +61,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -116,10 +105,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @Test
     public void createMin() {
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
-
-        StepVerifier.create(dc.create())
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
+        assertDoesNotThrow(() -> dc.create().block());
     }
 
     @Test
@@ -133,7 +119,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createDefaultsWithOptions() {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
@@ -176,28 +162,25 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @Test
     public void createOverwrite() {
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
+        dc.create().block();
 
-        Mono<PathInfo> response = dc.create()
-            .then(dc.create(false));
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.create(false))
             .verifyError(DataLakeStorageException.class);
     }
 
     @Test
     public void exists() {
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
+        dc.create().block();
 
-        Mono<Boolean> response = dc.create()
-            .then(dc.exists());
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.exists())
             .expectNext(true)
             .verifyComplete();
     }
 
     @Test
     public void doesNotExist() {
+
         StepVerifier.create(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName()).exists())
             .expectNext(false)
             .verifyComplete();
@@ -214,15 +197,13 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setContentLanguage(contentLanguage)
             .setContentType(contentType);
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
+        dc.createWithResponse(null, null, headers, null, null).block();
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
+
         String finalContentType = contentType;
-
-        Mono<Response<PathProperties>> response = dc.createWithResponse(null, null, headers, null, null)
-            .then(dc.getPropertiesWithResponse(null));
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.getPropertiesWithResponse(null))
             .assertNext(r -> validatePathProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage,
                 null, finalContentType))
             .verifyComplete();
@@ -247,10 +228,9 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             metadata.put(key2, value2);
         }
 
-        Mono<PathProperties> response = dc.createWithResponse(null, null, null, metadata, null)
-            .then(dc.getProperties());
+        dc.createWithResponse(null, null, null, metadata, null).block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(dc.getProperties())
             .assertNext(r -> {
                 for (String k : metadata.keySet()) {
                     assertTrue(r.getMetadata().containsKey(k));
@@ -264,27 +244,15 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void createAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                          String leaseID) {
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+            .setIfMatch(setupPathMatchCondition(dc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.createWithResponse(null, null, null, null, drc);
-            });
-
-        assertAsyncResponseStatusCode(response, 201);
+        assertAsyncResponseStatusCode(dc.createWithResponse(null, null, null, null, drc),
+            201);
     }
 
     private static Stream<Arguments> modifiedMatchAndLeaseIdSupplier() {
@@ -303,22 +271,15 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void createACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.createWithResponse(null, null, null, null, drc);
-            });
+        setupPathLeaseCondition(dc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+        StepVerifier.create(dc.createWithResponse(null, null, null, null, drc))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -351,16 +312,15 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .fileSystemEncryptionScopeOptions(encryptionScope)
             .buildAsyncClient();
 
-        Mono<PathProperties> response = client.create()
-            .then(client.createDirectory(generatePathName())
-                .flatMap(DataLakePathAsyncClient::getProperties));
+        client.create().block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(client.createDirectory(generatePathName())
+            .flatMap(DataLakePathAsyncClient::getProperties))
             .assertNext(p -> assertEquals(ENCRYPTION_SCOPE_STRING, p.getEncryptionScope()))
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createEncryptionScopeSas() {
         PathSasPermission permissions = new PathSasPermission()
@@ -376,16 +336,14 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
         DataLakeDirectoryAsyncClient client = getDirectoryAsyncClient(sas, dataLakeFileSystemAsyncClient.getFileSystemUrl(),
             generatePathName());
+        client.create().block();
 
-        Mono<PathProperties> response = client.create()
-            .then(client.getProperties());
-
-        StepVerifier.create(response)
+        StepVerifier.create(client.getProperties())
             .assertNext(r -> assertEquals(ENCRYPTION_SCOPE_STRING, r.getEncryptionScope()))
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createEncryptionScopeAccountSas() {
         AccountSasService service = new AccountSasService().setBlobAccess(true);
@@ -406,16 +364,14 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
         DataLakeDirectoryAsyncClient client = getDirectoryAsyncClient(sas, dataLakeFileSystemAsyncClient.getFileSystemUrl(),
             generatePathName());
+        client.create().block();
 
-        Mono<PathProperties> response = client.create()
-            .then(client.getProperties());
-
-        StepVerifier.create(response)
+        StepVerifier.create(client.getProperties())
             .assertNext(r -> assertEquals(ENCRYPTION_SCOPE_STRING, r.getEncryptionScope()))
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createEncryptionScopeIdentitySas() {
         UserDelegationKey key = getOAuthServiceClient()
@@ -437,24 +393,21 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
         DataLakeDirectoryAsyncClient client = getDirectoryAsyncClient(sas, dataLakeFileSystemAsyncClient.getFileSystemUrl(),
             generatePathName());
+        client.create().block();
 
-        Mono<PathProperties> response = client.create()
-            .then(client.getProperties());
-
-        StepVerifier.create(response)
+        StepVerifier.create(client.getProperties())
             .assertNext(r -> assertEquals(ENCRYPTION_SCOPE_STRING, r.getEncryptionScope()))
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createOptionsWithAcl() {
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
 
-        Mono<PathAccessControl> response = dc.createWithResponse(new DataLakePathCreateOptions().setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES))
-            .then(dc.getAccessControl());
+        dc.createWithResponse(new DataLakePathCreateOptions().setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES)).block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(dc.getAccessControl())
             .assertNext(r -> {
                 assertEquals(PATH_ACCESS_CONTROL_ENTRIES.get(0), r.getAccessControlList().get(0)); // testing if owner is set the same
                 assertEquals(PATH_ACCESS_CONTROL_ENTRIES.get(1), r.getAccessControlList().get(1)); // testing if group is set the same
@@ -462,17 +415,15 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createOptionsWithOwnerAndGroup() {
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
         String ownerName = testResourceNamer.randomUuid();
         String groupName = testResourceNamer.randomUuid();
+        dc.createWithResponse(new DataLakePathCreateOptions().setOwner(ownerName).setGroup(groupName)).block();
 
-        Mono<PathAccessControl> response = dc.createWithResponse(new DataLakePathCreateOptions().setOwner(ownerName).setGroup(groupName))
-            .then(dc.getAccessControl());
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.getAccessControl())
             .assertNext(r -> {
                 assertEquals(ownerName, r.getOwner());
                 assertEquals(groupName, r.getGroup());
@@ -483,11 +434,9 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @Test
     public void createOptionsWithNullOwnerAndGroup() {
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
+        dc.createWithResponse(null).block();
 
-        Mono<PathAccessControl> response = dc.createWithResponse(null)
-            .then(dc.getAccessControl());
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.getAccessControl())
             .assertNext(r -> {
                 assertEquals("$superuser", r.getOwner());
                 assertEquals("$superuser", r.getGroup());
@@ -509,10 +458,9 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setContentMd5(contentMD5)
             .setContentType(contentType);
 
-        Mono<Response<PathProperties>> response = dc.createWithResponse(new DataLakePathCreateOptions().setPathHttpHeaders(putHeaders))
-            .then(dc.getPropertiesWithResponse(null));
+        dc.createWithResponse(new DataLakePathCreateOptions().setPathHttpHeaders(putHeaders)).block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(dc.getPropertiesWithResponse(null))
             .assertNext(r -> validatePathProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage,
                 contentMD5, contentType))
             .verifyComplete();
@@ -544,11 +492,9 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @Test
     public void createOptionsWithPermissionsAndUmask() {
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
+        dc.createWithResponse(new DataLakePathCreateOptions().setPermissions("0777").setUmask("0057")).block();
 
-        Mono<Response<PathAccessControl>> response = dc.createWithResponse(new DataLakePathCreateOptions().setPermissions("0777").setUmask("0057"))
-            .then(dc.getAccessControlWithResponse(true, null));
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.getAccessControlWithResponse(true, null))
             .assertNext(r -> assertEquals(PathPermissions.parseSymbolic("rwx-w----").toString(),
                 r.getValue().getPermissions().toString()))
             .verifyComplete();
@@ -584,10 +530,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @Test
     public void createIfNotExistsMin() {
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
-
-        StepVerifier.create(dc.createIfNotExists())
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
+        assertDoesNotThrow(() -> dc.createIfNotExists().block());
     }
 
     @Test
@@ -615,11 +558,9 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @Test
     public void createIfNotExistsDoesExist() {
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
+        dc.createIfNotExists().block();
 
-        Mono<Boolean> response = dc.createIfNotExists()
-            .then(dc.exists());
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.exists())
             .expectNext(true)
             .verifyComplete();
     }
@@ -636,14 +577,13 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setContentType(contentType);
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
 
+        dc.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setPathHttpHeaders(headers)).block();
+
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
         String finalContentType = contentType;
 
-        Mono<Response<PathProperties>> response = dc.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setPathHttpHeaders(headers))
-            .then(dc.getPropertiesWithResponse(null));
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.getPropertiesWithResponse(null))
             .assertNext(r -> validatePathProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage,
                 null, finalContentType))
             .verifyComplete();
@@ -661,11 +601,9 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         }
 
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
+        dc.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setMetadata(metadata)).block();
 
-        Mono<PathProperties> response = dc.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setMetadata(metadata))
-            .then(dc.getProperties());
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.getProperties())
             .assertNext(r -> {
                 for (String k : metadata.keySet()) {
                     assertEquals(metadata.get(k), r.getMetadata().get(k));
@@ -692,35 +630,24 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @Test
     public void deleteRecursivelyAsync() {
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
-
-        Mono<Void> response = dc.create()
-            .then(dc.createFile(generatePathName()))
-            .then(dc.createFile(generatePathName()))
-            .then(dc.createFile(generatePathName()))
-            .then(dc.createFile(generatePathName()))
-            .then(dc.createFile(generatePathName()))
-            .then(dc.deleteRecursively());
-
-        StepVerifier.create(response)
-            .verifyComplete();
-        StepVerifier.create(dc.exists())
-            .expectNext(false)
-            .verifyComplete();
+        dc.create().block();
+        // upload 5 files to the directory
+        for (int i = 0; i < 5; i++) {
+            dc.createFile(generatePathName()).block();
+        }
+        StepVerifier.create(dc.deleteRecursively()).verifyComplete();
+        StepVerifier.create(dc.exists()).expectNext(false).verifyComplete();
     }
 
     @Test
     public void deleteRecursivelyAsyncWithResponse() {
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
-
-        Mono<Response<Void>> response = dc.create()
-            .then(dc.createFile(generatePathName()))
-            .then(dc.createFile(generatePathName()))
-            .then(dc.createFile(generatePathName()))
-            .then(dc.createFile(generatePathName()))
-            .then(dc.createFile(generatePathName()))
-            .then(dc.deleteRecursivelyWithResponse(null));
-
-        StepVerifier.create(response)
+        dc.create().block();
+        // upload 5 files to the directory
+        for (int i = 0; i < 5; i++) {
+            dc.createFile(generatePathName()).block();
+        }
+        StepVerifier.create(dc.deleteRecursivelyWithResponse(null))
             .assertNext(r -> assertEquals(200, r.getStatusCode())).verifyComplete();
         StepVerifier.create(dc.exists()).expectNext(false).verifyComplete();
     }
@@ -733,10 +660,9 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void deleteDirDoesNotExistAnymore() {
-        Mono<Response<PathProperties>> response = dc.deleteWithResponse(false, null)
-            .then(dc.getPropertiesWithResponse(null));
+        dc.deleteWithResponse(false, null).block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(dc.getPropertiesWithResponse(null))
             .verifyErrorSatisfies(r -> {
                 DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
                 assertEquals(404, e.getStatusCode());
@@ -748,50 +674,29 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void deleteAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                          String leaseID) {
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+            .setIfMatch(setupPathMatchCondition(dc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.deleteWithResponse(false, drc);
-            });
-
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(dc.deleteWithResponse(false, drc), 200);
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void deleteACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
+        setupPathLeaseCondition(dc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.deleteWithResponse(false, drc);
-            });
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.deleteWithResponse(false, drc))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -833,57 +738,33 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void deleteIfExistsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+            .setIfMatch(setupPathMatchCondition(dc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
+            .setIsRecursive(false);
 
-        Mono<Response<Boolean>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-
-                DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
-                    .setIsRecursive(false);
-
-                return dc.deleteIfExistsWithResponse(options);
-            });
-
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(dc.deleteIfExistsWithResponse(options), 200);
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void deleteIfExistsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String leaseID) {
+        setupPathLeaseCondition(dc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
+            .setIsRecursive(false);
 
-        Mono<Response<Boolean>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
-                    .setIsRecursive(false);
-
-                return dc.deleteIfExistsWithResponse(options);
-            });
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.deleteIfExistsWithResponse(options))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -907,49 +788,29 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setPermissionsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, drc);
-            });
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+            .setIfMatch(setupPathMatchCondition(dc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(dc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, drc), 200);
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void setPermissionsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String leaseID) {
+        setupPathLeaseCondition(dc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, drc);
-            });
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, drc))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -982,50 +843,30 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setAclAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                          String leaseID) {
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+            .setIfMatch(setupPathMatchCondition(dc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc);
-            });
-
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(dc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc),
+            200);
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void setAclACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
+        setupPathLeaseCondition(dc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc);
-            });
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -1037,10 +878,11 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void setACLRecursiveMin() {
-        StepVerifier.create(setupStandardRecursiveAclTest().then(dc.setAccessControlRecursive(PATH_ACCESS_CONTROL_ENTRIES)))
+        setupStandardRecursiveAclTest();
+        StepVerifier.create(dc.setAccessControlRecursive(PATH_ACCESS_CONTROL_ENTRIES))
             .assertNext(r -> {
                 assertEquals(3L, r.getCounters().getChangedDirectoriesCount()); // Including the top level
                 assertEquals(4L, r.getCounters().getChangedFilesCount());
@@ -1051,12 +893,13 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void setACLRecursiveBatches() {
+        setupStandardRecursiveAclTest();
         PathSetAccessControlRecursiveOptions options =
             new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2);
-        StepVerifier.create(setupStandardRecursiveAclTest().then(dc.setAccessControlRecursiveWithResponse(options)))
+        StepVerifier.create(dc.setAccessControlRecursiveWithResponse(options))
             .assertNext(r -> {
                 assertEquals(3L, r.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
                 assertEquals(4L, r.getValue().getCounters().getChangedFilesCount());
@@ -1067,42 +910,40 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void setACLRecursiveBatchesResume() {
+        setupStandardRecursiveAclTest();
         PathSetAccessControlRecursiveOptions options =
             new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2).setMaxBatches(1);
 
-        Mono<Tuple2<Response<AccessControlChangeResult>, Response<AccessControlChangeResult>>> response = setupStandardRecursiveAclTest()
-            .then(dc.setAccessControlRecursiveWithResponse(options))
-                .flatMap(r -> {
-                    options.setMaxBatches(null).setContinuationToken(r.getValue().getContinuationToken());
-                    return Mono.zip(Mono.just(r), dc.setAccessControlRecursiveWithResponse(options));
-                });
+        AccessControlChangeResult r = dc.setAccessControlRecursiveWithResponse(options).block().getValue();
+        options.setMaxBatches(null).setContinuationToken(r.getContinuationToken());
 
-        StepVerifier.create(response)
+        StepVerifier.create(dc.setAccessControlRecursiveWithResponse(options))
             .assertNext(r2 -> {
-                assertEquals(3L, r2.getT1().getValue().getCounters().getChangedDirectoriesCount()
-                    + r2.getT2().getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
-                assertEquals(4L, r2.getT1().getValue().getCounters().getChangedFilesCount()
-                    + r2.getT2().getValue().getCounters().getChangedFilesCount());
-                assertEquals(0L, r2.getT1().getValue().getCounters().getFailedChangesCount()
-                    + r2.getT2().getValue().getCounters().getFailedChangesCount());
-                assertNull(r2.getT2().getValue().getContinuationToken());
-                assertNull(r2.getT1().getValue().getBatchFailures());
+                assertEquals(3L, r.getCounters().getChangedDirectoriesCount()
+                    + r2.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
+                assertEquals(4L, r.getCounters().getChangedFilesCount()
+                    + r2.getValue().getCounters().getChangedFilesCount());
+                assertEquals(0L, r.getCounters().getFailedChangesCount()
+                    + r2.getValue().getCounters().getFailedChangesCount());
+                assertNull(r2.getValue().getContinuationToken());
+                assertNull(r.getBatchFailures());
             })
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void setACLRecursiveBatchesProgress() {
+        setupStandardRecursiveAclTest();
         DirectoryApiTests.InMemoryAccessControlRecursiveChangeProgress progress =
             new DirectoryApiTests.InMemoryAccessControlRecursiveChangeProgress();
         PathSetAccessControlRecursiveOptions options = new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES)
             .setBatchSize(2).setProgressHandler(progress);
 
-        StepVerifier.create(setupStandardRecursiveAclTest().then(dc.setAccessControlRecursiveWithResponse(options)))
+        StepVerifier.create(dc.setAccessControlRecursiveWithResponse(options))
             .assertNext(r -> {
                 assertEquals(3L, r.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
                 assertEquals(4L, r.getValue().getCounters().getChangedFilesCount());
@@ -1132,38 +973,35 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             + progress.cumulativeCounters.get(3).getChangedDirectoriesCount());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void setACLRecursiveBatchesFollowToken() {
-        AtomicLong failedChanges = new AtomicLong();
-        AtomicLong directoriesChanged = new AtomicLong();
-        AtomicLong filesChanged = new AtomicLong();
-        AtomicInteger iterations = new AtomicInteger();
-
+        setupStandardRecursiveAclTest();
         PathSetAccessControlRecursiveOptions options = new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES)
             .setBatchSize(2).setMaxBatches(2);
 
-        Mono<Void> step = dc.setAccessControlRecursiveWithResponse(options)
-            .expand(response -> {
-                AccessControlChangeResult result = response.getValue();
-                failedChanges.addAndGet(result.getCounters().getFailedChangesCount());
-                directoriesChanged.addAndGet(result.getCounters().getChangedDirectoriesCount());
-                filesChanged.addAndGet(result.getCounters().getChangedFilesCount());
-                iterations.incrementAndGet();
+        String continuation = "null";
+        int failedChanges = 0;
+        int directoriesChanged = 0;
+        int filesChanged = 0;
+        int iterations = 0;
+        while (!CoreUtils.isNullOrEmpty(continuation) && iterations < 10) {
+            if (iterations == 0) {
+                continuation = null; // do while not supported in Groovy
+            }
+            options.setContinuationToken(continuation);
+            AccessControlChangeResult result = dc.setAccessControlRecursiveWithResponse(options).block().getValue();
+            failedChanges += result.getCounters().getFailedChangesCount();
+            directoriesChanged += result.getCounters().getChangedDirectoriesCount();
+            filesChanged += result.getCounters().getChangedFilesCount();
+            iterations++;
+            continuation = result.getContinuationToken();
+        }
 
-                return CoreUtils.isNullOrEmpty(result.getContinuationToken()) || iterations.get() >= 10
-                    ? Mono.empty()
-                    : dc.setAccessControlRecursiveWithResponse(options.setContinuationToken(result.getContinuationToken()));
-            })
-            .then();
-
-        StepVerifier.create(setupStandardRecursiveAclTest().then(step))
-            .verifyComplete();
-
-        assertEquals(0, failedChanges.get());
-        assertEquals(3, directoriesChanged.get()); // Including the top level
-        assertEquals(4, filesChanged.get());
-        assertEquals(2, iterations.get());
+        assertEquals(0, failedChanges);
+        assertEquals(3, directoriesChanged); // Including the top level
+        assertEquals(4, filesChanged);
+        assertEquals(2, iterations);
     }
 
     private DataLakeDirectoryAsyncClient getSasDirectoryClient(DataLakeDirectoryAsyncClient directoryClient, String owner) {
@@ -1175,7 +1013,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         return getDirectoryAsyncClient(sas, directoryClient.getDirectoryUrl(), directoryClient.getDirectoryPath());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void setACLRecursiveProgressWithFailure() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -1196,13 +1034,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String subowner = testResourceNamer.randomUuid();
         RolePermissions rp = RolePermissions.parseSymbolic("rwx", false);
         PathPermissions pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp);
-        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
-            .then(subdir1.setPermissions(pathPermissions, null, subowner))
-            .then(file1.setPermissions(pathPermissions, null, subowner))
-            .then(file2.setPermissions(pathPermissions, null, subowner))
-            .then(subdir2.setPermissions(pathPermissions, null, subowner))
-            .then(file3.setPermissions(pathPermissions, null, subowner))
-            .block();
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner).block();
+        subdir1.setPermissions(pathPermissions, null, subowner).block();
+        file1.setPermissions(pathPermissions, null, subowner).block();
+        file2.setPermissions(pathPermissions, null, subowner).block();
+        subdir2.setPermissions(pathPermissions, null, subowner).block();
+        file3.setPermissions(pathPermissions, null, subowner).block();
 
         // Create file4 without assigning subowner permissions
         DataLakeFileAsyncClient file4 = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName)
@@ -1231,7 +1068,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void setACLRecursiveContinueOnFailure() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -1252,13 +1089,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String subowner = testResourceNamer.randomUuid();
         RolePermissions rp = RolePermissions.parseSymbolic("rwx", false);
         PathPermissions pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp);
-        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
-            .then(subdir1.setPermissions(pathPermissions, null, subowner))
-            .then(file1.setPermissions(pathPermissions, null, subowner))
-            .then(file2.setPermissions(pathPermissions, null, subowner))
-            .then(subdir2.setPermissions(pathPermissions, null, subowner))
-            .then(file3.setPermissions(pathPermissions, null, subowner))
-            .block();
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner).block();
+        subdir1.setPermissions(pathPermissions, null, subowner).block();
+        file1.setPermissions(pathPermissions, null, subowner).block();
+        file2.setPermissions(pathPermissions, null, subowner).block();
+        subdir2.setPermissions(pathPermissions, null, subowner).block();
+        file3.setPermissions(pathPermissions, null, subowner).block();
 
         // Create resources as super user (using shared key)
         DataLakeFileAsyncClient file4 = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName)
@@ -1298,7 +1134,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void setACLRecursiveContinueOnFailureBatchFailures() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -1319,13 +1155,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String subowner = testResourceNamer.randomUuid();
         RolePermissions rp = RolePermissions.parseSymbolic("rwx", false);
         PathPermissions pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp);
-        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
-            .then(subdir1.setPermissions(pathPermissions, null, subowner))
-            .then(file1.setPermissions(pathPermissions, null, subowner))
-            .then(file2.setPermissions(pathPermissions, null, subowner))
-            .then(subdir2.setPermissions(pathPermissions, null, subowner))
-            .then(file3.setPermissions(pathPermissions, null, subowner))
-            .block();
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner).block();
+        subdir1.setPermissions(pathPermissions, null, subowner).block();
+        file1.setPermissions(pathPermissions, null, subowner).block();
+        file2.setPermissions(pathPermissions, null, subowner).block();
+        subdir2.setPermissions(pathPermissions, null, subowner).block();
+        file3.setPermissions(pathPermissions, null, subowner).block();
 
         // Create resources as super user (using shared key)
         dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
@@ -1361,7 +1196,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void setACLRecursiveContinueOnFailureBatchesResume() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -1382,24 +1217,22 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String subowner = testResourceNamer.randomUuid();
         RolePermissions rp = RolePermissions.parseSymbolic("rwx", false);
         PathPermissions pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp);
-        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
-            .then(subdir1.setPermissions(pathPermissions, null, subowner))
-            .then(file1.setPermissions(pathPermissions, null, subowner))
-            .then(file2.setPermissions(pathPermissions, null, subowner))
-            .then(subdir2.setPermissions(pathPermissions, null, subowner))
-            .then(file3.setPermissions(pathPermissions, null, subowner))
-            .block();
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner).block();
+        subdir1.setPermissions(pathPermissions, null, subowner).block();
+        file1.setPermissions(pathPermissions, null, subowner).block();
+        file2.setPermissions(pathPermissions, null, subowner).block();
+        subdir2.setPermissions(pathPermissions, null, subowner).block();
+        file3.setPermissions(pathPermissions, null, subowner).block();
 
         // Create resources as super user (using shared key)
         dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-            .createFile(generatePathName())
-        .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-            .createFile(generatePathName()))
-        .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-            .createFile(generatePathName()))
-        .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-            .createSubdirectory(generatePathName()))
-        .block();
+            .createFile(generatePathName()).block();
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
+            .createFile(generatePathName()).block();
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
+            .createFile(generatePathName()).block();
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
+            .createSubdirectory(generatePathName()).block();
 
         // Create more files as app
         DataLakeFileAsyncClient file7 = subdir1.createFile(generatePathName()).block();
@@ -1408,11 +1241,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         DataLakeFileAsyncClient file9 = subdir4.createFile(generatePathName()).block();
 
         // Only allow subowner rights to the directory and it's subpaths
-        file7.setPermissions(pathPermissions, null, subowner)
-            .then(file8.setPermissions(pathPermissions, null, subowner))
-            .then(subdir4.setPermissions(pathPermissions, null, subowner))
-            .then(file9.setPermissions(pathPermissions, null, subowner))
-            .block();
+        file7.setPermissions(pathPermissions, null, subowner).block();
+        file8.setPermissions(pathPermissions, null, subowner).block();
+        subdir4.setPermissions(pathPermissions, null, subowner).block();
+        file9.setPermissions(pathPermissions, null, subowner).block();
 
         // Create a user delegation sas that delegates an owner when creating files
         DataLakeDirectoryAsyncClient subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner);
@@ -1442,24 +1274,26 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void setACLRecursiveError() {
-        Mono<Response<AccessControlChangeResult>> response = dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
-            .setAccessControlList(EXECUTE_ONLY_ACCESS_CONTROL_ENTRIES, null, null)
-            .then(getOAuthServiceAsyncClient()
-                .getFileSystemAsyncClient(dataLakeFileSystemAsyncClient.getFileSystemName())
-                .getDirectoryAsyncClient(generatePathName())
-                .setAccessControlRecursiveWithResponse(new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES)));
+        dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
+            .setAccessControlList(EXECUTE_ONLY_ACCESS_CONTROL_ENTRIES, null, null).block();
 
-        StepVerifier.create(response)
+        DataLakeDirectoryAsyncClient topDirOauthClient = getOAuthServiceAsyncClient()
+            .getFileSystemAsyncClient(dataLakeFileSystemAsyncClient.getFileSystemName())
+            .getDirectoryAsyncClient(generatePathName());
+
+        StepVerifier.create(topDirOauthClient.setAccessControlRecursiveWithResponse(
+                new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES)))
             .verifyErrorSatisfies(r -> {
                 DataLakeAclChangeFailedException e = assertInstanceOf(DataLakeAclChangeFailedException.class, r);
                 assertInstanceOf(DataLakeStorageException.class, e.getCause());
             });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @ParameterizedTest
     @MethodSource("setACLRecursiveErrorSupplier")
     public void setACLRecursiveErrorMiddleOfBatches(Throwable error) {
+        setupStandardRecursiveAclTest();
         PathSetAccessControlRecursiveOptions options =
             new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2);
 
@@ -1469,7 +1303,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
         dc = getDirectoryAsyncClient(getDataLakeCredential(), dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy);
 
-        StepVerifier.create(setupStandardRecursiveAclTest().then(dc.setAccessControlRecursiveWithResponse(options)))
+        StepVerifier.create(dc.setAccessControlRecursiveWithResponse(options))
             .verifyErrorSatisfies(r -> {
                 DataLakeAclChangeFailedException e = assertInstanceOf(DataLakeAclChangeFailedException.class, r);
                 assertEquals(error.getClass(), e.getCause().getClass());
@@ -1482,10 +1316,11 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                 getStubResponse(500, new HttpRequest(HttpMethod.PUT, "https://www.fake.com")), null));
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void updateACLRecursive() {
-        StepVerifier.create(setupStandardRecursiveAclTest().then(dc.updateAccessControlRecursive(PATH_ACCESS_CONTROL_ENTRIES)))
+        setupStandardRecursiveAclTest();
+        StepVerifier.create(dc.updateAccessControlRecursive(PATH_ACCESS_CONTROL_ENTRIES))
             .assertNext(r -> {
                 assertEquals(3L, r.getCounters().getChangedDirectoriesCount()); // Including the top level
                 assertEquals(4L, r.getCounters().getChangedFilesCount());
@@ -1495,13 +1330,15 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void updateACLRecursiveBatches() {
+        setupStandardRecursiveAclTest();
         PathUpdateAccessControlRecursiveOptions options =
             new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2);
 
-        StepVerifier.create(setupStandardRecursiveAclTest().then(dc.updateAccessControlRecursiveWithResponse(options)))
+
+        StepVerifier.create(dc.updateAccessControlRecursiveWithResponse(options))
             .assertNext(r -> {
                 assertEquals(3L, r.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
                 assertEquals(4L, r.getValue().getCounters().getChangedFilesCount());
@@ -1512,42 +1349,40 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void updateACLRecursiveBatchesResume() {
+        setupStandardRecursiveAclTest();
         PathUpdateAccessControlRecursiveOptions options =
             new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2).setMaxBatches(1);
 
-        Mono<Tuple2<Response<AccessControlChangeResult>, Response<AccessControlChangeResult>>> response = setupStandardRecursiveAclTest()
-            .then(dc.updateAccessControlRecursiveWithResponse(options))
-                .flatMap(r -> {
-                    options.setMaxBatches(null).setContinuationToken(r.getValue().getContinuationToken());
-                    return Mono.zip(Mono.just(r), dc.updateAccessControlRecursiveWithResponse(options));
-                });
+        AccessControlChangeResult r = dc.updateAccessControlRecursiveWithResponse(options).block().getValue();
 
-        StepVerifier.create(response)
+        options.setMaxBatches(null).setContinuationToken(r.getContinuationToken());
+        StepVerifier.create(dc.updateAccessControlRecursiveWithResponse(options))
             .assertNext(r2 -> {
-                assertEquals(3L, r2.getT1().getValue().getCounters().getChangedDirectoriesCount()
-                    + r2.getT2().getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
-                assertEquals(4L, r2.getT1().getValue().getCounters().getChangedFilesCount()
-                    + r2.getT2().getValue().getCounters().getChangedFilesCount());
-                assertEquals(0L, r2.getT1().getValue().getCounters().getFailedChangesCount()
-                    + r2.getT2().getValue().getCounters().getFailedChangesCount());
-                assertNull(r2.getT2().getValue().getContinuationToken());
-                assertNull(r2.getT1().getValue().getBatchFailures());
+                assertEquals(3L, r.getCounters().getChangedDirectoriesCount()
+                    + r2.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
+                assertEquals(4L, r.getCounters().getChangedFilesCount()
+                    + r2.getValue().getCounters().getChangedFilesCount());
+                assertEquals(0L, r.getCounters().getFailedChangesCount()
+                    + r2.getValue().getCounters().getFailedChangesCount());
+                assertNull(r2.getValue().getContinuationToken());
+                assertNull(r.getBatchFailures());
             })
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void updateACLRecursiveBatchesProgress() {
+        setupStandardRecursiveAclTest();
         DirectoryApiTests.InMemoryAccessControlRecursiveChangeProgress progress =
             new DirectoryApiTests.InMemoryAccessControlRecursiveChangeProgress();
         PathUpdateAccessControlRecursiveOptions options = new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES)
             .setBatchSize(2).setProgressHandler(progress);
 
-        StepVerifier.create(setupStandardRecursiveAclTest().then(dc.updateAccessControlRecursiveWithResponse(options)))
+        StepVerifier.create(dc.updateAccessControlRecursiveWithResponse(options))
             .assertNext(r -> {
                 assertEquals(3L, r.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
                 assertEquals(4L, r.getValue().getCounters().getChangedFilesCount());
@@ -1576,36 +1411,38 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             + progress.cumulativeCounters.get(3).getChangedDirectoriesCount());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void updateACLRecursiveBatchesFollowToken() {
-        AtomicLong failedChanges = new AtomicLong();
-        AtomicLong directoriesChanged = new AtomicLong();
-        AtomicLong filesChanged = new AtomicLong();
-        AtomicInteger iterations = new AtomicInteger();
-
+        setupStandardRecursiveAclTest();
         PathUpdateAccessControlRecursiveOptions options = new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES)
             .setBatchSize(2).setMaxBatches(2);
 
-        Mono<Void> step = dc.updateAccessControlRecursiveWithResponse(options)
-            .expand(response -> {
-                AccessControlChangeResult result = response.getValue();
-                failedChanges.addAndGet(result.getCounters().getFailedChangesCount());
-                directoriesChanged.addAndGet(result.getCounters().getChangedDirectoriesCount());
-                filesChanged.addAndGet(result.getCounters().getChangedFilesCount());
-                iterations.incrementAndGet();
+        String continuation = "null";
+        int failedChanges = 0;
+        int directoriesChanged = 0;
+        int filesChanged = 0;
+        int iterations = 0;
+        while (!CoreUtils.isNullOrEmpty(continuation) && iterations < 10) {
+            if (iterations == 0) {
+                continuation = null; // do while not supported in Groovy
+            }
+            options.setContinuationToken(continuation);
+            AccessControlChangeResult result = dc.updateAccessControlRecursiveWithResponse(options).block().getValue();
+            failedChanges += result.getCounters().getFailedChangesCount();
+            directoriesChanged += result.getCounters().getChangedDirectoriesCount();
+            filesChanged += result.getCounters().getChangedFilesCount();
+            iterations++;
+            continuation = result.getContinuationToken();
+        }
 
-                return CoreUtils.isNullOrEmpty(result.getContinuationToken()) || iterations.get() >= 10
-                    ? Mono.empty()
-                    : dc.updateAccessControlRecursiveWithResponse(options.setContinuationToken(result.getContinuationToken()));
-            })
-            .then();
-
-        StepVerifier.create(setupStandardRecursiveAclTest().then(step))
-            .verifyComplete();
+        assertEquals(0, failedChanges);
+        assertEquals(3, directoriesChanged); // Including the top level
+        assertEquals(4, filesChanged);
+        assertEquals(2, iterations);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void updateACLRecursiveProgressWithFailure() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -1626,12 +1463,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String subowner = testResourceNamer.randomUuid();
         RolePermissions rp = RolePermissions.parseSymbolic("rwx", false);
         PathPermissions pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp);
-        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
-            .then(subdir1.setPermissions(pathPermissions, null, subowner))
-            .then(file1.setPermissions(pathPermissions, null, subowner))
-            .then(file2.setPermissions(pathPermissions, null, subowner))
-            .then(subdir2.setPermissions(pathPermissions, null, subowner))
-            .then(file3.setPermissions(pathPermissions, null, subowner)).block();
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner).block();
+        subdir1.setPermissions(pathPermissions, null, subowner).block();
+        file1.setPermissions(pathPermissions, null, subowner).block();
+        file2.setPermissions(pathPermissions, null, subowner).block();
+        subdir2.setPermissions(pathPermissions, null, subowner).block();
+        file3.setPermissions(pathPermissions, null, subowner).block();
 
         // Create file4 as super user (using shared key)
         DataLakeFileAsyncClient file4 = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName)
@@ -1658,7 +1495,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         assertNotNull(progress.failures.get(0).getErrorMessage());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void updateACLRecursiveContinueOnFailure() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -1679,12 +1516,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String subowner = testResourceNamer.randomUuid();
         RolePermissions rp = RolePermissions.parseSymbolic("rwx", false);
         PathPermissions pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp);
-        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
-            .then(subdir1.setPermissions(pathPermissions, null, subowner))
-            .then(file1.setPermissions(pathPermissions, null, subowner))
-            .then(file2.setPermissions(pathPermissions, null, subowner))
-            .then(subdir2.setPermissions(pathPermissions, null, subowner))
-            .then(file3.setPermissions(pathPermissions, null, subowner)).block();
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner).block();
+        subdir1.setPermissions(pathPermissions, null, subowner).block();
+        file1.setPermissions(pathPermissions, null, subowner).block();
+        file2.setPermissions(pathPermissions, null, subowner).block();
+        subdir2.setPermissions(pathPermissions, null, subowner).block();
+        file3.setPermissions(pathPermissions, null, subowner).block();
 
         // Create resources as super user (using shared key)
         DataLakeFileAsyncClient file4 = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName)
@@ -1723,7 +1560,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void updateACLRecursiveContinueOnFailureBatchFailures() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -1744,23 +1581,22 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String subowner = testResourceNamer.randomUuid();
         RolePermissions rp = RolePermissions.parseSymbolic("rwx", false);
         PathPermissions pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp);
-        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
-            .then(subdir1.setPermissions(pathPermissions, null, subowner))
-            .then(file1.setPermissions(pathPermissions, null, subowner))
-            .then(file2.setPermissions(pathPermissions, null, subowner))
-            .then(subdir2.setPermissions(pathPermissions, null, subowner))
-            .then(file3.setPermissions(pathPermissions, null, subowner)).block();
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner).block();
+        subdir1.setPermissions(pathPermissions, null, subowner).block();
+        file1.setPermissions(pathPermissions, null, subowner).block();
+        file2.setPermissions(pathPermissions, null, subowner).block();
+        subdir2.setPermissions(pathPermissions, null, subowner).block();
+        file3.setPermissions(pathPermissions, null, subowner).block();
 
         // Create resources as super user (using shared key)
         dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-            .createFile(generatePathName())
-            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-                .createFile(generatePathName()))
-            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-                .createFile(generatePathName()))
-            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-                .createSubdirectory(generatePathName()))
-            .block();
+            .createFile(generatePathName()).block();
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
+            .createFile(generatePathName()).block();
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
+            .createFile(generatePathName()).block();
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
+            .createSubdirectory(generatePathName()).block();
 
         // Create a user delegation sas that delegates an owner when creating files
         DataLakeDirectoryAsyncClient subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner);
@@ -1786,7 +1622,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void updateACLRecursiveContinueOnFailureBatchesResume() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -1807,23 +1643,22 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String subowner = testResourceNamer.randomUuid();
         RolePermissions rp = RolePermissions.parseSymbolic("rwx", false);
         PathPermissions pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp);
-        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
-            .then(subdir1.setPermissions(pathPermissions, null, subowner))
-            .then(file1.setPermissions(pathPermissions, null, subowner))
-            .then(file2.setPermissions(pathPermissions, null, subowner))
-            .then(subdir2.setPermissions(pathPermissions, null, subowner))
-            .then(file3.setPermissions(pathPermissions, null, subowner)).block();
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner).block();
+        subdir1.setPermissions(pathPermissions, null, subowner).block();
+        file1.setPermissions(pathPermissions, null, subowner).block();
+        file2.setPermissions(pathPermissions, null, subowner).block();
+        subdir2.setPermissions(pathPermissions, null, subowner).block();
+        file3.setPermissions(pathPermissions, null, subowner).block();
 
         // Create resources as super user (using shared key)
         dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-            .createFile(generatePathName())
-            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-                .createFile(generatePathName()))
-            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-                .createFile(generatePathName()))
-            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-                .createSubdirectory(generatePathName()))
-            .block();
+            .createFile(generatePathName()).block();
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
+            .createFile(generatePathName()).block();
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
+            .createFile(generatePathName()).block();
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
+            .createSubdirectory(generatePathName()).block();
 
         // Create more files as app
         DataLakeFileAsyncClient file7 = subdir1.createFile(generatePathName()).block();
@@ -1832,10 +1667,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         DataLakeFileAsyncClient file9 = subdir4.createFile(generatePathName()).block();
 
         // Only allow subowner rights to the directory and it's subpaths
-        file7.setPermissions(pathPermissions, null, subowner)
-            .then(file8.setPermissions(pathPermissions, null, subowner))
-            .then(subdir4.setPermissions(pathPermissions, null, subowner))
-            .then(file9.setPermissions(pathPermissions, null, subowner)).block();
+        file7.setPermissions(pathPermissions, null, subowner).block();
+        file8.setPermissions(pathPermissions, null, subowner).block();
+        subdir4.setPermissions(pathPermissions, null, subowner).block();
+        file9.setPermissions(pathPermissions, null, subowner).block();
 
         PathUpdateAccessControlRecursiveOptions options = new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES)
             .setBatchSize(2).setContinueOnFailure(true).setMaxBatches(1);
@@ -1864,24 +1699,25 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void updateACLRecursiveError() {
-        Mono<Response<AccessControlChangeResult>> response = dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
-            .setAccessControlList(EXECUTE_ONLY_ACCESS_CONTROL_ENTRIES, null, null)
-            .then(getOAuthServiceAsyncClient()
-                .getFileSystemAsyncClient(dataLakeFileSystemAsyncClient.getFileSystemName())
-                .getDirectoryAsyncClient(generatePathName())
-                .updateAccessControlRecursiveWithResponse(new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES)));
+        dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
+            .setAccessControlList(EXECUTE_ONLY_ACCESS_CONTROL_ENTRIES, null, null).block();
+        DataLakeDirectoryAsyncClient topDirOauthClient = getOAuthServiceAsyncClient()
+            .getFileSystemAsyncClient(dataLakeFileSystemAsyncClient.getFileSystemName())
+            .getDirectoryAsyncClient(generatePathName());
 
-        StepVerifier.create(response)
+        StepVerifier.create(topDirOauthClient.updateAccessControlRecursiveWithResponse(
+            new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES)))
             .verifyErrorSatisfies(r -> {
                 DataLakeAclChangeFailedException e = assertInstanceOf(DataLakeAclChangeFailedException.class, r);
                 assertInstanceOf(DataLakeStorageException.class, e.getCause());
             });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @ParameterizedTest
     @MethodSource("setACLRecursiveErrorSupplier")
     public void updateACLRecursiveErrorMiddleOfBatches(Throwable error) {
+        setupStandardRecursiveAclTest();
         PathUpdateAccessControlRecursiveOptions options =
             new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2);
 
@@ -1890,17 +1726,18 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process();
         dc = getDirectoryAsyncClient(getDataLakeCredential(), dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy);
 
-        StepVerifier.create(setupStandardRecursiveAclTest().then(dc.updateAccessControlRecursiveWithResponse(options)))
+        StepVerifier.create(dc.updateAccessControlRecursiveWithResponse(options))
             .verifyErrorSatisfies(r -> {
                 DataLakeAclChangeFailedException e = assertInstanceOf(DataLakeAclChangeFailedException.class, r);
                 assertEquals(error.getClass(), e.getCause().getClass());
             });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void removeACLRecursive() {
-        StepVerifier.create(setupStandardRecursiveAclTest().then(dc.removeAccessControlRecursive(REMOVE_ACCESS_CONTROL_ENTRIES)))
+        setupStandardRecursiveAclTest();
+        StepVerifier.create(dc.removeAccessControlRecursive(REMOVE_ACCESS_CONTROL_ENTRIES))
             .assertNext(r -> {
                 assertEquals(3L, r.getCounters().getChangedDirectoriesCount()); // Including the top level
                 assertEquals(4L, r.getCounters().getChangedFilesCount());
@@ -1909,13 +1746,14 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void removeACLRecursiveBatches() {
+        setupStandardRecursiveAclTest();
         PathRemoveAccessControlRecursiveOptions options =
             new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES).setBatchSize(2);
 
-        StepVerifier.create(setupStandardRecursiveAclTest().then(dc.removeAccessControlRecursiveWithResponse(options)))
+        StepVerifier.create(dc.removeAccessControlRecursiveWithResponse(options))
             .assertNext(r -> {
                 assertEquals(3L, r.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
                 assertEquals(4L, r.getValue().getCounters().getChangedFilesCount());
@@ -1926,42 +1764,40 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void removeACLRecursiveBatchesResume() {
+        setupStandardRecursiveAclTest();
         PathRemoveAccessControlRecursiveOptions options = new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES)
             .setBatchSize(2).setMaxBatches(1);
 
-        Mono<Tuple2<Response<AccessControlChangeResult>, Response<AccessControlChangeResult>>> response = setupStandardRecursiveAclTest()
-            .then(dc.removeAccessControlRecursiveWithResponse(options))
-                .flatMap(r -> {
-                    options.setMaxBatches(null).setContinuationToken(r.getValue().getContinuationToken());
-                    return Mono.zip(Mono.just(r), dc.removeAccessControlRecursiveWithResponse(options));
-                });
+        AccessControlChangeResult r = dc.removeAccessControlRecursiveWithResponse(options).block().getValue();
 
-        StepVerifier.create(response)
+        options.setMaxBatches(null).setContinuationToken(r.getContinuationToken());
+        StepVerifier.create(dc.removeAccessControlRecursiveWithResponse(options))
             .assertNext(r2 -> {
-                assertEquals(3L, r2.getT1().getValue().getCounters().getChangedDirectoriesCount()
-                    + r2.getT2().getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
-                assertEquals(4L, r2.getT1().getValue().getCounters().getChangedFilesCount()
-                    + r2.getT2().getValue().getCounters().getChangedFilesCount());
-                assertEquals(0L, r2.getT1().getValue().getCounters().getFailedChangesCount()
-                    + r2.getT2().getValue().getCounters().getFailedChangesCount());
-                assertNull(r2.getT2().getValue().getContinuationToken());
-                assertNull(r2.getT1().getValue().getBatchFailures());
+                assertEquals(3L, r.getCounters().getChangedDirectoriesCount()
+                    + r2.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
+                assertEquals(4L, r.getCounters().getChangedFilesCount()
+                    + r2.getValue().getCounters().getChangedFilesCount());
+                assertEquals(0L, r.getCounters().getFailedChangesCount()
+                    + r2.getValue().getCounters().getFailedChangesCount());
+                assertNull(r2.getValue().getContinuationToken());
+                assertNull(r.getBatchFailures());
             })
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void removeACLRecursiveBatchesProgress() {
+        setupStandardRecursiveAclTest();
         DirectoryApiTests.InMemoryAccessControlRecursiveChangeProgress progress =
             new DirectoryApiTests.InMemoryAccessControlRecursiveChangeProgress();
         PathRemoveAccessControlRecursiveOptions options = new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES)
             .setBatchSize(2).setProgressHandler(progress);
 
-        StepVerifier.create(setupStandardRecursiveAclTest().then(dc.removeAccessControlRecursiveWithResponse(options)))
+        StepVerifier.create(dc.removeAccessControlRecursiveWithResponse(options))
             .assertNext(r -> {
                 assertEquals(3L, r.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
                 assertEquals(4L, r.getValue().getCounters().getChangedFilesCount());
@@ -1990,42 +1826,38 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             + progress.cumulativeCounters.get(3).getChangedDirectoriesCount());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void removeACLRecursiveBatchesFollowToken() {
-
-        AtomicLong failedChanges = new AtomicLong();
-        AtomicLong directoriesChanged = new AtomicLong();
-        AtomicLong filesChanged = new AtomicLong();
-        AtomicInteger iterations = new AtomicInteger();
-
+        setupStandardRecursiveAclTest();
         PathRemoveAccessControlRecursiveOptions options =
             new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES).setBatchSize(2).setMaxBatches(2);
 
-        Mono<Void> step = dc.removeAccessControlRecursiveWithResponse(options)
-            .expand(response -> {
-                AccessControlChangeResult result = response.getValue();
-                failedChanges.addAndGet(result.getCounters().getFailedChangesCount());
-                directoriesChanged.addAndGet(result.getCounters().getChangedDirectoriesCount());
-                filesChanged.addAndGet(result.getCounters().getChangedFilesCount());
-                iterations.incrementAndGet();
+        String continuation = "null";
+        int failedChanges = 0;
+        int directoriesChanged = 0;
+        int filesChanged = 0;
+        int iterations = 0;
+        while (!CoreUtils.isNullOrEmpty(continuation) && iterations < 10) {
+            if (iterations == 0) {
+                continuation = null; // do while not supported in Groovy
+            }
+            options.setContinuationToken(continuation);
+            AccessControlChangeResult result = dc.removeAccessControlRecursiveWithResponse(options).block().getValue();
+            failedChanges += result.getCounters().getFailedChangesCount();
+            directoriesChanged += result.getCounters().getChangedDirectoriesCount();
+            filesChanged += result.getCounters().getChangedFilesCount();
+            iterations++;
+            continuation = result.getContinuationToken();
+        }
 
-                return CoreUtils.isNullOrEmpty(result.getContinuationToken()) || iterations.get() >= 10
-                    ? Mono.empty()
-                    : dc.removeAccessControlRecursiveWithResponse(options.setContinuationToken(result.getContinuationToken()));
-            })
-            .then();
-
-        StepVerifier.create(setupStandardRecursiveAclTest().then(step))
-            .verifyComplete();
-
-        assertEquals(0, failedChanges.get());
-        assertEquals(3, directoriesChanged.get()); // Including the top level
-        assertEquals(4, filesChanged.get());
-        assertEquals(2, iterations.get());
+        assertEquals(0, failedChanges);
+        assertEquals(3, directoriesChanged); // Including the top level
+        assertEquals(4, filesChanged);
+        assertEquals(2, iterations);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void removeACLRecursiveProgressWithFailure() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -2046,12 +1878,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String subowner = testResourceNamer.randomUuid();
         RolePermissions rp = RolePermissions.parseSymbolic("rwx", false);
         PathPermissions pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp);
-        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
-            .then(subdir1.setPermissions(pathPermissions, null, subowner))
-            .then(file1.setPermissions(pathPermissions, null, subowner))
-            .then(file2.setPermissions(pathPermissions, null, subowner))
-            .then(subdir2.setPermissions(pathPermissions, null, subowner))
-            .then(file3.setPermissions(pathPermissions, null, subowner)).block();
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner).block();
+        subdir1.setPermissions(pathPermissions, null, subowner).block();
+        file1.setPermissions(pathPermissions, null, subowner).block();
+        file2.setPermissions(pathPermissions, null, subowner).block();
+        subdir2.setPermissions(pathPermissions, null, subowner).block();
+        file3.setPermissions(pathPermissions, null, subowner).block();
 
         // Create file4 without assigning subowner permissions
         DataLakeFileAsyncClient file4 = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName)
@@ -2079,7 +1911,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         assertNotNull(progress.failures.get(0).getErrorMessage());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void removeACLRecursiveContinueOnFailure() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -2100,12 +1932,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String subowner = testResourceNamer.randomUuid();
         RolePermissions rp = RolePermissions.parseSymbolic("rwx", false);
         PathPermissions pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp);
-        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
-            .then(subdir1.setPermissions(pathPermissions, null, subowner))
-            .then(file1.setPermissions(pathPermissions, null, subowner))
-            .then(file2.setPermissions(pathPermissions, null, subowner))
-            .then(subdir2.setPermissions(pathPermissions, null, subowner))
-            .then(file3.setPermissions(pathPermissions, null, subowner)).block();
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner).block();
+        subdir1.setPermissions(pathPermissions, null, subowner).block();
+        file1.setPermissions(pathPermissions, null, subowner).block();
+        file2.setPermissions(pathPermissions, null, subowner).block();
+        subdir2.setPermissions(pathPermissions, null, subowner).block();
+        file3.setPermissions(pathPermissions, null, subowner).block();
 
         // Create resources as super user (using shared key)
         DataLakeFileAsyncClient file4 = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName)
@@ -2143,7 +1975,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void removeACLRecursiveContinueOnFailureBatchFailures() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -2164,23 +1996,22 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String subowner = testResourceNamer.randomUuid();
         RolePermissions rp = RolePermissions.parseSymbolic("rwx", false);
         PathPermissions pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp);
-        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
-            .then(subdir1.setPermissions(pathPermissions, null, subowner))
-            .then(file1.setPermissions(pathPermissions, null, subowner))
-            .then(file2.setPermissions(pathPermissions, null, subowner))
-            .then(subdir2.setPermissions(pathPermissions, null, subowner))
-            .then(file3.setPermissions(pathPermissions, null, subowner)).block();
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner).block();
+        subdir1.setPermissions(pathPermissions, null, subowner).block();
+        file1.setPermissions(pathPermissions, null, subowner).block();
+        file2.setPermissions(pathPermissions, null, subowner).block();
+        subdir2.setPermissions(pathPermissions, null, subowner).block();
+        file3.setPermissions(pathPermissions, null, subowner).block();
 
         // Create resources as super user (using shared key)
         dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-            .createFile(generatePathName())
-            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-                .createFile(generatePathName()))
-            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-                .createFile(generatePathName()))
-            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-                .createSubdirectory(generatePathName()))
-            .block();
+            .createFile(generatePathName()).block();
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
+            .createFile(generatePathName()).block();
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
+            .createFile(generatePathName()).block();
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
+            .createSubdirectory(generatePathName()).block();
 
         // Create a user delegation sas that delegates an owner when creating files
         DataLakeDirectoryAsyncClient subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner);
@@ -2207,7 +2038,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void removeACLRecursiveContinueOnFailureBatchesResume() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -2228,23 +2059,22 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String subowner = testResourceNamer.randomUuid();
         RolePermissions rp = RolePermissions.parseSymbolic("rwx", false);
         PathPermissions pathPermissions = new PathPermissions().setGroup(rp).setOther(rp).setOwner(rp);
-        topDirOauthClient.setPermissions(pathPermissions, null, subowner)
-            .then(subdir1.setPermissions(pathPermissions, null, subowner))
-            .then(file1.setPermissions(pathPermissions, null, subowner))
-            .then(file2.setPermissions(pathPermissions, null, subowner))
-            .then(subdir2.setPermissions(pathPermissions, null, subowner))
-            .then(file3.setPermissions(pathPermissions, null, subowner)).block();
+        topDirOauthClient.setPermissions(pathPermissions, null, subowner).block();
+        subdir1.setPermissions(pathPermissions, null, subowner).block();
+        file1.setPermissions(pathPermissions, null, subowner).block();
+        file2.setPermissions(pathPermissions, null, subowner).block();
+        subdir2.setPermissions(pathPermissions, null, subowner).block();
+        file3.setPermissions(pathPermissions, null, subowner).block();
 
         // Create resources as super user (using shared key)
         dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-            .createFile(generatePathName())
-            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-                .createFile(generatePathName()))
-            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-                .createFile(generatePathName()))
-            .then(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
-                .createSubdirectory(generatePathName()))
-            .block();
+            .createFile(generatePathName()).block();
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
+            .createFile(generatePathName()).block();
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
+            .createFile(generatePathName()).block();
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(topDirName).getSubdirectoryAsyncClient(subdir2.getObjectName())
+            .createSubdirectory(generatePathName()).block();
 
         // Create more files as app
         DataLakeFileAsyncClient file7 = subdir1.createFile(generatePathName()).block();
@@ -2253,10 +2083,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         DataLakeFileAsyncClient file9 = subdir4.createFile(generatePathName()).block();
 
         // Only allow subowner rights to the directory and it's subpaths
-        file7.setPermissions(pathPermissions, null, subowner)
-            .then(file8.setPermissions(pathPermissions, null, subowner))
-            .then(subdir4.setPermissions(pathPermissions, null, subowner))
-            .then(file9.setPermissions(pathPermissions, null, subowner)).block();
+        file7.setPermissions(pathPermissions, null, subowner).block();
+        file8.setPermissions(pathPermissions, null, subowner).block();
+        subdir4.setPermissions(pathPermissions, null, subowner).block();
+        file9.setPermissions(pathPermissions, null, subowner).block();
 
         PathRemoveAccessControlRecursiveOptions options =
             new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES)
@@ -2288,24 +2118,25 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void removeACLRecursiveError() {
-        Mono<Response<AccessControlChangeResult>> response = dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
-            .setAccessControlList(EXECUTE_ONLY_ACCESS_CONTROL_ENTRIES, null, null)
-            .then(getOAuthServiceAsyncClient()
-                .getFileSystemAsyncClient(dataLakeFileSystemAsyncClient.getFileSystemName())
-                .getDirectoryAsyncClient(generatePathName())
-                .removeAccessControlRecursiveWithResponse(new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES)));
+        dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
+            .setAccessControlList(EXECUTE_ONLY_ACCESS_CONTROL_ENTRIES, null, null).block();
+        DataLakeDirectoryAsyncClient topDirOauthClient = getOAuthServiceAsyncClient()
+            .getFileSystemAsyncClient(dataLakeFileSystemAsyncClient.getFileSystemName())
+            .getDirectoryAsyncClient(generatePathName());
 
-        StepVerifier.create(response)
+        StepVerifier.create(topDirOauthClient.removeAccessControlRecursiveWithResponse(
+            new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES)))
             .verifyErrorSatisfies(r -> {
                 DataLakeAclChangeFailedException e = assertInstanceOf(DataLakeAclChangeFailedException.class, r);
                 assertInstanceOf(DataLakeStorageException.class, e.getCause());
             });
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @ParameterizedTest
     @MethodSource("setACLRecursiveErrorSupplier")
     public void removeACLRecursiveErrorMiddleOfBatches(Throwable error) {
+        setupStandardRecursiveAclTest();
         PathRemoveAccessControlRecursiveOptions options =
             new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES).setBatchSize(2);
 
@@ -2314,21 +2145,20 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process();
         dc = getDirectoryAsyncClient(getDataLakeCredential(), dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy);
 
-        StepVerifier.create(setupStandardRecursiveAclTest().then(dc.removeAccessControlRecursiveWithResponse(options)))
+        StepVerifier.create(dc.removeAccessControlRecursiveWithResponse(options))
             .verifyErrorSatisfies(r -> {
                 DataLakeAclChangeFailedException e = assertInstanceOf(DataLakeAclChangeFailedException.class, r);
                 assertEquals(error.getClass(), e.getCause().getClass());
             });
     }
 
-    private Mono<DataLakeFileAsyncClient> setupStandardRecursiveAclTest() {
-        Mono<DataLakeFileAsyncClient> setup = dc.createSubdirectory(generatePathName())
-            .flatMap(r -> r.createFile(generatePathName()).then(r.createFile(generatePathName())))
-            .then(dc.createSubdirectory(generatePathName()))
-            .flatMap(r -> r.createFile(generatePathName()))
-            .then(dc.createFile(generatePathName()));
-
-        return setup;
+    private void setupStandardRecursiveAclTest() {
+        DataLakeDirectoryAsyncClient subdir1 = dc.createSubdirectory(generatePathName()).block();
+        subdir1.createFile(generatePathName()).block();
+        subdir1.createFile(generatePathName()).block();
+        DataLakeDirectoryAsyncClient subdir2 = dc.createSubdirectory(generatePathName()).block();
+        subdir2.createFile(generatePathName()).block();
+        dc.createFile(generatePathName()).block();
     }
 
     // set recursive acl error, with response
@@ -2361,27 +2191,15 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void getAccessControlAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                    String leaseID) {
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+            .setIfMatch(setupPathMatchCondition(dc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        Mono<Response<PathAccessControl>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.getAccessControlWithResponse(false, drc);
-            });
-
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(dc.getAccessControlWithResponse(false, drc),
+            200);
     }
 
     @ParameterizedTest
@@ -2392,22 +2210,15 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             return; // known issue - remove when resolved.
         }
 
-        Mono<Response<PathAccessControl>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.getAccessControlWithResponse(false, drc);
-            });
+        setupPathLeaseCondition(dc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+        StepVerifier.create(dc.getAccessControlWithResponse(false, drc))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -2423,7 +2234,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                 null))
             .assertNext(r -> {
                 DataLakeDirectoryAsyncClient renamedClient = r.getValue();
-                assertDoesNotThrow(() -> renamedClient.getProperties());
+                assertDoesNotThrow(renamedClient::getProperties);
             })
             .verifyComplete();
 
@@ -2433,13 +2244,13 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void renameFilesystemWithResponse() {
-        Mono<Response<DataLakeDirectoryAsyncClient>> response = primaryDataLakeServiceAsyncClient.createFileSystem(generateFileSystemName())
-            .flatMap(r -> dc.renameWithResponse(r.getFileSystemName(), generatePathName(), null, null));
-
-        StepVerifier.create(response)
+        DataLakeFileSystemAsyncClient newFileSystem =
+            primaryDataLakeServiceAsyncClient.createFileSystem(generateFileSystemName()).block();
+        StepVerifier.create(dc.renameWithResponse(newFileSystem.getFileSystemName(),
+            generatePathName(), null, null))
             .assertNext(r -> {
                 DataLakeDirectoryAsyncClient renamedClient = r.getValue();
-                assertDoesNotThrow(() -> renamedClient.getProperties());
+                assertDoesNotThrow(renamedClient::getProperties);
             })
             .verifyComplete();
 
@@ -2459,50 +2270,30 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void renameSourceAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                String leaseID) {
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+            .setIfMatch(setupPathMatchCondition(dc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        Mono<Response<DataLakeDirectoryAsyncClient>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.renameWithResponse(null, generatePathName(), drc, null);
-            });
-
-        assertAsyncResponseStatusCode(response, 201);
+        assertAsyncResponseStatusCode(dc.renameWithResponse(null, generatePathName(), drc,
+            null), 201);
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void renameSourceACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                    String leaseID) {
+        setupPathLeaseCondition(dc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        Mono<Response<DataLakeDirectoryAsyncClient>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.renameWithResponse(null, generatePathName(), drc, null);
-            });
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.renameWithResponse(null, generatePathName(), drc, null))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -2511,27 +2302,16 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void renameDestAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
         String pathName = generatePathName();
-        Mono<Response<DataLakeDirectoryAsyncClient>> response = dataLakeFileSystemAsyncClient.createDirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
-            .flatMap(setupTuple -> {
-                String newLease = setupTuple.getT1();
-                String newMatch = setupTuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.renameWithResponse(null, pathName, null, drc);
-            });
+        DataLakeDirectoryAsyncClient destDir = dataLakeFileSystemAsyncClient.createDirectory(pathName).block();
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(destDir, leaseID))
+            .setIfMatch(setupPathMatchCondition(destDir, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(response, 201);
+        assertAsyncResponseStatusCode(dc.renameWithResponse(null, pathName, null, drc),
+            201);
     }
 
     @ParameterizedTest
@@ -2539,23 +2319,16 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void renameDestACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
         String pathName = generatePathName();
-        Mono<Response<DataLakeDirectoryAsyncClient>> response = dataLakeFileSystemAsyncClient.createDirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.renameWithResponse(null, pathName, null, drc);
-            });
+        DataLakeDirectoryAsyncClient destDir = dataLakeFileSystemAsyncClient.createDirectory(pathName).block();
+        setupPathLeaseCondition(destDir, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(destDir, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+        StepVerifier.create(dc.renameWithResponse(null, pathName, null, drc))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -2624,7 +2397,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             200);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-06-12")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200612ServiceVersion")
     @Test
     public void getPropertiesOwnerGroupPermissions() {
         StepVerifier.create(dc.getPropertiesWithResponse(null))
@@ -2640,54 +2413,28 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void getPropertiesAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                 String leaseID) {
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+            .setIfMatch(setupPathMatchCondition(dc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        Mono<Response<PathProperties>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.getPropertiesWithResponse(drc);
-            });
-
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(dc.getPropertiesWithResponse(drc), 200);
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void getPropertiesACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                     String leaseID) {
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        Mono<Response<PathProperties>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
-            .flatMap(tuple -> {
-                String newLeaseID = tuple.getT1();
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newLeaseID)) {
-                    newLeaseID = null;
-                }
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLeaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.getPropertiesWithResponse(drc);
-            });
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.getPropertiesWithResponse(drc))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -2712,20 +2459,17 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void setHTTPHeadersMin() {
-        Mono<Void> response = dc.getProperties()
-            .flatMap(r -> {
-                PathHttpHeaders headers = new PathHttpHeaders()
-                    .setContentEncoding(r.getContentEncoding())
-                    .setContentDisposition(r.getContentDisposition())
-                    .setContentType("type")
-                    .setCacheControl(r.getCacheControl())
-                    .setContentLanguage(r.getContentLanguage());
-                return dc.setHttpHeaders(headers);
-            });
+        PathProperties properties = dc.getProperties().block();
+        PathHttpHeaders headers = new PathHttpHeaders()
+            .setContentEncoding(properties.getContentEncoding())
+            .setContentDisposition(properties.getContentDisposition())
+            .setContentType("type")
+            .setCacheControl(properties.getCacheControl())
+            .setContentLanguage(properties.getContentLanguage());
 
-        StepVerifier.create(Mono.when(response).then(dc.getProperties()))
-            .assertNext(r -> assertEquals("type", r.getContentType()))
-            .verifyComplete();
+        dc.setHttpHeaders(headers).block();
+
+        assertEquals("type", dc.getProperties().block().getContentType());
     }
 
     @ParameterizedTest
@@ -2741,10 +2485,8 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setContentMd5(contentMD5)
             .setContentType(contentType);
 
-        Mono<Response<PathProperties>> response = dc.setHttpHeaders(putHeaders)
-            .then(dc.getPropertiesWithResponse(null));
-
-        StepVerifier.create(response)
+        dc.setHttpHeaders(putHeaders).block();
+        StepVerifier.create(dc.getPropertiesWithResponse(null))
             .assertNext(r -> {
                 validatePathProperties(r, cacheControl, contentDisposition,
                     contentEncoding, contentLanguage, contentMD5, contentType);
@@ -2756,49 +2498,29 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setHttpHeadersAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.setHttpHeadersWithResponse(null, drc);
-            });
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+            .setIfMatch(setupPathMatchCondition(dc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(dc.setHttpHeadersWithResponse(null, drc), 200);
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void setHttpHeadersACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String leaseID) {
+        setupPathLeaseCondition(dc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.setHttpHeadersWithResponse(null, drc);
-            });
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.setHttpHeadersWithResponse(null, drc))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -2819,19 +2541,15 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
 
         // Directories have an is directory metadata param by default
-        StepVerifier.create(dc.getProperties())
-            .assertNext(r -> assertEquals(1, r.getMetadata().size()))
-            .verifyComplete();
+        assertEquals(1, dc.getProperties().block().getMetadata().size());
     }
 
     @Test
     public void setMetadataMin() {
         Map<String, String> metadata = Collections.singletonMap("foo", "bar");
+        dc.setMetadata(metadata).block();
 
-        Mono<PathProperties> response = dc.setMetadata(metadata)
-            .then(dc.getProperties());
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.getProperties())
             .assertNext(r -> {
                 for (String k : metadata.keySet()) {
                     assertTrue(r.getMetadata().containsKey(k));
@@ -2868,48 +2586,29 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setMetadataAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                               String leaseID) {
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.setMetadataWithResponse(null, drc);
-            });
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+            .setIfMatch(setupPathMatchCondition(dc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(dc.setMetadataWithResponse(null, drc), 200);
     }
 
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void setMetadataACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                   String leaseID) {
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.setMetadataWithResponse(null, drc);
-            });
+        setupPathLeaseCondition(dc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+        StepVerifier.create(dc.setMetadataWithResponse(null, drc))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -2921,28 +2620,19 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void createFileMin() {
-        StepVerifier.create(dc.createFile(generatePathName()))
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
+        assertDoesNotThrow(() -> dc.createFile(generatePathName()).block());
     }
 
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void createFileOverwrite(boolean overwrite) {
         String pathName = generatePathName();
+        dc.createFile(pathName).block();
 
         if (overwrite) {
-            Mono<DataLakeFileAsyncClient> response = dc.createFile(pathName)
-                .then(dc.createFile(pathName, true));
-
-            StepVerifier.create(response)
-                .assertNext(Assertions::assertNotNull)
-                .verifyComplete();
+            assertDoesNotThrow(() -> dc.createFile(pathName, true).block());
         } else {
-            Mono<DataLakeFileAsyncClient> response = dc.createFile(pathName)
-                .then(dc.createFile(pathName, false));
-
-            StepVerifier.create(response)
+            StepVerifier.create(dc.createFile(pathName, false))
                 .verifyError(DataLakeStorageException.class);
         }
     }
@@ -2998,27 +2688,16 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void createFileAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
         String pathName = generatePathName();
-        Mono<Response<DataLakeFileAsyncClient>> response = dc.createFile(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
-            .flatMap(setupTuple -> {
-                String newLease = setupTuple.getT1();
-                String newMatch = setupTuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.createFileWithResponse(pathName, null, null, null, null, drc);
-            });
+        DataLakeFileAsyncClient client = dc.createFile(pathName).block();
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(client, leaseID))
+            .setIfMatch(setupPathMatchCondition(client, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(response, 201);
+        assertAsyncResponseStatusCode(dc.createFileWithResponse(pathName, null, null, null,
+            null, drc), 201);
     }
 
     @ParameterizedTest
@@ -3026,23 +2705,16 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void createFileACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
         String pathName = generatePathName();
-        Mono<Response<DataLakeFileAsyncClient>> response = dc.createFile(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.createFileWithResponse(pathName, null, null, null, null, drc);
-            });
+        DataLakeFileAsyncClient client = dc.createFile(pathName).block();
+        setupPathLeaseCondition(client, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+        StepVerifier.create(dc.createFileWithResponse(pathName, null, null, null, null, drc))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -3114,17 +2786,13 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         }
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setMetadata(metadata);
 
-        Mono<Boolean> response1 = dc.createFileIfNotExistsWithResponse(generatePathName(), options)
-            .flatMap(r -> r.getValue().exists());
+        DataLakeFileAsyncClient client = dc.createFileIfNotExistsWithResponse(generatePathName(), options).block().getValue();
 
-        Mono<PathProperties> response2 = dc.createFileIfNotExistsWithResponse(generatePathName(), options)
-            .flatMap(r -> r.getValue().getProperties());
-
-        StepVerifier.create(response1)
+        StepVerifier.create(client.exists())
             .expectNext(true)
             .verifyComplete();
 
-        StepVerifier.create(response2)
+        StepVerifier.create(client.getProperties())
             .assertNext(r -> assertEquals(metadata, r.getMetadata()))
             .verifyComplete();
     }
@@ -3141,22 +2809,18 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @Test
     public void deleteFileMin() {
         String pathName = generatePathName();
+        dc.createFile(pathName).block();
 
-        Mono<Response<Void>> response = dc.createFile(pathName)
-            .then(dc.deleteFileWithResponse(pathName, null));
-
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(dc.deleteFileWithResponse(pathName, null), 200);
     }
 
     @Test
     public void deleteFileFileDoesNotExistAnymore() {
         String pathName = generatePathName();
+        DataLakeFileAsyncClient client = dc.createFile(pathName).block();
+        dc.deleteFileWithResponse(pathName, null).block();
 
-        Mono<Response<PathProperties>> response = dc.createFile(pathName)
-            .flatMap(c -> dc.deleteFileWithResponse(pathName, null).map(r -> c))
-                .flatMap(c1 -> c1.getPropertiesWithResponse(null));
-
-        StepVerifier.create(response)
+        StepVerifier.create(client.getPropertiesWithResponse(null))
             .verifyErrorSatisfies(r -> {
                 DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
                 assertEquals(404, e.getResponse().getStatusCode());
@@ -3169,27 +2833,15 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void deleteFileAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
         String pathName = generatePathName();
-        Mono<Response<Void>> response = dc.createFile(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
-            .flatMap(setupTuple -> {
-                String newLease = setupTuple.getT1();
-                String newMatch = setupTuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.deleteFileWithResponse(pathName, drc);
-            });
+        DataLakeFileAsyncClient client = dc.createFile(pathName).block();
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(client, leaseID))
+            .setIfMatch(setupPathMatchCondition(client, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(dc.deleteFileWithResponse(pathName, drc), 200);
     }
 
     @ParameterizedTest
@@ -3197,34 +2849,25 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void deleteFileACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
         String pathName = generatePathName();
-        Mono<Response<Void>> response = dc.createFile(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.deleteFileWithResponse(pathName, drc);
-            });
+        DataLakeFileAsyncClient client = dc.createFile(pathName).block();
+        setupPathLeaseCondition(client, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+        StepVerifier.create(dc.deleteFileWithResponse(pathName, drc))
             .verifyError(DataLakeStorageException.class);
     }
 
     @Test
     public void deleteIfExistsFile() {
         String pathName = generatePathName();
+        dc.createFile(pathName).block();
 
-        Mono<Boolean> response = dc.createFile(pathName)
-            .then(dc.deleteFileIfExists(pathName));
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.deleteFileIfExists(pathName))
             .expectNext(true)
             .verifyComplete();
     }
@@ -3232,44 +2875,31 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @Test
     public void deleteIfExistsFileMin() {
         String pathName = generatePathName();
+        dc.createFile(pathName).block();
 
-        Mono<Response<Boolean>> response = dc.createFile(pathName)
-            .then(dc.deleteFileIfExistsWithResponse(pathName, null));
-
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(dc.deleteFileIfExistsWithResponse(pathName, null), 200);
     }
 
     @Test
     public void deleteIfExistsFileFileDoesNotExistAnymore() {
         String pathName = generatePathName();
+        DataLakeFileAsyncClient client = dc.createFile(pathName).block();
 
-        Mono<Boolean> response = dc.createFile(pathName)
-            .flatMap(client -> dc.deleteFileIfExistsWithResponse(pathName, null)
-                .map(r -> {
-                    assertEquals(200, r.getStatusCode());
-                    return client;
-                }))
-            .flatMap(c -> c.exists());
+        assertAsyncResponseStatusCode(dc.deleteFileIfExistsWithResponse(pathName, null), 200);
 
-        StepVerifier.create(response)
+        StepVerifier.create(client.exists())
             .expectNext(false)
             .verifyComplete();
-
     }
 
     @Test
     public void deleteIfExistsFileFileThatWasAlreadyDeleted() {
         String pathName = generatePathName();
+        DataLakeFileAsyncClient client = dc.createFile(pathName).block();
 
-        Mono<Boolean> response = dc.createFile(pathName)
-            .flatMap(client -> dc.deleteFileIfExistsWithResponse(pathName, null)
-                .map(r -> {
-                    assertEquals(200, r.getStatusCode());
-                    return client;
-                }))
-            .flatMap(c -> c.exists());
+        assertAsyncResponseStatusCode(dc.deleteFileIfExistsWithResponse(pathName, null), 200);
 
-        StepVerifier.create(response)
+        StepVerifier.create(client.exists())
             .expectNext(false)
             .verifyComplete();
 
@@ -3281,29 +2911,16 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void deleteIfExistsFileAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String leaseID) {
         String pathName = generatePathName();
+        DataLakeFileAsyncClient client = dc.createFile(pathName).block();
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(client, leaseID))
+            .setIfMatch(setupPathMatchCondition(client, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc);
 
-        Mono<Response<Boolean>> response = dc.createFile(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
-            .flatMap(setupTuple -> {
-                String newLease = setupTuple.getT1();
-                String newMatch = setupTuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc);
-                return dc.deleteFileIfExistsWithResponse(pathName, options);
-            });
-
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(dc.deleteFileIfExistsWithResponse(pathName, options), 200);
     }
 
     @ParameterizedTest
@@ -3311,50 +2928,35 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void deleteIfExistsFileACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
                                          String noneMatch, String leaseID) {
         String pathName = generatePathName();
-        Mono<Response<Boolean>> response = dc.createFile(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.deleteFileIfExistsWithResponse(pathName, new DataLakePathDeleteOptions().setRequestConditions(drc));
-            });
+        DataLakeFileAsyncClient client = dc.createFile(pathName).block();
+        setupPathLeaseCondition(client, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+        StepVerifier.create(dc.deleteFileIfExistsWithResponse(pathName,
+            new DataLakePathDeleteOptions().setRequestConditions(drc)))
             .verifyError(DataLakeStorageException.class);
     }
 
     @Test
     public void createSubDirMin() {
-        StepVerifier.create(dc.createSubdirectory(generatePathName()))
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
+        assertDoesNotThrow(() -> dc.createSubdirectory(generatePathName()).block());
     }
 
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void createSubDirOverwrite(boolean overwrite) {
         String pathName = generatePathName();
+        dc.createSubdirectory(pathName).block();
 
         if (overwrite) {
-            Mono<DataLakeDirectoryAsyncClient> response = dc.createSubdirectory(pathName)
-                .then(dc.createSubdirectory(pathName, true));
-
-            StepVerifier.create(response)
-                .assertNext(Assertions::assertNotNull)
-                .verifyComplete();
+            assertDoesNotThrow(() -> dc.createSubdirectory(pathName, true).block());
         } else {
-            Mono<DataLakeDirectoryAsyncClient> response = dc.createSubdirectory(pathName)
-                .then(dc.createSubdirectory(pathName, false));
-
-            StepVerifier.create(response)
+            StepVerifier.create(dc.createSubdirectory(pathName, false))
                 .verifyError(DataLakeStorageException.class);
         }
     }
@@ -3427,28 +3029,16 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void createSubDirAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                String leaseID) {
         String pathName = generatePathName();
-        Mono<Response<DataLakeDirectoryAsyncClient>> response = dc.createSubdirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
-            .flatMap(setupTuple -> {
-                String newLease = setupTuple.getT1();
-                String newMatch = setupTuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
+        DataLakeDirectoryAsyncClient client = dc.createSubdirectory(pathName).block();
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(client, leaseID))
+            .setIfMatch(setupPathMatchCondition(client, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-                return dc.createSubdirectoryWithResponse(pathName, null, null, null, null, drc);
-            });
-
-        assertAsyncResponseStatusCode(response, 201);
+        assertAsyncResponseStatusCode(dc.createSubdirectoryWithResponse(pathName, null, null, null,
+            null, drc), 201);
     }
 
     @ParameterizedTest
@@ -3456,23 +3046,17 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void createSubDirACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                    String leaseID) {
         String pathName = generatePathName();
-        Mono<Response<DataLakeDirectoryAsyncClient>> response = dc.createSubdirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.createSubdirectoryWithResponse(pathName, null, null, null, null, drc);
-            });
+        DataLakeDirectoryAsyncClient client = dc.createSubdirectory(pathName).block();
+        setupPathLeaseCondition(client, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+        StepVerifier.create(dc.createSubdirectoryWithResponse(pathName, null, null, null,
+                null, drc))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -3587,21 +3171,18 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @Test
     public void deleteSubDirMin() {
         String pathName = generatePathName();
+        dc.createSubdirectory(pathName).block();
 
-        Mono<Response<Void>> response = dc.createSubdirectory(pathName)
-            .then(dc.deleteSubdirectoryWithResponse(pathName, false, null));
-
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(dc.deleteSubdirectoryWithResponse(pathName, false, null),
+            200);
     }
 
     @Test
     public void deleteSubDirRecursive() {
         String pathName = generatePathName();
+        dc.createSubdirectory(pathName).block();
 
-        Mono<Response<Void>> response = dc.createSubdirectory(pathName)
-            .then(dc.deleteSubdirectoryWithResponse(pathName, true, null));
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.deleteSubdirectoryWithResponse(pathName, true, null))
             .assertNext(r -> assertEquals(200, r.getStatusCode()))
             .verifyComplete();
     }
@@ -3609,13 +3190,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @Test
     public void deleteSubDirDirDoesNotExistAnymore() {
         String pathName = generatePathName();
+        DataLakeDirectoryAsyncClient client = dc.createSubdirectory(pathName).block();
+        dc.deleteSubdirectoryWithResponse(pathName, false, null).block();
 
-        Mono<Response<PathProperties>> response = dc.createSubdirectory(pathName)
-            .flatMap(client -> dc.deleteSubdirectoryWithResponse(pathName, false, null)
-                .map(ignore -> client))
-            .flatMap(c -> c.getPropertiesWithResponse(null));
-
-        StepVerifier.create(response)
+        StepVerifier.create(client.getPropertiesWithResponse(null))
             .verifyErrorSatisfies(r -> {
                 DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
                 assertEquals(404, e.getResponse().getStatusCode());
@@ -3628,28 +3206,15 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void deleteSubDirAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                String leaseID) {
         String pathName = generatePathName();
-        Mono<Response<Void>> response = dc.createSubdirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
-            .flatMap(setupTuple -> {
-                String newLease = setupTuple.getT1();
-                String newMatch = setupTuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
+        DataLakeDirectoryAsyncClient client = dc.createSubdirectory(pathName).block();
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(client, leaseID))
+            .setIfMatch(setupPathMatchCondition(client, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-                return dc.deleteSubdirectoryWithResponse(pathName, false, drc);
-            });
-
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(dc.deleteSubdirectoryWithResponse(pathName, false, drc), 200);
     }
 
     @ParameterizedTest
@@ -3657,34 +3222,25 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void deleteSubDirACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                    String leaseID) {
         String pathName = generatePathName();
-        Mono<Response<Void>> response = dc.createSubdirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                return dc.deleteSubdirectoryWithResponse(pathName, false, drc);
-            });
+        DataLakeDirectoryAsyncClient client = dc.createSubdirectory(pathName).block();
+        setupPathLeaseCondition(client, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(response)
+        StepVerifier.create(dc.deleteSubdirectoryWithResponse(pathName, false, drc))
             .verifyError(DataLakeStorageException.class);
     }
 
     @Test
     public void deleteIfExistsSubDir() {
         String pathName = generatePathName();
+        dc.createSubdirectoryIfNotExists(pathName).block();
 
-        Mono<Boolean> response = dc.createSubdirectoryIfNotExists(pathName)
-            .then(dc.deleteSubdirectoryIfExists(pathName));
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.deleteSubdirectoryIfExists(pathName))
             .expectNext(true)
             .verifyComplete();
     }
@@ -3692,42 +3248,33 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @Test
     public void deleteIfExistsSubDirMin() {
         String pathName = generatePathName();
+        dc.createSubdirectoryIfNotExists(pathName).block();
 
         //cannot run without setting recursive options?
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false);
 
-        Mono<Response<Boolean>> response = dc.createSubdirectoryIfNotExists(pathName)
-            .then(dc.deleteSubdirectoryIfExistsWithResponse(pathName, options));
-
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(dc.deleteSubdirectoryIfExistsWithResponse(pathName, options), 200);
     }
 
     @Test
     public void deleteIfExistsSubDirRecursive() {
         String pathName = generatePathName();
+        dc.createSubdirectory(pathName).block();
 
-        Mono<Response<Boolean>> response = dc.createSubdirectory(pathName)
-            .then(dc.deleteSubdirectoryIfExistsWithResponse(pathName, new DataLakePathDeleteOptions().setIsRecursive(true)));
-
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(dc.deleteSubdirectoryIfExistsWithResponse(pathName, new DataLakePathDeleteOptions()
+            .setIsRecursive(true)), 200);
     }
 
     @Test
     public void deleteIfExistsSubDirDirDoesNotExistAnymore() {
         String pathName = generatePathName();
+        DataLakeDirectoryAsyncClient client = dc.createSubdirectory(pathName).block();
 
-        Mono<Boolean> response = dc.createSubdirectory(pathName)
-            .flatMap(client -> {
-                DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false);
-                return dc.deleteSubdirectoryIfExistsWithResponse(pathName, options)
-                    .map(r -> {
-                        assertEquals(200, r.getStatusCode());
-                        return client;
-                    });
-            })
-            .flatMap(c -> c.exists());
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false);
 
-        StepVerifier.create(response)
+        assertAsyncResponseStatusCode(dc.deleteSubdirectoryIfExistsWithResponse(pathName, options), 200);
+
+        StepVerifier.create(client.exists())
             .expectNext(false)
             .verifyComplete();
     }
@@ -3737,30 +3284,17 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void deleteIfExistsSubDirAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
                                        String noneMatch, String leaseID) {
         String pathName = generatePathName();
-        Mono<Response<Boolean>> response = dc.createSubdirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
-            .flatMap(setupTuple -> {
-                String newLease = setupTuple.getT1();
-                String newMatch = setupTuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
-                    .setIsRecursive(false);
+        DataLakeDirectoryAsyncClient client = dc.createSubdirectory(pathName).block();
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(client, leaseID))
+            .setIfMatch(setupPathMatchCondition(client, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
+            .setIsRecursive(false);
 
-                return dc.deleteSubdirectoryIfExistsWithResponse(pathName, options);
-            });
-
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(dc.deleteSubdirectoryIfExistsWithResponse(pathName, options), 200);
     }
 
     @ParameterizedTest
@@ -3768,48 +3302,40 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void deleteIfExistsSubDirACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
                                            String noneMatch, String leaseID) {
         String pathName = generatePathName();
-        Mono<Response<Boolean>> response = dc.createSubdirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                DataLakeRequestConditions drc = new DataLakeRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified);
-                DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
-                    .setIsRecursive(false);
+        DataLakeDirectoryAsyncClient client = dc.createSubdirectory(pathName).block();
+        setupPathLeaseCondition(client, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
+            .setIsRecursive(false);
 
-                return dc.deleteSubdirectoryIfExistsWithResponse(pathName, options);
-            });
-
-        StepVerifier.create(response)
+        StepVerifier.create(dc.deleteSubdirectoryIfExistsWithResponse(pathName, options))
             .verifyError(DataLakeStorageException.class);
     }
 
     @ParameterizedTest
     @MethodSource("fileEncodingSupplier")
-    public void getDirectoryNameAndBuildClient(String originalDirectoryName) {
+    public void getDirectoryNameAndBuildClient(String originalDirectoryName, String finalDirectoryName) {
         DataLakeDirectoryAsyncClient client = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(originalDirectoryName);
 
         // Note : Here I use Path because there is a test that tests the use of a /
-        assertEquals(originalDirectoryName, client.getDirectoryPath());
+        assertEquals(finalDirectoryName, client.getDirectoryPath());
     }
 
     @ParameterizedTest
     @MethodSource("fileEncodingSupplier")
-    public void createDeleteSubDirectoryUrlEncoding(String originalDirectoryName) {
+    public void createDeleteSubDirectoryUrlEncoding(String originalDirectoryName, String finalDirectoryName) {
         String dirName = generatePathName();
         DataLakeDirectoryAsyncClient client = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dirName);
 
         StepVerifier.create(client.createSubdirectoryWithResponse(originalDirectoryName, null))
             .assertNext(r -> {
                 assertEquals(201, r.getStatusCode());
-                assertEquals(dirName + "/" + originalDirectoryName, r.getValue().getDirectoryPath());
+                assertEquals(dirName + "/" + finalDirectoryName, r.getValue().getDirectoryPath());
             })
             .verifyComplete();
 
@@ -3819,14 +3345,14 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     @ParameterizedTest
     @MethodSource("fileEncodingSupplier")
-    public void createDeleteFileUrlEncoding(String originalFileName) {
+    public void createDeleteFileUrlEncoding(String originalFileName, String finalFileName) {
         String fileName = generatePathName();
         DataLakeDirectoryAsyncClient client = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(fileName);
 
         StepVerifier.create(client.createFileWithResponse(originalFileName, null))
             .assertNext(r -> {
                 assertEquals(201, r.getStatusCode());
-                assertEquals(fileName + "/" + originalFileName, r.getValue().getFilePath());
+                assertEquals(fileName + "/" + finalFileName, r.getValue().getFilePath());
             })
             .verifyComplete();
 
@@ -3836,21 +3362,17 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     private static Stream<Arguments> fileEncodingSupplier() {
         return Stream.of(
-            Arguments.of("file"),
-            Arguments.of("test%test"),
-            Arguments.of("test%25test"),
-            Arguments.of("path%2Fto%5Da%20file"),
-            Arguments.of("path/to]a file"),
-            Arguments.of("斑點"),
-            Arguments.of("%E6%96%91%E9%BB%9E")
+            // originalName | finalName
+            Arguments.of("file", "file"),
+            Arguments.of("path/to]a file", "path/to]a file"),
+            Arguments.of("path%2Fto%5Da%20file", "path/to]a file"),
+            Arguments.of("斑點", "斑點"),
+            Arguments.of("%E6%96%91%E9%BB%9E", "斑點")
         );
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "dir/file"
-//        "dir%2Ffile" // no longer supported
-    })
+    @ValueSource(strings = {"dir/file", "dir%2Ffile"})
     public void createFileWithPathStructure(String pathName) {
         DataLakeFileAsyncClient fileClient = dataLakeFileSystemAsyncClient.createFile(pathName).block();
         // Check that service created underlying directory
@@ -3912,29 +3434,28 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         return ENVIRONMENT.getServiceVersion() != null;
     }
 
-    private Mono<DataLakeDirectoryAsyncClient> setupDirectoryForListing(DataLakeDirectoryAsyncClient client) {
-        return client.createSubdirectory("foo")
-            .flatMap(foo -> {
-                return foo.createSubdirectory("foo")
-                    .then(foo.createSubdirectory("bar"));
-            })
-            .then(client.createSubdirectory("bar"))
-            .then(client.createSubdirectory("baz"))
-                .flatMap(baz -> {
-                    return baz.createSubdirectory("foo")
-                        .flatMap(foo2 -> foo2.createSubdirectory("bar"))
-                    .then(baz.createSubdirectory("bar/foo"));
-                });
+    private void setupDirectoryForListing(DataLakeDirectoryAsyncClient client) {
+        // Create 3 subdirs
+        DataLakeDirectoryAsyncClient foo = client.createSubdirectory("foo").block();
+        client.createSubdirectory("bar").block();
+        DataLakeDirectoryAsyncClient baz = client.createSubdirectory("baz").block();
+
+        // Create subdirs for foo
+        foo.createSubdirectory("foo").block();
+        foo.createSubdirectory("bar").block();
+
+        // Creat subdirs for baz
+        baz.createSubdirectory("foo").block().createSubdirectory("bar").block();
+        baz.createSubdirectory("bar/foo").block();
     }
 
     @Test
     public void listPaths() {
         String dirName = generatePathName();
+        DataLakeDirectoryAsyncClient dir = dataLakeFileSystemAsyncClient.createDirectory(dirName).block();
+        setupDirectoryForListing(dir);
 
-        Flux<PathItem> response = dataLakeFileSystemAsyncClient.createDirectory(dirName)
-            .flatMapMany(dir -> setupDirectoryForListing(dir).thenMany(dir.listPaths()));
-
-        StepVerifier.create(response)
+        StepVerifier.create(dir.listPaths())
             .assertNext(r -> assertEquals(dirName + "/bar", r.getName()))
             .assertNext(r -> assertEquals(dirName + "/baz", r.getName()))
             .assertNext(r -> assertEquals(dirName + "/foo", r.getName()))
@@ -3944,12 +3465,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @Test
     public void listPathsRecursive() {
         String dirName = generatePathName();
+        DataLakeDirectoryAsyncClient dir = dataLakeFileSystemAsyncClient.createDirectory(dirName).block();
+        setupDirectoryForListing(dir);
 
-        Flux<PathItem> response = dataLakeFileSystemAsyncClient.createDirectory(dirName)
-            .flatMapMany(dir -> setupDirectoryForListing(dir)
-                .thenMany(dir.listPaths(true, false, null)));
-
-        StepVerifier.create(response)
+        StepVerifier.create(dir.listPaths(true, false, null))
             .assertNext(r -> assertEquals(dirName + "/bar", r.getName()))
             .assertNext(r -> assertEquals(dirName + "/baz", r.getName()))
             .assertNext(r -> assertEquals(dirName + "/baz/bar", r.getName()))
@@ -3965,12 +3484,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @Test
     public void listPathsUpn() {
         String dirName = generatePathName();
+        DataLakeDirectoryAsyncClient dir = dataLakeFileSystemAsyncClient.createDirectory(dirName).block();
+        setupDirectoryForListing(dir);
 
-        Flux<PathItem> response = dataLakeFileSystemAsyncClient.createDirectory(dirName)
-            .flatMapMany(dir -> setupDirectoryForListing(dir)
-                .thenMany(dir.listPaths(false, true, null)));
-
-        StepVerifier.create(response)
+        StepVerifier.create(dir.listPaths(false, true, null))
             .assertNext(r -> {
                 assertEquals(dirName + "/bar", r.getName());
                 assertNotNull(r.getGroup());
@@ -3985,12 +3502,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @Test
     public void listPathsMaxResults() {
         String dirName = generatePathName();
+        DataLakeDirectoryAsyncClient dir = dataLakeFileSystemAsyncClient.createDirectory(dirName).block();
+        setupDirectoryForListing(dir);
 
-        Flux<PagedResponse<PathItem>> response = dataLakeFileSystemAsyncClient.createDirectory(dirName)
-            .flatMapMany(dir -> setupDirectoryForListing(dir)
-                .thenMany(dir.listPaths(false, false, 2).byPage()));
-
-        StepVerifier.create(response)
+        StepVerifier.create(dir.listPaths(false, false, 2).byPage())
             .assertNext(r -> {
                 assertEquals(2, r.getValue().size());
                 assertEquals(dirName + "/bar", r.getValue().get(0).getName());
@@ -4002,11 +3517,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void listPathsMaxResultsByPage() {
-        Flux<PagedResponse<PathItem>> response = dataLakeFileSystemAsyncClient.createDirectory(generatePathName())
-            .flatMapMany(dir -> setupDirectoryForListing(dir)
-                .thenMany(dir.listPaths(false, false, null).byPage(2)));
+        DataLakeDirectoryAsyncClient dir = dataLakeFileSystemAsyncClient.createDirectory(generatePathName()).block();
+        setupDirectoryForListing(dir);
 
-        StepVerifier.create(response)
+        StepVerifier.create(dir.listPaths(false, false, null).byPage(2))
             .assertNext(r -> assertTrue(r.getValue().size() <= 2))
             .expectNextCount(1)
             .verifyComplete();
@@ -4028,10 +3542,11 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(resourcePrefix + dirName);
 
         DataLakeFileAsyncClient fileClient = dc.getFileAsyncClient(subResourcePrefix + subPath);
-        assertEquals(resourcePrefix + dirName + "/" + subResourcePrefix + subPath, fileClient.getFilePath());
+        assertEquals(Utility.urlDecode(resourcePrefix) + dirName + "/" + Utility.urlDecode(subResourcePrefix) + subPath,
+            fileClient.getFilePath());
 
         DataLakeDirectoryAsyncClient subDirectoryClient = dc.getSubdirectoryAsyncClient(subResourcePrefix + subPath);
-        assertEquals(resourcePrefix + dirName + "/" + subResourcePrefix + subPath,
+        assertEquals(Utility.urlDecode(resourcePrefix) + dirName + "/" + Utility.urlDecode(subResourcePrefix) + subPath,
             subDirectoryClient.getDirectoryPath());
     }
 
@@ -4039,8 +3554,9 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         return Stream.of(
             // resourcePrefix | subResourcePrefix
             Arguments.of("", ""),
-            Arguments.of("%", "%"), // Resource has special character
-            Arguments.of(Utility.urlEncode("%"), Utility.urlEncode("%")) // Sub resource has special character
+            Arguments.of("", Utility.urlEncode("%")), // Resource has special character
+            Arguments.of(Utility.urlEncode("%"), ""), // Sub resource has special character
+            Arguments.of(Utility.urlEncode("%"), Utility.urlEncode("%"))
         );
     }
 
@@ -4049,20 +3565,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String renamedName = generatePathName();
         dc = dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient();
         // Create file in root directory and rename
-        Mono<Object> response = dc.createFile(generatePathName())
-            .flatMap(file -> file.rename(null, renamedName))
-            .flatMap(renamedFile -> {
-                assertEquals(renamedName, renamedFile.getObjectPath());
-                return Mono.zip(renamedFile.getProperties(), renamedFile.setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER));
-            })
-            .flatMap(tuple -> {
-                assertEquals(tuple.getT1().getETag(), tuple.getT2().getETag());
-                return Mono.empty();
-            });
+        DataLakeFileAsyncClient renamedFile = dc.createFile(generatePathName()).block().rename(
+            null, renamedName).block();
 
-        StepVerifier.create(response)
-            .verifyComplete();
-
+        assertEquals(renamedName, renamedFile.getObjectPath());
+        assertEquals(renamedFile.getProperties().block().getETag(), renamedFile.setAccessControlList(
+            PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER).block().getETag());
     }
 
     @Test
@@ -4070,19 +3578,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String renamedName = generatePathName();
         dc = dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient();
         // Create dir in root directory and rename
-        Mono<Object> response = dc.createSubdirectory(generatePathName())
-            .flatMap(dir -> dir.rename(null, renamedName))
-            .flatMap(renamedDir -> {
-                assertEquals(renamedName, renamedDir.getObjectPath());
-                return Mono.zip(renamedDir.getProperties(), renamedDir.setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER));
-            })
-            .flatMap(tuple -> {
-                assertEquals(tuple.getT1().getETag(), tuple.getT2().getETag());
-                return Mono.empty();
-            });
+        DataLakeDirectoryAsyncClient renamedDir = dc.createSubdirectory(generatePathName()).block().rename(
+            null, renamedName).block();
 
-        StepVerifier.create(response)
-            .verifyComplete();
+        assertEquals(renamedName, renamedDir.getObjectPath());
+        assertEquals(renamedDir.getProperties().block().getETag(), renamedDir.setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES,
+            GROUP, OWNER).block().getETag());
     }
 
     @Test
@@ -4113,62 +3614,5 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         }
 
         fail("Expected a request to time out.");
-    }
-
-    @Test
-    public void defaultAudience() {
-        DataLakeDirectoryAsyncClient aadDirClient = getPathClientBuilderWithTokenCredential(
-            dataLakeFileSystemAsyncClient.getFileSystemUrl(), dc.getDirectoryPath())
-            .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
-            .audience(null) // should default to "https://storage.azure.com/"
-            .buildDirectoryAsyncClient();
-
-        StepVerifier.create(aadDirClient.exists())
-            .expectNext(true)
-            .verifyComplete();
-    }
-
-    @Test
-    public void storageAccountAudience() {
-        DataLakeDirectoryAsyncClient aadDirClient = getPathClientBuilderWithTokenCredential(
-            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
-            .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
-            .audience(DataLakeAudience.createDataLakeServiceAccountAudience(dataLakeFileSystemAsyncClient.getAccountName()))
-            .buildDirectoryAsyncClient();
-
-        StepVerifier.create(aadDirClient.exists())
-            .expectNext(true)
-            .verifyComplete();
-    }
-
-    @Test
-    public void audienceError() {
-        DataLakeDirectoryAsyncClient aadDirClient = getPathClientBuilderWithTokenCredential(
-            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
-            .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
-            .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
-            .buildDirectoryAsyncClient();
-
-        StepVerifier.create(aadDirClient.exists())
-            .verifyErrorSatisfies(r -> {
-                DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
-                assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
-            });
-    }
-
-    @Test
-    public void audienceFromString() {
-        String url = String.format("https://%s.blob.core.windows.net/", dataLakeFileSystemAsyncClient.getAccountName());
-        DataLakeAudience audience = DataLakeAudience.fromString(url);
-
-        DataLakeDirectoryAsyncClient aadDirClient = getPathClientBuilderWithTokenCredential(
-            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
-            .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
-            .audience(audience)
-            .buildDirectoryAsyncClient();
-
-        StepVerifier.create(aadDirClient.exists())
-            .expectNext(true)
-            .verifyComplete();
     }
 }

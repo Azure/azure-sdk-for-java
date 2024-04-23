@@ -18,7 +18,6 @@ public final class DataLakeFileInputStreamOptions {
     private DataLakeRequestConditions requestConditions;
     private Integer blockSize;
     private ConsistentReadControl consistentReadControl;
-    private Boolean userPrincipalName;
 
     /**
      * @return {@link FileRange}
@@ -85,22 +84,6 @@ public final class DataLakeFileInputStreamOptions {
      */
     public DataLakeFileInputStreamOptions setConsistentReadControl(ConsistentReadControl consistentReadControl) {
         this.consistentReadControl = consistentReadControl;
-        return this;
-    }
-
-    /**
-     * @return The value for the x-ms-upn header.
-     */
-    public Boolean isUserPrincipalName() {
-        return userPrincipalName;
-    }
-
-    /**
-     * @param userPrincipalName The value for the x-ms-upn header.
-     * @return The updated options.
-     */
-    public DataLakeFileInputStreamOptions setUserPrincipalName(Boolean userPrincipalName) {
-        this.userPrincipalName = userPrincipalName;
         return this;
     }
 }
