@@ -40,6 +40,7 @@ public class ConfigsTests {
 
     @Test(groups = { "unit" })
     public void getMetricsConfig() {
+        System.clearProperty("COSMOS.METRICS_CONFIG");
         CosmosMicrometerMetricsConfig metricsConfig = Configs.getMetricsConfig();
         assertThat(metricsConfig.getMetricCategories()).isEqualTo(MetricCategory.DEFAULT_CATEGORIES);
         assertThat(metricsConfig.getTagNames()).isEqualTo(TagName.DEFAULT_TAGS);
@@ -65,7 +66,7 @@ public class ConfigsTests {
             assertThat(metricsConfig.getApplyDiagnosticThresholdsForTransportLevelMeters()).isTrue();
             assertThat(metricsConfig.getSampleRate()).isEqualTo(0.5);
         } finally {
-            System.clearProperty("METRICS_CONFIG");
+            System.clearProperty("COSMOS.METRICS_CONFIG");
         }
     }
 }
