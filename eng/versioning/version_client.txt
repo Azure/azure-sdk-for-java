@@ -194,7 +194,7 @@ com.azure:azure-storage-blob-nio;12.0.0-beta.21;12.0.0-beta.22
 com.azure:azure-storage-common;12.24.3;12.24.4
 com.azure:azure-storage-file-share;12.21.3;12.21.4
 com.azure:azure-storage-file-datalake;12.18.3;12.19.0-beta.2
-com.azure:azure-storage-internal-avro;12.10.3;12.11.0-beta.2
+com.azure:azure-storage-internal-avro;12.10.3;12.10.4
 com.azure:azure-storage-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-storage-queue;12.20.3;12.20.4
 com.azure:azure-template-perf;1.0.0-beta.1;1.0.0-beta.1
