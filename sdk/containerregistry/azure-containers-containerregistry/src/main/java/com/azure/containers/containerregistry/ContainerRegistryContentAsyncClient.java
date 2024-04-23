@@ -61,41 +61,11 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * <p>This class provides a client that can upload, download, and delete artifacts in Azure Container Registry repository.
- * It uses docker v2 REST APIs supported by Azure Container Registry.</p>
+ * This class provides a client that exposes operations to push and pull images into container registry.
+ * It exposes methods that upload, download and delete artifacts from the registry i.e. images and manifests.
  *
- * <h2>Getting Started</h2>
+ * <p>View {@link ContainerRegistryContentClientBuilder this} for additional ways to construct the client.</p>
  *
- * <p>In order to interact with the Container Registry service you'll need to create an instance of
- * Container Registry Content Async Client.</p>
- *
- * <p>To create the client and communicate with the service, you'll need to use AAD authentication via
- * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable"> Azure Identity</a></p>.
- *
- * <p><strong>Sample: Construct Container Registry Content Async Client</strong></p>
- *
- * <p>The following code sample demonstrates the creation of a Container Registry Content Client.</p>
- *
- * <!-- src_embed readme-sample-createContentAsyncClient -->
- * <pre>
- * DefaultAzureCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
- * ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder&#40;&#41;
- *     .endpoint&#40;endpoint&#41;
- *     .credential&#40;credential&#41;
- *     .repositoryName&#40;repository&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end readme-sample-createContentAsyncClient -->
- *
- * <p><strong>Note:</strong> For synchronous sample, refer to
- * {@link com.azure.containers.containerregistry.ContainerRegistryContentClient}.</p>
- *
- * <p>View {@link ContainerRegistryContentClientBuilder} for additional ways to construct the client.</p>
- *
- * <p>Container Registry Content Async Client allows to upload and download registry artifacts. See methods below to
- * explore all capabilities this client provides.</p>
- *
- * @see com.azure.containers.containerregistry
  * @see ContainerRegistryContentClientBuilder
  */
 @ServiceClient(builder = ContainerRegistryContentClientBuilder.class, isAsync = true)
@@ -117,27 +87,27 @@ public final class ContainerRegistryContentAsyncClient {
     }
 
     /**
-     * Gets the current repository name.
+     * This method returns the registry's repository on which operations are being performed.
      *
-     * @return The repository name.
+     * @return The name of the repository
      */
     public String getRepositoryName() {
         return this.repositoryName;
     }
 
     /**
-     * Gets the Azure Container Registry service endpoint.
+     * This method returns the complete registry endpoint.
      *
-     * @return The service endpoint.
+     * @return The registry endpoint including the authority.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
     /**
-     * Upload the OCI manifest to the repository.
+     * Upload the Oci manifest to the repository.
      *
-     * <p><strong>Upload an OCI manifest</strong></p>
+     * <p><strong>Code Samples:</strong></p>
      *
      * <!-- src_embed com.azure.containers.containerregistry.setManifestAsync -->
      * <pre>
@@ -153,7 +123,7 @@ public final class ContainerRegistryContentAsyncClient {
      * @param manifest The {@link OciImageManifest} that needs to be uploaded.
      * @param tag Tag to apply on uploaded manifest. If {@code null} is passed, no tags will be applied.
      * @return upload result.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code manifest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -169,7 +139,7 @@ public final class ContainerRegistryContentAsyncClient {
     /**
      * Uploads a manifest to the repository.
      *
-     * <p><strong>Upload a manifest</strong></p>
+     * <p><strong>Code Samples:</strong></p>
      *
      * <!-- src_embed com.azure.containers.containerregistry.uploadCustomManifestAsync -->
      * <pre>
@@ -185,7 +155,7 @@ public final class ContainerRegistryContentAsyncClient {
      * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      * @param options The options for the upload manifest operation.
      * @return The rest response containing the upload result.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code data} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -200,7 +170,7 @@ public final class ContainerRegistryContentAsyncClient {
     /**
      * Uploads a blob to the repository.
      *
-     * <p><strong>Upload a blob from {@link BinaryData content}</strong></p>
+     * <p><strong>Code Samples:</strong></p>
      *
      * <!-- src_embed com.azure.containers.containerregistry.uploadBlobAsync -->
      * <pre>
@@ -213,8 +183,6 @@ public final class ContainerRegistryContentAsyncClient {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.uploadBlobAsync -->
      *
-     * <p><strong>Upload a blob from file</strong></p>
-     *
      * <!-- src_embed com.azure.containers.containerregistry.uploadFileAsync -->
      * <pre>
      * contentClient.uploadBlob&#40;BinaryData.fromFile&#40;Paths.get&#40;&quot;artifact.tar.gz&quot;&#41;, CHUNK_SIZE&#41;&#41;
@@ -223,8 +191,6 @@ public final class ContainerRegistryContentAsyncClient {
      *             uploadResult.getDigest&#40;&#41;, uploadResult.getSizeInBytes&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.containers.containerregistry.uploadFileAsync -->
-     *
-     * <p><strong>Error handling</strong></p>
      *
      * <!-- src_embed com.azure.containers.containerregistry.uploadBlobAsyncErrorHandling -->
      * <pre>
@@ -241,8 +207,9 @@ public final class ContainerRegistryContentAsyncClient {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.uploadBlobAsyncErrorHandling -->
      *
-     * <p><strong>Note:</strong></p>
-     *
+     * <p>
+     * Note:
+     * </p>
      * Content may be uploaded in chunks of up to 4MB size. Chunk size depends on the passed {@link BinaryData} content.
      * When {@link BinaryData} is created using {@link BinaryData#fromFlux(Flux, Long, boolean)}, it may be uploaded in
      * chunks matching individual {@link ByteBuffer} in the {@link Flux} and up to 4MB size.
@@ -251,7 +218,7 @@ public final class ContainerRegistryContentAsyncClient {
      *
      * @param content The blob content that needs to be uploaded.
      * @return The operation result.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code data} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -266,7 +233,7 @@ public final class ContainerRegistryContentAsyncClient {
     /**
      * Download the manifest identified by the given tag or digest.
      *
-     * <p><strong>Download manifest</strong></p>
+     * <p><strong>Code Samples:</strong></p>
      *
      * <!-- src_embed com.azure.containers.containerregistry.getManifestAsync -->
      * <pre>
@@ -288,7 +255,7 @@ public final class ContainerRegistryContentAsyncClient {
      *
      * @param tagOrDigest Manifest reference which can be tag or digest.
      * @return The manifest identified by the given tag or digest.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -299,7 +266,7 @@ public final class ContainerRegistryContentAsyncClient {
     /**
      * Download the manifest identified by the given tag or digest.
      *
-     * <p><strong>Download manifest</strong></p>
+     * <p><strong>Code Samples:</strong></p>
      *
      * <!-- src_embed com.azure.containers.containerregistry.getManifestWithResponseAsync -->
      * <pre>
@@ -320,7 +287,7 @@ public final class ContainerRegistryContentAsyncClient {
      *
      * @param tagOrDigest Manifest reference which can be tag or digest.
      * @return The response for the manifest identified by the given tag or digest.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -332,7 +299,7 @@ public final class ContainerRegistryContentAsyncClient {
      * Download the blob identified by the given digest.
      * Content is downloaded in chunks of 4MB size each.
      *
-     * <p><strong>Download blob to file</strong></p>
+     * <p><strong>Code Samples:</strong></p>
      *
      * Write content to synchronous channel, for example {@link java.nio.channels.FileChannel}:
      *
@@ -348,8 +315,6 @@ public final class ContainerRegistryContentAsyncClient {
      *     .block&#40;&#41;;
      * </pre>
      * <!-- end com.azure.containers.containerregistry.downloadStreamAsyncFile -->
-     *
-     * <p><strong>Download blob as a stream</strong></p>
      *
      * Write content to asynchronous byte channel, for example {@link java.nio.channels.AsynchronousSocketChannel}:
      *
@@ -368,7 +333,7 @@ public final class ContainerRegistryContentAsyncClient {
      *
      * @param digest The digest for the given image layer.
      * @return The image identified by the given digest.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code digest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -378,9 +343,9 @@ public final class ContainerRegistryContentAsyncClient {
     }
 
     /**
-     * Delete blob identified by the given digest
+     * Delete the image identified by the given digest
      *
-     * <p><strong>Delete artifact</strong></p>
+     * <p><strong>Code Samples:</strong></p>
      *
      * <!-- src_embed readme-sample-deleteBlobAsync -->
      * <pre>
@@ -392,7 +357,7 @@ public final class ContainerRegistryContentAsyncClient {
      *
      * @param digest The digest for the given image layer.
      * @return The completion signal.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code digest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -401,11 +366,11 @@ public final class ContainerRegistryContentAsyncClient {
     }
 
     /**
-     * Delete blob identified by the given digest
+     * Delete the image identified by the given digest
      *
      * @param digest The digest for the given image layer.
      * @return The REST response for the completion.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code digest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -416,7 +381,7 @@ public final class ContainerRegistryContentAsyncClient {
     /**
      * Delete the manifest identified by the given digest.
      *
-     * <p><strong>Delete manifest</strong></p>
+     * <p><strong>Code Samples:</strong></p>
      *
      * <!-- src_embed readme-sample-deleteManifestAsync -->
      * <pre>
@@ -428,7 +393,7 @@ public final class ContainerRegistryContentAsyncClient {
      *
      * @param digest The digest of the manifest.
      * @return The completion.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code digest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -441,7 +406,7 @@ public final class ContainerRegistryContentAsyncClient {
      *
      * @param digest The digest of the manifest.
      * @return The REST response for completion.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code digest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
