@@ -5,24 +5,22 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An object representing a single summary with context for given document. */
 @Fluent
-public final class AbstractiveSummary implements JsonSerializable<AbstractiveSummary> {
+public final class AbstractiveSummary {
     /*
      * The text of the summary.
      */
+    @JsonProperty(value = "text", required = true)
     private String text;
 
     /*
      * The context list of the summary.
      */
+    @JsonProperty(value = "contexts")
     private List<SummaryContext> contexts;
 
     /** Creates an instance of AbstractiveSummary class. */
@@ -66,45 +64,5 @@ public final class AbstractiveSummary implements JsonSerializable<AbstractiveSum
     public AbstractiveSummary setContexts(List<SummaryContext> contexts) {
         this.contexts = contexts;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeArrayField("contexts", this.contexts, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AbstractiveSummary from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AbstractiveSummary if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AbstractiveSummary.
-     */
-    public static AbstractiveSummary fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    AbstractiveSummary deserializedAbstractiveSummary = new AbstractiveSummary();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("text".equals(fieldName)) {
-                            deserializedAbstractiveSummary.text = reader.getString();
-                        } else if ("contexts".equals(fieldName)) {
-                            List<SummaryContext> contexts =
-                                    reader.readArray(reader1 -> SummaryContext.fromJson(reader1));
-                            deserializedAbstractiveSummary.contexts = contexts;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedAbstractiveSummary;
-                });
     }
 }
