@@ -5,7 +5,5 @@ package com.azure.storage.common.test.shared;
 
 public enum TestHttpClientType {
     NETTY,
-    OK_HTTP,
-    VERTX,
-    JDK_HTTP
+    OK_HTTP
 }
