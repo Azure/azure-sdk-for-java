@@ -38,7 +38,6 @@ import com.azure.storage.file.datalake.implementation.models.PathSetAccessContro
 import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlRecursiveHeaders;
 import com.azure.storage.file.datalake.implementation.models.SetAccessControlRecursiveResponse;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
-import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
@@ -63,7 +62,6 @@ import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
-import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -129,7 +127,7 @@ public class DataLakePathAsyncClient {
         CpkInfo customerProvidedKey, boolean isTokenCredentialAuthenticated) {
         this.accountName = accountName;
         this.fileSystemName = fileSystemName;
-        this.pathName = pathName;
+        this.pathName = Utility.urlDecode(pathName);
         this.pathResourceType = pathResourceType;
         this.blockBlobAsyncClient = blockBlobAsyncClient;
         this.sasToken = sasToken;
@@ -432,7 +430,7 @@ public class DataLakePathAsyncClient {
      * String umask = &quot;umask&quot;;
      * String owner = &quot;rwx&quot;;
      * String group = &quot;r--&quot;;
-     * String leaseId = CoreUtils.randomUuid&#40;&#41;.toString&#40;&#41;;
+     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
      * Integer duration = 15;
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
      *     .setPermissions&#40;permissions&#41;
@@ -881,31 +879,6 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.getProperties#PathGetPropertiesOptions -->
-     * <pre>
-     * PathGetPropertiesOptions options = new PathGetPropertiesOptions&#40;&#41;.setUserPrincipalName&#40;true&#41;;
-     *
-     * client.getProperties&#40;options&#41;.subscribe&#40;response -&gt;
-     *     System.out.printf&#40;&quot;Creation Time: %s, Size: %d%n&quot;, response.getCreationTime&#40;&#41;, response.getFileSize&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.getProperties#PathGetPropertiesOptions -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
-     *
-     * @param options {@link PathGetPropertiesOptions}
-     * @return A reactive response containing the resource's properties and metadata.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathProperties> getProperties(PathGetPropertiesOptions options) {
-        return getPropertiesUsingOptionsWithResponse(options).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Returns the resource's metadata and properties.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesWithResponse#DataLakeRequestConditions -->
      * <pre>
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
@@ -925,25 +898,6 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathProperties>> getPropertiesWithResponse(DataLakeRequestConditions requestConditions) {
         return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobRequestConditions(requestConditions))
-            .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
-            .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response)));
-    }
-
-    /**
-     * Returns the resource's metadata and properties.
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
-     *
-     * @param options {@link PathGetPropertiesOptions}
-     * @return A reactive response containing the resource's properties and metadata.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PathProperties>> getPropertiesUsingOptionsWithResponse(PathGetPropertiesOptions options) {
-        Context context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUserPrincipalName(), null);
-
-        return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobRequestConditions(options.getRequestConditions()))
-            .contextWrite(FluxUtil.toReactorContext(context))
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
             .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response)));
     }
@@ -1699,7 +1653,6 @@ public class DataLakePathAsyncClient {
         DataLakePathAsyncClient dataLakePathAsyncClient = getPathAsyncClient(destinationFileSystem, destinationPath);
 
         String renameSource = "/" + this.fileSystemName + "/" + Utility.urlEncode(pathName);
-        //String renameSource = "/" + this.fileSystemName + "/" + pathName;
 
         String signature = null;
         if (this.sasToken != null) {
@@ -1760,7 +1713,6 @@ public class DataLakePathAsyncClient {
         return new SpecializedBlobClientBuilder()
             .pipeline(getHttpPipeline())
             .endpoint(newBlobEndpoint)
-            .blobName(destinationPath)
             .serviceVersion(TransformUtils.toBlobServiceVersion(getServiceVersion()));
     }
 

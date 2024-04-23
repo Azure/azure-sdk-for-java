@@ -5,7 +5,6 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
@@ -88,7 +87,6 @@ import com.azure.storage.file.datalake.models.LeaseDurationType;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.LeaseStatusType;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
-import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathDeletedItem;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
@@ -114,7 +112,6 @@ import java.util.stream.Collectors;
 
 class Transforms {
 
-    private static final ClientLogger LOGGER = new ClientLogger(Transforms.class);
     private static final String SERIALIZATION_MESSAGE = String.format("'serialization' must be one of %s, %s, %s or "
             + "%s.", FileQueryJsonSerialization.class.getSimpleName(),
         FileQueryDelimitedSerialization.class.getSimpleName(), FileQueryArrowSerialization.class.getSimpleName(),
@@ -127,7 +124,6 @@ class Transforms {
     public static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
     public static final HttpHeaderName X_MS_PERMISSIONS = HttpHeaderName.fromString("x-ms-permissions");
     public static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
-    public static final HttpHeaderName X_MS_ACL = HttpHeaderName.fromString("x-ms-acl");
 
     static {
         // https://docs.oracle.com/javase/8/docs/api/java/util/Date.html#getTime--
@@ -340,10 +336,9 @@ class Transforms {
                 String owner = r.getHeaders().getValue(X_MS_OWNER);
                 String group = r.getHeaders().getValue(X_MS_GROUP);
                 String permissions = r.getHeaders().getValue(X_MS_PERMISSIONS);
-                String acl = r.getHeaders().getValue(X_MS_ACL);
 
                 return AccessorUtility.getPathPropertiesAccessor().setPathProperties(pathProperties,
-                    properties.getEncryptionScope(), encryptionContext, owner, group, permissions, acl);
+                    properties.getEncryptionScope(), encryptionContext, owner, group, permissions);
             }
         }
     }
@@ -386,43 +381,21 @@ class Transforms {
             parseDateOrNull(path.getLastModified()), path.getContentLength() == null ? 0 : path.getContentLength(),
             path.getGroup(), path.isDirectory() != null && path.isDirectory(), path.getName(), path.getOwner(),
             path.getPermissions(),
-            parseWindowsFileTimeOrDateString(path.getCreationTime()),
-            parseWindowsFileTimeOrDateString(path.getExpiryTime()));
+            path.getCreationTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getCreationTime())),
+            path.getExpiryTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getExpiryTime())));
 
         return AccessorUtility.getPathItemAccessor().setPathItemProperties(pathItem, path.getEncryptionScope(), path.getEncryptionContext());
     }
 
-    static OffsetDateTime parseWindowsFileTimeOrDateString(String date) {
-        if (date == null) {
-            return null;
-        }
-
-        try {
-            // First try to parse as a long (Windows file time)
-            return fromWindowsFileTimeOrNull(Long.parseLong(date));
-        } catch (Exception ex) {
-            if (ex instanceof NumberFormatException) {
-                // If parsing as a long fails, try to parse as a date string in the format DAYOFTHEWEEK, DD MMMM YYYY HH:MM:SS ZONE
-                return parseDateOrNull(date);
-            }
-            // Reaching here means we got a format from the service we did not expect
-            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to parse date string: " + date, ex));
-        }
-    }
-
     private static OffsetDateTime parseDateOrNull(String date) {
-        try {
-            return date == null ? null : OffsetDateTime.parse(date, DateTimeFormatter.RFC_1123_DATE_TIME);
-        } catch (Exception ex) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to parse date string: " + date, ex));
-        }
+        return date == null ? null : OffsetDateTime.parse(date, DateTimeFormatter.RFC_1123_DATE_TIME);
     }
 
     private static OffsetDateTime fromWindowsFileTimeOrNull(long fileTime) {
         if (fileTime == 0) {
             return null;
         }
-        long fileTimeMs = fileTime / 10000; // fileTime is given in 100ms intervals. Convert to ms
+        long fileTimeMs = fileTime / 10000; // fileTime is given in 100ns intervals. Convert to ms
         long fileTimeUnixEpoch = fileTimeMs - EPOCH_CONVERSION; // Remove difference between Unix and Windows FileTime epochs
 
         return Instant.ofEpochMilli(fileTimeUnixEpoch).atOffset(ZoneOffset.UTC);
@@ -455,11 +428,10 @@ class Transforms {
             return null;
         }
         return new FileReadAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(), r.getValue(),
-            Transforms.toPathReadHeaders(r.getDeserializedHeaders(), r.getHeaders().getValue(X_MS_ENCRYPTION_CONTEXT),
-            r.getHeaders().getValue(X_MS_ACL)));
+            Transforms.toPathReadHeaders(r.getDeserializedHeaders(), r.getHeaders().getValue(X_MS_ENCRYPTION_CONTEXT)));
     }
 
-    private static FileReadHeaders toPathReadHeaders(BlobDownloadHeaders h, String encryptionContext, String acl) {
+    private static FileReadHeaders toPathReadHeaders(BlobDownloadHeaders h, String encryptionContext) {
         if (h == null) {
             return null;
         }
@@ -495,8 +467,7 @@ class Transforms {
             .setContentCrc64(h.getContentCrc64())
             .setErrorCode(h.getErrorCode())
             .setCreationTime(h.getCreationTime())
-            .setEncryptionContext(encryptionContext)
-            .setAccessControlList(PathAccessControlEntry.parseList(acl));
+            .setEncryptionContext(encryptionContext);
     }
 
     static List<BlobSignedIdentifier> toBlobIdentifierList(List<DataLakeSignedIdentifier> identifiers) {

@@ -186,9 +186,6 @@ public class PathAccessControlEntry {
      * @return The ACL deserialized into a {@code java.util.List}
      */
     public static List<PathAccessControlEntry> parseList(String str) {
-        if (str == null) {
-            return null;
-        }
         String[] strs = str.split(",");
         List<PathAccessControlEntry> acl = new ArrayList<>(strs.length);
         for (String entry : strs) {
