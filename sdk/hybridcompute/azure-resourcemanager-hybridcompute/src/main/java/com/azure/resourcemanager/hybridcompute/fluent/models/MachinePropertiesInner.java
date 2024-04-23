@@ -9,6 +9,7 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.hybridcompute.models.AgentConfiguration;
 import com.azure.resourcemanager.hybridcompute.models.AgentUpgrade;
 import com.azure.resourcemanager.hybridcompute.models.CloudMetadata;
+import com.azure.resourcemanager.hybridcompute.models.LicenseProfileMachineInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
@@ -19,8 +20,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
-/** Describes the properties of a hybrid machine. */
+/**
+ * Describes the properties of a hybrid machine.
+ */
 @Fluent
 public final class MachinePropertiesInner {
     /*
@@ -60,10 +64,10 @@ public final class MachinePropertiesInner {
     private OSProfile osProfile;
 
     /*
-     * Specifies the ESU related properties for a machine.
+     * Specifies the License related properties for a machine.
      */
     @JsonProperty(value = "licenseProfile")
-    private LicenseProfileMachineInstanceViewInner licenseProfile;
+    private LicenseProfileMachineInstanceView licenseProfile;
 
     /*
      * The provisioning state, which only appears in the response.
@@ -99,7 +103,7 @@ public final class MachinePropertiesInner {
      * Specifies the hybrid machine unique ID.
      */
     @JsonProperty(value = "vmId")
-    private String vmId;
+    private UUID vmId;
 
     /*
      * Specifies the hybrid machine display name.
@@ -141,7 +145,7 @@ public final class MachinePropertiesInner {
      * Specifies the Arc Machine's unique SMBIOS ID
      */
     @JsonProperty(value = "vmUuid", access = JsonProperty.Access.WRITE_ONLY)
-    private String vmUuid;
+    private UUID vmUuid;
 
     /*
      * Machine Extensions information (deprecated field)
@@ -154,6 +158,12 @@ public final class MachinePropertiesInner {
      */
     @JsonProperty(value = "osSku", access = JsonProperty.Access.WRITE_ONLY)
     private String osSku;
+
+    /*
+     * The edition of the Operating System.
+     */
+    @JsonProperty(value = "osEdition", access = JsonProperty.Access.WRITE_ONLY)
+    private String osEdition;
 
     /*
      * Specifies the Windows domain name.
@@ -204,13 +214,15 @@ public final class MachinePropertiesInner {
     @JsonProperty(value = "networkProfile", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkProfileInner networkProfile;
 
-    /** Creates an instance of MachinePropertiesInner class. */
+    /**
+     * Creates an instance of MachinePropertiesInner class.
+     */
     public MachinePropertiesInner() {
     }
 
     /**
      * Get the locationData property: Metadata pertaining to the geographic location of the resource.
-     *
+     * 
      * @return the locationData value.
      */
     public LocationData locationData() {
@@ -219,7 +231,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Set the locationData property: Metadata pertaining to the geographic location of the resource.
-     *
+     * 
      * @param locationData the locationData value to set.
      * @return the MachinePropertiesInner object itself.
      */
@@ -231,7 +243,7 @@ public final class MachinePropertiesInner {
     /**
      * Get the agentConfiguration property: Configurable properties that the user can set locally via the azcmagent
      * config command, or remotely via ARM.
-     *
+     * 
      * @return the agentConfiguration value.
      */
     public AgentConfiguration agentConfiguration() {
@@ -240,7 +252,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the serviceStatuses property: Statuses of dependent services that are reported back to ARM.
-     *
+     * 
      * @return the serviceStatuses value.
      */
     public ServiceStatuses serviceStatuses() {
@@ -249,7 +261,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Set the serviceStatuses property: Statuses of dependent services that are reported back to ARM.
-     *
+     * 
      * @param serviceStatuses the serviceStatuses value to set.
      * @return the MachinePropertiesInner object itself.
      */
@@ -260,7 +272,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the cloudMetadata property: The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
-     *
+     * 
      * @return the cloudMetadata value.
      */
     public CloudMetadata cloudMetadata() {
@@ -269,7 +281,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Set the cloudMetadata property: The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
-     *
+     * 
      * @param cloudMetadata the cloudMetadata value to set.
      * @return the MachinePropertiesInner object itself.
      */
@@ -280,7 +292,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the agentUpgrade property: The info of the machine w.r.t Agent Upgrade.
-     *
+     * 
      * @return the agentUpgrade value.
      */
     public AgentUpgrade agentUpgrade() {
@@ -289,7 +301,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Set the agentUpgrade property: The info of the machine w.r.t Agent Upgrade.
-     *
+     * 
      * @param agentUpgrade the agentUpgrade value to set.
      * @return the MachinePropertiesInner object itself.
      */
@@ -300,7 +312,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the osProfile property: Specifies the operating system settings for the hybrid machine.
-     *
+     * 
      * @return the osProfile value.
      */
     public OSProfile osProfile() {
@@ -309,7 +321,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Set the osProfile property: Specifies the operating system settings for the hybrid machine.
-     *
+     * 
      * @param osProfile the osProfile value to set.
      * @return the MachinePropertiesInner object itself.
      */
@@ -319,28 +331,28 @@ public final class MachinePropertiesInner {
     }
 
     /**
-     * Get the licenseProfile property: Specifies the ESU related properties for a machine.
-     *
+     * Get the licenseProfile property: Specifies the License related properties for a machine.
+     * 
      * @return the licenseProfile value.
      */
-    public LicenseProfileMachineInstanceViewInner licenseProfile() {
+    public LicenseProfileMachineInstanceView licenseProfile() {
         return this.licenseProfile;
     }
 
     /**
-     * Set the licenseProfile property: Specifies the ESU related properties for a machine.
-     *
+     * Set the licenseProfile property: Specifies the License related properties for a machine.
+     * 
      * @param licenseProfile the licenseProfile value to set.
      * @return the MachinePropertiesInner object itself.
      */
-    public MachinePropertiesInner withLicenseProfile(LicenseProfileMachineInstanceViewInner licenseProfile) {
+    public MachinePropertiesInner withLicenseProfile(LicenseProfileMachineInstanceView licenseProfile) {
         this.licenseProfile = licenseProfile;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -349,7 +361,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the status property: The status of the hybrid machine agent.
-     *
+     * 
      * @return the status value.
      */
     public StatusTypes status() {
@@ -358,7 +370,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the lastStatusChange property: The time of the last status change.
-     *
+     * 
      * @return the lastStatusChange value.
      */
     public OffsetDateTime lastStatusChange() {
@@ -367,7 +379,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the errorDetails property: Details about the error state.
-     *
+     * 
      * @return the errorDetails value.
      */
     public List<ManagementError> errorDetails() {
@@ -376,7 +388,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the agentVersion property: The hybrid machine agent full version.
-     *
+     * 
      * @return the agentVersion value.
      */
     public String agentVersion() {
@@ -385,27 +397,27 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the vmId property: Specifies the hybrid machine unique ID.
-     *
+     * 
      * @return the vmId value.
      */
-    public String vmId() {
+    public UUID vmId() {
         return this.vmId;
     }
 
     /**
      * Set the vmId property: Specifies the hybrid machine unique ID.
-     *
+     * 
      * @param vmId the vmId value to set.
      * @return the MachinePropertiesInner object itself.
      */
-    public MachinePropertiesInner withVmId(String vmId) {
+    public MachinePropertiesInner withVmId(UUID vmId) {
         this.vmId = vmId;
         return this;
     }
 
     /**
      * Get the displayName property: Specifies the hybrid machine display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -414,7 +426,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the machineFqdn property: Specifies the hybrid machine FQDN.
-     *
+     * 
      * @return the machineFqdn value.
      */
     public String machineFqdn() {
@@ -424,7 +436,7 @@ public final class MachinePropertiesInner {
     /**
      * Get the clientPublicKey property: Public Key that the client provides to be used during initial resource
      * onboarding.
-     *
+     * 
      * @return the clientPublicKey value.
      */
     public String clientPublicKey() {
@@ -434,7 +446,7 @@ public final class MachinePropertiesInner {
     /**
      * Set the clientPublicKey property: Public Key that the client provides to be used during initial resource
      * onboarding.
-     *
+     * 
      * @param clientPublicKey the clientPublicKey value to set.
      * @return the MachinePropertiesInner object itself.
      */
@@ -445,7 +457,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the osName property: The Operating System running on the hybrid machine.
-     *
+     * 
      * @return the osName value.
      */
     public String osName() {
@@ -454,7 +466,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the osVersion property: The version of Operating System running on the hybrid machine.
-     *
+     * 
      * @return the osVersion value.
      */
     public String osVersion() {
@@ -463,7 +475,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the osType property: The type of Operating System (windows/linux).
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -472,7 +484,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Set the osType property: The type of Operating System (windows/linux).
-     *
+     * 
      * @param osType the osType value to set.
      * @return the MachinePropertiesInner object itself.
      */
@@ -483,16 +495,16 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the vmUuid property: Specifies the Arc Machine's unique SMBIOS ID.
-     *
+     * 
      * @return the vmUuid value.
      */
-    public String vmUuid() {
+    public UUID vmUuid() {
         return this.vmUuid;
     }
 
     /**
      * Get the extensions property: Machine Extensions information (deprecated field).
-     *
+     * 
      * @return the extensions value.
      */
     public List<MachineExtensionInstanceView> extensions() {
@@ -501,7 +513,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Set the extensions property: Machine Extensions information (deprecated field).
-     *
+     * 
      * @param extensions the extensions value to set.
      * @return the MachinePropertiesInner object itself.
      */
@@ -512,7 +524,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the osSku property: Specifies the Operating System product SKU.
-     *
+     * 
      * @return the osSku value.
      */
     public String osSku() {
@@ -520,8 +532,17 @@ public final class MachinePropertiesInner {
     }
 
     /**
+     * Get the osEdition property: The edition of the Operating System.
+     * 
+     * @return the osEdition value.
+     */
+    public String osEdition() {
+        return this.osEdition;
+    }
+
+    /**
      * Get the domainName property: Specifies the Windows domain name.
-     *
+     * 
      * @return the domainName value.
      */
     public String domainName() {
@@ -530,7 +551,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the adFqdn property: Specifies the AD fully qualified display name.
-     *
+     * 
      * @return the adFqdn value.
      */
     public String adFqdn() {
@@ -539,7 +560,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the dnsFqdn property: Specifies the DNS fully qualified display name.
-     *
+     * 
      * @return the dnsFqdn value.
      */
     public String dnsFqdn() {
@@ -549,7 +570,7 @@ public final class MachinePropertiesInner {
     /**
      * Get the privateLinkScopeResourceId property: The resource id of the private link scope this machine is assigned
      * to, if any.
-     *
+     * 
      * @return the privateLinkScopeResourceId value.
      */
     public String privateLinkScopeResourceId() {
@@ -559,7 +580,7 @@ public final class MachinePropertiesInner {
     /**
      * Set the privateLinkScopeResourceId property: The resource id of the private link scope this machine is assigned
      * to, if any.
-     *
+     * 
      * @param privateLinkScopeResourceId the privateLinkScopeResourceId value to set.
      * @return the MachinePropertiesInner object itself.
      */
@@ -571,7 +592,7 @@ public final class MachinePropertiesInner {
     /**
      * Get the parentClusterResourceId property: The resource id of the parent cluster (Azure HCI) this machine is
      * assigned to, if any.
-     *
+     * 
      * @return the parentClusterResourceId value.
      */
     public String parentClusterResourceId() {
@@ -581,7 +602,7 @@ public final class MachinePropertiesInner {
     /**
      * Set the parentClusterResourceId property: The resource id of the parent cluster (Azure HCI) this machine is
      * assigned to, if any.
-     *
+     * 
      * @param parentClusterResourceId the parentClusterResourceId value to set.
      * @return the MachinePropertiesInner object itself.
      */
@@ -592,7 +613,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the mssqlDiscovered property: Specifies whether any MS SQL instance is discovered on the machine.
-     *
+     * 
      * @return the mssqlDiscovered value.
      */
     public String mssqlDiscovered() {
@@ -601,7 +622,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Set the mssqlDiscovered property: Specifies whether any MS SQL instance is discovered on the machine.
-     *
+     * 
      * @param mssqlDiscovered the mssqlDiscovered value to set.
      * @return the MachinePropertiesInner object itself.
      */
@@ -612,7 +633,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the detectedProperties property: Detected properties from the machine.
-     *
+     * 
      * @return the detectedProperties value.
      */
     public Map<String, String> detectedProperties() {
@@ -621,7 +642,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Get the networkProfile property: Information about the network the machine is on.
-     *
+     * 
      * @return the networkProfile value.
      */
     public NetworkProfileInner networkProfile() {
@@ -630,7 +651,7 @@ public final class MachinePropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -16,14 +16,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CosmosClientStore {
-    // TODO[Public Preview]: revalidate how to get the active directory endpoint map. It suppose to come from management SDK.
-    private static final Map<CosmosAzureEnvironments, String> ACTIVE_DIRECTORY_ENDPOINT_MAP;
+    private static final Map<CosmosAzureEnvironment, String> ACTIVE_DIRECTORY_ENDPOINT_MAP;
     static {
+        // for now we maintain a static list within the SDK these values do not change very frequently
         ACTIVE_DIRECTORY_ENDPOINT_MAP = new HashMap<>();
-        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironments.AZURE, "https://login.microsoftonline.com/");
-        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironments.AZURE_CHINA, "https://login.chinacloudapi.cn/");
-        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironments.AZURE_US_GOVERNMENT, "https://login.microsoftonline.us/");
-        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironments.AZURE_GERMANY, "https://login.microsoftonline.de/");
+        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironment.AZURE, "https://login.microsoftonline.com/");
+        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironment.AZURE_CHINA, "https://login.chinacloudapi.cn/");
+        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironment.AZURE_US_GOVERNMENT, "https://login.microsoftonline.us/");
+        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironment.AZURE_GERMANY, "https://login.microsoftonline.de/");
     }
 
     public static CosmosAsyncClient getCosmosClient(CosmosAccountConfig accountConfig) {

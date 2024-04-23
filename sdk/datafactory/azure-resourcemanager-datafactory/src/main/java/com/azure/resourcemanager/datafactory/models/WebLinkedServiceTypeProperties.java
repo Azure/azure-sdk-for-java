@@ -8,18 +8,19 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Base definition of WebLinkedServiceTypeProperties, this typeProperties is polymorphic based on authenticationType,
- * so not flattened in SDK models.
+ * Base definition of WebLinkedServiceTypeProperties, this typeProperties is polymorphic based on authenticationType, so
+ * not flattened in SDK models.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "authenticationType",
-    defaultImpl = WebLinkedServiceTypeProperties.class)
+    defaultImpl = WebLinkedServiceTypeProperties.class,
+    visible = true)
 @JsonTypeName("WebLinkedServiceTypeProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Anonymous", value = WebAnonymousAuthentication.class),
@@ -28,8 +29,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class WebLinkedServiceTypeProperties {
     /*
-     * The URL of the web service endpoint, e.g. https://www.microsoft.com . Type: string (or Expression with
-     * resultType string).
+     * Type of authentication used to connect to the web table source.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "authenticationType", required = true)
+    private WebAuthenticationType authenticationType;
+
+    /*
+     * The URL of the web service endpoint, e.g. https://www.microsoft.com . Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
@@ -38,6 +45,16 @@ public class WebLinkedServiceTypeProperties {
      * Creates an instance of WebLinkedServiceTypeProperties class.
      */
     public WebLinkedServiceTypeProperties() {
+        this.authenticationType = WebAuthenticationType.fromString("WebLinkedServiceTypeProperties");
+    }
+
+    /**
+     * Get the authenticationType property: Type of authentication used to connect to the web table source.
+     * 
+     * @return the authenticationType value.
+     */
+    public WebAuthenticationType authenticationType() {
+        return this.authenticationType;
     }
 
     /**
@@ -69,8 +86,9 @@ public class WebLinkedServiceTypeProperties {
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property url in model WebLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property url in model WebLinkedServiceTypeProperties"));
         }
     }
 

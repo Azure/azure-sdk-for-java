@@ -4,6 +4,7 @@
 package com.azure.cosmos.kafka.connect;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
@@ -15,12 +16,14 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
-import com.azure.cosmos.kafka.connect.implementation.CosmosAuthTypes;
+import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
-import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedModes;
-import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedStartFromModes;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedMode;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedStartFromMode;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosMetadataStorageType;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
-import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceOffsetStorageReader;
+import com.azure.cosmos.kafka.connect.implementation.source.MetadataCosmosStorageManager;
+import com.azure.cosmos.kafka.connect.implementation.source.MetadataKafkaStorageManager;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTask;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeContinuationTopicOffset;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeContinuationTopicPartition;
@@ -32,8 +35,10 @@ import com.azure.cosmos.kafka.connect.implementation.source.MetadataMonitorThrea
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataTaskUnit;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigValue;
@@ -85,7 +90,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = "{ kafka }", timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void getTaskConfigsWithoutPersistedOffset() throws JsonProcessingException {
         CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
         try {
@@ -104,7 +109,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             sourceConfigMap.put("kafka.connect.cosmos.source.containers.topicMap", containerTopicMapList.toString());
 
             // setup the internal state
-            this.setupDefaultConnectorInternalStates(sourceConnector, sourceConfigMap);
+            this.setupDefaultConnectorInternalStatesWithMetadataKafkaReader(sourceConnector, sourceConfigMap);
             CosmosAsyncClient cosmosAsyncClient = KafkaCosmosReflectionUtils.getCosmosClient(sourceConnector);
 
             int maxTask = 2;
@@ -156,7 +161,86 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = "{ kafka }", timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
+    public void getTaskConfigs_withMetadataCosmosStorageManager() throws JsonProcessingException {
+        CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
+        String metadataStorageName = "_cosmos.metadata.topic-" + UUID.randomUUID();
+        CosmosAsyncClient cosmosAsyncClient = null;
+        try {
+            Map<String, Object> sourceConfigMap = new HashMap<>();
+            sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
+            sourceConfigMap.put("kafka.connect.cosmos.accountKey", KafkaCosmosTestConfigurations.MASTER_KEY);
+            sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
+            List<String> containersIncludedList = Arrays.asList(
+                singlePartitionContainerName,
+                multiPartitionContainerName
+            );
+            sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());
+
+            String singlePartitionContainerTopicName = singlePartitionContainerName + "topic";
+            List<String> containerTopicMapList = Arrays.asList(singlePartitionContainerTopicName + "#" + singlePartitionContainerName);
+            sourceConfigMap.put("kafka.connect.cosmos.source.containers.topicMap", containerTopicMapList.toString());
+            sourceConfigMap.put("kafka.connect.cosmos.source.metadata.storage.name", metadataStorageName);
+            sourceConfigMap.put("kafka.connect.cosmos.source.metadata.storage.type", CosmosMetadataStorageType.COSMOS.getName());
+
+            // setup the internal state
+            this.setupDefaultConnectorInternalStatesWithMetadataCosmosReader(sourceConnector, sourceConfigMap, databaseName, metadataStorageName);
+            cosmosAsyncClient = KafkaCosmosReflectionUtils.getCosmosClient(sourceConnector);
+
+            int maxTask = 2;
+            List<Map<String, String>> taskConfigs = sourceConnector.taskConfigs(maxTask);
+            assertThat(taskConfigs.size()).isEqualTo(maxTask);
+
+            // construct expected feed range task units
+            CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(cosmosAsyncClient);
+            List<FeedRangeTaskUnit> singlePartitionContainerFeedRangeTasks =
+                getFeedRangeTaskUnits(
+                    cosmosAsyncClient,
+                    databaseName,
+                    singlePartitionContainer,
+                    null,
+                    singlePartitionContainerTopicName);
+            assertThat(singlePartitionContainerFeedRangeTasks.size()).isEqualTo(1);
+
+            CosmosContainerProperties multiPartitionContainer = getMultiPartitionContainer(cosmosAsyncClient);
+            List<FeedRangeTaskUnit> multiPartitionContainerFeedRangeTasks =
+                getFeedRangeTaskUnits(
+                    cosmosAsyncClient,
+                    databaseName,
+                    multiPartitionContainer,
+                    null,
+                    multiPartitionContainer.getId());
+            assertThat(multiPartitionContainerFeedRangeTasks.size()).isGreaterThan(1);
+
+            List<List<FeedRangeTaskUnit>> expectedTaskUnits = new ArrayList<>();
+            for (int i = 0; i < maxTask; i++) {
+                expectedTaskUnits.add(new ArrayList<>());
+            }
+
+            expectedTaskUnits.get(0).add(singlePartitionContainerFeedRangeTasks.get(0));
+            for (int i = 0; i < multiPartitionContainerFeedRangeTasks.size(); i++) {
+                int index = ( i + 1) % 2;
+                expectedTaskUnits.get(index).add(multiPartitionContainerFeedRangeTasks.get(i));
+            }
+
+            validateFeedRangeTasks(expectedTaskUnits, taskConfigs);
+
+            MetadataTaskUnit expectedMetadataTaskUnit =
+                getMetadataTaskUnit(
+                    cosmosAsyncClient,
+                    databaseName,
+                    Arrays.asList(singlePartitionContainer, multiPartitionContainer));
+            CosmosAsyncContainer metadataContainer = cosmosAsyncClient.getDatabase(databaseName).getContainer(metadataStorageName);
+            validateMetadataItems(expectedMetadataTaskUnit, metadataContainer);
+        } finally {
+            if (cosmosAsyncClient != null) {
+                cosmosAsyncClient.getDatabase(databaseName).getContainer(metadataStorageName).delete().block();
+            }
+            sourceConnector.stop();
+        }
+    }
+
+    @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void getTaskConfigsAfterSplit() throws JsonProcessingException {
         // This test is to simulate after a split happen, the task resume with persisted offset
         CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
@@ -170,11 +254,11 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());
 
             // setup the internal state
-            this.setupDefaultConnectorInternalStates(sourceConnector, sourceConfigMap);
+            this.setupDefaultConnectorInternalStatesWithMetadataKafkaReader(sourceConnector, sourceConfigMap);
 
             // override the storage reader with initial offset
             CosmosAsyncClient cosmosAsyncClient = KafkaCosmosReflectionUtils.getCosmosClient(sourceConnector);
-            CosmosSourceOffsetStorageReader sourceOffsetStorageReader = KafkaCosmosReflectionUtils.getSourceOffsetStorageReader(sourceConnector);
+            MetadataKafkaStorageManager sourceOffsetStorageReader = KafkaCosmosReflectionUtils.getKafkaOffsetStorageReader(sourceConnector);
             InMemoryStorageReader inMemoryStorageReader =
                 (InMemoryStorageReader) KafkaCosmosReflectionUtils.getOffsetStorageReader(sourceOffsetStorageReader);
 
@@ -251,7 +335,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = "{ kafka }", timeOut = TIMEOUT)
+    @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void getTaskConfigsAfterMerge() throws JsonProcessingException {
         // This test is to simulate after a merge happen, the task resume with previous feedRanges
         CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
@@ -265,11 +349,11 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());
 
             // setup the internal state
-            this.setupDefaultConnectorInternalStates(sourceConnector, sourceConfigMap);
+            this.setupDefaultConnectorInternalStatesWithMetadataKafkaReader(sourceConnector, sourceConfigMap);
 
             // override the storage reader with initial offset
             CosmosAsyncClient cosmosAsyncClient = KafkaCosmosReflectionUtils.getCosmosClient(sourceConnector);
-            CosmosSourceOffsetStorageReader sourceOffsetStorageReader = KafkaCosmosReflectionUtils.getSourceOffsetStorageReader(sourceConnector);
+            MetadataKafkaStorageManager sourceOffsetStorageReader = KafkaCosmosReflectionUtils.getKafkaOffsetStorageReader(sourceConnector);
             InMemoryStorageReader inMemoryStorageReader =
                 (InMemoryStorageReader) KafkaCosmosReflectionUtils.getOffsetStorageReader(sourceOffsetStorageReader);
 
@@ -368,8 +452,8 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                     databaseName,
                     Arrays.asList(singlePartitionContainer.getResourceId()),
                     containersEffectiveRangesMap,
-                    "_cosmos.metadata.topic"
-                );
+                    "_cosmos.metadata.topic",
+                    CosmosMetadataStorageType.KAFKA);
             validateMetadataTask(expectedMetadataTaskUnit, taskConfigs.get(1));
         } finally {
             sourceConnector.stop();
@@ -508,7 +592,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         sourceConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.container", "ThroughputControlContainer");
         sourceConfigMap.put("kafka.connect.cosmos.throughputControl.name", "groupName");
         sourceConfigMap.put("kafka.connect.cosmos.throughputControl.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
-        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.auth.type", CosmosAuthTypes.SERVICE_PRINCIPAL.getName());
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
 
         config = sourceConnector.validate(sourceConfigMap);
         errorMessages = config.configValues().stream()
@@ -529,7 +613,10 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         return sourceConfigMap;
     }
 
-    private void setupDefaultConnectorInternalStates(CosmosSourceConnector sourceConnector, Map<String, Object> sourceConfigMap) {
+    private void setupDefaultConnectorInternalStatesWithMetadataKafkaReader(
+        CosmosSourceConnector sourceConnector,
+        Map<String, Object> sourceConfigMap) {
+
         CosmosSourceConfig cosmosSourceConfig = new CosmosSourceConfig(sourceConfigMap);
         KafkaCosmosReflectionUtils.setCosmosSourceConfig(sourceConnector, cosmosSourceConfig);
 
@@ -537,18 +624,56 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         KafkaCosmosReflectionUtils.setCosmosClient(sourceConnector, cosmosAsyncClient);
 
         InMemoryStorageReader inMemoryStorageReader = new InMemoryStorageReader();
-        CosmosSourceOffsetStorageReader storageReader = new CosmosSourceOffsetStorageReader(inMemoryStorageReader);
-        KafkaCosmosReflectionUtils.setOffsetStorageReader(sourceConnector, storageReader);
+        MetadataKafkaStorageManager metadataReader = new MetadataKafkaStorageManager(inMemoryStorageReader);
+
+        KafkaCosmosReflectionUtils.setMetadataReader(sourceConnector, metadataReader);
+        KafkaCosmosReflectionUtils.setKafkaOffsetStorageReader(sourceConnector, metadataReader);
 
         SourceConnectorContext connectorContext = Mockito.mock(SourceConnectorContext.class);
         MetadataMonitorThread monitorThread = new MetadataMonitorThread(
             cosmosSourceConfig.getContainersConfig(),
             cosmosSourceConfig.getMetadataConfig(),
             connectorContext,
-            storageReader,
+            metadataReader,
             cosmosAsyncClient);
 
         KafkaCosmosReflectionUtils.setMetadataMonitorThread(sourceConnector, monitorThread);
+    }
+
+    private void setupDefaultConnectorInternalStatesWithMetadataCosmosReader(
+        CosmosSourceConnector sourceConnector,
+        Map<String, Object> sourceConfigMap,
+        String databaseName,
+        String containerName) {
+
+        CosmosSourceConfig cosmosSourceConfig = new CosmosSourceConfig(sourceConfigMap);
+        KafkaCosmosReflectionUtils.setCosmosSourceConfig(sourceConnector, cosmosSourceConfig);
+
+        CosmosAsyncClient cosmosAsyncClient = CosmosClientStore.getCosmosClient(cosmosSourceConfig.getAccountConfig());
+        KafkaCosmosReflectionUtils.setCosmosClient(sourceConnector, cosmosAsyncClient);
+
+        CosmosAsyncContainer container = cosmosAsyncClient.getDatabase(databaseName).getContainer(containerName);
+        MetadataCosmosStorageManager cosmosStorageManager = new MetadataCosmosStorageManager(container);
+        KafkaCosmosReflectionUtils.setMetadataReader(sourceConnector, cosmosStorageManager);
+
+        InMemoryStorageReader inMemoryStorageReader = new InMemoryStorageReader();
+        MetadataKafkaStorageManager metadataReader = new MetadataKafkaStorageManager(inMemoryStorageReader);
+        KafkaCosmosReflectionUtils.setKafkaOffsetStorageReader(sourceConnector, metadataReader);
+
+        SourceConnectorContext connectorContext = Mockito.mock(SourceConnectorContext.class);
+        MetadataMonitorThread monitorThread = new MetadataMonitorThread(
+            cosmosSourceConfig.getContainersConfig(),
+            cosmosSourceConfig.getMetadataConfig(),
+            connectorContext,
+            cosmosStorageManager,
+            cosmosAsyncClient);
+
+        KafkaCosmosReflectionUtils.setMetadataMonitorThread(sourceConnector, monitorThread);
+
+        // pre-create metadata container
+        cosmosAsyncClient.getDatabase(databaseName)
+            .createContainerIfNotExists(containerName, "/id")
+            .block();
     }
 
     private List<FeedRangeTaskUnit> getFeedRangeTaskUnits(
@@ -610,8 +735,8 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             databaseName,
             containers.stream().map(CosmosContainerProperties::getResourceId).collect(Collectors.toList()),
             containersEffectiveRangesMap,
-            "_cosmos.metadata.topic"
-        );
+            "_cosmos.metadata.topic",
+            CosmosMetadataStorageType.KAFKA);
     }
 
     private void validateFeedRangeTasks(
@@ -664,14 +789,85 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         MetadataTaskUnit metadataTaskUnitFromTaskConfig =
             Utils.getSimpleObjectMapper().readValue(taskConfig.get(taskUnitKey), MetadataTaskUnit.class);
 
-        assertThat(expectedMetadataTaskUnit).isEqualTo(metadataTaskUnitFromTaskConfig);
+        assertThat(expectedMetadataTaskUnit.getDatabaseName()).isEqualTo(metadataTaskUnitFromTaskConfig.getDatabaseName());
+        assertThat(expectedMetadataTaskUnit.getContainerRids().size()).isEqualTo(metadataTaskUnitFromTaskConfig.getContainerRids().size());
+        assertThat(expectedMetadataTaskUnit.getContainerRids().containsAll(metadataTaskUnitFromTaskConfig.getContainerRids())).isTrue();
+        assertThat(expectedMetadataTaskUnit.getContainersEffectiveRangesMap().size())
+            .isEqualTo(metadataTaskUnitFromTaskConfig.getContainersEffectiveRangesMap().size());
+
+        for (String containerRid : expectedMetadataTaskUnit.getContainersEffectiveRangesMap().keySet()) {
+            assertThat(metadataTaskUnitFromTaskConfig.getContainersEffectiveRangesMap().get(containerRid)).isNotNull();
+            assertThat(expectedMetadataTaskUnit.getContainersEffectiveRangesMap().get(containerRid).size())
+                .isEqualTo(metadataTaskUnitFromTaskConfig.getContainersEffectiveRangesMap().get(containerRid).size());
+            assertThat(
+                expectedMetadataTaskUnit
+                    .getContainersEffectiveRangesMap()
+                    .get(containerRid)
+                    .containsAll(metadataTaskUnitFromTaskConfig.getContainersEffectiveRangesMap().get(containerRid)))
+                .isTrue();
+        }
+    }
+
+    private void validateMetadataItems(
+        MetadataTaskUnit expectedMetadataTaskUnit,
+        CosmosAsyncContainer metadataContainer) throws JsonProcessingException {
+
+        // validate containers metadata exists
+        JsonNode containersMetadata =
+            metadataContainer
+                .readItem(expectedMetadataTaskUnit.getDatabaseName(), new PartitionKey(expectedMetadataTaskUnit.getDatabaseName()), JsonNode.class)
+                .block()
+                .getItem();
+        Map<String, Object> metadataMap =
+            Utils
+                .getSimpleObjectMapper()
+                .convertValue(containersMetadata.get("metadata"), new TypeReference<Map<String, Object>>(){});
+
+        assertThat(metadataMap.containsKey("containerRids")).isTrue();
+        List<String> persistedContainerRids =
+            Utils
+                .getSimpleObjectMapper()
+                .readValue(metadataMap.get("containerRids").toString(), new TypeReference<List<String>>() {
+                });
+        assertThat(persistedContainerRids.size()).isEqualTo(expectedMetadataTaskUnit.getContainerRids().size());
+        assertThat(persistedContainerRids.containsAll(expectedMetadataTaskUnit.getContainerRids())).isTrue();
+
+        // validate feedRanges metadata exists
+        for (String containerRid : expectedMetadataTaskUnit.getContainersEffectiveRangesMap().keySet()) {
+            List<String> expectedFeedRanges =
+                expectedMetadataTaskUnit
+                    .getContainersEffectiveRangesMap()
+                    .get(containerRid)
+                    .stream()
+                    .map(FeedRange::toString)
+                    .collect(Collectors.toList());
+
+            String cosmosItemId = expectedMetadataTaskUnit.getDatabaseName() + "_" + containerRid;
+            JsonNode persistedFeedRangesMetadata =
+                metadataContainer
+                    .readItem(cosmosItemId, new PartitionKey(cosmosItemId), JsonNode.class)
+                    .block()
+                    .getItem();
+            Map<String, Object> feedRangesMetadataMap =
+                Utils
+                    .getSimpleObjectMapper()
+                    .convertValue(persistedFeedRangesMetadata.get("metadata"), new TypeReference<Map<String, Object>>() {});
+            assertThat(feedRangesMetadataMap.containsKey("feedRanges")).isTrue();
+            List<String> persistedFeedRanges =
+                Utils
+                    .getSimpleObjectMapper()
+                    .readValue(feedRangesMetadataMap.get("feedRanges").toString(), new TypeReference<List<String>>() {
+                    });
+            assertThat(expectedFeedRanges.size()).isEqualTo(persistedFeedRanges.size());
+            assertThat(expectedFeedRanges.containsAll(persistedFeedRanges)).isTrue();
+        }
     }
 
     public static class SourceConfigs {
         public static final List<KafkaCosmosConfigEntry<?>> ALL_VALID_CONFIGS = Arrays.asList(
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.accountEndpoint", null, false),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.account.tenantId", Strings.Emtpy, true),
-            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.auth.type", CosmosAuthTypes.MASTER_KEY.getName(), true),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.auth.type", CosmosAuthType.MASTER_KEY.getName(), true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.accountKey", Strings.Emtpy, true, true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.auth.aad.clientId", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.auth.aad.clientSecret", Strings.Emtpy, true, true),
@@ -681,7 +877,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.enabled", false, true),
             new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.accountEndpoint", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.throughputControl.account.tenantId", Strings.Emtpy, true),
-            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.throughputControl.auth.type", CosmosAuthTypes.MASTER_KEY.getName(), true),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.throughputControl.auth.type", CosmosAuthType.MASTER_KEY.getName(), true),
             new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.accountKey", Strings.Emtpy, true, true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.throughputControl.auth.aad.clientId", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.throughputControl.auth.aad.clientSecret", Strings.Emtpy, true, true),
@@ -702,17 +898,21 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.source.containers.topicMap", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>(
                 "kafka.connect.cosmos.source.changeFeed.startFrom",
-                CosmosChangeFeedStartFromModes.BEGINNING.getName(),
+                CosmosChangeFeedStartFromMode.BEGINNING.getName(),
                 true),
             new KafkaCosmosConfigEntry<String>(
                 "kafka.connect.cosmos.source.changeFeed.mode",
-                CosmosChangeFeedModes.LATEST_VERSION.getName(),
+                CosmosChangeFeedMode.LATEST_VERSION.getName(),
                 true),
             new KafkaCosmosConfigEntry<Integer>("kafka.connect.cosmos.source.changeFeed.maxItemCountHint", 1000, true),
             new KafkaCosmosConfigEntry<Integer>("kafka.connect.cosmos.source.metadata.poll.delay.ms", 5 * 60 * 1000, true),
             new KafkaCosmosConfigEntry<String>(
-                "kafka.connect.cosmos.source.metadata.storage.topic",
+                "kafka.connect.cosmos.source.metadata.storage.name",
                 "_cosmos.metadata.topic",
+                true),
+            new KafkaCosmosConfigEntry<String>(
+                "kafka.connect.cosmos.source.metadata.storage.type",
+                CosmosMetadataStorageType.KAFKA.getName(),
                 true),
             new KafkaCosmosConfigEntry<Boolean>("kafka.connect.cosmos.source.messageKey.enabled", true, true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.source.messageKey.field", "id", true)

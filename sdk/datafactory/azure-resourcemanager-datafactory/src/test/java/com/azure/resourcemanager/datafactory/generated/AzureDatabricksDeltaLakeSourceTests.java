@@ -12,17 +12,19 @@ public final class AzureDatabricksDeltaLakeSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDatabricksDeltaLakeSource model = BinaryData.fromString(
-            "{\"type\":\"AzureDatabricksDeltaLakeSource\",\"query\":\"datall\",\"exportSettings\":{\"type\":\"AzureDatabricksDeltaLakeExportCommand\",\"dateFormat\":\"datahthxcrweeqkdmpfm\",\"timestampFormat\":\"datacelsnjf\",\"\":{\"ikmgwxysu\":\"datadcjtveibnt\",\"kstrmsbmdgrzke\":\"datasofdhrif\",\"aaxz\":\"dataplorntnss\",\"pisc\":\"datadlnv\"}},\"sourceRetryCount\":\"datayhtb\",\"sourceRetryWait\":\"dataycacoelvoy\",\"maxConcurrentConnections\":\"datamxqalqqrymjwwox\",\"disableMetricsCollection\":\"dataefellhdsgo\",\"\":{\"malthcbvuvwdp\":\"datab\"}}")
+            "{\"type\":\"zdukamt\",\"query\":\"dataawmhbq\",\"exportSettings\":{\"type\":\"xxc\",\"dateFormat\":\"datamgvwbytz\",\"timestampFormat\":\"dataqvzwummw\",\"\":{\"dujhzaiw\":\"datag\",\"l\":\"dataqrbtrmi\"}},\"sourceRetryCount\":\"dataufvabci\",\"sourceRetryWait\":\"databyfs\",\"maxConcurrentConnections\":\"dataiwgkozlpsfraj\",\"disableMetricsCollection\":\"datau\",\"\":{\"lllsungzvytbqq\":\"datagf\",\"ugjea\":\"dataxkuyyrcqsyq\"}}")
             .toObject(AzureDatabricksDeltaLakeSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDatabricksDeltaLakeSource model = new AzureDatabricksDeltaLakeSource().withSourceRetryCount("datayhtb")
-            .withSourceRetryWait("dataycacoelvoy").withMaxConcurrentConnections("datamxqalqqrymjwwox")
-            .withDisableMetricsCollection("dataefellhdsgo").withQuery("datall")
-            .withExportSettings(new AzureDatabricksDeltaLakeExportCommand().withDateFormat("datahthxcrweeqkdmpfm")
-                .withTimestampFormat("datacelsnjf"));
+        AzureDatabricksDeltaLakeSource model = new AzureDatabricksDeltaLakeSource().withSourceRetryCount("dataufvabci")
+            .withSourceRetryWait("databyfs")
+            .withMaxConcurrentConnections("dataiwgkozlpsfraj")
+            .withDisableMetricsCollection("datau")
+            .withQuery("dataawmhbq")
+            .withExportSettings(new AzureDatabricksDeltaLakeExportCommand().withDateFormat("datamgvwbytz")
+                .withTimestampFormat("dataqvzwummw"));
         model = BinaryData.fromObject(model).toObject(AzureDatabricksDeltaLakeSource.class);
     }
 }

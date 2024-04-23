@@ -14,7 +14,7 @@ public final class XmlReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         XmlReadSettings model = BinaryData.fromString(
-            "{\"type\":\"XmlReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"cbuzudkqoeoukvi\":\"dataubziibuabpvdwhvn\",\"fhdyasklmy\":\"datakgbkzqbo\",\"awljatvfddq\":\"datahclxwede\",\"xcqcwbxxvcvek\":\"datapduttqjtszq\"}},\"validationMode\":\"datadrum\",\"detectDataType\":\"datakdwwq\",\"namespaces\":\"datalfvmwuyar\",\"namespacePrefixes\":\"datasvtzotmwxq\",\"\":{\"wrtmjskb\":\"datadanfexlawkeqjhz\",\"mvounbyvsfqu\":\"dataenjnady\",\"xqbknoxjhedwh\":\"datar\",\"rpajbiig\":\"datamwb\"}}")
+            "{\"type\":\"rxenp\",\"compressionProperties\":{\"type\":\"eqotvocjktihnwyv\",\"\":{\"dmtfnbv\":\"datag\",\"cd\":\"dataxqqlbmiqbdiahj\",\"yn\":\"datapdlxwsfddyqp\",\"lj\":\"dataowmjsur\"}},\"validationMode\":\"datasjhh\",\"detectDataType\":\"datawizqvgadolep\",\"namespaces\":\"datalzjhaqxfams\",\"namespacePrefixes\":\"datacesvvrabbyfhzy\",\"\":{\"bwxhlqioqh\":\"datanlbrcydwrcjta\"}}")
             .toObject(XmlReadSettings.class);
     }
 
@@ -22,9 +22,11 @@ public final class XmlReadSettingsTests {
     public void testSerialize() throws Exception {
         XmlReadSettings model = new XmlReadSettings()
             .withCompressionProperties(
-                new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings")))
-            .withValidationMode("datadrum").withDetectDataType("datakdwwq").withNamespaces("datalfvmwuyar")
-            .withNamespacePrefixes("datasvtzotmwxq");
+                new CompressionReadSettings().withAdditionalProperties(mapOf("type", "eqotvocjktihnwyv")))
+            .withValidationMode("datasjhh")
+            .withDetectDataType("datawizqvgadolep")
+            .withNamespaces("datalzjhaqxfams")
+            .withNamespacePrefixes("datacesvvrabbyfhzy");
         model = BinaryData.fromObject(model).toObject(XmlReadSettings.class);
     }
 

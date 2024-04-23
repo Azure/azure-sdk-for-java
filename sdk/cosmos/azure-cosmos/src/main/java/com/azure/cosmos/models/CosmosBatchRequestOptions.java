@@ -5,10 +5,12 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,27 @@ public final class CosmosBatchRequestOptions {
     private Map<String, String> customOptions;
     private CosmosDiagnosticsThresholds thresholds = new CosmosDiagnosticsThresholds();
     private List<String> excludeRegions;
+
+    private CosmosItemSerializer customSerializer;
+
+    /**
+     * Creates an instance of the CosmosBatchRequestOptions class
+     */
+    public CosmosBatchRequestOptions() {
+    }
+
+
+    CosmosBatchRequestOptions(CosmosBatchRequestOptions toBeCloned) {
+        this.consistencyLevel = toBeCloned.consistencyLevel;
+        this.sessionToken = toBeCloned.sessionToken;
+        this.customOptions = toBeCloned.customOptions;
+        this.thresholds = toBeCloned.thresholds;
+        this.customSerializer = toBeCloned.customSerializer;
+
+        if (toBeCloned.excludeRegions != null) {
+            this.excludeRegions = new ArrayList<>(toBeCloned.excludeRegions);
+        }
+    }
 
     /**
      * Gets the consistency level required for the request.
@@ -90,6 +113,8 @@ public final class CosmosBatchRequestOptions {
         requestOptions.setConsistencyLevel(getConsistencyLevel());
         requestOptions.setSessionToken(sessionToken);
         requestOptions.setDiagnosticsThresholds(thresholds);
+        requestOptions.setEffectiveItemSerializer(this.customSerializer);
+
         if(this.customOptions != null) {
             for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {
                 requestOptions.setHeader(entry.getKey(), entry.getValue());
@@ -142,6 +167,27 @@ public final class CosmosBatchRequestOptions {
     }
 
     /**
+     * Gets the custom item serializer defined for this instance of request options
+     * @return the custom item serializer
+     */
+    public CosmosItemSerializer getCustomSerializer() {
+        return this.customSerializer;
+    }
+
+    /**
+     * Allows specifying a custom item serializer to be used for this operation. If the serializer
+     * on the request options is null, the serializer on CosmosClientBuilder is used. If both serializers
+     * are null (the default), an internal Jackson ObjectMapper is ued for serialization/deserialization.
+     * @param itemSerializerOverride the custom item serializer for this operation
+     * @return  the CosmosItemRequestOptions.
+     */
+    public CosmosBatchRequestOptions setCustomSerializer(CosmosItemSerializer itemSerializerOverride) {
+        this.customSerializer = itemSerializerOverride;
+
+        return this;
+    }
+
+    /**
      * Gets the custom batch request options
      *
      * @return Map of custom request options
@@ -180,6 +226,11 @@ public final class CosmosBatchRequestOptions {
                 @Override
                 public List<String> getExcludeRegions(CosmosBatchRequestOptions cosmosBatchRequestOptions) {
                     return cosmosBatchRequestOptions.excludeRegions;
+                }
+
+                @Override
+                public CosmosBatchRequestOptions clone(CosmosBatchRequestOptions toBeCloned) {
+                    return new CosmosBatchRequestOptions(toBeCloned);
                 }
             }
         );

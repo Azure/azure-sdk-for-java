@@ -8,8 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A representation of a single generated image, provided as either base64-encoded data or as a URL from which the
- * image
+ * A representation of a single generated image, provided as either base64-encoded data or as a URL from which the image
  * may be retrieved.
  */
 @Immutable

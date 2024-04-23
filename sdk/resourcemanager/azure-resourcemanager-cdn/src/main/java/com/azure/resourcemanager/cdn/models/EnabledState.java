@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'. */
+/**
+ * Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'.
+ */
 public final class EnabledState extends ExpandableStringEnum<EnabledState> {
-    /** Static value Enabled for EnabledState. */
+    /**
+     * Static value Enabled for EnabledState.
+     */
     public static final EnabledState ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for EnabledState. */
+    /**
+     * Static value Disabled for EnabledState.
+     */
     public static final EnabledState DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of EnabledState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class EnabledState extends ExpandableStringEnum<EnabledState> {
 
     /**
      * Creates or finds a EnabledState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EnabledState.
      */
@@ -38,7 +44,7 @@ public final class EnabledState extends ExpandableStringEnum<EnabledState> {
 
     /**
      * Gets known EnabledState values.
-     *
+     * 
      * @return known EnabledState values.
      */
     public static Collection<EnabledState> values() {

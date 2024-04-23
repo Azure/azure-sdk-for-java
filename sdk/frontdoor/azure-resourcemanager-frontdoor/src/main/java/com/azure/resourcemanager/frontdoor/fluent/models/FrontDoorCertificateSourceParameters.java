@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.frontdoor.models.FrontDoorCertificateType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters required for enabling SSL with Front Door-managed certificates. */
+/**
+ * Parameters required for enabling SSL with Front Door-managed certificates.
+ */
 @Fluent
 public final class FrontDoorCertificateSourceParameters {
     /*
@@ -17,14 +19,16 @@ public final class FrontDoorCertificateSourceParameters {
     @JsonProperty(value = "certificateType")
     private FrontDoorCertificateType certificateType;
 
-    /** Creates an instance of FrontDoorCertificateSourceParameters class. */
+    /**
+     * Creates an instance of FrontDoorCertificateSourceParameters class.
+     */
     public FrontDoorCertificateSourceParameters() {
     }
 
     /**
      * Get the certificateType property: Defines the type of the certificate used for secure connections to a
      * frontendEndpoint.
-     *
+     * 
      * @return the certificateType value.
      */
     public FrontDoorCertificateType certificateType() {
@@ -34,7 +38,7 @@ public final class FrontDoorCertificateSourceParameters {
     /**
      * Set the certificateType property: Defines the type of the certificate used for secure connections to a
      * frontendEndpoint.
-     *
+     * 
      * @param certificateType the certificateType value to set.
      * @return the FrontDoorCertificateSourceParameters object itself.
      */
@@ -45,7 +49,7 @@ public final class FrontDoorCertificateSourceParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

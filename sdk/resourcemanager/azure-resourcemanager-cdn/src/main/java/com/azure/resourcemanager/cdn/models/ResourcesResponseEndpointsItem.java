@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ResourcesResponseEndpointsItem model. */
+/**
+ * The ResourcesResponseEndpointsItem model.
+ */
 @Fluent
 public final class ResourcesResponseEndpointsItem {
     /*
@@ -35,13 +37,15 @@ public final class ResourcesResponseEndpointsItem {
     @JsonProperty(value = "customDomains")
     private List<ResourcesResponseEndpointsPropertiesItemsItem> customDomains;
 
-    /** Creates an instance of ResourcesResponseEndpointsItem class. */
+    /**
+     * Creates an instance of ResourcesResponseEndpointsItem class.
+     */
     public ResourcesResponseEndpointsItem() {
     }
 
     /**
      * Get the id property: The id property.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -50,7 +54,7 @@ public final class ResourcesResponseEndpointsItem {
 
     /**
      * Set the id property: The id property.
-     *
+     * 
      * @param id the id value to set.
      * @return the ResourcesResponseEndpointsItem object itself.
      */
@@ -61,7 +65,7 @@ public final class ResourcesResponseEndpointsItem {
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -70,7 +74,7 @@ public final class ResourcesResponseEndpointsItem {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourcesResponseEndpointsItem object itself.
      */
@@ -81,7 +85,7 @@ public final class ResourcesResponseEndpointsItem {
 
     /**
      * Get the history property: The history property.
-     *
+     * 
      * @return the history value.
      */
     public Boolean history() {
@@ -90,7 +94,7 @@ public final class ResourcesResponseEndpointsItem {
 
     /**
      * Set the history property: The history property.
-     *
+     * 
      * @param history the history value to set.
      * @return the ResourcesResponseEndpointsItem object itself.
      */
@@ -101,7 +105,7 @@ public final class ResourcesResponseEndpointsItem {
 
     /**
      * Get the customDomains property: The customDomains property.
-     *
+     * 
      * @return the customDomains value.
      */
     public List<ResourcesResponseEndpointsPropertiesItemsItem> customDomains() {
@@ -110,19 +114,19 @@ public final class ResourcesResponseEndpointsItem {
 
     /**
      * Set the customDomains property: The customDomains property.
-     *
+     * 
      * @param customDomains the customDomains value to set.
      * @return the ResourcesResponseEndpointsItem object itself.
      */
-    public ResourcesResponseEndpointsItem withCustomDomains(
-        List<ResourcesResponseEndpointsPropertiesItemsItem> customDomains) {
+    public ResourcesResponseEndpointsItem
+        withCustomDomains(List<ResourcesResponseEndpointsPropertiesItemsItem> customDomains) {
         this.customDomains = customDomains;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

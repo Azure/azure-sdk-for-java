@@ -135,14 +135,16 @@ public final class ForEachActivityTypeProperties {
      */
     public void validate() {
         if (items() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property items in model ForEachActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property items in model ForEachActivityTypeProperties"));
         } else {
             items().validate();
         }
         if (activities() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property activities in model ForEachActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property activities in model ForEachActivityTypeProperties"));
         } else {
             activities().forEach(e -> e.validate());
         }

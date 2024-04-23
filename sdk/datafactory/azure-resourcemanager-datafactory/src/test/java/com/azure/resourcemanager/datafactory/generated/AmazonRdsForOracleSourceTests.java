@@ -12,20 +12,24 @@ public final class AmazonRdsForOracleSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmazonRdsForOracleSource model = BinaryData.fromString(
-            "{\"type\":\"AmazonRdsForOracleSource\",\"oracleReaderQuery\":\"datawgikpdpudqiwhvx\",\"queryTimeout\":\"datavpoeuufw\",\"partitionOption\":\"datadeffrbxzjedy\",\"partitionSettings\":{\"partitionNames\":\"datasxspnmfydphl\",\"partitionColumnName\":\"datano\",\"partitionUpperBound\":\"databdvjlqfzlbpeh\",\"partitionLowerBound\":\"datapgllrh\"},\"additionalColumns\":\"dataxstpg\",\"sourceRetryCount\":\"databezmyjqpdchds\",\"sourceRetryWait\":\"datakmgppxzgjysmtskt\",\"maxConcurrentConnections\":\"datasybwd\",\"disableMetricsCollection\":\"datajsokosugrfizfwd\",\"\":{\"nie\":\"datanwhqafzgzmonj\",\"fmognnw\":\"datactwbim\",\"yrfpnbyxy\":\"datardllrqamfj\",\"xhvzgl\":\"dataubvidpskdzs\"}}")
+            "{\"type\":\"ftqkg\",\"oracleReaderQuery\":\"dataa\",\"queryTimeout\":\"databrwvio\",\"partitionOption\":\"datayhsorcavkfhyoig\",\"partitionSettings\":{\"partitionNames\":\"datadfteratvpkgaw\",\"partitionColumnName\":\"dataujizdmhepfj\",\"partitionUpperBound\":\"datawzgwmumuchvqwhs\",\"partitionLowerBound\":\"dataaqd\"},\"additionalColumns\":\"dataeln\",\"sourceRetryCount\":\"datagoullxpaylk\",\"sourceRetryWait\":\"datastbkskkziebmwyo\",\"maxConcurrentConnections\":\"datamplgdxdtxbrdbw\",\"disableMetricsCollection\":\"datatxpfofr\",\"\":{\"ukqscmd\":\"databbnoevkkrlkd\"}}")
             .toObject(AmazonRdsForOracleSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmazonRdsForOracleSource model = new AmazonRdsForOracleSource().withSourceRetryCount("databezmyjqpdchds")
-            .withSourceRetryWait("datakmgppxzgjysmtskt").withMaxConcurrentConnections("datasybwd")
-            .withDisableMetricsCollection("datajsokosugrfizfwd").withOracleReaderQuery("datawgikpdpudqiwhvx")
-            .withQueryTimeout("datavpoeuufw").withPartitionOption("datadeffrbxzjedy")
-            .withPartitionSettings(new AmazonRdsForOraclePartitionSettings().withPartitionNames("datasxspnmfydphl")
-                .withPartitionColumnName("datano").withPartitionUpperBound("databdvjlqfzlbpeh")
-                .withPartitionLowerBound("datapgllrh"))
-            .withAdditionalColumns("dataxstpg");
+        AmazonRdsForOracleSource model = new AmazonRdsForOracleSource().withSourceRetryCount("datagoullxpaylk")
+            .withSourceRetryWait("datastbkskkziebmwyo")
+            .withMaxConcurrentConnections("datamplgdxdtxbrdbw")
+            .withDisableMetricsCollection("datatxpfofr")
+            .withOracleReaderQuery("dataa")
+            .withQueryTimeout("databrwvio")
+            .withPartitionOption("datayhsorcavkfhyoig")
+            .withPartitionSettings(new AmazonRdsForOraclePartitionSettings().withPartitionNames("datadfteratvpkgaw")
+                .withPartitionColumnName("dataujizdmhepfj")
+                .withPartitionUpperBound("datawzgwmumuchvqwhs")
+                .withPartitionLowerBound("dataaqd"))
+            .withAdditionalColumns("dataeln");
         model = BinaryData.fromObject(model).toObject(AmazonRdsForOracleSource.class);
     }
 }

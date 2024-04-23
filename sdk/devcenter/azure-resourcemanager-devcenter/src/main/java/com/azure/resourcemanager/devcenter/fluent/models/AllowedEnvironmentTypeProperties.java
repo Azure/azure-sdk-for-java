@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of an allowed environment type. */
+/**
+ * Properties of an allowed environment type.
+ */
 @Immutable
 public final class AllowedEnvironmentTypeProperties {
     /*
@@ -23,13 +25,15 @@ public final class AllowedEnvironmentTypeProperties {
     @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
-    /** Creates an instance of AllowedEnvironmentTypeProperties class. */
+    /**
+     * Creates an instance of AllowedEnvironmentTypeProperties class.
+     */
     public AllowedEnvironmentTypeProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -38,7 +42,7 @@ public final class AllowedEnvironmentTypeProperties {
 
     /**
      * Get the displayName property: The display name of the allowed environment type.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -47,7 +51,7 @@ public final class AllowedEnvironmentTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

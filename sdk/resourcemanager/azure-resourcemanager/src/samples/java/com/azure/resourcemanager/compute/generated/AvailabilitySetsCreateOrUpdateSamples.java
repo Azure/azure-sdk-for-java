@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.fluent.models.AvailabilitySetInner;
 public final class AvailabilitySetsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * availabilitySetExamples/AvailabilitySet_Create.json
      */
     /**

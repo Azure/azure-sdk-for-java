@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DevBoxDefinitionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DevBoxDefinitionsClient.
+ */
 public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DevBoxDefinitionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevCenterManagementClientImpl client;
 
     /**
      * Initializes an instance of DevBoxDefinitionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DevBoxDefinitionsClientImpl(DevCenterManagementClientImpl client) {
-        this.service =
-            RestProxy.create(DevBoxDefinitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DevBoxDefinitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,137 +72,96 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     @Host("{$host}")
     @ServiceInterface(name = "DevCenterManagementC")
     public interface DevBoxDefinitionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/devboxdefinitions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/devboxdefinitions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DevBoxDefinitionListResult>> listByDevCenter(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<DevBoxDefinitionListResult>> listByDevCenter(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/devboxdefinitions/{devBoxDefinitionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DevBoxDefinitionInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
+            @PathParam("devBoxDefinitionName") String devBoxDefinitionName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/devboxdefinitions/{devBoxDefinitionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/devboxdefinitions/{devBoxDefinitionName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DevBoxDefinitionInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
             @PathParam("devBoxDefinitionName") String devBoxDefinitionName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") DevBoxDefinitionInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/devboxdefinitions/{devBoxDefinitionName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/devboxdefinitions/{devBoxDefinitionName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
             @PathParam("devBoxDefinitionName") String devBoxDefinitionName,
-            @BodyParam("application/json") DevBoxDefinitionInner body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") DevBoxDefinitionUpdate body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/devboxdefinitions/{devBoxDefinitionName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/devboxdefinitions/{devBoxDefinitionName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
-            @PathParam("devBoxDefinitionName") String devBoxDefinitionName,
-            @BodyParam("application/json") DevBoxDefinitionUpdate body,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
+            @PathParam("devBoxDefinitionName") String devBoxDefinitionName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/devboxdefinitions/{devBoxDefinitionName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/devboxdefinitions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
-            @PathParam("devBoxDefinitionName") String devBoxDefinitionName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DevBoxDefinitionListResult>> listByProject(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("projectName") String projectName,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/devboxdefinitions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/devboxdefinitions/{devBoxDefinitionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DevBoxDefinitionListResult>> listByProject(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("projectName") String projectName,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<DevBoxDefinitionInner>> getByProject(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("projectName") String projectName,
+            @PathParam("devBoxDefinitionName") String devBoxDefinitionName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/devboxdefinitions/{devBoxDefinitionName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DevBoxDefinitionInner>> getByProject(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("projectName") String projectName,
-            @PathParam("devBoxDefinitionName") String devBoxDefinitionName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DevBoxDefinitionListResult>> listByDevCenterNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DevBoxDefinitionListResult>> listByProjectNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List Dev Box definitions for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -204,22 +169,18 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the Dev Box definition list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DevBoxDefinitionInner>> listByDevCenterSinglePageAsync(
-        String resourceGroupName, String devCenterName, Integer top) {
+    private Mono<PagedResponse<DevBoxDefinitionInner>> listByDevCenterSinglePageAsync(String resourceGroupName,
+        String devCenterName, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -230,33 +191,16 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDevCenter(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<DevBoxDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByDevCenter(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, devCenterName, top, accept, context))
+            .<PagedResponse<DevBoxDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List Dev Box definitions for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -265,22 +209,18 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the Dev Box definition list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DevBoxDefinitionInner>> listByDevCenterSinglePageAsync(
-        String resourceGroupName, String devCenterName, Integer top, Context context) {
+    private Mono<PagedResponse<DevBoxDefinitionInner>> listByDevCenterSinglePageAsync(String resourceGroupName,
+        String devCenterName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -292,29 +232,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDevCenter(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByDevCenter(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, devCenterName, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List Dev Box definitions for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -324,16 +250,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return results of the Dev Box definition list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DevBoxDefinitionInner> listByDevCenterAsync(
-        String resourceGroupName, String devCenterName, Integer top) {
-        return new PagedFlux<>(
-            () -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top),
+    private PagedFlux<DevBoxDefinitionInner> listByDevCenterAsync(String resourceGroupName, String devCenterName,
+        Integer top) {
+        return new PagedFlux<>(() -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top),
             nextLink -> listByDevCenterNextSinglePageAsync(nextLink));
     }
 
     /**
      * List Dev Box definitions for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -344,14 +269,13 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DevBoxDefinitionInner> listByDevCenterAsync(String resourceGroupName, String devCenterName) {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top),
+        return new PagedFlux<>(() -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top),
             nextLink -> listByDevCenterNextSinglePageAsync(nextLink));
     }
 
     /**
      * List Dev Box definitions for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -362,16 +286,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return results of the Dev Box definition list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DevBoxDefinitionInner> listByDevCenterAsync(
-        String resourceGroupName, String devCenterName, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top, context),
+    private PagedFlux<DevBoxDefinitionInner> listByDevCenterAsync(String resourceGroupName, String devCenterName,
+        Integer top, Context context) {
+        return new PagedFlux<>(() -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top, context),
             nextLink -> listByDevCenterNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List Dev Box definitions for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -387,7 +310,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
 
     /**
      * List Dev Box definitions for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -398,14 +321,14 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return results of the Dev Box definition list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DevBoxDefinitionInner> listByDevCenter(
-        String resourceGroupName, String devCenterName, Integer top, Context context) {
+    public PagedIterable<DevBoxDefinitionInner> listByDevCenter(String resourceGroupName, String devCenterName,
+        Integer top, Context context) {
         return new PagedIterable<>(listByDevCenterAsync(resourceGroupName, devCenterName, top, context));
     }
 
     /**
      * Gets a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -415,19 +338,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return a Dev Box definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DevBoxDefinitionInner>> getWithResponseAsync(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName) {
+    private Mono<Response<DevBoxDefinitionInner>> getWithResponseAsync(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -441,25 +360,14 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
                 .error(new IllegalArgumentException("Parameter devBoxDefinitionName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            devBoxDefinitionName,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, devCenterName, devBoxDefinitionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -470,19 +378,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return a Dev Box definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DevBoxDefinitionInner>> getWithResponseAsync(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, Context context) {
+    private Mono<Response<DevBoxDefinitionInner>> getWithResponseAsync(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -497,21 +401,13 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                devBoxDefinitionName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, devCenterName, devBoxDefinitionName, accept, context);
     }
 
     /**
      * Gets a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -521,15 +417,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return a Dev Box definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DevBoxDefinitionInner> getAsync(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName) {
+    private Mono<DevBoxDefinitionInner> getAsync(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName) {
         return getWithResponseAsync(resourceGroupName, devCenterName, devBoxDefinitionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -540,14 +436,14 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return a Dev Box definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DevBoxDefinitionInner> getWithResponse(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, Context context) {
+    public Response<DevBoxDefinitionInner> getWithResponse(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName, Context context) {
         return getWithResponseAsync(resourceGroupName, devCenterName, devBoxDefinitionName, context).block();
     }
 
     /**
      * Gets a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -563,7 +459,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
 
     /**
      * Creates or updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -572,22 +468,18 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a definition for a Developer Machine along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, DevBoxDefinitionInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String devCenterName, String devBoxDefinitionName, DevBoxDefinitionInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -607,25 +499,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            devBoxDefinitionName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, devCenterName, devBoxDefinitionName, body, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -635,26 +517,18 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a definition for a Developer Machine along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String devCenterName,
-        String devBoxDefinitionName,
-        DevBoxDefinitionInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String devCenterName, String devBoxDefinitionName, DevBoxDefinitionInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -674,22 +548,14 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                devBoxDefinitionName,
-                body,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, devCenterName, devBoxDefinitionName, body, accept,
+            context);
     }
 
     /**
      * Creates or updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -702,21 +568,16 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DevBoxDefinitionInner>, DevBoxDefinitionInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String devCenterName, String devBoxDefinitionName, DevBoxDefinitionInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body);
-        return this
-            .client
-            .<DevBoxDefinitionInner, DevBoxDefinitionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DevBoxDefinitionInner.class,
-                DevBoxDefinitionInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body);
+        return this.client.<DevBoxDefinitionInner, DevBoxDefinitionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DevBoxDefinitionInner.class, DevBoxDefinitionInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -729,23 +590,18 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DevBoxDefinitionInner>, DevBoxDefinitionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String devCenterName,
-        String devBoxDefinitionName,
-        DevBoxDefinitionInner body,
+        String resourceGroupName, String devCenterName, String devBoxDefinitionName, DevBoxDefinitionInner body,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body, context);
-        return this
-            .client
-            .<DevBoxDefinitionInner, DevBoxDefinitionInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DevBoxDefinitionInner.class, DevBoxDefinitionInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body, context);
+        return this.client.<DevBoxDefinitionInner, DevBoxDefinitionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DevBoxDefinitionInner.class, DevBoxDefinitionInner.class, context);
     }
 
     /**
      * Creates or updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -758,14 +614,13 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DevBoxDefinitionInner>, DevBoxDefinitionInner> beginCreateOrUpdate(
         String resourceGroupName, String devCenterName, String devBoxDefinitionName, DevBoxDefinitionInner body) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -778,19 +633,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DevBoxDefinitionInner>, DevBoxDefinitionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String devCenterName,
-        String devBoxDefinitionName,
-        DevBoxDefinitionInner body,
+        String resourceGroupName, String devCenterName, String devBoxDefinitionName, DevBoxDefinitionInner body,
         Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -801,16 +652,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return represents a definition for a Developer Machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DevBoxDefinitionInner> createOrUpdateAsync(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, DevBoxDefinitionInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body)
-            .last()
+    private Mono<DevBoxDefinitionInner> createOrUpdateAsync(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName, DevBoxDefinitionInner body) {
+        return beginCreateOrUpdateAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -822,20 +672,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return represents a definition for a Developer Machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DevBoxDefinitionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String devCenterName,
-        String devBoxDefinitionName,
-        DevBoxDefinitionInner body,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body, context)
-            .last()
+    private Mono<DevBoxDefinitionInner> createOrUpdateAsync(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName, DevBoxDefinitionInner body, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -846,14 +691,14 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return represents a definition for a Developer Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DevBoxDefinitionInner createOrUpdate(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, DevBoxDefinitionInner body) {
+    public DevBoxDefinitionInner createOrUpdate(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName, DevBoxDefinitionInner body) {
         return createOrUpdateAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body).block();
     }
 
     /**
      * Creates or updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -865,18 +710,14 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return represents a definition for a Developer Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DevBoxDefinitionInner createOrUpdate(
-        String resourceGroupName,
-        String devCenterName,
-        String devBoxDefinitionName,
-        DevBoxDefinitionInner body,
-        Context context) {
+    public DevBoxDefinitionInner createOrUpdate(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName, DevBoxDefinitionInner body, Context context) {
         return createOrUpdateAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body, context).block();
     }
 
     /**
      * Partially updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -885,22 +726,18 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a definition for a Developer Machine along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, DevBoxDefinitionUpdate body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName, DevBoxDefinitionUpdate body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -920,25 +757,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            devBoxDefinitionName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, devCenterName, devBoxDefinitionName, body, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Partially updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -948,26 +775,18 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a definition for a Developer Machine along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String devCenterName,
-        String devBoxDefinitionName,
-        DevBoxDefinitionUpdate body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName, DevBoxDefinitionUpdate body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -987,22 +806,13 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                devBoxDefinitionName,
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, devCenterName, devBoxDefinitionName, body, accept, context);
     }
 
     /**
      * Partially updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1015,21 +825,16 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DevBoxDefinitionInner>, DevBoxDefinitionInner> beginUpdateAsync(
         String resourceGroupName, String devCenterName, String devBoxDefinitionName, DevBoxDefinitionUpdate body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body);
-        return this
-            .client
-            .<DevBoxDefinitionInner, DevBoxDefinitionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DevBoxDefinitionInner.class,
-                DevBoxDefinitionInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body);
+        return this.client.<DevBoxDefinitionInner, DevBoxDefinitionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DevBoxDefinitionInner.class, DevBoxDefinitionInner.class,
+            this.client.getContext());
     }
 
     /**
      * Partially updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1042,23 +847,18 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DevBoxDefinitionInner>, DevBoxDefinitionInner> beginUpdateAsync(
-        String resourceGroupName,
-        String devCenterName,
-        String devBoxDefinitionName,
-        DevBoxDefinitionUpdate body,
+        String resourceGroupName, String devCenterName, String devBoxDefinitionName, DevBoxDefinitionUpdate body,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body, context);
-        return this
-            .client
-            .<DevBoxDefinitionInner, DevBoxDefinitionInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DevBoxDefinitionInner.class, DevBoxDefinitionInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body, context);
+        return this.client.<DevBoxDefinitionInner, DevBoxDefinitionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DevBoxDefinitionInner.class, DevBoxDefinitionInner.class, context);
     }
 
     /**
      * Partially updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1069,14 +869,14 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return the {@link SyncPoller} for polling of represents a definition for a Developer Machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DevBoxDefinitionInner>, DevBoxDefinitionInner> beginUpdate(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, DevBoxDefinitionUpdate body) {
+    public SyncPoller<PollResult<DevBoxDefinitionInner>, DevBoxDefinitionInner> beginUpdate(String resourceGroupName,
+        String devCenterName, String devBoxDefinitionName, DevBoxDefinitionUpdate body) {
         return this.beginUpdateAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body).getSyncPoller();
     }
 
     /**
      * Partially updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1088,20 +888,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return the {@link SyncPoller} for polling of represents a definition for a Developer Machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DevBoxDefinitionInner>, DevBoxDefinitionInner> beginUpdate(
-        String resourceGroupName,
-        String devCenterName,
-        String devBoxDefinitionName,
-        DevBoxDefinitionUpdate body,
-        Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body, context)
+    public SyncPoller<PollResult<DevBoxDefinitionInner>, DevBoxDefinitionInner> beginUpdate(String resourceGroupName,
+        String devCenterName, String devBoxDefinitionName, DevBoxDefinitionUpdate body, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body, context)
             .getSyncPoller();
     }
 
     /**
      * Partially updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1112,16 +907,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return represents a definition for a Developer Machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DevBoxDefinitionInner> updateAsync(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, DevBoxDefinitionUpdate body) {
-        return beginUpdateAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body)
-            .last()
+    private Mono<DevBoxDefinitionInner> updateAsync(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName, DevBoxDefinitionUpdate body) {
+        return beginUpdateAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Partially updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1133,20 +927,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return represents a definition for a Developer Machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DevBoxDefinitionInner> updateAsync(
-        String resourceGroupName,
-        String devCenterName,
-        String devBoxDefinitionName,
-        DevBoxDefinitionUpdate body,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body, context)
-            .last()
+    private Mono<DevBoxDefinitionInner> updateAsync(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName, DevBoxDefinitionUpdate body, Context context) {
+        return beginUpdateAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Partially updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1157,14 +946,14 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return represents a definition for a Developer Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DevBoxDefinitionInner update(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, DevBoxDefinitionUpdate body) {
+    public DevBoxDefinitionInner update(String resourceGroupName, String devCenterName, String devBoxDefinitionName,
+        DevBoxDefinitionUpdate body) {
         return updateAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body).block();
     }
 
     /**
      * Partially updates a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1176,18 +965,14 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return represents a definition for a Developer Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DevBoxDefinitionInner update(
-        String resourceGroupName,
-        String devCenterName,
-        String devBoxDefinitionName,
-        DevBoxDefinitionUpdate body,
-        Context context) {
+    public DevBoxDefinitionInner update(String resourceGroupName, String devCenterName, String devBoxDefinitionName,
+        DevBoxDefinitionUpdate body, Context context) {
         return updateAsync(resourceGroupName, devCenterName, devBoxDefinitionName, body, context).block();
     }
 
     /**
      * Deletes a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1197,19 +982,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1223,25 +1004,14 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
                 .error(new IllegalArgumentException("Parameter devBoxDefinitionName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            devBoxDefinitionName,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, devCenterName, devBoxDefinitionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1252,19 +1022,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1279,21 +1045,13 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                devBoxDefinitionName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, devCenterName, devBoxDefinitionName, accept, context);
     }
 
     /**
      * Deletes a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1303,19 +1061,17 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, devCenterName, devBoxDefinitionName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, devCenterName, devBoxDefinitionName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1326,19 +1082,18 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, devCenterName, devBoxDefinitionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, devCenterName, devBoxDefinitionName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1348,14 +1103,14 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName) {
         return this.beginDeleteAsync(resourceGroupName, devCenterName, devBoxDefinitionName).getSyncPoller();
     }
 
     /**
      * Deletes a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1366,14 +1121,14 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, devCenterName, devBoxDefinitionName, context).getSyncPoller();
     }
 
     /**
      * Deletes a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1384,14 +1139,13 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String devCenterName, String devBoxDefinitionName) {
-        return beginDeleteAsync(resourceGroupName, devCenterName, devBoxDefinitionName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, devCenterName, devBoxDefinitionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1402,16 +1156,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, devCenterName, devBoxDefinitionName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String devCenterName, String devBoxDefinitionName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, devCenterName, devBoxDefinitionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1426,7 +1179,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
 
     /**
      * Deletes a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1442,7 +1195,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
 
     /**
      * List Dev Box definitions configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -1450,22 +1203,18 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the Dev Box definition list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DevBoxDefinitionInner>> listByProjectSinglePageAsync(
-        String resourceGroupName, String projectName, Integer top) {
+    private Mono<PagedResponse<DevBoxDefinitionInner>> listByProjectSinglePageAsync(String resourceGroupName,
+        String projectName, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1476,33 +1225,16 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByProject(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            projectName,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<DevBoxDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByProject(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, projectName, top, accept, context))
+            .<PagedResponse<DevBoxDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List Dev Box definitions configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -1511,22 +1243,18 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the Dev Box definition list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DevBoxDefinitionInner>> listByProjectSinglePageAsync(
-        String resourceGroupName, String projectName, Integer top, Context context) {
+    private Mono<PagedResponse<DevBoxDefinitionInner>> listByProjectSinglePageAsync(String resourceGroupName,
+        String projectName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1538,29 +1266,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByProject(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                projectName,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByProject(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, projectName, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List Dev Box definitions configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -1570,16 +1284,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return results of the Dev Box definition list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DevBoxDefinitionInner> listByProjectAsync(
-        String resourceGroupName, String projectName, Integer top) {
-        return new PagedFlux<>(
-            () -> listByProjectSinglePageAsync(resourceGroupName, projectName, top),
+    private PagedFlux<DevBoxDefinitionInner> listByProjectAsync(String resourceGroupName, String projectName,
+        Integer top) {
+        return new PagedFlux<>(() -> listByProjectSinglePageAsync(resourceGroupName, projectName, top),
             nextLink -> listByProjectNextSinglePageAsync(nextLink));
     }
 
     /**
      * List Dev Box definitions configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1590,14 +1303,13 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DevBoxDefinitionInner> listByProjectAsync(String resourceGroupName, String projectName) {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listByProjectSinglePageAsync(resourceGroupName, projectName, top),
+        return new PagedFlux<>(() -> listByProjectSinglePageAsync(resourceGroupName, projectName, top),
             nextLink -> listByProjectNextSinglePageAsync(nextLink));
     }
 
     /**
      * List Dev Box definitions configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -1608,16 +1320,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return results of the Dev Box definition list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DevBoxDefinitionInner> listByProjectAsync(
-        String resourceGroupName, String projectName, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByProjectSinglePageAsync(resourceGroupName, projectName, top, context),
+    private PagedFlux<DevBoxDefinitionInner> listByProjectAsync(String resourceGroupName, String projectName,
+        Integer top, Context context) {
+        return new PagedFlux<>(() -> listByProjectSinglePageAsync(resourceGroupName, projectName, top, context),
             nextLink -> listByProjectNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List Dev Box definitions configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1633,7 +1344,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
 
     /**
      * List Dev Box definitions configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -1644,14 +1355,14 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return results of the Dev Box definition list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DevBoxDefinitionInner> listByProject(
-        String resourceGroupName, String projectName, Integer top, Context context) {
+    public PagedIterable<DevBoxDefinitionInner> listByProject(String resourceGroupName, String projectName, Integer top,
+        Context context) {
         return new PagedIterable<>(listByProjectAsync(resourceGroupName, projectName, top, context));
     }
 
     /**
      * Gets a Dev Box definition configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1659,22 +1370,18 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Dev Box definition configured for a project along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DevBoxDefinitionInner>> getByProjectWithResponseAsync(
-        String resourceGroupName, String projectName, String devBoxDefinitionName) {
+    private Mono<Response<DevBoxDefinitionInner>> getByProjectWithResponseAsync(String resourceGroupName,
+        String projectName, String devBoxDefinitionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1689,24 +1396,14 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByProject(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            projectName,
-                            devBoxDefinitionName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByProject(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, projectName, devBoxDefinitionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a Dev Box definition configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1715,22 +1412,18 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Dev Box definition configured for a project along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DevBoxDefinitionInner>> getByProjectWithResponseAsync(
-        String resourceGroupName, String projectName, String devBoxDefinitionName, Context context) {
+    private Mono<Response<DevBoxDefinitionInner>> getByProjectWithResponseAsync(String resourceGroupName,
+        String projectName, String devBoxDefinitionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1745,21 +1438,13 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByProject(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                projectName,
-                devBoxDefinitionName,
-                accept,
-                context);
+        return service.getByProject(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, projectName, devBoxDefinitionName, accept, context);
     }
 
     /**
      * Gets a Dev Box definition configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1769,15 +1454,15 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return a Dev Box definition configured for a project on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DevBoxDefinitionInner> getByProjectAsync(
-        String resourceGroupName, String projectName, String devBoxDefinitionName) {
+    private Mono<DevBoxDefinitionInner> getByProjectAsync(String resourceGroupName, String projectName,
+        String devBoxDefinitionName) {
         return getByProjectWithResponseAsync(resourceGroupName, projectName, devBoxDefinitionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a Dev Box definition configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1788,14 +1473,14 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return a Dev Box definition configured for a project along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DevBoxDefinitionInner> getByProjectWithResponse(
-        String resourceGroupName, String projectName, String devBoxDefinitionName, Context context) {
+    public Response<DevBoxDefinitionInner> getByProjectWithResponse(String resourceGroupName, String projectName,
+        String devBoxDefinitionName, Context context) {
         return getByProjectWithResponseAsync(resourceGroupName, projectName, devBoxDefinitionName, context).block();
     }
 
     /**
      * Gets a Dev Box definition configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -1805,21 +1490,22 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @return a Dev Box definition configured for a project.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DevBoxDefinitionInner getByProject(
-        String resourceGroupName, String projectName, String devBoxDefinitionName) {
+    public DevBoxDefinitionInner getByProject(String resourceGroupName, String projectName,
+        String devBoxDefinitionName) {
         return getByProjectWithResponse(resourceGroupName, projectName, devBoxDefinitionName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the Dev Box definition list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DevBoxDefinitionInner>> listByDevCenterNextSinglePageAsync(String nextLink) {
@@ -1827,75 +1513,58 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDevCenterNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DevBoxDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DevBoxDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the Dev Box definition list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DevBoxDefinitionInner>> listByDevCenterNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DevBoxDefinitionInner>> listByDevCenterNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByDevCenterNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByDevCenterNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the Dev Box definition list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DevBoxDefinitionInner>> listByProjectNextSinglePageAsync(String nextLink) {
@@ -1903,62 +1572,44 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByProjectNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DevBoxDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DevBoxDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the Dev Box definition list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DevBoxDefinitionInner>> listByProjectNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DevBoxDefinitionInner>> listByProjectNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByProjectNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByProjectNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -24,6 +24,7 @@
     <maven.compiler.target>11</maven.compiler.target>
     <jacoco.skip>true</jacoco.skip>
     <shadingPrefix>azure_cosmos_spark</shadingPrefix>
+    <shadingPrefixNetty>azurecosmosspark</shadingPrefixNetty>
     <legal>
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]>
     </legal>
@@ -63,7 +64,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.58.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.59.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
@@ -84,12 +85,12 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cosmos</artifactId>
-      <version>2.37.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
+      <version>2.38.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.11.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -100,7 +101,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.14.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -207,7 +208,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
@@ -226,6 +227,7 @@
                 <include>org.scala-lang.modules:scala-java8-compat_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
                 <include>io.projectreactor:reactor-scala-extensions_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_io.projectreactor:reactor-scala-extensions_2.12;external_dependency} -->
                 <include>org.scalatest:scalatest_2.12:[3.2.2]</include> <!-- {x-include-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
+                <include>org.apache.maven.plugins:maven-antrun-plugin:[3.1.0]</include> <!-- {x-include-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
                 <include>net.alchim31.maven:scala-maven-plugin:[4.8.1]</include> <!-- {x-include-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
                 <include>org.scalastyle:scalastyle-maven-plugin:[1.0.0]</include> <!-- {x-include-update;cosmos_org.scalastyle:scalastyle-maven-plugin;external_dependency} -->
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
@@ -258,7 +260,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <failOnWarning>false</failOnWarning>
             </configuration>
@@ -275,7 +277,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>attach-javadocs</id>
@@ -298,10 +300,10 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
-            <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+            <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
             <executions>
               <execution>
-                <id>empty-javadoc-jar-with-readme</id>
+                <id>01-empty-javadoc-jar-with-readme</id>
                 <phase>package</phase>
                 <goals>
                   <goal>jar</goal>
@@ -313,33 +315,6 @@
               </execution>
             </executions>
           </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>copy-readme-to-javadocTemp</id>
-                <phase>prepare-package</phase>
-                <configuration>
-                  <target>
-                    <echo>Deleting existing ${project.basedir}/javadocTemp</echo>
-                    <delete includeEmptyDirs="true" quiet="true">
-                      <fileset dir="${project.basedir}/javadocTemp"/>
-                    </delete>
-                    <echo>Copying ${project.basedir}/README.md to
-                      ${project.basedir}/javadocTemp/README.md
-                    </echo>
-                    <copy file="${project.basedir}/README.md" tofile="${project.basedir}/javadocTemp/README.md"/>
-                  </target>
-                </configuration>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <!-- END: Empty Java Doc -->
           <plugin>
             <groupId>net.alchim31.maven</groupId>
             <artifactId>scala-maven-plugin</artifactId>
@@ -396,10 +371,10 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-shade-plugin</artifactId>
-            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
             <executions>
               <execution>
-                <id>shade</id>
+                <id>02-shade</id>
                 <phase>package</phase>
                 <goals>
                   <goal>shade</goal>
@@ -427,7 +402,7 @@
                     </relocation>
                     <relocation>
                       <pattern>io.netty</pattern>
-                      <shadedPattern>${shadingPrefix}.io.netty</shadedPattern>
+                      <shadedPattern>${shadingPrefixNetty}.io.netty</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>org.codehaus</pattern>
@@ -605,9 +580,57 @@
             </executions>
           </plugin>
           <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>01-copy-readme-to-javadocTemp</id>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <target>
+                    <echo>Deleting existing ${project.basedir}/javadocTemp</echo>
+                    <delete includeEmptyDirs="true" quiet="true">
+                      <fileset dir="${project.basedir}/javadocTemp"/>
+                    </delete>
+                    <echo>Copying ${project.basedir}/README.md to
+                      ${project.basedir}/javadocTemp/README.md
+                    </echo>
+                    <copy file="${project.basedir}/README.md" tofile="${project.basedir}/javadocTemp/README.md"/>
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>03-repack</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <unzip src="${project.build.directory}/${project.build.finalName}.jar" dest="${project.build.directory}/tmp" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_resolver_dns_native_macos_x86_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_resolver_dns_native_macos_x86_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_linux_aarch_64.so" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_tcnative_linux_aarch_64.so" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_linux_x86_64.so" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_tcnative_linux_x86_64.so" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_osx_aarch_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_tcnative_osx_aarch_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_osx_x86_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_tcnative_osx_x86_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_transport_native_epoll_x86_64.so" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_transport_native_epoll_x86_64.so" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_transport_native_kqueue_x86_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_transport_native_kqueue_x86_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/netty_tcnative_windows_x86_64.dll" tofile="${project.build.directory}/tmp/META-INF/native/azurecosmosspark_netty_tcnative_windows_x86_64.dll" />
+                    <zip basedir="${project.build.directory}/tmp" destfile="${project.build.directory}/${project.build.finalName}.jar" />
+                    <delete dir="${project.build.directory}/tmp" />
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>xml-maven-plugin</artifactId>
-            <version>1.0.2</version> <!-- {x-version-update;org.codehaus.mojo:xml-maven-plugin;external_dependency} -->
+            <version>1.1.0</version> <!-- {x-version-update;org.codehaus.mojo:xml-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>stripDependencyReducedPom</id>
@@ -696,7 +719,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <skipMain>true</skipMain>
             </configuration>
@@ -705,7 +728,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>
@@ -714,7 +737,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
-            <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+            <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>
@@ -734,7 +757,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>default-compile</id>

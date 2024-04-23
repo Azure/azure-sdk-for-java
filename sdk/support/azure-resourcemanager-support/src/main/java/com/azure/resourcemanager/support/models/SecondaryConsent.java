@@ -19,8 +19,7 @@ public final class SecondaryConsent {
     private UserConsent userConsent;
 
     /*
-     * The service name for which the secondary consent is being provided. The value needs to be retrieved from the
-     * Problem Classification API response.
+     * The service name for which the secondary consent is being provided. The value needs to be retrieved from the Problem Classification API response.
      */
     @JsonProperty(value = "type")
     private String type;

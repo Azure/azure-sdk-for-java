@@ -31,8 +31,7 @@ public final class StagingSettings {
     private Object path;
 
     /*
-     * Specifies whether to use compression when copying data via an interim staging. Default value is false. Type:
-     * boolean (or Expression with resultType boolean).
+     * Specifies whether to use compression when copying data via an interim staging. Default value is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enableCompression")
     private Object enableCompression;
@@ -149,8 +148,9 @@ public final class StagingSettings {
      */
     public void validate() {
         if (linkedServiceName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property linkedServiceName in model StagingSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedServiceName in model StagingSettings"));
         } else {
             linkedServiceName().validate();
         }

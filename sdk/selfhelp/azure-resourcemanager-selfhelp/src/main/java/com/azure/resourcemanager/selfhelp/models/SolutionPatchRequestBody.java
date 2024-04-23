@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Solution response.
+ * Solution PatchRequest body.
  */
 @Fluent
 public final class SolutionPatchRequestBody {

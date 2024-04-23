@@ -19,8 +19,7 @@ public final class MachineInstallPatchesResultImpl implements MachineInstallPatc
 
     private final com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager;
 
-    MachineInstallPatchesResultImpl(
-        MachineInstallPatchesResultInner innerObject,
+    MachineInstallPatchesResultImpl(MachineInstallPatchesResultInner innerObject,
         com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

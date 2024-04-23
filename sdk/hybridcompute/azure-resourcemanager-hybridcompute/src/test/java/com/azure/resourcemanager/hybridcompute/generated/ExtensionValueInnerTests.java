@@ -10,11 +10,9 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.ExtensionValueInner
 public final class ExtensionValueInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExtensionValueInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"version\":\"jzlmw\",\"extensionType\":\"kvugfhzovawjvzun\",\"publisher\":\"thnnpr\"},\"id\":\"i\",\"name\":\"eilpjzuaejxdu\",\"type\":\"tskzbbtdzumveek\"}")
-                .toObject(ExtensionValueInner.class);
+        ExtensionValueInner model = BinaryData.fromString(
+            "{\"properties\":{\"version\":\"blmpewww\",\"extensionType\":\"krvrns\",\"publisher\":\"hqjohxcrsbfova\"},\"id\":\"ruvw\",\"name\":\"hsqfsubcgjbirxbp\",\"type\":\"bsrfbj\"}")
+            .toObject(ExtensionValueInner.class);
     }
 
     @org.junit.jupiter.api.Test

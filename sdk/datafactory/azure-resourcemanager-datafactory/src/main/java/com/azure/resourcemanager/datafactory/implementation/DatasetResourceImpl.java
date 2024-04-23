@@ -63,14 +63,20 @@ public final class DatasetResourceImpl implements DatasetResource, DatasetResour
     }
 
     public DatasetResource create() {
-        this.innerObject = serviceManager.serviceClient().getDatasets().createOrUpdateWithResponse(resourceGroupName,
-            factoryName, datasetName, this.innerModel(), createIfMatch, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatasets()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, datasetName, this.innerModel(), createIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public DatasetResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDatasets().createOrUpdateWithResponse(resourceGroupName,
-            factoryName, datasetName, this.innerModel(), createIfMatch, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatasets()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, datasetName, this.innerModel(), createIfMatch,
+                context)
+            .getValue();
         return this;
     }
 
@@ -87,14 +93,20 @@ public final class DatasetResourceImpl implements DatasetResource, DatasetResour
     }
 
     public DatasetResource apply() {
-        this.innerObject = serviceManager.serviceClient().getDatasets().createOrUpdateWithResponse(resourceGroupName,
-            factoryName, datasetName, this.innerModel(), updateIfMatch, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatasets()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, datasetName, this.innerModel(), updateIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public DatasetResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDatasets().createOrUpdateWithResponse(resourceGroupName,
-            factoryName, datasetName, this.innerModel(), updateIfMatch, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatasets()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, datasetName, this.innerModel(), updateIfMatch,
+                context)
+            .getValue();
         return this;
     }
 
@@ -109,15 +121,19 @@ public final class DatasetResourceImpl implements DatasetResource, DatasetResour
 
     public DatasetResource refresh() {
         String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient().getDatasets()
-            .getWithResponse(resourceGroupName, factoryName, datasetName, localIfNoneMatch, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatasets()
+            .getWithResponse(resourceGroupName, factoryName, datasetName, localIfNoneMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DatasetResource refresh(Context context) {
         String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient().getDatasets()
-            .getWithResponse(resourceGroupName, factoryName, datasetName, localIfNoneMatch, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatasets()
+            .getWithResponse(resourceGroupName, factoryName, datasetName, localIfNoneMatch, context)
+            .getValue();
         return this;
     }
 

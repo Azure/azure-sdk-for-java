@@ -3,7 +3,6 @@
 
 package com.azure.communication.jobrouter.implementation.converters;
 
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterValueConstructorProxy;
 import com.azure.communication.jobrouter.implementation.models.CancelExceptionActionInternal;
 import com.azure.communication.jobrouter.implementation.models.ExceptionActionInternal;
 import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyInternal;
@@ -24,8 +23,6 @@ import com.azure.communication.jobrouter.models.QueueLengthExceptionTrigger;
 import com.azure.communication.jobrouter.models.ReclassifyExceptionAction;
 import com.azure.communication.jobrouter.models.WaitTimeExceptionTrigger;
 
-import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,9 +39,11 @@ public class ExceptionPolicyAdapter {
     public static ExceptionPolicyInternal convertCreateOptionsToExceptionPolicy(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
         return new ExceptionPolicyInternal()
             .setName(createExceptionPolicyOptions.getName())
-            .setExceptionRules(createExceptionPolicyOptions.getExceptionRules()
+            .setExceptionRules(createExceptionPolicyOptions != null
+                ? createExceptionPolicyOptions.getExceptionRules()
                 .stream().map(rule -> convertExceptionRule(rule))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList())
+            : null);
     }
 
     private static ExceptionTriggerInternal convertExceptionTrigger(ExceptionTrigger exceptionTrigger) {
@@ -65,16 +64,29 @@ public class ExceptionPolicyAdapter {
             CancelExceptionAction cancelExceptionAction = (CancelExceptionAction) exceptionAction;
             exceptionActionInternal = new CancelExceptionActionInternal()
                 .setNote(cancelExceptionAction.getNote())
+                .setId(cancelExceptionAction.getId())
                 .setDispositionCode(cancelExceptionAction.getDispositionCode());
         } else if (exceptionAction.getClass() == ManualReclassifyExceptionAction.class) {
             ManualReclassifyExceptionAction manualReclassifyExceptionAction = (ManualReclassifyExceptionAction) exceptionAction;
             exceptionActionInternal = new ManualReclassifyExceptionActionInternal()
                 .setPriority(manualReclassifyExceptionAction.getPriority())
                 .setQueueId(manualReclassifyExceptionAction.getQueueId())
-                .setWorkerSelectors(manualReclassifyExceptionAction.getWorkerSelectors()
-                    .stream()
-                    .map(ws -> LabelSelectorAdapter.convertWorkerSelectorToInternal(ws))
-                    .collect(Collectors.toList()));
+                .setId(manualReclassifyExceptionAction.getId())
+                .setWorkerSelectors(manualReclassifyExceptionAction.getWorkerSelectors() != null
+                    ? manualReclassifyExceptionAction.getWorkerSelectors()
+                        .stream()
+                        .map(LabelSelectorAdapter::convertWorkerSelectorToInternal)
+                        .collect(Collectors.toList())
+                    : null);
+        } else if (exceptionAction.getClass() == ReclassifyExceptionAction.class) {
+            ReclassifyExceptionAction reclassifyExceptionAction = (ReclassifyExceptionAction) exceptionAction;
+            exceptionActionInternal = new ReclassifyExceptionActionInternal()
+                .setClassificationPolicyId(reclassifyExceptionAction.getClassificationPolicyId())
+                .setId(reclassifyExceptionAction.getId())
+                .setLabelsToUpsert(reclassifyExceptionAction.getLabelsToUpsert() != null
+                    ? reclassifyExceptionAction.getLabelsToUpsert().entrySet().stream()
+                    .collect(Collectors.toMap(Map.Entry::getKey, v -> RouterValueAdapter.getValue(v.getValue())))
+                    : null);
         }
         return exceptionActionInternal;
     }
@@ -82,69 +94,13 @@ public class ExceptionPolicyAdapter {
     private static ExceptionRuleInternal convertExceptionRule(ExceptionRule exceptionRule) {
         String id = exceptionRule.getId();
         ExceptionTriggerInternal exceptionTriggerInternal = convertExceptionTrigger(exceptionRule.getTrigger());
-        List<ExceptionActionInternal> exceptionActionInternalList = exceptionRule.getActions()
-            .stream()
-            .map(action -> convertExceptionAction(action))
-            .collect(Collectors.toList());
+        List<ExceptionActionInternal> exceptionActionInternalList = exceptionRule.getActions() != null
+            ? exceptionRule.getActions()
+                .stream()
+                .map(action -> convertExceptionAction(action))
+                .collect(Collectors.toList())
+            : null;
         return new ExceptionRuleInternal(id, exceptionTriggerInternal, exceptionActionInternalList);
     }
 
-    public static ExceptionTrigger convertExceptionTriggerToPublic(ExceptionTriggerInternal trigger) {
-        if (trigger instanceof QueueLengthExceptionTriggerInternal) {
-            QueueLengthExceptionTriggerInternal queueLength = (QueueLengthExceptionTriggerInternal) trigger;
-            return new QueueLengthExceptionTrigger(queueLength.getThreshold());
-        } else if (trigger instanceof WaitTimeExceptionTriggerInternal) {
-            WaitTimeExceptionTriggerInternal waitTime = (WaitTimeExceptionTriggerInternal) trigger;
-            return new WaitTimeExceptionTrigger(Duration.ofSeconds((long) waitTime.getThresholdSeconds()));
-        }
-
-        return null;
-    }
-
-    public static ExceptionAction convertExceptionActionToPublic(ExceptionActionInternal action) {
-        if (action instanceof CancelExceptionActionInternal) {
-            CancelExceptionActionInternal cancel = (CancelExceptionActionInternal) action;
-            return new CancelExceptionAction()
-                .setNote(cancel.getNote())
-                .setDispositionCode(cancel.getDispositionCode());
-        } else if (action instanceof ManualReclassifyExceptionActionInternal) {
-            ManualReclassifyExceptionActionInternal manualReclassify = (ManualReclassifyExceptionActionInternal) action;
-            return new ManualReclassifyExceptionAction()
-                .setPriority(manualReclassify.getPriority())
-                .setQueueId(manualReclassify.getQueueId())
-                .setWorkerSelectors(manualReclassify.getWorkerSelectors().stream()
-                    .map(LabelSelectorAdapter::convertWorkerSelectorToPublic).collect(Collectors.toList()));
-        } else if (action instanceof ReclassifyExceptionActionInternal) {
-            ReclassifyExceptionActionInternal reclassify = (ReclassifyExceptionActionInternal) action;
-            return new ReclassifyExceptionAction()
-                .setClassificationPolicyId(reclassify.getClassificationPolicyId())
-                .setLabelsToUpsert(reclassify.getLabelsToUpsert().entrySet().stream()
-                    .collect(Collectors.toMap(Map.Entry::getKey, entry -> RouterValueConstructorProxy.create(entry.getValue()))));
-        }
-
-        return null;
-    }
-
-    public static List<ExceptionRule> convertExceptionRulesToPublic(List<ExceptionRuleInternal> rules) {
-        return rules != null ? rules.stream()
-            .map(rule -> {
-                ExceptionTrigger trigger = convertExceptionTriggerToPublic(rule.getTrigger());
-                List<ExceptionAction> actions = rule.getActions().stream()
-                    .map(action -> convertExceptionActionToPublic(action))
-                    .collect(Collectors.toList());
-                return new ExceptionRule(rule.getId(), trigger, actions);
-            })
-            .collect(Collectors.toList()) : new ArrayList<ExceptionRule>();
-    }
-
-    public static ExceptionPolicyInternal convertExceptionPolicyToInternal(ExceptionPolicy exceptionPolicy) {
-        return new ExceptionPolicyInternal()
-            .setEtag(exceptionPolicy.getEtag())
-            .setId(exceptionPolicy.getId())
-            .setName(exceptionPolicy.getName())
-            .setExceptionRules(exceptionPolicy.getExceptionRules().stream()
-                .map(exceptionRule -> convertExceptionRule(exceptionRule))
-                .collect(Collectors.toList())
-            );
-    }
 }

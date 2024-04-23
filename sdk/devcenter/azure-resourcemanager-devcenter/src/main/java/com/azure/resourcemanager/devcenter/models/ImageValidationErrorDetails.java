@@ -7,7 +7,9 @@ package com.azure.resourcemanager.devcenter.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Image validation error details. */
+/**
+ * Image validation error details.
+ */
 @Fluent
 public final class ImageValidationErrorDetails {
     /*
@@ -22,13 +24,15 @@ public final class ImageValidationErrorDetails {
     @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of ImageValidationErrorDetails class. */
+    /**
+     * Creates an instance of ImageValidationErrorDetails class.
+     */
     public ImageValidationErrorDetails() {
     }
 
     /**
      * Get the code property: An identifier for the error.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -37,7 +41,7 @@ public final class ImageValidationErrorDetails {
 
     /**
      * Set the code property: An identifier for the error.
-     *
+     * 
      * @param code the code value to set.
      * @return the ImageValidationErrorDetails object itself.
      */
@@ -48,7 +52,7 @@ public final class ImageValidationErrorDetails {
 
     /**
      * Get the message property: A message describing the error.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -57,7 +61,7 @@ public final class ImageValidationErrorDetails {
 
     /**
      * Set the message property: A message describing the error.
-     *
+     * 
      * @param message the message value to set.
      * @return the ImageValidationErrorDetails object itself.
      */
@@ -68,7 +72,7 @@ public final class ImageValidationErrorDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

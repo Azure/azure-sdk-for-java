@@ -23,13 +23,15 @@ public final class RulesEngineInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private RulesEngineProperties innerProperties;
 
-    /** Creates an instance of RulesEngineInner class. */
+    /**
+     * Creates an instance of RulesEngineInner class.
+     */
     public RulesEngineInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Rules Engine Configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RulesEngineProperties innerProperties() {
@@ -38,9 +40,9 @@ public final class RulesEngineInner extends ProxyResource {
 
     /**
      * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
-     *
-     * <p>Resource status.
-     *
+     * 
+     * Resource status.
+     * 
      * @return the resourceState value.
      */
     public FrontDoorResourceState resourceState() {
@@ -49,7 +51,7 @@ public final class RulesEngineInner extends ProxyResource {
 
     /**
      * Get the rules property: A list of rules that define a particular Rules Engine Configuration.
-     *
+     * 
      * @return the rules value.
      */
     public List<RulesEngineRule> rules() {
@@ -58,7 +60,7 @@ public final class RulesEngineInner extends ProxyResource {
 
     /**
      * Set the rules property: A list of rules that define a particular Rules Engine Configuration.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the RulesEngineInner object itself.
      */
@@ -72,7 +74,7 @@ public final class RulesEngineInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

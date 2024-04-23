@@ -72,8 +72,7 @@ public final class IotFhirDestinationInner extends LocationBasedResource {
     }
 
     /**
-     * Get the resourceIdentityResolutionType property: Determines how resource identity is resolved on the
-     * destination.
+     * Get the resourceIdentityResolutionType property: Determines how resource identity is resolved on the destination.
      * 
      * @return the resourceIdentityResolutionType value.
      */
@@ -82,8 +81,7 @@ public final class IotFhirDestinationInner extends LocationBasedResource {
     }
 
     /**
-     * Set the resourceIdentityResolutionType property: Determines how resource identity is resolved on the
-     * destination.
+     * Set the resourceIdentityResolutionType property: Determines how resource identity is resolved on the destination.
      * 
      * @param resourceIdentityResolutionType the resourceIdentityResolutionType value to set.
      * @return the IotFhirDestinationInner object itself.
@@ -152,8 +150,9 @@ public final class IotFhirDestinationInner extends LocationBasedResource {
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model IotFhirDestinationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model IotFhirDestinationInner"));
         } else {
             innerProperties().validate();
         }

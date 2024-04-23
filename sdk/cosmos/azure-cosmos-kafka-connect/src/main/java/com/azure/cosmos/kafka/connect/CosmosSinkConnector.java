@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateCosmosAccountAuthConfig;
 import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateThroughputControlConfig;
+import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateWriteConfig;
 
 /**
  * A Sink connector that publishes topic messages to CosmosDB.
@@ -84,6 +85,7 @@ public class CosmosSinkConnector extends SinkConnector {
 
         validateCosmosAccountAuthConfig(configValues);
         validateThroughputControlConfig(configValues);
+        validateWriteConfig(configValues);
         return config;
     }
 }
