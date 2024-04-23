@@ -6,57 +6,39 @@ package com.azure.resourcemanager.support.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.support.SupportManager;
 import com.azure.resourcemanager.support.fluent.models.FileDetailsInner;
 import com.azure.resourcemanager.support.models.FileDetails;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class FilesNoSubscriptionsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"createdOn\":\"2021-07-20T17:34:14Z\",\"chunkSize\":782840551,\"fileSize\":1337241911,\"numberOfChunks\":669649169},\"id\":\"xmvwfg\",\"name\":\"ayxonsupeujl\",\"type\":\"qnhcvsqltnzoibg\"}";
+            = "{\"properties\":{\"createdOn\":\"2021-06-27T13:13:13Z\",\"chunkSize\":1740217746,\"fileSize\":1527837396,\"numberOfChunks\":1693425826},\"id\":\"h\",\"name\":\"immbcx\",\"type\":\"h\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(201);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 201, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SupportManager manager = SupportManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SupportManager manager = SupportManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        FileDetails response = manager.filesNoSubscriptions()
+            .createWithResponse("aaomylweazu", "cse",
+                new FileDetailsInner().withChunkSize(1128305959).withFileSize(574230298).withNumberOfChunks(307378678),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        FileDetails response
-            = manager.filesNoSubscriptions()
-                .createWithResponse("uamwabzxrvxc", "s", new FileDetailsInner().withChunkSize(35510152)
-                    .withFileSize(1111352078).withNumberOfChunks(885005234), com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals(782840551, response.chunkSize());
-        Assertions.assertEquals(1337241911, response.fileSize());
-        Assertions.assertEquals(669649169, response.numberOfChunks());
+        Assertions.assertEquals(1740217746, response.chunkSize());
+        Assertions.assertEquals(1527837396, response.fileSize());
+        Assertions.assertEquals(1693425826, response.numberOfChunks());
     }
 }

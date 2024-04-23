@@ -1,14 +1,63 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0 (2024-04-23)
 
-### Features Added
+- Azure Resource Manager support client library for Java. This package contains Microsoft Azure SDK for support Management SDK. Microsoft Azure Support Resource Provider. Package tag package-2024-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.ServiceClassifications` was removed
 
-### Other Changes
+* `models.LookUpResourceIdRequest` was removed
+
+* `models.ProblemClassificationsNoSubscriptions` was removed
+
+* `models.ServiceClassificationRequest` was removed
+
+* `models.ProblemClassificationsClassificationOutput` was removed
+
+* `models.LookUpResourceIds` was removed
+
+* `models.ServiceClassificationOutput` was removed
+
+* `models.ProblemClassificationsClassificationResult` was removed
+
+* `models.LookUpResourceIdResponse` was removed
+
+* `models.ServiceClassificationAnswer` was removed
+
+* `models.ServiceClassificationsNoSubscriptions` was removed
+
+* `models.ProblemClassificationProperties` was removed
+
+* `models.ProblemClassificationsClassificationInput` was removed
+
+* `models.ResourceType` was removed
+
+#### `models.CommunicationDetails$DefinitionStages` was modified
+
+* Stage 2, 3 was added
+
+#### `models.ProblemClassification` was modified
+
+* `parentProblemClassification()` was removed
+* `metadata()` was removed
+
+#### `models.ProblemClassifications` was modified
+
+* `classifyProblemsWithResponse(java.lang.String,models.ProblemClassificationsClassificationInput,com.azure.core.util.Context)` was removed
+* `classifyProblems(java.lang.String,models.ProblemClassificationsClassificationInput)` was removed
+
+#### `models.Service` was modified
+
+* `metadata()` was removed
+
+#### `SupportManager` was modified
+
+* `lookUpResourceIds()` was removed
+* `problemClassificationsNoSubscriptions()` was removed
+* `serviceClassificationsNoSubscriptions()` was removed
+* `serviceClassifications()` was removed
 
 ## 1.0.0-beta.4 (2024-03-20)
 

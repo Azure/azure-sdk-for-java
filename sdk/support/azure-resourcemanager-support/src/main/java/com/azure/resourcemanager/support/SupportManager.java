@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -28,17 +28,13 @@ import com.azure.resourcemanager.support.implementation.ChatTranscriptsImpl;
 import com.azure.resourcemanager.support.implementation.ChatTranscriptsNoSubscriptionsImpl;
 import com.azure.resourcemanager.support.implementation.CommunicationsImpl;
 import com.azure.resourcemanager.support.implementation.CommunicationsNoSubscriptionsImpl;
-import com.azure.resourcemanager.support.implementation.FileWorkspacesImpl;
-import com.azure.resourcemanager.support.implementation.FileWorkspacesNoSubscriptionsImpl;
 import com.azure.resourcemanager.support.implementation.FilesImpl;
 import com.azure.resourcemanager.support.implementation.FilesNoSubscriptionsImpl;
-import com.azure.resourcemanager.support.implementation.LookUpResourceIdsImpl;
+import com.azure.resourcemanager.support.implementation.FileWorkspacesImpl;
+import com.azure.resourcemanager.support.implementation.FileWorkspacesNoSubscriptionsImpl;
 import com.azure.resourcemanager.support.implementation.MicrosoftSupportBuilder;
 import com.azure.resourcemanager.support.implementation.OperationsImpl;
 import com.azure.resourcemanager.support.implementation.ProblemClassificationsImpl;
-import com.azure.resourcemanager.support.implementation.ProblemClassificationsNoSubscriptionsImpl;
-import com.azure.resourcemanager.support.implementation.ServiceClassificationsImpl;
-import com.azure.resourcemanager.support.implementation.ServiceClassificationsNoSubscriptionsImpl;
 import com.azure.resourcemanager.support.implementation.ServicesImpl;
 import com.azure.resourcemanager.support.implementation.SupportTicketsImpl;
 import com.azure.resourcemanager.support.implementation.SupportTicketsNoSubscriptionsImpl;
@@ -46,16 +42,12 @@ import com.azure.resourcemanager.support.models.ChatTranscripts;
 import com.azure.resourcemanager.support.models.ChatTranscriptsNoSubscriptions;
 import com.azure.resourcemanager.support.models.Communications;
 import com.azure.resourcemanager.support.models.CommunicationsNoSubscriptions;
-import com.azure.resourcemanager.support.models.FileWorkspaces;
-import com.azure.resourcemanager.support.models.FileWorkspacesNoSubscriptions;
 import com.azure.resourcemanager.support.models.Files;
 import com.azure.resourcemanager.support.models.FilesNoSubscriptions;
-import com.azure.resourcemanager.support.models.LookUpResourceIds;
+import com.azure.resourcemanager.support.models.FileWorkspaces;
+import com.azure.resourcemanager.support.models.FileWorkspacesNoSubscriptions;
 import com.azure.resourcemanager.support.models.Operations;
 import com.azure.resourcemanager.support.models.ProblemClassifications;
-import com.azure.resourcemanager.support.models.ProblemClassificationsNoSubscriptions;
-import com.azure.resourcemanager.support.models.ServiceClassifications;
-import com.azure.resourcemanager.support.models.ServiceClassificationsNoSubscriptions;
 import com.azure.resourcemanager.support.models.Services;
 import com.azure.resourcemanager.support.models.SupportTickets;
 import com.azure.resourcemanager.support.models.SupportTicketsNoSubscriptions;
@@ -74,12 +66,6 @@ public final class SupportManager {
     private Operations operations;
 
     private Services services;
-
-    private ServiceClassificationsNoSubscriptions serviceClassificationsNoSubscriptions;
-
-    private ServiceClassifications serviceClassifications;
-
-    private ProblemClassificationsNoSubscriptions problemClassificationsNoSubscriptions;
 
     private ProblemClassifications problemClassifications;
 
@@ -103,16 +89,16 @@ public final class SupportManager {
 
     private FilesNoSubscriptions filesNoSubscriptions;
 
-    private LookUpResourceIds lookUpResourceIds;
-
     private final MicrosoftSupport clientObject;
 
     private SupportManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject = new MicrosoftSupportBuilder().pipeline(httpPipeline)
-            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
-            .defaultPollInterval(defaultPollInterval).buildClient();
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -263,12 +249,19 @@ public final class SupportManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.support").append("/")
-                .append("1.0.0-beta.4");
+            userAgentBuilder.append("azsdk-java")
+                .append("-")
+                .append("com.azure.resourcemanager.support")
+                .append("/")
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
+                userAgentBuilder.append(" (")
+                    .append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.name"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version"))
+                    .append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -287,18 +280,21 @@ public final class SupportManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
                 .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
-                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new SupportManager(httpPipeline, profile, defaultPollInterval);
         }
     }
@@ -325,45 +321,6 @@ public final class SupportManager {
             this.services = new ServicesImpl(clientObject.getServices(), this);
         }
         return services;
-    }
-
-    /**
-     * Gets the resource collection API of ServiceClassificationsNoSubscriptions.
-     * 
-     * @return Resource collection API of ServiceClassificationsNoSubscriptions.
-     */
-    public ServiceClassificationsNoSubscriptions serviceClassificationsNoSubscriptions() {
-        if (this.serviceClassificationsNoSubscriptions == null) {
-            this.serviceClassificationsNoSubscriptions = new ServiceClassificationsNoSubscriptionsImpl(
-                clientObject.getServiceClassificationsNoSubscriptions(), this);
-        }
-        return serviceClassificationsNoSubscriptions;
-    }
-
-    /**
-     * Gets the resource collection API of ServiceClassifications.
-     * 
-     * @return Resource collection API of ServiceClassifications.
-     */
-    public ServiceClassifications serviceClassifications() {
-        if (this.serviceClassifications == null) {
-            this.serviceClassifications
-                = new ServiceClassificationsImpl(clientObject.getServiceClassifications(), this);
-        }
-        return serviceClassifications;
-    }
-
-    /**
-     * Gets the resource collection API of ProblemClassificationsNoSubscriptions.
-     * 
-     * @return Resource collection API of ProblemClassificationsNoSubscriptions.
-     */
-    public ProblemClassificationsNoSubscriptions problemClassificationsNoSubscriptions() {
-        if (this.problemClassificationsNoSubscriptions == null) {
-            this.problemClassificationsNoSubscriptions = new ProblemClassificationsNoSubscriptionsImpl(
-                clientObject.getProblemClassificationsNoSubscriptions(), this);
-        }
-        return problemClassificationsNoSubscriptions;
     }
 
     /**
@@ -501,18 +458,6 @@ public final class SupportManager {
             this.filesNoSubscriptions = new FilesNoSubscriptionsImpl(clientObject.getFilesNoSubscriptions(), this);
         }
         return filesNoSubscriptions;
-    }
-
-    /**
-     * Gets the resource collection API of LookUpResourceIds.
-     * 
-     * @return Resource collection API of LookUpResourceIds.
-     */
-    public LookUpResourceIds lookUpResourceIds() {
-        if (this.lookUpResourceIds == null) {
-            this.lookUpResourceIds = new LookUpResourceIdsImpl(clientObject.getLookUpResourceIds(), this);
-        }
-        return lookUpResourceIds;
     }
 
     /**
