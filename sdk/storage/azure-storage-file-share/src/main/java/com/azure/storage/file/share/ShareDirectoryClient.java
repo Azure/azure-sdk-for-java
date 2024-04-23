@@ -228,7 +228,7 @@ public class ShareDirectoryClient {
             Response<ShareDirectoryProperties> response = getPropertiesWithResponse(timeout, context);
             return new SimpleResponse<>(response, true);
         } catch (RuntimeException e) {
-            if (ModelHelper.checkDoesNotExistStatusCode(e)) {
+            if (ModelHelper.checkDoesNotExistStatusCode(e) && e instanceof HttpResponseException) {
                 HttpResponse response = ((HttpResponseException) e).getResponse();
                 return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), false);
@@ -302,7 +302,7 @@ public class ShareDirectoryClient {
             .setSmbProperties(smbProperties)
             .setFilePermission(filePermission)
             .setMetadata(metadata), timeout, context);
-}
+    }
 
     /**
      * Creates a directory in the file share and returns a response of ShareDirectoryInfo to interact with it.

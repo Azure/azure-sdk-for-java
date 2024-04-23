@@ -13,7 +13,7 @@ import java.nio.ByteBuffer;
  */
 public class MappedByteBufferInputStream extends InputStream {
 
-    private ByteBuffer byteBuffer;
+    private final ByteBuffer byteBuffer;
 
     /**
      * Creates a new input stream from the given {@link ByteBuffer}.
@@ -21,7 +21,9 @@ public class MappedByteBufferInputStream extends InputStream {
      * @param buffer The buffer to wrap.
      */
     public MappedByteBufferInputStream(ByteBuffer buffer) {
-        this.byteBuffer = buffer;
+        // Defensive copy of the ByteBuffer
+        this.byteBuffer = ByteBuffer.allocate(buffer.capacity()).put(buffer);
+        this.byteBuffer.flip(); // Reset position after copying data
     }
 
     @Override

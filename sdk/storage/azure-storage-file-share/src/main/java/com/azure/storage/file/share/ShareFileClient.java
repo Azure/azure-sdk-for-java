@@ -2336,29 +2336,7 @@ public class ShareFileClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadFromFile(String uploadFilePath, ShareRequestConditions requestConditions) {
-        List<ShareFileRange> shareFileRanges = ModelHelper.sliceFile(uploadFilePath);
-        try (FileChannel channel = FileChannel.open(Paths.get(uploadFilePath), StandardOpenOption.READ)) {
-            shareFileRanges.stream().forEach(range -> {
-                try {
-                    MappedByteBuffer map = channel.map(READ_ONLY, range.getStart(),
-                        range.getEnd() - range.getStart() + 1);
-                    InputStream inputStream = new MappedByteBufferInputStream(map);
-                    ShareFileUploadRangeOptions shareFileUploadRangeOptions =
-                        new ShareFileUploadRangeOptions(inputStream, range.getEnd() - range.getStart() + 1)
-                            .setRequestConditions(requestConditions)
-                            .setOffset(range.getStart());
-
-                    uploadRangeWithResponse(shareFileUploadRangeOptions, null, Context.NONE);
-                } catch (IOException e) {
-                    // need to add retry here based on IOException or TimeoutException
-                    throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
-                }
-            });
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
-        } catch (RuntimeException e) {
-            throw LOGGER.logExceptionAsError(e);
-        }
+        shareFileAsyncClient.uploadFromFile(uploadFilePath, requestConditions).block();
     }
 
     /**
@@ -2549,7 +2527,7 @@ public class ShareFileClient {
         String rangeString = options.getRange() == null ? null : options.getRange().toString();
         Callable<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> operation = () ->
             this.azureFileStorageClient.getFiles().getRangeListWithResponse(shareName, filePath, snapshot,
-                options.getPreviousSnapshot(), null, rangeString, requestConditions.getLeaseId(), null, finalContext);
+                options.getPreviousSnapshot(), null, rangeString, requestConditions.getLeaseId(), options.isRenameIncluded(), finalContext);
 
         return StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
     }
