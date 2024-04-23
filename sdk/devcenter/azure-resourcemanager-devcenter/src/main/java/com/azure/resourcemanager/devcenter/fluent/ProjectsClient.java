@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devcenter.fluent.models.ProjectInner;
 import com.azure.resourcemanager.devcenter.models.ProjectUpdate;
 
-/** An instance of this class provides access to all the operations defined in ProjectsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProjectsClient.
+ */
 public interface ProjectsClient {
     /**
      * Lists all projects in the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the project list operation as paginated response with {@link PagedIterable}.
@@ -28,7 +30,7 @@ public interface ProjectsClient {
 
     /**
      * Lists all projects in the subscription.
-     *
+     * 
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,7 +43,7 @@ public interface ProjectsClient {
 
     /**
      * Lists all projects in the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -53,7 +55,7 @@ public interface ProjectsClient {
 
     /**
      * Lists all projects in the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -67,7 +69,7 @@ public interface ProjectsClient {
 
     /**
      * Gets a specific project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param context The context to associate with this operation.
@@ -77,12 +79,12 @@ public interface ProjectsClient {
      * @return a specific project along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProjectInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String projectName, Context context);
+    Response<ProjectInner> getByResourceGroupWithResponse(String resourceGroupName, String projectName,
+        Context context);
 
     /**
      * Gets a specific project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -95,7 +97,7 @@ public interface ProjectsClient {
 
     /**
      * Creates or updates a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Represents a project.
@@ -105,12 +107,12 @@ public interface ProjectsClient {
      * @return the {@link SyncPoller} for polling of represents a project resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ProjectInner>, ProjectInner> beginCreateOrUpdate(
-        String resourceGroupName, String projectName, ProjectInner body);
+    SyncPoller<PollResult<ProjectInner>, ProjectInner> beginCreateOrUpdate(String resourceGroupName, String projectName,
+        ProjectInner body);
 
     /**
      * Creates or updates a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Represents a project.
@@ -121,12 +123,12 @@ public interface ProjectsClient {
      * @return the {@link SyncPoller} for polling of represents a project resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ProjectInner>, ProjectInner> beginCreateOrUpdate(
-        String resourceGroupName, String projectName, ProjectInner body, Context context);
+    SyncPoller<PollResult<ProjectInner>, ProjectInner> beginCreateOrUpdate(String resourceGroupName, String projectName,
+        ProjectInner body, Context context);
 
     /**
      * Creates or updates a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Represents a project.
@@ -140,7 +142,7 @@ public interface ProjectsClient {
 
     /**
      * Creates or updates a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Represents a project.
@@ -155,7 +157,7 @@ public interface ProjectsClient {
 
     /**
      * Partially updates a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Updatable project properties.
@@ -165,12 +167,12 @@ public interface ProjectsClient {
      * @return the {@link SyncPoller} for polling of represents a project resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ProjectInner>, ProjectInner> beginUpdate(
-        String resourceGroupName, String projectName, ProjectUpdate body);
+    SyncPoller<PollResult<ProjectInner>, ProjectInner> beginUpdate(String resourceGroupName, String projectName,
+        ProjectUpdate body);
 
     /**
      * Partially updates a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Updatable project properties.
@@ -181,12 +183,12 @@ public interface ProjectsClient {
      * @return the {@link SyncPoller} for polling of represents a project resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ProjectInner>, ProjectInner> beginUpdate(
-        String resourceGroupName, String projectName, ProjectUpdate body, Context context);
+    SyncPoller<PollResult<ProjectInner>, ProjectInner> beginUpdate(String resourceGroupName, String projectName,
+        ProjectUpdate body, Context context);
 
     /**
      * Partially updates a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Updatable project properties.
@@ -200,7 +202,7 @@ public interface ProjectsClient {
 
     /**
      * Partially updates a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param body Updatable project properties.
@@ -215,7 +217,7 @@ public interface ProjectsClient {
 
     /**
      * Deletes a project resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,7 +230,7 @@ public interface ProjectsClient {
 
     /**
      * Deletes a project resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param context The context to associate with this operation.
@@ -242,7 +244,7 @@ public interface ProjectsClient {
 
     /**
      * Deletes a project resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -254,7 +256,7 @@ public interface ProjectsClient {
 
     /**
      * Deletes a project resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param context The context to associate with this operation.

@@ -77,8 +77,7 @@ public final class CommunicationDetailsProperties {
     }
 
     /**
-     * Get the sender property: Email address of the sender. This property is required if called by a service
-     * principal.
+     * Get the sender property: Email address of the sender. This property is required if called by a service principal.
      * 
      * @return the sender value.
      */
@@ -87,8 +86,7 @@ public final class CommunicationDetailsProperties {
     }
 
     /**
-     * Set the sender property: Email address of the sender. This property is required if called by a service
-     * principal.
+     * Set the sender property: Email address of the sender. This property is required if called by a service principal.
      * 
      * @param sender the sender value to set.
      * @return the CommunicationDetailsProperties object itself.
@@ -154,12 +152,14 @@ public final class CommunicationDetailsProperties {
      */
     public void validate() {
         if (subject() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property subject in model CommunicationDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subject in model CommunicationDetailsProperties"));
         }
         if (body() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property body in model CommunicationDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property body in model CommunicationDetailsProperties"));
         }
     }
 

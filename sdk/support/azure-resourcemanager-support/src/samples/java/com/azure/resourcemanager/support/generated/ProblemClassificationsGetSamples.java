@@ -9,8 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class ProblemClassificationsGetSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * GetProblemClassification.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/GetProblemClassification.json
      */
     /**
      * Sample code: Gets details of problemClassification for Azure service.
@@ -19,7 +18,7 @@ public final class ProblemClassificationsGetSamples {
      */
     public static void
         getsDetailsOfProblemClassificationForAzureService(com.azure.resourcemanager.support.SupportManager manager) {
-        manager.problemClassifications().getWithResponse("service_guid", "problemClassification_guid",
-            com.azure.core.util.Context.NONE);
+        manager.problemClassifications()
+            .getWithResponse("service_guid", "problemClassification_guid", com.azure.core.util.Context.NONE);
     }
 }

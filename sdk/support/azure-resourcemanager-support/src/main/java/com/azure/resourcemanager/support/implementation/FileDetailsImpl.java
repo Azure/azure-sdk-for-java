@@ -72,14 +72,18 @@ public final class FileDetailsImpl implements FileDetails, FileDetails.Definitio
     }
 
     public FileDetails create() {
-        this.innerObject = serviceManager.serviceClient().getFiles()
-            .createWithResponse(fileWorkspaceName, fileName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFiles()
+            .createWithResponse(fileWorkspaceName, fileName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public FileDetails create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFiles()
-            .createWithResponse(fileWorkspaceName, fileName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFiles()
+            .createWithResponse(fileWorkspaceName, fileName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -90,14 +94,18 @@ public final class FileDetailsImpl implements FileDetails, FileDetails.Definitio
     }
 
     public FileDetails refresh() {
-        this.innerObject = serviceManager.serviceClient().getFiles()
-            .getWithResponse(fileWorkspaceName, fileName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFiles()
+            .getWithResponse(fileWorkspaceName, fileName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FileDetails refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFiles()
-            .getWithResponse(fileWorkspaceName, fileName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFiles()
+            .getWithResponse(fileWorkspaceName, fileName, context)
+            .getValue();
         return this;
     }
 

@@ -153,20 +153,16 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     }
 
     public Pool create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPools()
-                .createOrUpdate(resourceGroupName, projectName, poolName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .createOrUpdate(resourceGroupName, projectName, poolName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Pool create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPools()
-                .createOrUpdate(resourceGroupName, projectName, poolName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .createOrUpdate(resourceGroupName, projectName, poolName, this.innerModel(), context);
         return this;
     }
 
@@ -182,48 +178,40 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     }
 
     public Pool apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPools()
-                .update(resourceGroupName, projectName, poolName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .update(resourceGroupName, projectName, poolName, updateBody, Context.NONE);
         return this;
     }
 
     public Pool apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPools()
-                .update(resourceGroupName, projectName, poolName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .update(resourceGroupName, projectName, poolName, updateBody, context);
         return this;
     }
 
     PoolImpl(PoolInner innerObject, com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.projectName = Utils.getValueFromIdByName(innerObject.id(), "projects");
-        this.poolName = Utils.getValueFromIdByName(innerObject.id(), "pools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
+        this.poolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "pools");
     }
 
     public Pool refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPools()
-                .getWithResponse(resourceGroupName, projectName, poolName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .getWithResponse(resourceGroupName, projectName, poolName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Pool refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPools()
-                .getWithResponse(resourceGroupName, projectName, poolName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .getWithResponse(resourceGroupName, projectName, poolName, context)
+            .getValue();
         return this;
     }
 

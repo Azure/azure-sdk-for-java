@@ -61,16 +61,16 @@ public final class ProjectEnvironmentTypeImpl
         return this.innerModel().provisioningState();
     }
 
-    public String displayName() {
-        return this.innerModel().displayName();
-    }
-
     public Integer environmentCount() {
         return this.innerModel().environmentCount();
     }
 
     public String deploymentTargetId() {
         return this.innerModel().deploymentTargetId();
+    }
+
+    public String displayName() {
+        return this.innerModel().displayName();
     }
 
     public EnvironmentTypeEnableStatus status() {
@@ -125,24 +125,19 @@ public final class ProjectEnvironmentTypeImpl
     }
 
     public ProjectEnvironmentType create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjectEnvironmentTypes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, projectName, environmentTypeName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjectEnvironmentTypes()
+            .createOrUpdateWithResponse(resourceGroupName, projectName, environmentTypeName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProjectEnvironmentType create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjectEnvironmentTypes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, projectName, environmentTypeName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjectEnvironmentTypes()
+            .createOrUpdateWithResponse(resourceGroupName, projectName, environmentTypeName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -158,51 +153,43 @@ public final class ProjectEnvironmentTypeImpl
     }
 
     public ProjectEnvironmentType apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjectEnvironmentTypes()
-                .updateWithResponse(resourceGroupName, projectName, environmentTypeName, updateBody, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjectEnvironmentTypes()
+            .updateWithResponse(resourceGroupName, projectName, environmentTypeName, updateBody, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProjectEnvironmentType apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjectEnvironmentTypes()
-                .updateWithResponse(resourceGroupName, projectName, environmentTypeName, updateBody, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjectEnvironmentTypes()
+            .updateWithResponse(resourceGroupName, projectName, environmentTypeName, updateBody, context)
+            .getValue();
         return this;
     }
 
-    ProjectEnvironmentTypeImpl(
-        ProjectEnvironmentTypeInner innerObject, com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
+    ProjectEnvironmentTypeImpl(ProjectEnvironmentTypeInner innerObject,
+        com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.projectName = Utils.getValueFromIdByName(innerObject.id(), "projects");
-        this.environmentTypeName = Utils.getValueFromIdByName(innerObject.id(), "environmentTypes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
+        this.environmentTypeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "environmentTypes");
     }
 
     public ProjectEnvironmentType refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjectEnvironmentTypes()
-                .getWithResponse(resourceGroupName, projectName, environmentTypeName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjectEnvironmentTypes()
+            .getWithResponse(resourceGroupName, projectName, environmentTypeName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProjectEnvironmentType refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjectEnvironmentTypes()
-                .getWithResponse(resourceGroupName, projectName, environmentTypeName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjectEnvironmentTypes()
+            .getWithResponse(resourceGroupName, projectName, environmentTypeName, context)
+            .getValue();
         return this;
     }
 
@@ -236,17 +223,22 @@ public final class ProjectEnvironmentTypeImpl
         }
     }
 
-    public ProjectEnvironmentTypeImpl withDisplayName(String displayName) {
-        this.innerModel().withDisplayName(displayName);
-        return this;
-    }
-
     public ProjectEnvironmentTypeImpl withDeploymentTargetId(String deploymentTargetId) {
         if (isInCreateMode()) {
             this.innerModel().withDeploymentTargetId(deploymentTargetId);
             return this;
         } else {
             this.updateBody.withDeploymentTargetId(deploymentTargetId);
+            return this;
+        }
+    }
+
+    public ProjectEnvironmentTypeImpl withDisplayName(String displayName) {
+        if (isInCreateMode()) {
+            this.innerModel().withDisplayName(displayName);
+            return this;
+        } else {
+            this.updateBody.withDisplayName(displayName);
             return this;
         }
     }
@@ -261,8 +253,8 @@ public final class ProjectEnvironmentTypeImpl
         }
     }
 
-    public ProjectEnvironmentTypeImpl withCreatorRoleAssignment(
-        ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment creatorRoleAssignment) {
+    public ProjectEnvironmentTypeImpl
+        withCreatorRoleAssignment(ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment creatorRoleAssignment) {
         if (isInCreateMode()) {
             this.innerModel().withCreatorRoleAssignment(creatorRoleAssignment);
             return this;
@@ -272,8 +264,8 @@ public final class ProjectEnvironmentTypeImpl
         }
     }
 
-    public ProjectEnvironmentTypeImpl withUserRoleAssignments(
-        Map<String, UserRoleAssignmentValue> userRoleAssignments) {
+    public ProjectEnvironmentTypeImpl
+        withUserRoleAssignments(Map<String, UserRoleAssignmentValue> userRoleAssignments) {
         if (isInCreateMode()) {
             this.innerModel().withUserRoleAssignments(userRoleAssignments);
             return this;
