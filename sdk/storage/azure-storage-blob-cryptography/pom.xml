@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-cryptography</artifactId>
-  <version>12.25.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
+  <version>12.24.3</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
 
   <name>Microsoft Azure client library for Blob Storage cryptography</name>
   <description>This module contains client library for Microsoft Azure Blob Storage cryptography.</description>
@@ -41,32 +41,25 @@
       --add-opens com.azure.storage.blob.cryptography/com.azure.storage.blob.specialized.cryptography=ALL-UNNAMED
       --add-reads com.azure.storage.blob.cryptography=com.azure.http.netty
       --add-reads com.azure.storage.blob.cryptography=com.azure.core.http.okhttp
-      --add-reads com.azure.storage.blob.cryptography=com.azure.core.http.jdk.httpclient
-      --add-reads com.azure.storage.blob.cryptography=com.azure.core.http.vertx
     </javaModulesSurefireArgLine>
-    <parallelizeLiveTests>concurrent</parallelizeLiveTests>
-
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
-
-    <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
+    <parallelizeLiveTests>true</parallelizeLiveTests>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.48.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.47.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.14.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.26.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.25.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
 
     <dependency>
@@ -78,7 +71,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.25.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.24.3</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>
@@ -86,7 +79,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.24.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.24.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -126,13 +119,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.11.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.8.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+      <version>4.8.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -154,15 +147,35 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.11.20</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-vertx</artifactId>
-      <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
+      <artifactId>azure-core-http-okhttp</artifactId>
+      <version>1.11.19</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
+    <!-- of Mockito supporting Java 8 as a baseline. -->
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy</artifactId>
+      <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy-agent</artifactId>
+      <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -172,7 +185,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
@@ -185,21 +198,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>java12plus</id>
-      <activation>
-        <jdk>[12,)</jdk>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-http-jdk-httpclient</artifactId>
-          <version>1.0.0-beta.12</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
 </project>
